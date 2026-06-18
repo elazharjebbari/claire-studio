@@ -158,6 +158,21 @@ def test_assignments_shape(admin_client):
         )
 
 
+# --------------------------------------------------------- preannotation richness
+@requires_data
+def test_preannotation_is_rich(admin_client):
+    """Les pré-annotations v9.2 portent rationale par clause + rationaleGlobal."""
+    pre = PreAnnotation.objects.first()
+    body = admin_client.get(
+        f"/api/v1/preannotations?project=claudette-gold-v1"
+        f"&document={pre.document.external_id}"
+    ).json()
+    item = body["results"][0]
+    assert "rationaleGlobal" in item and "estimatedNBlocks" in item
+    # Schéma riche → au moins une clause a un rationale non vide.
+    assert any(c.get("rationale") for c in item["clauses"]), "aucun rationale (schéma pauvre ?)"
+
+
 # ------------------------------------------------------------- doc translations
 @requires_data
 def test_document_translations_shape(admin_client):
@@ -328,7 +343,8 @@ def test_preannotations_shape(admin_client):
     _assert_keys(
         item,
         {"id", "projectSlug", "documentId", "judge", "schemaVersion",
-         "mapped", "importedAt", "clauses"},
+         "mapped", "importedAt", "clauses",
+         "rationaleGlobal", "estimatedNBlocks"},
         where="PreAnnotation",
     )
     if item["clauses"]:
