@@ -18,30 +18,41 @@ test.describe("Workspace d'annotation (F1)", () => {
     await expect(page.getByRole("complementary", { name: "Inspecteur" })).toBeVisible();
   });
 
-  test("pose une frontière de clause en cliquant une phrase", async ({ page }) => {
-    // Une phrase sans ancre existante (index 12).
+  test("le clic seul n'annote PAS ; choisir un thème crée la clause", async ({ page }) => {
+    // Phrase sans clause (index 12) : le clic ne doit créer aucune clause (plus
+    // d'auto « Boilerplate divers ») — il ouvre l'état « créer une clause ».
     await page.getByTestId("sentence-12").click();
     await expect(page.getByTestId("inspector")).toBeVisible();
-    // La nouvelle clause apparaît dans le plan (scopé au panneau « Plan du document »).
+    await expect(page.getByTestId("inspector-no-clause")).toBeVisible();
+    const planChip = page
+      .getByRole("complementary", { name: "Plan du document" })
+      .getByTestId("clause-chip")
+      .filter({ hasText: "[12]" });
+    await expect(planChip).toHaveCount(0); // rien créé au simple clic
+    // Choix explicite d'un thème → la clause est créée.
+    await page.getByTestId("inspector").getByTestId("theme-option-TERMINATION").click();
+    await expect(planChip).toBeVisible();
+  });
+
+  test("la touche B ouvre la palette de thème (pas d'auto-Boilerplate)", async ({ page }) => {
+    await page.getByTestId("sentence-9").click(); // non-ancre
+    await page.keyboard.press("b");
+    // La création reste explicite : la palette est proposée, aucune clause auto-créée.
+    await expect(page.getByTestId("inspector").getByTestId("theme-palette")).toBeVisible();
     await expect(
       page
         .getByRole("complementary", { name: "Plan du document" })
         .getByTestId("clause-chip")
-        .filter({ hasText: "[12]" }),
-    ).toBeVisible();
+        .filter({ hasText: "[9]" }),
+    ).toHaveCount(0);
   });
 
-  test("pose une frontière au clavier (B) puis règle la certitude (3)", async ({ page }) => {
-    await page.getByTestId("sentence-8").click();
-    // Déplacement clavier et pose d'ancre.
-    await page.keyboard.press("j");
-    await page.keyboard.press("b");
-    // Certitude clavier sur la clause sélectionnée.
-    await page.keyboard.press("3");
-    // La certitude clavier s'applique à la clause sélectionnée (picker de l'inspecteur).
-    await expect(
-      page.getByTestId("inspector").getByTestId("certainty-3"),
-    ).toHaveAttribute("aria-checked", "true");
+  test("règle la certitude d'une clause existante", async ({ page }) => {
+    await page.getByTestId("sentence-0").click(); // ancre META existante (fixtures)
+    const c3 = page.getByTestId("inspector").getByTestId("certainty-3");
+    await expect(c3).toBeVisible();
+    await c3.click();
+    await expect(c3).toHaveAttribute("aria-checked", "true");
   });
 
   test("change le thème via la palette", async ({ page }) => {

@@ -4,6 +4,10 @@
  * Panneau droit — Inspecteur de la clause sélectionnée (navigation.md §3) :
  * thème (ThemePalette), nature juridique, certitude 0–3, evidence span, rationale,
  * commentaires (F9), provenance/diff LLM. Édite le brouillon local (store).
+ *
+ * Q2 : si la phrase focalisée n'a PAS de clause, l'inspecteur n'affiche pas l'éditeur
+ * mais un état « créer une clause » : une ThemePalette dont la sélection d'un thème
+ * crée la clause à cet index (pas de thème par défaut — création explicite).
  */
 
 import { useWorkspaceStore, selectSelectedDraft } from "@/store/workspace";
@@ -18,21 +22,38 @@ export function InspectorPanel({
   annotationId,
   themeCodes,
   legalNatures,
+  themeFocusRef,
 }: {
   annotationId: string;
   themeCodes: string[];
   legalNatures: LegalNature[];
+  /** Permet au workspace de focaliser l'input de recherche de thème (touche B/T). */
+  themeFocusRef?: React.MutableRefObject<(() => void) | null>;
 }) {
   const draft = useWorkspaceStore(selectSelectedDraft);
   const updateDraft = useWorkspaceStore((s) => s.updateDraft);
   const setCertainty = useWorkspaceStore((s) => s.setCertainty);
   const removeBoundary = useWorkspaceStore((s) => s.removeBoundary);
   const selectClause = useWorkspaceStore((s) => s.selectClause);
+  const focusedSentence = useWorkspaceStore((s) => s.focusedSentence);
+  const setBoundary = useWorkspaceStore((s) => s.setBoundary);
 
+  // État « aucune clause sur la phrase focalisée » → proposer la création (Q2).
   if (!draft) {
     return (
-      <div className="p-4 text-sm text-ink-muted">
-        Sélectionnez une clause dans le plan ou posez une ancre dans le document.
+      <div className="flex flex-col gap-3 p-4" data-testid="inspector">
+        <p className="text-sm text-ink-muted" data-testid="inspector-no-clause">
+          Phrase {focusedSentence} — aucune clause. Choisissez un thème pour créer une clause.
+        </p>
+        <ThemePalette
+          value={null}
+          themeCodes={themeCodes}
+          autoFocus={false}
+          onChange={(code) => {
+            setBoundary(focusedSentence, code);
+          }}
+          focusRef={themeFocusRef}
+        />
       </div>
     );
   }
@@ -68,6 +89,7 @@ export function InspectorPanel({
           value={draft.theme}
           themeCodes={themeCodes}
           onChange={(code) => updateDraft(draft.localId, { theme: code })}
+          focusRef={themeFocusRef}
         />
       </Field>
 

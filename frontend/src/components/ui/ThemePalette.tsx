@@ -5,7 +5,7 @@
  * filtrable au clavier (recherche typée). Navigation clavier complète + ARIA listbox.
  */
 
-import { useMemo, useRef, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { cn } from "@/lib/cn";
 import { THEMES, getThemeToken } from "@/lib/tokens";
 
@@ -15,12 +15,26 @@ export interface ThemePaletteProps {
   /** Restreint la liste aux thèmes d'un scheme donné (sinon tous les tokens). */
   themeCodes?: string[];
   autoFocus?: boolean;
+  /**
+   * Ref impérative : `.current` est câblé sur une fonction qui focalise le champ
+   * de recherche. Permet à un parent (touche `B`, ouverture inspecteur) de donner
+   * le focus à la palette sans la remonter.
+   */
+  focusRef?: React.MutableRefObject<(() => void) | null>;
 }
 
-export function ThemePalette({ value, onChange, themeCodes, autoFocus }: ThemePaletteProps) {
+export function ThemePalette({ value, onChange, themeCodes, autoFocus, focusRef }: ThemePaletteProps) {
   const [query, setQuery] = useState("");
   const [activeIdx, setActiveIdx] = useState(0);
   const inputRef = useRef<HTMLInputElement>(null);
+
+  useEffect(() => {
+    if (!focusRef) return;
+    focusRef.current = () => inputRef.current?.focus();
+    return () => {
+      focusRef.current = null;
+    };
+  }, [focusRef]);
 
   const options = useMemo(() => {
     const base = themeCodes

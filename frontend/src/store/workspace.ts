@@ -12,6 +12,9 @@
 import { create } from "zustand";
 import type { Certainty, Clause, PivotClause } from "@/types/contract";
 
+/** Source affichée dans le DocumentPanel (Q3). */
+export type LlmSource = "human" | "claude" | "codex" | "compare";
+
 export interface DraftClause {
   /** id local tant que non persisté ; sinon l'id serveur. */
   localId: string;
@@ -54,6 +57,13 @@ interface WorkspaceState {
   displayLang: "orig" | "both" | "fr";
   /** Phrases dont la traduction FR est affichée individuellement. */
   translatedSentences: number[];
+  /**
+   * Source de segmentation affichée dans le document (Q3) :
+   *  - `human`   : annotation humaine (édition).
+   *  - `claude` / `codex` : segmentation d'un juge en lecture seule.
+   *  - `compare` : superposition de l'accord par phrase entre les deux juges.
+   */
+  llmSource: LlmSource;
   // Statut de dirty (modifs non snapshotées).
   dirty: boolean;
 
@@ -62,8 +72,12 @@ interface WorkspaceState {
   focusSentence: (index: number) => void;
   moveFocus: (delta: number) => void;
   selectClause: (id: string | null) => void;
-  /** Pose une frontière de clause sur la phrase focalisée (raccourci B / clic). */
-  setBoundary: (anchorIndex: number, theme?: string) => void;
+  /**
+   * Crée une clause à l'ancre donnée avec un thème EXPLICITE (Q2). Le thème est
+   * requis : il n'existe plus de thème par défaut, donc aucune clause ne peut être
+   * créée par accident. Si une ancre existe déjà à cet index, on la sélectionne.
+   */
+  setBoundary: (anchorIndex: number, theme: string) => void;
   removeBoundary: (anchorIndex: number) => void;
   updateDraft: (localId: string, patch: Partial<DraftClause>) => void;
   setCertainty: (localId: string, value: Certainty) => void;
@@ -84,6 +98,8 @@ interface WorkspaceState {
   setTranslated: (index: number, on: boolean) => void;
   /** Règle le mode d'affichage de langue (P10). */
   setDisplayLang: (lang: "orig" | "both" | "fr") => void;
+  /** Règle la source de segmentation affichée (Q3). */
+  setLlmSource: (source: LlmSource) => void;
   markClean: () => void;
   reset: () => void;
 }
@@ -125,6 +141,7 @@ export const useWorkspaceStore = create<WorkspaceState>((set, get) => ({
   selectedClauseIds: [],
   displayLang: "orig",
   translatedSentences: [],
+  llmSource: "human",
   dirty: false,
 
   init: ({ annotationId, nSentences, clauses }) =>
@@ -140,6 +157,7 @@ export const useWorkspaceStore = create<WorkspaceState>((set, get) => ({
       selectedClauseIds: [],
       translatedSentences: [],
       displayLang: "orig",
+      llmSource: "human",
     }),
 
   focusSentence: (index) =>
@@ -157,7 +175,7 @@ export const useWorkspaceStore = create<WorkspaceState>((set, get) => ({
 
   selectClause: (id) => set({ selectedClauseId: id }),
 
-  setBoundary: (anchorIndex, theme = "MISC_BOILERPLATE") =>
+  setBoundary: (anchorIndex, theme) =>
     set((s) => {
       if (s.draftClauses.some((c) => c.anchorIndex === anchorIndex)) {
         // Une ancre existe déjà : on la sélectionne plutôt que d'en créer une 2e.
@@ -283,6 +301,8 @@ export const useWorkspaceStore = create<WorkspaceState>((set, get) => ({
 
   setDisplayLang: (lang) => set({ displayLang: lang }),
 
+  setLlmSource: (source) => set({ llmSource: source }),
+
   markClean: () => set({ dirty: false }),
 
   reset: () =>
@@ -297,6 +317,7 @@ export const useWorkspaceStore = create<WorkspaceState>((set, get) => ({
       selectedClauseIds: [],
       translatedSentences: [],
       displayLang: "orig",
+      llmSource: "human",
       dirty: false,
     }),
 }));

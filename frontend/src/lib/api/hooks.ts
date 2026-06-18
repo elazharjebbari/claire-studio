@@ -8,7 +8,14 @@
 import { useMemo } from "react";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import * as api from "./endpoints";
-import type { Annotation, Certainty, Clause, Review } from "@/types/contract";
+import type {
+  Annotation,
+  Certainty,
+  Clause,
+  PreAnnotation,
+  Review,
+} from "@/types/contract";
+import { agreement, type JudgeClause } from "@/lib/llmAgreement";
 
 export const qk = {
   health: ["health"] as const,
@@ -189,6 +196,44 @@ export function useProjectPreAnnotations(project: string | undefined) {
     queryFn: () => api.listPreAnnotations({ project }),
     enabled: Boolean(project),
   });
+}
+
+/**
+ * Accord inter-juges Claude/Codex pour un document (Q3). Récupère les 2 pré-annotations
+ * + le document (pour nSentences), projette le thème par phrase de chaque juge et
+ * calcule l'accord (% + κ de Cohen). Renvoie aussi les deux pré-annotations brutes
+ * (rationaleGlobal, etc.). Mémoïsé sur les données.
+ */
+export function useLlmAgreement(
+  documentId: string | undefined,
+  projectSlug: string | undefined,
+) {
+  const pre = usePreAnnotations(projectSlug, documentId);
+  const doc = useDocument(documentId);
+
+  return useMemo(() => {
+    const results = pre.data?.results ?? [];
+    const claudePre: PreAnnotation | undefined = results.find((p) => p.judge === "claude");
+    const codexPre: PreAnnotation | undefined = results.find((p) => p.judge === "codex");
+    const n = doc.data?.nSentences ?? 0;
+
+    const toJudge = (p: PreAnnotation | undefined): JudgeClause[] =>
+      (p?.clauses ?? []).map((c) => ({ anchorIndex: c.anchorIndex, theme: c.themeCode }));
+
+    const res = agreement(toJudge(claudePre), toJudge(codexPre), n);
+
+    return {
+      claudePre,
+      codexPre,
+      claudeByIndex: res.claudeByIndex,
+      codexByIndex: res.codexByIndex,
+      agreementPct: res.agreementPct,
+      kappa: res.kappa,
+      support: res.support,
+      nSentences: n,
+      isLoading: pre.isLoading || doc.isLoading,
+    };
+  }, [pre.data, pre.isLoading, doc.data, doc.isLoading]);
 }
 
 export function useActivity(project?: string) {

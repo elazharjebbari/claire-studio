@@ -230,6 +230,10 @@ export interface PreAnnotation {
   clauses: PreClause[];
   importedAt: string;
   mapped: boolean;
+  /** Résumé global du juge (format v9.2 `rationale_global`), null si absent. */
+  rationaleGlobal?: string | null;
+  /** Nombre de blocs estimé par le juge (v9.2), null si absent. */
+  estimatedNBlocks?: number | null;
 }
 
 export interface AnnotationVersion {

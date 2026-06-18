@@ -3,7 +3,8 @@
 /**
  * Raccourcis clavier du workspace (navigation.md §3) :
  *   j/k  : phrase suivante / précédente
- *   B    : poser une frontière de clause sur la phrase focalisée
+ *   B    : ouvrir la palette de thème pour la phrase focalisée (n'applique plus de
+ *          thème par défaut — la création de clause est explicite, Q2)
  *   T    : ouvrir/cibler le sélecteur de thème (callback externe)
  *   C    : ouvrir un commentaire (callback externe)
  *   0–3  : certitude de la clause sélectionnée
@@ -52,8 +53,11 @@ export function useWorkspaceShortcuts(cb: ShortcutCallbacks = {}) {
           break;
         case "b":
         case "B":
+          // Q2 : `B` n'applique plus de thème par défaut. Il ouvre la palette de
+          // thème (focus de l'input de recherche), même si la phrase n'a pas encore
+          // de clause — la création reste explicite (sélection d'un thème).
           e.preventDefault();
-          store.setBoundary(store.focusedSentence);
+          cb.onFocusTheme?.();
           break;
         case "t":
         case "T":

@@ -40,7 +40,8 @@ describe("workspace store", () => {
   });
 
   it("ne crée pas deux ancres sur la même phrase", () => {
-    useWorkspaceStore.getState().setBoundary(0);
+    // setBoundary exige désormais un thème explicite (plus de défaut Boilerplate).
+    useWorkspaceStore.getState().setBoundary(0, "META");
     expect(useWorkspaceStore.getState().draftClauses).toHaveLength(1);
   });
 

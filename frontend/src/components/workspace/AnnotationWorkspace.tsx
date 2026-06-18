@@ -75,6 +75,7 @@ export function AnnotationWorkspace({ annotationId }: { annotationId: string }) 
               sentences={doc.sentences}
               referenceLabels={doc.referenceLabels}
               documentId={doc.id}
+              projectSlug={annotation.projectSlug}
             />
           }
           right={

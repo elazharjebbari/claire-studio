@@ -12,23 +12,31 @@
  *  - P4 : multi-sélection (Shift / Cmd|Ctrl + clic) + barre flottante d'actions.
  *  - P5 : traduction FR sous la phrase (phrase / sélection / document).
  *
- * IMPORTANT : le clic SIMPLE conserve son comportement (focus + pose/sélection d'ancre).
- * Les nouvelles interactions s'AJOUTENT sans le remplacer.
+ * Q2 : le clic SIMPLE ne crée PLUS de clause — il se contente de FOCUS + sélection
+ * mono de la phrase. La création de clause est explicite (thème dans l'inspecteur,
+ * menu clic-droit → Annoter). Shift/Cmd-clic et clic-droit/long-press inchangés.
+ *
+ * Q3 : un sélecteur de source (LlmSourceSwitch) pilote l'affichage :
+ *  - `human`   : annotation humaine (rail + puce de la clause humaine).
+ *  - `claude`/`codex` : segmentation du juge en lecture seule (rail + puce du juge).
+ *  - `compare` : accord par phrase (vert = identique, ambre = divergent) + bandeau
+ *    de score (κ + %).
  */
 
 import { useEffect, useMemo, useRef, useState } from "react";
-import type { ReferenceLabel, Sentence } from "@/types/contract";
+import type { PreClause, ReferenceLabel, Sentence } from "@/types/contract";
 import { useWorkspaceStore } from "@/store/workspace";
 import { getThemeToken } from "@/lib/tokens";
-import { computeRuns, runAt } from "@/lib/runs";
-import { useDocumentTranslations } from "@/lib/api/hooks";
+import { computeRuns, runAt, type Run } from "@/lib/runs";
+import { useDocumentTranslations, useLlmAgreement } from "@/lib/api/hooks";
 import { cn } from "@/lib/cn";
 import { unfairnessStyle, useUnfairnessIndex, type UnfairnessMark } from "./useUnfairness";
 import { useLongPress } from "./useLongPress";
 import { useBlockDragSelect } from "./useBlockDragSelect";
-import { SentenceMenu } from "./SentenceMenu";
+import { SentenceMenu, type JudgeDetail } from "./SentenceMenu";
 import { SelectionToolbar } from "./SelectionToolbar";
 import { LangSwitch } from "./LangSwitch";
+import { LlmSourceSwitch } from "./LlmSourceSwitch";
 
 interface MenuState {
   index: number;
@@ -40,14 +48,15 @@ export function DocumentPanel({
   sentences,
   referenceLabels,
   documentId,
+  projectSlug,
 }: {
   sentences: Sentence[];
   referenceLabels: ReferenceLabel[];
   documentId?: string;
+  projectSlug?: string;
 }) {
   const focused = useWorkspaceStore((s) => s.focusedSentence);
   const focusSentence = useWorkspaceStore((s) => s.focusSentence);
-  const setBoundary = useWorkspaceStore((s) => s.setBoundary);
   const drafts = useWorkspaceStore((s) => s.draftClauses);
   const selectClause = useWorkspaceStore((s) => s.selectClause);
   const showUnfairness = useWorkspaceStore((s) => s.showUnfairness);
@@ -55,6 +64,7 @@ export function DocumentPanel({
   const showGhostCodex = useWorkspaceStore((s) => s.showGhostCodex);
   const ghosts = useWorkspaceStore((s) => s.ghostClauses);
   const nSentences = useWorkspaceStore((s) => s.nSentences);
+  const llmSource = useWorkspaceStore((s) => s.llmSource);
 
   const showBoundaries = useWorkspaceStore((s) => s.showBoundaries);
   const toggleBoundaries = useWorkspaceStore((s) => s.toggleBoundaries);
@@ -64,6 +74,21 @@ export function DocumentPanel({
   const displayLang = useWorkspaceStore((s) => s.displayLang);
   const translatedSentences = useWorkspaceStore((s) => s.translatedSentences);
   const setTranslated = useWorkspaceStore((s) => s.setTranslated);
+
+  const n = nSentences || sentences.length;
+
+  // Accord LLM (Q3) — projection par phrase + score + détails par juge.
+  const llm = useLlmAgreement(documentId, projectSlug);
+
+  // Détails (rationale/evidence) d'un juge indexés par ancre → menu phrase enrichi.
+  const claudeDetailByAnchor = useMemo(
+    () => buildJudgeDetailMap(llm.claudePre?.clauses),
+    [llm.claudePre],
+  );
+  const codexDetailByAnchor = useMemo(
+    () => buildJudgeDetailMap(llm.codexPre?.clauses),
+    [llm.codexPre],
+  );
 
   const unfairIndex = useUnfairnessIndex(referenceLabels);
   const anchorByIndex = useMemo(
@@ -80,11 +105,24 @@ export function DocumentPanel({
     [ghosts, showGhostClaude, showGhostCodex],
   );
 
-  // Runs de clause (P2) : mémoïsés sur les ancres + nombre de phrases.
-  const runs = useMemo(
-    () => computeRuns(drafts.map((d) => ({ ...d })), nSentences || sentences.length),
-    [drafts, nSentences, sentences.length],
+  // Runs de la source ACTIVE (Q3). En `human` → clauses humaines ; en `claude`/`codex`
+  // → segmentation du juge ; en `compare` → on s'appuie sur la projection par phrase.
+  const humanRuns = useMemo(
+    () => computeRuns(drafts.map((d) => ({ ...d })), n),
+    [drafts, n],
   );
+  const claudeRuns = useMemo(
+    () => computeRuns(judgeAnchors(llm.claudePre?.clauses), n),
+    [llm.claudePre, n],
+  );
+  const codexRuns = useMemo(
+    () => computeRuns(judgeAnchors(llm.codexPre?.clauses), n),
+    [llm.codexPre, n],
+  );
+  const runs =
+    llmSource === "claude" ? claudeRuns : llmSource === "codex" ? codexRuns : humanRuns;
+  const isJudgeSource = llmSource === "claude" || llmSource === "codex";
+  const isCompare = llmSource === "compare";
 
   // Traductions FR (P5) — Map index→texte.
   const { byIndex: translations } = useDocumentTranslations(documentId);
@@ -110,7 +148,7 @@ export function DocumentPanel({
   return (
     <>
       <div className="mx-auto max-w-reading px-6 py-8 font-reading text-[17px] leading-reading text-ink">
-        <div className="mb-4 flex items-center justify-end gap-3 text-sm">
+        <div className="mb-4 flex flex-wrap items-center justify-end gap-3 text-sm">
           <label className="flex cursor-pointer items-center gap-2 text-ink-muted">
             <input
               type="checkbox"
@@ -120,8 +158,33 @@ export function DocumentPanel({
             />
             Frontières
           </label>
+          <LlmSourceSwitch />
           <LangSwitch />
         </div>
+
+        {/* Bandeau de score d'accord (Q3) — affiché en mode comparaison. */}
+        {isCompare && (
+          <div
+            data-testid="compare-banner"
+            role="status"
+            className="mb-4 flex flex-wrap items-center gap-x-4 gap-y-1 rounded-md border border-line bg-panel-muted/50 px-3 py-2 text-sm"
+          >
+            <span className="font-semibold text-ink">Accord Claude / Codex</span>
+            <span data-testid="compare-score" className="text-ink-muted">
+              κ&nbsp;<span className="font-mono text-ink">{llm.kappa.toFixed(2)}</span> ·{" "}
+              <span className="font-mono text-ink">{Math.round(llm.agreementPct)}%</span>{" "}
+              concordant ({llm.support} phrases)
+            </span>
+            <span className="ml-auto flex items-center gap-3 text-[11px] text-ink-muted">
+              <span className="flex items-center gap-1">
+                <span aria-hidden className="h-2 w-2 rounded-full bg-emerald-400" /> accord
+              </span>
+              <span className="flex items-center gap-1">
+                <span aria-hidden className="h-2 w-2 rounded-full bg-amber-400" /> divergence
+              </span>
+            </span>
+          </div>
+        )}
 
         {sentences.map((s) => {
           const isFocused = s.index === focused;
@@ -130,13 +193,42 @@ export function DocumentPanel({
           const mark: UnfairnessMark | undefined = showUnfairness
             ? unfairIndex.get(s.index)
             : undefined;
-          const anchorColor = anchor ? getThemeToken(anchor.theme).color : undefined;
+
+          // Projection par phrase de chaque juge (Q3).
+          const claudeTheme = llm.claudeByIndex[s.index] ?? null;
+          const codexTheme = llm.codexByIndex[s.index] ?? null;
+          const bothPresent = claudeTheme != null && codexTheme != null;
+          const compareAgree = bothPresent && claudeTheme === codexTheme;
 
           // Run couvrant la phrase (P2) → rail gauche + détection du début de run.
           const run = runAt(runs, s.index);
-          const runColor = run?.theme ? getThemeToken(run.theme).color : undefined;
+          let runColor = run?.theme ? getThemeToken(run.theme).color : undefined;
           const isRunStart = run != null && run.start === s.index;
-          const showDashedTop = showBoundaries && isRunStart && run!.theme != null;
+          let showDashedTop = showBoundaries && isRunStart && run!.theme != null;
+
+          // En comparaison, le rail traduit l'ACCORD (vert/ambre) et non un thème.
+          if (isCompare) {
+            runColor =
+              claudeTheme == null && codexTheme == null
+                ? undefined
+                : compareAgree
+                  ? "#34D399" // emerald-400
+                  : "#FBBF24"; // amber-400
+            showDashedTop = false;
+          }
+
+          // En-tête de clause/puce de thème selon la source active (Q3).
+          const badge = computeBadge({
+            llmSource,
+            anchor: anchor ? { theme: anchor.theme, seededFrom: anchor.seededFrom } : null,
+            run,
+            isRunStart,
+            claudeTheme,
+            codexTheme,
+            compareAgree,
+            bothPresent,
+          });
+
           const isSelected = selectedSet.has(s.index);
           const frText = translations.get(s.index);
           // Surcouche per-phrase (P9) — ne s'applique qu'en mode orig/both.
@@ -150,7 +242,7 @@ export function DocumentPanel({
 
           return (
             <div key={s.id} data-sentence-index={s.index} className="group relative">
-              {anchor && (
+              {badge && (
                 <div
                   data-testid="clause-badge"
                   className="mb-0.5 mt-3 flex items-center gap-1.5 pl-2 text-ink-muted"
@@ -158,14 +250,12 @@ export function DocumentPanel({
                   <span
                     aria-hidden
                     className="h-2 w-2 shrink-0 rounded-full"
-                    style={{ backgroundColor: anchorColor }}
+                    style={{ backgroundColor: badge.color }}
                   />
-                  <span className="text-[12px] font-medium text-ink">
-                    {getThemeToken(anchor.theme).label}
-                  </span>
-                  {anchor.seededFrom && (
+                  <span className="text-[12px] font-medium text-ink">{badge.label}</span>
+                  {badge.tag && (
                     <span className="rounded bg-panel-muted px-1 font-mono text-[9px] text-ink-muted">
-                      {anchor.seededFrom}
+                      {badge.tag}
                     </span>
                   )}
                 </div>
@@ -175,6 +265,7 @@ export function DocumentPanel({
                 isFocused={isFocused}
                 isSelected={isSelected}
                 hasAnchor={Boolean(anchor)}
+                compareState={isCompare ? (compareAgree ? "agree" : bothPresent ? "disagree" : null) : null}
                 ghost={ghost}
                 mark={mark}
                 runColor={runColor}
@@ -198,14 +289,18 @@ export function DocumentPanel({
                     focusSentence(s.index);
                     return;
                   }
-                  // Clic simple : comportement inchangé (focus + pose/sélection d'ancre).
+                  // Q2 : clic SIMPLE = focus + sélection mono, JAMAIS de création de
+                  // clause. Si la phrase a une clause humaine, on la sélectionne pour
+                  // l'inspecteur ; sinon l'inspecteur proposera de choisir un thème.
                   focusSentence(s.index);
                   if (anchor) selectClause(anchor.localId);
-                  else setBoundary(s.index);
+                  else selectClause(null);
                 }}
                 onKeyActivate={() => {
+                  // Enter/Espace : même sémantique que le clic simple (Q2).
                   focusSentence(s.index);
-                  if (!anchor) setBoundary(s.index);
+                  if (anchor) selectClause(anchor.localId);
+                  else selectClause(null);
                 }}
                 onOpenMenu={(x, y) => setMenu({ index: s.index, x, y })}
               />
@@ -250,13 +345,114 @@ export function DocumentPanel({
           sentenceIndex={menu.index}
           x={menu.x}
           y={menu.y}
-          runs={runs}
+          runs={humanRuns}
+          claudeDetail={detailAt(claudeDetailByAnchor, claudeRuns, menu.index)}
+          codexDetail={detailAt(codexDetailByAnchor, codexRuns, menu.index)}
           onClose={() => setMenu(null)}
         />
       )}
       <SelectionToolbar />
     </>
   );
+}
+
+// ── Helpers (purs, hors composant pour éviter les re-créations) ───────────────
+
+/** Ancres {anchorIndex, theme, localId} d'un juge à partir de ses PreClause. */
+function judgeAnchors(clauses: PreClause[] | undefined) {
+  return (clauses ?? []).map((c, i) => ({
+    anchorIndex: c.anchorIndex,
+    theme: c.themeCode,
+    localId: `j-${i}`,
+  }));
+}
+
+/** Map ancre → détail (thème/rationale/evidence) d'un juge, pour le menu phrase. */
+function buildJudgeDetailMap(clauses: PreClause[] | undefined): Map<number, JudgeDetail> {
+  const map = new Map<number, JudgeDetail>();
+  for (const c of clauses ?? []) {
+    map.set(c.anchorIndex, {
+      theme: c.themeCode,
+      rationale: c.rationale ?? null,
+      evidence: c.evidenceSpan ?? null,
+    });
+  }
+  return map;
+}
+
+/**
+ * Détail du juge couvrant `index` : on remonte au début du run du juge (l'ancre)
+ * pour récupérer le thème + rationale + evidence portés par cette clause.
+ */
+function detailAt(
+  detailByAnchor: Map<number, JudgeDetail>,
+  judgeRuns: Run[],
+  index: number,
+): JudgeDetail | null {
+  const run = runAt(judgeRuns, index);
+  if (!run || run.theme == null) return null;
+  return detailByAnchor.get(run.start) ?? { theme: run.theme, rationale: null, evidence: null };
+}
+
+interface Badge {
+  label: string;
+  color: string;
+  tag?: string;
+}
+
+/**
+ * Calcule l'en-tête de clause/puce à afficher au-dessus d'une phrase, selon la
+ * source active (Q3). Renvoie null si rien à afficher pour cette phrase.
+ */
+function computeBadge(args: {
+  llmSource: string;
+  anchor: { theme: string; seededFrom?: string | null } | null;
+  run: Run | undefined;
+  isRunStart: boolean;
+  claudeTheme: string | null;
+  codexTheme: string | null;
+  compareAgree: boolean;
+  bothPresent: boolean;
+}): Badge | null {
+  const { llmSource, anchor, run, isRunStart, claudeTheme, codexTheme, compareAgree, bothPresent } =
+    args;
+
+  if (llmSource === "human") {
+    if (!anchor) return null;
+    return {
+      label: getThemeToken(anchor.theme).label,
+      color: getThemeToken(anchor.theme).color,
+      tag: anchor.seededFrom ?? undefined,
+    };
+  }
+
+  if (llmSource === "claude" || llmSource === "codex") {
+    // Puce au début de chaque run du juge.
+    if (!run || run.theme == null || !isRunStart) return null;
+    return {
+      label: getThemeToken(run.theme).label,
+      color: getThemeToken(run.theme).color,
+      tag: llmSource,
+    };
+  }
+
+  // compare : puce uniquement aux phrases où au moins un juge propose un thème ET
+  // où il s'agit d'un début de divergence/accord notable (début de run de Claude).
+  if (llmSource === "compare") {
+    if (!run || run.theme == null || !isRunStart) return null;
+    if (compareAgree) {
+      return { label: getThemeToken(run.theme).label, color: "#34D399", tag: "accord" };
+    }
+    const cl = claudeTheme ? getThemeToken(claudeTheme).label : "—";
+    const cx = codexTheme ? getThemeToken(codexTheme).label : "—";
+    return {
+      label: bothPresent ? `${cl} ≠ ${cx}` : cl !== "—" ? cl : cx,
+      color: "#FBBF24",
+      tag: "divergence",
+    };
+  }
+
+  return null;
 }
 
 /**
@@ -268,6 +464,7 @@ function SentenceRow({
   isFocused,
   isSelected,
   hasAnchor,
+  compareState,
   ghost,
   mark,
   runColor,
@@ -287,6 +484,8 @@ function SentenceRow({
   isFocused: boolean;
   isSelected: boolean;
   hasAnchor: boolean;
+  /** En mode comparaison : accord ('agree')/divergence ('disagree') de la phrase. */
+  compareState: "agree" | "disagree" | null;
   ghost: { judge: string; theme: string } | undefined;
   mark: UnfairnessMark | undefined;
   runColor: string | undefined;
@@ -320,6 +519,7 @@ function SentenceRow({
       data-selected={isSelected || undefined}
       data-boundary={isRunStart || undefined}
       data-dashed={showDashedTop || undefined}
+      data-compare={compareState ?? undefined}
       {...longPress}
       onPointerDown={(e) => {
         // Bouton droit : démarre une sélection de blocs (P8) PUIS délègue au long-press
