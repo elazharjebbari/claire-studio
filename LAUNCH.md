@@ -3,6 +3,17 @@
 Visualiser et annoter les vraies données : corpus **CLAUDETTE** (50 ToS) + pré-annotations
 **Claude/Codex** + labels d'injustice + traductions FR.
 
+## Prérequis
+
+- **Node 18+** (frontend).
+- **Python ≥ 3.10** (backend — Django 5). ⚠️ Le `base` de conda est souvent en **3.9** et ne
+  suffit pas. Le script `run_real.sh` crée automatiquement un venv `backend/.venv` avec le
+  premier `python3.10+` trouvé. Si aucun n'est disponible :
+  ```bash
+  conda create -n claire python=3.12 -y && conda activate claire
+  ```
+  (ou installe Python 3.12, puis relance le script).
+
 ## Option A — une commande
 
 ```bash
@@ -10,16 +21,18 @@ bash scripts/run_real.sh                # 12 documents (défaut)
 bash scripts/run_real.sh --all          # les 50 documents
 bash scripts/run_real.sh --max-docs 6   # 6 documents
 ```
+Le script choisit un Python ≥ 3.10, crée `backend/.venv`, installe, feed, et lance les deux serveurs.
 
 Puis ouvrir **http://localhost:3000** et se connecter : **alice / claire-demo**
 (comptes : `admin`, `alice`, `bob` annotateurs, `rita` reviewer — tous mdp `claire-demo`).
 
 ## Option B — deux terminaux (plus lisible)
 
-**Terminal 1 — backend (API + données) :**
+**Terminal 1 — backend (API + données) — avec Python ≥ 3.10 :**
 ```bash
 cd backend
-make setup          # 1re fois : installe les dépendances Python
+python3.12 -m venv .venv && source .venv/bin/activate   # ou: conda activate claire
+pip install -r requirements.txt   # 1re fois
 make feed           # migrate + charge les vraies données (idempotent ; relançable)
 make run            # API sur http://localhost:8000
 ```
