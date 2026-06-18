@@ -6,7 +6,7 @@
  * serveur (react-query) et active les raccourcis clavier.
  */
 
-import { useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { useAnnotation, useDocument, useScheme } from "@/lib/api/hooks";
 import { useWorkspaceStore } from "@/store/workspace";
 import { ResizablePanels } from "./ResizablePanels";
@@ -24,6 +24,7 @@ export function AnnotationWorkspace({ annotationId }: { annotationId: string }) 
   const init = useWorkspaceStore((s) => s.init);
   const reset = useWorkspaceStore((s) => s.reset);
   const [snapshotFn, setSnapshotFn] = useState<(() => void) | null>(null);
+  const registerSnapshot = useCallback((fn: () => void) => setSnapshotFn(() => fn), []);
 
   // Initialise le store local dès que l'annotation + le document sont chargés.
   useEffect(() => {
@@ -64,7 +65,7 @@ export function AnnotationWorkspace({ annotationId }: { annotationId: string }) 
         annotationId={annotation.id}
         projectSlug={annotation.projectSlug}
         documentId={annotation.documentId}
-        onSnapshotRef={(fn) => setSnapshotFn(() => fn)}
+        onSnapshotRef={registerSnapshot}
       />
       <div className="min-h-0 flex-1">
         <ResizablePanels

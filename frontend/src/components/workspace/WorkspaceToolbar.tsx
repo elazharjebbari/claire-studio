@@ -5,7 +5,7 @@
  * globale (F10), soumission (F1). Bandeau de raccourcis + indicateur dirty.
  */
 
-import { useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { Button, StatusPill } from "@/components/ui/primitives";
 import { CertaintyPicker } from "@/components/ui/CertaintyPicker";
 import { useWorkspaceStore } from "@/store/workspace";
@@ -37,7 +37,9 @@ export function WorkspaceToolbar({
   const markClean = useWorkspaceStore((s) => s.markClean);
 
   const patchAnnotation = usePatchAnnotation(annotationId);
-  const createVersion = useCreateVersion(annotationId);
+  // On déstructure `mutate` (référence stable en react-query v5) plutôt que l'objet
+  // mutation entier (recréé à chaque rendu) → `snapshot` reste stable, pas de boucle d'effet.
+  const { mutate: createVersionMutate } = useCreateVersion(annotationId);
   const [snapshotMsg, setSnapshotMsg] = useState<string | null>(null);
 
   function prefillFrom(judge: Judge) {
@@ -51,16 +53,21 @@ export function WorkspaceToolbar({
     );
   }
 
-  function snapshot() {
-    createVersion.mutate("Snapshot manuel", {
+  const snapshot = useCallback(() => {
+    createVersionMutate("Snapshot manuel", {
       onSuccess: () => {
         markClean();
         setSnapshotMsg("Snapshot enregistré");
         setTimeout(() => setSnapshotMsg(null), 2000);
       },
     });
-  }
-  onSnapshotRef?.(snapshot);
+  }, [createVersionMutate, markClean]);
+
+  // Expose la fonction snapshot au parent APRÈS le rendu (jamais pendant le rendu,
+  // sinon setState du parent pendant le rendu de l'enfant → boucle infinie).
+  useEffect(() => {
+    onSnapshotRef?.(snapshot);
+  }, [onSnapshotRef, snapshot]);
 
   return (
     <div className="flex items-center gap-3 border-b border-line bg-elevated px-4 py-2">
