@@ -55,6 +55,9 @@ dev-frontend: ## Lance uniquement le frontend (:3000)
 
 run: dev ## Alias de `dev`
 
+serve: ## Lance SANS docker : backend SQLite (:8000) + frontend (:3000). Base déjà peuplée par `feed_db`.
+	bash $(SCRIPTS_DIR)/run_real.sh
+
 # --- Tests -------------------------------------------------------------------
 test: lint test-backend test-frontend ## Lint + pytest + vitest (sans navigateur)
 
