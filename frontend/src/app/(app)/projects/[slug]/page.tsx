@@ -45,7 +45,7 @@ export default function ProjectDashboard({ params }: { params: { slug: string } 
         <Panel className="p-4">
           <h2 className="mb-2 font-semibold text-ink">Mes assignations</h2>
           <ul className="flex flex-col gap-2">
-            {assignments?.results.map((a) => (
+            {(assignments?.results ?? []).map((a) => (
               <li key={a.id} className="flex items-center justify-between text-sm">
                 <span className="text-ink">{a.document.title}</span>
                 <div className="flex items-center gap-2">
@@ -64,7 +64,7 @@ export default function ProjectDashboard({ params }: { params: { slug: string } 
         <Panel className="p-4">
           <h2 className="mb-2 font-semibold text-ink">Activité récente</h2>
           <ul className="flex flex-col gap-1 text-sm">
-            {activity?.results.map((ev) => (
+            {(activity?.results ?? []).map((ev) => (
               <li key={ev.id} className="text-ink-muted">
                 <span className="text-ink">{ev.actorName}</span> {ev.verb.replace(/_/g, " ")}
               </li>

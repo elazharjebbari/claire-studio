@@ -27,12 +27,12 @@ export function CommandPalette() {
 
   const commands: Command[] = useMemo(
     () => [
-      { id: "go-fitbit", label: "Ouvrir le document Fitbit", hint: "annotate", run: () => router.push("/annotate/ann-1") },
+      { id: "go-resume", label: "Reprendre le travail", hint: "annotate", run: () => router.push("/") },
       { id: "go-projects", label: "Aller aux projets", run: () => router.push("/projects") },
       { id: "go-dashboard", label: "Tableau de bord du projet", run: () => router.push("/projects/claudette-gold-v1") },
       { id: "go-docs", label: "Liste des documents", run: () => router.push("/projects/claudette-gold-v1/docs") },
       { id: "go-export", label: "Lancer un export", hint: "admin", run: () => router.push("/admin/exports") },
-      { id: "go-compare", label: "Comparer deux annotations", run: () => router.push("/compare?doc=Fitbit&a=human&b=claude") },
+      { id: "go-compare", label: "Comparer deux annotations", run: () => router.push("/compare") },
       { id: "toggle-theme", label: "Basculer thème clair / sombre", run: toggleTheme },
       { id: "go-settings", label: "Préférences", run: () => router.push("/settings") },
     ],

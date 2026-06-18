@@ -11,10 +11,31 @@ import { ClauseChip } from "@/components/ui/ClauseChip";
 
 function CompareInner() {
   const sp = useSearchParams();
-  const docTitle = sp.get("doc") ?? "Fitbit";
-  const { data: annotation } = useAnnotation("ann-1");
-  const { data: pre } = usePreAnnotations("claudette-gold-v1", "doc-fitbit");
+  const docTitle = sp.get("doc") ?? "—";
+  // Paramètres réels passés dans l'URL : ?a=<annotationId>&project=<slug>&document=<id>
+  const annotationId = sp.get("a") ?? undefined;
+  const projectSlug = sp.get("project") ?? "claudette-gold-v1";
+  const documentId = sp.get("document") ?? undefined;
+  const { data: annotation } = useAnnotation(annotationId);
+  const { data: pre } = usePreAnnotations(projectSlug, documentId);
   const claude = pre?.results.find((p) => p.judge === "claude");
+
+  if (!annotationId || !documentId) {
+    return (
+      <div className="mx-auto max-w-4xl px-6 py-8">
+        <h1 className="mb-3 text-xl font-semibold text-ink">Comparaison</h1>
+        <Panel className="p-6 text-sm text-ink-muted">
+          Sélectionnez une annotation et un document à comparer.{" "}
+          <a href="/projects" className="text-accent hover:underline">
+            Ouvrir un projet →
+          </a>
+          <p className="mt-2 text-xs">
+            URL attendue : <code>/compare?a=&lt;annotationId&gt;&amp;document=&lt;documentId&gt;&amp;doc=&lt;titre&gt;</code>
+          </p>
+        </Panel>
+      </div>
+    );
+  }
   const human = new Map((annotation?.clauses ?? []).map((c) => [c.anchorIndex, c.theme]));
   const llm = new Map(preClausesToPivot(claude?.clauses ?? []).map((c) => [c.anchor_index, c.theme]));
   const allAnchors = Array.from(new Set([...human.keys(), ...llm.keys()])).sort((a, b) => a - b);

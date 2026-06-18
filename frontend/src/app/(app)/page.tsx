@@ -50,7 +50,7 @@ export default function HomePage() {
         <Panel className="p-4">
           <h2 className="font-semibold text-ink">Mes projets</h2>
           <ul className="mt-3 flex flex-col gap-2">
-            {projects?.results.map((p) => (
+            {projectList.map((p) => (
               <li key={p.slug} className="flex items-center justify-between">
                 <span className="text-sm text-ink">{p.name}</span>
                 <Link href={`/projects/${p.slug}`} className="text-sm text-accent hover:underline">

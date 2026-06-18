@@ -1,11 +1,11 @@
 "use client";
 
-import { usePreAnnotations } from "@/lib/api/hooks";
+import { useProjectPreAnnotations } from "@/lib/api/hooks";
 import { AdminScaffold } from "@/components/admin/AdminTable";
 import { Badge } from "@/components/ui/primitives";
 
 export default function AdminPreannotations() {
-  const { data } = usePreAnnotations("claudette-gold-v1", "doc-fitbit");
+  const { data } = useProjectPreAnnotations("claudette-gold-v1");
   return (
     <AdminScaffold
       title="Pré-annotations LLM"

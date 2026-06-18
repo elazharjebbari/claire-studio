@@ -159,6 +159,15 @@ export function usePreAnnotations(project: string | undefined, document: string 
   });
 }
 
+/** Toutes les pré-annotations d'un projet (tous documents) — vue admin. */
+export function useProjectPreAnnotations(project: string | undefined) {
+  return useQuery({
+    queryKey: qk.preannotations(project ?? "", "all"),
+    queryFn: () => api.listPreAnnotations({ project }),
+    enabled: Boolean(project),
+  });
+}
+
 export function useActivity(project?: string) {
   return useQuery({
     queryKey: qk.activity(project),
