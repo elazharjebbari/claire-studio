@@ -69,6 +69,19 @@ export function WorkspaceToolbar({
     onSnapshotRef?.(snapshot);
   }, [onSnapshotRef, snapshot]);
 
+  // Charge les fantômes des DEUX juges dès que les pré-annotations arrivent, indépendamment
+  // de l'adoption (F2 : overlay de comparaison). DocumentPanel n'affiche un fantôme que sur
+  // une phrase non encore ancrée par l'humain.
+  useEffect(() => {
+    if (!preClaude) return;
+    for (const p of preClaude.results) {
+      setGhost(
+        p.clauses.map((c) => ({ anchorIndex: c.anchorIndex, theme: c.themeCode })),
+        p.judge,
+      );
+    }
+  }, [preClaude, setGhost]);
+
   return (
     <div className="flex items-center gap-3 border-b border-line bg-elevated px-4 py-2">
       <StatusPill status={annotation?.status ?? "draft"} />

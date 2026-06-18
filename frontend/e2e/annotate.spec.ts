@@ -22,8 +22,13 @@ test.describe("Workspace d'annotation (F1)", () => {
     // Une phrase sans ancre existante (index 12).
     await page.getByTestId("sentence-12").click();
     await expect(page.getByTestId("inspector")).toBeVisible();
-    // La nouvelle clause apparaît dans le plan.
-    await expect(page.getByTestId("clause-chip").filter({ hasText: "[12]" })).toBeVisible();
+    // La nouvelle clause apparaît dans le plan (scopé au panneau « Plan du document »).
+    await expect(
+      page
+        .getByRole("complementary", { name: "Plan du document" })
+        .getByTestId("clause-chip")
+        .filter({ hasText: "[12]" }),
+    ).toBeVisible();
   });
 
   test("pose une frontière au clavier (B) puis règle la certitude (3)", async ({ page }) => {
@@ -33,7 +38,10 @@ test.describe("Workspace d'annotation (F1)", () => {
     await page.keyboard.press("b");
     // Certitude clavier sur la clause sélectionnée.
     await page.keyboard.press("3");
-    await expect(page.getByTestId("certainty-3")).toHaveAttribute("aria-checked", "true");
+    // La certitude clavier s'applique à la clause sélectionnée (picker de l'inspecteur).
+    await expect(
+      page.getByTestId("inspector").getByTestId("certainty-3"),
+    ).toHaveAttribute("aria-checked", "true");
   });
 
   test("change le thème via la palette", async ({ page }) => {
@@ -41,8 +49,9 @@ test.describe("Workspace d'annotation (F1)", () => {
     const input = page.getByLabel("Rechercher un thème");
     await input.fill("arbitrage");
     await page.getByTestId("theme-option-ARBITRATION_DISPUTES").click();
+    // La clause sélectionnée de l'inspecteur reflète le nouveau thème.
     await expect(
-      page.getByTestId("inspector").getByText("Arbitrage & litiges"),
+      page.getByTestId("inspector").getByTestId("clause-chip").filter({ hasText: "Arbitrage" }),
     ).toBeVisible();
   });
 

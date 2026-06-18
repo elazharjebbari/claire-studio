@@ -60,9 +60,14 @@ export function DocumentPanel({
           <div key={s.id} data-sentence-index={s.index} className="group relative">
             {anchor && (
               <div
-                className="mb-1 mt-3 flex items-center gap-2 border-l-2 pl-2 text-[11px] font-semibold uppercase tracking-wide"
-                style={{ borderColor: themeColor, color: themeColor }}
+                className="mb-1 mt-3 flex items-center gap-2 border-l-2 pl-2 text-[11px] font-semibold uppercase tracking-wide text-ink"
+                style={{ borderColor: themeColor }}
               >
+                <span
+                  aria-hidden
+                  className="h-2 w-2 shrink-0 rounded-full"
+                  style={{ backgroundColor: themeColor }}
+                />
                 ▸ Début de clause · {getThemeToken(anchor.theme).label}
                 {anchor.seededFrom && (
                   <span className="rounded bg-panel-muted px-1 font-mono text-[9px] text-ink-muted">

@@ -23,9 +23,10 @@ test.describe("Pré-remplissage LLM (F2)", () => {
   });
 
   test("affiche les fantômes Claude quand l'overlay est activé", async ({ page }) => {
-    await page.getByTestId("prefill-claude").click();
+    // Les fantômes sont chargés au montage (overlay de comparaison) : on active simplement
+    // l'overlay, sans pré-remplir (le pré-remplissage transformerait les fantômes en ancres).
     await page.getByTestId("toggle-ghost-claude").check();
-    // Une phrase non encore ancrée par l'humain mais proposée par le LLM.
+    // Une phrase non encore ancrée par l'humain mais proposée par Claude (ex. index 1).
     await expect(page.getByText(/fantôme claude/i).first()).toBeVisible();
   });
 });

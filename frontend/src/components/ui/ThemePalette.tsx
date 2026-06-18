@@ -70,27 +70,34 @@ export function ThemePalette({ value, onChange, themeCodes, autoFocus }: ThemePa
         {options.map((t, i) => {
           const selected = value === t.code;
           return (
-            <li key={t.code} role="option" aria-selected={selected}>
-              <button
-                type="button"
-                data-testid={`theme-option-${t.code}`}
-                onClick={() => onChange(t.code)}
-                onMouseEnter={() => setActiveIdx(i)}
-                className={cn(
-                  "flex w-full items-center gap-2 px-2 py-1.5 text-left text-sm transition-colors",
-                  i === activeIdx ? "bg-panel-muted" : "hover:bg-panel-muted/60",
-                  selected ? "font-semibold" : "",
-                )}
-              >
-                <span
-                  aria-hidden
-                  className="h-3 w-3 shrink-0 rounded-full ring-1 ring-inset ring-black/20"
-                  style={{ backgroundColor: t.color }}
-                />
-                <span className="flex-1 truncate text-ink">{t.label}</span>
-                <span className="font-mono text-[10px] text-ink-muted">{t.code}</span>
-                {selected && <span aria-hidden>✓</span>}
-              </button>
+            <li
+              key={t.code}
+              role="option"
+              aria-selected={selected}
+              data-testid={`theme-option-${t.code}`}
+              tabIndex={0}
+              onClick={() => onChange(t.code)}
+              onKeyDown={(e) => {
+                if (e.key === "Enter" || e.key === " ") {
+                  e.preventDefault();
+                  onChange(t.code);
+                }
+              }}
+              onMouseEnter={() => setActiveIdx(i)}
+              className={cn(
+                "flex w-full cursor-pointer items-center gap-2 px-2 py-1.5 text-left text-sm transition-colors",
+                i === activeIdx ? "bg-panel-muted" : "hover:bg-panel-muted/60",
+                selected ? "font-semibold" : "",
+              )}
+            >
+              <span
+                aria-hidden
+                className="h-3 w-3 shrink-0 rounded-full ring-1 ring-inset ring-black/20"
+                style={{ backgroundColor: t.color }}
+              />
+              <span className="flex-1 truncate text-ink">{t.label}</span>
+              <span className="font-mono text-[10px] text-ink-muted">{t.code}</span>
+              {selected && <span aria-hidden>✓</span>}
             </li>
           );
         })}

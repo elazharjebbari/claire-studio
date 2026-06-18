@@ -46,7 +46,7 @@ export function CertaintyPicker({
               size === "sm" ? "px-1.5 py-1 text-base" : "px-2.5 py-1.5 text-lg",
               selected
                 ? "border-transparent ring-2"
-                : "border-line opacity-70 hover:opacity-100",
+                : "border-line hover:bg-panel-muted",
             )}
             style={
               selected

@@ -28,6 +28,7 @@ export function ResizablePanels({
   right: React.ReactNode;
 }) {
   const [layout, setLayout] = useState<Layout>(DEFAULT);
+  const [containerWidth, setContainerWidth] = useState(0);
   const containerRef = useRef<HTMLDivElement>(null);
   const dragging = useRef<"left" | "right" | null>(null);
 
@@ -38,6 +39,20 @@ export function ResizablePanels({
     } catch {
       /* ignore */
     }
+  }, []);
+
+  useEffect(() => {
+    const el = containerRef.current;
+    if (!el) return;
+    const measure = () => setContainerWidth(el.getBoundingClientRect().width);
+    measure();
+    if (typeof ResizeObserver !== "undefined") {
+      const ro = new ResizeObserver(measure);
+      ro.observe(el);
+      return () => ro.disconnect();
+    }
+    window.addEventListener("resize", measure);
+    return () => window.removeEventListener("resize", measure);
   }, []);
 
   const persist = useCallback((next: Layout) => {
@@ -91,11 +106,18 @@ export function ResizablePanels({
   }
 
   function Handle({ side }: { side: "left" | "right" }) {
+    const value = Math.round(layout[side]);
+    // Borne supérieure raisonnable : largeur conteneur moins l'espace réservé
+    // aux deux autres colonnes (mêmes bornes que le drag), sinon repli sur 1200px.
+    const max = containerWidth > 3 * MIN ? Math.round(containerWidth - 2 * MIN) : 1200;
     return (
       <div
         role="separator"
         aria-orientation="vertical"
         aria-label={`Redimensionner le panneau ${side === "left" ? "gauche" : "droit"}`}
+        aria-valuenow={value}
+        aria-valuemin={MIN}
+        aria-valuemax={Math.max(max, value)}
         tabIndex={0}
         data-testid={`resize-${side}`}
         onMouseDown={() => {

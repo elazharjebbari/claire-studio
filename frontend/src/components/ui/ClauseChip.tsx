@@ -44,18 +44,19 @@ export function ClauseChip({
       aria-pressed={onClick ? selected : undefined}
       title={token.label}
       className={cn(
-        "inline-flex items-center gap-1.5 rounded-md border font-medium transition-colors",
+        "inline-flex items-center gap-1.5 rounded-md border font-medium text-ink transition-colors",
         size === "sm" ? "px-1.5 py-0.5 text-[11px]" : "px-2 py-1 text-xs",
-        ghost ? "border-dashed opacity-70" : "border-solid",
+        ghost ? "border-dashed" : "border-solid",
         selected ? "ring-2 ring-offset-1 ring-offset-panel" : "",
         onClick ? "cursor-pointer hover:brightness-110" : "",
         className,
       )}
       style={
         {
+          // La couleur de thème est réservée aux éléments non textuels (fond léger,
+          // bordure, pastille) ; le texte reste en `text-ink` pour garantir AA 4.5:1.
           backgroundColor: `rgba(${rgb}, ${ghost ? 0.08 : 0.18})`,
           borderColor: `rgba(${rgb}, ${selected ? 0.9 : 0.45})`,
-          color: token.color,
           "--tw-ring-color": token.color,
         } as React.CSSProperties
       }
@@ -66,9 +67,9 @@ export function ClauseChip({
         style={{ backgroundColor: token.color }}
       />
       {anchorIndex !== undefined && (
-        <span className="font-mono opacity-80">[{anchorIndex}]</span>
+        <span className="font-mono text-ink">[{anchorIndex}]</span>
       )}
-      <span className="truncate">{token.label}</span>
+      <span className="truncate text-ink">{token.label}</span>
     </Comp>
   );
 }

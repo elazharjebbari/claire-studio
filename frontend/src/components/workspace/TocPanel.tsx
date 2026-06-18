@@ -32,11 +32,18 @@ export function TocPanel({ docTitle }: { docTitle: string }) {
         <p className="text-xs text-ink-muted">
           {drafts.length} clause(s) · {nSentences} phrases
         </p>
-        <div className="mt-2 h-1.5 overflow-hidden rounded-full bg-panel-muted">
+        <div
+          className="mt-2 h-1.5 overflow-hidden rounded-full bg-panel-muted"
+          role="progressbar"
+          aria-label={`Couverture ${coverage}%`}
+          aria-valuenow={coverage}
+          aria-valuemin={0}
+          aria-valuemax={100}
+        >
           <div
             className="h-full bg-accent transition-all"
             style={{ width: `${coverage}%` }}
-            aria-label={`Couverture ${coverage}%`}
+            aria-hidden
           />
         </div>
       </div>
