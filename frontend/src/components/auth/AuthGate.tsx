@@ -38,9 +38,11 @@ export function AuthGate({ children }: { children: React.ReactNode }) {
             ? (err as { status?: number }).status
             : undefined;
         setErrorMsg(
-          status
-            ? `Échec de connexion (HTTP ${status}). Vérifiez les identifiants d’auto-login.`
-            : "Connexion impossible. Le backend est-il démarré ?",
+          status === 429
+            ? "Trop de tentatives de connexion (HTTP 429). Patientez ~1 min, puis Réessayer."
+            : status
+              ? `Échec de connexion (HTTP ${status}). Vérifiez les identifiants d’auto-login.`
+              : "Connexion impossible. Le backend est-il démarré ?",
         );
         setPhase("error");
       });

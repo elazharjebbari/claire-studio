@@ -98,6 +98,13 @@ function useAuthExpiredRedirect() {
     if (MOCKS_ENABLED) return;
     setAuthExpiredHandler(() => {
       if (typeof window === "undefined") return;
+      // Anti-boucle DUR : au plus UNE reprise toutes les 30 s. Sans ce garde,
+      // un 401 de fond (ex. token expiré) déclenchait un reload → re-login →
+      // (429) → 401 → reload… en boucle. Le garde casse la tempête.
+      const now = Date.now();
+      const last = Number(window.sessionStorage.getItem("claire.lastReauth") ?? "0");
+      if (now - last < 30_000) return;
+      window.sessionStorage.setItem("claire.lastReauth", String(now));
       if (AUTO_LOGIN_ENABLED) {
         window.location.reload();
       } else if (window.location.pathname !== "/login") {
@@ -130,10 +137,14 @@ export function Providers({ children }: { children: React.ReactNode }) {
   return (
     <QueryClientProvider client={clientRef.current}>
       <ErrorBoundary>
-        <AuthGate>{children}</AuthGate>
+        <AuthGate>
+          {children}
+          {/* DebugBar DANS le gate : /me n'est sondé qu'une fois authentifié
+              (évite un 401 de fond pré-login qui boucle). */}
+          <DebugBar />
+        </AuthGate>
       </ErrorBoundary>
       <ApiErrorBanner />
-      <DebugBar />
     </QueryClientProvider>
   );
 }

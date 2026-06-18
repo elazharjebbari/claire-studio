@@ -34,8 +34,19 @@ def user_with_password(db):
 
 
 # --------------------------------------------------------------- 1. throttling
-def test_ratelimit_login(api_client, user_with_password):
+def test_ratelimit_login(api_client, user_with_password, monkeypatch):
     """After N login attempts the dedicated scope returns 429 + Retry-After."""
+    # Quota login déterministe (indépendant du défaut settings : dev = 60/min).
+    # `THROTTLE_RATES` est un attribut de CLASSE lié à l'import → on le patche
+    # directement (ce que lit `get_rate`), garant d'un 5/min effectif ici.
+    from rest_framework.throttling import SimpleRateThrottle
+
+    monkeypatch.setattr(
+        SimpleRateThrottle,
+        "THROTTLE_RATES",
+        {**SimpleRateThrottle.THROTTLE_RATES, "login": "5/min"},
+    )
+    cache.clear()
     payload = {"username": "bob", "password": "wrong"}
     statuses = []
     for _ in range(7):  # rate is 5/min -> 6th call should trip

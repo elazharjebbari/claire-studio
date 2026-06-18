@@ -1,0 +1,4 @@
+cd backend
+rm -f db.sqlite3 db.sqlite3-wal db.sqlite3-shm
+make feed-all
+make run
