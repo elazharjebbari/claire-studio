@@ -2,13 +2,14 @@
 
 /** Authentification JWT (CONTRACT §3 /auth/login). SSO-ready (placeholder). */
 
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { useState } from "react";
 import { login } from "@/lib/api/endpoints";
 import { Button, Field, Panel } from "@/components/ui/primitives";
 
 export default function LoginPage() {
   const router = useRouter();
+  const searchParams = useSearchParams();
   const [username, setUsername] = useState("alice");
   const [password, setPassword] = useState("claire-demo");
   const [error, setError] = useState<string | null>(null);
@@ -20,7 +21,8 @@ export default function LoginPage() {
     setError(null);
     try {
       await login(username, password);
-      router.push("/");
+      const next = searchParams.get("next");
+      router.push(next ? decodeURIComponent(next) : "/");
     } catch {
       setError("Identifiants invalides.");
     } finally {

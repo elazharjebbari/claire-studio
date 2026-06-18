@@ -70,6 +70,10 @@ export const handlers = [
     HttpResponse.json({ access: "mock-access-token-refreshed" }),
   ),
   http.get(`${BASE}/me`, () => HttpResponse.json(FIXTURE_USER)),
+  // Sonde de santé (sans auth) — utilisée par la DebugBar / useHealth.
+  http.get(`${BASE}/health`, () =>
+    HttpResponse.json({ status: "ok", documents: 1, annotations: 1 }),
+  ),
 
   // Corpora & documents
   http.get(`${BASE}/corpora`, () => HttpResponse.json(page([FIXTURE_CORPUS]))),

@@ -387,3 +387,10 @@ export interface AuthTokens {
   access: string;
   refresh: string;
 }
+
+/** GET /health (sans auth) — sonde de vivacité du backend. */
+export interface HealthStatus {
+  status: string;
+  documents: number;
+  annotations: number;
+}

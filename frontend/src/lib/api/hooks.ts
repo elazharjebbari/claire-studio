@@ -10,6 +10,7 @@ import * as api from "./endpoints";
 import type { Annotation, Certainty, Clause, Review } from "@/types/contract";
 
 export const qk = {
+  health: ["health"] as const,
   me: ["me"] as const,
   corpora: ["corpora"] as const,
   corpusDocs: (slug: string) => ["corpora", slug, "documents"] as const,
@@ -34,6 +35,16 @@ export const qk = {
 
 export function useMe() {
   return useQuery({ queryKey: qk.me, queryFn: api.getMe });
+}
+
+/** Sonde /health (sans auth) — utilisée par la DebugBar. Rafraîchissable. */
+export function useHealth() {
+  return useQuery({
+    queryKey: qk.health,
+    queryFn: api.getHealth,
+    retry: 0,
+    staleTime: 10_000,
+  });
 }
 
 export function useCorpora() {

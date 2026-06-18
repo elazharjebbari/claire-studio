@@ -5,7 +5,10 @@ non-ViewSet function/APIView endpoints (auth, nested actions).
 """
 
 from django.urls import include, path
+from rest_framework.permissions import AllowAny
+from rest_framework.response import Response
 from rest_framework.routers import DefaultRouter
+from rest_framework.views import APIView
 from rest_framework_simplejwt.views import TokenRefreshView
 
 from claire.accounts.views import LoginView, MeView
@@ -38,7 +41,28 @@ router.register("translations/sets", TranslationSetViewSet, basename="translatio
 router.register("exports", ExportJobViewSet, basename="export")
 router.register("activity", ActivityEventViewSet, basename="activity")
 
+class HealthView(APIView):
+    """GET /api/v1/health — liveness + état des données (sans auth, pour le debug front)."""
+
+    permission_classes = [AllowAny]
+    authentication_classes: list = []
+
+    def get(self, request):
+        from claire.annotations.models import Annotation
+        from claire.corpora.models import Document
+
+        return Response(
+            {
+                "status": "ok",
+                "documents": Document.objects.count(),
+                "annotations": Annotation.objects.count(),
+            }
+        )
+
+
 urlpatterns = [
+    # Liveness / debug (no auth)
+    path("health", HealthView.as_view(), name="health"),
     # Auth (JWT) — CONTRACT §3
     path("auth/login", LoginView.as_view(), name="auth-login"),
     path("auth/refresh", TokenRefreshView.as_view(), name="auth-refresh"),

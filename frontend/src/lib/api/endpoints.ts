@@ -15,6 +15,7 @@ import type {
   DocumentDetail,
   DocumentSummary,
   ExportJob,
+  HealthStatus,
   LabelScheme,
   Paginated,
   PreAnnotation,
@@ -46,6 +47,11 @@ export function logout(): void {
 
 export function getMe(): Promise<User> {
   return apiFetch<User>("/me");
+}
+
+/** GET /health (sans auth) — état du backend (status + compteurs). */
+export function getHealth(): Promise<HealthStatus> {
+  return apiFetch<HealthStatus>("/health");
 }
 
 // ── Corpora & documents ─────────────────────────────────────────────────────

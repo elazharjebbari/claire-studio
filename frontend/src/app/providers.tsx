@@ -11,14 +11,26 @@
  *  - tracé (console) pour diagnostic.
  */
 
-import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { MutationCache, QueryCache, QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { useEffect, useRef, useState } from "react";
 import { useUiStore } from "@/store/ui";
-
-const MOCKS_ENABLED = process.env.NEXT_PUBLIC_ENABLE_MOCKS === "true";
+import { useApiErrorStore } from "@/store/apiErrors";
+import { setAuthExpiredHandler } from "@/lib/api/client";
+import { AuthGate } from "@/components/auth/AuthGate";
+import { ApiErrorBanner } from "@/components/debug/ApiErrorBanner";
+import { DebugBar } from "@/components/debug/DebugBar";
+import { ErrorBoundary } from "@/components/debug/ErrorBoundary";
+import { MOCKS_ENABLED, AUTO_LOGIN_ENABLED } from "@/lib/env";
 
 function makeClient() {
+  // Les caches partagent un onError qui alimente le store d'erreurs API
+  // (surfaçage en bandeau/toast + console.error en dev).
+  const onError = (error: unknown) => {
+    useApiErrorStore.getState().push(error);
+  };
   return new QueryClient({
+    queryCache: new QueryCache({ onError }),
+    mutationCache: new MutationCache({ onError }),
     defaultOptions: {
       queries: { retry: 1, staleTime: 30_000, refetchOnWindowFocus: false },
     },
@@ -75,10 +87,33 @@ function useMocks(): boolean {
   return ready;
 }
 
+/**
+ * Branche la reprise après 401 terminal (mode réel uniquement).
+ * - Auto-login activé → on recharge la page : l'AuthGate relance un login propre.
+ * - Sinon → redirection vers /login en mémorisant la page courante.
+ * En mode mock, aucun handler n'est branché (auth désactivée → E2E intacts).
+ */
+function useAuthExpiredRedirect() {
+  useEffect(() => {
+    if (MOCKS_ENABLED) return;
+    setAuthExpiredHandler(() => {
+      if (typeof window === "undefined") return;
+      if (AUTO_LOGIN_ENABLED) {
+        window.location.reload();
+      } else if (window.location.pathname !== "/login") {
+        const next = encodeURIComponent(window.location.pathname);
+        window.location.assign(`/login?next=${next}`);
+      }
+    });
+    return () => setAuthExpiredHandler(null);
+  }, []);
+}
+
 export function Providers({ children }: { children: React.ReactNode }) {
   const clientRef = useRef<QueryClient>();
   if (!clientRef.current) clientRef.current = makeClient();
   useApplyTheme();
+  useAuthExpiredRedirect();
   const mocksReady = useMocks();
 
   if (!mocksReady) {
@@ -92,5 +127,13 @@ export function Providers({ children }: { children: React.ReactNode }) {
     );
   }
 
-  return <QueryClientProvider client={clientRef.current}>{children}</QueryClientProvider>;
+  return (
+    <QueryClientProvider client={clientRef.current}>
+      <ErrorBoundary>
+        <AuthGate>{children}</AuthGate>
+      </ErrorBoundary>
+      <ApiErrorBanner />
+      <DebugBar />
+    </QueryClientProvider>
+  );
 }

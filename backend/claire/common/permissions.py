@@ -37,7 +37,15 @@ class IsReviewerOrAdmin(BasePermission):
 
 
 class IsAnnotationOwnerOrReviewer(BasePermission):
-    """Object-level: owner may edit; reviewers/admins may act on review."""
+    """Object-level: owner may edit; reviewers/admins may act on review.
+
+    A view-level `has_permission` is REQUIRED here: without it, BasePermission's
+    default returns True and anonymous requests reach `get_queryset`, which filters
+    on `request.user` (AnonymousUser) and raises a 500 instead of a clean 401.
+    """
+
+    def has_permission(self, request, view):
+        return bool(request.user and request.user.is_authenticated)
 
     def has_object_permission(self, request, view, obj):
         u = request.user

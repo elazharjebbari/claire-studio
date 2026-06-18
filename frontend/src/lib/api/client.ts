@@ -9,10 +9,23 @@
  * branché à un vrai backend Django/DRF.
  */
 
+import { MOCKS_ENABLED } from "@/lib/env";
+
 const API_BASE = process.env.NEXT_PUBLIC_API_BASE ?? "/api/v1";
 
 const ACCESS_KEY = "claire.access";
 const REFRESH_KEY = "claire.refresh";
+
+/**
+ * Hook optionnel invoqué quand l'authentification est définitivement perdue
+ * (401 persistant après refresh) en mode réel. Branché par les providers pour
+ * déclencher une redirection /login ou un ré-auto-login, sans coupler le client
+ * à Next.js. En mode mock, ce hook reste inactif.
+ */
+let onAuthExpired: (() => void) | null = null;
+export function setAuthExpiredHandler(fn: (() => void) | null): void {
+  onAuthExpired = fn;
+}
 
 export class ApiError extends Error {
   constructor(
@@ -89,6 +102,14 @@ export async function apiFetch<T>(path: string, options: RequestOptions = {}): P
   if (res.status === 401 && !_retried) {
     const ok = await refreshAccessToken();
     if (ok) return apiFetch<T>(path, { ...options, _retried: true });
+    // 401 terminal : le refresh a échoué (ou aucun refresh token). En mode réel,
+    // on purge les tokens et on délègue la reprise (redirection /login ou
+    // ré-auto-login) au handler branché par les providers. On évite la boucle :
+    // on ne re-tente PAS la requête, on lève l'erreur ci-dessous.
+    if (!MOCKS_ENABLED) {
+      tokenStore.clear();
+      onAuthExpired?.();
+    }
   }
 
   if (!res.ok) {
