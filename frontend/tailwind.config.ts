@@ -30,6 +30,7 @@ const config: Config = {
         ink: "rgb(var(--surface-text) / <alpha-value>)",
         "ink-muted": "rgb(var(--surface-text-muted) / <alpha-value>)",
         accent: "rgb(var(--surface-accent) / <alpha-value>)",
+        "accent-fg": "rgb(var(--surface-on-accent) / <alpha-value>)",
         reading: "rgb(var(--surface-reading) / <alpha-value>)",
         // Couleurs de thème de clause, accessibles en `text-theme-META`, etc.
         theme: themeColorVars,

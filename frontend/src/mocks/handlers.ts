@@ -11,6 +11,7 @@ import type {
   Annotation,
   Clause,
   Comment,
+  Review,
   TranslationMappingEntry,
   TranslationSet,
 } from "@/types/contract";
@@ -27,6 +28,7 @@ import {
   FIXTURE_PROJECT,
   FIXTURE_REVIEWS,
   FIXTURE_SCHEME,
+  // (FIXTURE_REVIEWS sert d'état initial mutable ci-dessous)
   FIXTURE_TRANSLATION_SETS,
   FIXTURE_USER,
   FIXTURE_VERSIONS,
@@ -37,17 +39,21 @@ const BASE = process.env.NEXT_PUBLIC_API_BASE ?? "/api/v1";
 // État mutable en mémoire (réinitialisable dans les tests via resetDb()).
 let annotation: Annotation = structuredClone(FIXTURE_ANNOTATION);
 let comments: Comment[] = structuredClone(FIXTURE_COMMENTS);
+let reviews: Review[] = structuredClone(FIXTURE_REVIEWS);
 let translationSets: TranslationSet[] = structuredClone(FIXTURE_TRANSLATION_SETS);
 let clauseSeq = 100;
 let commentSeq = 100;
+let reviewSeq = 100;
 let translationSeq = 100;
 
 export function resetDb(): void {
   annotation = structuredClone(FIXTURE_ANNOTATION);
   comments = structuredClone(FIXTURE_COMMENTS);
+  reviews = structuredClone(FIXTURE_REVIEWS);
   translationSets = structuredClone(FIXTURE_TRANSLATION_SETS);
   clauseSeq = 100;
   commentSeq = 100;
+  reviewSeq = 100;
   translationSeq = 100;
 }
 
@@ -282,26 +288,25 @@ export const handlers = [
     return HttpResponse.json(comments.find((c) => c.id === params.id));
   }),
 
-  // Reviews
-  http.get(`${BASE}/annotations/:id/reviews`, () => HttpResponse.json(page(FIXTURE_REVIEWS))),
+  // Reviews (état mutable en mémoire pour refléter les soumissions)
+  http.get(`${BASE}/annotations/:id/reviews`, () => HttpResponse.json(page(reviews))),
   http.post(`${BASE}/annotations/:id/reviews`, async ({ params, request }) => {
     const body = (await request.json()) as {
       score: number;
       decision: string;
       body?: string;
     };
-    return HttpResponse.json(
-      {
-        id: `rev-${Date.now()}`,
-        annotationId: String(params.id),
-        reviewerId: "u-bruno",
-        score: body.score,
-        decision: body.decision,
-        body: body.body,
-        createdAt: new Date().toISOString(),
-      },
-      { status: 201 },
-    );
+    const review: Review = {
+      id: `rev-${(reviewSeq += 1)}`,
+      annotationId: String(params.id),
+      reviewerId: "u-bruno",
+      score: body.score as Review["score"],
+      decision: body.decision as Review["decision"],
+      body: body.body,
+      createdAt: new Date().toISOString(),
+    };
+    reviews = [...reviews, review];
+    return HttpResponse.json(review, { status: 201 });
   }),
 
   // Pré-annotations (F2)

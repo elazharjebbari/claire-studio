@@ -16,6 +16,7 @@
   --surface-text: 230 234 240; /* #E6EAF0 */
   --surface-text-muted: 154 166 182; /* #9AA6B6 */
   --surface-accent: 91 157 255; /* #5B9DFF */
+  --surface-on-accent: 11 15 20; /* texte sur accent (accent clair → texte sombre, AA) */
   --surface-reading: 14 20 28; /* #0E141C */
 
   --font-sans: ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
@@ -32,6 +33,7 @@ html.light {
   --surface-text: 26 34 48; /* #1A2230 */
   --surface-text-muted: 90 102 120; /* #5A6678 */
   --surface-accent: 37 99 235; /* #2563EB */
+  --surface-on-accent: 255 255 255; /* texte sur accent (accent foncé → texte blanc, AA) */
   --surface-reading: 252 253 255; /* #FCFDFF */
 }
 

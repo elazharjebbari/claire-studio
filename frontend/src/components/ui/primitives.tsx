@@ -16,7 +16,7 @@ export function Button({
       {...props}
       className={cn(
         "inline-flex items-center justify-center gap-2 rounded-md px-3 py-1.5 text-sm font-medium transition-colors disabled:cursor-not-allowed disabled:opacity-50",
-        variant === "primary" && "bg-accent text-white hover:brightness-110",
+        variant === "primary" && "bg-accent text-accent-fg hover:brightness-110",
         variant === "outline" && "border border-line bg-panel text-ink hover:bg-panel-muted",
         variant === "ghost" && "text-ink-muted hover:bg-panel-muted hover:text-ink",
         variant === "subtle" && "bg-panel-muted text-ink hover:brightness-110",

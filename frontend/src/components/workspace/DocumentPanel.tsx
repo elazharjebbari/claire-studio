@@ -41,7 +41,8 @@ export function DocumentPanel({
 
   const focusedRef = useRef<HTMLDivElement>(null);
   useEffect(() => {
-    focusedRef.current?.scrollIntoView({ block: "nearest", behavior: "smooth" });
+    // `scrollIntoView` peut être absent (jsdom, vieux moteurs) → appel optionnel défensif.
+    focusedRef.current?.scrollIntoView?.({ block: "nearest", behavior: "smooth" });
   }, [focused]);
 
   return (
