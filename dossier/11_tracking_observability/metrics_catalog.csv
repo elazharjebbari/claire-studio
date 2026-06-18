@@ -1,0 +1,23 @@
+metric_name,type,layer,description,source,labels,unit,feature
+http_requests_total,counter,observability,Nombre de requetes HTTP servies,DRF middleware,"method,route,status",count,F7
+http_request_duration_seconds,histogram,observability,Latence des requetes HTTP,DRF middleware,"method,route",seconds,F7
+http_requests_errors_total,counter,observability,Requetes en erreur 5xx,DRF middleware,"route,status",count,F7
+db_query_duration_seconds,histogram,observability,Duree des requetes SQL,psycopg/OTel,"operation",seconds,F7
+db_connections_in_use,gauge,observability,Connexions DB actives du pool,pool Postgres,"",count,F7
+queue_depth,gauge,observability,Jobs asynchrones en attente,worker broker,"queue",count,F5
+export_jobs_total,counter,observability,Jobs d'export par format et statut,exports worker,"format,status",count,F5
+export_job_duration_seconds,histogram,observability,Duree de generation d'un export,exports worker,"format",seconds,F5
+translation_sync_total,counter,observability,Syncs de traduction par statut,translations worker,"status",count,F8
+preannotation_import_total,counter,observability,Imports de preannotations par version de schema,imports worker,"schema_version,status",count,F2
+annotations_active_gauge,gauge,observability,Annotations non terminees en cours,DB agregat,"project",count,F1
+login_failures_total,counter,observability,Echecs d'authentification,auth view,"reason",count,F-sec
+annotation_velocity,derived,tracking,Annotations soumises par periode et annotateur (pseudo),ActivityEvent annotation.submitted,"project,annotator_pseudo,period",count,F4
+annotation_cycle_time_seconds,derived,tracking,Delai created->submitted (mediane),ActivityEvent created+submitted,"project,annotator_pseudo",seconds,F4
+review_lead_time_seconds,derived,tracking,Delai submitted->review.posted (mediane),ActivityEvent submitted+review.posted,"project",seconds,F10
+edit_depth,derived,tracking,Nombre d'editions de clause par annotation,ActivityEvent clause.added/updated/deleted,"project,annotator_pseudo",count,F1
+seeding_uptake_ratio,derived,tracking,Part d'annotations seedees LLM puis editees,Annotation.source+provenance.edited,"project,judge",ratio,F2
+certainty_distribution,derived,tracking,Distribution de certitude des clauses,Clause.certainty,"project,annotator_pseudo,value",count,F10
+iaa_cohen_kappa_macro,derived,tracking,Kappa de Cohen macro par projet,IAA computation,"project",ratio,F4
+iaa_window_diff_mean,derived,tracking,WindowDiff moyen segmentation par projet,IAA computation,"project",ratio,F4
+approval_rate,derived,tracking,Part d'annotations approuvees,Review.decision,"project",ratio,F10
+export_anonymized_ratio,derived,tracking,Part d'exports anonymises,ExportJob.scope.anonymize,"project",ratio,F5

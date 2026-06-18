@@ -1,0 +1,199 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+env:
+  PYTHON_VERSION: "3.11"
+  NODE_VERSION: "20"
+  PNPM_VERSION: "9"
+
+jobs:
+  # ---------------------------------------------------------------------------
+  lint:
+    name: Lint (backend + frontend)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: astral-sh/setup-uv@v3
+      - uses: actions/setup-python@v5
+        with:
+          python-version: ${{ env.PYTHON_VERSION }}
+      - uses: pnpm/action-setup@v4
+        with:
+          version: ${{ env.PNPM_VERSION }}
+      - uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: pnpm
+          cache-dependency-path: annotation-studio/frontend/pnpm-lock.yaml
+      - name: Backend lint (ruff + import-linter)
+        working-directory: annotation-studio/backend
+        run: make setup && make lint
+      - name: Frontend lint (eslint + prettier + tsc)
+        working-directory: annotation-studio/frontend
+        run: pnpm install --frozen-lockfile && pnpm lint && pnpm typecheck
+
+  # ---------------------------------------------------------------------------
+  backend-test:
+    name: Backend tests (pytest + Postgres)
+    runs-on: ubuntu-latest
+    needs: lint
+    services:
+      postgres:
+        image: postgres:16-alpine
+        env:
+          POSTGRES_DB: claire_test
+          POSTGRES_USER: claire
+          POSTGRES_PASSWORD: claire
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd "pg_isready -U claire -d claire_test"
+          --health-interval 5s --health-timeout 5s --health-retries 10
+    env:
+      DATABASE_URL: postgresql://claire:claire@localhost:5432/claire_test
+      TEST_DATABASE_URL: postgresql://claire:claire@localhost:5432/claire_test
+      DJANGO_SECRET_KEY: ci-secret-key-not-for-prod
+      JWT_SIGNING_KEY: ci-jwt-key-not-for-prod
+      DJANGO_DEBUG: "0"
+      DJANGO_ALLOWED_HOSTS: localhost,127.0.0.1
+    steps:
+      - uses: actions/checkout@v4
+      - uses: astral-sh/setup-uv@v3
+      - uses: actions/setup-python@v5
+        with:
+          python-version: ${{ env.PYTHON_VERSION }}
+      - name: Setup + migrate
+        working-directory: annotation-studio/backend
+        run: make setup && make migrate
+      - name: pytest (avec couverture, fail-under via coverage_goals.md)
+        working-directory: annotation-studio/backend
+        run: make test
+      - name: Upload coverage backend
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: backend-coverage
+          path: annotation-studio/backend/coverage.xml
+          if-no-files-found: ignore
+
+  # ---------------------------------------------------------------------------
+  frontend-test:
+    name: Frontend tests (Vitest + MSW)
+    runs-on: ubuntu-latest
+    needs: lint
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+        with:
+          version: ${{ env.PNPM_VERSION }}
+      - uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: pnpm
+          cache-dependency-path: annotation-studio/frontend/pnpm-lock.yaml
+      - name: Install
+        working-directory: annotation-studio/frontend
+        run: pnpm install --frozen-lockfile
+      - name: Vitest + couverture (seuils coverage_goals.md)
+        working-directory: annotation-studio/frontend
+        run: pnpm test:coverage
+      - name: Upload coverage frontend
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: frontend-coverage
+          path: annotation-studio/frontend/coverage
+          if-no-files-found: ignore
+
+  # ---------------------------------------------------------------------------
+  e2e:
+    name: E2E (Playwright, 12 specs F1->F12)
+    runs-on: ubuntu-latest
+    needs: [backend-test, frontend-test]
+    services:
+      postgres:
+        image: postgres:16-alpine
+        env:
+          POSTGRES_DB: claire
+          POSTGRES_USER: claire
+          POSTGRES_PASSWORD: claire
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd "pg_isready -U claire -d claire"
+          --health-interval 5s --health-timeout 5s --health-retries 10
+    env:
+      DATABASE_URL: postgresql://claire:claire@localhost:5432/claire
+      DJANGO_SECRET_KEY: ci-secret-key-not-for-prod
+      JWT_SIGNING_KEY: ci-jwt-key-not-for-prod
+      DJANGO_DEBUG: "0"
+      DJANGO_ALLOWED_HOSTS: localhost,127.0.0.1,backend
+      DJANGO_CORS_ALLOWED_ORIGINS: http://localhost:3000
+      NEXT_PUBLIC_API_URL: http://localhost:8000/api/v1
+      E2E_BASE_URL: http://localhost:3000
+      E2E_API_URL: http://localhost:8000/api/v1
+      SEED_DEFAULT_PASSWORD: ci-seed-password
+    steps:
+      - uses: actions/checkout@v4
+      - uses: astral-sh/setup-uv@v3
+      - uses: actions/setup-python@v5
+        with:
+          python-version: ${{ env.PYTHON_VERSION }}
+      - uses: pnpm/action-setup@v4
+        with:
+          version: ${{ env.PNPM_VERSION }}
+      - uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: pnpm
+          cache-dependency-path: annotation-studio/frontend/pnpm-lock.yaml
+      - name: Backend setup + migrate + seed
+        working-directory: annotation-studio/backend
+        run: make setup && make migrate && make seed
+      - name: Frontend install + Playwright browsers
+        working-directory: annotation-studio/frontend
+        run: pnpm install --frozen-lockfile && pnpm exec playwright install --with-deps
+      - name: Start backend (background)
+        working-directory: annotation-studio/backend
+        run: |
+          make run > /tmp/backend.log 2>&1 &
+          for i in $(seq 1 60); do curl -fsS http://localhost:8000/api/v1/ && break || sleep 2; done
+      - name: Start frontend (background)
+        working-directory: annotation-studio/frontend
+        run: |
+          pnpm build && pnpm start > /tmp/frontend.log 2>&1 &
+          for i in $(seq 1 60); do curl -fsS http://localhost:3000/ && break || sleep 2; done
+      - name: Playwright
+        working-directory: annotation-studio/frontend
+        run: pnpm e2e
+      - name: Upload Playwright report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: playwright-report
+          path: |
+            annotation-studio/frontend/playwright-report
+            annotation-studio/frontend/test-results
+          if-no-files-found: ignore
+
+  # ---------------------------------------------------------------------------
+  build:
+    name: Build images (backend + frontend)
+    runs-on: ubuntu-latest
+    needs: [backend-test, frontend-test]
+    steps:
+      - uses: actions/checkout@v4
+      - name: Build backend image
+        working-directory: annotation-studio
+        run: docker build -t claire-backend:ci ./backend
+      - name: Build frontend image
+        working-directory: annotation-studio
+        run: docker build -t claire-frontend:ci ./frontend

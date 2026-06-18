@@ -1,0 +1,49 @@
+@startuml c4_container
+' C4 niveau 2 — Conteneurs · CLAIRE Studio
+' Reflète ARCHITECTURE.md (Django/DRF, Next.js, PostgreSQL DB-centrique, workers, fichiers).
+title CLAIRE Studio — Diagramme de conteneurs (C4 niveau 2)
+
+skinparam shadowing false
+skinparam defaultTextAlignment center
+skinparam rectangle {
+  BorderColor #334155
+  BackgroundColor #F1F5F9
+}
+skinparam database {
+  BorderColor #334155
+  BackgroundColor #DBEAFE
+}
+skinparam queue {
+  BorderColor #334155
+  BackgroundColor #FEF3C7
+}
+
+actor "Utilisateur\n(annotator/reviewer/\nlead/admin)" as User
+
+rectangle "Frontend SPA\nNext.js (App Router) + TypeScript + Tailwind\n\nWorkspace 3 panneaux, /review, /compare,\n/admin, command palette, design tokens" as SPA #D1FAE5
+
+rectangle "Backend API\nDjango + Django REST Framework (JWT)\n\nApps domaine: corpora, schemes, projects,\nannotations, collaboration, imports,\nexports, translations, audit" as API #D1FAE5
+
+rectangle "Workers asynchrones\n(exports, imports pré-annotations,\nsync traductions, calcul IAA)" as Workers #D1FAE5
+
+database "PostgreSQL\n(SOURCE DE VERITE)\nentités CONTRACT §2" as DB
+
+queue "File de tâches\n(jobs longs)" as Queue
+
+rectangle "Stockage d'artefacts\nexports dérivés + manifest\n(feature 5)" as Artifacts #FEF3C7
+rectangle "Dossiers de traductions\n(file-based, feature 8)" as TransFS #FEF3C7
+
+rectangle "Sources externes\nCorpus (CLAUDETTE…)\n+ pré-annotations LLM" as Sources #FEF3C7
+
+User --> SPA : HTTPS
+SPA --> API : REST /api/v1/ (JWT)
+API --> DB : ORM (lecture/écriture, transactions, invariants)
+API --> Queue : enfile export/import/sync
+Queue --> Workers : dépile
+Workers --> DB : lit l'état faisant foi
+Workers --> Artifacts : écrit artefact + manifest
+Workers --> TransFS : lit/sync (mapping file-based)
+Workers <-- Sources : ingestion corpus + pré-annotations
+API --> Artifacts : sert le lien d'artefact (GET /exports/{id})
+
+@enduml

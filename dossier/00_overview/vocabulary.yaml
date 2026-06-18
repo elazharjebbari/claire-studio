@@ -1,0 +1,61 @@
+# Vocabulaire canonique v1 — source de vérité pour seeders, backend et frontend.
+# Réutilisable : un autre corpus déclare son propre LabelScheme avec la même structure.
+scheme:
+  slug: claire-themes-v1
+  name: "CLAIRE Themes v1 (CLAUDETTE ToS)"
+  version: "1.0.0"
+  is_active: true
+
+# Thèmes (couleurs pensées pour un thème sombre, contraste AA, fatigue oculaire minimale).
+themes:
+  - {code: META,                  label: "Méta / dates / adresses",        color: "#6B7280", order: 0}
+  - {code: PREAMBLE_SCOPE,        label: "Préambule & périmètre",          color: "#8B5CF6", order: 1}
+  - {code: PRIVACY_DATA,          label: "Données & vie privée",           color: "#0EA5E9", order: 2}
+  - {code: ELIGIBILITY_ACCOUNT,   label: "Éligibilité & compte",           color: "#14B8A6", order: 3}
+  - {code: ACCEPTABLE_USE,        label: "Usage acceptable",               color: "#22C55E", order: 4}
+  - {code: USER_CONTENT,          label: "Contenu utilisateur",            color: "#84CC16", order: 5}
+  - {code: LICENSE_IP,            label: "Licence & propriété intel.",     color: "#EAB308", order: 6}
+  - {code: MODIFICATION_OF_TERMS, label: "Modification des conditions",    color: "#F59E0B", order: 7}
+  - {code: TERMINATION,           label: "Résiliation",                    color: "#F97316", order: 8}
+  - {code: WARRANTY_DISCLAIMER,   label: "Exclusion de garantie",          color: "#EF4444", order: 9}
+  - {code: LIMITATION_LIABILITY,  label: "Limitation de responsabilité",   color: "#DC2626", order: 10}
+  - {code: ARBITRATION_DISPUTES,  label: "Arbitrage & litiges",            color: "#EC4899", order: 11}
+  - {code: GOVERNING_LAW,         label: "Loi applicable",                 color: "#D946EF", order: 12}
+  - {code: THIRD_PARTY_SERVICES,  label: "Services tiers",                 color: "#A855F7", order: 13}
+  - {code: FEES_PAYMENT,          label: "Frais & paiement",               color: "#10B981", order: 14}
+  - {code: COMMUNICATIONS,        label: "Communications",                 color: "#06B6D4", order: 15}
+  - {code: FEEDBACK,              label: "Retours / feedback",             color: "#3B82F6", order: 16}
+  - {code: PROMOTIONS,            label: "Promotions",                     color: "#F472B6", order: 17}
+  - {code: DMCA,                  label: "DMCA / contrefaçon",             color: "#FB7185", order: 18}
+  - {code: MISC_BOILERPLATE,      label: "Boilerplate divers",             color: "#94A3B8", order: 19}
+
+# Nature juridique (dérivée, optionnelle — feature avancée, dérivable hors-prompt comme v9.2).
+legal_natures:
+  - {code: OBLIGATION,    label: "Obligation",        order: 0}
+  - {code: PROHIBITION,   label: "Interdiction",      order: 1}
+  - {code: PERMISSION,    label: "Permission",        order: 2}
+  - {code: DEFINITION,    label: "Définition",        order: 3}
+  - {code: DECLARATION,   label: "Déclaration",       order: 4}
+  - {code: PROCEDURE,     label: "Procédure / mécanisme", order: 5}
+
+# Catégories d'injustice CLAUDETTE (ReferenceLabel) — affichées en surimpression (feature 12).
+unfairness_categories:
+  - {code: A,   label: "Arbitration",                  color: "#EC4899"}
+  - {code: CH,  label: "Unilateral change",            color: "#F59E0B"}
+  - {code: CR,  label: "Content removal",              color: "#F97316"}
+  - {code: J,   label: "Jurisdiction",                 color: "#D946EF"}
+  - {code: LAW, label: "Choice of law",                color: "#A855F7"}
+  - {code: LTD, label: "Limitation of liability",      color: "#DC2626"}
+  - {code: TER, label: "Unilateral termination",       color: "#EF4444"}
+  - {code: USE, label: "Contract by using",            color: "#8B5CF6"}
+unfairness_levels:
+  - {value: 1, label: "clairement juste / faible",   intensity: 0.25}
+  - {value: 2, label: "potentiellement injuste",     intensity: 0.55}
+  - {value: 3, label: "clairement injuste",          intensity: 0.90}
+
+# Échelle de certitude intuitive (feature 10) — boutons + raccourcis clavier.
+certainty_scale:
+  - {value: 0, label: "Incertain",   emoji: "🤔", shortcut: "0", color: "#94A3B8"}
+  - {value: 1, label: "Plutôt",      emoji: "🙂", shortcut: "1", color: "#38BDF8"}
+  - {value: 2, label: "Confiant",    emoji: "😀", shortcut: "2", color: "#34D399"}
+  - {value: 3, label: "Certain",     emoji: "💯", shortcut: "3", color: "#22C55E"}

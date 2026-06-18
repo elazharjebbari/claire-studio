@@ -1,0 +1,38 @@
+@startuml c4_context
+' C4 niveau 1 — Contexte système · CLAIRE Studio
+' Aligné sur CONTRACT.md (rôles, sources LLM, fichiers) et navigation.md.
+title CLAIRE Studio — Diagramme de contexte (C4 niveau 1)
+
+skinparam shadowing false
+skinparam defaultTextAlignment center
+skinparam rectangle {
+  BorderColor #334155
+  BackgroundColor #F1F5F9
+}
+skinparam actor {
+  BorderColor #334155
+}
+
+actor "Annotateur\n(annotator)" as Annotator
+actor "Reviewer\n(reviewer)" as Reviewer
+actor "Lead de campagne\n(project lead)" as Lead
+actor "Admin / Owner" as Admin
+
+rectangle "CLAIRE Studio\n\nAtelier web d'annotation juridique\n(segmentation en clauses + thèmes\n+ certitude, gold humain traçable)" as System #D1FAE5
+
+rectangle "Pré-annotations LLM\n(Claude / Codex)\nplans v9.2 / v9.4" as LLM #FEF3C7
+rectangle "Corpus juridiques\nCLAUDETTE-ToS, CUAD,\nLEDGAR, ContractNLI…" as Corpus #FEF3C7
+rectangle "Dossiers de traductions\n(file-based, feature 8)" as Translations #FEF3C7
+rectangle "Consommateurs d'export\n(recherche, notebooks, HF Hub)" as Exports #FEF3C7
+
+Annotator --> System : annote des documents\n(workspace, clavier)
+Reviewer --> System : relit, note, commente
+Lead --> System : suit avancement + IAA (kappa)
+Admin --> System : importe corpus, configure\nschemes, projets, exports
+
+System <-- Corpus : import documents\n+ reference_labels (feature 12)
+System <-- LLM : import pré-annotations\n(feature 2, pivot clause)
+System <-- Translations : pointeurs + sync\n(feature 8, file-based)
+System --> Exports : exports multi-format\n(jsonl/csv/conll/xml/md/hf, feature 5)
+
+@enduml

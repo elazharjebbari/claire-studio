@@ -1,0 +1,71 @@
+@startuml c4_component_backend
+' C4 niveau 3 — Composants du backend Django · CLAIRE Studio
+' Apps par domaine (CONTRACT §6). Dépendances orientées feuilles -> métier -> périphériques.
+title CLAIRE Studio — Composants backend (C4 niveau 3, apps Django)
+
+skinparam shadowing false
+skinparam defaultTextAlignment center
+skinparam component {
+  BorderColor #334155
+  BackgroundColor #F1F5F9
+}
+skinparam database {
+  BorderColor #334155
+  BackgroundColor #DBEAFE
+}
+
+component "API Gateway DRF\n/api/v1/ + JWT auth\n(routing, permissions par rôle)" as Gateway #D1FAE5
+
+package "Apps feuilles (référentiel)" {
+  component "corpora\nCorpus, Document, Sentence,\nReferenceLabel (feature 11/12)" as Corpora
+  component "schemes\nLabelScheme, Theme,\nLegalNature (vocab fermé, ADR-0003)" as Schemes
+}
+
+package "Apps métier (annotation)" {
+  component "projects\nProject, ProjectMembership,\nAssignment, progress/IAA" as Projects
+  component "annotations\nAnnotation, Clause,\nstate machine, certitude" as Annotations
+  component "collaboration\nComment, Review,\nAnnotationVersion, diff" as Collab
+}
+
+package "Apps périphériques (E/S)" {
+  component "imports\nPreAnnotation, PreClause,\nnormalisation v9.2/v9.4 -> pivot" as Imports
+  component "exports\nExportJob, formatters\n(jsonl/csv/conll/xml/md/hf)" as Exports
+  component "translations\nTranslationSet, Translation\n(file-based, sync)" as Translations
+  component "audit\nActivityEvent\n(audit trail, feature 4)" as Audit
+}
+
+database "PostgreSQL\n(vérité)" as DB
+
+Gateway --> Corpora
+Gateway --> Schemes
+Gateway --> Projects
+Gateway --> Annotations
+Gateway --> Collab
+Gateway --> Imports
+Gateway --> Exports
+Gateway --> Translations
+Gateway --> Audit
+
+Projects --> Corpora : référence documents
+Projects --> Schemes : attache un LabelScheme
+Annotations --> Projects : appartient à un projet
+Annotations --> Schemes : valide theme ∈ scheme (invariant)
+Annotations --> Audit : émet ActivityEvent sur transition
+Collab --> Annotations : versions / comments / reviews
+Imports --> Projects : pré-annotations par projet
+Imports --> Annotations : seed une Annotation (preannotation_seed)
+Exports --> Annotations : matérialise le gold
+Exports --> Audit : trace les exports
+Translations --> Corpora : pointeurs file-based
+
+Corpora --> DB
+Schemes --> DB
+Projects --> DB
+Annotations --> DB
+Collab --> DB
+Imports --> DB
+Exports --> DB
+Translations --> DB
+Audit --> DB
+
+@enduml

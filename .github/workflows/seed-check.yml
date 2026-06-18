@@ -1,0 +1,69 @@
+name: Seed idempotency check
+
+# Vérifie Q-ROB-02 : un 2e passage de seed ne produit AUCUNE mutation.
+# Stratégie : seed, dump DB, re-seed, dump DB, comparer les deux dumps.
+
+on:
+  pull_request:
+    paths:
+      - "annotation-studio/backend/**"
+      - "annotation-studio/scripts/seed_all.sh"
+      - "annotation-studio/.github/workflows/seed-check.yml"
+  workflow_dispatch:
+
+jobs:
+  seed-idempotency:
+    name: Seed = idempotent
+    runs-on: ubuntu-latest
+    services:
+      postgres:
+        image: postgres:16-alpine
+        env:
+          POSTGRES_DB: claire
+          POSTGRES_USER: claire
+          POSTGRES_PASSWORD: claire
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd "pg_isready -U claire -d claire"
+          --health-interval 5s --health-timeout 5s --health-retries 10
+    env:
+      DATABASE_URL: postgresql://claire:claire@localhost:5432/claire
+      DJANGO_SECRET_KEY: ci-secret-key-not-for-prod
+      JWT_SIGNING_KEY: ci-jwt-key-not-for-prod
+      DJANGO_DEBUG: "0"
+      SEED_DEFAULT_PASSWORD: ci-seed-password
+      PGPASSWORD: claire
+    steps:
+      - uses: actions/checkout@v4
+      - uses: astral-sh/setup-uv@v3
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - name: Setup + migrate
+        working-directory: annotation-studio/backend
+        run: make setup && make migrate
+
+      - name: First seed
+        working-directory: annotation-studio/backend
+        run: make seed
+      - name: Dump #1
+        run: |
+          pg_dump -h localhost -U claire -d claire --no-owner --no-acl \
+            --exclude-table='*django_migrations*' > /tmp/dump1.sql
+
+      - name: Second seed (must be a no-op)
+        working-directory: annotation-studio/backend
+        run: make seed
+      - name: Dump #2
+        run: |
+          pg_dump -h localhost -U claire -d claire --no-owner --no-acl \
+            --exclude-table='*django_migrations*' > /tmp/dump2.sql
+
+      - name: Compare dumps (0 mutation attendue)
+        run: |
+          if ! diff -u /tmp/dump1.sql /tmp/dump2.sql; then
+            echo "::error::Le seed n'est PAS idempotent (Q-ROB-02) : le 2e passage a muté la base."
+            exit 1
+          fi
+          echo "Seed idempotent : 0 mutation au 2e passage."

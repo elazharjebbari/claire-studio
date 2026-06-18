@@ -1,0 +1,72 @@
+"use client";
+
+/**
+ * Top bar — sélecteur de projet, ⌘K, avancement perso, bascule thème, cloche
+ * d'activité, menu utilisateur (navigation.md §2).
+ */
+
+import { useUiStore } from "@/store/ui";
+import { useMe, useProjects } from "@/lib/api/hooks";
+import { ActivityBell } from "./ActivityBell";
+import { Badge } from "@/components/ui/primitives";
+
+export function TopBar() {
+  const theme = useUiStore((s) => s.theme);
+  const toggleTheme = useUiStore((s) => s.toggleTheme);
+  const setPaletteOpen = useUiStore((s) => s.setCommandPaletteOpen);
+  const currentProject = useUiStore((s) => s.currentProjectSlug);
+  const setProject = useUiStore((s) => s.setCurrentProject);
+  const { data: me } = useMe();
+  const { data: projects } = useProjects();
+
+  return (
+    <header className="flex h-12 shrink-0 items-center gap-3 border-b border-line bg-elevated px-3">
+      <label className="sr-only" htmlFor="project-select">
+        Projet courant
+      </label>
+      <select
+        id="project-select"
+        data-testid="project-select"
+        value={currentProject ?? ""}
+        onChange={(e) => setProject(e.target.value || null)}
+        className="rounded-md border border-line bg-panel px-2 py-1 text-sm text-ink"
+      >
+        <option value="">Sélectionner un projet…</option>
+        {projects?.results.map((p) => (
+          <option key={p.slug} value={p.slug}>
+            {p.name}
+          </option>
+        ))}
+      </select>
+
+      <button
+        type="button"
+        data-testid="open-command-palette"
+        onClick={() => setPaletteOpen(true)}
+        className="flex items-center gap-2 rounded-md border border-line bg-panel px-3 py-1 text-sm text-ink-muted hover:text-ink"
+        aria-label="Ouvrir la palette de commandes (Cmd+K)"
+      >
+        <span>Rechercher…</span>
+        <kbd className="rounded bg-panel-muted px-1.5 py-0.5 font-mono text-[10px]">⌘K</kbd>
+      </button>
+
+      <div className="ml-auto flex items-center gap-2">
+        <ActivityBell />
+        <button
+          type="button"
+          data-testid="theme-toggle"
+          onClick={toggleTheme}
+          aria-label={theme === "dark" ? "Passer au thème clair" : "Passer au thème sombre"}
+          className="rounded-md border border-line bg-panel px-2 py-1 text-sm text-ink hover:bg-panel-muted"
+        >
+          {theme === "dark" ? "☀" : "☾"}
+        </button>
+
+        <div className="flex items-center gap-2 rounded-md border border-line bg-panel px-2 py-1">
+          <span className="text-sm text-ink">{me?.displayName ?? me?.username ?? "—"}</span>
+          {me?.role && <Badge>{me.role}</Badge>}
+        </div>
+      </div>
+    </header>
+  );
+}

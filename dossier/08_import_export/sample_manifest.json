@@ -1,0 +1,98 @@
+{
+  "manifest_schema_version": 1,
+  "export": {
+    "id": 31,
+    "format": "csv",
+    "created_at": "2026-06-18T11:00:00Z",
+    "requested_by": "Annotateur A (pseudonymized)",
+    "tool": "CLAIRE Studio",
+    "tool_version": "0.4.0",
+    "artifact_path": "exports/claudette-gold-v1/2026-06-18/csv/data.csv",
+    "artifact_checksum_sha256": "5f2c9a1e8b3d4c6f7a0e1b2c3d4e5f60718293a4b5c6d7e8f90a1b2c3d4e5f60",
+    "row_count": 5
+  },
+  "provenance": {
+    "corpus": {
+      "slug": "CLAUDETTE-ToS",
+      "name": "CLAUDETTE Terms of Service",
+      "license": "research-use (see source)",
+      "source_url": "http://claudette.eui.eu/ToS.zip",
+      "default_language": "en"
+    },
+    "project": {"slug": "claudette-gold-v1", "name": "CLAUDETTE Gold v1"},
+    "scope": {
+      "status": ["approved"],
+      "documents": ["Fitbit", "Spotify"],
+      "annotators": ["A", "B"],
+      "include_preannotations": false,
+      "include_reference_labels": true,
+      "anonymize": true
+    },
+    "anonymized": true,
+    "data_sources": {
+      "gold_human": true,
+      "preannotations_llm": false,
+      "reference_labels_claudette": true
+    }
+  },
+  "schema": {
+    "label_scheme": {"slug": "claire-themes-v1", "version": "1.0.0"},
+    "pivot_format": "clause@CONTRACT-v1.0",
+    "themes": [
+      {"code": "META", "label": "Meta / dates / adresses"},
+      {"code": "PREAMBLE_SCOPE", "label": "Preambule & perimetre"},
+      {"code": "LICENSE_IP", "label": "Licence & propriete intel."},
+      {"code": "LIMITATION_LIABILITY", "label": "Limitation de responsabilite"},
+      {"code": "ARBITRATION_DISPUTES", "label": "Arbitrage & litiges"}
+    ],
+    "legal_natures": [
+      {"code": "DECLARATION", "label": "Declaration"},
+      {"code": "DEFINITION", "label": "Definition"},
+      {"code": "PROCEDURE", "label": "Procedure / mecanisme"}
+    ],
+    "certainty_scale": [
+      {"value": 0, "label": "Incertain"},
+      {"value": 1, "label": "Plutot"},
+      {"value": 2, "label": "Confiant"},
+      {"value": 3, "label": "Certain"}
+    ],
+    "unfairness_categories": [
+      {"code": "A", "label": "Arbitration"},
+      {"code": "LTD", "label": "Limitation of liability"}
+    ],
+    "unfairness_levels": [
+      {"value": 1, "label": "clairement juste / faible"},
+      {"value": 2, "label": "potentiellement injuste"},
+      {"value": 3, "label": "clairement injuste"}
+    ]
+  },
+  "columns": [
+    {"name": "doc", "type": "string", "desc": "Document.external_id"},
+    {"name": "project", "type": "string", "desc": "Project.slug"},
+    {"name": "annotator", "type": "string", "desc": "Pseudonyme stable par projet"},
+    {"name": "schema", "type": "string", "desc": "LabelScheme.slug"},
+    {"name": "status", "type": "enum", "desc": "Statut annotation (approved ici)"},
+    {"name": "global_certainty", "type": "int", "enum_ref": "schema.certainty_scale", "desc": "Certitude globale 0-3"},
+    {"name": "anchor_index", "type": "int", "desc": "Index de phrase debut de clause (0-based)"},
+    {"name": "theme", "type": "enum", "enum_ref": "schema.themes", "desc": "Theme (vocab ferme)"},
+    {"name": "legal_nature", "type": "enum", "enum_ref": "schema.legal_natures", "desc": "Nature juridique optionnelle"},
+    {"name": "certainty", "type": "int", "enum_ref": "schema.certainty_scale", "desc": "Certitude 0-3 de la clause"},
+    {"name": "evidence_span", "type": "string", "desc": "Extrait textuel justifiant la clause"},
+    {"name": "rationale", "type": "string", "desc": "Justification libre de l'annotateur"},
+    {"name": "seeded_from", "type": "string", "desc": "Provenance du pre-remplissage LLM, ou vide"},
+    {"name": "edited", "type": "bool", "desc": "True si edite par l'humain apres seeding"}
+  ],
+  "integrity": {
+    "row_count": 5,
+    "document_count": 2,
+    "annotation_count": 2,
+    "files": [
+      {"path": "data.csv", "sha256": "5f2c9a1e8b3d4c6f7a0e1b2c3d4e5f60718293a4b5c6d7e8f90a1b2c3d4e5f60", "bytes": 712}
+    ]
+  },
+  "notes": [
+    "Anonymise : libelles annotateurs pseudonymises et stables par projet.",
+    "Donnees gold humaines uniquement ; pre-annotations LLM exclues du perimetre.",
+    "Niveaux d'injustice CLAUDETTE references en notes de rationale (lecture seule, non gold)."
+  ]
+}

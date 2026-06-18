@@ -1,0 +1,46 @@
+feature_id,feature,test_level,test_file,owner,success_criterion,quality_req
+F1,Simplifier l'annotation humaine,unit-backend,backend/tests/annotations/test_invariants.py,backend,"Tous les invariants Clause/Annotation du CONTRACT 2 garantis par contrainte DB, 0 donnee corrompue",Q-ROB-03
+F1,Simplifier l'annotation humaine,unit-frontend,frontend/tests/components/ClauseEditor.test.tsx,frontend,"Pose de frontiere + attribution theme + certitude editables, theme limite au vocab ferme",Q-FON-03
+F1,Simplifier l'annotation humaine,integration-backend,backend/tests/api/test_annotations.py,backend,"POST /annotations, POST /annotations/{id}/clauses, PATCH /clauses/{id} renvoient 201/200/400 conformes",Q-MOD-01
+F1,Simplifier l'annotation humaine,e2e,frontend/e2e/annotate.spec.ts,frontend,"Annoter un document entierement au clavier (B/T/C/0-3/cmd+S) sans souris, annotation soumise",Q-FON-03
+F2,Charger/recuperer les pre-annotations LLM,unit-backend,backend/tests/imports/test_pivot.py,backend,"Import v9.2 et v9.4 normalises vers le pivot clause unique du CONTRACT 4, round-trip stable",Q-MOD-01
+F2,Charger/recuperer les pre-annotations LLM,unit-backend,backend/tests/imports/test_idempotency.py,backend,"Re-import d'un fichier inchange (checksum) = 0 mutation",Q-ROB-02
+F2,Charger/recuperer les pre-annotations LLM,unit-frontend,frontend/tests/components/PreannotationGhost.test.tsx,frontend,"Overlay fantome affiche, application en brouillon editable, provenance tracee",Q-MOD-01
+F2,Charger/recuperer les pre-annotations LLM,e2e,frontend/e2e/prefill.spec.ts,frontend,"Pre-remplir depuis Claude puis Codex, frontieres non retenues restent en fantome, provenance visible",Q-MOD-01
+F3,Navigation fichiers + versioning + historique,unit-backend,backend/tests/annotations/test_versioning.py,backend,"Snapshot immuable, restaurer v(n) puis diff = vide",Q-FIA-01
+F3,Navigation fichiers + versioning + historique,integration-backend,backend/tests/api/test_versioning.py,backend,"GET versions, GET versions/{n}/diff, conflit concurrent -> 409",Q-FIA-01
+F3,Navigation fichiers + versioning + historique,unit-frontend,frontend/tests/components/DiffView.test.tsx,frontend,"Timeline ordonnee et diff rendu correctement entre deux versions",Q-FIA-01
+F3,Navigation fichiers + versioning + historique,e2e,frontend/e2e/history.spec.ts,frontend,"Ouvrir l'historique, comparer deux versions, restaurer, etat reproduit a l'identique",Q-FIA-01
+F4,Annotation collaborative,unit-backend,backend/tests/audit/test_activity.py,backend,"100% des transitions de statut emettent exactement 1 ActivityEvent",Q-FIA-03
+F4,Annotation collaborative,unit-backend,backend/tests/iaa/test_iaa.py,backend,"Cohen/Fleiss/WindowDiff egaux aux valeurs de reference a 1e-6 pres",Q-FIA-02
+F4,Annotation collaborative,unit-frontend,frontend/tests/components/ActivityBell.test.tsx,frontend,"Cloche affiche les evenements recents, badge non-lus correct",Q-FIA-03
+F4,Annotation collaborative,e2e,frontend/e2e/collaboration.spec.ts,frontend,"Tableau de bord projet montre qui a annote quoi, IAA et progression a jour",Q-FIA-02
+F5,Export multi-format,integration-backend,backend/tests/exports/test_export_formats.py,backend,"jsonl/csv/conll/xml/md/huggingface generes, ajout d'un format ne casse pas les existants",Q-EVO-03
+F5,Export multi-format,integration-backend,backend/tests/exports/test_export_manifest.py,backend,"Manifest trace la version de schema, tout theme exporte appartient au LabelScheme",Q-EVO-02
+F5,Export multi-format,integration-backend,backend/tests/exports/test_export_scope.py,backend,"Throttling exports + concurrence bornee par projet, anonymize=true par defaut",Q-OPT-03
+F5,Export multi-format,e2e,frontend/e2e/export.spec.ts,frontend,"Lancer un export depuis /admin/exports, suivre le statut du job, telecharger l'artefact",Q-FON-01
+F6,Affichage ergonomique anti-fatigue,unit-frontend,frontend/tests/design/tokens.test.ts,frontend,"Tokens couleur/typo/espacement charges, theme sombre coherent",Q-A11Y-01
+F6,Affichage ergonomique anti-fatigue,unit-frontend,frontend/tests/a11y/workspace.axe.test.tsx,frontend,"0 violation axe critique, contraste AA des couleurs de themes",Q-A11Y-01
+F6,Affichage ergonomique anti-fatigue,e2e,frontend/e2e/ergonomics.spec.ts,frontend,"Bascule clair/sombre, panneaux redimensionnables persistes, lecture confortable",Q-A11Y-01
+F7,Systeme d'annotation complet,integration-backend,backend/tests/observability/test_tracing.py,backend,"request_id + trace_id presents et correles dans logs et traces",Q-DEB-01
+F7,Systeme d'annotation complet,arch-backend,backend (import-linter en CI),backend,"Aucune dependance circulaire entre apps Django",Q-MOD-02
+F7,Systeme d'annotation complet,e2e,frontend/e2e/palette.spec.ts,frontend,"Palette cmd+K saute a un document/lance un export, toute surface en <= 3 clics",Q-FON-02
+F8,Traductions file-based,unit-backend,backend/tests/translations/test_translation_sync.py,backend,"Sync file-based idempotent (checksum), mapping document/sentence correct",Q-ROB-02
+F8,Traductions file-based,unit-backend,backend/tests/translations/test_pathsafety.py,backend,"Path-traversal/symlink/absolu hors racine rejetes a 100%",Q-SEC-03
+F8,Traductions file-based,e2e,frontend/e2e/translations.spec.ts,frontend,"Declarer un dossier de traduction, lancer le sync, overlay langue affiche la traduction",Q-FON-01
+F9,Commentaires,unit-backend,backend/tests/collaboration/test_comments.py,backend,"Threads ancres sur clause/phrase/annotation, resolve marque le fil resolu",Q-FON-01
+F9,Commentaires,unit-frontend,frontend/tests/components/CommentThread.test.tsx,frontend,"Fil affiche, ajout d'un commentaire, resolution visible dans l'inspecteur",Q-FON-01
+F9,Commentaires,e2e,frontend/e2e/comments.spec.ts,frontend,"Ouvrir un fil avec C sur une clause, commenter, resoudre",Q-FON-01
+F10,Archivage + notation + certitude,unit-backend,backend/tests/annotations/test_reviews_certainty.py,backend,"Review score 1..5 et decision valides, certainty in {0,1,2,3}, archivage = statut archived",Q-FON-01
+F10,Archivage + notation + certitude,unit-frontend,frontend/tests/components/CertaintyControl.test.tsx,frontend,"Certitude 0-3 au clavier, agregation en certitude globale",Q-FON-01
+F10,Archivage + notation + certitude,e2e,frontend/e2e/review.spec.ts,frontend,"Mode revue: noter, demander des changements, archiver une annotation",Q-FON-01
+F11,Robustesse multi-corpus,unit-backend,backend/tests/schemes/test_scheme_isolation.py,backend,"Ajouter un corpus+LabelScheme via admin uniquement, 0 ligne de code metier touchee",Q-EVO-01
+F11,Robustesse multi-corpus,integration-backend,backend/tests/api/test_schemes.py,backend,"GET /corpora, GET/POST /schemes, vocab ferme versionne",Q-EVO-02
+F11,Robustesse multi-corpus,e2e,frontend/e2e/new-corpus.spec.ts,frontend,"Creer un nouveau corpus + schema via /admin et l'utiliser dans un projet sans deploiement",Q-EVO-01
+F12,Integration & affichage CLAUDETTE,unit-backend,backend/tests/imports/test_claudette_loader.py,backend,"100% des documents mal alignes rejetes, 0 ecriture partielle, categorie+niveau parses",Q-ROB-01
+F12,Integration & affichage CLAUDETTE,integration-backend,backend/tests/api/test_documents.py,backend,"GET /documents/{id} renvoie phrases + reference_labels, requetes bornees (pas de N+1)",Q-OPT-01
+F12,Integration & affichage CLAUDETTE,unit-frontend,frontend/tests/components/UnfairnessOverlay.test.tsx,frontend,"Toggle surlignage injustice, info-bulle categorie+niveau",Q-FON-01
+F12,Integration & affichage CLAUDETTE,e2e,frontend/e2e/unfairness-overlay.spec.ts,frontend,"Overlay injustice CLAUDETTE affiche par defaut, togglable, info-bulle correcte",Q-FON-01
+F-sec,Securite transverse,unit-backend,backend/tests/security/test_authz_isolation.py,backend,"Isolation par role et par projet, deny-by-default, annotateur jamais hors perimetre",Q-SEC-01
+F-sec,Securite transverse,unit-backend,backend/tests/security/test_logging_pii.py,backend,"PIIScrubber retire email/nom/token/contenu, 0 PII en logs/metrics/traces",Q-SEC-02
+F-sec,Securite transverse,integration-backend,backend/tests/exports/test_anonymize.py,backend,"Exports comparatifs/IAA anonymises par defaut, identites pseudonymisees",Q-SEC-04

@@ -1,0 +1,64 @@
+@startuml sequence_submit_review
+' Séquence features 1 + 10 — Soumission d'une annotation puis revue
+' State machine: draft -> submitted -> in_review -> approved/rejected (03_data_model/state_machines.puml).
+title Features 1 & 10 — Soumettre puis réviser une annotation
+
+skinparam shadowing false
+actor "Annotateur" as A
+actor "Reviewer" as R
+participant "Frontend" as FE
+participant "API DRF" as API
+participant "annotations\n(state machine)" as ANN
+participant "collaboration\n(reviews/comments/versions)" as COL
+participant "audit" as AUD
+database "PostgreSQL" as DB
+
+== Soumission (annotateur, feature 1) ==
+A -> FE : « Soumettre » (certitude globale posée)
+FE -> API : POST /annotations/{id}/submit
+API -> ANN : transition draft -> submitted
+ANN -> ANN : valider invariants (clauses, theme ∈ scheme)
+ANN -> DB : UPDATE Annotation(status=submitted)
+ANN -> COL : snapshot auto
+COL -> DB : INSERT AnnotationVersion(snapshot immuable)
+ANN -> AUD : ActivityEvent(verb=submitted)
+AUD -> DB : INSERT ActivityEvent
+API --> FE : 200 OK (submitted)
+note over AUD : alimente la cloche d'activité + progress/IAA (feature 4)
+
+== Revue (reviewer, feature 10) ==
+R -> FE : ouvre /review/{id}
+FE -> API : GET /annotations/{id}
+API -> DB : SELECT Annotation + Clause[] (lecture seule)
+DB --> API : annotation + certitudes + rationales
+API --> FE : 200 OK
+opt prise en revue
+  FE -> API : PATCH /annotations/{id} {status:in_review}
+  API -> ANN : submitted -> in_review
+  ANN -> DB : UPDATE + ActivityEvent
+end
+
+R -> FE : commente une clause litigieuse (C)
+FE -> API : POST /annotations/{id}/comments {clause}
+API -> COL : créer Comment (fil)
+COL -> DB : INSERT Comment
+API --> FE : 201 Created
+
+R -> FE : enregistre la revue (score 1..5 + décision + rubrique)
+FE -> API : POST /annotations/{id}/reviews
+API -> COL : créer Review
+COL -> DB : INSERT Review
+
+alt décision = approve
+  FE -> API : PATCH /annotations/{id} {status:approved}
+  API -> ANN : in_review -> approved
+  ANN -> DB : UPDATE + AnnotationVersion + ActivityEvent
+  API --> FE : 200 OK (gold validé)
+else décision = request_changes / reject
+  FE -> API : PATCH /annotations/{id} {status:rejected}
+  API -> ANN : in_review -> rejected
+  ANN -> DB : UPDATE + ActivityEvent
+  API --> FE : 200 OK (retour à l'annotateur, boucle fermée)
+end
+
+@enduml

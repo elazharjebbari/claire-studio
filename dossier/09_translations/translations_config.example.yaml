@@ -1,0 +1,50 @@
+# Exemple de configuration d'un dossier de traductions (feature F8).
+# Sert de corps a POST /api/v1/translations/sets et de reference pour /admin/translations.
+# Voir translations_filebased.md (sync) et mapping_strategies.md (alignement).
+
+# --- Racine autorisee (cote serveur, settings.TRANSLATIONS_ROOT) ---
+# Les folder_path ci-dessous sont RELATIFS a cette racine ; pas de '..', pas de symlink sortant.
+translations_root: "/srv/claire/translations"   # documentation seulement (fixe par l'admin systeme)
+
+translation_sets:
+
+  # 1) Francais aligne phrase a phrase (cas par defaut CLAUDETTE : 1 phrase/ligne).
+  - name: "CLAUDETTE FR (pipeline v3)"
+    corpus: "CLAUDETTE-ToS"
+    target_language: "fr"            # BCP-47
+    folder_path: "claudette-tos/fr"  # contient Fitbit.txt, Spotify.txt, ...
+    mapping_strategy: "by_line_index"
+    options:
+      encoding: "utf-8"
+      strict_length: true            # nb lignes == Document.n_sentences, sinon doc en 'mismatch'
+      case_insensitive: true         # appariement stem <-> external_id
+      on_conflict: "replace"         # skip | replace | fail (re-sync)
+
+  # 2) Espagnol robuste par identifiant de phrase (JSONL), traduction partielle toleree.
+  - name: "CLAUDETTE ES (human, partiel)"
+    corpus: "CLAUDETTE-ToS"
+    target_language: "es"
+    folder_path: "claudette-tos/es"  # contient Fitbit.jsonl, ... ({"sentence_index":..,"text":..})
+    mapping_strategy: "by_sentence_id"
+    options:
+      encoding: "utf-8"
+      container: "jsonl"             # jsonl | tsv
+      strict_length: false           # sous-ensemble autorise (alignement par id)
+      on_conflict: "fail"
+
+  # 3) Allemand au niveau document (bloc), pas d'alignement phrase.
+  - name: "CLAUDETTE DE (resume bloc)"
+    corpus: "CLAUDETTE-ToS"
+    target_language: "de"
+    folder_path: "claudette-tos/de"  # contient Fitbit.txt (contenu entier = 1 Translation document)
+    mapping_strategy: "by_filename"
+    options:
+      encoding: "utf-8"
+      on_conflict: "skip"
+
+# --- Comportement de sync (rappel, applique a chaque set) ---
+sync:
+  idempotent: true            # checksum par fichier ; fichier inchange => skip
+  per_document_transaction: true   # pas d'etat partiel par document
+  emits_activity_event: "translation.synced"
+  status_values: ["synced", "partial", "error", "stale"]

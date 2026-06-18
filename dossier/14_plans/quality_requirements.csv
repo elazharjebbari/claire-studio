@@ -1,0 +1,25 @@
+req_id,quality,requirement,measurable_criterion,verification_method,feature
+Q-ROB-01,robuste,Le loader CLAUDETTE rejette tout document mal aligne sans etat partiel,"100% des documents avec mismatch de longueur rejetes, 0 ecriture partielle",pytest claudette_loader,F12
+Q-ROB-02,robuste,Les imports/sync file-based sont idempotents,"Re-import d'un fichier inchange = 0 mutation (checksum)",pytest preann_autopull + translation_sync,F2/F8
+Q-ROB-03,robuste,Les invariants de donnees sont garantis par contrainte DB,"Tentative de violer un invariant CONTRACT 2 -> erreur, 0 donnee corrompue",pytest invariants par invariant,F1
+Q-FIA-01,fiable,La restauration d'une version reproduit exactement l'etat snapshote,"Restaurer v(n) puis comparer = diff vide",pytest versioning + diff,F3
+Q-FIA-02,fiable,L'IAA est exact sur cas de reference,"Cohen/Fleiss/WindowDiff = valeurs tabulees a 1e-6 pres",pytest iaa_*,F4
+Q-FIA-03,fiable,Aucune transition de statut sans evenement d'audit,"100% des transitions emettent exactement 1 ActivityEvent",pytest activity,F4
+Q-EVO-01,evolutif,Ajouter un corpus ne touche aucun code metier,"Nouveau Corpus+LabelScheme via admin uniquement, 0 ligne de code",pytest scheme_isolation + e2e new-corpus,F11
+Q-EVO-02,evolutif,Les vocabulaires sont fermes et versionnes,"Tout theme exporte appartient au LabelScheme, version tracee",pytest export_manifest,F11
+Q-EVO-03,evolutif,Un nouveau format d'export s'ajoute sans casser les existants,"Ajout d'un format -> suite export_formats reste verte",pytest export_formats,F5
+Q-DEB-01,debogable,Chaque requete est tracable de bout en bout,"request_id + trace_id presents dans logs et traces correles",pytest tracing + logging_pii,F7
+Q-DEB-02,debogable,Chaque alerte renvoie a un dashboard et un runbook,"100% des alertes ont un lien runbook",revue manuelle alerting,F7
+Q-MOD-01,modulaire,Le pivot clause est l'unique primitive import/diff/export,"import v9.2/v9.4, diff et export derivent du meme pivot",pytest import_v92/v94 + export round-trip,F2/F5
+Q-MOD-02,modulaire,Les apps Django sont decouplees par domaine,"Aucune dependance circulaire entre apps",import-linter en CI,F7
+Q-OPT-01,optimal,Pas de requete N+1 sur les vues critiques,"GET document+sentences+labels en <= k requetes bornees",pytest assertNumQueries,F12
+Q-OPT-02,optimal,Latence API maitrisee,"p95 http_request_duration_seconds < 800 ms en charge nominale",test de charge + alerting,F7
+Q-OPT-03,optimal,Les exports lourds n'epuisent pas le service,"Throttling exports + concurrence bornee par projet, 0 saturation worker",pytest export_scope + charge,F5
+Q-FON-01,fonctionnel,Les 12 features ont un E2E vert,"100% des e2e de feature_traceability.csv passent",suite e2e,F1-F12
+Q-FON-02,fonctionnel,La navigation respecte profondeur <= 3 clics,"Toute surface atteignable en <= 3 clics",revue navigation + e2e,F7
+Q-FON-03,fonctionnel,L'annotation est entierement pilotable au clavier,"Poser clause/theme/certitude/commentaire/snapshot sans souris",e2e annotate.spec,F1
+Q-SEC-01,securise,Isolation d'acces par role et par projet,"Un annotateur ne lit/edite jamais hors perimetre, deny-by-default",pytest authz_isolation,F-sec
+Q-SEC-02,securise,Aucune donnee personnelle en logs/metrics/traces,"PIIScrubber retire email/nom/token/contenu, 0 PII detectee",pytest logging_pii + metrics_cardinality,F-sec
+Q-SEC-03,securise,Chemins file-based confines,"Path-traversal/symlink/absolu hors racine rejetes a 100%",pytest pathsafety,F8/F2
+Q-SEC-04,securise,Exports comparatifs anonymises par defaut,"anonymize=true par defaut sur IAA/compare, identites pseudonymisees",pytest export_scope + anonymize,F4/F5
+Q-A11Y-01,fonctionnel,Accessibilite AA sur les surfaces UI,"0 violation axe critique, contraste AA des couleurs vocabulary",a11y axe,F6

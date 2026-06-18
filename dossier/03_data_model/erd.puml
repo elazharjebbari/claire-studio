@@ -1,0 +1,299 @@
+@startuml erd
+' Entity-Relationship — CLAIRE Studio
+' Reprend EXACTEMENT les entités et champs clés du CONTRACT §2. Notation: * obligatoire, ? optionnel.
+title CLAIRE Studio — Schéma entité-relation (CONTRACT §2)
+
+skinparam shadowing false
+skinparam linetype ortho
+hide circle
+skinparam class {
+  BorderColor #334155
+  BackgroundColor #F8FAFC
+  ArrowColor #475569
+}
+
+entity User {
+  * id : PK
+  --
+  * username
+  * email
+  * role : annotator|reviewer|admin|owner
+  display_name ?
+  locale
+}
+
+entity Corpus {
+  * id : PK
+  --
+  * slug
+  * name
+  description
+  source_url
+  license
+  default_language
+}
+
+entity Document {
+  * id : PK
+  --
+  * corpus : FK
+  * external_id
+  * title
+  language
+  n_sentences
+  source_meta : json
+  checksum
+}
+
+entity Sentence {
+  * id : PK
+  --
+  * document : FK
+  * index
+  * raw_text
+  clean_text
+  char_start ?
+  char_end ?
+}
+
+entity ReferenceLabel {
+  * id : PK
+  --
+  * sentence : FK
+  * category : A|CH|CR|J|LAW|LTD|TER|USE|...
+  * level : 1|2|3
+  source
+}
+
+entity LabelScheme {
+  * id : PK
+  --
+  * slug
+  * name
+  * version
+  is_active
+  definition : json
+}
+
+entity Theme {
+  * id : PK
+  --
+  * scheme : FK
+  * code
+  * label
+  color
+  definition
+  examples : json
+  order
+}
+
+entity LegalNature {
+  * id : PK
+  --
+  * scheme : FK
+  * code
+  * label
+  definition
+  order
+}
+
+entity Project {
+  * id : PK
+  --
+  * slug
+  * name
+  * corpus : FK
+  * scheme : FK
+  guidelines : md
+  status
+  settings : json
+}
+
+entity ProjectMembership {
+  * id : PK
+  --
+  * project : FK
+  * user : FK
+  * role : annotator|reviewer|lead
+  joined_at
+}
+
+entity Assignment {
+  * id : PK
+  --
+  * project : FK
+  * document : FK
+  * assignee : FK User
+  status
+  due_at ?
+}
+
+entity Annotation {
+  * id : PK
+  --
+  * project : FK
+  * document : FK
+  * annotator : FK User
+  * status : draft|submitted|in_review|approved|rejected|archived
+  global_certainty : 0..3 ?
+  source : human|preannotation_seed
+  created_at
+  updated_at
+}
+
+entity Clause {
+  * id : PK
+  --
+  * annotation : FK
+  * anchor_sentence : FK Sentence
+  * theme : FK
+  legal_nature : FK ?
+  evidence_span
+  rationale
+  certainty : 0..3 ?
+  order
+}
+
+entity PreAnnotation {
+  * id : PK
+  --
+  * project : FK
+  * document : FK
+  * judge : claude|codex|other
+  * schema_version
+  raw : json
+  imported_at
+  mapped : bool
+}
+
+entity PreClause {
+  * id : PK
+  --
+  * preannotation : FK
+  * anchor_index
+  * theme_code
+  evidence_span
+  rationale
+}
+
+entity AnnotationVersion {
+  * id : PK
+  --
+  * annotation : FK
+  * number
+  * snapshot : json
+  * author : FK User
+  label ?
+  created_at
+}
+
+entity Comment {
+  * id : PK
+  --
+  * annotation : FK
+  clause : FK ?
+  sentence : FK ?
+  * author : FK User
+  * body : md
+  thread_root ?
+  resolved : bool
+  created_at
+}
+
+entity Review {
+  * id : PK
+  --
+  * annotation : FK
+  * reviewer : FK User
+  * score : 1..5
+  decision : approve|request_changes|reject
+  rubric : json
+  body : md
+  created_at
+}
+
+entity TranslationSet {
+  * id : PK
+  --
+  * corpus : FK
+  * name
+  * target_language
+  * folder_path
+  mapping_strategy
+  status
+}
+
+entity Translation {
+  * id : PK
+  --
+  * translation_set : FK
+  * document : FK
+  sentence : FK ?
+  * text
+  provenance
+}
+
+entity ActivityEvent {
+  * id : PK
+  --
+  * actor : FK User
+  * verb
+  * target_type
+  * target_id
+  payload : json
+  created_at
+}
+
+entity ExportJob {
+  * id : PK
+  --
+  * project : FK
+  * format : jsonl|csv|conll|xml|md|huggingface
+  scope : json
+  status
+  artifact_path ?
+  manifest : json
+  * requested_by : FK User
+  created_at
+}
+
+' --- Relations ---
+Corpus ||--o{ Document
+Document ||--o{ Sentence
+Sentence ||--o{ ReferenceLabel
+LabelScheme ||--o{ Theme
+LabelScheme ||--o{ LegalNature
+Corpus ||--o{ Project
+LabelScheme ||--o{ Project
+Project ||--o{ ProjectMembership
+User ||--o{ ProjectMembership
+Project ||--o{ Assignment
+Document ||--o{ Assignment
+User ||--o{ Assignment
+Project ||--o{ Annotation
+Document ||--o{ Annotation
+User ||--o{ Annotation
+Annotation ||--o{ Clause
+Sentence ||--o{ Clause
+Theme ||--o{ Clause
+LegalNature |o--o{ Clause
+Project ||--o{ PreAnnotation
+Document ||--o{ PreAnnotation
+PreAnnotation ||--o{ PreClause
+Annotation ||--o{ AnnotationVersion
+User ||--o{ AnnotationVersion
+Annotation ||--o{ Comment
+Clause |o--o{ Comment
+Sentence |o--o{ Comment
+User ||--o{ Comment
+Annotation ||--o{ Review
+User ||--o{ Review
+Corpus ||--o{ TranslationSet
+TranslationSet ||--o{ Translation
+Document ||--o{ Translation
+Sentence |o--o{ Translation
+User ||--o{ ActivityEvent
+Project ||--o{ ExportJob
+User ||--o{ ExportJob
+
+@enduml

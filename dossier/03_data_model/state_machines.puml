@@ -1,0 +1,50 @@
+@startuml state_machines
+' Machine à états du statut d'Annotation — CLAIRE Studio
+' Statuts: CONTRACT §2 (draft|submitted|in_review|approved|rejected|archived).
+' Invariant INV-5: toute transition émet un ActivityEvent et peut créer une AnnotationVersion.
+title Annotation.status — machine à états (CONTRACT §2)
+
+skinparam shadowing false
+skinparam state {
+  BorderColor #334155
+  BackgroundColor #F1F5F9
+}
+
+[*] --> draft : POST /annotations\n(source=human | preannotation_seed)
+
+state draft : édition libre des clauses\n(POST/PATCH/DELETE clauses)\nauto-save optimiste
+state submitted : soumis par l'annotateur\n(snapshot auto)
+state in_review : pris en charge par un reviewer
+state approved : gold validé
+state rejected : modifications demandées / rejeté
+state archived : retiré du flux actif
+
+draft --> submitted : POST /annotations/{id}/submit\n[invariants OK] / +ActivityEvent +Version
+submitted --> in_review : PATCH status=in_review\n(reviewer ouvre) / +ActivityEvent
+submitted --> draft : PATCH status=draft\n(annotateur reprend avant revue) / +ActivityEvent
+
+in_review --> approved : Review.decision=approve\nPATCH status=approved / +ActivityEvent +Version
+in_review --> rejected : Review.decision=reject\nPATCH status=rejected / +ActivityEvent +Version
+in_review --> draft : Review.decision=request_changes\nrenvoi à l'annotateur / +ActivityEvent
+
+rejected --> draft : l'annotateur corrige\nPATCH status=draft / +ActivityEvent
+approved --> archived : PATCH status=archived\n(clôture campagne) / +ActivityEvent
+rejected --> archived : PATCH status=archived / +ActivityEvent
+
+archived --> [*]
+
+note right of approved
+  Boucle de revue (features 1 & 10) :
+  approve  -> approved (gold)
+  reject   -> rejected
+  changes  -> draft (boucle fermée)
+end note
+
+note bottom of draft
+  Transitions interdites (rejetées 409) :
+  - approved/archived -> draft directement
+  - draft -> approved sans passer par submitted/in_review
+  Toute transition passe par le service state machine (INV-5).
+end note
+
+@enduml

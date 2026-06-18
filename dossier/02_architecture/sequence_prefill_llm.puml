@@ -1,0 +1,54 @@
+@startuml sequence_prefill_llm
+' Séquence feature 2 — Pré-remplir une annotation depuis un LLM (Claude/Codex)
+' Endpoints: CONTRACT §3. Invariant: pré-annotation jamais mélangée au gold (CONTRACT §1).
+title Feature 2 — Pré-remplissage depuis une pré-annotation LLM
+
+skinparam shadowing false
+actor "Annotateur" as U
+participant "Frontend\n/annotate/[id]" as FE
+participant "API DRF\n/api/v1/" as API
+participant "imports\n(normalisation pivot)" as IMP
+participant "annotations\n(service seed)" as ANN
+participant "audit" as AUD
+database "PostgreSQL" as DB
+
+== Pré-requis : pré-annotations déjà importées par l'admin ==
+note over IMP, DB
+  PreAnnotation + PreClause en base
+  (v9.2 start_id / v9.4 anchor_id -> anchor_index),
+  mapped = true. Immuables.
+end note
+
+U -> FE : clic « Pré-remplir depuis Claude »
+FE -> API : POST /annotations\n{project, document, seed:"preannotation:claude"}
+API -> IMP : récupérer PreAnnotation(judge=claude)
+IMP -> DB : SELECT PreClause[]
+DB --> IMP : PreClause[] (anchor_index, theme_code, evidence_span, rationale)
+IMP --> API : clauses normalisées (format pivot, CONTRACT §4)
+
+API -> ANN : créer Annotation(source=preannotation_seed)
+ANN -> DB : INSERT Annotation(status=draft)
+ANN -> DB : INSERT Clause[] (provenance.seeded_from=claude@v9.4, edited=false)
+note right of ANN
+  Invariants vérifiés:
+  - 1 clause-start par phrase
+  - theme ∈ LabelScheme du projet
+  - unicité (project, document, annotator)
+end note
+ANN -> AUD : ActivityEvent(verb=seeded)
+AUD -> DB : INSERT ActivityEvent
+ANN --> API : Annotation + Clause[]
+API --> FE : 201 Created (annotation brouillon)
+
+FE -> API : GET /preannotations?judge=claude (overlay fantôme)
+API --> FE : frontières LLM non retenues -> rendu « fantôme »
+FE --> U : clauses éditables + fantômes LLM affichés
+
+== Correction par l'humain ==
+U -> FE : accepte / corrige / supprime des clauses
+FE -> API : PATCH /clauses/{id} | DELETE /clauses/{id} | POST .../clauses
+API -> ANN : applique l'édition (provenance.edited=true)
+ANN -> DB : UPDATE/DELETE/INSERT Clause
+API --> FE : 200/204 (gold humain, distinct de la PreAnnotation immuable)
+
+@enduml

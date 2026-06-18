@@ -1,0 +1,217 @@
+{
+  "$schema": "https://design-tokens.github.io/community-group/format/",
+  "meta": {
+    "name": "CLAIRE Studio Design Tokens",
+    "version": "1.0.0",
+    "description": "Tokens de design — thèmes clair et sombre, contraste AA, conçus anti-fatigue (feature 6). Les couleurs de thèmes de clause et catégories d'injustice reprennent EXACTEMENT vocabulary.yaml.",
+    "wcag_target": "WCAG 2.1 AA"
+  },
+
+  "color": {
+    "comment": "Palettes neutres et accent. Light et dark vérifiés AA (>=4.5:1 texte normal, >=3:1 large/UI). Fond sombre jamais noir pur, texte sombre jamais blanc pur (anti-halation).",
+    "neutral": {
+      "0":  { "value": "#FFFFFF" },
+      "50": { "value": "#F8FAFC" },
+      "100":{ "value": "#F1F5F9" },
+      "200":{ "value": "#E2E8F0" },
+      "300":{ "value": "#CBD5E1" },
+      "400":{ "value": "#94A3B8" },
+      "500":{ "value": "#64748B" },
+      "600":{ "value": "#475569" },
+      "700":{ "value": "#334155" },
+      "800":{ "value": "#1E293B" },
+      "900":{ "value": "#0F172A" },
+      "950":{ "value": "#0B1120" }
+    },
+    "accent": {
+      "comment": "Bleu d'action principal. AA sur fonds clair et sombre.",
+      "400": { "value": "#38BDF8" },
+      "500": { "value": "#0EA5E9" },
+      "600": { "value": "#0284C7" },
+      "700": { "value": "#0369A1" }
+    },
+    "status": {
+      "success": { "value": "#22C55E", "comment": "approved / certain" },
+      "warning": { "value": "#F59E0B", "comment": "request_changes / attention" },
+      "danger":  { "value": "#EF4444", "comment": "rejected / destructif" },
+      "info":    { "value": "#0EA5E9", "comment": "in_review / neutre informatif" }
+    }
+  },
+
+  "theme": {
+    "comment": "Tokens sémantiques résolus par thème. Le frontend mappe ces alias sur les variables CSS --bg, --fg, etc.",
+    "light": {
+      "bg":            { "value": "{color.neutral.50}" },
+      "bg-elevated":   { "value": "{color.neutral.0}" },
+      "bg-document":   { "value": "#FCFCFD", "comment": "panneau document, off-white doux (anti-eblouissement)" },
+      "surface":       { "value": "{color.neutral.100}" },
+      "border":        { "value": "{color.neutral.200}" },
+      "fg":            { "value": "{color.neutral.900}", "comment": "texte primaire, contraste ~16:1 sur bg" },
+      "fg-muted":      { "value": "{color.neutral.600}", "comment": ">=4.5:1 sur bg" },
+      "fg-subtle":     { "value": "{color.neutral.500}" },
+      "accent-fg":     { "value": "{color.accent.700}" },
+      "focus-ring":    { "value": "{color.accent.600}" },
+      "overlay-scrim": { "value": "rgba(15,23,42,0.45)" }
+    },
+    "dark": {
+      "bg":            { "value": "#0F1115", "comment": "gris tres sombre, JAMAIS noir pur" },
+      "bg-elevated":   { "value": "#161A20" },
+      "bg-document":   { "value": "#13161B", "comment": "panneau document sombre doux pour lecture longue" },
+      "surface":       { "value": "#1E232B" },
+      "border":        { "value": "#2A313B" },
+      "fg":            { "value": "#E6E8EC", "comment": "gris clair, JAMAIS blanc pur (anti-halation)" },
+      "fg-muted":      { "value": "#A4ACB8", "comment": ">=4.5:1 sur bg" },
+      "fg-subtle":     { "value": "#7C8595" },
+      "accent-fg":     { "value": "{color.accent.400}" },
+      "focus-ring":    { "value": "{color.accent.400}" },
+      "overlay-scrim": { "value": "rgba(0,0,0,0.55)" }
+    }
+  },
+
+  "theme_colors": {
+    "comment": "Couleurs de THEMES de clause — reprises EXACTEMENT de vocabulary.yaml (20 themes). Doublees du code/label en UI (jamais couleur seule, cf. accessibility.md). Pastilles a bordure pour visibilite sur les deux fonds.",
+    "META":                  { "value": "#6B7280", "order": 0 },
+    "PREAMBLE_SCOPE":        { "value": "#8B5CF6", "order": 1 },
+    "PRIVACY_DATA":          { "value": "#0EA5E9", "order": 2 },
+    "ELIGIBILITY_ACCOUNT":   { "value": "#14B8A6", "order": 3 },
+    "ACCEPTABLE_USE":        { "value": "#22C55E", "order": 4 },
+    "USER_CONTENT":          { "value": "#84CC16", "order": 5 },
+    "LICENSE_IP":            { "value": "#EAB308", "order": 6 },
+    "MODIFICATION_OF_TERMS": { "value": "#F59E0B", "order": 7 },
+    "TERMINATION":           { "value": "#F97316", "order": 8 },
+    "WARRANTY_DISCLAIMER":   { "value": "#EF4444", "order": 9 },
+    "LIMITATION_LIABILITY":  { "value": "#DC2626", "order": 10 },
+    "ARBITRATION_DISPUTES":  { "value": "#EC4899", "order": 11 },
+    "GOVERNING_LAW":         { "value": "#D946EF", "order": 12 },
+    "THIRD_PARTY_SERVICES":  { "value": "#A855F7", "order": 13 },
+    "FEES_PAYMENT":          { "value": "#10B981", "order": 14 },
+    "COMMUNICATIONS":        { "value": "#06B6D4", "order": 15 },
+    "FEEDBACK":              { "value": "#3B82F6", "order": 16 },
+    "PROMOTIONS":            { "value": "#F472B6", "order": 17 },
+    "DMCA":                  { "value": "#FB7185", "order": 18 },
+    "MISC_BOILERPLATE":      { "value": "#94A3B8", "order": 19 }
+  },
+
+  "unfairness_colors": {
+    "comment": "Categories d'injustice CLAUDETTE (ReferenceLabel, feature 12) — reprises de vocabulary.yaml. Affichees en surimpression de faible opacite + chiffre de niveau.",
+    "A":   { "value": "#EC4899", "label": "Arbitration" },
+    "CH":  { "value": "#F59E0B", "label": "Unilateral change" },
+    "CR":  { "value": "#F97316", "label": "Content removal" },
+    "J":   { "value": "#D946EF", "label": "Jurisdiction" },
+    "LAW": { "value": "#A855F7", "label": "Choice of law" },
+    "LTD": { "value": "#DC2626", "label": "Limitation of liability" },
+    "TER": { "value": "#EF4444", "label": "Unilateral termination" },
+    "USE": { "value": "#8B5CF6", "label": "Contract by using" },
+    "level_intensity": {
+      "1": { "value": 0.25, "label": "clairement juste / faible" },
+      "2": { "value": 0.55, "label": "potentiellement injuste" },
+      "3": { "value": 0.90, "label": "clairement injuste" }
+    }
+  },
+
+  "certainty_colors": {
+    "comment": "Echelle de certitude (feature 10) — reprise de vocabulary.yaml. Couleur + emoji + label (aria) + raccourci.",
+    "0": { "value": "#94A3B8", "emoji": "🤔", "label": "Incertain", "shortcut": "0" },
+    "1": { "value": "#38BDF8", "emoji": "🙂", "label": "Plutôt",  "shortcut": "1" },
+    "2": { "value": "#34D399", "emoji": "😀", "label": "Confiant",  "shortcut": "2" },
+    "3": { "value": "#22C55E", "emoji": "💯", "label": "Certain",   "shortcut": "3" }
+  },
+
+  "typography": {
+    "comment": "Anti-fatigue: corps >=16px, line-height document 1.7, colonne ~70ch (cf. ergonomics_anti_fatigue.md).",
+    "font-family": {
+      "sans": { "value": "Inter, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" },
+      "serif-reading": { "value": "'Source Serif 4', Georgia, serif", "comment": "option lecture longue du document" },
+      "mono": { "value": "'JetBrains Mono', 'SF Mono', Menlo, monospace", "comment": "index de phrase, codes de theme, diff" }
+    },
+    "font-size": {
+      "xs":   { "value": "0.75rem" },
+      "sm":   { "value": "0.875rem" },
+      "base": { "value": "1rem",   "comment": "16px minimum corps" },
+      "md":   { "value": "1.0625rem", "comment": "17px confort lecture document" },
+      "lg":   { "value": "1.25rem" },
+      "xl":   { "value": "1.5rem" },
+      "2xl":  { "value": "1.875rem" }
+    },
+    "line-height": {
+      "tight":   { "value": "1.25", "comment": "titres" },
+      "normal":  { "value": "1.5",  "comment": "UI" },
+      "reading": { "value": "1.7",  "comment": "corps du document (anti-fatigue)" }
+    },
+    "font-weight": {
+      "regular": { "value": "400" },
+      "medium":  { "value": "500", "comment": "phrases d'ancre / clauses" },
+      "semibold":{ "value": "600" },
+      "bold":    { "value": "700" }
+    },
+    "measure": {
+      "document": { "value": "70ch", "comment": "longueur de ligne cible 60-75ch, plafonnee" }
+    }
+  },
+
+  "spacing": {
+    "comment": "Echelle 4px. Densite confort (defaut) / compact reglable dans /settings.",
+    "0":  { "value": "0" },
+    "1":  { "value": "0.25rem" },
+    "2":  { "value": "0.5rem" },
+    "3":  { "value": "0.75rem" },
+    "4":  { "value": "1rem" },
+    "5":  { "value": "1.25rem" },
+    "6":  { "value": "1.5rem" },
+    "8":  { "value": "2rem" },
+    "10": { "value": "2.5rem" },
+    "12": { "value": "3rem" },
+    "16": { "value": "4rem" },
+    "sentence-gap": { "value": "0.5rem", "comment": "interstice vertical entre phrases du document" }
+  },
+
+  "radius": {
+    "none": { "value": "0" },
+    "sm":   { "value": "0.25rem" },
+    "md":   { "value": "0.5rem", "comment": "chips, boutons, cartes" },
+    "lg":   { "value": "0.75rem" },
+    "xl":   { "value": "1rem" },
+    "pill": { "value": "9999px", "comment": "ClauseChip, badges" }
+  },
+
+  "shadow": {
+    "comment": "Ombres douces; en dark, ombres tres discretes + bordure pour l'elevation.",
+    "xs":  { "value": "0 1px 2px rgba(15,23,42,0.06)" },
+    "sm":  { "value": "0 1px 3px rgba(15,23,42,0.10), 0 1px 2px rgba(15,23,42,0.06)" },
+    "md":  { "value": "0 4px 12px rgba(15,23,42,0.12)" },
+    "lg":  { "value": "0 12px 32px rgba(15,23,42,0.16)" },
+    "focus": { "value": "0 0 0 3px rgba(14,165,233,0.45)", "comment": "anneau de focus AA" }
+  },
+
+  "motion": {
+    "comment": "Respecte prefers-reduced-motion (accessibility.md): reduit/supprime.",
+    "duration": {
+      "fast":   { "value": "120ms" },
+      "normal": { "value": "200ms" },
+      "slow":   { "value": "320ms" }
+    },
+    "easing": {
+      "standard": { "value": "cubic-bezier(0.2, 0, 0, 1)" },
+      "emphasized": { "value": "cubic-bezier(0.2, 0, 0, 1.2)" }
+    }
+  },
+
+  "layout": {
+    "comment": "Workspace 3 panneaux redimensionnables (navigation.md, wireframes.md).",
+    "panel-left-default":  { "value": "18%", "comment": "Plan / TOC" },
+    "panel-center-min":    { "value": "0px" },
+    "panel-right-default": { "value": "26%", "comment": "Inspecteur" },
+    "sidebar-collapsed":   { "value": "56px" },
+    "topbar-height":       { "value": "56px" },
+    "min-touch-target":    { "value": "24px", "comment": "WCAG AA" }
+  },
+
+  "z-index": {
+    "base":    { "value": 0 },
+    "sticky":  { "value": 10 },
+    "overlay": { "value": 100 },
+    "modal":   { "value": 1000 },
+    "command-palette": { "value": 1100 },
+    "toast":   { "value": 1200 }
+  }
+}

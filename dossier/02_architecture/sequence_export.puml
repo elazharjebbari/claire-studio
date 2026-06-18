@@ -1,0 +1,44 @@
+@startuml sequence_export
+' Séquence feature 5 — Export multi-format asynchrone
+' DB-centrique (ADR-0002): l'export est un artefact dérivé + manifest, jamais la source de vérité.
+title Feature 5 — Export multi-format (asynchrone, traçable)
+
+skinparam shadowing false
+actor "Admin / Lead" as ADM
+participant "Frontend\n/admin/exports" as FE
+participant "API DRF" as API
+participant "exports\n(service + formatters)" as EXP
+queue "File de tâches" as Q
+participant "Worker" as W
+participant "audit" as AUD
+database "PostgreSQL\n(vérité)" as DB
+collections "Stockage artefacts" as FS
+
+ADM -> FE : choisit format (jsonl/csv/conll/xml/md/huggingface)\n+ scope (status=approved, documents…)
+FE -> API : POST /projects/{slug}/exports {format, scope}
+API -> EXP : créer ExportJob(status=pending)
+EXP -> DB : INSERT ExportJob
+EXP -> Q : enfiler le job
+API --> FE : 201 Created (job id, status=pending)
+note over FE : la requête ne bloque pas (job long)
+
+Q -> W : dépile le job
+W -> DB : UPDATE ExportJob(status=running)
+W -> DB : SELECT Annotation + Clause[] selon scope\n(état faisant foi)
+DB --> W : gold (format pivot clause, CONTRACT §4)
+W -> W : formatter -> artefact (selon format)
+W -> FS : écrit artefact
+W -> W : calcule manifest (scope, format, comptes, hash -> reproductibilité)
+W -> DB : UPDATE ExportJob(status=done, artifact_path, manifest)
+W -> AUD : ActivityEvent(verb=exported)
+AUD -> DB : INSERT ActivityEvent
+
+== Récupération ==
+ADM -> FE : rafraîchit la liste
+FE -> API : GET /exports/{id}
+API -> DB : SELECT ExportJob
+DB --> API : status=done, artifact_path, manifest
+API --> FE : 200 OK (lien artefact + manifest)
+FE --> ADM : télécharge l'artefact (dérivé, régénérable)
+
+@enduml

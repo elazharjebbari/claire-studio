@@ -1,0 +1,13 @@
+feature_id,feature,backend_module,api_endpoints,frontend_surface,key_entities,tests
+F1,Simplifier l'annotation humaine,annotations,"POST /annotations, POST /annotations/{id}/clauses, PATCH /clauses/{id}",/annotate/[id] workspace + raccourcis clavier,"Annotation, Clause","e2e annotate.spec, unit clause-editor"
+F2,Charger/récupérer les pré-annotations LLM (claude/codex),imports,"POST /projects/{slug}/preannotations/import, GET /preannotations",bouton Pré-remplir + overlay fantôme,"PreAnnotation, PreClause","pytest import_v92/v94, e2e prefill.spec"
+F3,Navigation fichiers + versioning + historique,annotations+collaboration,"GET /annotations/{id}/versions, .../diff",/history/[id] timeline + diff,"AnnotationVersion","pytest versioning, e2e history.spec"
+F4,Annotation collaborative (qui a annoté quoi),audit+projects,"GET /activity, GET /projects/{slug}/progress",cloche activité + tableau de bord,"ActivityEvent, ProjectMembership","pytest activity, e2e collaboration.spec"
+F5,Export multi-format + formats explicatifs,exports,"POST /projects/{slug}/exports, GET /exports/{id}",/admin/exports,"ExportJob","pytest export_formats, e2e export.spec"
+F6,Affichage ergonomique anti-fatigue,frontend(design-system),n/a,workspace + thème sombre + tokens,n/a,"unit theme, a11y axe, vitest tokens"
+F7,Système d'annotation complet (features non listées),transverse,multiple,palette ⌘K, inter-annotator agreement,"tous","suite complète"
+F8,Traductions file-based,translations,"POST /translations/sets, POST .../sync, GET /projects/{slug}/translations",overlay langue + /admin/translations,"TranslationSet, Translation","pytest translation_sync, e2e translations.spec"
+F9,Commentaires (justifier le choix),collaboration,"GET/POST /annotations/{id}/comments, POST /comments/{id}/resolve",fil dans l'inspecteur,"Comment","pytest comments, e2e comments.spec"
+F10,Archivage + notation + gestion certitude,annotations+collaboration,"PATCH /annotations/{id} (status/certainty), POST /annotations/{id}/reviews",inspecteur certitude + mode revue,"Review, certainty fields","pytest reviews/certainty, e2e review.spec"
+F11,Robustesse multi-corpus,corpora+schemes,"GET /corpora, POST /schemes",/admin/corpora + /admin/schemes,"Corpus, LabelScheme, Theme","pytest scheme_isolation, e2e new-corpus.spec"
+F12,Intégration & affichage CLAUDETTE par défaut,corpora(imports),"GET /documents/{id} (reference_labels)",overlay injustice surligné,"ReferenceLabel","pytest claudette_loader, e2e unfairness-overlay.spec"

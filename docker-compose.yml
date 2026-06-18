@@ -1,0 +1,93 @@
+# =============================================================================
+# CLAIRE Studio — orchestration des services (dev / pile complète)
+# Services : postgres + backend (Django/DRF :8000) + frontend (Next.js :3000)
+#            + adminer (optionnel, profil `tools`).
+# Les Dockerfiles vivent dans backend/ et frontend/ (produits par d'autres agents).
+# =============================================================================
+
+services:
+  postgres:
+    image: postgres:16-alpine
+    container_name: claire-postgres
+    environment:
+      POSTGRES_DB: ${POSTGRES_DB:-claire}
+      POSTGRES_USER: ${POSTGRES_USER:-claire}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-claire}
+    ports:
+      - "${POSTGRES_PORT:-5432}:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-claire} -d ${POSTGRES_DB:-claire}"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+    restart: unless-stopped
+
+  backend:
+    build:
+      context: ./backend
+    container_name: claire-backend
+    env_file:
+      - .env
+    environment:
+      # Surcharge l'hôte DB pour le réseau docker
+      DATABASE_URL: ${DATABASE_URL:-postgresql://claire:claire@postgres:5432/claire}
+      POSTGRES_HOST: postgres
+      DJANGO_ALLOWED_HOSTS: ${DJANGO_ALLOWED_HOSTS:-localhost,127.0.0.1,backend}
+    ports:
+      - "${BACKEND_PORT:-8000}:8000"
+    volumes:
+      - ./backend:/app
+      - backend_data:/data        # exports / imports / translations confinés
+    depends_on:
+      postgres:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD-SHELL", "python -c \"import urllib.request,sys; urllib.request.urlopen('http://localhost:8000/api/v1/'); \" || curl -fsS http://localhost:8000/api/v1/ || exit 1"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+      start_period: 30s
+    restart: unless-stopped
+
+  frontend:
+    build:
+      context: ./frontend
+    container_name: claire-frontend
+    environment:
+      NEXT_PUBLIC_API_URL: ${NEXT_PUBLIC_API_URL:-http://localhost:8000/api/v1}
+      NEXT_TELEMETRY_DISABLED: "1"
+      NODE_ENV: ${NODE_ENV:-development}
+    ports:
+      - "${FRONTEND_PORT:-3000}:3000"
+    volumes:
+      - ./frontend:/app
+      - /app/node_modules
+    depends_on:
+      backend:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD-SHELL", "curl -fsS http://localhost:3000/ || exit 1"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+      start_period: 30s
+    restart: unless-stopped
+
+  adminer:
+    image: adminer:4
+    container_name: claire-adminer
+    profiles: ["tools"]            # `docker compose --profile tools up adminer`
+    ports:
+      - "${ADMINER_PORT:-8080}:8080"
+    depends_on:
+      postgres:
+        condition: service_healthy
+    environment:
+      ADMINER_DEFAULT_SERVER: postgres
+    restart: unless-stopped
+
+volumes:
+  pgdata:
+  backend_data:

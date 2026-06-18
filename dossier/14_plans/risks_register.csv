@@ -1,0 +1,19 @@
+risk_id,category,risk,likelihood,impact,severity,mitigation,contingency,owner,feature
+R-01,donnees,Mauvais alignement ligne a ligne CLAUDETTE (Sentences vs Labels),medium,high,high,Validation stricte de longueur + rejet document + journalisation,Inspection manuelle du document fautif puis correction source,lead-data,F12
+R-02,donnees,Pre-annotations LLM avec anchor_index hallucines (hors borne),high,medium,high,Validation Pydantic AnchorOutOfRangeError + dedup d'ancres,Marquer unmapped et resolution admin,lead-ml,F2
+R-03,donnees,Theme LLM inconnu du LabelScheme,high,low,medium,"Table d'alias + statut unmapped, jamais d'OTHER_ libre",Enrichir les alias ou etendre le scheme (version),lead-ml,F2
+R-04,donnees,Re-import corpus change n_sentences et invalide alignements traduction,medium,medium,medium,TranslationSet marque stale + re-sync requis,"Re-sync, ou figer la version de corpus annotee",lead-data,F8
+R-05,methodo,IAA biaise par visibilite non aveugle (contagion entre pairs),medium,high,high,Mode peer_visibility blind + signalement du regime dans coverage,"Recalcul sur sous-ensemble aveugle, mention dans le rapport",lead-research,F4
+R-06,methodo,Fuite train/test silencieuse a l'export,low,high,medium,Splits explicites + manifeste documente,Bloquer export sans split declare si dataset ML,lead-research,F5
+R-07,securite,Path-traversal via folder_path file-based,low,high,high,Validation racine + rejet ../symlink/absolu,"Confinement FS worker, audit",lead-sec,F8
+R-08,securite,Vol/rejeu de token JWT,low,high,high,Refresh rotatif + blacklist jti + cookie HttpOnly,"Revocation globale, rotation des cles RS256",lead-sec,F-sec
+R-09,securite,De-anonymisation abusive d'annotateurs,low,high,high,Reserve lead/admin + ActivityEvent reveal_identity,"Revue d'audit, double validation optionnelle",owner,F4
+R-10,rgpd,Re-identification via metriques fines,medium,medium,medium,k-anonymat k>=3 + pseudonyme par projet,Suppression de la metrique trop fine,owner,F4
+R-11,rgpd,Conservation excessive d'annotations/evenements,medium,low,low,Retention parametree + purge motivee tracee,Purge differee avec preuve minimale,owner,F10
+R-12,perf,N+1 sur GET document+sentences+labels,medium,medium,medium,select_related/prefetch + assertNumQueries,"Pagination + cache, profilage",lead-backend,F12
+R-13,perf,Exports lourds saturant les workers,medium,medium,medium,Throttling exports + concurrence bornee par projet,"File prioritaire, exports nocturnes",lead-backend,F5
+R-14,produit,Versioning sature par autosave trop frequent,medium,low,low,Snapshot throttle (autosave_interval_min),Compaction des versions autosave anciennes,lead-backend,F3
+R-15,planning,Sous-estimation des E2E par feature,medium,medium,medium,"Marge risques +15%, vertical slices testees tot","Reprioriser, reduire le perimetre non critique",pm,F7
+R-16,dependances,Dependance vulnerable (supply chain),medium,high,high,uv lock + pip-audit/Dependabot + scan secrets,"Patch/upgrade prioritaire, pinning",lead-sec,F7
+R-17,qualite,Schema incompatible empechant la restauration d'une vieille version,low,medium,medium,Refus de restauration sur theme disparu + message guide,Migration de mapping ou clonage de scheme versionne,lead-backend,F3
+R-18,produit,Confusion gold humain vs pre-annotation LLM,low,high,medium,Tables disjointes + provenance tracee + manifeste data_sources,"Audit, separation renforcee a l'export",lead-research,F2

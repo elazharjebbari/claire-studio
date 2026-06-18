@@ -1,0 +1,83 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/*
+ * Variables de surface (canaux RGB pour <alpha-value> Tailwind). Le thème par
+ * défaut est SOMBRE anti-fatigue (F6). La classe `.light` sur <html> bascule en clair.
+ * Valeurs alignées sur design-tokens.json > surface.
+ */
+:root {
+  --surface-bg: 11 15 20; /* #0B0F14 */
+  --surface-bg-elevated: 17 23 34; /* #111722 */
+  --surface-panel: 20 27 38; /* #141B26 */
+  --surface-panel-muted: 26 34 48; /* #1A2230 */
+  --surface-border: 38 48 63; /* #26303F */
+  --surface-text: 230 234 240; /* #E6EAF0 */
+  --surface-text-muted: 154 166 182; /* #9AA6B6 */
+  --surface-accent: 91 157 255; /* #5B9DFF */
+  --surface-reading: 14 20 28; /* #0E141C */
+
+  --font-sans: ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
+  --font-reading: "Iowan Old Style", Georgia, Cambria, "Times New Roman", serif;
+  --font-mono: ui-monospace, SFMono-Regular, Menlo, monospace;
+}
+
+html.light {
+  --surface-bg: 247 249 252; /* #F7F9FC */
+  --surface-bg-elevated: 255 255 255;
+  --surface-panel: 255 255 255;
+  --surface-panel-muted: 238 242 248; /* #EEF2F8 */
+  --surface-border: 216 224 236; /* #D8E0EC */
+  --surface-text: 26 34 48; /* #1A2230 */
+  --surface-text-muted: 90 102 120; /* #5A6678 */
+  --surface-accent: 37 99 235; /* #2563EB */
+  --surface-reading: 252 253 255; /* #FCFDFF */
+}
+
+html,
+body {
+  height: 100%;
+}
+
+body {
+  background-color: rgb(var(--surface-bg));
+  color: rgb(var(--surface-text));
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+}
+
+/* Focus visible accessible (a11y AA) sur tout élément interactif. */
+:focus-visible {
+  outline: 2px solid rgb(var(--surface-accent));
+  outline-offset: 2px;
+  border-radius: 4px;
+}
+
+/* Scrollbars discrètes en thème sombre. */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: rgb(var(--surface-border)) transparent;
+}
+
+/* Lien d'évitement (skip-link) pour la navigation clavier. */
+.skip-link {
+  position: absolute;
+  left: -999px;
+  top: 0;
+  z-index: 100;
+}
+.skip-link:focus {
+  left: 8px;
+  top: 8px;
+  background: rgb(var(--surface-panel));
+  padding: 8px 12px;
+  border-radius: 6px;
+}
+
+/* Surlignage d'injustice CLAUDETTE (overlay F12) — intensité variable via --uf-intensity. */
+.unfairness-mark {
+  border-radius: 3px;
+  padding: 0 1px;
+  box-decoration-break: clone;
+}
