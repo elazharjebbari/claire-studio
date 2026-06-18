@@ -39,3 +39,7 @@ openapi:
 
 resync-translations:
 	$(MANAGE) sync_translations
+
+feed-all:
+	$(MANAGE) migrate
+	$(MANAGE) feed_db --all
