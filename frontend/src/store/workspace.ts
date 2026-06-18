@@ -45,8 +45,13 @@ interface WorkspaceState {
   showBoundaries: boolean;
   /** Multi-sélection de phrases (number[] pour la sérialisation/tests simples). */
   selectedSentences: number[];
-  /** Traduction globale du document (overlay). */
-  translateAll: boolean;
+  /** Multi-sélection de BLOCS/clauses (localId), via right-drag (P8). */
+  selectedClauseIds: string[];
+  /**
+   * Mode d'affichage de langue (P10) : `orig` (VO seule), `both` (VO + FR sous
+   * la phrase), `fr` (texte FR, repli VO si absent). Remplace l'ancien `translateAll`.
+   */
+  displayLang: "orig" | "both" | "fr";
   /** Phrases dont la traduction FR est affichée individuellement. */
   translatedSentences: number[];
   // Statut de dirty (modifs non snapshotées).
@@ -73,8 +78,12 @@ interface WorkspaceState {
   selectRange: (from: number, to: number) => void;
   toggleSelected: (index: number) => void;
   clearSelection: () => void;
+  /** Sélection multi-blocs (P8) : remplace la liste des clauses sélectionnées. */
+  setSelectedClauses: (ids: string[]) => void;
+  clearClauseSelection: () => void;
   setTranslated: (index: number, on: boolean) => void;
-  toggleTranslateAll: () => void;
+  /** Règle le mode d'affichage de langue (P10). */
+  setDisplayLang: (lang: "orig" | "both" | "fr") => void;
   markClean: () => void;
   reset: () => void;
 }
@@ -113,7 +122,8 @@ export const useWorkspaceStore = create<WorkspaceState>((set, get) => ({
   showTranslation: false,
   showBoundaries: true,
   selectedSentences: [],
-  translateAll: false,
+  selectedClauseIds: [],
+  displayLang: "orig",
   translatedSentences: [],
   dirty: false,
 
@@ -127,8 +137,9 @@ export const useWorkspaceStore = create<WorkspaceState>((set, get) => ({
       dirty: false,
       ghostClauses: [],
       selectedSentences: [],
+      selectedClauseIds: [],
       translatedSentences: [],
-      translateAll: false,
+      displayLang: "orig",
     }),
 
   focusSentence: (index) =>
@@ -255,6 +266,11 @@ export const useWorkspaceStore = create<WorkspaceState>((set, get) => ({
 
   clearSelection: () => set({ selectedSentences: [] }),
 
+  setSelectedClauses: (ids) =>
+    set({ selectedClauseIds: Array.from(new Set(ids)) }),
+
+  clearClauseSelection: () => set({ selectedClauseIds: [] }),
+
   setTranslated: (index, on) =>
     set((s) => {
       const has = s.translatedSentences.includes(index);
@@ -265,7 +281,7 @@ export const useWorkspaceStore = create<WorkspaceState>((set, get) => ({
       return { translatedSentences: next };
     }),
 
-  toggleTranslateAll: () => set((s) => ({ translateAll: !s.translateAll })),
+  setDisplayLang: (lang) => set({ displayLang: lang }),
 
   markClean: () => set({ dirty: false }),
 
@@ -278,8 +294,9 @@ export const useWorkspaceStore = create<WorkspaceState>((set, get) => ({
       draftClauses: [],
       ghostClauses: [],
       selectedSentences: [],
+      selectedClauseIds: [],
       translatedSentences: [],
-      translateAll: false,
+      displayLang: "orig",
       dirty: false,
     }),
 }));

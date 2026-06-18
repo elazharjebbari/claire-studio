@@ -20,9 +20,11 @@ export function TocPanel({ docTitle }: { docTitle: string }) {
   const showGhostClaude = useWorkspaceStore((s) => s.showGhostClaude);
   const showGhostCodex = useWorkspaceStore((s) => s.showGhostCodex);
   const toggleGhost = useWorkspaceStore((s) => s.toggleGhost);
-  // Overlay « Traduction (FR) » branché sur la vraie source (translateAll, P5).
-  const translateAll = useWorkspaceStore((s) => s.translateAll);
-  const toggleTranslateAll = useWorkspaceStore((s) => s.toggleTranslateAll);
+  // Overlay « Traduction (FR) » branché sur le mode de langue (P10) : coché = FR,
+  // décoché = VO. Bascule cohérente avec le switch segmenté du DocumentPanel.
+  const displayLang = useWorkspaceStore((s) => s.displayLang);
+  const setDisplayLang = useWorkspaceStore((s) => s.setDisplayLang);
+  const frActive = displayLang === "fr";
 
   const coverage = nSentences > 0 ? Math.round((drafts.length / nSentences) * 100) : 0;
 
@@ -106,8 +108,8 @@ export function TocPanel({ docTitle }: { docTitle: string }) {
           <input
             type="checkbox"
             data-testid="toggle-translation"
-            checked={translateAll}
-            onChange={toggleTranslateAll}
+            checked={frActive}
+            onChange={() => setDisplayLang(frActive ? "orig" : "fr")}
           />
           Traduction (FR)
         </label>

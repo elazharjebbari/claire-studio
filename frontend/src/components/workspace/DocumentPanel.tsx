@@ -25,8 +25,10 @@ import { useDocumentTranslations } from "@/lib/api/hooks";
 import { cn } from "@/lib/cn";
 import { unfairnessStyle, useUnfairnessIndex, type UnfairnessMark } from "./useUnfairness";
 import { useLongPress } from "./useLongPress";
+import { useBlockDragSelect } from "./useBlockDragSelect";
 import { SentenceMenu } from "./SentenceMenu";
 import { SelectionToolbar } from "./SelectionToolbar";
+import { LangSwitch } from "./LangSwitch";
 
 interface MenuState {
   index: number;
@@ -59,9 +61,9 @@ export function DocumentPanel({
   const selectedSentences = useWorkspaceStore((s) => s.selectedSentences);
   const selectRange = useWorkspaceStore((s) => s.selectRange);
   const toggleSelected = useWorkspaceStore((s) => s.toggleSelected);
-  const translateAll = useWorkspaceStore((s) => s.translateAll);
-  const toggleTranslateAll = useWorkspaceStore((s) => s.toggleTranslateAll);
+  const displayLang = useWorkspaceStore((s) => s.displayLang);
   const translatedSentences = useWorkspaceStore((s) => s.translatedSentences);
+  const setTranslated = useWorkspaceStore((s) => s.setTranslated);
 
   const unfairIndex = useUnfairnessIndex(referenceLabels);
   const anchorByIndex = useMemo(
@@ -87,6 +89,9 @@ export function DocumentPanel({
   // Traductions FR (P5) — Map index→texte.
   const { byIndex: translations } = useDocumentTranslations(documentId);
 
+  // Sélection multi-blocs au bouton droit maintenu (P8).
+  const blockDrag = useBlockDragSelect(runs);
+
   const selectedSet = useMemo(() => new Set(selectedSentences), [selectedSentences]);
 
   const [menu, setMenu] = useState<MenuState | null>(null);
@@ -105,7 +110,7 @@ export function DocumentPanel({
   return (
     <>
       <div className="mx-auto max-w-reading px-6 py-8 font-reading text-[17px] leading-reading text-ink">
-        <div className="mb-4 flex items-center justify-end gap-2 text-sm">
+        <div className="mb-4 flex items-center justify-end gap-3 text-sm">
           <label className="flex cursor-pointer items-center gap-2 text-ink-muted">
             <input
               type="checkbox"
@@ -115,20 +120,7 @@ export function DocumentPanel({
             />
             Frontières
           </label>
-          <button
-            type="button"
-            data-testid="translate-document"
-            aria-pressed={translateAll}
-            onClick={toggleTranslateAll}
-            className={cn(
-              "rounded-md border px-2 py-1 transition-colors",
-              translateAll
-                ? "border-accent bg-accent/10 text-ink"
-                : "border-line text-ink-muted hover:bg-panel-muted",
-            )}
-          >
-            🌐 Traduire le document
-          </button>
+          <LangSwitch />
         </div>
 
         {sentences.map((s) => {
@@ -146,23 +138,31 @@ export function DocumentPanel({
           const isRunStart = run != null && run.start === s.index;
           const showDashedTop = showBoundaries && isRunStart && run!.theme != null;
           const isSelected = selectedSet.has(s.index);
-          const showTranslation =
-            (translateAll || translatedSentences.includes(s.index)) &&
-            translations.get(s.index) != null;
+          const frText = translations.get(s.index);
+          // Surcouche per-phrase (P9) — ne s'applique qu'en mode orig/both.
+          const perSentenceFr =
+            displayLang !== "fr" &&
+            (displayLang === "both" || translatedSentences.includes(s.index)) &&
+            frText != null;
+          // En mode `fr`, le texte affiché EST le FR (repli VO si absent).
+          const renderFr = displayLang === "fr";
+          const missingFr = renderFr && frText == null;
 
           return (
             <div key={s.id} data-sentence-index={s.index} className="group relative">
               {anchor && (
                 <div
-                  className="mb-1 mt-3 flex items-center gap-2 border-l-2 pl-2 text-[11px] font-semibold uppercase tracking-wide text-ink"
-                  style={{ borderColor: anchorColor }}
+                  data-testid="clause-badge"
+                  className="mb-0.5 mt-3 flex items-center gap-1.5 pl-2 text-ink-muted"
                 >
                   <span
                     aria-hidden
                     className="h-2 w-2 shrink-0 rounded-full"
                     style={{ backgroundColor: anchorColor }}
                   />
-                  ▸ Début de clause · {getThemeToken(anchor.theme).label}
+                  <span className="text-[12px] font-medium text-ink">
+                    {getThemeToken(anchor.theme).label}
+                  </span>
                   {anchor.seededFrom && (
                     <span className="rounded bg-panel-muted px-1 font-mono text-[9px] text-ink-muted">
                       {anchor.seededFrom}
@@ -180,7 +180,12 @@ export function DocumentPanel({
                 runColor={runColor}
                 showDashedTop={showDashedTop}
                 isRunStart={isRunStart}
+                renderFr={renderFr}
+                frText={frText}
+                missingFr={missingFr}
                 focusedRef={isFocused ? focusedRef : undefined}
+                onBlockPointerDown={(e) => blockDrag.onSentencePointerDown(e, s.index)}
+                shouldSuppressContextMenu={blockDrag.shouldSuppressContextMenu}
                 onActivate={(e) => {
                   // Multi-sélection (P4) — s'AJOUTE au clic simple.
                   if (e.shiftKey) {
@@ -204,18 +209,41 @@ export function DocumentPanel({
                 }}
                 onOpenMenu={(x, y) => setMenu({ index: s.index, x, y })}
               />
-              {showTranslation && (
+              {/* Ligne FR sous l'original (P5/P9) — uniquement en mode orig/both. */}
+              {perSentenceFr && (
                 <p
                   data-testid={`translation-${s.index}`}
-                  className="mb-1 ml-6 mt-0.5 italic text-ink-muted"
+                  className="mb-1 ml-6 mt-0.5 flex items-start gap-1 italic text-ink-muted"
                 >
-                  {translations.get(s.index)}
+                  <span className="flex-1">{frText}</span>
+                  <button
+                    type="button"
+                    data-testid={`hide-translation-${s.index}`}
+                    aria-label={`Masquer la traduction de la phrase ${s.index}`}
+                    onClick={() => setTranslated(s.index, false)}
+                    className="not-italic rounded px-1 text-ink-muted hover:bg-panel-muted"
+                  >
+                    ×
+                  </button>
                 </p>
               )}
             </div>
           );
         })}
       </div>
+
+      {/* Tooltip flottant suivant le curseur pendant la sélection multi-blocs (P8). */}
+      {blockDrag.tip && (
+        <div
+          data-testid="block-select-tip"
+          role="status"
+          className="pointer-events-none fixed z-50 rounded-md border border-line bg-elevated px-2 py-1 text-xs text-ink shadow-lg"
+          style={{ left: blockDrag.tip.x + 12, top: blockDrag.tip.y + 12 }}
+        >
+          {blockDrag.tip.count} bloc{blockDrag.tip.count > 1 ? "s" : ""} sélectionné
+          {blockDrag.tip.count > 1 ? "s" : ""}
+        </div>
+      )}
 
       {menu && (
         <SentenceMenu
@@ -245,10 +273,15 @@ function SentenceRow({
   runColor,
   showDashedTop,
   isRunStart,
+  renderFr,
+  frText,
+  missingFr,
   focusedRef,
   onActivate,
   onKeyActivate,
   onOpenMenu,
+  onBlockPointerDown,
+  shouldSuppressContextMenu,
 }: {
   sentence: Sentence;
   isFocused: boolean;
@@ -259,12 +292,22 @@ function SentenceRow({
   runColor: string | undefined;
   showDashedTop: boolean;
   isRunStart: boolean;
+  /** Mode FR : afficher le texte traduit (repli VO si absent). */
+  renderFr: boolean;
+  frText: string | undefined;
+  /** Mode FR sans traduction disponible → indicateur « VO ». */
+  missingFr: boolean;
   focusedRef: React.RefObject<HTMLDivElement> | undefined;
   onActivate: (e: React.MouseEvent) => void;
   onKeyActivate: () => void;
   onOpenMenu: (x: number, y: number) => void;
+  onBlockPointerDown: (e: React.PointerEvent) => void;
+  shouldSuppressContextMenu: () => boolean;
 }) {
   const longPress = useLongPress((x, y) => onOpenMenu(x, y));
+  // Texte affiché : FR en mode `fr` (repli VO), sinon VO. L'index de phrase
+  // reste l'unité d'interaction quel que soit le texte rendu.
+  const displayText = renderFr && frText != null ? frText : s.rawText;
 
   return (
     <div
@@ -278,6 +321,20 @@ function SentenceRow({
       data-boundary={isRunStart || undefined}
       data-dashed={showDashedTop || undefined}
       {...longPress}
+      onPointerDown={(e) => {
+        // Bouton droit : démarre une sélection de blocs (P8) PUIS délègue au long-press
+        // (qui ignore les boutons != 0, donc pas de conflit avec le clic simple).
+        onBlockPointerDown(e);
+        longPress.onPointerDown(e);
+      }}
+      onContextMenu={(e) => {
+        // Un drag de blocs vient d'avoir lieu → on annule l'ouverture du menu.
+        if (shouldSuppressContextMenu()) {
+          e.preventDefault();
+          return;
+        }
+        longPress.onContextMenu(e);
+      }}
       onClick={onActivate}
       onKeyDown={(e) => {
         if (e.key === "Enter" || e.key === " ") {
@@ -309,10 +366,19 @@ function SentenceRow({
           title={`Injustice ${mark.label} · niveau ${mark.level}`}
           data-testid={`unfairness-${s.index}`}
         >
-          {s.rawText}
+          {displayText}
         </span>
       ) : (
-        <span>{s.rawText}</span>
+        <span>{displayText}</span>
+      )}
+      {missingFr && (
+        <span
+          aria-hidden
+          title="Traduction absente — texte original affiché"
+          className="ml-2 rounded bg-panel-muted px-1 font-mono text-[9px] text-ink-muted"
+        >
+          VO
+        </span>
       )}
       {ghost && !hasAnchor && (
         <span className="ml-2 rounded bg-panel-muted px-1 font-mono text-[9px] text-ink-muted">

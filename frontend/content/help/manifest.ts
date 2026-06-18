@@ -22,6 +22,8 @@ export const HELP_MANIFEST: HelpSection[] = [
   { slug: "introduction", title: "Introduction", group: "Découverte" },
   { slug: "demarrage", title: "Démarrage", group: "Découverte" },
   { slug: "workspace", title: "Le workspace", group: "Annoter" },
+  { slug: "selection-blocs", title: "Sélection multi-blocs", group: "Annoter" },
+  { slug: "modes-langue", title: "Modes de langue & traduction", group: "Annoter" },
   { slug: "themes-vocabulaire", title: "Thèmes & vocabulaire", group: "Annoter" },
   { slug: "preannotations-llm", title: "Pré-annotations LLM", group: "Annoter" },
   { slug: "injustice-claudette", title: "Injustice CLAUDETTE", group: "Annoter" },

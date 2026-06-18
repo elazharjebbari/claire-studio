@@ -44,8 +44,14 @@ test.describe("DocumentPanel — refonte ergonomique", () => {
     await expect(page.getByTestId("selection-count")).toContainText("3");
   });
 
-  test("« Traduire le document » affiche la ligne FR", async ({ page }) => {
-    await page.getByTestId("translate-document").click();
+  test("le mode Bilingue affiche la ligne FR sous l'original", async ({ page }) => {
+    await page.getByTestId("lang-both").click();
     await expect(page.getByTestId("translation-0")).toBeVisible();
+  });
+
+  test("le mode FR affiche le texte traduit dans la phrase", async ({ page }) => {
+    await page.getByTestId("lang-fr").click();
+    // sentence-0 a une traduction mock → son texte devient le FR.
+    await expect(page.getByTestId("sentence-0")).toContainText("[FR] Phrase 0 traduite.");
   });
 });

@@ -40,6 +40,12 @@ export function SentenceMenu({ sentenceIndex, x, y, runs, onClose }: SentenceMen
   const updateDraft = useWorkspaceStore((s) => s.updateDraft);
   const setCertainty = useWorkspaceStore((s) => s.setCertainty);
   const setTranslated = useWorkspaceStore((s) => s.setTranslated);
+  const translatedSentences = useWorkspaceStore((s) => s.translatedSentences);
+  const displayLang = useWorkspaceStore((s) => s.displayLang);
+
+  // En mode `both`, toutes les phrases montrent déjà le FR ; le toggle per-phrase
+  // n'a alors d'effet visible qu'en mode `orig`.
+  const isTranslated = displayLang === "both" || translatedSentences.includes(sentenceIndex);
 
   const isAnchor = drafts.some((d) => d.anchorIndex === sentenceIndex);
   // Clause couvrant la phrase (par son run) → cible des actions thème/certitude.
@@ -178,19 +184,20 @@ export function SentenceMenu({ sentenceIndex, x, y, runs, onClose }: SentenceMen
         )}
       </section>
 
-      {/* (c) Traduire cette phrase */}
+      {/* (c) Traduire / masquer la traduction de cette phrase (toggle, P9) */}
       <section className="pt-3">
         <button
           type="button"
           role="menuitem"
           data-testid="menu-translate"
+          aria-pressed={isTranslated}
           onClick={() => {
-            setTranslated(sentenceIndex, true);
+            setTranslated(sentenceIndex, !isTranslated);
             onClose();
           }}
           className="w-full rounded-md border border-line px-2 py-1 text-left hover:bg-panel-muted"
         >
-          🌐 Traduire cette phrase
+          {isTranslated ? "🙈 Masquer la traduction" : "🌐 Traduire cette phrase"}
         </button>
       </section>
     </div>

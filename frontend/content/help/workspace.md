@@ -21,6 +21,15 @@ Une clause commence à une phrase « ancre ». Pour la poser :
 
 Cliquer une phrase déjà ancrée sélectionne sa clause dans l'inspecteur.
 
+## Sélection multi-blocs et modes de langue
+
+- **Sélection multi-blocs** : maintenez le **bouton droit** et glissez sur
+  plusieurs phrases pour sélectionner une plage de clauses, puis annotez-les
+  ensemble (cf. « Sélection multi-blocs »).
+- **Modes de langue** : le switch **VO / Bilingue / FR** de la barre d'en-tête
+  bascule l'affichage du texte ; l'annotation reste alignée sur l'index de
+  phrase (cf. « Modes de langue & traduction »).
+
 ## Attribuer un thème
 
 Une fois une clause sélectionnée, attribuez-lui un thème :

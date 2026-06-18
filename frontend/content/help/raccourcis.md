@@ -17,6 +17,16 @@ CLAIRE Studio est pensé pour le travail au clavier afin de réduire la fatigue.
 | `3` | Certitude 3 (certain) |
 | `⌘S` | Snapshot (instantané), fonctionne même en saisie |
 
+## Souris
+
+| Geste | Action |
+|---|---|
+| Clic | Focus + pose / sélection de la frontière de clause |
+| Clic-droit (immobile) | Ouvrir le menu d'annotation de la phrase |
+| Clic-droit **maintenu + glisser** | Sélectionner une plage de **blocs** (clauses) |
+| Shift + clic | Étendre la sélection de phrases |
+| ⌘/Ctrl + clic | Ajouter / retirer une phrase de la sélection |
+
 ## Application
 
 | Touche | Action |

@@ -70,6 +70,31 @@ export function runAt(runs: Run[], index: number): Run | undefined {
   return runs.find((r) => index >= r.start && index <= r.end);
 }
 
+/**
+ * Plage ORDONNÉE de localId de clauses (P8) dont le run chevauche [fromIndex, toIndex].
+ * Sert au mapping « plage de phrases → clauses » de la sélection multi-blocs au
+ * bouton droit. Les runs neutres (localId === null) sont ignorés. L'ordre de sortie
+ * suit l'ordre des runs (donc l'ordre des ancres).
+ */
+export function clauseRangeBetween(
+  runs: Run[],
+  fromIndex: number,
+  toIndex: number,
+): string[] {
+  const lo = Math.min(fromIndex, toIndex);
+  const hi = Math.max(fromIndex, toIndex);
+  const ids: string[] = [];
+  const seen = new Set<string>();
+  for (const r of runs) {
+    if (r.localId == null) continue;
+    if (r.end >= lo && r.start <= hi && !seen.has(r.localId)) {
+      seen.add(r.localId);
+      ids.push(r.localId);
+    }
+  }
+  return ids;
+}
+
 /** Thème du run couvrant `index` (null si run neutre / hors bornes). */
 export function runThemeAt(runs: Run[], index: number): string | null {
   return runAt(runs, index)?.theme ?? null;

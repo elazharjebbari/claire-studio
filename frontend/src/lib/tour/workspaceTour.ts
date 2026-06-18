@@ -44,6 +44,24 @@ export const WORKSPACE_TOUR_STEPS: TourStep[] = [
       "Chaque phrase est indexée et cliquable. Naviguez au clavier avec j (suivant) et k (précédent).",
   },
   {
+    element: '[data-testid="boundary-toggle"]',
+    title: "Frontières",
+    description:
+      "Activez ou masquez les frontières de clause (rail coloré + pointillés). Un repère visuel discret, indépendant du surlignage d'injustice.",
+  },
+  {
+    element: '[data-testid="lang-switch"]',
+    title: "Modes de langue",
+    description:
+      "Basculez l'affichage entre VO (original), Bilingue (VO + FR) et FR (traduction). Toutes les interactions opèrent sur l'index de phrase, quel que soit le mode.",
+  },
+  {
+    element: '[data-testid="sentence-0"]',
+    title: "Sélection multi-blocs",
+    description:
+      "Maintenez le clic-droit et glissez sur plusieurs phrases pour sélectionner une plage de blocs (clauses), puis annotez-les ensemble. Un clic-droit immobile ouvre le menu de la phrase.",
+  },
+  {
     element: '[data-testid="inspector"]',
     title: "L'inspecteur",
     description:

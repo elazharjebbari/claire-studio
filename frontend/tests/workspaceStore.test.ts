@@ -101,16 +101,39 @@ describe("workspace store", () => {
     expect(useWorkspaceStore.getState().selectedSentences).toEqual([]);
   });
 
-  it("setTranslated / toggleTranslateAll gèrent la traduction", () => {
+  it("setTranslated gère la traduction par phrase", () => {
     useWorkspaceStore.getState().setTranslated(2, true);
     expect(useWorkspaceStore.getState().translatedSentences).toEqual([2]);
     useWorkspaceStore.getState().setTranslated(0, true);
     expect(useWorkspaceStore.getState().translatedSentences).toEqual([0, 2]);
     useWorkspaceStore.getState().setTranslated(2, false);
     expect(useWorkspaceStore.getState().translatedSentences).toEqual([0]);
+  });
 
-    expect(useWorkspaceStore.getState().translateAll).toBe(false);
-    useWorkspaceStore.getState().toggleTranslateAll();
-    expect(useWorkspaceStore.getState().translateAll).toBe(true);
+  it("setDisplayLang règle le mode d'affichage (défaut orig, P10)", () => {
+    expect(useWorkspaceStore.getState().displayLang).toBe("orig");
+    useWorkspaceStore.getState().setDisplayLang("both");
+    expect(useWorkspaceStore.getState().displayLang).toBe("both");
+    useWorkspaceStore.getState().setDisplayLang("fr");
+    expect(useWorkspaceStore.getState().displayLang).toBe("fr");
+    useWorkspaceStore.getState().setDisplayLang("orig");
+    expect(useWorkspaceStore.getState().displayLang).toBe("orig");
+  });
+
+  it("setSelectedClauses / clearClauseSelection gèrent la sélection de blocs (P8)", () => {
+    expect(useWorkspaceStore.getState().selectedClauseIds).toEqual([]);
+    useWorkspaceStore.getState().setSelectedClauses(["c1", "c2", "c1"]);
+    // Déduplication.
+    expect(useWorkspaceStore.getState().selectedClauseIds).toEqual(["c1", "c2"]);
+    useWorkspaceStore.getState().clearClauseSelection();
+    expect(useWorkspaceStore.getState().selectedClauseIds).toEqual([]);
+  });
+
+  it("init et reset réinitialisent displayLang et selectedClauseIds", () => {
+    useWorkspaceStore.getState().setDisplayLang("fr");
+    useWorkspaceStore.getState().setSelectedClauses(["c1"]);
+    useWorkspaceStore.getState().reset();
+    expect(useWorkspaceStore.getState().displayLang).toBe("orig");
+    expect(useWorkspaceStore.getState().selectedClauseIds).toEqual([]);
   });
 });

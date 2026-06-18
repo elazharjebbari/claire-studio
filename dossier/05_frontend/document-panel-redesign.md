@@ -115,6 +115,48 @@ Qualités visées : **modulaire** (utils purs + composants isolés), **débogabl
 erreurs via le bandeau API), **évolutif** (runs/translations génériques), **fiable** (tests),
 **optimal** (mémoïsation des runs, pas de re-render global).
 
+## 3bis. Audit v2 + solutions (itération 2)
+
+Retours terrain (capture Instagram) et nouvelles demandes :
+
+**(a) Bruit visuel des bandeaux « ▸ DÉBUT DE CLAUSE · … ».** Répété à chaque clause (beaucoup de
+`BOILERPLATE DIVERS`), en MAJUSCULES pleine largeur → fatigue, dilue l'information.
+| Option | Forces | Faiblesses |
+|---|---|---|
+| **A. Puce-thème compacte** (✅) : petite pastille colorée + label court à gauche, sans « DÉBUT DE CLAUSE ». Le rail + le pointillé portent déjà la frontière. | Discret, garde le thème, supprime la redondance. | Le mot « clause » disparaît (acceptable : la frontière reste visible). |
+| B. Bandeau au survol uniquement | Zéro bruit au repos. | Moins découvrable, instable au survol. |
+| C. Label en marge (gouttière) | Très propre. | Largeur de gouttière coûteuse en lecture. |
+→ **A** : puce + code thème compact ; option densité dans `/settings` plus tard.
+
+**(b) Sélection multi-blocs au bouton DROIT maintenu + annoter ensemble + compteur.**
+| Option | Forces | Faiblesses |
+|---|---|---|
+| **A. Right-press + drag sur les blocs → plage de clauses, tooltip compteur, relâche = sélection ; clic-droit simple = menu phrase** (✅) | Gestuelle demandée ; pas de calcul de marquee (on suit le bloc survolé) ; un seul bouton. | Doit neutraliser le `contextmenu` après un drag ; distinguer clic vs drag. |
+| B. Cases à cocher par bloc | Explicite. | Lourd, casse la lecture. |
+| C. Shift+clic au niveau bloc | Simple. | Pas la gestuelle demandée. |
+→ **A** : sélection de **blocs** (clauses) par glisser au bouton droit, **tooltip “N bloc(s)”** suivant
+le curseur ; au relâchement, `SelectionToolbar` propose « Annoter les N blocs » (ThemePalette →
+applique le thème à toutes les clauses sélectionnées) ; un clic-droit **sans déplacement** ouvre le
+menu phrase (inchangé).
+
+**(c) Masquer la traduction d'une phrase.** Le menu devient un **toggle** « Afficher/Masquer la
+traduction » + une croix `×` sur la ligne FR. `setTranslated(i,false)` la retire.
+
+**(d) Mode « traduction seule » (switch ergonomique en barre).** Remplacer le booléen `translateAll`
+par un mode d'affichage **segmenté 3 états** : `VO` (original) · `Bilingue` · `FR` (traduction seule).
+| Option | Forces | Faiblesses |
+|---|---|---|
+| **A. Switch segmenté 3 états `displayLang`** (✅) | Lisible, état unique, toutes les fonctions opèrent sur le texte affiché (mêmes index) ; bascule VO⇄FR instantanée. | Demande de remplacer `translateAll` partout. |
+| B. 2 checkboxes (bilingue / FR-only) | Simple. | États incohérents possibles. |
+→ **A** : `displayLang: 'orig' | 'both' | 'fr'` dans le store. En mode `fr`, chaque phrase REND le
+texte FR (repli VO si traduction absente) ; **annotation, frontières, menu, sélection, injustice**
+fonctionnent à l'identique (l'unité reste l'index de phrase). En `both`, VO + ligne FR. Le toggle
+per-phrase et `translatedSentences` ne s'appliquent qu'en mode `both`/`orig` (surcouche ponctuelle).
+
+**(e) Données.** Importer/ą confirmer les pré-annotations LLM (claude/codex) **déjà** présentes en base
+(feed `--all` = 100 préannotations) ; **traduire réellement** le 1er document de test (Instagram, 158
+phrases) phrase par phrase et re-synchroniser. **(f)** Mettre à jour le centre d'aide + la visite guidée.
+
 ## 4. Runbook d'exécution
 
 ```
@@ -140,6 +182,45 @@ npx playwright test                       # non-régression (26+ specs)
 # Lancement
 make -C ../backend run   &  npm run dev   # recharger /annotate/<id>
 ```
+
+## 5. Plan d'action itération 2 (P7→P12)
+
+> **Statut itération 2** : P7 ✅ · P8 ✅ · P9 ✅ · P10 ✅ · P12 ✅ (P11 = données/backend,
+> hors périmètre frontend). `tsc --noEmit` 0 erreur + Vitest 67/67 verts sur `/tmp/fe`.
+> Spec E2E `document-ux.spec.ts` mise à jour (`lang-both`/`lang-fr`) ; clic simple inchangé.
+>
+> - **P7** ✅ : bandeau verbeux remplacé par une **puce compacte** (`data-testid="clause-badge"`) :
+>   pastille couleur du thème + label court (casse normale), `seededFrom` en petit. Le rail
+>   gauche + le pointillé (P2) portent la frontière.
+> - **P8** ✅ : hook `useBlockDragSelect.ts` (right-press + drag → plage de clauses via
+>   `clauseRangeBetween`/`runAt`), tooltip flottant `block-select-tip`, suppression du
+>   `contextmenu` après un drag (clic-droit immobile → menu phrase inchangé), `user-select:none`
+>   temporaire + `pointercancel`. Store `selectedClauseIds` + `setSelectedClauses`/
+>   `clearClauseSelection`. `SelectionToolbar` mode blocs : « N bloc(s) » + `annotate-blocks`
+>   (ThemePalette → `updateDraft(localId,{theme})` sur toutes les clauses) + « Effacer ».
+> - **P9** ✅ : `SentenceMenu` toggle « Traduire / Masquer la traduction » + croix
+>   `hide-translation-${i}` sur la ligne FR (`setTranslated(i,false)`).
+> - **P10** ✅ : booléen `translateAll` remplacé par `displayLang:'orig'|'both'|'fr'`
+>   (`setDisplayLang`, défaut `orig`). `LangSwitch.tsx` segmenté 3 états
+>   (`lang-switch`/`lang-orig`/`lang-both`/`lang-fr`, `radiogroup`/`radio`, clavier ←/→).
+>   En mode `fr` : texte FR rendu (repli VO + indicateur « VO »). Surcouche per-phrase
+>   limitée à `orig`/`both`. Overlay TocPanel `toggle-translation` rebranché sur
+>   `displayLang` (`orig`⇄`fr`). Interactions inchangées (unité = index de phrase).
+> - **P12** ✅ : aide `selection-blocs.md` + `modes-langue.md` (manifest + index), MAJ
+>   `workspace.md`/`raccourcis.md` ; visite guidée (`lang-switch`, sélection blocs, Frontières).
+> - **Tests** : `workspaceStore.test.ts` étendu (displayLang, selectedClauseIds), nouveau
+>   `blockSelect.test.ts` (mapping plage→clauses), `document-ux.spec.ts` mis à jour.
+
+- **P7** Puce-thème compacte (remplace le bandeau verbeux) — `DocumentPanel`.
+- **P8** Sélection multi-blocs au bouton droit + tooltip compteur + « Annoter N blocs » —
+  `useBlockDragSelect` hook, `SelectionToolbar` (mode blocs), store `selectedClauseIds`.
+- **P9** Masquer la traduction (toggle menu + `×` sur la ligne FR).
+- **P10** Switch segmenté `displayLang` (VO/Bilingue/FR) ; rendu du texte FR en mode `fr` ; toutes les
+  interactions opèrent sur l'index (inchangées). Remplace `translateAll`.
+- **P11** Données : confirmer les pré-annotations LLM en base ; **traduction réelle** d'Instagram
+  (158 phrases) → `data/translations/claudette_fr/Instagram.txt` + re-sync DB.
+- **P12** Docs (`/help`) + visite guidée : nouvelles sections/étapes (sélection blocs, modes de langue).
+Vérif : tsc 0 ; Vitest verts ; pytest verts ; specs E2E (anciennes + `document-ux`) vertes.
 
 Critères de fin : tsc 0 ; Vitest verts ; pytest verts ; specs E2E nouvelles + anciennes vertes ;
 frontières togglables et subtiles ; menu long-press/clic-droit fonctionnel avec accord LLM ;

@@ -14,6 +14,8 @@
 import introduction from "./introduction.md?raw";
 import demarrage from "./demarrage.md?raw";
 import workspace from "./workspace.md?raw";
+import selectionBlocs from "./selection-blocs.md?raw";
+import modesLangue from "./modes-langue.md?raw";
 import themesVocabulaire from "./themes-vocabulaire.md?raw";
 import preannotationsLlm from "./preannotations-llm.md?raw";
 import injusticeClaudette from "./injustice-claudette.md?raw";
@@ -31,6 +33,8 @@ export const HELP_CONTENT: Record<string, string> = {
   introduction,
   demarrage,
   workspace,
+  "selection-blocs": selectionBlocs,
+  "modes-langue": modesLangue,
   "themes-vocabulaire": themesVocabulaire,
   "preannotations-llm": preannotationsLlm,
   "injustice-claudette": injusticeClaudette,

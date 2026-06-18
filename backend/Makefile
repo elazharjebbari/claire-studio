@@ -36,3 +36,6 @@ check:
 openapi:
 	$(MANAGE) spectacular --file openapi.yaml
 	@echo "OpenAPI schema written to openapi.yaml"
+
+resync-translations:
+	$(MANAGE) sync_translations
