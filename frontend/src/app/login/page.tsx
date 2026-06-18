@@ -10,7 +10,7 @@ import { Button, Field, Panel } from "@/components/ui/primitives";
 export default function LoginPage() {
   const router = useRouter();
   const [username, setUsername] = useState("alice");
-  const [password, setPassword] = useState("demo");
+  const [password, setPassword] = useState("claire-demo");
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
 
