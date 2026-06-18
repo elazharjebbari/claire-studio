@@ -11,11 +11,11 @@ files and maps them to documents/sentences. Two strategies:
 from __future__ import annotations
 
 import logging
-from pathlib import Path
 
+from django.conf import settings
 from django.db import transaction
 
-from claire.corpora.models import Document
+from claire.common.pathsafety import UnsafePathError, safe_join
 
 from .models import Translation, TranslationSet
 
@@ -24,7 +24,18 @@ logger = logging.getLogger("claire.translations")
 
 @transaction.atomic
 def sync_translation_set(translation_set: TranslationSet) -> dict:
-    folder = Path(translation_set.folder_path)
+    # Defense in depth: re-validate the path against the confinement root at
+    # sync time (the declared path may predate this control). A10/path-safety.
+    try:
+        folder = safe_join(settings.TRANSLATIONS_ROOT, translation_set.folder_path)
+    except UnsafePathError:
+        logger.warning(
+            "translations_sync_rejected set=%s reason=unsafe_path",
+            translation_set.pk,
+        )
+        translation_set.status = "error:unsafe_path"
+        translation_set.save(update_fields=["status"])
+        return {"created": 0, "documents": 0, "error": "unsafe_path"}
     if not folder.exists():
         translation_set.status = "error:folder_missing"
         translation_set.save(update_fields=["status"])

@@ -54,7 +54,29 @@ class AnnotationViewSet(viewsets.ModelViewSet):
         return AnnotationDetailSerializer
 
     def get_queryset(self):
+        from django.db.models import Count
+
         qs = super().get_queryset()
+        # Avoid N+1 on the list serializer's clause count (perf audit M9):
+        # one annotated COUNT instead of one query per row. Keep a stable
+        # ordering for pagination (annotate can otherwise drop Meta ordering).
+        qs = qs.annotate(n_clauses_agg=Count("clauses", distinct=True)).order_by(
+            "-updated_at"
+        )
+        # Project isolation (A01 / security.md §2): non-privileged users only
+        # see annotations of projects they belong to (or that they authored).
+        # Admins/owners and reviewers (cross-project quality role) keep full
+        # reach.
+        from django.db.models import Q
+
+        user = self.request.user
+        if not (
+            getattr(user, "is_admin_role", False)
+            or getattr(user, "role", None) == "reviewer"
+        ):
+            qs = qs.filter(
+                Q(project__memberships__user=user) | Q(annotator=user)
+            ).distinct()
         # support ?project=<slug> in addition to pk
         project = self.request.query_params.get("project")
         if project and not project.isdigit():

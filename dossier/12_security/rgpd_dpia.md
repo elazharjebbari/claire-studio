@@ -54,7 +54,7 @@ qui est compatible RGPD dès lors que la ré-identification devient impossible.
 |---|---|---|---|
 | Ré-identification d'un annotateur via métriques fines | moyenne | moyenne | k-anonymat (k≥3) sur agrégats, pseudonyme par projet |
 | Biais/pression entre pairs (visibilité nominative) | moyenne | moyenne | mode `blind`, pseudonymisation IAA, finalité non-RH affichée |
-| Fuite de PII via logs/exports | faible | élevée | `PIIScrubber` logs, exports pseudonymisés par défaut, pas de PII en JWT |
+| Fuite de PII via logs/exports | faible | élevée | `PIIScrubber` logs (implémenté M9, `claire.common.logging`, test `test_logging_pii`), exports pseudonymisés par défaut, pas de PII en JWT |
 | Conservation excessive | moyenne | faible | rétention paramétrée + purge motivée tracée |
 | Dé-anonymisation abusive | faible | élevée | réservée `lead`/`admin`, **tracée** (`reveal_identity`), justifiée |
 

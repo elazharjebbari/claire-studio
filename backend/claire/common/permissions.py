@@ -3,6 +3,19 @@
 from rest_framework.permissions import SAFE_METHODS, BasePermission
 
 
+def is_project_member(user, project) -> bool:
+    """True if ``user`` is an admin/owner or a member of ``project``.
+
+    Centralises the project-isolation rule (security.md §2, A01): annotators
+    only ever touch projects they belong to; admins/owners have full reach.
+    """
+    if not (user and user.is_authenticated):
+        return False
+    if getattr(user, "is_admin_role", False):
+        return True
+    return project.memberships.filter(user=user).exists()
+
+
 class IsAdminRole(BasePermission):
     """Admin/owner role (or superuser) required for write; read open to authed."""
 

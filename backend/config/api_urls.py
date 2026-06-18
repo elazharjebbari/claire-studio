@@ -6,9 +6,9 @@ non-ViewSet function/APIView endpoints (auth, nested actions).
 
 from django.urls import include, path
 from rest_framework.routers import DefaultRouter
-from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView
+from rest_framework_simplejwt.views import TokenRefreshView
 
-from claire.accounts.views import MeView
+from claire.accounts.views import LoginView, MeView
 from claire.annotations.views import (
     AnnotationViewSet,
     ClauseViewSet,
@@ -40,7 +40,7 @@ router.register("activity", ActivityEventViewSet, basename="activity")
 
 urlpatterns = [
     # Auth (JWT) — CONTRACT §3
-    path("auth/login", TokenObtainPairView.as_view(), name="auth-login"),
+    path("auth/login", LoginView.as_view(), name="auth-login"),
     path("auth/refresh", TokenRefreshView.as_view(), name="auth-refresh"),
     path("me", MeView.as_view(), name="me"),
     path("", include(router.urls)),

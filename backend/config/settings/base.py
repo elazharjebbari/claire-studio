@@ -49,6 +49,10 @@ VOCABULARY_FILE = Path(
 )
 EXPORTS_DIR = Path(env("CLAIRE_EXPORTS_DIR", default=str(BASE_DIR / "var" / "exports")))
 FIXTURES_DIR = BASE_DIR / "fixtures"
+# File-based features confinement root (translations sync, auto-pull). A10/SSRF.
+TRANSLATIONS_ROOT = Path(
+    env("CLAIRE_TRANSLATIONS_ROOT", default=str(PROJECT_ROOT / "data" / "translations"))
+)
 
 INSTALLED_APPS = [
     "django.contrib.admin",
@@ -60,6 +64,7 @@ INSTALLED_APPS = [
     # 3rd party
     "rest_framework",
     "rest_framework_simplejwt",
+    "rest_framework_simplejwt.token_blacklist",
     "corsheaders",
     "django_filters",
     "drf_spectacular",
@@ -80,6 +85,7 @@ INSTALLED_APPS = [
 MIDDLEWARE = [
     "corsheaders.middleware.CorsMiddleware",
     "django.middleware.security.SecurityMiddleware",
+    "claire.common.middleware.SecurityHeadersMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
     "django.middleware.common.CommonMiddleware",
     "django.middleware.csrf.CsrfViewMiddleware",
@@ -153,6 +159,17 @@ REST_FRAMEWORK = {
     ),
     "DEFAULT_SCHEMA_CLASS": "drf_spectacular.openapi.AutoSchema",
     "EXCEPTION_HANDLER": "claire.common.exceptions.claire_exception_handler",
+    # --- Rate limiting (security.md §4, A07) ---------------------------------
+    "DEFAULT_THROTTLE_CLASSES": (
+        "rest_framework.throttling.ScopedRateThrottle",
+    ),
+    "DEFAULT_THROTTLE_RATES": {
+        # Strict, dedicated budget for login (anti brute-force).
+        "login": env("THROTTLE_LOGIN_RATE", default="5/min"),
+        # Generous reads, stricter writes/exports for authenticated traffic.
+        "burst": env("THROTTLE_BURST_RATE", default="120/min"),
+        "exports": env("THROTTLE_EXPORTS_RATE", default="10/min"),
+    },
 }
 
 from datetime import timedelta  # noqa: E402
@@ -163,6 +180,10 @@ SIMPLE_JWT = {
     ),
     "REFRESH_TOKEN_LIFETIME": timedelta(days=env.int("JWT_REFRESH_DAYS", default=7)),
     "AUTH_HEADER_TYPES": ("Bearer",),
+    # Refresh rotation + blacklist of the consumed refresh (security.md §1,
+    # threat_model.md §3.1 S — anti-replay). Requires token_blacklist app.
+    "ROTATE_REFRESH_TOKENS": True,
+    "BLACKLIST_AFTER_ROTATION": True,
 }
 
 SPECTACULAR_SETTINGS = {
@@ -173,6 +194,12 @@ SPECTACULAR_SETTINGS = {
     "SCHEMA_PATH_PREFIX": "/api/v1",
 }
 
+# --- Security headers & transport (security.md §7, A05) ----------------------
+# Baseline values applied in all environments; prod.py tightens HSTS/SSL.
+SECURE_CONTENT_TYPE_NOSNIFF = True
+SECURE_REFERRER_POLICY = "strict-origin-when-cross-origin"
+X_FRAME_OPTIONS = "DENY"
+
 # --- CORS --------------------------------------------------------------------
 CORS_ALLOWED_ORIGINS = env("CORS_ALLOWED_ORIGINS")
 CORS_ALLOW_CREDENTIALS = True
@@ -181,6 +208,10 @@ CORS_ALLOW_CREDENTIALS = True
 LOGGING = {
     "version": 1,
     "disable_existing_loggers": False,
+    "filters": {
+        # A09: never let PII (emails/tokens/passwords) reach the logs.
+        "pii_scrubber": {"()": "claire.common.logging.PIIScrubber"},
+    },
     "formatters": {
         "structured": {
             "format": (
@@ -193,6 +224,7 @@ LOGGING = {
         "console": {
             "class": "logging.StreamHandler",
             "formatter": "structured",
+            "filters": ["pii_scrubber"],
         },
     },
     "root": {"handlers": ["console"], "level": env("DJANGO_LOG_LEVEL", default="INFO")},

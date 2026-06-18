@@ -90,3 +90,23 @@ Double couche (cf. `07_collaboration_versioning/collaboration.md` §2) :
 - `pytest ratelimit_login` : lockout après N échecs, `429` + `Retry-After`.
 - `pytest input_validation` : bornes certitude/thème/anchor ; path-safety ; XSS Markdown bloqué.
 - `security-review` (CI) sur tout diff touchant auth/permissions.
+
+## 9. État d'implémentation (jalon M9 — durcissement)
+
+> Implémenté dans `backend/` au jalon M9. Chaque mesure a un test pytest dédié
+> (`backend/tests/test_security_m9.py`, sauf mention). Suite totale : **48 tests verts**.
+
+| Mesure | Statut | Implémentation | Test |
+|---|---|---|---|
+| Throttling login (anti brute-force) | ✅ | `claire.common.throttling.LoginRateThrottle` (scope `login`, 5/min/IP) sur `LoginView` (`claire.accounts.views`) ; `DEFAULT_THROTTLE_RATES` dans `settings/base.py` ; `429` + `Retry-After` natif DRF | `test_ratelimit_login` |
+| Isolation AuthZ par projet | ✅ | `AnnotationViewSet.get_queryset` filtre `project__memberships__user` (sauf admin/owner/reviewer) → deny-by-default (404 non-disclosure) ; helper `claire.common.permissions.is_project_member` | `test_authz_isolation` (+ `test_permissions.test_annotator_cannot_edit_others_annotation`) |
+| Rotation JWT + blacklist | ✅ | `SIMPLE_JWT.ROTATE_REFRESH_TOKENS=True`, `BLACKLIST_AFTER_ROTATION=True` ; app `rest_framework_simplejwt.token_blacklist` (migrations natives, aucune migration projet à générer) | `test_jwt_rotation` |
+| Scrub PII des logs (A09) | ✅ | `claire.common.logging.PIIScrubber` (email/JWT/bearer/`key=value` sensibles) câblé en `LOGGING.filters` sur le handler console ; masque le message rendu et ses args | `test_logging_pii` |
+| Path-safety traductions (A10) | ✅ | `claire.common.pathsafety.safe_join` (rejet `..`/absolu hors racine/symlink sortant) ; validé à la déclaration (`TranslationSetSerializer.validate_folder_path`) **et** au sync (`services.sync_translation_set`) ; racine `settings.TRANSLATIONS_ROOT` | `test_translation_pathsafety` |
+| En-têtes de sécurité (A05, §7) | ✅ | `claire.common.middleware.SecurityHeadersMiddleware` (`X-Content-Type-Options=nosniff`, `X-Frame-Options=DENY`, `Referrer-Policy`) ; `SECURE_*` baseline en `base.py`, HSTS/SSL en `prod.py` | `test_security_headers`, `test_security_headers_hsts_in_prod` |
+| Perf — N+1 listes (DoS/coût) | ✅ | `AnnotationViewSet.get_queryset` : `select_related` + `prefetch_related` + `annotate(Count(clauses))` (compteur sans requête/ligne) ; pagination par défaut active (`DefaultPagination`, 25/page) | `test_no_nplus1_annotations` (`django_assert_max_num_queries`) |
+
+Notes :
+- Aucun secret en dur (clé via `DJANGO_SECRET_KEY`/env ; `manage.py check --deploy` propre hors warning SECRET_KEY de test).
+- `AUTH_USER_MODEL=accounts.User` respecté ; les permissions s'appuient sur `User.role` / `ProjectMembership`.
+- Le throttle login est volontairement **IP-scopé** (login non authentifié) ; le lockout par compte reste un contrôle complémentaire documenté §4.

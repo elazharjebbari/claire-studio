@@ -84,3 +84,10 @@
 - `pytest authz_isolation`, `pytest jwt_rotation`, `pytest ratelimit_login` (cf. `security.md`).
 - `pytest audit_append_only` : aucune route ne mute/supprime un `ActivityEvent`.
 - `security-review` CI sur diffs auth/permissions/file-based.
+
+**État M9 (implémenté)** — voir `security.md` §9. Les mitigations STRIDE marquées
+ci-dessus sont couvertes par `backend/tests/test_security_m9.py` :
+§3.1 (S rejeu → `test_jwt_rotation` ; D bourrage → `test_ratelimit_login` ;
+I scrubbing → `test_logging_pii`), §3.2 (T/I isolation → `test_authz_isolation`),
+§3.3 (T path-traversal → `test_translation_pathsafety`). En-têtes A05 :
+`test_security_headers`. Suite complète : 48 tests verts.

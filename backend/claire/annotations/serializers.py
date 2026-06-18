@@ -79,7 +79,15 @@ class AnnotationListSerializer(serializers.ModelSerializer):
     )
     project = serializers.SlugRelatedField(slug_field="slug", read_only=True)
     annotator = serializers.SlugRelatedField(slug_field="username", read_only=True)
-    n_clauses = serializers.IntegerField(source="clauses.count", read_only=True)
+    n_clauses = serializers.SerializerMethodField()
+
+    def get_n_clauses(self, obj) -> int:
+        # Prefer the annotated aggregate (set by the list queryset) to avoid an
+        # extra COUNT query per row (N+1, M9 perf audit); fall back otherwise.
+        agg = getattr(obj, "n_clauses_agg", None)
+        if agg is not None:
+            return agg
+        return obj.clauses.count()
 
     class Meta:
         model = Annotation

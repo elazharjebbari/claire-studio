@@ -41,7 +41,9 @@ def test_annotator_cannot_edit_others_annotation(
         f"/api/v1/annotations/{annotation.id}",
         {"global_certainty": 2}, format="json",
     )
-    assert resp.status_code == 403
+    # Deny-by-default project isolation (M9): a non-member/non-owner annotator
+    # cannot edit and the object is not even disclosed -> 403 or 404.
+    assert resp.status_code in (403, 404)
 
 
 def test_owner_can_add_clause_and_submit(auth, annotation, scheme_with_themes):
