@@ -8,7 +8,7 @@ Dernière exécution : 2026-06-18.
 |---|---|---|
 | Configuration | `python manage.py check` | ✅ 0 problème |
 | Migrations à jour | `python manage.py makemigrations --check --dry-run` | ✅ No changes |
-| Tests unitaires & intégration | `pytest -q` | ✅ **40 passed** |
+| Tests unitaires & intégration | `pytest -q` | ✅ **48 passed** (dont 8 sécurité M9) |
 | Dépréciations Django 6 | `pytest -W error::DeprecationWarning` | ✅ 0 warning `CheckConstraint` |
 | Seed démo idempotent | `make seed` (×2) | ✅ 2e passe sans mutation |
 
@@ -47,6 +47,10 @@ npm run e2e              # 10 specs : annotate, prefill, unfairness-overlay, com
 
 - `next` relevé de `14.2.5` → `^14.2.33` (résout `14.2.35`) pour corriger l'avis de sécurité
   Next.js du 2025-12-11. Lockfile régénéré en conséquence.
+- **Durcissement M9** (backend) : throttle login (429), isolation AuthZ par projet, rotation JWT +
+  blacklist du refresh, scrub PII des logs, path-safety des dossiers de traduction, en-têtes de
+  sécurité (X-Frame-Options/X-Content-Type-Options/Referrer-Policy + HSTS en prod), correctifs N+1.
+  Chaque mesure couverte par un test pytest dédié.
 
 ## Reproductibilité
 
