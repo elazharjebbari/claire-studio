@@ -103,3 +103,94 @@ def project_iaa(project) -> dict:
     else:
         mean_kappa = None
     return {"mean_kappa": mean_kappa, "pairs": per_doc}
+
+
+def project_iaa_detail(project) -> dict | None:
+    """Build the IaaDetail payload (CONTRACT) or None when < 2 annotators.
+
+    - globalKappa : mean Cohen's kappa across all annotator pairs/documents.
+    - annotatorPairs : number of compared (annotator, annotator) pairs.
+    - boundaryKappa : agreement on clause-start boundaries (segmentation).
+    - perTheme : per-theme kappa with support, plus a "__boundaries__" row.
+    """
+    statuses = ["submitted", "in_review", "approved"]
+    documents = list(
+        Document.objects.filter(
+            annotations__project=project,
+            annotations__status__in=statuses,
+        ).distinct()
+    )
+
+    theme_obs: dict[str, list[tuple]] = defaultdict(list)
+    boundary_a: list[bool] = []
+    boundary_b: list[bool] = []
+    global_pairs: list[float] = []
+    pair_count = 0
+
+    themes = {t.code: t.label for t in project.scheme.themes.all()}
+
+    for doc in documents:
+        n = doc.n_sentences
+        anns = list(
+            project.annotations.filter(
+                document=doc, status__in=statuses
+            ).select_related("annotator")
+        )
+        if len(anns) < 2:
+            continue
+        vectors = {a.id: _theme_vector(a, n) for a in anns}
+        starts = {
+            a.id: set(
+                a.clauses.values_list("anchor_sentence__index", flat=True)
+            )
+            for a in anns
+        }
+        ids = list(vectors)
+        for i in range(len(ids)):
+            for j in range(i + 1, len(ids)):
+                v1, v2 = vectors[ids[i]], vectors[ids[j]]
+                global_pairs.append(cohen_kappa(v1, v2))
+                pair_count += 1
+                for idx in range(n):
+                    theme_obs[v1[idx] or "__none__"]  # touch for support
+                    boundary_a.append(idx in starts[ids[i]])
+                    boundary_b.append(idx in starts[ids[j]])
+                # Per-theme one-vs-rest agreement, keyed on theme code.
+                for code in set(v for v in v1 + v2 if v):
+                    a_lab = [c == code for c in v1]
+                    b_lab = [c == code for c in v2]
+                    theme_obs[code].append((a_lab, b_lab))
+
+    if pair_count == 0:
+        return None
+
+    global_kappa = round(sum(global_pairs) / len(global_pairs), 4)
+    boundary_kappa = round(cohen_kappa(boundary_a, boundary_b), 4)
+
+    per_theme = []
+    for code, observations in sorted(theme_obs.items()):
+        if code == "__none__":
+            continue
+        flat_a: list = []
+        flat_b: list = []
+        for a_lab, b_lab in observations:
+            flat_a.extend(a_lab)
+            flat_b.extend(b_lab)
+        if not flat_a:
+            continue
+        support = sum(1 for x in flat_a if x) + sum(1 for x in flat_b if x)
+        per_theme.append(
+            {
+                "code": code,
+                "label": themes.get(code, code),
+                "kappa": round(cohen_kappa(flat_a, flat_b), 4),
+                "support": support,
+            }
+        )
+
+    return {
+        "global_kappa": global_kappa,
+        "annotator_pairs": pair_count,
+        "boundary_kappa": boundary_kappa,
+        "per_theme": per_theme,
+    }

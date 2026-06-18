@@ -48,16 +48,17 @@ def test_annotator_cannot_edit_others_annotation(
 
 def test_owner_can_add_clause_and_submit(auth, annotation, scheme_with_themes):
     client = auth(annotation.annotator)
+    # Frontend CONTRACT clause write fields: anchorIndex + theme(code).
     resp = client.post(
         f"/api/v1/annotations/{annotation.id}/clauses",
-        {"anchor_index": 0, "theme_code": "META", "certainty": 2},
+        {"anchorIndex": 0, "theme": "META", "certainty": 2},
         format="json",
     )
     assert resp.status_code == 201, resp.content
     # duplicate anchor -> 409 (INV-2)
     dup = client.post(
         f"/api/v1/annotations/{annotation.id}/clauses",
-        {"anchor_index": 0, "theme_code": "TERMINATION"},
+        {"anchorIndex": 0, "theme": "TERMINATION"},
         format="json",
     )
     assert dup.status_code == 409
@@ -73,7 +74,7 @@ def test_reviewer_can_review_and_drive_state(
     owner = auth(annotation.annotator)
     owner.post(
         f"/api/v1/annotations/{annotation.id}/clauses",
-        {"anchor_index": 0, "theme_code": "META"}, format="json",
+        {"anchorIndex": 0, "theme": "META"}, format="json",
     )
     owner.post(f"/api/v1/annotations/{annotation.id}/submit")
 

@@ -161,22 +161,24 @@ def test_translation_pathsafety(auth, admin_user, tmp_path, settings):
     corpus = CorpusFactory()
     client = auth(admin_user)
 
+    # Write payload uses the frontend CONTRACT shape (camelCase): corpus(slug),
+    # targetLanguage, folderPath, mappingStrategy.
     bad = client.post(
         "/api/v1/translations/sets",
         {
-            "corpus_slug": corpus.slug, "name": "fr", "target_language": "fr",
-            "folder_path": "../../../etc", "mapping_strategy": "document",
+            "corpus": corpus.slug, "name": "fr", "targetLanguage": "fr",
+            "folderPath": "../../../etc", "mappingStrategy": "document",
         },
         format="json",
     )
     assert bad.status_code == 400
-    assert "folder_path" in bad.json()
+    assert "folderPath" in bad.json()
 
     ok = client.post(
         "/api/v1/translations/sets",
         {
-            "corpus_slug": corpus.slug, "name": "fr", "target_language": "fr",
-            "folder_path": "fr", "mapping_strategy": "document",
+            "corpus": corpus.slug, "name": "fr", "targetLanguage": "fr",
+            "folderPath": "fr", "mappingStrategy": "document",
         },
         format="json",
     )

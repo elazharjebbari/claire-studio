@@ -16,6 +16,9 @@ class TranslationSet(TimeStampedModel):
     mapping_strategy = models.CharField(max_length=60, default="by_external_id")
     status = models.CharField(max_length=40, default="declared")
 
+    class Meta:
+        ordering = ["corpus", "name"]
+
     def __str__(self) -> str:  # pragma: no cover
         return f"{self.name}->{self.target_language}"
 

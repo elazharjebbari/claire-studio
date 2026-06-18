@@ -39,8 +39,11 @@ def test_import_preannotation_endpoint(
         payload, format="json",
     )
     assert resp.status_code == 201, resp.content
-    assert resp.json()[0]["schema_version"] == "v9.4"
-    assert resp.json()[0]["preclauses"][0]["anchor_index"] == 0
+    # Response is camelCased to match the frontend CONTRACT (PreAnnotation):
+    # schema_version -> schemaVersion, preclauses -> clauses, anchor_index ->
+    # anchorIndex.
+    assert resp.json()[0]["schemaVersion"] == "v9.4"
+    assert resp.json()[0]["clauses"][0]["anchorIndex"] == 0
 
 
 def test_create_annotation_seeded_from_preannotation(

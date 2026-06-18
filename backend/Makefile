@@ -2,7 +2,7 @@
 PY ?= python
 MANAGE = $(PY) manage.py
 
-.PHONY: setup migrate makemigrations seed run test lint openapi check
+.PHONY: setup migrate makemigrations seed feed run test lint openapi check
 
 setup:
 	$(PY) -m pip install -r requirements.txt
@@ -16,6 +16,10 @@ migrate:
 seed:
 	$(MANAGE) migrate
 	$(MANAGE) seed_demo
+
+feed:
+	$(MANAGE) migrate
+	$(MANAGE) feed_db
 
 run:
 	$(MANAGE) runserver 0.0.0.0:8000

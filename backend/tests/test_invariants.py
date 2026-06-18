@@ -33,11 +33,12 @@ def test_inv3_theme_must_be_in_scheme(auth, annotator, annotation):
     client = auth(annotator)
     resp = client.post(
         f"/api/v1/annotations/{annotation.id}/clauses",
-        {"anchor_index": 1, "theme_code": "NOT_A_THEME"},
+        {"anchorIndex": 1, "theme": "NOT_A_THEME"},
         format="json",
     )
     assert resp.status_code == 400
-    assert "theme_code" in resp.json()
+    # Validation error key is camelCased to match the wire field name.
+    assert "theme" in resp.json()
 
 
 # INV-3 (scheme isolation): a theme from another scheme must not be usable.
@@ -49,7 +50,7 @@ def test_inv3_scheme_isolation(auth, annotator, annotation):
     client = auth(annotator)
     resp = client.post(
         f"/api/v1/annotations/{annotation.id}/clauses",
-        {"anchor_index": 1, "theme_code": "FOREIGN"},
+        {"anchorIndex": 1, "theme": "FOREIGN"},
         format="json",
     )
     # FOREIGN exists, but not in this project's scheme -> rejected.

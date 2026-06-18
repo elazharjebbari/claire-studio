@@ -17,6 +17,10 @@ User = get_user_model()
 class UserFactory(factory.django.DjangoModelFactory):
     class Meta:
         model = User
+        # Idempotent on username: tolerate a pre-existing user (e.g. demo users
+        # committed by the module-scoped feed_db fixture) instead of raising a
+        # UNIQUE violation. Keeps tests isolated regardless of run order.
+        django_get_or_create = ("username",)
 
     username = factory.Sequence(lambda n: f"user{n}")
     email = factory.Sequence(lambda n: f"user{n}@claire.local")

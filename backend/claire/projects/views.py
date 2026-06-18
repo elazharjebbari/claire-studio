@@ -1,4 +1,3 @@
-from django.db.models import Count, Q
 from django.shortcuts import get_object_or_404
 from rest_framework import status, viewsets
 from rest_framework.decorators import action
@@ -7,7 +6,7 @@ from rest_framework.response import Response
 
 from claire.common.permissions import IsAdminRole
 
-from .iaa import project_iaa
+from .iaa import project_iaa, project_iaa_detail
 from .models import Project
 from .serializers import AssignmentSerializer, ProjectSerializer
 
@@ -34,31 +33,55 @@ class ProjectViewSet(viewsets.ModelViewSet):
     @action(detail=True, methods=["get"])
     def assignments(self, request, slug=None):
         project = self.get_object()
-        qs = project.assignments.select_related("document", "assignee")
+        qs = project.assignments.select_related(
+            "project", "document", "document__corpus", "assignee"
+        )
         if not request.user.is_admin_role:
             qs = qs.filter(assignee=request.user)
-        ser = AssignmentSerializer(qs, many=True)
+        ser = AssignmentSerializer(qs, many=True, context={"request": request})
         return Response(ser.data)
 
     @action(detail=True, methods=["get"])
     def progress(self, request, slug=None):
+        """Return the ProjectProgress shape (CONTRACT)."""
         project = self.get_object()
-        status_counts = dict(
-            project.annotations.values_list("status")
-            .annotate(c=Count("id"))
-            .values_list("status", "c")
+        total_documents = project.corpus.documents.count()
+        # An annotated document is one with at least one annotation in the project.
+        annotated_documents = (
+            project.annotations.values("document").distinct().count()
         )
-        totals = project.annotations.aggregate(
-            total=Count("id"),
-            submitted=Count("id", filter=Q(status="submitted")),
-            approved=Count("id", filter=Q(status="approved")),
+        submitted_documents = (
+            project.annotations.filter(
+                status__in=["submitted", "in_review", "approved"]
+            )
+            .values("document")
+            .distinct()
+            .count()
         )
+        approved_documents = (
+            project.annotations.filter(status="approved")
+            .values("document")
+            .distinct()
+            .count()
+        )
+        my_assigned = project.assignments.filter(assignee=request.user).count()
+        my_done = project.annotations.filter(
+            annotator=request.user,
+            status__in=["submitted", "in_review", "approved"],
+        ).count()
+
+        iaa = project_iaa(project)
+        iaa_detail = project_iaa_detail(project)
         return Response(
             {
-                "project": project.slug,
-                "status_counts": status_counts,
-                "totals": totals,
-                "iaa": project_iaa(project),
+                "total_documents": total_documents,
+                "annotated_documents": annotated_documents,
+                "submitted_documents": submitted_documents,
+                "approved_documents": approved_documents,
+                "my_assigned": my_assigned,
+                "my_done": my_done,
+                "iaa": iaa["mean_kappa"],
+                "iaa_detail": iaa_detail,
             }
         )
 

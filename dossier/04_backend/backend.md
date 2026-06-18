@@ -136,7 +136,109 @@ non-liste, `anchor_id`/`start_id` manquant ou non entier) lèvent désormais une
 `PreAnnotationFormatError` claire au lieu d'un `KeyError`/`TypeError` opaque.
 Couvert par `tests/test_loaders.py`.
 
-## 8. Compatibilité Django 6
+## 8. Alimenter la base (`feed_db` — données réelles, idempotent)
+
+`feed_db` est le **chargeur canonique** des données réelles désormais embarquées
+dans le projet. Contrairement à `seed_demo` (qui bascule sur des fixtures de
+secours), `feed_db` lit exclusivement les vraies sources :
+
+- Corpus CLAUDETTE : `settings.CLAUDETTE_DIR` (`Sentences/` + `Labels_<CAT>/`).
+- Pré-annotations LLM v9.4 : `settings.PREANNOTATIONS_DIR/{claude,codex}/<Doc>_<judge>.json`.
+- Traductions : `settings.TRANSLATIONS_ROOT/claudette_fr/<Doc>.txt`.
+
+```bash
+make feed                       # migrate + feed_db (12 docs par défaut)
+python manage.py feed_db                 # 12 documents
+python manage.py feed_db --all           # les 50 documents
+python manage.py feed_db --max-docs 4
+python manage.py feed_db --reset --all   # vide les tables de données puis recharge
+```
+
+Ce que la commande crée / met à jour (tout via `get_or_create` /
+`update_or_create`, donc une 2ᵉ exécution → **zéro doublon**, compteurs stables) :
+
+1. `LabelScheme claire-themes-v1` depuis `vocabulary.yaml`.
+2. Utilisateurs démo : `admin`, `alice` (annotator), `bob` (annotator),
+   `rita` (reviewer) ; mot de passe `claire-demo` (toujours (re)posé).
+3. N documents CLAUDETTE (`--max-docs`, défaut 12 ; `--all` pour les 50) via le
+   loader `corpora/loaders.py`.
+4. Pré-annotations `claude` **et** `codex` de ces documents (PreAnnotation / PreClause).
+5. Projet démo `claudette-gold-v1` (corpus + scheme + membres alice/bob/rita/admin
+   + assignments).
+6. Pour rendre le travail **visible immédiatement** : par document, une Annotation
+   humaine d'`alice` seedée depuis `claude` et une de `bob` seedée depuis `codex`,
+   toutes deux **submitted** (un submit crée un `AnnotationVersion` snapshot). Plus
+   1-2 commentaires et 1 review d'exemple sur le premier document → alimente la
+   visualisation, l'historique et l'IAA.
+7. Un `TranslationSet claudette_fr` (langue fr, stratégie `by_external_id`) +
+   lancement de la sync.
+
+Options : `--max-docs`, `--all`, `--reset` (vide annotations/clauses/versions,
+pré-annotations, documents/phrases/labels, traductions, projet/membres — conserve
+users & scheme). Logs clairs avec compteurs. Couvert par `tests/test_feed_db.py`
+(création complète **+ idempotence** : 2ᵉ run → compteurs identiques, ≥ 2 docs
+réels importés depuis `data/`).
+
+## 9. Casing API ↔ frontend (CONTRACT) — `djangorestframework-camel-case`
+
+Le frontend (`frontend/src/types/contract.ts`, `mocks/fixtures.ts`) consomme du
+**camelCase** et **ne transforme pas** les réponses. Le backend reste idiomatique
+`snake_case` (CONTRACT §6) : la conversion est automatique aux deux extrémités via
+`djangorestframework-camel-case`, câblé dans `REST_FRAMEWORK` :
+
+- `DEFAULT_RENDERER_CLASSES` = `CamelCaseJSONRenderer` (+ `CamelCaseBrowsableAPIRenderer`)
+  → sortie `snake_case` → `camelCase`.
+- `DEFAULT_PARSER_CLASSES` = `CamelCaseJSON/Form/MultiPartParser` → entrée
+  `camelCase` → `snake_case` (les clés déjà en snake passent telles quelles, donc
+  les payloads `endpoints.ts` qui envoient `anchor_index`/`legal_nature` restent
+  acceptés).
+
+Au-delà de la casse, les **noms et structures** des sérialiseurs ont été alignés
+sur les interfaces frontend (renvoient des IDs/slug attendus, pas les objets liés) :
+
+| Entité | Forme renvoyée (après camelCase) |
+|---|---|
+| User | `{id, username, email, role, displayName, locale}` |
+| Project | `{id, slug, name, corpusSlug, schemeSlug, guidelines, status, settings, myRole}` |
+| ProjectProgress | `{totalDocuments, annotatedDocuments, submittedDocuments, approvedDocuments, myAssigned, myDone, iaa, iaaDetail}` |
+| IaaDetail | `{globalKappa, annotatorPairs, boundaryKappa, perTheme:[{code,label,kappa,support}]}` |
+| Assignment | `{id, projectSlug, document(DocumentSummary), assigneeId, status, annotationId, dueAt}` |
+| DocumentDetail | `{id, corpusId, externalId, title, language, nSentences, checksum, sentences[], referenceLabels[], sourceMeta}` |
+| Sentence | `{id, documentId, index, rawText, cleanText, charStart, charEnd}` |
+| ReferenceLabel | `{id, sentenceId, sentenceIndex, category, level, source}` (remontés au niveau document) |
+| LabelScheme | `{id, slug, name, version, isActive, definition, themes[], legalNatures[]}` |
+| Theme / LegalNature | `{id, schemeId, code, label, …, order}` |
+| Annotation | `{id, projectSlug, documentId, annotatorId, status, globalCertainty, source, clauses[], createdAt, updatedAt}` |
+| Clause | `{id, annotationId, anchorIndex, theme(code), legalNature(code\|null), evidenceSpan, rationale, certainty, order}` |
+| PreAnnotation | `{id, projectSlug, documentId, judge, schemaVersion, mapped, importedAt, clauses:[{anchorIndex, themeCode, evidenceSpan, rationale}]}` |
+| AnnotationVersion | `{id, annotationId, number, label, authorId, createdAt, snapshot}` |
+| Comment | `{id, annotationId, clauseId, sentenceIndex, authorId, body, threadRoot, resolved, createdAt}` |
+| Review | `{id, annotationId, reviewerId, score, decision, rubric, body, createdAt}` |
+| TranslationSet | `{id, corpusSlug, name, targetLanguage, folderPath, mappingStrategy, status, mappedDocuments, createdAt}` |
+| ActivityEvent | `{id, actorId, actorName, verb, targetType, targetId, payload, createdAt}` |
+
+**Écriture (payloads entrants)** : la création de clause accepte `anchorIndex` +
+`theme`(code) + `legalNature`(code) ; commentaires `clause`/`sentenceIndex`/`threadRoot` ;
+TranslationSet `corpus`(slug)/`targetLanguage`/`folderPath`/`mappingStrategy`.
+
+> **Filtres `?project=&document=&annotator=`** sur `/annotations` : gérés
+> manuellement dans `get_queryset` pour accepter **à la fois** une PK numérique et
+> la clé humaine du frontend (slug projet, `external_id` document, username) — le
+> `DjangoFilterBackend` ne valide plus ces champs comme des PK.
+
+Garantie de visualisation : `tests/test_api_contract_shapes.py` authentifie via
+JWT et vérifie, pour chaque endpoint GET clé, que les **clés JSON correspondent
+exactement** aux types frontend (y compris des champs imbriqués :
+`annotation.clauses[0].anchorIndex/evidenceSpan`,
+`document.referenceLabels[0].sentenceIndex`, etc.).
+
+**Tests existants migrés snake→camel** (le camelCase est désormais le format de
+fil contractuel) : `test_import_api.py` (`schemaVersion`, `clauses[].anchorIndex`),
+`test_permissions.py` / `test_invariants.py` (écriture clause `anchorIndex`/`theme`,
+clé d'erreur `theme`), `test_security_m9.py` (TranslationSet `corpus`/`targetLanguage`/
+`folderPath`/`mappingStrategy`).
+
+## 10. Compatibilité Django 6
 
 Les `CheckConstraint` des modèles utilisent l'argument `condition=` (et non
 l'ancien `check=`, déprécié `RemovedInDjango60Warning`). Concernés :

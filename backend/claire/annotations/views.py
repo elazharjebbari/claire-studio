@@ -39,10 +39,10 @@ class AnnotationViewSet(viewsets.ModelViewSet):
     ).prefetch_related("clauses__theme", "clauses__anchor_sentence")
     permission_classes = [IsAnnotationOwnerOrReviewer]
     filter_backends = [DjangoFilterBackend]
+    # project/document/annotator are handled manually in get_queryset so they
+    # accept BOTH a numeric PK and the human key the frontend sends (project
+    # slug, document external_id, annotator username — see endpoints.ts).
     filterset_fields = {
-        "project": ["exact"],
-        "document": ["exact"],
-        "annotator": ["exact"],
         "status": ["exact"],
     }
 
@@ -77,16 +77,23 @@ class AnnotationViewSet(viewsets.ModelViewSet):
             qs = qs.filter(
                 Q(project__memberships__user=user) | Q(annotator=user)
             ).distinct()
-        # support ?project=<slug> in addition to pk
+        # support ?project=<slug|pk>, ?document=<external_id|pk>,
+        # ?annotator=<username|pk> (frontend sends the human keys).
         project = self.request.query_params.get("project")
-        if project and not project.isdigit():
-            qs = qs.filter(project__slug=project)
+        if project:
+            qs = qs.filter(project__pk=project) if project.isdigit() else (
+                qs.filter(project__slug=project)
+            )
         document = self.request.query_params.get("document")
-        if document and not document.isdigit():
-            qs = qs.filter(document__external_id=document)
+        if document:
+            qs = qs.filter(document__pk=document) if document.isdigit() else (
+                qs.filter(document__external_id=document)
+            )
         annotator = self.request.query_params.get("annotator")
-        if annotator and not annotator.isdigit():
-            qs = qs.filter(annotator__username=annotator)
+        if annotator:
+            qs = qs.filter(annotator__pk=annotator) if annotator.isdigit() else (
+                qs.filter(annotator__username=annotator)
+            )
         return qs
 
     def create(self, request, *args, **kwargs):
@@ -151,7 +158,7 @@ class AnnotationViewSet(viewsets.ModelViewSet):
         attrs = ser._resolve(annotation, dict(ser.validated_data))
         if "anchor_sentence" not in attrs or "theme" not in attrs:
             return Response(
-                {"detail": "anchor_index and theme_code are required."},
+                {"detail": "anchorIndex and theme are required."},
                 status=status.HTTP_400_BAD_REQUEST,
             )
         if annotation.clauses.filter(
@@ -205,7 +212,7 @@ class AnnotationViewSet(viewsets.ModelViewSet):
             ser.is_valid(raise_exception=True)
             comment = Comment.objects.create(
                 annotation=annotation, author=request.user,
-                **ser.validated_data,
+                **ser.build_comment_kwargs(annotation),
             )
             return Response(
                 CommentSerializer(comment).data, status=status.HTTP_201_CREATED

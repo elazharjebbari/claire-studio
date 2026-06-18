@@ -34,12 +34,18 @@ DEBUG = env("DJANGO_DEBUG")
 ALLOWED_HOSTS = env("DJANGO_ALLOWED_HOSTS")
 
 # --- Paths to real corpora / pre-annotation data (overridable via env) -------
-DATA_RAW_DIR = Path(env("CLAIRE_DATA_RAW_DIR", default=str(PROJECT_ROOT / "data" / "raw")))
+# Defaults live INSIDE the project (REPO_ROOT = claire-studio) so the app is
+# portable without machine-specific env: claire-studio/data/{claudette_tos,preannotations,translations}.
+DATA_DIR = Path(env("CLAIRE_DATA_DIR", default=str(REPO_ROOT / "data")))
+DATA_RAW_DIR = Path(env("CLAIRE_DATA_RAW_DIR", default=str(DATA_DIR)))
 CLAUDETTE_DIR = Path(
-    env("CLAIRE_CLAUDETTE_DIR", default=str(DATA_RAW_DIR / "claudette_tos"))
+    env("CLAIRE_CLAUDETTE_DIR", default=str(DATA_DIR / "claudette_tos"))
+)
+PREANNOTATIONS_DIR = Path(
+    env("CLAIRE_PREANNOTATIONS_DIR", default=str(DATA_DIR / "preannotations"))
 )
 ANNOTATIONS_DIR = Path(
-    env("CLAIRE_ANNOTATIONS_DIR", default=str(PROJECT_ROOT / "annotations"))
+    env("CLAIRE_ANNOTATIONS_DIR", default=str(DATA_DIR / "preannotations"))
 )
 VOCABULARY_FILE = Path(
     env(
@@ -51,7 +57,7 @@ EXPORTS_DIR = Path(env("CLAIRE_EXPORTS_DIR", default=str(BASE_DIR / "var" / "exp
 FIXTURES_DIR = BASE_DIR / "fixtures"
 # File-based features confinement root (translations sync, auto-pull). A10/SSRF.
 TRANSLATIONS_ROOT = Path(
-    env("CLAIRE_TRANSLATIONS_ROOT", default=str(PROJECT_ROOT / "data" / "translations"))
+    env("CLAIRE_TRANSLATIONS_ROOT", default=str(DATA_DIR / "translations"))
 )
 
 INSTALLED_APPS = [
@@ -143,6 +149,21 @@ DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
 # --- DRF ---------------------------------------------------------------------
 REST_FRAMEWORK = {
+    # --- Casing bridge (frontend CONTRACT) -----------------------------------
+    # The frontend (frontend/src/types/contract.ts) consumes camelCase and does
+    # NOT transform responses. djangorestframework-camel-case renders snake_case
+    # model/serializer fields as camelCase on the way out and parses incoming
+    # camelCase JSON back to snake_case on the way in — so serializers stay
+    # idiomatic snake_case (CONTRACT §6) while the wire format is camelCase.
+    "DEFAULT_RENDERER_CLASSES": (
+        "djangorestframework_camel_case.render.CamelCaseJSONRenderer",
+        "djangorestframework_camel_case.render.CamelCaseBrowsableAPIRenderer",
+    ),
+    "DEFAULT_PARSER_CLASSES": (
+        "djangorestframework_camel_case.parser.CamelCaseJSONParser",
+        "djangorestframework_camel_case.parser.CamelCaseFormParser",
+        "djangorestframework_camel_case.parser.CamelCaseMultiPartParser",
+    ),
     "DEFAULT_AUTHENTICATION_CLASSES": (
         "rest_framework_simplejwt.authentication.JWTAuthentication",
         "rest_framework.authentication.SessionAuthentication",
