@@ -33,10 +33,24 @@
 | `CertaintyPicker` | Échelle 0–3 emoji + raccourci (ARIA radiogroup). |
 | `primitives` | `Button`, `Badge`, `Panel`, `Field`, `StatusPill`. |
 
+## Historique (`components/history/`)
+
+| Composant | Feature | Rôle |
+|---|---|---|
+| `DiffView` | F3 | Vue diff réelle entre deux versions : clauses ajoutées / supprimées / modifiées par `anchor_index` et thème, champs modifiés (avant → après), résumé. Composant pur (reçoit un `VersionDiff`). |
+
+## Projets (`components/projects/`)
+
+| Composant | Feature | Rôle |
+|---|---|---|
+| `IaaDashboard` | F10 | Tableau de bord IAA : κ de Cohen global, accord sur les frontières, κ par thème (barres SVG/CSS « maison », couleurs des tokens, interprétation Landis & Koch). Reçoit `IaaDetail` depuis `/projects/{slug}/progress`. |
+
 ## Admin (`components/admin/`)
 
-`AdminScaffold` — tableau générique (en-têtes + lignes + actions) réutilisé par toutes les
-sous-pages `/admin/*`.
+`AdminScaffold` — tableau générique (en-têtes + lignes + actions) réutilisé par les
+sous-pages `/admin/*`. La page **`/admin/translations`** (F8) est désormais une surface complète
+(formulaire de déclaration de `TranslationSet`, sync, mapping document↔fichier) et n'utilise plus
+le scaffold générique.
 
 ## Conventions
 

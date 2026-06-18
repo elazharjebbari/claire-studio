@@ -98,3 +98,51 @@ make openapi        # écrit openapi.yaml (drf-spectacular)
 Le seed charge 5 documents CLAUDETTE réels (`data/raw/claudette_tos/`), le LabelScheme
 depuis `vocabulary.yaml`, les pré-annotations claude+codex, et 2 annotations exemples
 (une par annotateur) soumises pour alimenter progression et IAA.
+
+## 7. Import de données réelles (optionnel)
+
+La commande `import_claudette` ingère un corpus réel au **format CLAUDETTE** sans
+dépendre du seed de démo (qui crée aussi projet/membres/annotations). Elle ne
+fait qu'alimenter Corpus/Document/Sentence/ReferenceLabel via le loader
+`corpora/loaders.py`.
+
+```bash
+# format attendu : <source>/Sentences/<Doc>.txt + <source>/Labels_<CAT>/<Doc>.txt
+python manage.py import_claudette --source /chemin/vers/ToS
+python manage.py import_claudette                       # défaut : settings.CLAUDETTE_DIR
+python manage.py import_claudette --source ToS --docs Dropbox Netflix
+python manage.py import_claudette --source ToS --max-docs 10 --corpus-slug claudette-tos
+```
+
+Options : `--source` (dossier, défaut `CLAUDETTE_DIR`), `--corpus-slug` /
+`--corpus-name` (corpus cible, créé si absent), `--docs` (liste explicite),
+`--max-docs` (plafond).
+
+Propriétés :
+- **Idempotente** : documents appariés par `(corpus, external_id)` ; un document
+  inchangé est *skippé* par le loader (comparaison des index de phrases) ; le
+  corpus est `get_or_create`.
+- **Robuste** : si `--source` n'existe pas, ou si le sous-dossier `Sentences/`
+  est absent, la commande **lève un `CommandError` explicite** (avec le lien
+  http://claudette.eui.eu/ToS.zip) au lieu de planter. Un document dont les
+  phrases sont déjà référencées par des clauses (PROTECT) est *skippé* avec un
+  avertissement, sans interrompre l'import des autres.
+- **Sûre vis-à-vis des invariants** : chaque document est chargé en transaction
+  atomique, **INV-1** (indices contigus) vérifié par le loader.
+
+Robustesse des loaders de pré-annotations (`imports/loaders.py`) : les payloads
+malformés (ni `plan` ni `document_plan`, JSON non-objet, `clauses`/`segments`
+non-liste, `anchor_id`/`start_id` manquant ou non entier) lèvent désormais une
+`PreAnnotationFormatError` claire au lieu d'un `KeyError`/`TypeError` opaque.
+Couvert par `tests/test_loaders.py`.
+
+## 8. Compatibilité Django 6
+
+Les `CheckConstraint` des modèles utilisent l'argument `condition=` (et non
+l'ancien `check=`, déprécié `RemovedInDjango60Warning`). Concernés :
+`annotations.Annotation` (certitude globale), `annotations.Clause` (certitude),
+`collaboration.Review` (score 1..5). Le changement est purement cosmétique sur
+l'API de contrainte : `check`/`condition` se *déconstruisent* à l'identique, donc
+**aucune migration nouvelle** n'est générée (`makemigrations --check --dry-run`
+→ *No changes detected*). La suite pytest tourne **sans aucun warning de
+dépréciation** lié à `CheckConstraint`.

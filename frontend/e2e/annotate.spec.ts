@@ -14,7 +14,7 @@ test.describe("Workspace d'annotation (F1)", () => {
 
   test("affiche les trois panneaux", async ({ page }) => {
     await expect(page.getByRole("complementary", { name: "Plan du document" })).toBeVisible();
-    await expect(page.getByRole("main", { name: "Document" })).toBeVisible();
+    await expect(page.getByRole("region", { name: "Document" })).toBeVisible();
     await expect(page.getByRole("complementary", { name: "Inspecteur" })).toBeVisible();
   });
 

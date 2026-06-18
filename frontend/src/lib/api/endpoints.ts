@@ -22,6 +22,9 @@ import type {
   ProjectProgress,
   Review,
   AnnotationVersion,
+  TranslationSet,
+  TranslationSyncResult,
+  VersionDiff,
   User,
   Certainty,
 } from "@/types/contract";
@@ -173,6 +176,19 @@ export function createVersion(
   });
 }
 
+/**
+ * Diff de la version `to` contre `against` (par défaut la version précédente).
+ * CONTRACT §3 : GET /annotations/{id}/versions/{n}/diff.
+ */
+export function getVersionDiff(
+  annotationId: string,
+  to: number,
+  against?: number,
+): Promise<VersionDiff> {
+  const qs = against != null ? `?against=${against}` : "";
+  return apiFetch<VersionDiff>(`/annotations/${annotationId}/versions/${to}/diff${qs}`);
+}
+
 // ── Commentaires (F9) ─────────────────────────────────────────────────────────
 
 export function listComments(annotationId: string): Promise<Paginated<Comment>> {
@@ -261,4 +277,37 @@ export function listActivity(params: {
     Object.entries(params).filter(([, v]) => v) as [string, string][],
   ).toString();
   return apiFetch<Paginated<ActivityEvent>>(`/activity?${qs}`);
+}
+
+// ── Traductions file-based (F8) ───────────────────────────────────────────────
+
+export function listTranslationSets(): Promise<Paginated<TranslationSet>> {
+  return apiFetch<Paginated<TranslationSet>>("/translations/sets");
+}
+
+export function listProjectTranslations(slug: string): Promise<Paginated<TranslationSet>> {
+  return apiFetch<Paginated<TranslationSet>>(`/projects/${slug}/translations`);
+}
+
+export function createTranslationSet(payload: {
+  corpus?: string;
+  name: string;
+  targetLanguage: string;
+  folderPath: string;
+  mappingStrategy?: TranslationSet["mappingStrategy"];
+}): Promise<TranslationSet> {
+  return apiFetch<TranslationSet>("/translations/sets", {
+    method: "POST",
+    body: {
+      corpus: payload.corpus,
+      name: payload.name,
+      target_language: payload.targetLanguage,
+      folder_path: payload.folderPath,
+      mapping_strategy: payload.mappingStrategy,
+    },
+  });
+}
+
+export function syncTranslationSet(id: string): Promise<TranslationSyncResult> {
+  return apiFetch<TranslationSyncResult>(`/translations/sets/${id}/sync`, { method: "POST" });
 }

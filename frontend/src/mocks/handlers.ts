@@ -7,7 +7,14 @@
  */
 
 import { http, HttpResponse } from "msw";
-import type { Annotation, Clause, Comment } from "@/types/contract";
+import type {
+  Annotation,
+  Clause,
+  Comment,
+  TranslationMappingEntry,
+  TranslationSet,
+} from "@/types/contract";
+import { buildVersionDiff } from "@/lib/versionDiff";
 import {
   FIXTURE_ACTIVITY,
   FIXTURE_ANNOTATION,
@@ -20,7 +27,9 @@ import {
   FIXTURE_PROJECT,
   FIXTURE_REVIEWS,
   FIXTURE_SCHEME,
+  FIXTURE_TRANSLATION_SETS,
   FIXTURE_USER,
+  FIXTURE_VERSIONS,
 } from "./fixtures";
 
 const BASE = process.env.NEXT_PUBLIC_API_BASE ?? "/api/v1";
@@ -28,14 +37,18 @@ const BASE = process.env.NEXT_PUBLIC_API_BASE ?? "/api/v1";
 // État mutable en mémoire (réinitialisable dans les tests via resetDb()).
 let annotation: Annotation = structuredClone(FIXTURE_ANNOTATION);
 let comments: Comment[] = structuredClone(FIXTURE_COMMENTS);
+let translationSets: TranslationSet[] = structuredClone(FIXTURE_TRANSLATION_SETS);
 let clauseSeq = 100;
 let commentSeq = 100;
+let translationSeq = 100;
 
 export function resetDb(): void {
   annotation = structuredClone(FIXTURE_ANNOTATION);
   comments = structuredClone(FIXTURE_COMMENTS);
+  translationSets = structuredClone(FIXTURE_TRANSLATION_SETS);
   clauseSeq = 100;
   commentSeq = 100;
+  translationSeq = 100;
 }
 
 function page<T>(results: T[]) {
@@ -174,37 +187,24 @@ export const handlers = [
     return new HttpResponse(null, { status: 204 });
   }),
 
-  // Versions
+  // Versions (F3)
   http.get(`${BASE}/annotations/:id/versions`, ({ params }) =>
     HttpResponse.json(
-      page([
-        {
-          id: "v-1",
-          annotationId: String(params.id),
-          number: 1,
-          authorId: "u-alice",
-          label: "Premier jet",
-          createdAt: "2026-06-15T09:30:00Z",
-          snapshot: {
-            doc: "Fitbit",
-            project: "claudette-gold-v1",
-            annotator: "alice",
-            schema: "claire-themes-v1",
-            status: "draft",
-            global_certainty: 1,
-            clauses: [],
-          },
-        },
-      ]),
+      page(
+        FIXTURE_VERSIONS.map((v) => ({ ...v, annotationId: String(params.id) })),
+      ),
     ),
   ),
-  http.post(`${BASE}/annotations/:id/versions`, ({ params }) =>
-    HttpResponse.json(
+  http.post(`${BASE}/annotations/:id/versions`, async ({ params, request }) => {
+    const body = (await request.json().catch(() => ({}))) as { label?: string };
+    const next = FIXTURE_VERSIONS.length + 1;
+    return HttpResponse.json(
       {
         id: `v-${Date.now()}`,
         annotationId: String(params.id),
-        number: 2,
+        number: next,
         authorId: "u-alice",
+        label: body.label ?? `Snapshot v${next}`,
         createdAt: new Date().toISOString(),
         snapshot: {
           doc: "Fitbit",
@@ -213,12 +213,48 @@ export const handlers = [
           schema: "claire-themes-v1",
           status: annotation.status,
           global_certainty: annotation.globalCertainty ?? 0,
-          clauses: [],
+          clauses: annotation.clauses
+            .slice()
+            .sort((a, b) => a.anchorIndex - b.anchorIndex)
+            .map((c) => ({
+              anchor_index: c.anchorIndex,
+              theme: c.theme,
+              legal_nature: c.legalNature ?? null,
+              evidence_span: c.evidenceSpan ?? "",
+              rationale: c.rationale ?? "",
+              certainty: (c.certainty ?? 0) as 0 | 1 | 2 | 3,
+            })),
         },
       },
       { status: 201 },
-    ),
-  ),
+    );
+  }),
+  // Diff entre deux versions : {n} = version cible, ?against= version base (sinon n-1).
+  http.get(`${BASE}/annotations/:id/versions/:n/diff`, ({ params, request }) => {
+    const url = new URL(request.url);
+    const toNumber = Number(params.n);
+    const against = url.searchParams.get("against");
+    const fromNumber = against != null ? Number(against) : toNumber - 1;
+
+    const to = FIXTURE_VERSIONS.find((v) => v.number === toNumber);
+    const from = FIXTURE_VERSIONS.find((v) => v.number === fromNumber);
+    if (!to) return new HttpResponse(null, { status: 404 });
+
+    // Si pas de version base (première version), diffe contre un snapshot vide.
+    const fromVersion = from ?? {
+      number: Math.max(0, fromNumber),
+      label: "∅ (vide)",
+      snapshot: { ...to.snapshot, clauses: [] },
+    };
+
+    return HttpResponse.json(
+      buildVersionDiff(
+        String(params.id),
+        { number: fromVersion.number, label: fromVersion.label, snapshot: fromVersion.snapshot },
+        { number: to.number, label: to.label, snapshot: to.snapshot },
+      ),
+    );
+  }),
 
   // Commentaires
   http.get(`${BASE}/annotations/:id/comments`, () => HttpResponse.json(page(comments))),
@@ -314,4 +350,73 @@ export const handlers = [
 
   // Activité (F4)
   http.get(`${BASE}/activity`, () => HttpResponse.json(page(FIXTURE_ACTIVITY))),
+
+  // Traductions file-based (F8)
+  http.get(`${BASE}/projects/:slug/translations`, () =>
+    HttpResponse.json(
+      page(translationSets.filter((t) => t.corpusSlug === FIXTURE_PROJECT.corpusSlug)),
+    ),
+  ),
+  http.get(`${BASE}/translations/sets`, () =>
+    HttpResponse.json(page(translationSets)),
+  ),
+  http.post(`${BASE}/translations/sets`, async ({ request }) => {
+    const body = (await request.json()) as {
+      corpus?: string;
+      name: string;
+      target_language: string;
+      folder_path: string;
+      mapping_strategy?: TranslationSet["mappingStrategy"];
+    };
+    const set: TranslationSet = {
+      id: `ts-${(translationSeq += 1)}`,
+      corpusSlug: body.corpus ?? FIXTURE_CORPUS.slug,
+      name: body.name,
+      targetLanguage: body.target_language,
+      folderPath: body.folder_path,
+      mappingStrategy: body.mapping_strategy ?? "external_id",
+      status: "declared",
+      createdAt: new Date().toISOString(),
+    };
+    translationSets = [...translationSets, set];
+    return HttpResponse.json(set, { status: 201 });
+  }),
+  http.post(`${BASE}/translations/sets/:id/sync`, ({ params }) => {
+    const set = translationSets.find((t) => t.id === params.id);
+    if (!set) return new HttpResponse(null, { status: 404 });
+
+    // Mapping simulé : 3 docs du corpus, dont un non résolu (démonstration file-based).
+    const mapping: TranslationMappingEntry[] = [
+      {
+        documentId: "doc-fitbit",
+        documentTitle: "Fitbit",
+        filePath: `${set.folderPath}/fitbit.${set.targetLanguage}.txt`,
+        matched: true,
+        nSentences: FIXTURE_DOCUMENT.nSentences,
+      },
+      {
+        documentId: "doc-spotify",
+        documentTitle: "Spotify",
+        filePath: `${set.folderPath}/spotify.${set.targetLanguage}.txt`,
+        matched: true,
+        nSentences: 42,
+      },
+      {
+        documentId: "doc-netflix",
+        documentTitle: "Netflix",
+        filePath: null,
+        matched: false,
+      },
+    ];
+    const matched = mapping.filter((m) => m.matched).length;
+    translationSets = translationSets.map((t) =>
+      t.id === set.id ? { ...t, status: "synced", mappedDocuments: matched } : t,
+    );
+    return HttpResponse.json({
+      setId: set.id,
+      status: "synced" as const,
+      mapping,
+      summary: { matched, unmatched: mapping.length - matched },
+    });
+  }),
 ];

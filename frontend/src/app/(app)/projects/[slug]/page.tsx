@@ -6,6 +6,7 @@ import Link from "next/link";
 import { useEffect } from "react";
 import { useAssignments, useProject, useProjectProgress, useActivity } from "@/lib/api/hooks";
 import { Panel, Button, StatusPill } from "@/components/ui/primitives";
+import { IaaDashboard } from "@/components/projects/IaaDashboard";
 import { useUiStore } from "@/store/ui";
 
 export default function ProjectDashboard({ params }: { params: { slug: string } }) {
@@ -70,6 +71,17 @@ export default function ProjectDashboard({ params }: { params: { slug: string } 
             ))}
           </ul>
         </Panel>
+      </div>
+
+      <div className="mt-6">
+        {progress?.iaaDetail ? (
+          <IaaDashboard detail={progress.iaaDetail} />
+        ) : (
+          <Panel className="p-4 text-sm text-ink-muted" data-testid="iaa-dashboard-empty">
+            L’accord inter-annotateurs sera calculé dès qu’au moins deux annotateurs auront
+            soumis le même document.
+          </Panel>
+        )}
       </div>
     </div>
   );

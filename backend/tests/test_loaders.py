@@ -1,8 +1,13 @@
 """Tests for pre-annotation loaders (v9.2 & v9.4) and CLAUDETTE loader."""
 
+from io import StringIO
+
 import pytest
+from django.core.management import call_command
+from django.core.management.base import CommandError
 
 from claire.imports.loaders import (
+    PreAnnotationFormatError,
     detect_schema_version,
     normalize_preannotation,
     normalize_v92,
@@ -71,6 +76,31 @@ def test_normalize_dispatch():
     assert v == "v9.2" and len(c92) == 2
 
 
+def test_malformed_preannotation_raises_clear_error():
+    # Neither 'plan' nor 'document_plan' -> clear format error, not a crash.
+    with pytest.raises(PreAnnotationFormatError):
+        normalize_preannotation({"doc": "X", "judge": "claude"})
+    # Non-dict payload.
+    with pytest.raises(PreAnnotationFormatError):
+        detect_schema_version([1, 2, 3])
+
+
+def test_malformed_v94_clause_anchor_raises():
+    # Missing/invalid anchor_id and wrong container types must be reported, not
+    # silently dropped or crash with a KeyError/TypeError.
+    bad_anchor = {"plan": {"clauses": [{"theme": "META", "open_span": "x"}]}}
+    with pytest.raises(PreAnnotationFormatError):
+        normalize_v94(bad_anchor)
+
+    not_a_list = {"plan": {"clauses": {"oops": True}}}
+    with pytest.raises(PreAnnotationFormatError):
+        normalize_v94(not_a_list)
+
+    bad_segment = {"document_plan": {"segments": [{"theme": "META"}]}}
+    with pytest.raises(PreAnnotationFormatError):
+        normalize_v92(bad_segment)
+
+
 def test_theme_alias_mapping():
     assert normalize_theme_code("THIRD_PARTY") == "THIRD_PARTY_SERVICES"
     assert normalize_theme_code("PAYMENT_BILLING") == "FEES_PAYMENT"
@@ -136,3 +166,51 @@ def test_seed_annotation_from_preannotation_dedups_and_maps_theme(
     # has META/PREAMBLE_SCOPE/TERMINATION/MISC_BOILERPLATE.
     codes = set(ann.clauses.values_list("theme__code", flat=True))
     assert "META" in codes and "TERMINATION" in codes
+
+
+def _write_mini_claudette(root):
+    """Create a minimal CLAUDETTE tree with 2 documents under ``root``."""
+    sentences = root / "Sentences"
+    sentences.mkdir()
+    (sentences / "DocOne.txt").write_text(
+        "first sentence .\nsecond -lrb- ok -rrb- .\n", encoding="utf-8"
+    )
+    (sentences / "DocTwo.txt").write_text(
+        "alpha .\nbeta .\ngamma .\n", encoding="utf-8"
+    )
+    labels_a = root / "Labels_A"
+    labels_a.mkdir()
+    (labels_a / "DocOne.txt").write_text("-1\n2\n", encoding="utf-8")
+    (labels_a / "DocTwo.txt").write_text("1\n-1\n-1\n", encoding="utf-8")
+
+
+def test_import_claudette_command_idempotent(tmp_path):
+    from claire.corpora.models import Corpus, Document
+
+    _write_mini_claudette(tmp_path)
+
+    out = StringIO()
+    call_command("import_claudette", "--source", str(tmp_path), stdout=out)
+    corpus = Corpus.objects.get(slug="claudette-tos")
+    assert Document.objects.filter(corpus=corpus).count() == 2
+    doc1 = Document.objects.get(corpus=corpus, external_id="DocOne")
+    assert doc1.n_sentences == 2
+    assert doc1.sentences.get(index=1).reference_labels.get(category="A").level == 2
+
+    # Re-running must not duplicate documents (idempotent).
+    call_command("import_claudette", "--source", str(tmp_path), stdout=StringIO())
+    assert Document.objects.filter(corpus=corpus).count() == 2
+
+
+def test_import_claudette_missing_source_errors(tmp_path):
+    missing = tmp_path / "nope"
+    with pytest.raises(CommandError):
+        call_command("import_claudette", "--source", str(missing), stdout=StringIO())
+
+    # Directory exists but no Sentences/ subfolder -> clear error too.
+    (tmp_path / "empty").mkdir()
+    with pytest.raises(CommandError):
+        call_command(
+            "import_claudette", "--source", str(tmp_path / "empty"),
+            stdout=StringIO(),
+        )

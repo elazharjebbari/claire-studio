@@ -65,7 +65,7 @@ class Annotation(TimeStampedModel):
             ),
             # INV-6
             models.CheckConstraint(
-                check=models.Q(global_certainty__isnull=True)
+                condition=models.Q(global_certainty__isnull=True)
                 | models.Q(global_certainty__in=[0, 1, 2, 3]),
                 name="ck_annotation_global_certainty_range",
             ),
@@ -107,7 +107,7 @@ class Clause(models.Model):
             ),
             # INV-6
             models.CheckConstraint(
-                check=models.Q(certainty__isnull=True)
+                condition=models.Q(certainty__isnull=True)
                 | models.Q(certainty__in=[0, 1, 2, 3]),
                 name="ck_clause_certainty_range",
             ),

@@ -140,6 +140,29 @@ export interface Project {
   progress?: ProjectProgress;
 }
 
+/** κ de Cohen par thème (et frontières) pour le tableau de bord IAA (feature 10). */
+export interface IaaThemeAgreement {
+  /** Code de thème, ou "__boundaries__" pour l'accord sur les frontières de clause. */
+  code: string;
+  label: string;
+  /** κ de Cohen ∈ [-1, 1]. */
+  kappa: number;
+  /** Nombre d'items comparés (phrases / frontières). */
+  support: number;
+}
+
+/** Détail IAA renvoyé par /projects/{slug}/progress (feature 10). */
+export interface IaaDetail {
+  /** Accord global (κ de Cohen moyen, pondéré). */
+  globalKappa: number;
+  /** Nombre de paires d'annotateurs comparées. */
+  annotatorPairs: number;
+  /** Accord sur les frontières de clause (segmentation). */
+  boundaryKappa: number;
+  /** κ par thème. */
+  perTheme: IaaThemeAgreement[];
+}
+
 export interface ProjectProgress {
   totalDocuments: number;
   annotatedDocuments: number;
@@ -149,6 +172,8 @@ export interface ProjectProgress {
   myDone: number;
   /** Inter-annotator agreement (peut être null tant que < 2 annotateurs). */
   iaa?: number | null;
+  /** Détail IAA (κ par thème + frontières), si ≥ 2 annotateurs. */
+  iaaDetail?: IaaDetail | null;
 }
 
 export interface Assignment {
@@ -217,6 +242,36 @@ export interface AnnotationVersion {
   snapshot: PivotClauseDocument;
 }
 
+/** Statut d'une clause dans un diff de versions (F3). */
+export type DiffStatus = "added" | "removed" | "modified" | "unchanged";
+
+/**
+ * Différence d'une clause entre deux versions, identifiée par son `anchor_index`.
+ * - `added` : présente dans `to`, absente dans `from`.
+ * - `removed` : présente dans `from`, absente dans `to`.
+ * - `modified` : présente dans les deux mais thème/nature/span/certitude différents.
+ * - `unchanged` : identique.
+ */
+export interface ClauseDiff {
+  anchorIndex: number;
+  status: DiffStatus;
+  /** Champs avant (null si ajout). */
+  before?: PivotClause | null;
+  /** Champs après (null si suppression). */
+  after?: PivotClause | null;
+  /** Liste des champs modifiés (pour `modified`). */
+  changedFields?: string[];
+}
+
+/** Réponse de GET /annotations/{id}/versions/{n}/diff (diff vs version précédente, ou ?against=). */
+export interface VersionDiff {
+  annotationId: string;
+  from: { number: number; label?: string };
+  to: { number: number; label?: string };
+  clauses: ClauseDiff[];
+  summary: { added: number; removed: number; modified: number; unchanged: number };
+}
+
 export interface Comment {
   id: string;
   annotationId: string;
@@ -238,6 +293,38 @@ export interface Review {
   rubric?: Record<string, unknown>;
   body?: string;
   createdAt: string;
+}
+
+/** Pointeur file-based vers un dossier de traductions (CONTRACT §2, feature 8). */
+export interface TranslationSet {
+  id: string;
+  corpusSlug: string;
+  name: string;
+  targetLanguage: string;
+  folderPath: string;
+  mappingStrategy: "filename" | "external_id" | "order";
+  status: "declared" | "syncing" | "synced" | "error";
+  /** Nombre de documents mappés après sync (rempli par la sync). */
+  mappedDocuments?: number;
+  createdAt?: string;
+}
+
+/** Une entrée du mapping document↔fichier produite par la sync (feature 8). */
+export interface TranslationMappingEntry {
+  documentId: string;
+  documentTitle: string;
+  /** Chemin relatif du fichier de traduction associé (null si non résolu). */
+  filePath: string | null;
+  matched: boolean;
+  nSentences?: number;
+}
+
+/** Résultat d'une sync de TranslationSet : statut + mapping document↔fichier. */
+export interface TranslationSyncResult {
+  setId: string;
+  status: TranslationSet["status"];
+  mapping: TranslationMappingEntry[];
+  summary: { matched: number; unmatched: number };
 }
 
 export interface ActivityEvent {

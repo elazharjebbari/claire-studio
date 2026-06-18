@@ -118,9 +118,13 @@ export function ResizablePanels({
         {left}
       </aside>
       <Handle side="left" />
-      <main className="h-full flex-1 overflow-y-auto bg-reading" aria-label="Document">
+      <section
+        role="region"
+        className="h-full flex-1 overflow-y-auto bg-reading"
+        aria-label="Document"
+      >
         {center}
-      </main>
+      </section>
       <Handle side="right" />
       <aside
         style={{ width: layout.right }}

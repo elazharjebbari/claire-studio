@@ -7,17 +7,20 @@
 
 import type {
   Annotation,
+  AnnotationVersion,
   Assignment,
   Comment,
   Corpus,
   DocumentDetail,
   LabelScheme,
   PreAnnotation,
+  PivotClause,
   Project,
   ProjectProgress,
   ReferenceLabel,
   Review,
   Sentence,
+  TranslationSet,
   User,
   ActivityEvent,
 } from "@/types/contract";
@@ -159,6 +162,25 @@ export const FIXTURE_PROGRESS: ProjectProgress = {
   myAssigned: 10,
   myDone: 4,
   iaa: 0.78,
+  iaaDetail: {
+    globalKappa: 0.78,
+    annotatorPairs: 3,
+    boundaryKappa: 0.71,
+    // κ par thème (échantillon représentatif : certains thèmes plus consensuels que d'autres).
+    perTheme: [
+      { code: "META", label: "Méta / dates / adresses", kappa: 0.94, support: 48 },
+      { code: "PREAMBLE_SCOPE", label: "Préambule & périmètre", kappa: 0.82, support: 51 },
+      { code: "PRIVACY_DATA", label: "Données & vie privée", kappa: 0.79, support: 63 },
+      { code: "ELIGIBILITY_ACCOUNT", label: "Éligibilité & compte", kappa: 0.88, support: 40 },
+      { code: "LICENSE_IP", label: "Licence & propriété intel.", kappa: 0.66, support: 35 },
+      { code: "MODIFICATION_OF_TERMS", label: "Modification des conditions", kappa: 0.58, support: 29 },
+      { code: "TERMINATION", label: "Résiliation", kappa: 0.84, support: 44 },
+      { code: "LIMITATION_LIABILITY", label: "Limitation de responsabilité", kappa: 0.75, support: 52 },
+      { code: "ARBITRATION_DISPUTES", label: "Arbitrage & litiges", kappa: 0.91, support: 33 },
+      { code: "GOVERNING_LAW", label: "Loi applicable", kappa: 0.89, support: 31 },
+      { code: "MISC_BOILERPLATE", label: "Boilerplate divers", kappa: 0.41, support: 27 },
+    ],
+  },
 };
 
 export const FIXTURE_PROJECT: Project = {
@@ -287,4 +309,130 @@ export const FIXTURE_ACTIVITY: ActivityEvent[] = [
   { id: "ev-1", actorId: "u-alice", actorName: "Alice", verb: "created_annotation", targetType: "annotation", targetId: "ann-1", createdAt: "2026-06-15T09:00:00Z" },
   { id: "ev-2", actorId: "u-alice", actorName: "Alice", verb: "added_clause", targetType: "clause", targetId: "cl-5", createdAt: "2026-06-16T14:20:00Z" },
   { id: "ev-3", actorId: "u-bruno", actorName: "Bruno", verb: "commented", targetType: "comment", targetId: "cm-1", createdAt: "2026-06-17T10:00:00Z" },
+];
+
+// ── Versions & snapshots (F3 — historique / diff) ─────────────────────────────
+
+function pivotClause(
+  anchorIndex: number,
+  theme: string,
+  evidenceSpan: string,
+  rationale: string,
+  certainty: 0 | 1 | 2 | 3,
+  legalNature: string | null = null,
+): PivotClause {
+  return {
+    anchor_index: anchorIndex,
+    theme,
+    legal_nature: legalNature,
+    evidence_span: evidenceSpan,
+    rationale,
+    certainty,
+  };
+}
+
+/**
+ * Trois versions du document Fitbit montrant une vraie évolution :
+ *  v1 — premier jet (3 clauses, certitudes basses).
+ *  v2 — ajout de clauses + relèvement de certitudes + reclassement d'un thème.
+ *  v3 — suppression d'une clause + ajout de la licence + nature juridique.
+ */
+export const FIXTURE_VERSIONS: AnnotationVersion[] = [
+  {
+    id: "v-1",
+    annotationId: "ann-1",
+    number: 1,
+    authorId: "u-alice",
+    label: "Premier jet",
+    createdAt: "2026-06-15T09:30:00Z",
+    snapshot: {
+      doc: "Fitbit",
+      project: "claudette-gold-v1",
+      annotator: "alice",
+      schema: "claire-themes-v1",
+      status: "draft",
+      global_certainty: 1,
+      clauses: [
+        pivotClause(0, "META", "Fitbit Terms of Service", "Titre du document", 2),
+        pivotClause(2, "PREAMBLE_SCOPE", "apply to your use", "Périmètre", 1),
+        pivotClause(4, "ELIGIBILITY_ACCOUNT", "at least 13 years old", "Âge minimum", 2),
+      ],
+    },
+  },
+  {
+    id: "v-2",
+    annotationId: "ann-1",
+    number: 2,
+    authorId: "u-alice",
+    label: "Ajout données & résiliation",
+    createdAt: "2026-06-16T15:00:00Z",
+    snapshot: {
+      doc: "Fitbit",
+      project: "claudette-gold-v1",
+      annotator: "alice",
+      schema: "claire-themes-v1",
+      status: "draft",
+      global_certainty: 2,
+      clauses: [
+        pivotClause(0, "META", "Fitbit Terms of Service", "Titre du document", 3),
+        // PREAMBLE_SCOPE reclassé en MODIFICATION_OF_TERMS (modifié).
+        pivotClause(2, "MODIFICATION_OF_TERMS", "apply to your use", "Reclassé", 2),
+        pivotClause(4, "ELIGIBILITY_ACCOUNT", "at least 13 years old", "Âge minimum", 3),
+        // Ajouts v2.
+        pivotClause(7, "PRIVACY_DATA", "collect data about your activity", "Collecte de données", 2),
+        pivotClause(16, "TERMINATION", "terminate or suspend your account", "Résiliation unilatérale", 2),
+      ],
+    },
+  },
+  {
+    id: "v-3",
+    annotationId: "ann-1",
+    number: 3,
+    authorId: "u-alice",
+    label: "Licence + natures juridiques",
+    createdAt: "2026-06-17T11:30:00Z",
+    snapshot: {
+      doc: "Fitbit",
+      project: "claudette-gold-v1",
+      annotator: "alice",
+      schema: "claire-themes-v1",
+      status: "submitted",
+      global_certainty: 2,
+      clauses: [
+        pivotClause(0, "META", "Fitbit Terms of Service", "Titre du document", 3, "DECLARATION"),
+        pivotClause(2, "PREAMBLE_SCOPE", "apply to your use of the Fitbit service", "Périmètre des CGU", 2, "DEFINITION"),
+        pivotClause(4, "ELIGIBILITY_ACCOUNT", "at least 13 years old", "Condition d'âge", 3, "OBLIGATION"),
+        pivotClause(7, "PRIVACY_DATA", "collect data about your activity", "Collecte de données", 2, "DECLARATION"),
+        // anchor 16 (TERMINATION) supprimé en v3.
+        // Ajout de la licence.
+        pivotClause(10, "LICENSE_IP", "grant Fitbit a worldwide, royalty-free license", "Licence de contenu", 2, "PERMISSION"),
+      ],
+    },
+  },
+];
+
+// ── Translation sets (F8 — sync file-based) ───────────────────────────────────
+
+export const FIXTURE_TRANSLATION_SETS: TranslationSet[] = [
+  {
+    id: "ts-fr",
+    corpusSlug: "claudette-tos",
+    name: "CLAUDETTE FR",
+    targetLanguage: "fr",
+    folderPath: "/data/translations/claudette_fr",
+    mappingStrategy: "external_id",
+    status: "synced",
+    mappedDocuments: 48,
+    createdAt: "2026-06-10T08:00:00Z",
+  },
+  {
+    id: "ts-de",
+    corpusSlug: "claudette-tos",
+    name: "CLAUDETTE DE",
+    targetLanguage: "de",
+    folderPath: "/data/translations/claudette_de",
+    mappingStrategy: "filename",
+    status: "declared",
+    createdAt: "2026-06-17T09:00:00Z",
+  },
 ];

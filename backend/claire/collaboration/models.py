@@ -65,7 +65,7 @@ class Review(models.Model):
         ordering = ["-created_at"]
         constraints = [
             models.CheckConstraint(
-                check=models.Q(score__gte=1) & models.Q(score__lte=5),
+                condition=models.Q(score__gte=1) & models.Q(score__lte=5),
                 name="ck_review_score_range",
             )
         ]

@@ -22,11 +22,14 @@ export const qk = {
   progress: (slug: string) => ["projects", slug, "progress"] as const,
   annotation: (id: string) => ["annotations", id] as const,
   versions: (id: string) => ["annotations", id, "versions"] as const,
+  versionDiff: (id: string, to: number, against?: number) =>
+    ["annotations", id, "versions", to, "diff", against ?? "prev"] as const,
   comments: (id: string) => ["annotations", id, "comments"] as const,
   reviews: (id: string) => ["annotations", id, "reviews"] as const,
   preannotations: (project: string, doc: string) =>
     ["preannotations", project, doc] as const,
   activity: (project?: string) => ["activity", project ?? "all"] as const,
+  translationSets: ["translations", "sets"] as const,
 };
 
 export function useMe() {
@@ -103,6 +106,22 @@ export function useVersions(id: string | undefined) {
     queryFn: () => api.listVersions(id!),
     enabled: Boolean(id),
   });
+}
+
+export function useVersionDiff(
+  id: string | undefined,
+  to: number | undefined,
+  against?: number,
+) {
+  return useQuery({
+    queryKey: qk.versionDiff(id ?? "", to ?? -1, against),
+    queryFn: () => api.getVersionDiff(id!, to!, against),
+    enabled: Boolean(id) && typeof to === "number" && to >= 1,
+  });
+}
+
+export function useTranslationSets() {
+  return useQuery({ queryKey: qk.translationSets, queryFn: api.listTranslationSets });
 }
 
 export function useComments(id: string | undefined) {
@@ -204,5 +223,21 @@ export function useCreateVersion(annotationId: string) {
   return useMutation({
     mutationFn: (label?: string) => api.createVersion(annotationId, label),
     onSuccess: () => qc.invalidateQueries({ queryKey: qk.versions(annotationId) }),
+  });
+}
+
+export function useCreateTranslationSet() {
+  const qc = useQueryClient();
+  return useMutation({
+    mutationFn: api.createTranslationSet,
+    onSuccess: () => qc.invalidateQueries({ queryKey: qk.translationSets }),
+  });
+}
+
+export function useSyncTranslationSet() {
+  const qc = useQueryClient();
+  return useMutation({
+    mutationFn: (id: string) => api.syncTranslationSet(id),
+    onSuccess: () => qc.invalidateQueries({ queryKey: qk.translationSets }),
   });
 }
