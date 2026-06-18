@@ -9,6 +9,7 @@ from rest_framework.response import Response
 from claire.collaboration.models import Comment, Review, ReviewDecision
 from claire.collaboration.serializers import CommentSerializer, ReviewSerializer
 from claire.common.exceptions import Conflict
+from claire.common.pagination import results_envelope
 from claire.common.permissions import (
     IsAnnotationOwnerOrReviewer,
     IsReviewerOrAdmin,
@@ -185,7 +186,7 @@ class AnnotationViewSet(viewsets.ModelViewSet):
                 status=status.HTTP_201_CREATED,
             )
         qs = annotation.versions.select_related("author")
-        return Response(AnnotationVersionSerializer(qs, many=True).data)
+        return Response(results_envelope(AnnotationVersionSerializer(qs, many=True).data))
 
     @action(
         detail=True, methods=["get"],
@@ -218,7 +219,7 @@ class AnnotationViewSet(viewsets.ModelViewSet):
                 CommentSerializer(comment).data, status=status.HTTP_201_CREATED
             )
         qs = annotation.comments.select_related("author")
-        return Response(CommentSerializer(qs, many=True).data)
+        return Response(results_envelope(CommentSerializer(qs, many=True).data))
 
     # --- reviews ----------------------------------------------------------
     @action(
@@ -251,7 +252,7 @@ class AnnotationViewSet(viewsets.ModelViewSet):
                 ReviewSerializer(review).data, status=status.HTTP_201_CREATED
             )
         qs = annotation.reviews.select_related("reviewer")
-        return Response(ReviewSerializer(qs, many=True).data)
+        return Response(results_envelope(ReviewSerializer(qs, many=True).data))
 
 
 class ClauseViewSet(viewsets.ModelViewSet):

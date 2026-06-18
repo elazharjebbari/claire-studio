@@ -93,9 +93,9 @@ export default function ReviewPage({ params }: { params: { id: string } }) {
           >
             Envoyer la revue
           </Button>
-          {reviews && reviews.results.length > 0 && (
+          {(reviews?.results?.length ?? 0) > 0 && (
             <p className="mt-2 text-xs text-ink-muted">
-              {reviews.results.length} revue(s) déjà enregistrée(s).
+              {reviews?.results?.length ?? 0} revue(s) déjà enregistrée(s).
             </p>
           )}
         </Panel>

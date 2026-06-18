@@ -135,9 +135,15 @@ def test_assignments_shape(admin_client):
     body = admin_client.get(
         "/api/v1/projects/claudette-gold-v1/assignments"
     ).json()
-    assert isinstance(body, list)
-    if body:
-        a = body[0]
+    # The frontend consumes this as Paginated<Assignment> ({results}); a bare
+    # list crashes the home page (assignments.results.map).
+    _assert_keys(
+        body, {"count", "next", "previous", "results"}, where="Assignments paginated"
+    )
+    items = body["results"]
+    assert isinstance(items, list)
+    if items:
+        a = items[0]
         _assert_keys(
             a,
             {"id", "projectSlug", "document", "assigneeId", "status",
@@ -254,7 +260,7 @@ def test_versions_comments_reviews_shape(admin_client):
     ann = Annotation.objects.filter(versions__isnull=False).first()
     aid = ann.id
 
-    versions = admin_client.get(f"/api/v1/annotations/{aid}/versions").json()
+    versions = admin_client.get(f"/api/v1/annotations/{aid}/versions").json()["results"]
     assert versions
     _assert_keys(
         versions[0],
@@ -266,7 +272,7 @@ def test_versions_comments_reviews_shape(admin_client):
     snap = versions[0]["snapshot"]
     assert "clauses" in snap and "doc" in snap
 
-    comments = admin_client.get(f"/api/v1/annotations/{aid}/comments").json()
+    comments = admin_client.get(f"/api/v1/annotations/{aid}/comments").json()["results"]
     if comments:
         _assert_keys(
             comments[0],
@@ -275,7 +281,7 @@ def test_versions_comments_reviews_shape(admin_client):
             where="Comment",
         )
 
-    reviews = admin_client.get(f"/api/v1/annotations/{aid}/reviews").json()
+    reviews = admin_client.get(f"/api/v1/annotations/{aid}/reviews").json()["results"]
     if reviews:
         _assert_keys(
             reviews[0],
@@ -339,4 +345,8 @@ def test_translations_shape(admin_client):
     proj_ts = admin_client.get(
         "/api/v1/projects/claudette-gold-v1/translations"
     ).json()
-    assert isinstance(proj_ts, list)
+    # Paginated envelope (frontend consumes .results).
+    _assert_keys(
+        proj_ts, {"count", "next", "previous", "results"}, where="Project translations paginated"
+    )
+    assert isinstance(proj_ts["results"], list)

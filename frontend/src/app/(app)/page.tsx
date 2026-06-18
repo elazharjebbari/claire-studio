@@ -9,6 +9,10 @@ import { Panel, Button, StatusPill } from "@/components/ui/primitives";
 export default function HomePage() {
   const { data: projects } = useProjects();
   const { data: assignments } = useAssignments("claudette-gold-v1");
+  // Défensif : une réponse inattendue (liste nue, erreur, champ manquant) ne doit
+  // jamais white-screener l'accueil.
+  const assignmentList = assignments?.results ?? [];
+  const projectList = projects?.results ?? [];
 
   return (
     <div className="mx-auto max-w-4xl px-6 py-10">
@@ -24,7 +28,7 @@ export default function HomePage() {
         <Panel className="p-4">
           <h2 className="font-semibold text-ink">Reprendre le travail</h2>
           <ul className="mt-3 flex flex-col gap-2">
-            {assignments?.results.map((a) => (
+            {assignmentList.map((a) => (
               <li key={a.id} className="flex items-center justify-between">
                 <span className="text-sm text-ink">{a.document.title}</span>
                 <div className="flex items-center gap-2">
@@ -37,7 +41,7 @@ export default function HomePage() {
                 </div>
               </li>
             ))}
-            {(!assignments || assignments.results.length === 0) && (
+            {assignmentList.length === 0 && (
               <li className="text-sm text-ink-muted">Aucune assignation pour l’instant.</li>
             )}
           </ul>

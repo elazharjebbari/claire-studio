@@ -4,6 +4,7 @@ from rest_framework.decorators import action
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 
+from claire.common.pagination import results_envelope
 from claire.common.permissions import IsAdminRole
 
 from .iaa import project_iaa, project_iaa_detail
@@ -39,7 +40,7 @@ class ProjectViewSet(viewsets.ModelViewSet):
         if not request.user.is_admin_role:
             qs = qs.filter(assignee=request.user)
         ser = AssignmentSerializer(qs, many=True, context={"request": request})
-        return Response(ser.data)
+        return Response(results_envelope(ser.data))
 
     @action(detail=True, methods=["get"])
     def progress(self, request, slug=None):
@@ -116,7 +117,7 @@ class ProjectViewSet(viewsets.ModelViewSet):
 
         project = self.get_object()
         qs = project.corpus.translation_sets.all()
-        return Response(TranslationSetSerializer(qs, many=True).data)
+        return Response(results_envelope(TranslationSetSerializer(qs, many=True).data))
 
     # --- exports (feature 5) ----------------------------------------------
     @action(detail=True, methods=["post"], permission_classes=[IsAdminRole])
