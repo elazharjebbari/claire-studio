@@ -5,6 +5,7 @@
  * Clés de cache stables ; invalidations ciblées après mutations.
  */
 
+import { useMemo } from "react";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import * as api from "./endpoints";
 import type { Annotation, Certainty, Clause, Review } from "@/types/contract";
@@ -15,6 +16,8 @@ export const qk = {
   corpora: ["corpora"] as const,
   corpusDocs: (slug: string) => ["corpora", slug, "documents"] as const,
   document: (id: string) => ["documents", id] as const,
+  documentTranslations: (id: string, lang: string) =>
+    ["documents", id, "translations", lang] as const,
   schemes: ["schemes"] as const,
   scheme: (slug: string) => ["schemes", slug] as const,
   projects: ["projects"] as const,
@@ -65,6 +68,26 @@ export function useDocument(id: string | undefined) {
     queryFn: () => api.getDocument(id!),
     enabled: Boolean(id),
   });
+}
+
+/**
+ * Traductions FR du document (P5). Expose la requête brute + une Map index→texte
+ * mémoïsée, prête à l'affichage sous chaque phrase.
+ */
+export function useDocumentTranslations(documentId: string | undefined, lang = "fr") {
+  const query = useQuery({
+    queryKey: qk.documentTranslations(documentId ?? "", lang),
+    queryFn: () => api.getDocumentTranslations(documentId!, lang),
+    enabled: Boolean(documentId),
+  });
+
+  const byIndex = useMemo(() => {
+    const map = new Map<number, string>();
+    for (const r of query.data?.results ?? []) map.set(r.sentenceIndex, r.text);
+    return map;
+  }, [query.data]);
+
+  return { ...query, byIndex };
 }
 
 export function useScheme(slug: string | undefined) {

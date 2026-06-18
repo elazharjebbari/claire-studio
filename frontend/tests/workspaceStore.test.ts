@@ -69,4 +69,48 @@ describe("workspace store", () => {
     useWorkspaceStore.getState().toggleUnfairness();
     expect(useWorkspaceStore.getState().showUnfairness).toBe(!before);
   });
+
+  it("toggle les frontières (défaut ON)", () => {
+    expect(useWorkspaceStore.getState().showBoundaries).toBe(true);
+    useWorkspaceStore.getState().toggleBoundaries();
+    expect(useWorkspaceStore.getState().showBoundaries).toBe(false);
+  });
+
+  it("selectRange sélectionne une plage inclusive bornée", () => {
+    useWorkspaceStore.getState().selectRange(2, 4);
+    expect(useWorkspaceStore.getState().selectedSentences).toEqual([2, 3, 4]);
+    // Ordre inversé → même plage triée.
+    useWorkspaceStore.getState().selectRange(4, 2);
+    expect(useWorkspaceStore.getState().selectedSentences).toEqual([2, 3, 4]);
+    // Bornée à nSentences-1 (=9).
+    useWorkspaceStore.getState().selectRange(8, 100);
+    expect(useWorkspaceStore.getState().selectedSentences).toEqual([8, 9]);
+  });
+
+  it("toggleSelected ajoute puis retire un index (trié)", () => {
+    useWorkspaceStore.getState().toggleSelected(5);
+    useWorkspaceStore.getState().toggleSelected(1);
+    expect(useWorkspaceStore.getState().selectedSentences).toEqual([1, 5]);
+    useWorkspaceStore.getState().toggleSelected(5);
+    expect(useWorkspaceStore.getState().selectedSentences).toEqual([1]);
+  });
+
+  it("clearSelection vide la sélection", () => {
+    useWorkspaceStore.getState().selectRange(0, 3);
+    useWorkspaceStore.getState().clearSelection();
+    expect(useWorkspaceStore.getState().selectedSentences).toEqual([]);
+  });
+
+  it("setTranslated / toggleTranslateAll gèrent la traduction", () => {
+    useWorkspaceStore.getState().setTranslated(2, true);
+    expect(useWorkspaceStore.getState().translatedSentences).toEqual([2]);
+    useWorkspaceStore.getState().setTranslated(0, true);
+    expect(useWorkspaceStore.getState().translatedSentences).toEqual([0, 2]);
+    useWorkspaceStore.getState().setTranslated(2, false);
+    expect(useWorkspaceStore.getState().translatedSentences).toEqual([0]);
+
+    expect(useWorkspaceStore.getState().translateAll).toBe(false);
+    useWorkspaceStore.getState().toggleTranslateAll();
+    expect(useWorkspaceStore.getState().translateAll).toBe(true);
+  });
 });

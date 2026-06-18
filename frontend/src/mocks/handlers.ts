@@ -95,6 +95,17 @@ export const handlers = [
   http.get(`${BASE}/documents/:id/sentences`, () =>
     HttpResponse.json(page(FIXTURE_DOCUMENT.sentences)),
   ),
+  // Traductions phrase par phrase (P5). Renvoie un mapping index→texte FR.
+  http.get(`${BASE}/documents/:id/translations`, ({ request }) => {
+    const url = new URL(request.url);
+    const language = url.searchParams.get("lang") ?? "fr";
+    const results = [
+      { sentenceIndex: 0, text: "[FR] Phrase 0 traduite." },
+      { sentenceIndex: 2, text: "[FR] Phrase 2 traduite." },
+      { sentenceIndex: 8, text: "[FR] Phrase 8 traduite." },
+    ];
+    return HttpResponse.json({ language, count: results.length, results });
+  }),
 
   // Schemes
   http.get(`${BASE}/schemes`, () => HttpResponse.json(page([FIXTURE_SCHEME]))),

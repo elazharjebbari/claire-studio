@@ -54,3 +54,27 @@ class DocumentViewSet(viewsets.ReadOnlyModelViewSet):
         if page is not None:
             return self.get_paginated_response(ser.data)
         return Response(ser.data)
+
+    @action(detail=True, methods=["get"])
+    def translations(self, request, pk=None):
+        """GET /documents/{id}/translations?lang=fr — textes traduits STOCKÉS,
+        par index de phrase. Aucune traduction en ligne : on lit les `Translation`
+        du jeu de la langue demandée (feature F8). Renvoie {language, results}.
+        """
+        from claire.translations.models import Translation
+
+        document = self.get_object()
+        lang = request.query_params.get("lang", "fr")
+        rows = (
+            Translation.objects.filter(
+                document=document,
+                translation_set__target_language=lang,
+                sentence__isnull=False,
+            )
+            .select_related("sentence")
+            .order_by("sentence__index")
+        )
+        results = [
+            {"sentenceIndex": t.sentence.index, "text": t.text} for t in rows
+        ]
+        return Response({"language": lang, "count": len(results), "results": results})

@@ -41,6 +41,14 @@ interface WorkspaceState {
   showGhostClaude: boolean;
   showGhostCodex: boolean;
   showTranslation: boolean;
+  /** Affichage des frontières de clause (rail + pointillés). Défaut ON (P2). */
+  showBoundaries: boolean;
+  /** Multi-sélection de phrases (number[] pour la sérialisation/tests simples). */
+  selectedSentences: number[];
+  /** Traduction globale du document (overlay). */
+  translateAll: boolean;
+  /** Phrases dont la traduction FR est affichée individuellement. */
+  translatedSentences: number[];
   // Statut de dirty (modifs non snapshotées).
   dirty: boolean;
 
@@ -60,6 +68,13 @@ interface WorkspaceState {
   toggleUnfairness: () => void;
   toggleGhost: (judge: "claude" | "codex") => void;
   toggleTranslation: () => void;
+  // Frontières / multi-sélection / traduction (P1).
+  toggleBoundaries: () => void;
+  selectRange: (from: number, to: number) => void;
+  toggleSelected: (index: number) => void;
+  clearSelection: () => void;
+  setTranslated: (index: number, on: boolean) => void;
+  toggleTranslateAll: () => void;
   markClean: () => void;
   reset: () => void;
 }
@@ -96,6 +111,10 @@ export const useWorkspaceStore = create<WorkspaceState>((set, get) => ({
   showGhostClaude: false,
   showGhostCodex: false,
   showTranslation: false,
+  showBoundaries: true,
+  selectedSentences: [],
+  translateAll: false,
+  translatedSentences: [],
   dirty: false,
 
   init: ({ annotationId, nSentences, clauses }) =>
@@ -107,6 +126,9 @@ export const useWorkspaceStore = create<WorkspaceState>((set, get) => ({
       selectedClauseId: clauses[0]?.id ?? null,
       dirty: false,
       ghostClauses: [],
+      selectedSentences: [],
+      translatedSentences: [],
+      translateAll: false,
     }),
 
   focusSentence: (index) =>
@@ -210,6 +232,41 @@ export const useWorkspaceStore = create<WorkspaceState>((set, get) => ({
 
   toggleTranslation: () => set((s) => ({ showTranslation: !s.showTranslation })),
 
+  toggleBoundaries: () => set((s) => ({ showBoundaries: !s.showBoundaries })),
+
+  selectRange: (from, to) =>
+    set((s) => {
+      const lo = Math.min(from, to);
+      const hi = Math.max(from, to);
+      const max = Math.max(0, s.nSentences - 1);
+      const next: number[] = [];
+      for (let i = Math.max(0, lo); i <= Math.min(hi, max); i += 1) next.push(i);
+      return { selectedSentences: next };
+    }),
+
+  toggleSelected: (index) =>
+    set((s) => {
+      const has = s.selectedSentences.includes(index);
+      const next = has
+        ? s.selectedSentences.filter((i) => i !== index)
+        : [...s.selectedSentences, index].sort((a, b) => a - b);
+      return { selectedSentences: next };
+    }),
+
+  clearSelection: () => set({ selectedSentences: [] }),
+
+  setTranslated: (index, on) =>
+    set((s) => {
+      const has = s.translatedSentences.includes(index);
+      if (on === has) return {};
+      const next = on
+        ? [...s.translatedSentences, index].sort((a, b) => a - b)
+        : s.translatedSentences.filter((i) => i !== index);
+      return { translatedSentences: next };
+    }),
+
+  toggleTranslateAll: () => set((s) => ({ translateAll: !s.translateAll })),
+
   markClean: () => set({ dirty: false }),
 
   reset: () =>
@@ -220,6 +277,9 @@ export const useWorkspaceStore = create<WorkspaceState>((set, get) => ({
       selectedClauseId: null,
       draftClauses: [],
       ghostClauses: [],
+      selectedSentences: [],
+      translatedSentences: [],
+      translateAll: false,
       dirty: false,
     }),
 }));

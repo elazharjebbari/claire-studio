@@ -14,6 +14,7 @@ import type {
   Corpus,
   DocumentDetail,
   DocumentSummary,
+  DocumentTranslations,
   ExportJob,
   HealthStatus,
   LabelScheme,
@@ -66,6 +67,17 @@ export function listCorpusDocuments(slug: string): Promise<Paginated<DocumentSum
 
 export function getDocument(id: string): Promise<DocumentDetail> {
   return apiFetch<DocumentDetail>(`/documents/${id}?include=reference_labels`);
+}
+
+/**
+ * Traductions phrase par phrase d'un document (P0/P5).
+ * GET /documents/{id}/translations?lang= → {language, count, results:[{sentenceIndex,text}]}.
+ */
+export function getDocumentTranslations(
+  id: string,
+  lang = "fr",
+): Promise<DocumentTranslations> {
+  return apiFetch<DocumentTranslations>(`/documents/${id}/translations?lang=${lang}`);
 }
 
 // ── Schemes ─────────────────────────────────────────────────────────────────

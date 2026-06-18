@@ -20,8 +20,9 @@ export function TocPanel({ docTitle }: { docTitle: string }) {
   const showGhostClaude = useWorkspaceStore((s) => s.showGhostClaude);
   const showGhostCodex = useWorkspaceStore((s) => s.showGhostCodex);
   const toggleGhost = useWorkspaceStore((s) => s.toggleGhost);
-  const showTranslation = useWorkspaceStore((s) => s.showTranslation);
-  const toggleTranslation = useWorkspaceStore((s) => s.toggleTranslation);
+  // Overlay « Traduction (FR) » branché sur la vraie source (translateAll, P5).
+  const translateAll = useWorkspaceStore((s) => s.translateAll);
+  const toggleTranslateAll = useWorkspaceStore((s) => s.toggleTranslateAll);
 
   const coverage = nSentences > 0 ? Math.round((drafts.length / nSentences) * 100) : 0;
 
@@ -105,8 +106,8 @@ export function TocPanel({ docTitle }: { docTitle: string }) {
           <input
             type="checkbox"
             data-testid="toggle-translation"
-            checked={showTranslation}
-            onChange={toggleTranslation}
+            checked={translateAll}
+            onChange={toggleTranslateAll}
           />
           Traduction (FR)
         </label>

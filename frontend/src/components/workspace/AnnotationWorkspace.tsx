@@ -74,6 +74,7 @@ export function AnnotationWorkspace({ annotationId }: { annotationId: string }) 
             <DocumentPanel
               sentences={doc.sentences}
               referenceLabels={doc.referenceLabels}
+              documentId={doc.id}
             />
           }
           right={

@@ -158,6 +158,30 @@ def test_assignments_shape(admin_client):
         )
 
 
+# ------------------------------------------------------------- doc translations
+@requires_data
+def test_document_translations_shape(admin_client):
+    # feed_db sync's a 'claudette_fr' set → at least one doc has FR translations.
+    doc = Document.objects.first()
+    body = admin_client.get(
+        f"/api/v1/documents/{doc.id}/translations?lang=fr"
+    ).json()
+    _assert_keys(
+        body, {"language", "count", "results"}, where="DocumentTranslations"
+    )
+    assert body["language"] == "fr"
+    if body["results"]:
+        _assert_keys(
+            body["results"][0], {"sentenceIndex", "text"}, where="Translation row"
+        )
+        assert isinstance(body["results"][0]["sentenceIndex"], int)
+    # Unknown language → empty, not an error.
+    empty = admin_client.get(
+        f"/api/v1/documents/{doc.id}/translations?lang=zz"
+    ).json()
+    assert empty["results"] == []
+
+
 # ------------------------------------------------------------------ documents
 @requires_data
 def test_document_detail_shape(admin_client):

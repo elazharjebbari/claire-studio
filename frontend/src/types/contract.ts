@@ -327,6 +327,19 @@ export interface TranslationSyncResult {
   summary: { matched: number; unmatched: number };
 }
 
+/** Une phrase traduite (mapping index→texte) renvoyée par GET /documents/{id}/translations. */
+export interface DocumentTranslationEntry {
+  sentenceIndex: number;
+  text: string;
+}
+
+/** Réponse de GET /documents/{id}/translations?lang= (P0 backend). */
+export interface DocumentTranslations {
+  language: string;
+  count: number;
+  results: DocumentTranslationEntry[];
+}
+
 export interface ActivityEvent {
   id: string;
   actorId: string;
