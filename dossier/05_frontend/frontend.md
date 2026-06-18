@@ -80,6 +80,51 @@ agrège le résumé. C’est une brique pure, testée (`tests/versionDiff.test.t
   κ par thème (barres SVG/CSS maison, couleurs des tokens), depuis `iaaDetail` de
   `/projects/{slug}/progress`.
 
+## 4 ter. Centre d'aide & visite guidée (onboarding)
+
+Deux dispositifs d'aide complètent le shell (navigation.md §2 « ouvrir l'aide », §5
+« tour guidé léger, jamais bloquant »).
+
+### Centre d'aide in-app (Markdown)
+
+- **Route** : `/help` (groupe `(app)`), accessible via le lien « ? »
+  (`data-testid="help-link"`) dans la `TopBar`. Mise en page 2 colonnes : barre
+  latérale (groupes + sections du manifeste, lien actif, recherche par titre) +
+  contenu rendu avec **react-markdown + remark-gfm** (`components/help/HelpMarkdown.tsx`,
+  composants stylés sur les tokens sombres : titres, listes, code, tables, citations,
+  liens internes via `next/link`).
+- **Contenu piloté par fichiers** : `content/help/*.md` (un fichier par section,
+  éditables à la main, source de vérité). `content/help/manifest.ts` exporte
+  l'ordre et les titres `[{ slug, title, group }]` + les helpers `helpGroups()`,
+  `helpSection()`. `content/help/index.ts` réexporte chaque `.md` en chaîne brute
+  via le suffixe `?raw` (support natif Vite/Vitest ; règle webpack `asset/source`
+  ajoutée dans `next.config.mjs` ; type `*.md?raw` déclaré dans `src/types/raw-md.d.ts`).
+- **Ajouter une section** : (1) créer `content/help/<slug>.md` ; (2) l'importer et
+  l'enregistrer dans `HELP_CONTENT` (`content/help/index.ts`) ; (3) ajouter
+  `{ slug, title, group }` dans `HELP_MANIFEST`. Aucune autre modification.
+- Sections livrées : introduction, démarrage, workspace, thèmes & vocabulaire,
+  pré-annotations LLM, injustice CLAUDETTE, certitude, commentaires, versions &
+  historique, revue, export, traductions, raccourcis, FAQ.
+
+### Visite guidée du workspace (driver.js)
+
+- **Module** : `src/lib/tour/workspaceTour.ts` configure **driver.js** (MIT, CSS
+  importé dans le module). Les étapes (`WORKSPACE_TOUR_STEPS`) ciblent des sélecteurs
+  RÉELS (`data-testid` + rôles ARIA) : workspace, plan, document, phrase, inspecteur,
+  palette de thèmes, certitude, pré-remplissage Claude, overlays injustice/fantômes,
+  commentaires, snapshot, soumission, rappel des raccourcis + lien vers `/help`.
+  `startWorkspaceTour()` **filtre dynamiquement** les étapes dont l'élément est absent
+  du DOM (ex. le fil de commentaires n'existe qu'avec une clause sélectionnée).
+- **Déclenchement** : bouton « Visite guidée » (`data-testid="start-tour"`) dans
+  `WorkspaceToolbar` (`components/workspace/WorkspaceTourButton.tsx`, import dynamique
+  pour ne charger driver.js qu'à la demande). Auto-démarrage à la **première visite**
+  (localStorage `claire.tourSeen`), non bloquant, et **JAMAIS en mode mock**
+  (`NEXT_PUBLIC_ENABLE_MOCKS === "true"`) afin de préserver les E2E Playwright ; le
+  bouton fonctionne toujours. Pilotable au clavier (driver.js).
+- **Tests** : Vitest `tests/helpManifest.test.ts` (slugs uniques, contenu non vide)
+  et `tests/workspaceTour.test.ts` (chaque étape a un sélecteur + popover titre/desc).
+  Playwright `e2e/help.spec.ts` et `e2e/tour.spec.ts`.
+
 ## 5. Thème & accessibilité (F6)
 
 - Sombre par défaut, contraste AA, colonne de lecture ~70ch, `line-height 1.7`.

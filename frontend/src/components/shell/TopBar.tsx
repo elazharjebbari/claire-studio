@@ -5,6 +5,7 @@
  * d'activité, menu utilisateur (navigation.md §2).
  */
 
+import Link from "next/link";
 import { useUiStore } from "@/store/ui";
 import { useMe, useProjects } from "@/lib/api/hooks";
 import { ActivityBell } from "./ActivityBell";
@@ -51,6 +52,15 @@ export function TopBar() {
       </button>
 
       <div className="ml-auto flex items-center gap-2">
+        <Link
+          href="/help"
+          data-testid="help-link"
+          aria-label="Centre d'aide"
+          title="Centre d'aide"
+          className="flex h-7 w-7 items-center justify-center rounded-md border border-line bg-panel text-sm text-ink hover:bg-panel-muted"
+        >
+          ?
+        </Link>
         <ActivityBell />
         <button
           type="button"

@@ -1,0 +1,27 @@
+# Raccourcis clavier
+
+CLAIRE Studio est pensé pour le travail au clavier afin de réduire la fatigue.
+
+## Workspace d'annotation
+
+| Touche | Action |
+|---|---|
+| `j` | Phrase suivante |
+| `k` | Phrase précédente |
+| `B` | Poser une frontière de clause sur la phrase focalisée |
+| `T` | Cibler / ouvrir le sélecteur de thème |
+| `C` | Ouvrir un commentaire sur la clause sélectionnée |
+| `0` | Certitude 0 (très incertain) |
+| `1` | Certitude 1 |
+| `2` | Certitude 2 |
+| `3` | Certitude 3 (certain) |
+| `⌘S` | Snapshot (instantané), fonctionne même en saisie |
+
+## Application
+
+| Touche | Action |
+|---|---|
+| `⌘K` | Ouvrir la palette de commandes (recherche globale) |
+
+> Les raccourcis `0–3`, `B`, `T`, `C` sont désactivés lorsque le focus est dans
+> un champ de saisie (sauf `⌘S`), pour ne pas interférer avec la frappe.

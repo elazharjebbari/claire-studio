@@ -16,6 +16,7 @@ import {
   usePreAnnotations,
 } from "@/lib/api/hooks";
 import { preClausesToPivot } from "@/lib/pivot";
+import { WorkspaceTourButton } from "./WorkspaceTourButton";
 import type { Certainty, Judge } from "@/types/contract";
 
 export function WorkspaceToolbar({
@@ -107,6 +108,8 @@ export function WorkspaceToolbar({
           Codex
         </Button>
       </div>
+
+      <WorkspaceTourButton />
 
       <div className="ml-auto flex items-center gap-3">
         <div className="flex items-center gap-2">

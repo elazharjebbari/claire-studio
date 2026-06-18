@@ -7,6 +7,15 @@ const nextConfig = {
     // Active le mock MSW côté navigateur en dev si non branché au backend.
     NEXT_PUBLIC_ENABLE_MOCKS: process.env.NEXT_PUBLIC_ENABLE_MOCKS ?? "true",
   },
+  webpack(config) {
+    // Importer les fichiers Markdown du centre d'aide en tant que chaîne brute
+    // via le suffixe `?raw` (parité avec le support natif de Vite/Vitest).
+    config.module.rules.push({
+      resourceQuery: /raw/,
+      type: "asset/source",
+    });
+    return config;
+  },
 };
 
 export default nextConfig;
