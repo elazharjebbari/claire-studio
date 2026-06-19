@@ -48,9 +48,49 @@ const FALLBACK_THEME: ThemeToken = {
   order: 999,
 };
 
+/**
+ * Table de thèmes hydratée au runtime depuis le SCHÉMA DU PROJET (API), pour rendre
+ * l'app générique (H4) : un corpus tiers aux codes/couleurs différents s'affiche
+ * correctement au lieu du repli gris. `design-tokens.json` reste le repli statique
+ * (mode démo/E2E, ou couleur absente du schéma). null ⇒ uniquement le statique.
+ */
+let runtimeThemes: Map<string, ThemeToken> | null = null;
+
+export interface SchemeThemeInput {
+  code: string;
+  label?: string;
+  color?: string;
+  order?: number;
+}
+
+/** Hydrate (ou réinitialise via null) la table de thèmes depuis le schéma API. */
+export function setRuntimeThemes(themes: SchemeThemeInput[] | null | undefined): void {
+  if (!themes || themes.length === 0) {
+    runtimeThemes = null;
+    return;
+  }
+  runtimeThemes = new Map(
+    themes.map((t) => [
+      t.code,
+      {
+        code: t.code,
+        label: t.label || themeByCode.get(t.code)?.label || t.code,
+        // Couleur du schéma si fournie, sinon repli sur le token statique du même
+        // code, sinon la couleur de repli neutre.
+        color: t.color || themeByCode.get(t.code)?.color || FALLBACK_THEME.color,
+        order: t.order ?? themeByCode.get(t.code)?.order ?? 0,
+      },
+    ]),
+  );
+}
+
 export function getThemeToken(code: string | null | undefined): ThemeToken {
   if (!code) return FALLBACK_THEME;
-  return themeByCode.get(code) ?? { ...FALLBACK_THEME, code, label: code };
+  return (
+    runtimeThemes?.get(code) ??
+    themeByCode.get(code) ??
+    { ...FALLBACK_THEME, code, label: code }
+  );
 }
 
 export function getCertaintyToken(value: number | null | undefined): CertaintyToken {

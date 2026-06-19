@@ -7,8 +7,9 @@
  */
 
 import { useCallback, useEffect, useRef, useState } from "react";
-import { useAnnotation, useDocument, useScheme } from "@/lib/api/hooks";
+import { useAnnotation, useDocument, useProject, useScheme } from "@/lib/api/hooks";
 import { useWorkspaceStore } from "@/store/workspace";
+import { setRuntimeThemes } from "@/lib/tokens";
 import { ResizablePanels } from "./ResizablePanels";
 import { TocPanel } from "./TocPanel";
 import { DocumentPanel } from "./DocumentPanel";
@@ -21,7 +22,10 @@ import { useWorkspaceShortcuts } from "./useShortcuts";
 export function AnnotationWorkspace({ annotationId }: { annotationId: string }) {
   const { data: annotation, isLoading: loadingAnn } = useAnnotation(annotationId);
   const { data: doc, isLoading: loadingDoc } = useDocument(annotation?.documentId);
-  const { data: scheme } = useScheme(annotation?.projectSlug ? "claire-themes-v1" : undefined);
+  // Schéma résolu via le projet (plus de slug en dur, H4) : l'app suit le schéma du
+  // corpus chargé, quel qu'il soit.
+  const { data: project } = useProject(annotation?.projectSlug);
+  const { data: scheme } = useScheme(project?.schemeSlug);
 
   const init = useWorkspaceStore((s) => s.init);
   const reset = useWorkspaceStore((s) => s.reset);
@@ -41,6 +45,13 @@ export function AnnotationWorkspace({ annotationId }: { annotationId: string }) 
     }
     return () => reset();
   }, [annotation, doc, init, reset]);
+
+  // Hydrate couleurs/labels de thèmes depuis le schéma API (H4) ; repli statique
+  // (design-tokens.json) en mode démo ou si une couleur manque. Réinit au démontage.
+  useEffect(() => {
+    setRuntimeThemes(scheme?.themes ?? null);
+    return () => setRuntimeThemes(null);
+  }, [scheme]);
 
   const themeFocusRef = useRef<(() => void) | null>(null);
   useWorkspaceShortcuts({
