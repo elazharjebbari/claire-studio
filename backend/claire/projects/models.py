@@ -14,6 +14,11 @@ class ProjectStatus(models.TextChoices):
     CLOSED = "closed", "Closed"
 
 
+class ProjectVisibility(models.TextChoices):
+    PRIVATE = "private", "Private"
+    PUBLIC = "public", "Public"
+
+
 class Project(TimeStampedModel):
     slug = models.SlugField(max_length=120, unique=True)
     name = models.CharField(max_length=200)
@@ -26,6 +31,13 @@ class Project(TimeStampedModel):
     guidelines = models.TextField(blank=True)  # markdown
     status = models.CharField(
         max_length=16, choices=ProjectStatus.choices, default=ProjectStatus.ACTIVE
+    )
+    # Publication (chantier F) : privé par défaut (RGPD/confidentialité) ; un projet
+    # n'expose ses agrégats en lecture seule publique que s'il est rendu public.
+    visibility = models.CharField(
+        max_length=10,
+        choices=ProjectVisibility.choices,
+        default=ProjectVisibility.PRIVATE,
     )
     settings = models.JSONField(default=dict, blank=True)
 

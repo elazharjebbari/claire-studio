@@ -31,7 +31,11 @@ from claire.corpora.views import (
 )
 from claire.exports.views import ExportJobViewSet
 from claire.imports.views import PreAnnotationViewSet
-from claire.projects.views import ProjectViewSet
+from claire.projects.views import (
+    ProjectViewSet,
+    PublicProjectDetailView,
+    PublicProjectListView,
+)
 from claire.schemes.views import LabelSchemeViewSet
 from claire.translations.views import TranslationSetViewSet
 
@@ -112,5 +116,12 @@ urlpatterns = [
         name="auth-password-reset-confirm",
     ),
     path("me", MeView.as_view(), name="me"),
+    # Publication publique (chantier F) — lecture seule, sans authentification.
+    path("public/projects", PublicProjectListView.as_view(), name="public-projects"),
+    path(
+        "public/projects/<slug:slug>",
+        PublicProjectDetailView.as_view(),
+        name="public-project-detail",
+    ),
     path("", include(router.urls)),
 ]

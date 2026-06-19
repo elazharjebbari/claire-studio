@@ -1,14 +1,15 @@
 from django.shortcuts import get_object_or_404
 from rest_framework import status, viewsets
 from rest_framework.decorators import action
-from rest_framework.permissions import IsAuthenticated
+from rest_framework.permissions import AllowAny, IsAuthenticated
 from rest_framework.response import Response
+from rest_framework.views import APIView
 
 from claire.common.pagination import results_envelope
 from claire.common.permissions import IsAdminRole
 
 from .iaa import project_iaa, project_iaa_detail
-from .models import Project
+from .models import Project, ProjectVisibility
 from .serializers import AssignmentSerializer, ProjectSerializer
 
 
@@ -292,3 +293,78 @@ class ProjectViewSet(viewsets.ModelViewSet):
         return Response(
             ExportJobSerializer(job).data, status=status.HTTP_201_CREATED
         )
+
+
+# --- Publication publique (chantier F) ---------------------------------------
+def _public_aggregates(project):
+    """Agrégats lecture seule d'un projet (KPI + distribution de thèmes)."""
+    from django.db.models import Avg, Count
+
+    from claire.annotations.models import Annotation, Clause
+
+    anns = Annotation.objects.filter(project=project)
+    theme_distribution = [
+        {"theme": r["theme__code"], "count": r["count"]}
+        for r in Clause.objects.filter(annotation__project=project)
+        .values("theme__code")
+        .annotate(count=Count("id"))
+        .order_by("-count")
+    ]
+    mean_certainty = Clause.objects.filter(annotation__project=project).aggregate(
+        m=Avg("certainty")
+    )["m"]
+    try:
+        kappa = project_iaa(project).get("mean_kappa")
+    except Exception:  # noqa: BLE001 — l'IAA ne doit jamais casser l'écran public
+        kappa = None
+    return {
+        "slug": project.slug,
+        "name": project.name,
+        "corpus_slug": project.corpus.slug,
+        "kpi": {
+            "documents_total": project.corpus.documents.count(),
+            "documents_annotated": anns.values("document").distinct().count(),
+            "annotators": anns.values("annotator").distinct().count(),
+            "mean_certainty": round(mean_certainty, 2) if mean_certainty else None,
+            "kappa": round(kappa, 2) if kappa is not None else None,
+        },
+        "theme_distribution": theme_distribution,
+    }
+
+
+class PublicProjectListView(APIView):
+    """GET /public/projects — projets PUBLIÉS uniquement (lecture seule, sans auth)."""
+
+    permission_classes = [AllowAny]
+    authentication_classes: list = []
+
+    def get(self, request):
+        qs = Project.objects.filter(
+            visibility=ProjectVisibility.PUBLIC
+        ).select_related("corpus")
+        results = [
+            {"slug": p.slug, "name": p.name, "corpus_slug": p.corpus.slug}
+            for p in qs
+        ]
+        return Response(results_envelope(results))
+
+
+class PublicProjectDetailView(APIView):
+    """GET /public/projects/{slug} — agrégats publics (404 si privé/inexistant)."""
+
+    permission_classes = [AllowAny]
+    authentication_classes: list = []
+
+    def get(self, request, slug=None):
+        project = (
+            Project.objects.filter(slug=slug, visibility=ProjectVisibility.PUBLIC)
+            .select_related("corpus")
+            .first()
+        )
+        if project is None:
+            # Confidentialité : on ne distingue pas « privé » de « inexistant ».
+            return Response(
+                {"detail": "Projet introuvable ou non publié."},
+                status=status.HTTP_404_NOT_FOUND,
+            )
+        return Response(_public_aggregates(project))

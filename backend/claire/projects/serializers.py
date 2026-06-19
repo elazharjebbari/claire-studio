@@ -29,7 +29,7 @@ class ProjectSerializer(serializers.ModelSerializer):
         model = Project
         fields = [
             "id", "slug", "name", "corpus_slug", "scheme_slug", "guidelines",
-            "status", "settings", "my_role", "corpus", "scheme",
+            "status", "visibility", "settings", "my_role", "corpus", "scheme",
         ]
 
     def get_my_role(self, obj):
