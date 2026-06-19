@@ -276,16 +276,53 @@ export interface VersionDiff {
   summary: { added: number; removed: number; modified: number; unchanged: number };
 }
 
+/** Niveau d'ancrage d'un commentaire (point 3). */
+export type CommentScope = "sentence" | "clause" | "range" | "document";
+
 export interface Comment {
   id: string;
   annotationId: string;
   clauseId?: string | null;
   sentenceIndex?: number | null;
+  /** Portée du commentaire (point 3). Défaut historique : clause. */
+  scope?: CommentScope;
+  /** Bornes de phrases si scope = range (inclusives). */
+  rangeStart?: number | null;
+  rangeEnd?: number | null;
   authorId: string;
   body: string;
   threadRoot?: string | null;
   resolved: boolean;
   createdAt: string;
+}
+
+/** Contributeur d'un document (membre du projet ayant une couleur d'identité). */
+export interface Contributor {
+  userId: string;
+  name: string;
+  color: string;
+  role: "owner" | "reviewer" | "annotator";
+}
+
+export interface ContributorsResponse {
+  count: number;
+  results: Contributor[];
+}
+
+/** Dernière modification attribuée à une cible (clause/phrase) — point 3. */
+export interface AttributionEntry {
+  /** Cible : index de phrase (by=sentence) ou anchorIndex de clause (by=clause). */
+  index: number;
+  actorId: string;
+  actorName: string;
+  actorColor: string;
+  verb: string;
+  at: string;
+}
+
+export interface AttributionResponse {
+  by: "sentence" | "clause";
+  results: AttributionEntry[];
 }
 
 export interface Review {

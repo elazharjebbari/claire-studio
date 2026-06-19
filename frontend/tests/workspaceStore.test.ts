@@ -256,6 +256,14 @@ describe("workspace store", () => {
     expect(useWorkspaceStore.getState().redoStack.length).toBe(0);
   });
 
+  it("toggleAttribution bascule l'overlay d'attribution (défaut OFF, point 3)", () => {
+    expect(useWorkspaceStore.getState().showAttribution).toBe(false);
+    useWorkspaceStore.getState().toggleAttribution();
+    expect(useWorkspaceStore.getState().showAttribution).toBe(true);
+    useWorkspaceStore.getState().reset();
+    expect(useWorkspaceStore.getState().showAttribution).toBe(false);
+  });
+
   it("undo/redo sont des no-op quand les piles sont vides", () => {
     const snap = useWorkspaceStore.getState().draftClauses;
     useWorkspaceStore.getState().undo();

@@ -96,4 +96,25 @@ test.describe("Collaboration & versioning — socle (points 0,1,2)", () => {
     await page.getByTestId("redo-btn").click();
     await expect(planChip).toBeVisible(); // clause rétablie
   });
+
+  test("commentaire multi-niveaux : ajout d'un commentaire général (point 3)", async ({ page }) => {
+    await open(page);
+    await page.getByTestId("toggle-comments").click();
+    const panel = page.getByTestId("comments-panel");
+    await expect(panel).toBeVisible();
+    // Commentaires de démo présents (général, range, phrase).
+    await expect(panel.getByTestId("comment-item").first()).toBeVisible();
+    // Ajout d'un commentaire général.
+    await page.getByTestId("comment-scope-document").click();
+    await page.getByTestId("comment-body").fill("Relecture globale OK.");
+    await page.getByTestId("comment-add").click();
+    await expect(panel.getByText("Relecture globale OK.")).toBeVisible();
+  });
+
+  test("l'overlay d'attribution montre l'auteur sur les clauses (point 3)", async ({ page }) => {
+    await open(page);
+    await page.getByTestId("toggle-attribution").click();
+    // La clause à l'ancre 0 (META, fixtures) porte une pastille d'auteur.
+    await expect(page.getByTestId("attribution-0")).toBeVisible();
+  });
 });

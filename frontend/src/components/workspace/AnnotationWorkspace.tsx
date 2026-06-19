@@ -15,6 +15,7 @@ import { DocumentPanel } from "./DocumentPanel";
 import { InspectorPanel } from "./InspectorPanel";
 import { WorkspaceToolbar } from "./WorkspaceToolbar";
 import { HistoryPanel } from "./HistoryPanel";
+import { CommentsPanel } from "./CommentsPanel";
 import { useWorkspaceShortcuts } from "./useShortcuts";
 
 export function AnnotationWorkspace({ annotationId }: { annotationId: string }) {
@@ -27,6 +28,7 @@ export function AnnotationWorkspace({ annotationId }: { annotationId: string }) 
   const [snapshotFn, setSnapshotFn] = useState<(() => void) | null>(null);
   const registerSnapshot = useCallback((fn: () => void) => setSnapshotFn(() => fn), []);
   const [showHistory, setShowHistory] = useState(false);
+  const [showComments, setShowComments] = useState(false);
 
   // Initialise le store local dès que l'annotation + le document sont chargés.
   useEffect(() => {
@@ -69,6 +71,7 @@ export function AnnotationWorkspace({ annotationId }: { annotationId: string }) 
         documentId={annotation.documentId}
         onSnapshotRef={registerSnapshot}
         onToggleHistory={() => setShowHistory((v) => !v)}
+        onToggleComments={() => setShowComments((v) => !v)}
       />
       <div className="flex min-h-0 flex-1">
         <div className="min-w-0 flex-1">
@@ -92,6 +95,13 @@ export function AnnotationWorkspace({ annotationId }: { annotationId: string }) 
           }
         />
         </div>
+        {showComments && (
+          <CommentsPanel
+            annotationId={annotation.id}
+            documentId={annotation.documentId}
+            onClose={() => setShowComments(false)}
+          />
+        )}
         {showHistory && <HistoryPanel onClose={() => setShowHistory(false)} />}
       </div>
     </div>

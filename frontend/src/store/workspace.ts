@@ -92,6 +92,8 @@ interface WorkspaceState {
   llmVersion: string | null;
   /** Panneau comparatif latéral Claude vs Codex visible (P4). */
   showComparePanel: boolean;
+  /** Overlay d'attribution multi-annotateurs (qui a touché quoi) — point 3. */
+  showAttribution: boolean;
   /** Juge pré-rempli courant (point 0a). */
   prefilledJudge: PrefillJudge;
   /** Journal des actions humaines de la session (point 2). */
@@ -152,6 +154,8 @@ interface WorkspaceState {
   setLlmVersion: (version: string | null) => void;
   /** Bascule le panneau comparatif latéral (P4). */
   toggleComparePanel: () => void;
+  /** Bascule l'overlay d'attribution (point 3). */
+  toggleAttribution: () => void;
   /** Vide le journal d'actions (ex. après soumission). */
   clearActionLog: () => void;
   /** Annule la dernière mutation de clauses (point 4a). */
@@ -219,6 +223,7 @@ export const useWorkspaceStore = create<WorkspaceState>((set, get) => ({
   llmSource: "human",
   llmVersion: null,
   showComparePanel: false,
+  showAttribution: false,
   prefilledJudge: null,
   actionLog: [],
   undoStack: [],
@@ -241,6 +246,7 @@ export const useWorkspaceStore = create<WorkspaceState>((set, get) => ({
       llmSource: "human",
       llmVersion: null,
       showComparePanel: false,
+      showAttribution: false,
       prefilledJudge: null,
       actionLog: [],
       undoStack: [],
@@ -526,6 +532,8 @@ export const useWorkspaceStore = create<WorkspaceState>((set, get) => ({
 
   toggleComparePanel: () => set((s) => ({ showComparePanel: !s.showComparePanel })),
 
+  toggleAttribution: () => set((s) => ({ showAttribution: !s.showAttribution })),
+
   clearActionLog: () => set({ actionLog: [] }),
 
   undo: () =>
@@ -579,6 +587,7 @@ export const useWorkspaceStore = create<WorkspaceState>((set, get) => ({
       llmSource: "human",
       llmVersion: null,
       showComparePanel: false,
+      showAttribution: false,
       prefilledJudge: null,
       actionLog: [],
       undoStack: [],

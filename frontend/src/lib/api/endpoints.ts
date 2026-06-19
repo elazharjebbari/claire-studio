@@ -220,14 +220,25 @@ export function listComments(annotationId: string): Promise<Paginated<Comment>> 
 
 export function addComment(
   annotationId: string,
-  payload: { body: string; clauseId?: string; sentenceIndex?: number; threadRoot?: string },
+  payload: {
+    body: string;
+    scope?: import("@/types/contract").CommentScope;
+    clauseId?: string;
+    sentenceIndex?: number;
+    rangeStart?: number;
+    rangeEnd?: number;
+    threadRoot?: string;
+  },
 ): Promise<Comment> {
   return apiFetch<Comment>(`/annotations/${annotationId}/comments`, {
     method: "POST",
     body: {
       body: payload.body,
+      scope: payload.scope ?? (payload.clauseId ? "clause" : "document"),
       clause: payload.clauseId ?? null,
       sentence_index: payload.sentenceIndex ?? null,
+      range_start: payload.rangeStart ?? null,
+      range_end: payload.rangeEnd ?? null,
       thread_root: payload.threadRoot ?? null,
     },
   });
@@ -235,6 +246,21 @@ export function addComment(
 
 export function resolveComment(id: string): Promise<Comment> {
   return apiFetch<Comment>(`/comments/${id}/resolve`, { method: "POST" });
+}
+
+// ── Attribution & contributeurs (point 3) ─────────────────────────────────────
+
+export function getDocumentContributors(
+  documentId: string,
+): Promise<import("@/types/contract").ContributorsResponse> {
+  return apiFetch(`/documents/${documentId}/contributors`);
+}
+
+export function getAttribution(
+  annotationId: string,
+  by: "sentence" | "clause" = "clause",
+): Promise<import("@/types/contract").AttributionResponse> {
+  return apiFetch(`/annotations/${annotationId}/attribution?by=${by}`);
 }
 
 // ── Reviews (F10) ─────────────────────────────────────────────────────────────

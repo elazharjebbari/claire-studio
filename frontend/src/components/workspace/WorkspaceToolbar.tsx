@@ -28,12 +28,14 @@ export function WorkspaceToolbar({
   documentId,
   onSnapshotRef,
   onToggleHistory,
+  onToggleComments,
 }: {
   annotationId: string;
   projectSlug: string;
   documentId: string;
   onSnapshotRef?: (fn: () => void) => void;
   onToggleHistory?: () => void;
+  onToggleComments?: () => void;
 }) {
   const { data: annotation } = useAnnotation(annotationId);
   const { data: preClaude } = usePreAnnotations(projectSlug, documentId);
@@ -177,6 +179,16 @@ export function WorkspaceToolbar({
         className="rounded-md border border-line px-2 py-1 text-xs text-ink-muted hover:bg-panel-muted"
       >
         🕑 Historique
+      </button>
+
+      <button
+        type="button"
+        data-testid="toggle-comments"
+        onClick={onToggleComments}
+        title="Commentaires (général / phrase / sélection / clause)"
+        className="rounded-md border border-line px-2 py-1 text-xs text-ink-muted hover:bg-panel-muted"
+      >
+        💬 Commentaires
       </button>
 
       <WorkspaceTourButton />

@@ -298,9 +298,36 @@ export function usePatchAnnotation(annotationId: string) {
 export function useAddComment(annotationId: string) {
   const qc = useQueryClient();
   return useMutation({
-    mutationFn: (payload: { body: string; clauseId?: string; sentenceIndex?: number }) =>
-      api.addComment(annotationId, payload),
+    mutationFn: (payload: {
+      body: string;
+      scope?: import("@/types/contract").CommentScope;
+      clauseId?: string;
+      sentenceIndex?: number;
+      rangeStart?: number;
+      rangeEnd?: number;
+    }) => api.addComment(annotationId, payload),
     onSuccess: () => qc.invalidateQueries({ queryKey: qk.comments(annotationId) }),
+  });
+}
+
+/** Contributeurs d'un document (membres + couleurs) — attribution (point 3). */
+export function useContributors(documentId: string | undefined) {
+  return useQuery({
+    queryKey: ["documents", documentId ?? "", "contributors"],
+    queryFn: () => api.getDocumentContributors(documentId!),
+    enabled: Boolean(documentId),
+  });
+}
+
+/** Dernière modification attribuée par cible (phrase/clause) — point 3. */
+export function useAttribution(
+  annotationId: string | undefined,
+  by: "sentence" | "clause" = "clause",
+) {
+  return useQuery({
+    queryKey: ["annotations", annotationId ?? "", "attribution", by],
+    queryFn: () => api.getAttribution(annotationId!, by),
+    enabled: Boolean(annotationId),
   });
 }
 

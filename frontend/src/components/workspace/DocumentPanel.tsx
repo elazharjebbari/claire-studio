@@ -28,7 +28,12 @@ import type { PreClause, ReferenceLabel, Sentence } from "@/types/contract";
 import { useWorkspaceStore } from "@/store/workspace";
 import { getThemeToken } from "@/lib/tokens";
 import { computeRuns, runAt, type Run } from "@/lib/runs";
-import { useAnnotationVersions, useDocumentTranslations, useLlmAgreement } from "@/lib/api/hooks";
+import {
+  useAnnotationVersions,
+  useAttribution,
+  useDocumentTranslations,
+  useLlmAgreement,
+} from "@/lib/api/hooks";
 import { cn } from "@/lib/cn";
 import { unfairnessStyle, useUnfairnessIndex, type UnfairnessMark } from "./useUnfairness";
 import { useLongPress } from "./useLongPress";
@@ -78,6 +83,9 @@ export function DocumentPanel({
   const resolveDivergence = useWorkspaceStore((s) => s.resolveDivergence);
   const showComparePanel = useWorkspaceStore((s) => s.showComparePanel);
   const toggleComparePanel = useWorkspaceStore((s) => s.toggleComparePanel);
+  const showAttribution = useWorkspaceStore((s) => s.showAttribution);
+  const toggleAttribution = useWorkspaceStore((s) => s.toggleAttribution);
+  const annotationId = useWorkspaceStore((s) => s.annotationId);
   const showUnfairness = useWorkspaceStore((s) => s.showUnfairness);
   const showGhostClaude = useWorkspaceStore((s) => s.showGhostClaude);
   const showGhostCodex = useWorkspaceStore((s) => s.showGhostCodex);
@@ -114,6 +122,15 @@ export function DocumentPanel({
     () => buildJudgeDetailMap(llm.codexPre?.clauses),
     [llm.codexPre],
   );
+
+  // Attribution multi-annotateurs (point 3) — dernière modif par ancre de clause.
+  const attribution = useAttribution(showAttribution ? annotationId ?? undefined : undefined, "clause");
+  const attributionByAnchor = useMemo(() => {
+    const m = new Map<number, { actorName: string; actorColor: string; verb: string }>();
+    for (const e of attribution.data?.results ?? [])
+      m.set(e.index, { actorName: e.actorName, actorColor: e.actorColor, verb: e.verb });
+    return m;
+  }, [attribution.data]);
 
   const unfairIndex = useUnfairnessIndex(referenceLabels);
   const anchorByIndex = useMemo(
@@ -269,6 +286,21 @@ export function DocumentPanel({
             Frontières
           </label>
           <LlmSourceSwitch />
+          <button
+            type="button"
+            data-testid="toggle-attribution"
+            aria-pressed={showAttribution}
+            onClick={toggleAttribution}
+            title="Attribution : qui a modifié quoi"
+            className={
+              "rounded-md border px-2 py-1 transition-colors " +
+              (showAttribution
+                ? "border-accent/60 bg-accent/10 text-ink"
+                : "border-line text-ink-muted hover:bg-panel-muted")
+            }
+          >
+            👤 Attribution
+          </button>
           {compareDataReady && (
             <button
               type="button"
@@ -404,6 +436,21 @@ export function DocumentPanel({
                   {badge.tag && (
                     <span className="rounded bg-panel-muted px-1 font-mono text-[9px] text-ink-muted">
                       {badge.tag}
+                    </span>
+                  )}
+                  {/* Attribution (point 3) : dernier annotateur ayant touché cette clause. */}
+                  {showAttribution && anchor && attributionByAnchor.has(anchor.anchorIndex) && (
+                    <span
+                      data-testid={`attribution-${s.index}`}
+                      title={`${attributionByAnchor.get(anchor.anchorIndex)!.actorName} · ${attributionByAnchor.get(anchor.anchorIndex)!.verb}`}
+                      className="inline-flex items-center gap-1 rounded px-1 text-[9px] font-medium text-ink-muted"
+                    >
+                      <span
+                        aria-hidden
+                        className="h-2 w-2 rounded-full"
+                        style={{ backgroundColor: attributionByAnchor.get(anchor.anchorIndex)!.actorColor }}
+                      />
+                      {attributionByAnchor.get(anchor.anchorIndex)!.actorName}
                     </span>
                   )}
                   {/* Voyant d'arbitrage (P1) : juge adopté sur cette clause. */}

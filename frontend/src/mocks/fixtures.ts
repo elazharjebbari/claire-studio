@@ -296,11 +296,56 @@ export const FIXTURE_COMMENTS: Comment[] = [
     id: "cm-1",
     annotationId: "ann-1",
     clauseId: "cl-5",
+    scope: "clause",
     authorId: "u-bruno",
     body: "La licence est-elle vraiment perpétuelle ? Vérifier la formulation exacte.",
     resolved: false,
     createdAt: "2026-06-17T10:00:00Z",
   },
+  {
+    id: "cm-2",
+    annotationId: "ann-1",
+    scope: "document",
+    authorId: "u-alice",
+    body: "Document globalement cohérent ; attention aux clauses de résiliation (16-17).",
+    resolved: false,
+    createdAt: "2026-06-17T11:30:00Z",
+  },
+  {
+    id: "cm-3",
+    annotationId: "ann-1",
+    scope: "range",
+    rangeStart: 16,
+    rangeEnd: 17,
+    authorId: "u-bruno",
+    body: "Ce bloc mélange résiliation et suspension : à séparer ?",
+    resolved: false,
+    createdAt: "2026-06-17T12:00:00Z",
+  },
+  {
+    id: "cm-4",
+    annotationId: "ann-1",
+    scope: "sentence",
+    sentenceIndex: 9,
+    authorId: "u-alice",
+    body: "Phrase ambiguë sur la propriété du contenu utilisateur.",
+    resolved: true,
+    createdAt: "2026-06-17T12:10:00Z",
+  },
+];
+
+/** Contributeurs (membres + couleurs d'identité) — attribution (point 3). */
+export const FIXTURE_CONTRIBUTORS = [
+  { userId: "u-alice", name: "Alice", color: "#06B6D4", role: "annotator" as const },
+  { userId: "u-bruno", name: "Bruno", color: "#F59E0B", role: "annotator" as const },
+  { userId: "u-camille", name: "Camille", color: "#A78BFA", role: "reviewer" as const },
+];
+
+/** Dernière modification attribuée par clause (anchorIndex) — point 3. */
+export const FIXTURE_ATTRIBUTION = [
+  { index: 0, actorId: "u-alice", actorName: "Alice", actorColor: "#06B6D4", verb: "clause.create", at: "2026-06-17T09:00:00Z" },
+  { index: 16, actorId: "u-bruno", actorName: "Bruno", actorColor: "#F59E0B", verb: "clause.retheme", at: "2026-06-17T10:20:00Z" },
+  { index: 22, actorId: "u-alice", actorName: "Alice", actorColor: "#06B6D4", verb: "clause.set_certainty", at: "2026-06-17T10:40:00Z" },
 ];
 
 export const FIXTURE_REVIEWS: Review[] = [];

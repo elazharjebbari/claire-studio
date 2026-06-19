@@ -20,7 +20,9 @@ import {
   FIXTURE_ACTIVITY,
   FIXTURE_ANNOTATION,
   FIXTURE_ASSIGNMENTS,
+  FIXTURE_ATTRIBUTION,
   FIXTURE_COMMENTS,
+  FIXTURE_CONTRIBUTORS,
   FIXTURE_CORPUS,
   FIXTURE_DOCUMENT,
   FIXTURE_PREANNOTATIONS,
@@ -290,14 +292,20 @@ export const handlers = [
   http.post(`${BASE}/annotations/:id/comments`, async ({ params, request }) => {
     const body = (await request.json()) as {
       body: string;
+      scope?: "sentence" | "clause" | "range" | "document";
       clause?: string | null;
       sentence_index?: number | null;
+      range_start?: number | null;
+      range_end?: number | null;
     };
     const c: Comment = {
       id: `cm-${(commentSeq += 1)}`,
       annotationId: String(params.id),
       clauseId: body.clause ?? null,
       sentenceIndex: body.sentence_index ?? null,
+      scope: body.scope ?? (body.clause ? "clause" : "document"),
+      rangeStart: body.range_start ?? null,
+      rangeEnd: body.range_end ?? null,
       authorId: FIXTURE_USER.id,
       body: body.body,
       resolved: false,
@@ -309,6 +317,15 @@ export const handlers = [
   http.post(`${BASE}/comments/:id/resolve`, ({ params }) => {
     comments = comments.map((c) => (c.id === params.id ? { ...c, resolved: true } : c));
     return HttpResponse.json(comments.find((c) => c.id === params.id));
+  }),
+
+  // Attribution & contributeurs (point 3)
+  http.get(`${BASE}/documents/:id/contributors`, () =>
+    HttpResponse.json({ count: FIXTURE_CONTRIBUTORS.length, results: FIXTURE_CONTRIBUTORS }),
+  ),
+  http.get(`${BASE}/annotations/:id/attribution`, ({ request }) => {
+    const by = new URL(request.url).searchParams.get("by") === "sentence" ? "sentence" : "clause";
+    return HttpResponse.json({ by, results: FIXTURE_ATTRIBUTION });
   }),
 
   // Reviews (état mutable en mémoire pour refléter les soumissions)
