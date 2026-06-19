@@ -97,9 +97,10 @@ servira de preuve de bout en bout (étape suivante, transverse audit point 2).
 - **Création d'annotation à la demande** : `createAnnotation` existe (endpoints) mais
   n'est pas câblé à l'UI ; les brouillons vides sont pré-seedés en attendant un flux
   « Commencer l'annotation » (chantier F/UX).
-- **E2E pré-existants rouges** (confirmés en échec sur le baseline `4e8b488`, hors
-  périmètre Vague 1/G) : `prefill.spec.ts:25` (fantômes Claude non affichés) et
-  `llm-compare.spec.ts:54` (adoption clavier « 1 »). À investiguer en chantier I.
+- **E2E pré-existants** (`prefill.spec.ts`, `llm-compare.spec.ts`) : **corrigés** —
+  c'étaient des sélecteurs/hypothèses de test fragiles (texte au lieu de testid ;
+  `divergence-next` supposé tomber sur la phrase 1), pas des bugs de feature. Suite
+  e2e désormais **65/65**.
 
 ## 8. Suite immédiate (chantier G + intégrité du dépôt)
 
@@ -113,6 +114,8 @@ servira de preuve de bout en bout (étape suivante, transverse audit point 2).
   `frontend/src/app/(app)/admin/exports/page.tsx` ET **toute l'app Django
   `backend/claire/exports/`** (pourtant dans `INSTALLED_APPS` ⇒ crash sur un clone
   neuf). Règle resserrée + fichiers restaurés au suivi git.
-- **Régression de test révélée puis corrigée** : `version-explorer.spec.ts` (sélecteur
-  ambigu sur une fixture dupliquée) fiabilisé.
-- **État e2e** : suite verte hormis les 2 échecs pré-existants ci-dessus.
+- **Tests fiabilisés** : `version-explorer.spec.ts` (sélecteur ambigu sur fixture
+  dupliquée), `prefill`/`llm-compare` (sélecteurs/hypothèses fragiles).
+- **État final** : pytest 69/69 · tsc 0 · Vitest 104/104 · **e2e 65/65** — tout vert.
+- **Relecture** : hydratation H4 rendue synchrone (un état module ne re-rendant pas,
+  un effet laissait un flash de couleurs par défaut pour un corpus tiers).
