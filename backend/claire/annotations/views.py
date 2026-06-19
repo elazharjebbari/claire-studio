@@ -193,16 +193,75 @@ class AnnotationViewSet(viewsets.ModelViewSet):
         url_path=r"versions/(?P<number>\d+)/diff",
     )
     def version_diff(self, request, pk=None, number=None):
+        """Diff au format CONTRAT (consommé par DiffView) :
+        {from:{number,label}, to:{number,label}, clauses:[{anchorIndex,status,
+        before,after,changedFields}], summary:{added,removed,modified,unchanged}}.
+        `?against=` choisit la base (0/absent → version précédente ; sinon ce numéro)."""
         annotation = self.get_object()
         n = int(number)
         target = get_object_or_404(annotation.versions, number=n)
-        prev = annotation.versions.filter(number__lt=n).order_by("-number").first()
-        if prev is None:
-            return Response(
-                {"detail": "No earlier version to diff against."},
-                status=status.HTTP_400_BAD_REQUEST,
+
+        against = request.query_params.get("against")
+        if against not in (None, "", "0"):
+            base = annotation.versions.filter(number=int(against)).first()
+        else:
+            base = annotation.versions.filter(number__lt=n).order_by("-number").first()
+
+        # Champs comparés → nom camelCase exposé dans changed_fields.
+        fields = {
+            "theme": "theme",
+            "legal_nature": "legalNature",
+            "evidence_span": "evidenceSpan",
+            "rationale": "rationale",
+            "certainty": "certainty",
+        }
+
+        def by_anchor(snap):
+            return {c["anchor_index"]: c for c in (snap or {}).get("clauses", [])}
+
+        old = by_anchor(base.snapshot) if base else {}
+        new = by_anchor(target.snapshot)
+        clauses = []
+        added = removed = modified = unchanged = 0
+        for k in sorted(set(old) | set(new)):
+            o, nw = old.get(k), new.get(k)
+            if o is None:
+                status_ = "added"; added += 1
+            elif nw is None:
+                status_ = "removed"; removed += 1
+            else:
+                changed = [camel for snake, camel in fields.items() if o.get(snake) != nw.get(snake)]
+                if changed:
+                    status_ = "modified"; modified += 1
+                else:
+                    status_ = "unchanged"; unchanged += 1
+            clauses.append(
+                {
+                    "anchor_index": k,
+                    "status": status_,
+                    "before": o,
+                    "after": nw,
+                    "changed_fields": (
+                        [camel for snake, camel in fields.items() if (o or {}).get(snake) != (nw or {}).get(snake)]
+                        if (o and nw)
+                        else []
+                    ),
+                }
             )
-        return Response(diff_versions(prev, target))
+        return Response(
+            {
+                "annotation_id": annotation.pk,
+                "from": {"number": base.number if base else 0, "label": base.label if base else "∅"},
+                "to": {"number": target.number, "label": target.label},
+                "clauses": clauses,
+                "summary": {
+                    "added": added,
+                    "removed": removed,
+                    "modified": modified,
+                    "unchanged": unchanged,
+                },
+            }
+        )
 
     # --- comments ---------------------------------------------------------
     @action(detail=True, methods=["get", "post"])
