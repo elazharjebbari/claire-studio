@@ -10,6 +10,7 @@ import { useCallback, useEffect, useMemo, useState } from "react";
 import { Button, StatusPill } from "@/components/ui/primitives";
 import { CertaintyPicker } from "@/components/ui/CertaintyPicker";
 import { useWorkspaceStore, type PrefillJudge } from "@/store/workspace";
+import { useAutosaveStore } from "@/store/autosave";
 import {
   useAnnotation,
   useCreateVersion,
@@ -124,6 +125,8 @@ export function WorkspaceToolbar({
     );
   }
 
+  // (SaveIndicator est défini hors composant, plus bas.)
+
   const PREFILL_OPTIONS: { value: PrefillJudge; label: string; testid: string }[] = [
     { value: null, label: "Aucun", testid: "prefill-none" },
     { value: "claude", label: "Claude", testid: "prefill-claude" },
@@ -135,11 +138,7 @@ export function WorkspaceToolbar({
       <DocumentSwitcher projectSlug={projectSlug} currentDocumentId={documentId} />
 
       <StatusPill status={annotation?.status ?? "draft"} />
-      {dirty && (
-        <span className="text-[11px] text-amber-400" data-testid="dirty-indicator">
-          ● modifications non enregistrées
-        </span>
-      )}
+      <SaveIndicator dirty={dirty} />
 
       {/* Pré-remplissage commutable (point 0a) */}
       <div
@@ -243,5 +242,29 @@ export function WorkspaceToolbar({
         />
       )}
     </div>
+  );
+}
+
+/** Indicateur d'état d'enregistrement (chantier C) : en cours / enregistré /
+ * hors-ligne / erreur, et « non enregistré » tant qu'aucune synchro n'a eu lieu. */
+function SaveIndicator({ dirty }: { dirty: boolean }) {
+  const saveState = useAutosaveStore((s) => s.saveState);
+  const view: Record<string, { text: string; cls: string } | null> = {
+    saving: { text: "● enregistrement…", cls: "text-amber-400" },
+    saved: { text: "✓ enregistré", cls: "text-emerald-400" },
+    offline: { text: "⚠ hors-ligne — reprise auto", cls: "text-amber-400" },
+    error: { text: "✗ échec — nouvelle tentative", cls: "text-red-400" },
+    idle: dirty ? { text: "● non enregistré", cls: "text-amber-400" } : null,
+  };
+  const v = view[saveState] ?? null;
+  if (!v) return null;
+  return (
+    <span
+      data-testid="save-indicator"
+      data-state={saveState}
+      className={`text-[11px] ${v.cls}`}
+    >
+      {v.text}
+    </span>
   );
 }

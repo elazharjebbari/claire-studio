@@ -18,6 +18,7 @@ import { WorkspaceToolbar } from "./WorkspaceToolbar";
 import { HistoryPanel } from "./HistoryPanel";
 import { CommentsPanel } from "./CommentsPanel";
 import { useWorkspaceShortcuts } from "./useShortcuts";
+import { useAutosave } from "./useAutosave";
 
 export function AnnotationWorkspace({ annotationId }: { annotationId: string }) {
   const { data: annotation, isLoading: loadingAnn } = useAnnotation(annotationId);
@@ -58,6 +59,9 @@ export function AnnotationWorkspace({ annotationId }: { annotationId: string }) 
     hydratedScheme.current = scheme;
   }
   useEffect(() => () => setRuntimeThemes(null), []);
+
+  // Auto-save : persiste les clauses en arrière-plan (chantier C), sans perte.
+  useAutosave(annotation?.id ?? null);
 
   const themeFocusRef = useRef<(() => void) | null>(null);
   useWorkspaceShortcuts({

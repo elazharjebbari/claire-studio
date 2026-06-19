@@ -184,7 +184,7 @@ export function submitAnnotation(id: string): Promise<Annotation> {
 
 export function addClause(
   annotationId: string,
-  clause: Partial<Clause> & { anchorIndex: number; theme: string },
+  clause: Partial<Clause> & { anchorIndex: number; theme: string; clientOpId?: string },
 ): Promise<Clause> {
   return apiFetch<Clause>(`/annotations/${annotationId}/clauses`, {
     method: "POST",
@@ -195,6 +195,8 @@ export function addClause(
       evidence_span: clause.evidenceSpan ?? "",
       rationale: clause.rationale ?? "",
       certainty: clause.certainty ?? null,
+      // Idempotence (chantier C) : un retry portant le même op ne duplique pas.
+      client_op_id: clause.clientOpId,
     },
   });
 }

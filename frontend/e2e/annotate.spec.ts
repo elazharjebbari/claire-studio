@@ -96,4 +96,18 @@ test.describe("Workspace d'annotation (F1)", () => {
     await page.getByTestId("snapshot-btn").click();
     await expect(page.getByTestId("snapshot-msg")).toBeVisible();
   });
+
+  test("l'auto-save persiste les modifications (indicateur « enregistré », §C)", async ({ page }) => {
+    // Une édition (re-thématisation) déclenche l'auto-save debounce → l'indicateur
+    // d'état passe à « enregistré » une fois la synchro serveur terminée.
+    await page.getByTestId("sentence-0").click();
+    const input = page.getByTestId("inspector").getByLabel("Rechercher un thème");
+    await input.fill("résiliation");
+    await page.getByTestId("inspector").getByTestId("theme-option-TERMINATION").click();
+    await expect(page.getByTestId("save-indicator")).toHaveAttribute(
+      "data-state",
+      "saved",
+      { timeout: 8000 },
+    );
+  });
 });
