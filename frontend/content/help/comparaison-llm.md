@@ -37,6 +37,10 @@ L'aperçu (icône 👁 / touche `e`) montre, pour chaque modèle, le **thème**,
 span** (citation justificative) et le **rationale** (raisonnement). L'onglet
 « Comparer » place Claude et Codex en regard pour trancher en un coup d'œil.
 
+Les frontières LLM (et leur icône 👁) sont disponibles **dans tous les modes**, y
+compris en mode Humain, pour arbitrer sans changer de vue. Vous pouvez les masquer
+avec la case **Frontières** en tête de document.
+
 ## Panneau comparatif
 
 La touche **`g`** (ou le bouton « ⇄ Comparer ») ouvre une vue côte à côte des blocs

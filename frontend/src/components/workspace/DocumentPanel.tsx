@@ -334,12 +334,14 @@ export function DocumentPanel({
           const compareAgree = bothPresent && claudeTheme === codexTheme;
 
           // Frontière LLM (P5) : début d'un run Claude OU Codex sur cette phrase.
-          // L'aperçu de preuves n'a de sens qu'en mode comparaison ou source juge.
+          // L'aperçu de preuves est disponible dès qu'il existe des données LLM,
+          // quelle que soit la source affichée (y compris en mode Humain), pour
+          // arbitrer sans changer de vue. Discret : un simple liseré + l'icône 👁.
           const claudeStart = runAt(claudeRuns, s.index);
           const codexStart = runAt(codexRuns, s.index);
           const llmFrontier =
             compareDataReady &&
-            (isCompare || llmSource === "claude" || llmSource === "codex") &&
+            showBoundaries &&
             ((claudeStart?.start === s.index && claudeStart.theme != null) ||
               (codexStart?.start === s.index && codexStart.theme != null));
 
