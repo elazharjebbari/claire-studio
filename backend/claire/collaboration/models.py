@@ -1,12 +1,14 @@
-"""Comment / Review (CONTRACT §2) — features 9 & 10."""
+"""Comment / Review / ShareLink (CONTRACT §2) — features 9, 10 & collaboration."""
 
 from django.conf import settings
 from django.core.validators import MaxValueValidator, MinValueValidator
 from django.db import models
+from django.utils import timezone
 
 from claire.annotations.models import Annotation, Clause
 from claire.common.models import TimeStampedModel
 from claire.corpora.models import Sentence
+from claire.projects.models import Project
 
 
 class Comment(TimeStampedModel):
@@ -72,3 +74,47 @@ class Review(models.Model):
 
     def __str__(self) -> str:  # pragma: no cover
         return f"review#{self.pk}:{self.decision}"
+
+
+class ShareRole(models.TextChoices):
+    ANNOTATOR = "annotator", "Annotator"
+    REVIEWER = "reviewer", "Reviewer"
+
+
+class ShareLink(TimeStampedModel):
+    """Lien de partage PERSISTÉ (chantier D) : révocable, expirable, à quota.
+
+    À l'ouverture, l'utilisateur AUTHENTIFIÉ rejoint le projet (jamais d'accès
+    anonyme). Remplace l'ancien jeton signé sans état (pas de révocation/quota).
+    """
+
+    project = models.ForeignKey(
+        Project, on_delete=models.CASCADE, related_name="share_links"
+    )
+    token = models.CharField(max_length=64, unique=True)
+    role_granted = models.CharField(
+        max_length=16, choices=ShareRole.choices, default=ShareRole.ANNOTATOR
+    )
+    created_by = models.ForeignKey(
+        settings.AUTH_USER_MODEL, on_delete=models.PROTECT,
+        related_name="share_links",
+    )
+    expires_at = models.DateTimeField(null=True, blank=True)
+    max_uses = models.PositiveIntegerField(null=True, blank=True)
+    used_count = models.PositiveIntegerField(default=0)
+    revoked = models.BooleanField(default=False)
+
+    class Meta:
+        ordering = ["-created_at"]
+
+    def is_expired(self) -> bool:
+        return self.expires_at is not None and timezone.now() >= self.expires_at
+
+    def is_exhausted(self) -> bool:
+        return self.max_uses is not None and self.used_count >= self.max_uses
+
+    def is_usable(self) -> bool:
+        return not self.revoked and not self.is_expired() and not self.is_exhausted()
+
+    def __str__(self) -> str:  # pragma: no cover
+        return f"sharelink#{self.pk}:{self.project_id}:{self.role_granted}"

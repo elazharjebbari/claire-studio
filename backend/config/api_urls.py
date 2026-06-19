@@ -32,6 +32,7 @@ from claire.corpora.views import (
 from claire.exports.views import ExportJobViewSet
 from claire.imports.views import PreAnnotationViewSet
 from claire.projects.views import (
+    JoinShareLinkView,
     ProjectViewSet,
     PublicProjectDetailView,
     PublicProjectListView,
@@ -122,6 +123,12 @@ urlpatterns = [
         "public/projects/<slug:slug>",
         PublicProjectDetailView.as_view(),
         name="public-project-detail",
+    ),
+    # Jonction via lien de partage persisté (chantier D) — authentifié.
+    path(
+        "share-links/<str:token>/join",
+        JoinShareLinkView.as_view(),
+        name="share-link-join",
     ),
     path("", include(router.urls)),
 ]

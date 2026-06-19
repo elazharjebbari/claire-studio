@@ -17,7 +17,7 @@ from rest_framework import serializers
 from claire.annotations.models import Clause
 from claire.corpora.models import Sentence
 
-from .models import Comment, Review
+from .models import Comment, Review, ShareLink
 
 
 class CommentSerializer(serializers.ModelSerializer):
@@ -98,3 +98,30 @@ class ReviewSerializer(serializers.ModelSerializer):
         if not 1 <= value <= 5:
             raise serializers.ValidationError("score must be in 1..5.")
         return value
+
+
+class ShareLinkSerializer(serializers.ModelSerializer):
+    project_slug = serializers.SlugRelatedField(
+        source="project", slug_field="slug", read_only=True
+    )
+    created_by_id = serializers.PrimaryKeyRelatedField(
+        source="created_by", read_only=True
+    )
+    url = serializers.SerializerMethodField()
+    usable = serializers.SerializerMethodField()
+
+    class Meta:
+        model = ShareLink
+        fields = [
+            "id", "project_slug", "token", "url", "role_granted",
+            "created_by_id", "expires_at", "max_uses", "used_count",
+            "revoked", "usable", "created_at",
+        ]
+
+    def get_url(self, obj) -> str:
+        request = self.context.get("request")
+        base = request.build_absolute_uri("/").rstrip("/") if request else ""
+        return f"{base}/join/{obj.token}"
+
+    def get_usable(self, obj) -> bool:
+        return obj.is_usable()

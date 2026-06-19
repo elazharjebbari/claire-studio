@@ -247,33 +247,60 @@ class ProjectViewSet(viewsets.ModelViewSet):
             }
         )
 
-    # --- partage collaboratif (points 4b/7) -------------------------------
-    @action(detail=True, methods=["post"], url_path="share-links")
+    # --- partage collaboratif (chantier D) --------------------------------
+    @action(
+        detail=True, methods=["get", "post"],
+        url_path="share-links", permission_classes=[IsAdminRole],
+    )
     def share_links(self, request, slug=None):
-        """POST /projects/{slug}/share-links — lien de partage SIGNÉ expirable (sans
-        stockage : jeton HMAC via django.core.signing). L'invité rejoint via son compte
-        authentifié à l'ouverture (cf. dossier 06)."""
-        from django.core import signing
+        """Liens de partage PERSISTÉS (révocables, expirables, à quota). GET liste,
+        POST crée. L'invité rejoint via son compte authentifié (cf. JoinShareLinkView)."""
+        import secrets
+
+        from django.utils.dateparse import parse_datetime
+
+        from claire.collaboration.models import ShareLink, ShareRole
+        from claire.collaboration.serializers import ShareLinkSerializer
 
         project = self.get_object()
-        role = request.data.get("role_granted", "annotator")
-        if role not in {"annotator", "reviewer"}:
-            role = "annotator"
-        payload = {"project": project.slug, "role": role}
-        token = signing.dumps(payload, salt="claire.share-link")
-        base = request.build_absolute_uri("/").rstrip("/")
+        if request.method == "POST":
+            role = request.data.get("role_granted", ShareRole.ANNOTATOR)
+            if role not in {ShareRole.ANNOTATOR, ShareRole.REVIEWER}:
+                role = ShareRole.ANNOTATOR
+            expires_raw = request.data.get("expires_at")
+            max_uses = request.data.get("max_uses")
+            link = ShareLink.objects.create(
+                project=project,
+                token=secrets.token_urlsafe(24),
+                role_granted=role,
+                created_by=request.user,
+                expires_at=parse_datetime(expires_raw) if expires_raw else None,
+                max_uses=int(max_uses) if max_uses else None,
+            )
+            return Response(
+                ShareLinkSerializer(link, context={"request": request}).data,
+                status=status.HTTP_201_CREATED,
+            )
+        qs = project.share_links.select_related("created_by")
         return Response(
-            {
-                "token": token,
-                "url": f"{base}/join/{token}",
-                "role_granted": role,
-                "expires_at": request.data.get("expires_at"),
-                "max_uses": request.data.get("max_uses"),
-                "used_count": 0,
-                "revoked": False,
-            },
-            status=status.HTTP_201_CREATED,
+            results_envelope(
+                ShareLinkSerializer(qs, many=True, context={"request": request}).data
+            )
         )
+
+    @action(
+        detail=True, methods=["post"],
+        url_path=r"share-links/(?P<token>[^/]+)/revoke",
+        permission_classes=[IsAdminRole],
+    )
+    def revoke_share_link(self, request, slug=None, token=None):
+        from claire.collaboration.serializers import ShareLinkSerializer
+
+        project = self.get_object()
+        link = get_object_or_404(project.share_links, token=token)
+        link.revoked = True
+        link.save(update_fields=["revoked"])
+        return Response(ShareLinkSerializer(link, context={"request": request}).data)
 
     # --- exports (feature 5) ----------------------------------------------
     @action(detail=True, methods=["post"], permission_classes=[IsAdminRole])
@@ -368,3 +395,48 @@ class PublicProjectDetailView(APIView):
                 status=status.HTTP_404_NOT_FOUND,
             )
         return Response(_public_aggregates(project))
+
+
+class JoinShareLinkView(APIView):
+    """POST /share-links/{token}/join — rejoint un projet via un lien de partage.
+
+    Accès AUTHENTIFIÉ uniquement (jamais anonyme, chantier D) : l'utilisateur connecté
+    devient membre du projet avec le rôle accordé. Refuse un lien révoqué / expiré /
+    épuisé. Le quota n'est décompté que sur une adhésion réellement nouvelle.
+    """
+
+    permission_classes = [IsAuthenticated]
+
+    def post(self, request, token=None):
+        from django.db.models import F
+
+        from claire.collaboration.models import ShareLink
+        from .models import ProjectMembership
+
+        link = (
+            ShareLink.objects.filter(token=token).select_related("project").first()
+        )
+        if link is None:
+            return Response(
+                {"detail": "Lien de partage invalide."},
+                status=status.HTTP_404_NOT_FOUND,
+            )
+        if not link.is_usable():
+            return Response(
+                {"detail": "Lien révoqué, expiré ou épuisé."},
+                status=status.HTTP_403_FORBIDDEN,
+            )
+        membership, created = ProjectMembership.objects.get_or_create(
+            project=link.project,
+            user=request.user,
+            defaults={"role": link.role_granted},
+        )
+        if created:
+            ShareLink.objects.filter(pk=link.pk).update(used_count=F("used_count") + 1)
+        return Response(
+            {
+                "project_slug": link.project.slug,
+                "role": membership.role,
+                "joined": created,
+            }
+        )
