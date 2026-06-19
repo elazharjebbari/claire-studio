@@ -1,0 +1,2369 @@
+{
+  "doc": "Evernote",
+  "judge": "codex",
+  "version": "v9.1",
+  "document_plan": {
+    "estimated_n_blocks": 36,
+    "rationale_global": "Plan établi a priori à partir des titres, changements lexicaux et indices thématiques du document.",
+    "segments": [
+      {
+        "start_id": 0,
+        "theme": "META",
+        "rationale": "Segment anticipé par l'indice « effective date : august 28 , 2017 - ».",
+        "evidence_span": "effective date : august 28 , 2017 -"
+      },
+      {
+        "start_id": 1,
+        "theme": "PREAMBLE_SCOPE",
+        "rationale": "Segment anticipé par l'indice « we invite you to access our websites and ».",
+        "evidence_span": "we invite you to access our websites and"
+      },
+      {
+        "start_id": 10,
+        "theme": "DEFINITIONS",
+        "rationale": "Segment anticipé par l'indice « the evernote software -lrb- as defined below -rrb- ».",
+        "evidence_span": "the evernote software -lrb- as defined below -rrb-"
+      },
+      {
+        "start_id": 22,
+        "theme": "MISC_BOILERPLATE",
+        "rationale": "Segment anticipé par l'indice « it depends upon how you interact with the ».",
+        "evidence_span": "it depends upon how you interact with the"
+      },
+      {
+        "start_id": 29,
+        "theme": "MODIFICATION_OF_TERMS",
+        "rationale": "Segment anticipé par l'indice « these terms may be amended as new features ».",
+        "evidence_span": "these terms may be amended as new features"
+      },
+      {
+        "start_id": 35,
+        "theme": "ELIGIBILITY_ACCOUNT",
+        "rationale": "Segment anticipé par l'indice « first , you need to create an evernote ».",
+        "evidence_span": "first , you need to create an evernote"
+      },
+      {
+        "start_id": 47,
+        "theme": "ELIGIBILITY_ACCOUNT",
+        "rationale": "Segment anticipé par l'indice « evernote service accounts should not be shared . ».",
+        "evidence_span": "evernote service accounts should not be shared ."
+      },
+      {
+        "start_id": 52,
+        "theme": "LICENSE_IP",
+        "rationale": "Segment anticipé par l'indice « once your account is created and you accept ».",
+        "evidence_span": "once your account is created and you accept"
+      },
+      {
+        "start_id": 56,
+        "theme": "LICENSE_IP",
+        "rationale": "Segment anticipé par l'indice « you retain copyright and any other rights you ».",
+        "evidence_span": "you retain copyright and any other rights you"
+      },
+      {
+        "start_id": 71,
+        "theme": "ACCEPTABLE_USE",
+        "rationale": "Segment anticipé par l'indice « when you use the evernote service to send ».",
+        "evidence_span": "when you use the evernote service to send"
+      },
+      {
+        "start_id": 74,
+        "theme": "ACCEPTABLE_USE",
+        "rationale": "Segment anticipé par l'indice « your use of the service must be in ».",
+        "evidence_span": "your use of the service must be in"
+      },
+      {
+        "start_id": 81,
+        "theme": "LICENSE_IP",
+        "rationale": "Segment anticipé par l'indice « while you own the content you store within ».",
+        "evidence_span": "while you own the content you store within"
+      },
+      {
+        "start_id": 85,
+        "theme": "MODIFICATION_OF_TERMS",
+        "rationale": "Segment anticipé par l'indice « we retain the right , in our sole ».",
+        "evidence_span": "we retain the right , in our sole"
+      },
+      {
+        "start_id": 94,
+        "theme": "THIRD_PARTY",
+        "rationale": "Segment anticipé par l'indice « evernote engages certain affiliates or other third parties ».",
+        "evidence_span": "evernote engages certain affiliates or other third parties"
+      },
+      {
+        "start_id": 98,
+        "theme": "THIRD_PARTY",
+        "rationale": "Segment anticipé par l'indice « evernote may from time to time include as ».",
+        "evidence_span": "evernote may from time to time include as"
+      },
+      {
+        "start_id": 102,
+        "theme": "MODIFICATION_OF_TERMS",
+        "rationale": "Segment anticipé par l'indice « in connection with any modification of the service ».",
+        "evidence_span": "in connection with any modification of the service"
+      },
+      {
+        "start_id": 106,
+        "theme": "ELIGIBILITY_ACCOUNT",
+        "rationale": "Segment anticipé par l'indice « if you are using the service as part ».",
+        "evidence_span": "if you are using the service as part"
+      },
+      {
+        "start_id": 111,
+        "theme": "LICENSE_IP",
+        "rationale": "Segment anticipé par l'indice « we respond to clear and complete notices of ».",
+        "evidence_span": "we respond to clear and complete notices of"
+      },
+      {
+        "start_id": 115,
+        "theme": "PRIVACY_DATA",
+        "rationale": "Segment anticipé par l'indice « further , we rely on parents and guardians ».",
+        "evidence_span": "further , we rely on parents and guardians"
+      },
+      {
+        "start_id": 119,
+        "theme": "PRIVACY_DATA",
+        "rationale": "Segment anticipé par l'indice « the service is available worldwide , but your ».",
+        "evidence_span": "the service is available worldwide , but your"
+      },
+      {
+        "start_id": 123,
+        "theme": "TERMINATION",
+        "rationale": "Segment anticipé par l'indice « you may deactivate your account with our service ».",
+        "evidence_span": "you may deactivate your account with our service"
+      },
+      {
+        "start_id": 131,
+        "theme": "PRIVACY_DATA",
+        "rationale": "Segment anticipé par l'indice « evernote 's pledge to protect the privacy of ».",
+        "evidence_span": "evernote 's pledge to protect the privacy of"
+      },
+      {
+        "start_id": 137,
+        "theme": "USER_CONTENT",
+        "rationale": "Segment anticipé par l'indice « when you submit any ideas , suggestions , ».",
+        "evidence_span": "when you submit any ideas , suggestions ,"
+      },
+      {
+        "start_id": 139,
+        "theme": "THIRD_PARTY",
+        "rationale": "Segment anticipé par l'indice « however , we may display advertisements and promotions ».",
+        "evidence_span": "however , we may display advertisements and promotions"
+      },
+      {
+        "start_id": 144,
+        "theme": "THIRD_PARTY",
+        "rationale": "Segment anticipé par l'indice « third-party links , content and programming . ».",
+        "evidence_span": "third-party links , content and programming ."
+      },
+      {
+        "start_id": 148,
+        "theme": "INDEMNIFICATION",
+        "rationale": "Segment anticipé par l'indice « in the event of such claim , we ».",
+        "evidence_span": "in the event of such claim , we"
+      },
+      {
+        "start_id": 150,
+        "theme": "WARRANTY_DISCLAIMER",
+        "rationale": "Segment anticipé par l'indice « to the maximum extent permitted by law , ».",
+        "evidence_span": "to the maximum extent permitted by law ,"
+      },
+      {
+        "start_id": 159,
+        "theme": "LIABILITY_LIMITATION",
+        "rationale": "Segment anticipé par l'indice « nothing in these terms of service -lrb- including ».",
+        "evidence_span": "nothing in these terms of service -lrb- including"
+      },
+      {
+        "start_id": 163,
+        "theme": "MISC_BOILERPLATE",
+        "rationale": "Segment anticipé par l'indice « this is another reason why it 's important ».",
+        "evidence_span": "this is another reason why it 's important"
+      },
+      {
+        "start_id": 173,
+        "theme": "ACCEPTABLE_USE",
+        "rationale": "Segment anticipé par l'indice « you may not use or otherwise export the ».",
+        "evidence_span": "you may not use or otherwise export the"
+      },
+      {
+        "start_id": 178,
+        "theme": "GOVERNING_LAW",
+        "rationale": "Segment anticipé par l'indice « if you are a resident of the united ».",
+        "evidence_span": "if you are a resident of the united"
+      },
+      {
+        "start_id": 183,
+        "theme": "DISPUTE_ARBITRATION",
+        "rationale": "Segment anticipé par l'indice « let us know about your complaint . ».",
+        "evidence_span": "let us know about your complaint ."
+      },
+      {
+        "start_id": 200,
+        "theme": "DISPUTE_ARBITRATION",
+        "rationale": "Segment anticipé par l'indice « the federal arbitration act governs the interpretation and ».",
+        "evidence_span": "the federal arbitration act governs the interpretation and"
+      },
+      {
+        "start_id": 223,
+        "theme": "DISPUTE_ARBITRATION",
+        "rationale": "Segment anticipé par l'indice « you agree that regardless of any statute or ».",
+        "evidence_span": "you agree that regardless of any statute or"
+      },
+      {
+        "start_id": 226,
+        "theme": "META",
+        "rationale": "Segment anticipé par l'indice « under california civil code section 1789.3 , users ».",
+        "evidence_span": "under california civil code section 1789.3 , users"
+      },
+      {
+        "start_id": 230,
+        "theme": "MISC_BOILERPLATE",
+        "rationale": "Segment anticipé par l'indice « first , these terms constitute the entire agreement ».",
+        "evidence_span": "first , these terms constitute the entire agreement"
+      }
+    ]
+  },
+  "annotations": [
+    {
+      "id": 0,
+      "theme": "META",
+      "legal_nature": "META",
+      "block_id": 0,
+      "is_block_start": true,
+      "rationale": "Ouverture du bloc META avec l'indice « effective date : august 28 , 2017 - ».",
+      "rationale_codes": {
+        "decision_trigger": "document_start",
+        "relation_to_prev": "document_start",
+        "evidence_span": "effective date : august 28 , 2017 -",
+        "revised_from_plan": false,
+        "confidence": 0.95
+      }
+    },
+    {
+      "id": 1,
+      "theme": "PREAMBLE_SCOPE",
+      "legal_nature": "OBLIGATION",
+      "block_id": 1,
+      "is_block_start": true,
+      "rationale": "Ouverture du bloc PREAMBLE_SCOPE avec l'indice « we invite you to access our websites and ».",
+      "rationale_codes": {
+        "decision_trigger": "lexical_shift",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "we invite you to access our websites and",
+        "revised_from_plan": false,
+        "confidence": 0.86
+      }
+    },
+    {
+      "id": 2,
+      "theme": "PREAMBLE_SCOPE",
+      "legal_nature": "OBLIGATION",
+      "block_id": 1,
+      "is_block_start": false,
+      "reason": "Continuation du bloc PREAMBLE_SCOPE, même sujet juridique."
+    },
+    {
+      "id": 3,
+      "theme": "PREAMBLE_SCOPE",
+      "legal_nature": "SCOPE_APPLICABILITY",
+      "block_id": 1,
+      "is_block_start": false,
+      "reason": "Continuation du bloc PREAMBLE_SCOPE, même sujet juridique."
+    },
+    {
+      "id": 4,
+      "theme": "PREAMBLE_SCOPE",
+      "legal_nature": "SCOPE_APPLICABILITY",
+      "block_id": 1,
+      "is_block_start": false,
+      "reason": "Continuation du bloc PREAMBLE_SCOPE, même sujet juridique."
+    },
+    {
+      "id": 5,
+      "theme": "PREAMBLE_SCOPE",
+      "legal_nature": "DEFINITION",
+      "block_id": 1,
+      "is_block_start": false,
+      "reason": "Continuation du bloc PREAMBLE_SCOPE, même sujet juridique."
+    },
+    {
+      "id": 6,
+      "theme": "PREAMBLE_SCOPE",
+      "legal_nature": "SCOPE_APPLICABILITY",
+      "block_id": 1,
+      "is_block_start": false,
+      "reason": "Continuation du bloc PREAMBLE_SCOPE, même sujet juridique."
+    },
+    {
+      "id": 7,
+      "theme": "PREAMBLE_SCOPE",
+      "legal_nature": "OBLIGATION",
+      "block_id": 1,
+      "is_block_start": false,
+      "reason": "Continuation du bloc PREAMBLE_SCOPE, même sujet juridique."
+    },
+    {
+      "id": 8,
+      "theme": "PREAMBLE_SCOPE",
+      "legal_nature": "OBLIGATION",
+      "block_id": 1,
+      "is_block_start": false,
+      "reason": "Continuation du bloc PREAMBLE_SCOPE, même sujet juridique."
+    },
+    {
+      "id": 9,
+      "theme": "PREAMBLE_SCOPE",
+      "legal_nature": "SCOPE_APPLICABILITY",
+      "block_id": 1,
+      "is_block_start": false,
+      "reason": "Continuation du bloc PREAMBLE_SCOPE, même sujet juridique."
+    },
+    {
+      "id": 10,
+      "theme": "DEFINITIONS",
+      "legal_nature": "DEFINITION",
+      "block_id": 2,
+      "is_block_start": true,
+      "rationale": "Ouverture du bloc DEFINITIONS avec l'indice « the evernote software -lrb- as defined below -rrb- ».",
+      "rationale_codes": {
+        "decision_trigger": "title_marker",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "the evernote software -lrb- as defined below -rrb-",
+        "revised_from_plan": false,
+        "confidence": 0.86
+      }
+    },
+    {
+      "id": 11,
+      "theme": "DEFINITIONS",
+      "legal_nature": "DEFINITION",
+      "block_id": 2,
+      "is_block_start": false,
+      "reason": "Continuation du bloc DEFINITIONS, même sujet juridique."
+    },
+    {
+      "id": 12,
+      "theme": "DEFINITIONS",
+      "legal_nature": "DEFINITION",
+      "block_id": 2,
+      "is_block_start": false,
+      "reason": "Continuation du bloc DEFINITIONS, même sujet juridique."
+    },
+    {
+      "id": 13,
+      "theme": "DEFINITIONS",
+      "legal_nature": "DEFINITION",
+      "block_id": 2,
+      "is_block_start": false,
+      "reason": "Continuation du bloc DEFINITIONS, même sujet juridique."
+    },
+    {
+      "id": 14,
+      "theme": "DEFINITIONS",
+      "legal_nature": "DEFINITION",
+      "block_id": 2,
+      "is_block_start": false,
+      "reason": "Continuation du bloc DEFINITIONS, même sujet juridique."
+    },
+    {
+      "id": 15,
+      "theme": "DEFINITIONS",
+      "legal_nature": "DEFINITION",
+      "block_id": 2,
+      "is_block_start": false,
+      "reason": "Continuation du bloc DEFINITIONS, même sujet juridique."
+    },
+    {
+      "id": 16,
+      "theme": "DEFINITIONS",
+      "legal_nature": "DEFINITION",
+      "block_id": 2,
+      "is_block_start": false,
+      "reason": "Continuation du bloc DEFINITIONS, même sujet juridique."
+    },
+    {
+      "id": 17,
+      "theme": "DEFINITIONS",
+      "legal_nature": "DEFINITION",
+      "block_id": 2,
+      "is_block_start": false,
+      "reason": "Continuation du bloc DEFINITIONS, même sujet juridique."
+    },
+    {
+      "id": 18,
+      "theme": "DEFINITIONS",
+      "legal_nature": "DEFINITION",
+      "block_id": 2,
+      "is_block_start": false,
+      "reason": "Continuation du bloc DEFINITIONS, même sujet juridique."
+    },
+    {
+      "id": 19,
+      "theme": "DEFINITIONS",
+      "legal_nature": "DEFINITION",
+      "block_id": 2,
+      "is_block_start": false,
+      "reason": "Continuation du bloc DEFINITIONS, même sujet juridique."
+    },
+    {
+      "id": 20,
+      "theme": "DEFINITIONS",
+      "legal_nature": "DEFINITION",
+      "block_id": 2,
+      "is_block_start": false,
+      "reason": "Continuation du bloc DEFINITIONS, même sujet juridique."
+    },
+    {
+      "id": 21,
+      "theme": "DEFINITIONS",
+      "legal_nature": "DEFINITION",
+      "block_id": 2,
+      "is_block_start": false,
+      "reason": "Continuation du bloc DEFINITIONS, même sujet juridique."
+    },
+    {
+      "id": 22,
+      "theme": "MISC_BOILERPLATE",
+      "legal_nature": "GOVERNANCE",
+      "block_id": 3,
+      "is_block_start": true,
+      "rationale": "Ouverture du bloc MISC_BOILERPLATE avec l'indice « it depends upon how you interact with the ».",
+      "rationale_codes": {
+        "decision_trigger": "title_marker",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "it depends upon how you interact with the",
+        "revised_from_plan": false,
+        "confidence": 0.86
+      }
+    },
+    {
+      "id": 23,
+      "theme": "MISC_BOILERPLATE",
+      "legal_nature": "GOVERNANCE",
+      "block_id": 3,
+      "is_block_start": false,
+      "reason": "Continuation du bloc MISC_BOILERPLATE, même sujet juridique."
+    },
+    {
+      "id": 24,
+      "theme": "MISC_BOILERPLATE",
+      "legal_nature": "GOVERNANCE",
+      "block_id": 3,
+      "is_block_start": false,
+      "reason": "Continuation du bloc MISC_BOILERPLATE, même sujet juridique."
+    },
+    {
+      "id": 25,
+      "theme": "MISC_BOILERPLATE",
+      "legal_nature": "GOVERNANCE",
+      "block_id": 3,
+      "is_block_start": false,
+      "reason": "Continuation du bloc MISC_BOILERPLATE, même sujet juridique."
+    },
+    {
+      "id": 26,
+      "theme": "MISC_BOILERPLATE",
+      "legal_nature": "DEFINITION",
+      "block_id": 3,
+      "is_block_start": false,
+      "reason": "Continuation du bloc MISC_BOILERPLATE, même sujet juridique."
+    },
+    {
+      "id": 27,
+      "theme": "MISC_BOILERPLATE",
+      "legal_nature": "GOVERNANCE",
+      "block_id": 3,
+      "is_block_start": false,
+      "reason": "Continuation du bloc MISC_BOILERPLATE, même sujet juridique."
+    },
+    {
+      "id": 28,
+      "theme": "MISC_BOILERPLATE",
+      "legal_nature": "GOVERNANCE",
+      "block_id": 3,
+      "is_block_start": false,
+      "reason": "Continuation du bloc MISC_BOILERPLATE, même sujet juridique."
+    },
+    {
+      "id": 29,
+      "theme": "MODIFICATION_OF_TERMS",
+      "legal_nature": "GOVERNANCE",
+      "block_id": 4,
+      "is_block_start": true,
+      "rationale": "Ouverture du bloc MODIFICATION_OF_TERMS avec l'indice « these terms may be amended as new features ».",
+      "rationale_codes": {
+        "decision_trigger": "title_marker",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "these terms may be amended as new features",
+        "revised_from_plan": false,
+        "confidence": 0.86
+      }
+    },
+    {
+      "id": 30,
+      "theme": "MODIFICATION_OF_TERMS",
+      "legal_nature": "GOVERNANCE",
+      "block_id": 4,
+      "is_block_start": false,
+      "reason": "Continuation du bloc MODIFICATION_OF_TERMS, même sujet juridique."
+    },
+    {
+      "id": 31,
+      "theme": "MODIFICATION_OF_TERMS",
+      "legal_nature": "GOVERNANCE",
+      "block_id": 4,
+      "is_block_start": false,
+      "reason": "Continuation du bloc MODIFICATION_OF_TERMS, même sujet juridique."
+    },
+    {
+      "id": 32,
+      "theme": "MODIFICATION_OF_TERMS",
+      "legal_nature": "GOVERNANCE",
+      "block_id": 4,
+      "is_block_start": false,
+      "reason": "Continuation du bloc MODIFICATION_OF_TERMS, même sujet juridique."
+    },
+    {
+      "id": 33,
+      "theme": "MODIFICATION_OF_TERMS",
+      "legal_nature": "GOVERNANCE",
+      "block_id": 4,
+      "is_block_start": false,
+      "reason": "Continuation du bloc MODIFICATION_OF_TERMS, même sujet juridique."
+    },
+    {
+      "id": 34,
+      "theme": "MODIFICATION_OF_TERMS",
+      "legal_nature": "GOVERNANCE",
+      "block_id": 4,
+      "is_block_start": false,
+      "reason": "Continuation du bloc MODIFICATION_OF_TERMS, même sujet juridique."
+    },
+    {
+      "id": 35,
+      "theme": "ELIGIBILITY_ACCOUNT",
+      "legal_nature": "OBLIGATION",
+      "block_id": 5,
+      "is_block_start": true,
+      "rationale": "Ouverture du bloc ELIGIBILITY_ACCOUNT avec l'indice « first , you need to create an evernote ».",
+      "rationale_codes": {
+        "decision_trigger": "title_marker",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "first , you need to create an evernote",
+        "revised_from_plan": false,
+        "confidence": 0.86
+      }
+    },
+    {
+      "id": 36,
+      "theme": "ELIGIBILITY_ACCOUNT",
+      "legal_nature": "OBLIGATION",
+      "block_id": 5,
+      "is_block_start": false,
+      "reason": "Continuation du bloc ELIGIBILITY_ACCOUNT, même sujet juridique."
+    },
+    {
+      "id": 37,
+      "theme": "ELIGIBILITY_ACCOUNT",
+      "legal_nature": "OBLIGATION",
+      "block_id": 5,
+      "is_block_start": false,
+      "reason": "Continuation du bloc ELIGIBILITY_ACCOUNT, même sujet juridique."
+    },
+    {
+      "id": 38,
+      "theme": "ELIGIBILITY_ACCOUNT",
+      "legal_nature": "DEFINITION",
+      "block_id": 5,
+      "is_block_start": false,
+      "reason": "Continuation du bloc ELIGIBILITY_ACCOUNT, même sujet juridique."
+    },
+    {
+      "id": 39,
+      "theme": "ELIGIBILITY_ACCOUNT",
+      "legal_nature": "OBLIGATION",
+      "block_id": 5,
+      "is_block_start": false,
+      "reason": "Continuation du bloc ELIGIBILITY_ACCOUNT, même sujet juridique."
+    },
+    {
+      "id": 40,
+      "theme": "ELIGIBILITY_ACCOUNT",
+      "legal_nature": "OBLIGATION",
+      "block_id": 5,
+      "is_block_start": false,
+      "reason": "Continuation du bloc ELIGIBILITY_ACCOUNT, même sujet juridique."
+    },
+    {
+      "id": 41,
+      "theme": "ELIGIBILITY_ACCOUNT",
+      "legal_nature": "OBLIGATION",
+      "block_id": 5,
+      "is_block_start": false,
+      "reason": "Continuation du bloc ELIGIBILITY_ACCOUNT, même sujet juridique."
+    },
+    {
+      "id": 42,
+      "theme": "ELIGIBILITY_ACCOUNT",
+      "legal_nature": "OBLIGATION",
+      "block_id": 5,
+      "is_block_start": false,
+      "reason": "Continuation du bloc ELIGIBILITY_ACCOUNT, même sujet juridique."
+    },
+    {
+      "id": 43,
+      "theme": "ELIGIBILITY_ACCOUNT",
+      "legal_nature": "OBLIGATION",
+      "block_id": 5,
+      "is_block_start": false,
+      "reason": "Continuation du bloc ELIGIBILITY_ACCOUNT, même sujet juridique."
+    },
+    {
+      "id": 44,
+      "theme": "ELIGIBILITY_ACCOUNT",
+      "legal_nature": "OBLIGATION",
+      "block_id": 5,
+      "is_block_start": false,
+      "reason": "Continuation du bloc ELIGIBILITY_ACCOUNT, même sujet juridique."
+    },
+    {
+      "id": 45,
+      "theme": "ELIGIBILITY_ACCOUNT",
+      "legal_nature": "OBLIGATION",
+      "block_id": 5,
+      "is_block_start": false,
+      "reason": "Continuation du bloc ELIGIBILITY_ACCOUNT, même sujet juridique."
+    },
+    {
+      "id": 46,
+      "theme": "ELIGIBILITY_ACCOUNT",
+      "legal_nature": "OBLIGATION",
+      "block_id": 5,
+      "is_block_start": false,
+      "reason": "Continuation du bloc ELIGIBILITY_ACCOUNT, même sujet juridique."
+    },
+    {
+      "id": 47,
+      "theme": "ELIGIBILITY_ACCOUNT",
+      "legal_nature": "PROHIBITION",
+      "block_id": 6,
+      "is_block_start": true,
+      "rationale": "Ouverture du bloc ELIGIBILITY_ACCOUNT avec l'indice « evernote service accounts should not be shared . ».",
+      "rationale_codes": {
+        "decision_trigger": "title_marker",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "evernote service accounts should not be shared .",
+        "revised_from_plan": false,
+        "confidence": 0.86
+      }
+    },
+    {
+      "id": 48,
+      "theme": "ELIGIBILITY_ACCOUNT",
+      "legal_nature": "PROHIBITION",
+      "block_id": 6,
+      "is_block_start": false,
+      "reason": "Continuation du bloc ELIGIBILITY_ACCOUNT, même sujet juridique."
+    },
+    {
+      "id": 49,
+      "theme": "ELIGIBILITY_ACCOUNT",
+      "legal_nature": "PROHIBITION",
+      "block_id": 6,
+      "is_block_start": false,
+      "reason": "Continuation du bloc ELIGIBILITY_ACCOUNT, même sujet juridique."
+    },
+    {
+      "id": 50,
+      "theme": "ELIGIBILITY_ACCOUNT",
+      "legal_nature": "PROHIBITION",
+      "block_id": 6,
+      "is_block_start": false,
+      "reason": "Continuation du bloc ELIGIBILITY_ACCOUNT, même sujet juridique."
+    },
+    {
+      "id": 51,
+      "theme": "ELIGIBILITY_ACCOUNT",
+      "legal_nature": "PROHIBITION",
+      "block_id": 6,
+      "is_block_start": false,
+      "reason": "Continuation du bloc ELIGIBILITY_ACCOUNT, même sujet juridique."
+    },
+    {
+      "id": 52,
+      "theme": "LICENSE_IP",
+      "legal_nature": "RIGHT_GRANT",
+      "block_id": 7,
+      "is_block_start": true,
+      "rationale": "Ouverture du bloc LICENSE_IP avec l'indice « once your account is created and you accept ».",
+      "rationale_codes": {
+        "decision_trigger": "title_marker",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "once your account is created and you accept",
+        "revised_from_plan": false,
+        "confidence": 0.86
+      }
+    },
+    {
+      "id": 53,
+      "theme": "LICENSE_IP",
+      "legal_nature": "RIGHT_GRANT",
+      "block_id": 7,
+      "is_block_start": false,
+      "reason": "Continuation du bloc LICENSE_IP, même sujet juridique."
+    },
+    {
+      "id": 54,
+      "theme": "LICENSE_IP",
+      "legal_nature": "RIGHT_GRANT",
+      "block_id": 7,
+      "is_block_start": false,
+      "reason": "Continuation du bloc LICENSE_IP, même sujet juridique."
+    },
+    {
+      "id": 55,
+      "theme": "LICENSE_IP",
+      "legal_nature": "RIGHT_GRANT",
+      "block_id": 7,
+      "is_block_start": false,
+      "reason": "Continuation du bloc LICENSE_IP, même sujet juridique."
+    },
+    {
+      "id": 56,
+      "theme": "LICENSE_IP",
+      "legal_nature": "RIGHT_GRANT",
+      "block_id": 8,
+      "is_block_start": true,
+      "rationale": "Ouverture du bloc LICENSE_IP avec l'indice « you retain copyright and any other rights you ».",
+      "rationale_codes": {
+        "decision_trigger": "title_marker",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "you retain copyright and any other rights you",
+        "revised_from_plan": false,
+        "confidence": 0.86
+      }
+    },
+    {
+      "id": 57,
+      "theme": "LICENSE_IP",
+      "legal_nature": "RIGHT_GRANT",
+      "block_id": 8,
+      "is_block_start": false,
+      "reason": "Continuation du bloc LICENSE_IP, même sujet juridique."
+    },
+    {
+      "id": 58,
+      "theme": "LICENSE_IP",
+      "legal_nature": "RIGHT_GRANT",
+      "block_id": 8,
+      "is_block_start": false,
+      "reason": "Continuation du bloc LICENSE_IP, même sujet juridique."
+    },
+    {
+      "id": 59,
+      "theme": "LICENSE_IP",
+      "legal_nature": "RIGHT_GRANT",
+      "block_id": 8,
+      "is_block_start": false,
+      "reason": "Continuation du bloc LICENSE_IP, même sujet juridique."
+    },
+    {
+      "id": 60,
+      "theme": "LICENSE_IP",
+      "legal_nature": "RIGHT_GRANT",
+      "block_id": 8,
+      "is_block_start": false,
+      "reason": "Continuation du bloc LICENSE_IP, même sujet juridique."
+    },
+    {
+      "id": 61,
+      "theme": "LICENSE_IP",
+      "legal_nature": "RIGHT_GRANT",
+      "block_id": 8,
+      "is_block_start": false,
+      "reason": "Continuation du bloc LICENSE_IP, même sujet juridique."
+    },
+    {
+      "id": 62,
+      "theme": "LICENSE_IP",
+      "legal_nature": "RIGHT_GRANT",
+      "block_id": 8,
+      "is_block_start": false,
+      "reason": "Continuation du bloc LICENSE_IP, même sujet juridique."
+    },
+    {
+      "id": 63,
+      "theme": "LICENSE_IP",
+      "legal_nature": "RIGHT_GRANT",
+      "block_id": 8,
+      "is_block_start": false,
+      "reason": "Continuation du bloc LICENSE_IP, même sujet juridique."
+    },
+    {
+      "id": 64,
+      "theme": "LICENSE_IP",
+      "legal_nature": "OBLIGATION",
+      "block_id": 8,
+      "is_block_start": false,
+      "reason": "Continuation du bloc LICENSE_IP, même sujet juridique."
+    },
+    {
+      "id": 65,
+      "theme": "LICENSE_IP",
+      "legal_nature": "RIGHT_GRANT",
+      "block_id": 8,
+      "is_block_start": false,
+      "reason": "Continuation du bloc LICENSE_IP, même sujet juridique."
+    },
+    {
+      "id": 66,
+      "theme": "LICENSE_IP",
+      "legal_nature": "RIGHT_GRANT",
+      "block_id": 8,
+      "is_block_start": false,
+      "reason": "Continuation du bloc LICENSE_IP, même sujet juridique."
+    },
+    {
+      "id": 67,
+      "theme": "LICENSE_IP",
+      "legal_nature": "RIGHT_GRANT",
+      "block_id": 8,
+      "is_block_start": false,
+      "reason": "Continuation du bloc LICENSE_IP, même sujet juridique."
+    },
+    {
+      "id": 68,
+      "theme": "LICENSE_IP",
+      "legal_nature": "RIGHT_GRANT",
+      "block_id": 8,
+      "is_block_start": false,
+      "reason": "Continuation du bloc LICENSE_IP, même sujet juridique."
+    },
+    {
+      "id": 69,
+      "theme": "LICENSE_IP",
+      "legal_nature": "RIGHT_GRANT",
+      "block_id": 8,
+      "is_block_start": false,
+      "reason": "Continuation du bloc LICENSE_IP, même sujet juridique."
+    },
+    {
+      "id": 70,
+      "theme": "LICENSE_IP",
+      "legal_nature": "RIGHT_GRANT",
+      "block_id": 8,
+      "is_block_start": false,
+      "reason": "Continuation du bloc LICENSE_IP, même sujet juridique."
+    },
+    {
+      "id": 71,
+      "theme": "ACCEPTABLE_USE",
+      "legal_nature": "OBLIGATION",
+      "block_id": 9,
+      "is_block_start": true,
+      "rationale": "Ouverture du bloc ACCEPTABLE_USE avec l'indice « when you use the evernote service to send ».",
+      "rationale_codes": {
+        "decision_trigger": "title_marker",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "when you use the evernote service to send",
+        "revised_from_plan": false,
+        "confidence": 0.86
+      }
+    },
+    {
+      "id": 72,
+      "theme": "ACCEPTABLE_USE",
+      "legal_nature": "OBLIGATION",
+      "block_id": 9,
+      "is_block_start": false,
+      "reason": "Continuation du bloc ACCEPTABLE_USE, même sujet juridique."
+    },
+    {
+      "id": 73,
+      "theme": "ACCEPTABLE_USE",
+      "legal_nature": "OBLIGATION",
+      "block_id": 9,
+      "is_block_start": false,
+      "reason": "Continuation du bloc ACCEPTABLE_USE, même sujet juridique."
+    },
+    {
+      "id": 74,
+      "theme": "ACCEPTABLE_USE",
+      "legal_nature": "OBLIGATION",
+      "block_id": 10,
+      "is_block_start": true,
+      "rationale": "Ouverture du bloc ACCEPTABLE_USE avec l'indice « your use of the service must be in ».",
+      "rationale_codes": {
+        "decision_trigger": "title_marker",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "your use of the service must be in",
+        "revised_from_plan": false,
+        "confidence": 0.86
+      }
+    },
+    {
+      "id": 75,
+      "theme": "ACCEPTABLE_USE",
+      "legal_nature": "OBLIGATION",
+      "block_id": 10,
+      "is_block_start": false,
+      "reason": "Continuation du bloc ACCEPTABLE_USE, même sujet juridique."
+    },
+    {
+      "id": 76,
+      "theme": "ACCEPTABLE_USE",
+      "legal_nature": "DEFINITION",
+      "block_id": 10,
+      "is_block_start": false,
+      "reason": "Continuation du bloc ACCEPTABLE_USE, même sujet juridique."
+    },
+    {
+      "id": 77,
+      "theme": "ACCEPTABLE_USE",
+      "legal_nature": "OBLIGATION",
+      "block_id": 10,
+      "is_block_start": false,
+      "reason": "Continuation du bloc ACCEPTABLE_USE, même sujet juridique."
+    },
+    {
+      "id": 78,
+      "theme": "ACCEPTABLE_USE",
+      "legal_nature": "PROHIBITION",
+      "block_id": 10,
+      "is_block_start": false,
+      "reason": "Continuation du bloc ACCEPTABLE_USE, même sujet juridique."
+    },
+    {
+      "id": 79,
+      "theme": "ACCEPTABLE_USE",
+      "legal_nature": "OBLIGATION",
+      "block_id": 10,
+      "is_block_start": false,
+      "reason": "Continuation du bloc ACCEPTABLE_USE, même sujet juridique."
+    },
+    {
+      "id": 80,
+      "theme": "ACCEPTABLE_USE",
+      "legal_nature": "OBLIGATION",
+      "block_id": 10,
+      "is_block_start": false,
+      "reason": "Continuation du bloc ACCEPTABLE_USE, même sujet juridique."
+    },
+    {
+      "id": 81,
+      "theme": "LICENSE_IP",
+      "legal_nature": "OBLIGATION",
+      "block_id": 11,
+      "is_block_start": true,
+      "rationale": "Ouverture du bloc LICENSE_IP avec l'indice « while you own the content you store within ».",
+      "rationale_codes": {
+        "decision_trigger": "title_marker",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "while you own the content you store within",
+        "revised_from_plan": false,
+        "confidence": 0.86
+      }
+    },
+    {
+      "id": 82,
+      "theme": "LICENSE_IP",
+      "legal_nature": "PROHIBITION",
+      "block_id": 11,
+      "is_block_start": false,
+      "reason": "Continuation du bloc LICENSE_IP, même sujet juridique."
+    },
+    {
+      "id": 83,
+      "theme": "LICENSE_IP",
+      "legal_nature": "OBLIGATION",
+      "block_id": 11,
+      "is_block_start": false,
+      "reason": "Continuation du bloc LICENSE_IP, même sujet juridique."
+    },
+    {
+      "id": 84,
+      "theme": "LICENSE_IP",
+      "legal_nature": "PROHIBITION",
+      "block_id": 11,
+      "is_block_start": false,
+      "reason": "Continuation du bloc LICENSE_IP, même sujet juridique."
+    },
+    {
+      "id": 85,
+      "theme": "MODIFICATION_OF_TERMS",
+      "legal_nature": "GOVERNANCE",
+      "block_id": 12,
+      "is_block_start": true,
+      "rationale": "Ouverture du bloc MODIFICATION_OF_TERMS avec l'indice « we retain the right , in our sole ».",
+      "rationale_codes": {
+        "decision_trigger": "title_marker",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "we retain the right , in our sole",
+        "revised_from_plan": false,
+        "confidence": 0.86
+      }
+    },
+    {
+      "id": 86,
+      "theme": "MODIFICATION_OF_TERMS",
+      "legal_nature": "GOVERNANCE",
+      "block_id": 12,
+      "is_block_start": false,
+      "reason": "Continuation du bloc MODIFICATION_OF_TERMS, même sujet juridique."
+    },
+    {
+      "id": 87,
+      "theme": "MODIFICATION_OF_TERMS",
+      "legal_nature": "GOVERNANCE",
+      "block_id": 12,
+      "is_block_start": false,
+      "reason": "Continuation du bloc MODIFICATION_OF_TERMS, même sujet juridique."
+    },
+    {
+      "id": 88,
+      "theme": "MODIFICATION_OF_TERMS",
+      "legal_nature": "GOVERNANCE",
+      "block_id": 12,
+      "is_block_start": false,
+      "reason": "Continuation du bloc MODIFICATION_OF_TERMS, même sujet juridique."
+    },
+    {
+      "id": 89,
+      "theme": "MODIFICATION_OF_TERMS",
+      "legal_nature": "GOVERNANCE",
+      "block_id": 12,
+      "is_block_start": false,
+      "reason": "Continuation du bloc MODIFICATION_OF_TERMS, même sujet juridique."
+    },
+    {
+      "id": 90,
+      "theme": "MODIFICATION_OF_TERMS",
+      "legal_nature": "GOVERNANCE",
+      "block_id": 12,
+      "is_block_start": false,
+      "reason": "Continuation du bloc MODIFICATION_OF_TERMS, même sujet juridique."
+    },
+    {
+      "id": 91,
+      "theme": "MODIFICATION_OF_TERMS",
+      "legal_nature": "GOVERNANCE",
+      "block_id": 12,
+      "is_block_start": false,
+      "reason": "Continuation du bloc MODIFICATION_OF_TERMS, même sujet juridique."
+    },
+    {
+      "id": 92,
+      "theme": "MODIFICATION_OF_TERMS",
+      "legal_nature": "GOVERNANCE",
+      "block_id": 12,
+      "is_block_start": false,
+      "reason": "Continuation du bloc MODIFICATION_OF_TERMS, même sujet juridique."
+    },
+    {
+      "id": 93,
+      "theme": "MODIFICATION_OF_TERMS",
+      "legal_nature": "GOVERNANCE",
+      "block_id": 12,
+      "is_block_start": false,
+      "reason": "Continuation du bloc MODIFICATION_OF_TERMS, même sujet juridique."
+    },
+    {
+      "id": 94,
+      "theme": "THIRD_PARTY",
+      "legal_nature": "SCOPE_APPLICABILITY",
+      "block_id": 13,
+      "is_block_start": true,
+      "rationale": "Ouverture du bloc THIRD_PARTY avec l'indice « evernote engages certain affiliates or other third parties ».",
+      "rationale_codes": {
+        "decision_trigger": "title_marker",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "evernote engages certain affiliates or other third parties",
+        "revised_from_plan": false,
+        "confidence": 0.86
+      }
+    },
+    {
+      "id": 95,
+      "theme": "THIRD_PARTY",
+      "legal_nature": "SCOPE_APPLICABILITY",
+      "block_id": 13,
+      "is_block_start": false,
+      "reason": "Continuation du bloc THIRD_PARTY, même sujet juridique."
+    },
+    {
+      "id": 96,
+      "theme": "THIRD_PARTY",
+      "legal_nature": "OBLIGATION",
+      "block_id": 13,
+      "is_block_start": false,
+      "reason": "Continuation du bloc THIRD_PARTY, même sujet juridique."
+    },
+    {
+      "id": 97,
+      "theme": "THIRD_PARTY",
+      "legal_nature": "SCOPE_APPLICABILITY",
+      "block_id": 13,
+      "is_block_start": false,
+      "reason": "Continuation du bloc THIRD_PARTY, même sujet juridique."
+    },
+    {
+      "id": 98,
+      "theme": "THIRD_PARTY",
+      "legal_nature": "LIMITATION_DISCLAIMER",
+      "block_id": 14,
+      "is_block_start": true,
+      "rationale": "Ouverture du bloc THIRD_PARTY avec l'indice « evernote may from time to time include as ».",
+      "rationale_codes": {
+        "decision_trigger": "title_marker",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "evernote may from time to time include as",
+        "revised_from_plan": false,
+        "confidence": 0.86
+      }
+    },
+    {
+      "id": 99,
+      "theme": "THIRD_PARTY",
+      "legal_nature": "LIMITATION_DISCLAIMER",
+      "block_id": 14,
+      "is_block_start": false,
+      "reason": "Continuation du bloc THIRD_PARTY, même sujet juridique."
+    },
+    {
+      "id": 100,
+      "theme": "THIRD_PARTY",
+      "legal_nature": "LIMITATION_DISCLAIMER",
+      "block_id": 14,
+      "is_block_start": false,
+      "reason": "Continuation du bloc THIRD_PARTY, même sujet juridique."
+    },
+    {
+      "id": 101,
+      "theme": "THIRD_PARTY",
+      "legal_nature": "LIMITATION_DISCLAIMER",
+      "block_id": 14,
+      "is_block_start": false,
+      "reason": "Continuation du bloc THIRD_PARTY, même sujet juridique."
+    },
+    {
+      "id": 102,
+      "theme": "MODIFICATION_OF_TERMS",
+      "legal_nature": "GOVERNANCE",
+      "block_id": 15,
+      "is_block_start": true,
+      "rationale": "Ouverture du bloc MODIFICATION_OF_TERMS avec l'indice « in connection with any modification of the service ».",
+      "rationale_codes": {
+        "decision_trigger": "title_marker",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "in connection with any modification of the service",
+        "revised_from_plan": false,
+        "confidence": 0.86
+      }
+    },
+    {
+      "id": 103,
+      "theme": "MODIFICATION_OF_TERMS",
+      "legal_nature": "GOVERNANCE",
+      "block_id": 15,
+      "is_block_start": false,
+      "reason": "Continuation du bloc MODIFICATION_OF_TERMS, même sujet juridique."
+    },
+    {
+      "id": 104,
+      "theme": "MODIFICATION_OF_TERMS",
+      "legal_nature": "GOVERNANCE",
+      "block_id": 15,
+      "is_block_start": false,
+      "reason": "Continuation du bloc MODIFICATION_OF_TERMS, même sujet juridique."
+    },
+    {
+      "id": 105,
+      "theme": "MODIFICATION_OF_TERMS",
+      "legal_nature": "GOVERNANCE",
+      "block_id": 15,
+      "is_block_start": false,
+      "reason": "Continuation du bloc MODIFICATION_OF_TERMS, même sujet juridique."
+    },
+    {
+      "id": 106,
+      "theme": "ELIGIBILITY_ACCOUNT",
+      "legal_nature": "SCOPE_APPLICABILITY",
+      "block_id": 16,
+      "is_block_start": true,
+      "rationale": "Ouverture du bloc ELIGIBILITY_ACCOUNT avec l'indice « if you are using the service as part ».",
+      "rationale_codes": {
+        "decision_trigger": "title_marker",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "if you are using the service as part",
+        "revised_from_plan": false,
+        "confidence": 0.86
+      }
+    },
+    {
+      "id": 107,
+      "theme": "ELIGIBILITY_ACCOUNT",
+      "legal_nature": "SCOPE_APPLICABILITY",
+      "block_id": 16,
+      "is_block_start": false,
+      "reason": "Continuation du bloc ELIGIBILITY_ACCOUNT, même sujet juridique."
+    },
+    {
+      "id": 108,
+      "theme": "ELIGIBILITY_ACCOUNT",
+      "legal_nature": "OBLIGATION",
+      "block_id": 16,
+      "is_block_start": false,
+      "reason": "Continuation du bloc ELIGIBILITY_ACCOUNT, même sujet juridique."
+    },
+    {
+      "id": 109,
+      "theme": "ELIGIBILITY_ACCOUNT",
+      "legal_nature": "SCOPE_APPLICABILITY",
+      "block_id": 16,
+      "is_block_start": false,
+      "reason": "Continuation du bloc ELIGIBILITY_ACCOUNT, même sujet juridique."
+    },
+    {
+      "id": 110,
+      "theme": "ELIGIBILITY_ACCOUNT",
+      "legal_nature": "SCOPE_APPLICABILITY",
+      "block_id": 16,
+      "is_block_start": false,
+      "reason": "Continuation du bloc ELIGIBILITY_ACCOUNT, même sujet juridique."
+    },
+    {
+      "id": 111,
+      "theme": "LICENSE_IP",
+      "legal_nature": "GOVERNANCE",
+      "block_id": 17,
+      "is_block_start": true,
+      "rationale": "Ouverture du bloc LICENSE_IP avec l'indice « we respond to clear and complete notices of ».",
+      "rationale_codes": {
+        "decision_trigger": "title_marker",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "we respond to clear and complete notices of",
+        "revised_from_plan": false,
+        "confidence": 0.86
+      }
+    },
+    {
+      "id": 112,
+      "theme": "LICENSE_IP",
+      "legal_nature": "OBLIGATION",
+      "block_id": 17,
+      "is_block_start": false,
+      "reason": "Continuation du bloc LICENSE_IP, même sujet juridique."
+    },
+    {
+      "id": 113,
+      "theme": "LICENSE_IP",
+      "legal_nature": "GOVERNANCE",
+      "block_id": 17,
+      "is_block_start": false,
+      "reason": "Continuation du bloc LICENSE_IP, même sujet juridique."
+    },
+    {
+      "id": 114,
+      "theme": "LICENSE_IP",
+      "legal_nature": "GOVERNANCE",
+      "block_id": 17,
+      "is_block_start": false,
+      "reason": "Continuation du bloc LICENSE_IP, même sujet juridique."
+    },
+    {
+      "id": 115,
+      "theme": "PRIVACY_DATA",
+      "legal_nature": "OBLIGATION",
+      "block_id": 18,
+      "is_block_start": true,
+      "rationale": "Ouverture du bloc PRIVACY_DATA avec l'indice « further , we rely on parents and guardians ».",
+      "rationale_codes": {
+        "decision_trigger": "lexical_shift",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "further , we rely on parents and guardians",
+        "revised_from_plan": false,
+        "confidence": 0.86
+      }
+    },
+    {
+      "id": 116,
+      "theme": "PRIVACY_DATA",
+      "legal_nature": "OBLIGATION",
+      "block_id": 18,
+      "is_block_start": false,
+      "reason": "Continuation du bloc PRIVACY_DATA, même sujet juridique."
+    },
+    {
+      "id": 117,
+      "theme": "PRIVACY_DATA",
+      "legal_nature": "OBLIGATION",
+      "block_id": 18,
+      "is_block_start": false,
+      "reason": "Continuation du bloc PRIVACY_DATA, même sujet juridique."
+    },
+    {
+      "id": 118,
+      "theme": "PRIVACY_DATA",
+      "legal_nature": "OBLIGATION",
+      "block_id": 18,
+      "is_block_start": false,
+      "reason": "Continuation du bloc PRIVACY_DATA, même sujet juridique."
+    },
+    {
+      "id": 119,
+      "theme": "PRIVACY_DATA",
+      "legal_nature": "SCOPE_APPLICABILITY",
+      "block_id": 19,
+      "is_block_start": true,
+      "rationale": "Ouverture du bloc PRIVACY_DATA avec l'indice « the service is available worldwide , but your ».",
+      "rationale_codes": {
+        "decision_trigger": "title_marker",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "the service is available worldwide , but your",
+        "revised_from_plan": false,
+        "confidence": 0.86
+      }
+    },
+    {
+      "id": 120,
+      "theme": "PRIVACY_DATA",
+      "legal_nature": "OBLIGATION",
+      "block_id": 19,
+      "is_block_start": false,
+      "reason": "Continuation du bloc PRIVACY_DATA, même sujet juridique."
+    },
+    {
+      "id": 121,
+      "theme": "PRIVACY_DATA",
+      "legal_nature": "SCOPE_APPLICABILITY",
+      "block_id": 19,
+      "is_block_start": false,
+      "reason": "Continuation du bloc PRIVACY_DATA, même sujet juridique."
+    },
+    {
+      "id": 122,
+      "theme": "PRIVACY_DATA",
+      "legal_nature": "SCOPE_APPLICABILITY",
+      "block_id": 19,
+      "is_block_start": false,
+      "reason": "Continuation du bloc PRIVACY_DATA, même sujet juridique."
+    },
+    {
+      "id": 123,
+      "theme": "TERMINATION",
+      "legal_nature": "GOVERNANCE",
+      "block_id": 20,
+      "is_block_start": true,
+      "rationale": "Ouverture du bloc TERMINATION avec l'indice « you may deactivate your account with our service ».",
+      "rationale_codes": {
+        "decision_trigger": "title_marker",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "you may deactivate your account with our service",
+        "revised_from_plan": false,
+        "confidence": 0.86
+      }
+    },
+    {
+      "id": 124,
+      "theme": "TERMINATION",
+      "legal_nature": "GOVERNANCE",
+      "block_id": 20,
+      "is_block_start": false,
+      "reason": "Continuation du bloc TERMINATION, même sujet juridique."
+    },
+    {
+      "id": 125,
+      "theme": "TERMINATION",
+      "legal_nature": "GOVERNANCE",
+      "block_id": 20,
+      "is_block_start": false,
+      "reason": "Continuation du bloc TERMINATION, même sujet juridique."
+    },
+    {
+      "id": 126,
+      "theme": "TERMINATION",
+      "legal_nature": "GOVERNANCE",
+      "block_id": 20,
+      "is_block_start": false,
+      "reason": "Continuation du bloc TERMINATION, même sujet juridique."
+    },
+    {
+      "id": 127,
+      "theme": "TERMINATION",
+      "legal_nature": "GOVERNANCE",
+      "block_id": 20,
+      "is_block_start": false,
+      "reason": "Continuation du bloc TERMINATION, même sujet juridique."
+    },
+    {
+      "id": 128,
+      "theme": "TERMINATION",
+      "legal_nature": "GOVERNANCE",
+      "block_id": 20,
+      "is_block_start": false,
+      "reason": "Continuation du bloc TERMINATION, même sujet juridique."
+    },
+    {
+      "id": 129,
+      "theme": "TERMINATION",
+      "legal_nature": "GOVERNANCE",
+      "block_id": 20,
+      "is_block_start": false,
+      "reason": "Continuation du bloc TERMINATION, même sujet juridique."
+    },
+    {
+      "id": 130,
+      "theme": "TERMINATION",
+      "legal_nature": "GOVERNANCE",
+      "block_id": 20,
+      "is_block_start": false,
+      "reason": "Continuation du bloc TERMINATION, même sujet juridique."
+    },
+    {
+      "id": 131,
+      "theme": "PRIVACY_DATA",
+      "legal_nature": "OBLIGATION",
+      "block_id": 21,
+      "is_block_start": true,
+      "rationale": "Ouverture du bloc PRIVACY_DATA avec l'indice « evernote 's pledge to protect the privacy of ».",
+      "rationale_codes": {
+        "decision_trigger": "title_marker",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "evernote 's pledge to protect the privacy of",
+        "revised_from_plan": false,
+        "confidence": 0.86
+      }
+    },
+    {
+      "id": 132,
+      "theme": "PRIVACY_DATA",
+      "legal_nature": "OBLIGATION",
+      "block_id": 21,
+      "is_block_start": false,
+      "reason": "Continuation du bloc PRIVACY_DATA, même sujet juridique."
+    },
+    {
+      "id": 133,
+      "theme": "PRIVACY_DATA",
+      "legal_nature": "OBLIGATION",
+      "block_id": 21,
+      "is_block_start": false,
+      "reason": "Continuation du bloc PRIVACY_DATA, même sujet juridique."
+    },
+    {
+      "id": 134,
+      "theme": "PRIVACY_DATA",
+      "legal_nature": "DEFINITION",
+      "block_id": 21,
+      "is_block_start": false,
+      "reason": "Continuation du bloc PRIVACY_DATA, même sujet juridique."
+    },
+    {
+      "id": 135,
+      "theme": "PRIVACY_DATA",
+      "legal_nature": "OBLIGATION",
+      "block_id": 21,
+      "is_block_start": false,
+      "reason": "Continuation du bloc PRIVACY_DATA, même sujet juridique."
+    },
+    {
+      "id": 136,
+      "theme": "PRIVACY_DATA",
+      "legal_nature": "OBLIGATION",
+      "block_id": 21,
+      "is_block_start": false,
+      "reason": "Continuation du bloc PRIVACY_DATA, même sujet juridique."
+    },
+    {
+      "id": 137,
+      "theme": "USER_CONTENT",
+      "legal_nature": "RIGHT_GRANT",
+      "block_id": 22,
+      "is_block_start": true,
+      "rationale": "Ouverture du bloc USER_CONTENT avec l'indice « when you submit any ideas , suggestions , ».",
+      "rationale_codes": {
+        "decision_trigger": "title_marker",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "when you submit any ideas , suggestions ,",
+        "revised_from_plan": false,
+        "confidence": 0.86
+      }
+    },
+    {
+      "id": 138,
+      "theme": "USER_CONTENT",
+      "legal_nature": "RIGHT_GRANT",
+      "block_id": 22,
+      "is_block_start": false,
+      "reason": "Continuation du bloc USER_CONTENT, même sujet juridique."
+    },
+    {
+      "id": 139,
+      "theme": "THIRD_PARTY",
+      "legal_nature": "GOVERNANCE",
+      "block_id": 23,
+      "is_block_start": true,
+      "rationale": "Ouverture du bloc THIRD_PARTY avec l'indice « however , we may display advertisements and promotions ».",
+      "rationale_codes": {
+        "decision_trigger": "lexical_shift",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "however , we may display advertisements and promotions",
+        "revised_from_plan": false,
+        "confidence": 0.86
+      }
+    },
+    {
+      "id": 140,
+      "theme": "THIRD_PARTY",
+      "legal_nature": "OBLIGATION",
+      "block_id": 23,
+      "is_block_start": false,
+      "reason": "Continuation du bloc THIRD_PARTY, même sujet juridique."
+    },
+    {
+      "id": 141,
+      "theme": "THIRD_PARTY",
+      "legal_nature": "LIMITATION_DISCLAIMER",
+      "block_id": 23,
+      "is_block_start": false,
+      "reason": "Continuation du bloc THIRD_PARTY, même sujet juridique."
+    },
+    {
+      "id": 142,
+      "theme": "THIRD_PARTY",
+      "legal_nature": "LIMITATION_DISCLAIMER",
+      "block_id": 23,
+      "is_block_start": false,
+      "reason": "Continuation du bloc THIRD_PARTY, même sujet juridique."
+    },
+    {
+      "id": 143,
+      "theme": "THIRD_PARTY",
+      "legal_nature": "LIMITATION_DISCLAIMER",
+      "block_id": 23,
+      "is_block_start": false,
+      "reason": "Continuation du bloc THIRD_PARTY, même sujet juridique."
+    },
+    {
+      "id": 144,
+      "theme": "THIRD_PARTY",
+      "legal_nature": "LIMITATION_DISCLAIMER",
+      "block_id": 24,
+      "is_block_start": true,
+      "rationale": "Ouverture du bloc THIRD_PARTY avec l'indice « third-party links , content and programming . ».",
+      "rationale_codes": {
+        "decision_trigger": "title_marker",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "third-party links , content and programming .",
+        "revised_from_plan": false,
+        "confidence": 0.86
+      }
+    },
+    {
+      "id": 145,
+      "theme": "THIRD_PARTY",
+      "legal_nature": "GOVERNANCE",
+      "block_id": 24,
+      "is_block_start": false,
+      "reason": "Continuation du bloc THIRD_PARTY, même sujet juridique."
+    },
+    {
+      "id": 146,
+      "theme": "THIRD_PARTY",
+      "legal_nature": "LIMITATION_DISCLAIMER",
+      "block_id": 24,
+      "is_block_start": false,
+      "reason": "Continuation du bloc THIRD_PARTY, même sujet juridique."
+    },
+    {
+      "id": 147,
+      "theme": "THIRD_PARTY",
+      "legal_nature": "OBLIGATION",
+      "block_id": 24,
+      "is_block_start": false,
+      "reason": "Continuation du bloc THIRD_PARTY, même sujet juridique."
+    },
+    {
+      "id": 148,
+      "theme": "INDEMNIFICATION",
+      "legal_nature": "RISK_ALLOCATION",
+      "block_id": 25,
+      "is_block_start": true,
+      "rationale": "Ouverture du bloc INDEMNIFICATION avec l'indice « in the event of such claim , we ».",
+      "rationale_codes": {
+        "decision_trigger": "topic_keyword",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "in the event of such claim , we",
+        "revised_from_plan": false,
+        "confidence": 0.86
+      }
+    },
+    {
+      "id": 149,
+      "theme": "INDEMNIFICATION",
+      "legal_nature": "RISK_ALLOCATION",
+      "block_id": 25,
+      "is_block_start": false,
+      "reason": "Continuation du bloc INDEMNIFICATION, même sujet juridique."
+    },
+    {
+      "id": 150,
+      "theme": "WARRANTY_DISCLAIMER",
+      "legal_nature": "LIMITATION_DISCLAIMER",
+      "block_id": 26,
+      "is_block_start": true,
+      "rationale": "Ouverture du bloc WARRANTY_DISCLAIMER avec l'indice « to the maximum extent permitted by law , ».",
+      "rationale_codes": {
+        "decision_trigger": "title_marker",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "to the maximum extent permitted by law ,",
+        "revised_from_plan": false,
+        "confidence": 0.86
+      }
+    },
+    {
+      "id": 151,
+      "theme": "WARRANTY_DISCLAIMER",
+      "legal_nature": "LIMITATION_DISCLAIMER",
+      "block_id": 26,
+      "is_block_start": false,
+      "reason": "Continuation du bloc WARRANTY_DISCLAIMER, même sujet juridique."
+    },
+    {
+      "id": 152,
+      "theme": "WARRANTY_DISCLAIMER",
+      "legal_nature": "LIMITATION_DISCLAIMER",
+      "block_id": 26,
+      "is_block_start": false,
+      "reason": "Continuation du bloc WARRANTY_DISCLAIMER, même sujet juridique."
+    },
+    {
+      "id": 153,
+      "theme": "WARRANTY_DISCLAIMER",
+      "legal_nature": "LIMITATION_DISCLAIMER",
+      "block_id": 26,
+      "is_block_start": false,
+      "reason": "Continuation du bloc WARRANTY_DISCLAIMER, même sujet juridique."
+    },
+    {
+      "id": 154,
+      "theme": "WARRANTY_DISCLAIMER",
+      "legal_nature": "LIMITATION_DISCLAIMER",
+      "block_id": 26,
+      "is_block_start": false,
+      "reason": "Continuation du bloc WARRANTY_DISCLAIMER, même sujet juridique."
+    },
+    {
+      "id": 155,
+      "theme": "WARRANTY_DISCLAIMER",
+      "legal_nature": "LIMITATION_DISCLAIMER",
+      "block_id": 26,
+      "is_block_start": false,
+      "reason": "Continuation du bloc WARRANTY_DISCLAIMER, même sujet juridique."
+    },
+    {
+      "id": 156,
+      "theme": "WARRANTY_DISCLAIMER",
+      "legal_nature": "LIMITATION_DISCLAIMER",
+      "block_id": 26,
+      "is_block_start": false,
+      "reason": "Continuation du bloc WARRANTY_DISCLAIMER, même sujet juridique."
+    },
+    {
+      "id": 157,
+      "theme": "WARRANTY_DISCLAIMER",
+      "legal_nature": "LIMITATION_DISCLAIMER",
+      "block_id": 26,
+      "is_block_start": false,
+      "reason": "Continuation du bloc WARRANTY_DISCLAIMER, même sujet juridique."
+    },
+    {
+      "id": 158,
+      "theme": "WARRANTY_DISCLAIMER",
+      "legal_nature": "LIMITATION_DISCLAIMER",
+      "block_id": 26,
+      "is_block_start": false,
+      "reason": "Continuation du bloc WARRANTY_DISCLAIMER, même sujet juridique."
+    },
+    {
+      "id": 159,
+      "theme": "LIABILITY_LIMITATION",
+      "legal_nature": "LIMITATION_DISCLAIMER",
+      "block_id": 27,
+      "is_block_start": true,
+      "rationale": "Ouverture du bloc LIABILITY_LIMITATION avec l'indice « nothing in these terms of service -lrb- including ».",
+      "rationale_codes": {
+        "decision_trigger": "topic_keyword",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "nothing in these terms of service -lrb- including",
+        "revised_from_plan": false,
+        "confidence": 0.86
+      }
+    },
+    {
+      "id": 160,
+      "theme": "LIABILITY_LIMITATION",
+      "legal_nature": "LIMITATION_DISCLAIMER",
+      "block_id": 27,
+      "is_block_start": false,
+      "reason": "Continuation du bloc LIABILITY_LIMITATION, même sujet juridique."
+    },
+    {
+      "id": 161,
+      "theme": "LIABILITY_LIMITATION",
+      "legal_nature": "LIMITATION_DISCLAIMER",
+      "block_id": 27,
+      "is_block_start": false,
+      "reason": "Continuation du bloc LIABILITY_LIMITATION, même sujet juridique."
+    },
+    {
+      "id": 162,
+      "theme": "LIABILITY_LIMITATION",
+      "legal_nature": "LIMITATION_DISCLAIMER",
+      "block_id": 27,
+      "is_block_start": false,
+      "reason": "Continuation du bloc LIABILITY_LIMITATION, même sujet juridique."
+    },
+    {
+      "id": 163,
+      "theme": "MISC_BOILERPLATE",
+      "legal_nature": "OBLIGATION",
+      "block_id": 28,
+      "is_block_start": true,
+      "rationale": "Ouverture du bloc MISC_BOILERPLATE avec l'indice « this is another reason why it 's important ».",
+      "rationale_codes": {
+        "decision_trigger": "title_marker",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "this is another reason why it 's important",
+        "revised_from_plan": false,
+        "confidence": 0.86
+      }
+    },
+    {
+      "id": 164,
+      "theme": "MISC_BOILERPLATE",
+      "legal_nature": "GOVERNANCE",
+      "block_id": 28,
+      "is_block_start": false,
+      "reason": "Continuation du bloc MISC_BOILERPLATE, même sujet juridique."
+    },
+    {
+      "id": 165,
+      "theme": "MISC_BOILERPLATE",
+      "legal_nature": "OBLIGATION",
+      "block_id": 28,
+      "is_block_start": false,
+      "reason": "Continuation du bloc MISC_BOILERPLATE, même sujet juridique."
+    },
+    {
+      "id": 166,
+      "theme": "MISC_BOILERPLATE",
+      "legal_nature": "DEFINITION",
+      "block_id": 28,
+      "is_block_start": false,
+      "reason": "Continuation du bloc MISC_BOILERPLATE, même sujet juridique."
+    },
+    {
+      "id": 167,
+      "theme": "MISC_BOILERPLATE",
+      "legal_nature": "OBLIGATION",
+      "block_id": 28,
+      "is_block_start": false,
+      "reason": "Continuation du bloc MISC_BOILERPLATE, même sujet juridique."
+    },
+    {
+      "id": 168,
+      "theme": "MISC_BOILERPLATE",
+      "legal_nature": "OBLIGATION",
+      "block_id": 28,
+      "is_block_start": false,
+      "reason": "Continuation du bloc MISC_BOILERPLATE, même sujet juridique."
+    },
+    {
+      "id": 169,
+      "theme": "MISC_BOILERPLATE",
+      "legal_nature": "OBLIGATION",
+      "block_id": 28,
+      "is_block_start": false,
+      "reason": "Continuation du bloc MISC_BOILERPLATE, même sujet juridique."
+    },
+    {
+      "id": 170,
+      "theme": "MISC_BOILERPLATE",
+      "legal_nature": "OBLIGATION",
+      "block_id": 28,
+      "is_block_start": false,
+      "reason": "Continuation du bloc MISC_BOILERPLATE, même sujet juridique."
+    },
+    {
+      "id": 171,
+      "theme": "MISC_BOILERPLATE",
+      "legal_nature": "OBLIGATION",
+      "block_id": 28,
+      "is_block_start": false,
+      "reason": "Continuation du bloc MISC_BOILERPLATE, même sujet juridique."
+    },
+    {
+      "id": 172,
+      "theme": "MISC_BOILERPLATE",
+      "legal_nature": "OBLIGATION",
+      "block_id": 28,
+      "is_block_start": false,
+      "reason": "Continuation du bloc MISC_BOILERPLATE, même sujet juridique."
+    },
+    {
+      "id": 173,
+      "theme": "ACCEPTABLE_USE",
+      "legal_nature": "PROHIBITION",
+      "block_id": 29,
+      "is_block_start": true,
+      "rationale": "Ouverture du bloc ACCEPTABLE_USE avec l'indice « you may not use or otherwise export the ».",
+      "rationale_codes": {
+        "decision_trigger": "title_marker",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "you may not use or otherwise export the",
+        "revised_from_plan": false,
+        "confidence": 0.86
+      }
+    },
+    {
+      "id": 174,
+      "theme": "ACCEPTABLE_USE",
+      "legal_nature": "PROHIBITION",
+      "block_id": 29,
+      "is_block_start": false,
+      "reason": "Continuation du bloc ACCEPTABLE_USE, même sujet juridique."
+    },
+    {
+      "id": 175,
+      "theme": "ACCEPTABLE_USE",
+      "legal_nature": "PROHIBITION",
+      "block_id": 29,
+      "is_block_start": false,
+      "reason": "Continuation du bloc ACCEPTABLE_USE, même sujet juridique."
+    },
+    {
+      "id": 176,
+      "theme": "ACCEPTABLE_USE",
+      "legal_nature": "OBLIGATION",
+      "block_id": 29,
+      "is_block_start": false,
+      "reason": "Continuation du bloc ACCEPTABLE_USE, même sujet juridique."
+    },
+    {
+      "id": 177,
+      "theme": "ACCEPTABLE_USE",
+      "legal_nature": "PROHIBITION",
+      "block_id": 29,
+      "is_block_start": false,
+      "reason": "Continuation du bloc ACCEPTABLE_USE, même sujet juridique."
+    },
+    {
+      "id": 178,
+      "theme": "GOVERNING_LAW",
+      "legal_nature": "GOVERNANCE",
+      "block_id": 30,
+      "is_block_start": true,
+      "rationale": "Ouverture du bloc GOVERNING_LAW avec l'indice « if you are a resident of the united ».",
+      "rationale_codes": {
+        "decision_trigger": "title_marker",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "if you are a resident of the united",
+        "revised_from_plan": false,
+        "confidence": 0.86
+      }
+    },
+    {
+      "id": 179,
+      "theme": "GOVERNING_LAW",
+      "legal_nature": "GOVERNANCE",
+      "block_id": 30,
+      "is_block_start": false,
+      "reason": "Continuation du bloc GOVERNING_LAW, même sujet juridique."
+    },
+    {
+      "id": 180,
+      "theme": "GOVERNING_LAW",
+      "legal_nature": "GOVERNANCE",
+      "block_id": 30,
+      "is_block_start": false,
+      "reason": "Continuation du bloc GOVERNING_LAW, même sujet juridique."
+    },
+    {
+      "id": 181,
+      "theme": "GOVERNING_LAW",
+      "legal_nature": "GOVERNANCE",
+      "block_id": 30,
+      "is_block_start": false,
+      "reason": "Continuation du bloc GOVERNING_LAW, même sujet juridique."
+    },
+    {
+      "id": 182,
+      "theme": "GOVERNING_LAW",
+      "legal_nature": "GOVERNANCE",
+      "block_id": 30,
+      "is_block_start": false,
+      "reason": "Continuation du bloc GOVERNING_LAW, même sujet juridique."
+    },
+    {
+      "id": 183,
+      "theme": "DISPUTE_ARBITRATION",
+      "legal_nature": "GOVERNANCE",
+      "block_id": 31,
+      "is_block_start": true,
+      "rationale": "Ouverture du bloc DISPUTE_ARBITRATION avec l'indice « let us know about your complaint . ».",
+      "rationale_codes": {
+        "decision_trigger": "title_marker",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "let us know about your complaint .",
+        "revised_from_plan": false,
+        "confidence": 0.86
+      }
+    },
+    {
+      "id": 184,
+      "theme": "DISPUTE_ARBITRATION",
+      "legal_nature": "GOVERNANCE",
+      "block_id": 31,
+      "is_block_start": false,
+      "reason": "Continuation du bloc DISPUTE_ARBITRATION, même sujet juridique."
+    },
+    {
+      "id": 185,
+      "theme": "DISPUTE_ARBITRATION",
+      "legal_nature": "GOVERNANCE",
+      "block_id": 31,
+      "is_block_start": false,
+      "reason": "Continuation du bloc DISPUTE_ARBITRATION, même sujet juridique."
+    },
+    {
+      "id": 186,
+      "theme": "DISPUTE_ARBITRATION",
+      "legal_nature": "GOVERNANCE",
+      "block_id": 31,
+      "is_block_start": false,
+      "reason": "Continuation du bloc DISPUTE_ARBITRATION, même sujet juridique."
+    },
+    {
+      "id": 187,
+      "theme": "DISPUTE_ARBITRATION",
+      "legal_nature": "GOVERNANCE",
+      "block_id": 31,
+      "is_block_start": false,
+      "reason": "Continuation du bloc DISPUTE_ARBITRATION, même sujet juridique."
+    },
+    {
+      "id": 188,
+      "theme": "DISPUTE_ARBITRATION",
+      "legal_nature": "GOVERNANCE",
+      "block_id": 31,
+      "is_block_start": false,
+      "reason": "Continuation du bloc DISPUTE_ARBITRATION, même sujet juridique."
+    },
+    {
+      "id": 189,
+      "theme": "DISPUTE_ARBITRATION",
+      "legal_nature": "GOVERNANCE",
+      "block_id": 31,
+      "is_block_start": false,
+      "reason": "Continuation du bloc DISPUTE_ARBITRATION, même sujet juridique."
+    },
+    {
+      "id": 190,
+      "theme": "DISPUTE_ARBITRATION",
+      "legal_nature": "GOVERNANCE",
+      "block_id": 31,
+      "is_block_start": false,
+      "reason": "Continuation du bloc DISPUTE_ARBITRATION, même sujet juridique."
+    },
+    {
+      "id": 191,
+      "theme": "DISPUTE_ARBITRATION",
+      "legal_nature": "GOVERNANCE",
+      "block_id": 31,
+      "is_block_start": false,
+      "reason": "Continuation du bloc DISPUTE_ARBITRATION, même sujet juridique."
+    },
+    {
+      "id": 192,
+      "theme": "DISPUTE_ARBITRATION",
+      "legal_nature": "GOVERNANCE",
+      "block_id": 31,
+      "is_block_start": false,
+      "reason": "Continuation du bloc DISPUTE_ARBITRATION, même sujet juridique."
+    },
+    {
+      "id": 193,
+      "theme": "DISPUTE_ARBITRATION",
+      "legal_nature": "GOVERNANCE",
+      "block_id": 31,
+      "is_block_start": false,
+      "reason": "Continuation du bloc DISPUTE_ARBITRATION, même sujet juridique."
+    },
+    {
+      "id": 194,
+      "theme": "DISPUTE_ARBITRATION",
+      "legal_nature": "GOVERNANCE",
+      "block_id": 31,
+      "is_block_start": false,
+      "reason": "Continuation du bloc DISPUTE_ARBITRATION, même sujet juridique."
+    },
+    {
+      "id": 195,
+      "theme": "DISPUTE_ARBITRATION",
+      "legal_nature": "GOVERNANCE",
+      "block_id": 31,
+      "is_block_start": false,
+      "reason": "Continuation du bloc DISPUTE_ARBITRATION, même sujet juridique."
+    },
+    {
+      "id": 196,
+      "theme": "DISPUTE_ARBITRATION",
+      "legal_nature": "GOVERNANCE",
+      "block_id": 31,
+      "is_block_start": false,
+      "reason": "Continuation du bloc DISPUTE_ARBITRATION, même sujet juridique."
+    },
+    {
+      "id": 197,
+      "theme": "DISPUTE_ARBITRATION",
+      "legal_nature": "GOVERNANCE",
+      "block_id": 31,
+      "is_block_start": false,
+      "reason": "Continuation du bloc DISPUTE_ARBITRATION, même sujet juridique."
+    },
+    {
+      "id": 198,
+      "theme": "DISPUTE_ARBITRATION",
+      "legal_nature": "GOVERNANCE",
+      "block_id": 31,
+      "is_block_start": false,
+      "reason": "Continuation du bloc DISPUTE_ARBITRATION, même sujet juridique."
+    },
+    {
+      "id": 199,
+      "theme": "DISPUTE_ARBITRATION",
+      "legal_nature": "GOVERNANCE",
+      "block_id": 31,
+      "is_block_start": false,
+      "reason": "Continuation du bloc DISPUTE_ARBITRATION, même sujet juridique."
+    },
+    {
+      "id": 200,
+      "theme": "DISPUTE_ARBITRATION",
+      "legal_nature": "GOVERNANCE",
+      "block_id": 32,
+      "is_block_start": true,
+      "rationale": "Ouverture du bloc DISPUTE_ARBITRATION avec l'indice « the federal arbitration act governs the interpretation and ».",
+      "rationale_codes": {
+        "decision_trigger": "topic_keyword",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "the federal arbitration act governs the interpretation and",
+        "revised_from_plan": false,
+        "confidence": 0.86
+      }
+    },
+    {
+      "id": 201,
+      "theme": "DISPUTE_ARBITRATION",
+      "legal_nature": "GOVERNANCE",
+      "block_id": 32,
+      "is_block_start": false,
+      "reason": "Continuation du bloc DISPUTE_ARBITRATION, même sujet juridique."
+    },
+    {
+      "id": 202,
+      "theme": "DISPUTE_ARBITRATION",
+      "legal_nature": "GOVERNANCE",
+      "block_id": 32,
+      "is_block_start": false,
+      "reason": "Continuation du bloc DISPUTE_ARBITRATION, même sujet juridique."
+    },
+    {
+      "id": 203,
+      "theme": "DISPUTE_ARBITRATION",
+      "legal_nature": "GOVERNANCE",
+      "block_id": 32,
+      "is_block_start": false,
+      "reason": "Continuation du bloc DISPUTE_ARBITRATION, même sujet juridique."
+    },
+    {
+      "id": 204,
+      "theme": "DISPUTE_ARBITRATION",
+      "legal_nature": "GOVERNANCE",
+      "block_id": 32,
+      "is_block_start": false,
+      "reason": "Continuation du bloc DISPUTE_ARBITRATION, même sujet juridique."
+    },
+    {
+      "id": 205,
+      "theme": "DISPUTE_ARBITRATION",
+      "legal_nature": "GOVERNANCE",
+      "block_id": 32,
+      "is_block_start": false,
+      "reason": "Continuation du bloc DISPUTE_ARBITRATION, même sujet juridique."
+    },
+    {
+      "id": 206,
+      "theme": "DISPUTE_ARBITRATION",
+      "legal_nature": "GOVERNANCE",
+      "block_id": 32,
+      "is_block_start": false,
+      "reason": "Continuation du bloc DISPUTE_ARBITRATION, même sujet juridique."
+    },
+    {
+      "id": 207,
+      "theme": "DISPUTE_ARBITRATION",
+      "legal_nature": "GOVERNANCE",
+      "block_id": 32,
+      "is_block_start": false,
+      "reason": "Continuation du bloc DISPUTE_ARBITRATION, même sujet juridique."
+    },
+    {
+      "id": 208,
+      "theme": "DISPUTE_ARBITRATION",
+      "legal_nature": "GOVERNANCE",
+      "block_id": 32,
+      "is_block_start": false,
+      "reason": "Continuation du bloc DISPUTE_ARBITRATION, même sujet juridique."
+    },
+    {
+      "id": 209,
+      "theme": "DISPUTE_ARBITRATION",
+      "legal_nature": "GOVERNANCE",
+      "block_id": 32,
+      "is_block_start": false,
+      "reason": "Continuation du bloc DISPUTE_ARBITRATION, même sujet juridique."
+    },
+    {
+      "id": 210,
+      "theme": "DISPUTE_ARBITRATION",
+      "legal_nature": "GOVERNANCE",
+      "block_id": 32,
+      "is_block_start": false,
+      "reason": "Continuation du bloc DISPUTE_ARBITRATION, même sujet juridique."
+    },
+    {
+      "id": 211,
+      "theme": "DISPUTE_ARBITRATION",
+      "legal_nature": "GOVERNANCE",
+      "block_id": 32,
+      "is_block_start": false,
+      "reason": "Continuation du bloc DISPUTE_ARBITRATION, même sujet juridique."
+    },
+    {
+      "id": 212,
+      "theme": "DISPUTE_ARBITRATION",
+      "legal_nature": "GOVERNANCE",
+      "block_id": 32,
+      "is_block_start": false,
+      "reason": "Continuation du bloc DISPUTE_ARBITRATION, même sujet juridique."
+    },
+    {
+      "id": 213,
+      "theme": "DISPUTE_ARBITRATION",
+      "legal_nature": "GOVERNANCE",
+      "block_id": 32,
+      "is_block_start": false,
+      "reason": "Continuation du bloc DISPUTE_ARBITRATION, même sujet juridique."
+    },
+    {
+      "id": 214,
+      "theme": "DISPUTE_ARBITRATION",
+      "legal_nature": "GOVERNANCE",
+      "block_id": 32,
+      "is_block_start": false,
+      "reason": "Continuation du bloc DISPUTE_ARBITRATION, même sujet juridique."
+    },
+    {
+      "id": 215,
+      "theme": "DISPUTE_ARBITRATION",
+      "legal_nature": "GOVERNANCE",
+      "block_id": 32,
+      "is_block_start": false,
+      "reason": "Continuation du bloc DISPUTE_ARBITRATION, même sujet juridique."
+    },
+    {
+      "id": 216,
+      "theme": "DISPUTE_ARBITRATION",
+      "legal_nature": "DEFINITION",
+      "block_id": 32,
+      "is_block_start": false,
+      "reason": "Continuation du bloc DISPUTE_ARBITRATION, même sujet juridique."
+    },
+    {
+      "id": 217,
+      "theme": "DISPUTE_ARBITRATION",
+      "legal_nature": "GOVERNANCE",
+      "block_id": 32,
+      "is_block_start": false,
+      "reason": "Continuation du bloc DISPUTE_ARBITRATION, même sujet juridique."
+    },
+    {
+      "id": 218,
+      "theme": "DISPUTE_ARBITRATION",
+      "legal_nature": "GOVERNANCE",
+      "block_id": 32,
+      "is_block_start": false,
+      "reason": "Continuation du bloc DISPUTE_ARBITRATION, même sujet juridique."
+    },
+    {
+      "id": 219,
+      "theme": "DISPUTE_ARBITRATION",
+      "legal_nature": "GOVERNANCE",
+      "block_id": 32,
+      "is_block_start": false,
+      "reason": "Continuation du bloc DISPUTE_ARBITRATION, même sujet juridique."
+    },
+    {
+      "id": 220,
+      "theme": "DISPUTE_ARBITRATION",
+      "legal_nature": "GOVERNANCE",
+      "block_id": 32,
+      "is_block_start": false,
+      "reason": "Continuation du bloc DISPUTE_ARBITRATION, même sujet juridique."
+    },
+    {
+      "id": 221,
+      "theme": "DISPUTE_ARBITRATION",
+      "legal_nature": "GOVERNANCE",
+      "block_id": 32,
+      "is_block_start": false,
+      "reason": "Continuation du bloc DISPUTE_ARBITRATION, même sujet juridique."
+    },
+    {
+      "id": 222,
+      "theme": "DISPUTE_ARBITRATION",
+      "legal_nature": "GOVERNANCE",
+      "block_id": 32,
+      "is_block_start": false,
+      "reason": "Continuation du bloc DISPUTE_ARBITRATION, même sujet juridique."
+    },
+    {
+      "id": 223,
+      "theme": "DISPUTE_ARBITRATION",
+      "legal_nature": "GOVERNANCE",
+      "block_id": 33,
+      "is_block_start": true,
+      "rationale": "Ouverture du bloc DISPUTE_ARBITRATION avec l'indice « you agree that regardless of any statute or ».",
+      "rationale_codes": {
+        "decision_trigger": "topic_keyword",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "you agree that regardless of any statute or",
+        "revised_from_plan": false,
+        "confidence": 0.86
+      }
+    },
+    {
+      "id": 224,
+      "theme": "DISPUTE_ARBITRATION",
+      "legal_nature": "GOVERNANCE",
+      "block_id": 33,
+      "is_block_start": false,
+      "reason": "Continuation du bloc DISPUTE_ARBITRATION, même sujet juridique."
+    },
+    {
+      "id": 225,
+      "theme": "DISPUTE_ARBITRATION",
+      "legal_nature": "GOVERNANCE",
+      "block_id": 33,
+      "is_block_start": false,
+      "reason": "Continuation du bloc DISPUTE_ARBITRATION, même sujet juridique."
+    },
+    {
+      "id": 226,
+      "theme": "META",
+      "legal_nature": "META",
+      "block_id": 34,
+      "is_block_start": true,
+      "rationale": "Ouverture du bloc META avec l'indice « under california civil code section 1789.3 , users ».",
+      "rationale_codes": {
+        "decision_trigger": "title_marker",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "under california civil code section 1789.3 , users",
+        "revised_from_plan": false,
+        "confidence": 0.86
+      }
+    },
+    {
+      "id": 227,
+      "theme": "META",
+      "legal_nature": "META",
+      "block_id": 34,
+      "is_block_start": false,
+      "reason": "Continuation du bloc META, même sujet juridique."
+    },
+    {
+      "id": 228,
+      "theme": "META",
+      "legal_nature": "META",
+      "block_id": 34,
+      "is_block_start": false,
+      "reason": "Continuation du bloc META, même sujet juridique."
+    },
+    {
+      "id": 229,
+      "theme": "META",
+      "legal_nature": "META",
+      "block_id": 34,
+      "is_block_start": false,
+      "reason": "Continuation du bloc META, même sujet juridique."
+    },
+    {
+      "id": 230,
+      "theme": "MISC_BOILERPLATE",
+      "legal_nature": "GOVERNANCE",
+      "block_id": 35,
+      "is_block_start": true,
+      "rationale": "Ouverture du bloc MISC_BOILERPLATE avec l'indice « first , these terms constitute the entire agreement ».",
+      "rationale_codes": {
+        "decision_trigger": "title_marker",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "first , these terms constitute the entire agreement",
+        "revised_from_plan": false,
+        "confidence": 0.86
+      }
+    },
+    {
+      "id": 231,
+      "theme": "MISC_BOILERPLATE",
+      "legal_nature": "GOVERNANCE",
+      "block_id": 35,
+      "is_block_start": false,
+      "reason": "Continuation du bloc MISC_BOILERPLATE, même sujet juridique."
+    },
+    {
+      "id": 232,
+      "theme": "MISC_BOILERPLATE",
+      "legal_nature": "GOVERNANCE",
+      "block_id": 35,
+      "is_block_start": false,
+      "reason": "Continuation du bloc MISC_BOILERPLATE, même sujet juridique."
+    },
+    {
+      "id": 233,
+      "theme": "MISC_BOILERPLATE",
+      "legal_nature": "OBLIGATION",
+      "block_id": 35,
+      "is_block_start": false,
+      "reason": "Continuation du bloc MISC_BOILERPLATE, même sujet juridique."
+    },
+    {
+      "id": 234,
+      "theme": "MISC_BOILERPLATE",
+      "legal_nature": "GOVERNANCE",
+      "block_id": 35,
+      "is_block_start": false,
+      "reason": "Continuation du bloc MISC_BOILERPLATE, même sujet juridique."
+    },
+    {
+      "id": 235,
+      "theme": "MISC_BOILERPLATE",
+      "legal_nature": "GOVERNANCE",
+      "block_id": 35,
+      "is_block_start": false,
+      "reason": "Continuation du bloc MISC_BOILERPLATE, même sujet juridique."
+    }
+  ]
+}

@@ -1,0 +1,1539 @@
+{
+  "doc": "Amazon",
+  "judge": "codex",
+  "version": "v9.2-nature-derived",
+  "document_plan": {
+    "estimated_n_blocks": 26,
+    "rationale_global": "lecture globale V9.2 ; segmentation conservatrice par sujet juridique autonome, avec continuité par défaut.",
+    "segments": [
+      {
+        "start_id": 0,
+        "theme": "META",
+        "rationale": "ouverture prévue pour date, adresse, URL ou identité d'entité",
+        "evidence_span": "last updated : may 30 , 2017"
+      },
+      {
+        "start_id": 1,
+        "theme": "PREAMBLE_SCOPE",
+        "rationale": "ouverture prévue pour cadre, acceptation ou périmètre du service",
+        "evidence_span": "amazon services llc and/or its affiliates -lrb- `` amazon ''"
+      },
+      {
+        "start_id": 11,
+        "theme": "LICENSE_IP",
+        "rationale": "ouverture prévue pour licence, propriété intellectuelle, copyright, marque ou DMCA",
+        "evidence_span": "all content included in or made available through any amazon"
+      },
+      {
+        "start_id": 13,
+        "theme": "PREAMBLE_SCOPE",
+        "rationale": "ouverture prévue pour cadre, acceptation ou périmètre du service",
+        "evidence_span": "click here to see a non-exhaustive list of amazon trademarks"
+      },
+      {
+        "start_id": 20,
+        "theme": "LICENSE_IP",
+        "rationale": "ouverture prévue pour licence, propriété intellectuelle, copyright, marque ou DMCA",
+        "evidence_span": "subject to your compliance with these conditions of use and"
+      },
+      {
+        "start_id": 29,
+        "theme": "ELIGIBILITY_ACCOUNT",
+        "rationale": "ouverture prévue pour compte, inscription, âge, identifiants ou sécurité d'accès",
+        "evidence_span": "you may need your own amazon account to use certain"
+      },
+      {
+        "start_id": 36,
+        "theme": "USER_CONTENT",
+        "rationale": "ouverture prévue pour contenu utilisateur, publication, avis ou feedback",
+        "evidence_span": "reviews , comments , communications , and other content"
+      },
+      {
+        "start_id": 45,
+        "theme": "LICENSE_IP",
+        "rationale": "ouverture prévue pour licence, propriété intellectuelle, copyright, marque ou DMCA",
+        "evidence_span": "amazon respects the intellectual property of others ."
+      },
+      {
+        "start_id": 47,
+        "theme": "DEFINITIONS",
+        "rationale": "ouverture prévue pour définitions contractuelles",
+        "evidence_span": "all purchases of physical items from amazon are made pursuant"
+      },
+      {
+        "start_id": 49,
+        "theme": "PAYMENT_BILLING",
+        "rationale": "ouverture prévue pour prix, frais, paiement, taxes, remboursement ou facturation",
+        "evidence_span": "amazon does not take title to returned items until the"
+      },
+      {
+        "start_id": 53,
+        "theme": "PREAMBLE_SCOPE",
+        "rationale": "ouverture prévue pour cadre, acceptation ou périmètre du service",
+        "evidence_span": "amazon attempts to be as accurate as possible ."
+      },
+      {
+        "start_id": 56,
+        "theme": "DEFINITIONS",
+        "rationale": "ouverture prévue pour définitions contractuelles",
+        "evidence_span": "`` list price '' means the suggested retail price of"
+      },
+      {
+        "start_id": 59,
+        "theme": "PAYMENT_BILLING",
+        "rationale": "ouverture prévue pour prix, frais, paiement, taxes, remboursement ou facturation",
+        "evidence_span": "with respect to items sold by amazon , we can"
+      },
+      {
+        "start_id": 67,
+        "theme": "ACCEPTABLE_USE",
+        "rationale": "ouverture prévue pour règles d'usage, restrictions, conduite ou interdictions",
+        "evidence_span": "you may not use any amazon service if you are"
+      },
+      {
+        "start_id": 69,
+        "theme": "LICENSE_IP",
+        "rationale": "ouverture prévue pour licence, propriété intellectuelle, copyright, marque ou DMCA",
+        "evidence_span": "parties other than amazon operate stores , provide services or"
+      },
+      {
+        "start_id": 74,
+        "theme": "WARRANTY_DISCLAIMER",
+        "rationale": "ouverture prévue pour exclusion de garanties",
+        "evidence_span": "disclaimer of warranties and limitation of liability"
+      },
+      {
+        "start_id": 81,
+        "theme": "DISPUTE_ARBITRATION",
+        "rationale": "ouverture prévue pour litige, arbitrage, action collective ou tribunal",
+        "evidence_span": "any dispute or claim relating in any way to your"
+      },
+      {
+        "start_id": 96,
+        "theme": "MODIFICATION_OF_TERMS",
+        "rationale": "ouverture prévue pour modification des conditions ou du service",
+        "evidence_span": "site policies , modification , and severability"
+      },
+      {
+        "start_id": 97,
+        "theme": "USER_CONTENT",
+        "rationale": "ouverture prévue pour contenu utilisateur, publication, avis ou feedback",
+        "evidence_span": "please review our other policies , such as our pricing"
+      },
+      {
+        "start_id": 101,
+        "theme": "PREAMBLE_SCOPE",
+        "rationale": "ouverture prévue pour cadre, acceptation ou périmètre du service",
+        "evidence_span": "the following terms -lrb- `` software terms '' -rrb- apply"
+      },
+      {
+        "start_id": 102,
+        "theme": "LICENSE_IP",
+        "rationale": "ouverture prévue pour licence, propriété intellectuelle, copyright, marque ou DMCA",
+        "evidence_span": "use of the amazon software ."
+      },
+      {
+        "start_id": 106,
+        "theme": "THIRD_PARTY",
+        "rationale": "ouverture prévue pour services, liens, contenus ou applications de tiers",
+        "evidence_span": "use of third party services ."
+      },
+      {
+        "start_id": 109,
+        "theme": "LICENSE_IP",
+        "rationale": "ouverture prévue pour licence, propriété intellectuelle, copyright, marque ou DMCA",
+        "evidence_span": "you may not reverse engineer , decompile or disassemble ,"
+      },
+      {
+        "start_id": 113,
+        "theme": "PREAMBLE_SCOPE",
+        "rationale": "ouverture prévue pour cadre, acceptation ou périmètre du service",
+        "evidence_span": "if you have a subpoena to serve on amazon ,"
+      },
+      {
+        "start_id": 118,
+        "theme": "PAYMENT_BILLING",
+        "rationale": "ouverture prévue pour prix, frais, paiement, taxes, remboursement ou facturation",
+        "evidence_span": "please note also that providing detailed and accurate information at"
+      },
+      {
+        "start_id": 120,
+        "theme": "LICENSE_IP",
+        "rationale": "ouverture prévue pour licence, propriété intellectuelle, copyright, marque ou DMCA",
+        "evidence_span": "notice and procedure for making claims of copyright infringement"
+      }
+    ]
+  },
+  "annotations": [
+    {
+      "id": 0,
+      "theme": "META",
+      "block_id": 0,
+      "is_block_start": true,
+      "rationale": "ouvre date, adresse, URL ou identité d'entité ; indice « last updated : may 30 , 2017 »",
+      "rationale_codes": {
+        "decision_trigger": "document_start",
+        "relation_to_prev": "document_start",
+        "evidence_span": "last updated : may 30 , 2017",
+        "revised_from_plan": false,
+        "confidence": 0.95
+      },
+      "legal_nature": "META",
+      "legal_nature_marker": "last updated"
+    },
+    {
+      "id": 1,
+      "theme": "PREAMBLE_SCOPE",
+      "block_id": 1,
+      "is_block_start": true,
+      "rationale": "ouvre cadre, acceptation ou périmètre du service ; indice « amazon services llc and/or its affiliates -lrb- `` amazon '' »",
+      "rationale_codes": {
+        "decision_trigger": "topic_keyword",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "amazon services llc and/or its affiliates -lrb- `` amazon ''",
+        "revised_from_plan": false,
+        "confidence": 0.82
+      },
+      "legal_nature": "META",
+      "legal_nature_marker": "llc"
+    },
+    {
+      "id": 2,
+      "theme": "PREAMBLE_SCOPE",
+      "block_id": 1,
+      "is_block_start": false,
+      "reason": "continue PREAMBLE_SCOPE, précision ou effet du même sujet",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 3,
+      "theme": "PREAMBLE_SCOPE",
+      "block_id": 1,
+      "is_block_start": false,
+      "reason": "continue PREAMBLE_SCOPE, précision ou effet du même sujet",
+      "legal_nature": "SCOPE_APPLICABILITY",
+      "legal_nature_marker": "by using"
+    },
+    {
+      "id": 4,
+      "theme": "PREAMBLE_SCOPE",
+      "block_id": 1,
+      "is_block_start": false,
+      "reason": "continue PREAMBLE_SCOPE, précision ou effet du même sujet",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 5,
+      "theme": "PREAMBLE_SCOPE",
+      "block_id": 1,
+      "is_block_start": false,
+      "reason": "continue PREAMBLE_SCOPE, précision ou effet du même sujet",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 6,
+      "theme": "PREAMBLE_SCOPE",
+      "block_id": 1,
+      "is_block_start": false,
+      "reason": "continue PREAMBLE_SCOPE, précision ou effet du même sujet",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 7,
+      "theme": "PREAMBLE_SCOPE",
+      "block_id": 1,
+      "is_block_start": false,
+      "reason": "continue PREAMBLE_SCOPE, précision ou effet du même sujet",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 8,
+      "theme": "PREAMBLE_SCOPE",
+      "block_id": 1,
+      "is_block_start": false,
+      "reason": "continue PREAMBLE_SCOPE, précision ou effet du même sujet",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 9,
+      "theme": "PREAMBLE_SCOPE",
+      "block_id": 1,
+      "is_block_start": false,
+      "reason": "continue PREAMBLE_SCOPE, précision ou effet du même sujet",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 10,
+      "theme": "PREAMBLE_SCOPE",
+      "block_id": 1,
+      "is_block_start": false,
+      "reason": "continue PREAMBLE_SCOPE, précision ou effet du même sujet",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 11,
+      "theme": "LICENSE_IP",
+      "block_id": 2,
+      "is_block_start": true,
+      "rationale": "ouvre licence, propriété intellectuelle, copyright, marque ou DMCA ; indice « all content included in or made available through any amazon »",
+      "rationale_codes": {
+        "decision_trigger": "topic_keyword",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "all content included in or made available through any amazon",
+        "revised_from_plan": false,
+        "confidence": 0.82
+      },
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 12,
+      "theme": "LICENSE_IP",
+      "block_id": 2,
+      "is_block_start": false,
+      "reason": "continue LICENSE_IP, précision ou effet du même sujet",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 13,
+      "theme": "PREAMBLE_SCOPE",
+      "block_id": 3,
+      "is_block_start": true,
+      "rationale": "ouvre cadre, acceptation ou périmètre du service ; indice « click here to see a non-exhaustive list of amazon trademarks »",
+      "rationale_codes": {
+        "decision_trigger": "topic_keyword",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "click here to see a non-exhaustive list of amazon trademarks",
+        "revised_from_plan": false,
+        "confidence": 0.82
+      },
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 14,
+      "theme": "PREAMBLE_SCOPE",
+      "block_id": 3,
+      "is_block_start": false,
+      "reason": "continue PREAMBLE_SCOPE, précision ou effet du même sujet",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 15,
+      "theme": "PREAMBLE_SCOPE",
+      "block_id": 3,
+      "is_block_start": false,
+      "reason": "continue PREAMBLE_SCOPE, précision ou effet du même sujet",
+      "legal_nature": "PROHIBITION",
+      "legal_nature_marker": "may not"
+    },
+    {
+      "id": 16,
+      "theme": "PREAMBLE_SCOPE",
+      "block_id": 3,
+      "is_block_start": false,
+      "reason": "continue PREAMBLE_SCOPE, précision ou effet du même sujet",
+      "legal_nature": "PROHIBITION",
+      "legal_nature_marker": "may not"
+    },
+    {
+      "id": 17,
+      "theme": "PREAMBLE_SCOPE",
+      "block_id": 3,
+      "is_block_start": false,
+      "reason": "continue PREAMBLE_SCOPE, précision ou effet du même sujet",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 18,
+      "theme": "PREAMBLE_SCOPE",
+      "block_id": 3,
+      "is_block_start": false,
+      "reason": "continue PREAMBLE_SCOPE, précision ou effet du même sujet",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 19,
+      "theme": "PREAMBLE_SCOPE",
+      "block_id": 3,
+      "is_block_start": false,
+      "reason": "continue PREAMBLE_SCOPE, précision ou effet du même sujet",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 20,
+      "theme": "LICENSE_IP",
+      "block_id": 4,
+      "is_block_start": true,
+      "rationale": "ouvre licence, propriété intellectuelle, copyright, marque ou DMCA ; indice « subject to your compliance with these conditions of use and »",
+      "rationale_codes": {
+        "decision_trigger": "topic_keyword",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "subject to your compliance with these conditions of use and",
+        "revised_from_plan": false,
+        "confidence": 0.82
+      },
+      "legal_nature": "RIGHT_GRANT",
+      "legal_nature_marker": "grant you"
+    },
+    {
+      "id": 21,
+      "theme": "LICENSE_IP",
+      "block_id": 4,
+      "is_block_start": false,
+      "reason": "continue LICENSE_IP, précision ou effet du même sujet",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 22,
+      "theme": "LICENSE_IP",
+      "block_id": 4,
+      "is_block_start": false,
+      "reason": "continue LICENSE_IP, précision ou effet du même sujet",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 23,
+      "theme": "LICENSE_IP",
+      "block_id": 4,
+      "is_block_start": false,
+      "reason": "continue LICENSE_IP, précision ou effet du même sujet",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 24,
+      "theme": "LICENSE_IP",
+      "block_id": 4,
+      "is_block_start": false,
+      "reason": "continue LICENSE_IP, précision ou effet du même sujet",
+      "legal_nature": "PROHIBITION",
+      "legal_nature_marker": "may not"
+    },
+    {
+      "id": 25,
+      "theme": "LICENSE_IP",
+      "block_id": 4,
+      "is_block_start": false,
+      "reason": "continue LICENSE_IP, précision ou effet du même sujet",
+      "legal_nature": "PROHIBITION",
+      "legal_nature_marker": "may not"
+    },
+    {
+      "id": 26,
+      "theme": "LICENSE_IP",
+      "block_id": 4,
+      "is_block_start": false,
+      "reason": "continue LICENSE_IP, précision ou effet du même sujet",
+      "legal_nature": "PROHIBITION",
+      "legal_nature_marker": "may not"
+    },
+    {
+      "id": 27,
+      "theme": "LICENSE_IP",
+      "block_id": 4,
+      "is_block_start": false,
+      "reason": "continue LICENSE_IP, précision ou effet du même sujet",
+      "legal_nature": "RIGHT_GRANT",
+      "legal_nature_marker": "you may use"
+    },
+    {
+      "id": 28,
+      "theme": "LICENSE_IP",
+      "block_id": 4,
+      "is_block_start": false,
+      "reason": "continue LICENSE_IP, précision ou effet du même sujet",
+      "legal_nature": "PROHIBITION",
+      "legal_nature_marker": "do not"
+    },
+    {
+      "id": 29,
+      "theme": "ELIGIBILITY_ACCOUNT",
+      "block_id": 5,
+      "is_block_start": true,
+      "rationale": "ouvre compte, inscription, âge, identifiants ou sécurité d'accès ; indice « you may need your own amazon account to use certain »",
+      "rationale_codes": {
+        "decision_trigger": "modal_verb",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "you may need your own amazon account to use certain",
+        "revised_from_plan": false,
+        "confidence": 0.82
+      },
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 30,
+      "theme": "ELIGIBILITY_ACCOUNT",
+      "block_id": 5,
+      "is_block_start": false,
+      "reason": "continue ELIGIBILITY_ACCOUNT, précision ou effet du même sujet",
+      "legal_nature": "OBLIGATION",
+      "legal_nature_marker": "you agree to"
+    },
+    {
+      "id": 31,
+      "theme": "ELIGIBILITY_ACCOUNT",
+      "block_id": 5,
+      "is_block_start": false,
+      "reason": "continue ELIGIBILITY_ACCOUNT, précision ou effet du même sujet",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 32,
+      "theme": "ELIGIBILITY_ACCOUNT",
+      "block_id": 5,
+      "is_block_start": false,
+      "reason": "continue ELIGIBILITY_ACCOUNT, précision ou effet du même sujet",
+      "legal_nature": "RIGHT_GRANT",
+      "legal_nature_marker": "you may use"
+    },
+    {
+      "id": 33,
+      "theme": "ELIGIBILITY_ACCOUNT",
+      "block_id": 5,
+      "is_block_start": false,
+      "reason": "continue ELIGIBILITY_ACCOUNT, précision ou effet du même sujet",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 34,
+      "theme": "ELIGIBILITY_ACCOUNT",
+      "block_id": 5,
+      "is_block_start": false,
+      "reason": "continue ELIGIBILITY_ACCOUNT, précision ou effet du même sujet",
+      "legal_nature": "OBLIGATION",
+      "legal_nature_marker": "you must"
+    },
+    {
+      "id": 35,
+      "theme": "ELIGIBILITY_ACCOUNT",
+      "block_id": 5,
+      "is_block_start": false,
+      "reason": "continue ELIGIBILITY_ACCOUNT, précision ou effet du même sujet",
+      "legal_nature": "GOVERNANCE",
+      "legal_nature_marker": "terminate"
+    },
+    {
+      "id": 36,
+      "theme": "USER_CONTENT",
+      "block_id": 6,
+      "is_block_start": true,
+      "rationale": "ouvre contenu utilisateur, publication, avis ou feedback ; indice « reviews , comments , communications , and other content »",
+      "rationale_codes": {
+        "decision_trigger": "title_marker",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "reviews , comments , communications , and other content",
+        "revised_from_plan": false,
+        "confidence": 0.82
+      },
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 37,
+      "theme": "USER_CONTENT",
+      "block_id": 6,
+      "is_block_start": false,
+      "reason": "continue USER_CONTENT, précision ou effet du même sujet",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 38,
+      "theme": "USER_CONTENT",
+      "block_id": 6,
+      "is_block_start": false,
+      "reason": "continue USER_CONTENT, précision ou effet du même sujet",
+      "legal_nature": "PROHIBITION",
+      "legal_nature_marker": "may not"
+    },
+    {
+      "id": 39,
+      "theme": "USER_CONTENT",
+      "block_id": 6,
+      "is_block_start": false,
+      "reason": "continue USER_CONTENT, précision ou effet du même sujet",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 40,
+      "theme": "USER_CONTENT",
+      "block_id": 6,
+      "is_block_start": false,
+      "reason": "continue USER_CONTENT, précision ou effet du même sujet",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 41,
+      "theme": "USER_CONTENT",
+      "block_id": 6,
+      "is_block_start": false,
+      "reason": "continue USER_CONTENT, précision ou effet du même sujet",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 42,
+      "theme": "USER_CONTENT",
+      "block_id": 6,
+      "is_block_start": false,
+      "reason": "continue USER_CONTENT, précision ou effet du même sujet",
+      "legal_nature": "PROHIBITION",
+      "legal_nature_marker": "will not"
+    },
+    {
+      "id": 43,
+      "theme": "USER_CONTENT",
+      "block_id": 6,
+      "is_block_start": false,
+      "reason": "continue USER_CONTENT, précision ou effet du même sujet",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 44,
+      "theme": "USER_CONTENT",
+      "block_id": 6,
+      "is_block_start": false,
+      "reason": "continue USER_CONTENT, précision ou effet du même sujet",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 45,
+      "theme": "LICENSE_IP",
+      "block_id": 7,
+      "is_block_start": true,
+      "rationale": "ouvre licence, propriété intellectuelle, copyright, marque ou DMCA ; indice « amazon respects the intellectual property of others . »",
+      "rationale_codes": {
+        "decision_trigger": "topic_keyword",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "amazon respects the intellectual property of others .",
+        "revised_from_plan": false,
+        "confidence": 0.82
+      },
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 46,
+      "theme": "LICENSE_IP",
+      "block_id": 7,
+      "is_block_start": false,
+      "reason": "continue LICENSE_IP, précision ou effet du même sujet",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 47,
+      "theme": "DEFINITIONS",
+      "block_id": 8,
+      "is_block_start": true,
+      "rationale": "ouvre définitions contractuelles ; indice « all purchases of physical items from amazon are made pursuant »",
+      "rationale_codes": {
+        "decision_trigger": "topic_keyword",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "all purchases of physical items from amazon are made pursuant",
+        "revised_from_plan": false,
+        "confidence": 0.82
+      },
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 48,
+      "theme": "DEFINITIONS",
+      "block_id": 8,
+      "is_block_start": false,
+      "reason": "continue DEFINITIONS, précision ou effet du même sujet",
+      "legal_nature": "DEFINITION",
+      "legal_nature_marker": "means"
+    },
+    {
+      "id": 49,
+      "theme": "PAYMENT_BILLING",
+      "block_id": 9,
+      "is_block_start": true,
+      "rationale": "ouvre prix, frais, paiement, taxes, remboursement ou facturation ; indice « amazon does not take title to returned items until the »",
+      "rationale_codes": {
+        "decision_trigger": "topic_keyword",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "amazon does not take title to returned items until the",
+        "revised_from_plan": false,
+        "confidence": 0.82
+      },
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 50,
+      "theme": "PAYMENT_BILLING",
+      "block_id": 9,
+      "is_block_start": false,
+      "reason": "continue PAYMENT_BILLING, précision ou effet du même sujet",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 51,
+      "theme": "PAYMENT_BILLING",
+      "block_id": 9,
+      "is_block_start": false,
+      "reason": "continue PAYMENT_BILLING, précision ou effet du même sujet",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 52,
+      "theme": "PAYMENT_BILLING",
+      "block_id": 9,
+      "is_block_start": false,
+      "reason": "continue PAYMENT_BILLING, précision ou effet du même sujet",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 53,
+      "theme": "PREAMBLE_SCOPE",
+      "block_id": 10,
+      "is_block_start": true,
+      "rationale": "ouvre cadre, acceptation ou périmètre du service ; indice « amazon attempts to be as accurate as possible . »",
+      "rationale_codes": {
+        "decision_trigger": "topic_keyword",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "amazon attempts to be as accurate as possible .",
+        "revised_from_plan": false,
+        "confidence": 0.82
+      },
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 54,
+      "theme": "PREAMBLE_SCOPE",
+      "block_id": 10,
+      "is_block_start": false,
+      "reason": "continue PREAMBLE_SCOPE, précision ou effet du même sujet",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 55,
+      "theme": "PREAMBLE_SCOPE",
+      "block_id": 10,
+      "is_block_start": false,
+      "reason": "continue PREAMBLE_SCOPE, précision ou effet du même sujet",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 56,
+      "theme": "DEFINITIONS",
+      "block_id": 11,
+      "is_block_start": true,
+      "rationale": "ouvre définitions contractuelles ; indice « `` list price '' means the suggested retail price of »",
+      "rationale_codes": {
+        "decision_trigger": "topic_keyword",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "`` list price '' means the suggested retail price of",
+        "revised_from_plan": false,
+        "confidence": 0.82
+      },
+      "legal_nature": "DEFINITION",
+      "legal_nature_marker": "means"
+    },
+    {
+      "id": 57,
+      "theme": "DEFINITIONS",
+      "block_id": 11,
+      "is_block_start": false,
+      "reason": "continue DEFINITIONS, précision ou effet du même sujet",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 58,
+      "theme": "DEFINITIONS",
+      "block_id": 11,
+      "is_block_start": false,
+      "reason": "continue DEFINITIONS, précision ou effet du même sujet",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 59,
+      "theme": "PAYMENT_BILLING",
+      "block_id": 12,
+      "is_block_start": true,
+      "rationale": "ouvre prix, frais, paiement, taxes, remboursement ou facturation ; indice « with respect to items sold by amazon , we can »",
+      "rationale_codes": {
+        "decision_trigger": "topic_keyword",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "with respect to items sold by amazon , we can",
+        "revised_from_plan": false,
+        "confidence": 0.82
+      },
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 60,
+      "theme": "PAYMENT_BILLING",
+      "block_id": 12,
+      "is_block_start": false,
+      "reason": "continue PAYMENT_BILLING, précision ou effet du même sujet",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 61,
+      "theme": "PAYMENT_BILLING",
+      "block_id": 12,
+      "is_block_start": false,
+      "reason": "continue PAYMENT_BILLING, précision ou effet du même sujet",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 62,
+      "theme": "PAYMENT_BILLING",
+      "block_id": 12,
+      "is_block_start": false,
+      "reason": "continue PAYMENT_BILLING, précision ou effet du même sujet",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 63,
+      "theme": "PAYMENT_BILLING",
+      "block_id": 12,
+      "is_block_start": false,
+      "reason": "continue PAYMENT_BILLING, précision ou effet du même sujet",
+      "legal_nature": "PROHIBITION",
+      "legal_nature_marker": "do not"
+    },
+    {
+      "id": 64,
+      "theme": "PAYMENT_BILLING",
+      "block_id": 12,
+      "is_block_start": false,
+      "reason": "continue PAYMENT_BILLING, précision ou effet du même sujet",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 65,
+      "theme": "PAYMENT_BILLING",
+      "block_id": 12,
+      "is_block_start": false,
+      "reason": "continue PAYMENT_BILLING, précision ou effet du même sujet",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 66,
+      "theme": "PAYMENT_BILLING",
+      "block_id": 12,
+      "is_block_start": false,
+      "reason": "continue PAYMENT_BILLING, précision ou effet du même sujet",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 67,
+      "theme": "ACCEPTABLE_USE",
+      "block_id": 13,
+      "is_block_start": true,
+      "rationale": "ouvre règles d'usage, restrictions, conduite ou interdictions ; indice « you may not use any amazon service if you are »",
+      "rationale_codes": {
+        "decision_trigger": "modal_verb",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "you may not use any amazon service if you are",
+        "revised_from_plan": false,
+        "confidence": 0.82
+      },
+      "legal_nature": "PROHIBITION",
+      "legal_nature_marker": "may not"
+    },
+    {
+      "id": 68,
+      "theme": "ACCEPTABLE_USE",
+      "block_id": 13,
+      "is_block_start": false,
+      "reason": "continue ACCEPTABLE_USE, précision ou effet du même sujet",
+      "legal_nature": "OBLIGATION",
+      "legal_nature_marker": "you must"
+    },
+    {
+      "id": 69,
+      "theme": "LICENSE_IP",
+      "block_id": 14,
+      "is_block_start": true,
+      "rationale": "ouvre licence, propriété intellectuelle, copyright, marque ou DMCA ; indice « parties other than amazon operate stores , provide services or »",
+      "rationale_codes": {
+        "decision_trigger": "topic_keyword",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "parties other than amazon operate stores , provide services or",
+        "revised_from_plan": false,
+        "confidence": 0.82
+      },
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 70,
+      "theme": "LICENSE_IP",
+      "block_id": 14,
+      "is_block_start": false,
+      "reason": "continue LICENSE_IP, précision ou effet du même sujet",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 71,
+      "theme": "LICENSE_IP",
+      "block_id": 14,
+      "is_block_start": false,
+      "reason": "continue LICENSE_IP, précision ou effet du même sujet",
+      "legal_nature": "PROHIBITION",
+      "legal_nature_marker": "do not"
+    },
+    {
+      "id": 72,
+      "theme": "LICENSE_IP",
+      "block_id": 14,
+      "is_block_start": false,
+      "reason": "continue LICENSE_IP, précision ou effet du même sujet",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 73,
+      "theme": "LICENSE_IP",
+      "block_id": 14,
+      "is_block_start": false,
+      "reason": "continue LICENSE_IP, précision ou effet du même sujet",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 74,
+      "theme": "WARRANTY_DISCLAIMER",
+      "block_id": 15,
+      "is_block_start": true,
+      "rationale": "ouvre exclusion de garanties ; indice « disclaimer of warranties and limitation of liability »",
+      "rationale_codes": {
+        "decision_trigger": "title_marker",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "disclaimer of warranties and limitation of liability",
+        "revised_from_plan": false,
+        "confidence": 0.82
+      },
+      "legal_nature": "LIMITATION_DISCLAIMER",
+      "legal_nature_marker": "warranties"
+    },
+    {
+      "id": 75,
+      "theme": "WARRANTY_DISCLAIMER",
+      "block_id": 15,
+      "is_block_start": false,
+      "reason": "continue WARRANTY_DISCLAIMER, précision ou effet du même sujet",
+      "legal_nature": "LIMITATION_DISCLAIMER",
+      "legal_nature_marker": "as is"
+    },
+    {
+      "id": 76,
+      "theme": "WARRANTY_DISCLAIMER",
+      "block_id": 15,
+      "is_block_start": false,
+      "reason": "continue WARRANTY_DISCLAIMER, précision ou effet du même sujet",
+      "legal_nature": "LIMITATION_DISCLAIMER",
+      "legal_nature_marker": "warranties"
+    },
+    {
+      "id": 77,
+      "theme": "WARRANTY_DISCLAIMER",
+      "block_id": 15,
+      "is_block_start": false,
+      "reason": "continue WARRANTY_DISCLAIMER, précision ou effet du même sujet",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 78,
+      "theme": "WARRANTY_DISCLAIMER",
+      "block_id": 15,
+      "is_block_start": false,
+      "reason": "continue WARRANTY_DISCLAIMER, précision ou effet du même sujet",
+      "legal_nature": "LIMITATION_DISCLAIMER",
+      "legal_nature_marker": "warranties"
+    },
+    {
+      "id": 79,
+      "theme": "WARRANTY_DISCLAIMER",
+      "block_id": 15,
+      "is_block_start": false,
+      "reason": "continue WARRANTY_DISCLAIMER, précision ou effet du même sujet",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 80,
+      "theme": "WARRANTY_DISCLAIMER",
+      "block_id": 15,
+      "is_block_start": false,
+      "reason": "continue WARRANTY_DISCLAIMER, précision ou effet du même sujet",
+      "legal_nature": "PROHIBITION",
+      "legal_nature_marker": "will not"
+    },
+    {
+      "id": 81,
+      "theme": "DISPUTE_ARBITRATION",
+      "block_id": 16,
+      "is_block_start": true,
+      "rationale": "ouvre litige, arbitrage, action collective ou tribunal ; indice « any dispute or claim relating in any way to your »",
+      "rationale_codes": {
+        "decision_trigger": "modal_verb",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "any dispute or claim relating in any way to your",
+        "revised_from_plan": false,
+        "confidence": 0.82
+      },
+      "legal_nature": "GOVERNANCE",
+      "legal_nature_marker": "arbitration"
+    },
+    {
+      "id": 82,
+      "theme": "DISPUTE_ARBITRATION",
+      "block_id": 16,
+      "is_block_start": false,
+      "reason": "continue DISPUTE_ARBITRATION, précision ou effet du même sujet",
+      "legal_nature": "GOVERNANCE",
+      "legal_nature_marker": "arbitration"
+    },
+    {
+      "id": 83,
+      "theme": "DISPUTE_ARBITRATION",
+      "block_id": 16,
+      "is_block_start": false,
+      "reason": "continue DISPUTE_ARBITRATION, précision ou effet du même sujet",
+      "legal_nature": "GOVERNANCE",
+      "legal_nature_marker": "arbitration"
+    },
+    {
+      "id": 84,
+      "theme": "DISPUTE_ARBITRATION",
+      "block_id": 16,
+      "is_block_start": false,
+      "reason": "continue DISPUTE_ARBITRATION, précision ou effet du même sujet",
+      "legal_nature": "OBLIGATION",
+      "legal_nature_marker": "must"
+    },
+    {
+      "id": 85,
+      "theme": "DISPUTE_ARBITRATION",
+      "block_id": 16,
+      "is_block_start": false,
+      "reason": "continue DISPUTE_ARBITRATION, précision ou effet du même sujet",
+      "legal_nature": "GOVERNANCE",
+      "legal_nature_marker": "arbitration"
+    },
+    {
+      "id": 86,
+      "theme": "DISPUTE_ARBITRATION",
+      "block_id": 16,
+      "is_block_start": false,
+      "reason": "continue DISPUTE_ARBITRATION, précision ou effet du même sujet",
+      "legal_nature": "GOVERNANCE",
+      "legal_nature_marker": "arbitration"
+    },
+    {
+      "id": 87,
+      "theme": "DISPUTE_ARBITRATION",
+      "block_id": 16,
+      "is_block_start": false,
+      "reason": "continue DISPUTE_ARBITRATION, précision ou effet du même sujet",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 88,
+      "theme": "DISPUTE_ARBITRATION",
+      "block_id": 16,
+      "is_block_start": false,
+      "reason": "continue DISPUTE_ARBITRATION, précision ou effet du même sujet",
+      "legal_nature": "GOVERNANCE",
+      "legal_nature_marker": "governed by"
+    },
+    {
+      "id": 89,
+      "theme": "DISPUTE_ARBITRATION",
+      "block_id": 16,
+      "is_block_start": false,
+      "reason": "continue DISPUTE_ARBITRATION, précision ou effet du même sujet",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 90,
+      "theme": "DISPUTE_ARBITRATION",
+      "block_id": 16,
+      "is_block_start": false,
+      "reason": "continue DISPUTE_ARBITRATION, précision ou effet du même sujet",
+      "legal_nature": "PROHIBITION",
+      "legal_nature_marker": "will not"
+    },
+    {
+      "id": 91,
+      "theme": "DISPUTE_ARBITRATION",
+      "block_id": 16,
+      "is_block_start": false,
+      "reason": "continue DISPUTE_ARBITRATION, précision ou effet du même sujet",
+      "legal_nature": "GOVERNANCE",
+      "legal_nature_marker": "arbitration"
+    },
+    {
+      "id": 92,
+      "theme": "DISPUTE_ARBITRATION",
+      "block_id": 16,
+      "is_block_start": false,
+      "reason": "continue DISPUTE_ARBITRATION, précision ou effet du même sujet",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 93,
+      "theme": "DISPUTE_ARBITRATION",
+      "block_id": 16,
+      "is_block_start": false,
+      "reason": "continue DISPUTE_ARBITRATION, précision ou effet du même sujet",
+      "legal_nature": "GOVERNANCE",
+      "legal_nature_marker": "arbitration"
+    },
+    {
+      "id": 94,
+      "theme": "DISPUTE_ARBITRATION",
+      "block_id": 16,
+      "is_block_start": false,
+      "reason": "continue DISPUTE_ARBITRATION, précision ou effet du même sujet",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 95,
+      "theme": "DISPUTE_ARBITRATION",
+      "block_id": 16,
+      "is_block_start": false,
+      "reason": "continue DISPUTE_ARBITRATION, précision ou effet du même sujet",
+      "legal_nature": "GOVERNANCE",
+      "legal_nature_marker": "arbitration"
+    },
+    {
+      "id": 96,
+      "theme": "MODIFICATION_OF_TERMS",
+      "block_id": 17,
+      "is_block_start": true,
+      "rationale": "ouvre modification des conditions ou du service ; indice « site policies , modification , and severability »",
+      "rationale_codes": {
+        "decision_trigger": "title_marker",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "site policies , modification , and severability",
+        "revised_from_plan": false,
+        "confidence": 0.82
+      },
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 97,
+      "theme": "USER_CONTENT",
+      "block_id": 18,
+      "is_block_start": true,
+      "rationale": "ouvre contenu utilisateur, publication, avis ou feedback ; indice « please review our other policies , such as our pricing »",
+      "rationale_codes": {
+        "decision_trigger": "topic_keyword",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "please review our other policies , such as our pricing",
+        "revised_from_plan": false,
+        "confidence": 0.82
+      },
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 98,
+      "theme": "USER_CONTENT",
+      "block_id": 18,
+      "is_block_start": false,
+      "reason": "continue USER_CONTENT, précision ou effet du même sujet",
+      "legal_nature": "SCOPE_APPLICABILITY",
+      "legal_nature_marker": "govern your use"
+    },
+    {
+      "id": 99,
+      "theme": "USER_CONTENT",
+      "block_id": 18,
+      "is_block_start": false,
+      "reason": "continue USER_CONTENT, précision ou effet du même sujet",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 100,
+      "theme": "USER_CONTENT",
+      "block_id": 18,
+      "is_block_start": false,
+      "reason": "continue USER_CONTENT, précision ou effet du même sujet",
+      "legal_nature": "PROHIBITION",
+      "legal_nature_marker": "shall not"
+    },
+    {
+      "id": 101,
+      "theme": "PREAMBLE_SCOPE",
+      "block_id": 19,
+      "is_block_start": true,
+      "rationale": "ouvre cadre, acceptation ou périmètre du service ; indice « the following terms -lrb- `` software terms '' -rrb- apply »",
+      "rationale_codes": {
+        "decision_trigger": "topic_keyword",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "the following terms -lrb- `` software terms '' -rrb- apply",
+        "revised_from_plan": false,
+        "confidence": 0.82
+      },
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 102,
+      "theme": "LICENSE_IP",
+      "block_id": 20,
+      "is_block_start": true,
+      "rationale": "ouvre licence, propriété intellectuelle, copyright, marque ou DMCA ; indice « use of the amazon software . »",
+      "rationale_codes": {
+        "decision_trigger": "topic_keyword",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "use of the amazon software .",
+        "revised_from_plan": false,
+        "confidence": 0.82
+      },
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 103,
+      "theme": "LICENSE_IP",
+      "block_id": 20,
+      "is_block_start": false,
+      "reason": "continue LICENSE_IP, précision ou effet du même sujet",
+      "legal_nature": "RIGHT_GRANT",
+      "legal_nature_marker": "you may use"
+    },
+    {
+      "id": 104,
+      "theme": "LICENSE_IP",
+      "block_id": 20,
+      "is_block_start": false,
+      "reason": "continue LICENSE_IP, précision ou effet du même sujet",
+      "legal_nature": "PROHIBITION",
+      "legal_nature_marker": "may not"
+    },
+    {
+      "id": 105,
+      "theme": "LICENSE_IP",
+      "block_id": 20,
+      "is_block_start": false,
+      "reason": "continue LICENSE_IP, précision ou effet du même sujet",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 106,
+      "theme": "THIRD_PARTY",
+      "block_id": 21,
+      "is_block_start": true,
+      "rationale": "ouvre services, liens, contenus ou applications de tiers ; indice « use of third party services . »",
+      "rationale_codes": {
+        "decision_trigger": "topic_keyword",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "use of third party services .",
+        "revised_from_plan": false,
+        "confidence": 0.82
+      },
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 107,
+      "theme": "THIRD_PARTY",
+      "block_id": 21,
+      "is_block_start": false,
+      "reason": "continue THIRD_PARTY, précision ou effet du même sujet",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 108,
+      "theme": "THIRD_PARTY",
+      "block_id": 21,
+      "is_block_start": false,
+      "reason": "continue THIRD_PARTY, précision ou effet du même sujet",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 109,
+      "theme": "LICENSE_IP",
+      "block_id": 22,
+      "is_block_start": true,
+      "rationale": "ouvre licence, propriété intellectuelle, copyright, marque ou DMCA ; indice « you may not reverse engineer , decompile or disassemble , »",
+      "rationale_codes": {
+        "decision_trigger": "modal_verb",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "you may not reverse engineer , decompile or disassemble ,",
+        "revised_from_plan": false,
+        "confidence": 0.82
+      },
+      "legal_nature": "PROHIBITION",
+      "legal_nature_marker": "may not"
+    },
+    {
+      "id": 110,
+      "theme": "LICENSE_IP",
+      "block_id": 22,
+      "is_block_start": false,
+      "reason": "continue LICENSE_IP, précision ou effet du même sujet",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 111,
+      "theme": "LICENSE_IP",
+      "block_id": 22,
+      "is_block_start": false,
+      "reason": "continue LICENSE_IP, précision ou effet du même sujet",
+      "legal_nature": "RIGHT_GRANT",
+      "legal_nature_marker": "grant you"
+    },
+    {
+      "id": 112,
+      "theme": "LICENSE_IP",
+      "block_id": 22,
+      "is_block_start": false,
+      "reason": "continue LICENSE_IP, précision ou effet du même sujet",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 113,
+      "theme": "PREAMBLE_SCOPE",
+      "block_id": 23,
+      "is_block_start": true,
+      "rationale": "ouvre cadre, acceptation ou périmètre du service ; indice « if you have a subpoena to serve on amazon , »",
+      "rationale_codes": {
+        "decision_trigger": "topic_keyword",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "if you have a subpoena to serve on amazon ,",
+        "revised_from_plan": false,
+        "confidence": 0.82
+      },
+      "legal_nature": "PROHIBITION",
+      "legal_nature_marker": "will not"
+    },
+    {
+      "id": 114,
+      "theme": "PREAMBLE_SCOPE",
+      "block_id": 23,
+      "is_block_start": false,
+      "reason": "continue PREAMBLE_SCOPE, précision ou effet du même sujet",
+      "legal_nature": "OBLIGATION",
+      "legal_nature_marker": "must"
+    },
+    {
+      "id": 115,
+      "theme": "PREAMBLE_SCOPE",
+      "block_id": 23,
+      "is_block_start": false,
+      "reason": "continue PREAMBLE_SCOPE, précision ou effet du même sujet",
+      "legal_nature": "GOVERNANCE",
+      "legal_nature_marker": "jurisdiction"
+    },
+    {
+      "id": 116,
+      "theme": "PREAMBLE_SCOPE",
+      "block_id": 23,
+      "is_block_start": false,
+      "reason": "continue PREAMBLE_SCOPE, précision ou effet du même sujet",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 117,
+      "theme": "PREAMBLE_SCOPE",
+      "block_id": 23,
+      "is_block_start": false,
+      "reason": "continue PREAMBLE_SCOPE, précision ou effet du même sujet",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 118,
+      "theme": "PAYMENT_BILLING",
+      "block_id": 24,
+      "is_block_start": true,
+      "rationale": "ouvre prix, frais, paiement, taxes, remboursement ou facturation ; indice « please note also that providing detailed and accurate information at »",
+      "rationale_codes": {
+        "decision_trigger": "topic_keyword",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "please note also that providing detailed and accurate information at",
+        "revised_from_plan": false,
+        "confidence": 0.82
+      },
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 119,
+      "theme": "PAYMENT_BILLING",
+      "block_id": 24,
+      "is_block_start": false,
+      "reason": "continue PAYMENT_BILLING, précision ou effet du même sujet",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 120,
+      "theme": "LICENSE_IP",
+      "block_id": 25,
+      "is_block_start": true,
+      "rationale": "ouvre licence, propriété intellectuelle, copyright, marque ou DMCA ; indice « notice and procedure for making claims of copyright infringement »",
+      "rationale_codes": {
+        "decision_trigger": "title_marker",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "notice and procedure for making claims of copyright infringement",
+        "revised_from_plan": false,
+        "confidence": 0.82
+      },
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 121,
+      "theme": "LICENSE_IP",
+      "block_id": 25,
+      "is_block_start": false,
+      "reason": "continue LICENSE_IP, précision ou effet du même sujet",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 122,
+      "theme": "LICENSE_IP",
+      "block_id": 25,
+      "is_block_start": false,
+      "reason": "continue LICENSE_IP, précision ou effet du même sujet",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 123,
+      "theme": "LICENSE_IP",
+      "block_id": 25,
+      "is_block_start": false,
+      "reason": "continue LICENSE_IP, précision ou effet du même sujet",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 124,
+      "theme": "LICENSE_IP",
+      "block_id": 25,
+      "is_block_start": false,
+      "reason": "continue LICENSE_IP, précision ou effet du même sujet",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 125,
+      "theme": "LICENSE_IP",
+      "block_id": 25,
+      "is_block_start": false,
+      "reason": "continue LICENSE_IP, précision ou effet du même sujet",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 126,
+      "theme": "LICENSE_IP",
+      "block_id": 25,
+      "is_block_start": false,
+      "reason": "continue LICENSE_IP, précision ou effet du même sujet",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 127,
+      "theme": "LICENSE_IP",
+      "block_id": 25,
+      "is_block_start": false,
+      "reason": "continue LICENSE_IP, précision ou effet du même sujet",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 128,
+      "theme": "LICENSE_IP",
+      "block_id": 25,
+      "is_block_start": false,
+      "reason": "continue LICENSE_IP, précision ou effet du même sujet",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 129,
+      "theme": "LICENSE_IP",
+      "block_id": 25,
+      "is_block_start": false,
+      "reason": "continue LICENSE_IP, précision ou effet du même sujet",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 130,
+      "theme": "LICENSE_IP",
+      "block_id": 25,
+      "is_block_start": false,
+      "reason": "continue LICENSE_IP, précision ou effet du même sujet",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 131,
+      "theme": "LICENSE_IP",
+      "block_id": 25,
+      "is_block_start": false,
+      "reason": "continue LICENSE_IP, précision ou effet du même sujet",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    }
+  ]
+}

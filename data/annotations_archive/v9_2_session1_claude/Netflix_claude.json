@@ -1,0 +1,1086 @@
+{
+  "doc": "Netflix",
+  "judge": "claude",
+  "version": "v9.2-nature-derived",
+  "document_plan": {
+    "estimated_n_blocks": 22,
+    "rationale_global": "ToS Netflix au profil NARRATIVE (peu de numerotation, 2 titres nominaux ids 33 et 81). Le document s'ouvre sur une presentation du service (PREAMBLE_SCOPE) puis une definition (DEFINITIONS). Il alterne ensuite abonnement/essai gratuit (SUBSCRIPTION_RENEWAL) et facturation (PAYMENT_BILLING), une section annulation (TERMINATION), un titre 'changes to the price and service plans' (MODIFICATION_OF_TERMS), eligibilite/age (ELIGIBILITY_ACCOUNT), licence d'acces au contenu et fonctionnalites (LICENSE_IP), usage acceptable et interdictions (ACCEPTABLE_USE), une resiliation pour violation (TERMINATION), la qualite de streaming et exigences techniques (MISC_BOILERPLATE), le logiciel Netflix et logiciel tiers (LICENSE_IP), le controle du compte (ELIGIBILITY_ACCOUNT), la loi applicable (GOVERNING_LAW), les materiaux non sollicites (LICENSE_IP), le support client/acces a distance + dispositions generales (MISC_BOILERPLATE), un titre 'changes to terms of use' (MODIFICATION_OF_TERMS), les communications electroniques (MISC_BOILERPLATE) et enfin la date de mise a jour (META). Granularite anticipee ~22 blocs, au-dela du prior 14 car le document multiplie les micro-clauses generales en fin de texte.",
+    "segments": [
+      {
+        "start_id": 0,
+        "theme": "PREAMBLE_SCOPE",
+        "rationale": "ouverture decrivant le service et son champ",
+        "evidence_span": "netflix provides a subscription service"
+      },
+      {
+        "start_id": 3,
+        "theme": "DEFINITIONS",
+        "rationale": "definition explicite du terme service",
+        "evidence_span": "as used in these terms of use"
+      },
+      {
+        "start_id": 4,
+        "theme": "SUBSCRIPTION_RENEWAL",
+        "rationale": "abonnement mensuel reconduit",
+        "evidence_span": "will continue month-to-month until terminated"
+      },
+      {
+        "start_id": 5,
+        "theme": "PAYMENT_BILLING",
+        "rationale": "exigence d'une methode de paiement et autorisation de prelevement",
+        "evidence_span": "valid , accepted method of payment"
+      },
+      {
+        "start_id": 8,
+        "theme": "SUBSCRIPTION_RENEWAL",
+        "rationale": "essai gratuit",
+        "evidence_span": "may start with a free trial"
+      },
+      {
+        "start_id": 15,
+        "theme": "PAYMENT_BILLING",
+        "rationale": "facturation de la cotisation et dates de paiement",
+        "evidence_span": "we will charge your payment method"
+      },
+      {
+        "start_id": 26,
+        "theme": "TERMINATION",
+        "rationale": "annulation de l'abonnement",
+        "evidence_span": "you can cancel your netflix membership at any time"
+      },
+      {
+        "start_id": 33,
+        "theme": "MODIFICATION_OF_TERMS",
+        "rationale": "titre changes to the price and service plans",
+        "evidence_span": "changes to the price and service plans"
+      },
+      {
+        "start_id": 35,
+        "theme": "ELIGIBILITY_ACCOUNT",
+        "rationale": "condition d'age pour devenir membre",
+        "evidence_span": "you must be 18 years of age"
+      },
+      {
+        "start_id": 37,
+        "theme": "LICENSE_IP",
+        "rationale": "usage personnel et licence d'acces au contenu",
+        "evidence_span": "for your personal and non-commercial use only"
+      },
+      {
+        "start_id": 50,
+        "theme": "ACCEPTABLE_USE",
+        "rationale": "obligation d'usage conforme aux lois et interdictions",
+        "evidence_span": "in accordance with all applicable laws"
+      },
+      {
+        "start_id": 54,
+        "theme": "TERMINATION",
+        "rationale": "resiliation en cas de violation des termes",
+        "evidence_span": "we may terminate or restrict your use of our service"
+      },
+      {
+        "start_id": 55,
+        "theme": "MISC_BOILERPLATE",
+        "rationale": "qualite d'affichage et exigences techniques de streaming",
+        "evidence_span": "the quality of the display"
+      },
+      {
+        "start_id": 65,
+        "theme": "LICENSE_IP",
+        "rationale": "logiciel Netflix et logiciel tiers",
+        "evidence_span": "the netflix software is developed by"
+      },
+      {
+        "start_id": 69,
+        "theme": "ELIGIBILITY_ACCOUNT",
+        "rationale": "proprietaire du compte et controle de l'acces",
+        "evidence_span": "the member who created the netflix account"
+      },
+      {
+        "start_id": 73,
+        "theme": "GOVERNING_LAW",
+        "rationale": "loi applicable des Pays-Bas",
+        "evidence_span": "shall be governed by"
+      },
+      {
+        "start_id": 75,
+        "theme": "LICENSE_IP",
+        "rationale": "materiaux et idees non sollicites",
+        "evidence_span": "does not accept unsolicited materials or ideas"
+      },
+      {
+        "start_id": 76,
+        "theme": "MISC_BOILERPLATE",
+        "rationale": "support client et acces a distance",
+        "evidence_span": "the netflix help center"
+      },
+      {
+        "start_id": 79,
+        "theme": "MISC_BOILERPLATE",
+        "rationale": "preseance des termes en cas de conflit",
+        "evidence_span": "these terms of use will control"
+      },
+      {
+        "start_id": 80,
+        "theme": "MISC_BOILERPLATE",
+        "rationale": "divisibilite des clauses",
+        "evidence_span": "invalid , illegal , or unenforceable"
+      },
+      {
+        "start_id": 81,
+        "theme": "MODIFICATION_OF_TERMS",
+        "rationale": "titre changes to terms of use",
+        "evidence_span": "changes to terms of use"
+      },
+      {
+        "start_id": 84,
+        "theme": "MISC_BOILERPLATE",
+        "rationale": "communications electroniques relatives au compte",
+        "evidence_span": "in electronic form only"
+      },
+      {
+        "start_id": 85,
+        "theme": "META",
+        "rationale": "date de derniere mise a jour",
+        "evidence_span": "last updated"
+      }
+    ]
+  },
+  "annotations": [
+    {
+      "id": 0,
+      "theme": "PREAMBLE_SCOPE",
+      "block_id": 0,
+      "is_block_start": true,
+      "rationale": "ouverture du document presentant le service Netflix, cite « netflix provides a subscription service »",
+      "rationale_codes": {
+        "decision_trigger": "document_start",
+        "relation_to_prev": "document_start",
+        "evidence_span": "netflix provides a subscription service",
+        "revised_from_plan": false,
+        "confidence": 0.96
+      },
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 1,
+      "theme": "PREAMBLE_SCOPE",
+      "block_id": 0,
+      "is_block_start": false,
+      "reason": "identite de l'entite qui fournit le service",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 2,
+      "theme": "PREAMBLE_SCOPE",
+      "block_id": 0,
+      "is_block_start": false,
+      "reason": "champ d'application des termes (govern your use)",
+      "legal_nature": "SCOPE_APPLICABILITY",
+      "legal_nature_marker": "govern your use"
+    },
+    {
+      "id": 3,
+      "theme": "DEFINITIONS",
+      "block_id": 1,
+      "is_block_start": true,
+      "rationale": "definition formelle du terme service, cite « as used in these terms of use »",
+      "rationale_codes": {
+        "decision_trigger": "definition_marker",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "as used in these terms of use",
+        "revised_from_plan": false,
+        "confidence": 0.9
+      },
+      "legal_nature": "DEFINITION",
+      "legal_nature_marker": "means"
+    },
+    {
+      "id": 4,
+      "theme": "SUBSCRIPTION_RENEWAL",
+      "block_id": 2,
+      "is_block_start": true,
+      "rationale": "ouverture sur la reconduction mensuelle de l'abonnement, cite « until terminated »",
+      "rationale_codes": {
+        "decision_trigger": "topic_keyword",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "will continue month-to-month until terminated",
+        "revised_from_plan": false,
+        "confidence": 0.86
+      },
+      "legal_nature": "GOVERNANCE",
+      "legal_nature_marker": "terminate"
+    },
+    {
+      "id": 5,
+      "theme": "PAYMENT_BILLING",
+      "block_id": 3,
+      "is_block_start": true,
+      "rationale": "exigence d'une methode de paiement valide, cite « valid , accepted method of payment »",
+      "rationale_codes": {
+        "decision_trigger": "topic_keyword",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "valid , accepted method of payment",
+        "revised_from_plan": false,
+        "confidence": 0.82
+      },
+      "legal_nature": "OBLIGATION",
+      "legal_nature_marker": "you must"
+    },
+    {
+      "id": 6,
+      "theme": "PAYMENT_BILLING",
+      "block_id": 3,
+      "is_block_start": false,
+      "reason": "autorisation de prelevement de la cotisation mensuelle",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 7,
+      "theme": "PAYMENT_BILLING",
+      "block_id": 3,
+      "is_block_start": false,
+      "reason": "consultation des details d'abonnement et de facturation via le compte",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 8,
+      "theme": "SUBSCRIPTION_RENEWAL",
+      "block_id": 4,
+      "is_block_start": true,
+      "rationale": "ouverture du sujet de l'essai gratuit, cite « may start with a free trial »",
+      "rationale_codes": {
+        "decision_trigger": "topic_keyword",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "may start with a free trial",
+        "revised_from_plan": false,
+        "confidence": 0.9
+      },
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 9,
+      "theme": "SUBSCRIPTION_RENEWAL",
+      "block_id": 4,
+      "is_block_start": false,
+      "reason": "duree de l'essai gratuit",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 10,
+      "theme": "SUBSCRIPTION_RENEWAL",
+      "block_id": 4,
+      "is_block_start": false,
+      "reason": "eligibilite a l'essai gratuit",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 11,
+      "theme": "SUBSCRIPTION_RENEWAL",
+      "block_id": 4,
+      "is_block_start": false,
+      "reason": "droit de revoquer l'essai en cas de non-eligibilite",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 12,
+      "theme": "SUBSCRIPTION_RENEWAL",
+      "block_id": 4,
+      "is_block_start": false,
+      "reason": "exclusion des foyers avec abonnement recent",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 13,
+      "theme": "SUBSCRIPTION_RENEWAL",
+      "block_id": 4,
+      "is_block_start": false,
+      "reason": "donnees utilisees pour determiner l'eligibilite a l'essai",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 14,
+      "theme": "SUBSCRIPTION_RENEWAL",
+      "block_id": 4,
+      "is_block_start": false,
+      "reason": "restrictions de combinaison avec d'autres offres",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 15,
+      "theme": "PAYMENT_BILLING",
+      "block_id": 5,
+      "is_block_start": true,
+      "rationale": "passage a la facturation de la cotisation a la fin de l'essai, cite « we will charge your payment method »",
+      "rationale_codes": {
+        "decision_trigger": "lexical_shift",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "we will charge your payment method",
+        "revised_from_plan": false,
+        "confidence": 0.8
+      },
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 16,
+      "theme": "PAYMENT_BILLING",
+      "block_id": 5,
+      "is_block_start": false,
+      "reason": "cotisation et frais factures mensuellement",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 17,
+      "theme": "PAYMENT_BILLING",
+      "block_id": 5,
+      "is_block_start": false,
+      "reason": "cas de changement de la date de paiement",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 18,
+      "theme": "PAYMENT_BILLING",
+      "block_id": 5,
+      "is_block_start": false,
+      "reason": "consultation de la prochaine date de paiement",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 19,
+      "theme": "PAYMENT_BILLING",
+      "block_id": 5,
+      "is_block_start": false,
+      "reason": "changement de la methode de paiement",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 20,
+      "theme": "PAYMENT_BILLING",
+      "block_id": 5,
+      "is_block_start": false,
+      "reason": "suspension en cas d'echec de paiement",
+      "legal_nature": "PROHIBITION",
+      "legal_nature_marker": "do not"
+    },
+    {
+      "id": 21,
+      "theme": "PAYMENT_BILLING",
+      "block_id": 5,
+      "is_block_start": false,
+      "reason": "autorisation de prelevement sur la methode mise a jour",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 22,
+      "theme": "PAYMENT_BILLING",
+      "block_id": 5,
+      "is_block_start": false,
+      "reason": "consequence sur les dates de facturation",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 23,
+      "theme": "PAYMENT_BILLING",
+      "block_id": 5,
+      "is_block_start": false,
+      "reason": "frais eventuels factures par l'emetteur du moyen de paiement",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 24,
+      "theme": "PAYMENT_BILLING",
+      "block_id": 5,
+      "is_block_start": false,
+      "reason": "taxes locales variant selon la methode de paiement",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 25,
+      "theme": "PAYMENT_BILLING",
+      "block_id": 5,
+      "is_block_start": false,
+      "reason": "renvoi au fournisseur de paiement pour details",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 26,
+      "theme": "TERMINATION",
+      "block_id": 6,
+      "is_block_start": true,
+      "rationale": "ouverture de la section annulation, cite « you can cancel your netflix membership at any time »",
+      "rationale_codes": {
+        "decision_trigger": "topic_keyword",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "you can cancel your netflix membership at any time",
+        "revised_from_plan": false,
+        "confidence": 0.88
+      },
+      "legal_nature": "OBLIGATION",
+      "legal_nature_marker": "you will"
+    },
+    {
+      "id": 27,
+      "theme": "TERMINATION",
+      "block_id": 6,
+      "is_block_start": false,
+      "reason": "non-remboursement apres annulation",
+      "legal_nature": "PROHIBITION",
+      "legal_nature_marker": "do not"
+    },
+    {
+      "id": 28,
+      "theme": "TERMINATION",
+      "block_id": 6,
+      "is_block_start": false,
+      "reason": "procedure d'annulation",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 29,
+      "theme": "TERMINATION",
+      "block_id": 6,
+      "is_block_start": false,
+      "reason": "fermeture automatique du compte en fin de periode",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 30,
+      "theme": "TERMINATION",
+      "block_id": 6,
+      "is_block_start": false,
+      "reason": "consultation de la date de fermeture du compte",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 31,
+      "theme": "TERMINATION",
+      "block_id": 6,
+      "is_block_start": false,
+      "reason": "annulation via un tiers payeur",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 32,
+      "theme": "TERMINATION",
+      "block_id": 6,
+      "is_block_start": false,
+      "reason": "informations de facturation via le tiers",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 33,
+      "theme": "MODIFICATION_OF_TERMS",
+      "block_id": 7,
+      "is_block_start": true,
+      "rationale": "titre nominal court annoncant les changements de prix et de plans, cite « changes to the price and service plans »",
+      "rationale_codes": {
+        "decision_trigger": "title_marker",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "changes to the price and service plans",
+        "revised_from_plan": false,
+        "confidence": 0.9
+      },
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 34,
+      "theme": "MODIFICATION_OF_TERMS",
+      "block_id": 7,
+      "is_block_start": false,
+      "reason": "modalites et preavis de 30 jours des changements de prix/plans",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 35,
+      "theme": "ELIGIBILITY_ACCOUNT",
+      "block_id": 8,
+      "is_block_start": true,
+      "rationale": "condition d'age pour devenir membre, cite « you must be 18 years of age »",
+      "rationale_codes": {
+        "decision_trigger": "topic_keyword",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "you must be 18 years of age",
+        "revised_from_plan": false,
+        "confidence": 0.87
+      },
+      "legal_nature": "OBLIGATION",
+      "legal_nature_marker": "you must"
+    },
+    {
+      "id": 36,
+      "theme": "ELIGIBILITY_ACCOUNT",
+      "block_id": 8,
+      "is_block_start": false,
+      "reason": "usage par les mineurs sous supervision d'un adulte",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 37,
+      "theme": "LICENSE_IP",
+      "block_id": 9,
+      "is_block_start": true,
+      "rationale": "restriction d'usage personnel et non commercial du contenu, cite « for your personal and non-commercial use only »",
+      "rationale_codes": {
+        "decision_trigger": "topic_keyword",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "for your personal and non-commercial use only",
+        "revised_from_plan": false,
+        "confidence": 0.83
+      },
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 38,
+      "theme": "LICENSE_IP",
+      "block_id": 9,
+      "is_block_start": false,
+      "reason": "octroi d'une licence limitee d'acces au contenu",
+      "legal_nature": "RIGHT_GRANT",
+      "legal_nature_marker": "grant you"
+    },
+    {
+      "id": 39,
+      "theme": "LICENSE_IP",
+      "block_id": 9,
+      "is_block_start": false,
+      "reason": "aucun autre droit transfere au-dela de la licence",
+      "legal_nature": "OBLIGATION",
+      "legal_nature_marker": "shall"
+    },
+    {
+      "id": 40,
+      "theme": "LICENSE_IP",
+      "block_id": 9,
+      "is_block_start": false,
+      "reason": "interdiction de representations publiques",
+      "legal_nature": "PROHIBITION",
+      "legal_nature_marker": "agree not to"
+    },
+    {
+      "id": 41,
+      "theme": "LICENSE_IP",
+      "block_id": 9,
+      "is_block_start": false,
+      "reason": "restrictions geographiques de visionnage du contenu sous licence",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 42,
+      "theme": "LICENSE_IP",
+      "block_id": 9,
+      "is_block_start": false,
+      "reason": "variation du contenu disponible selon la zone geographique",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 43,
+      "theme": "LICENSE_IP",
+      "block_id": 9,
+      "is_block_start": false,
+      "reason": "nombre d'appareils simultanes selon le plan",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 44,
+      "theme": "LICENSE_IP",
+      "block_id": 9,
+      "is_block_start": false,
+      "reason": "changements reguliers du service et de la bibliotheque de contenu",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 45,
+      "theme": "LICENSE_IP",
+      "block_id": 9,
+      "is_block_start": false,
+      "reason": "tests des differents aspects du service et du contenu",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 46,
+      "theme": "LICENSE_IP",
+      "block_id": 9,
+      "is_block_start": false,
+      "reason": "possibilite de se retirer des tests",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 47,
+      "theme": "LICENSE_IP",
+      "block_id": 9,
+      "is_block_start": false,
+      "reason": "telechargement temporaire et visionnage hors ligne du contenu",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 48,
+      "theme": "LICENSE_IP",
+      "block_id": 9,
+      "is_block_start": false,
+      "reason": "limitations sur les titres hors ligne",
+      "legal_nature": "OBLIGATION",
+      "legal_nature_marker": "you will"
+    },
+    {
+      "id": 49,
+      "theme": "LICENSE_IP",
+      "block_id": 9,
+      "is_block_start": false,
+      "reason": "indisponibilite de certains titres hors ligne selon le pays",
+      "legal_nature": "PROHIBITION",
+      "legal_nature_marker": "may not"
+    },
+    {
+      "id": 50,
+      "theme": "ACCEPTABLE_USE",
+      "block_id": 10,
+      "is_block_start": true,
+      "rationale": "obligation d'usage conforme aux lois applicables, cite « in accordance with all applicable laws »",
+      "rationale_codes": {
+        "decision_trigger": "topic_keyword",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "in accordance with all applicable laws",
+        "revised_from_plan": false,
+        "confidence": 0.84
+      },
+      "legal_nature": "OBLIGATION",
+      "legal_nature_marker": "you agree to"
+    },
+    {
+      "id": 51,
+      "theme": "ACCEPTABLE_USE",
+      "block_id": 10,
+      "is_block_start": false,
+      "reason": "interdiction de reproduire/distribuer/modifier le contenu",
+      "legal_nature": "PROHIBITION",
+      "legal_nature_marker": "agree not to"
+    },
+    {
+      "id": 52,
+      "theme": "ACCEPTABLE_USE",
+      "block_id": 10,
+      "is_block_start": false,
+      "reason": "interdictions techniques (contournement, robots, reverse engineering)",
+      "legal_nature": "DEFINITION",
+      "legal_nature_marker": "means"
+    },
+    {
+      "id": 53,
+      "theme": "ACCEPTABLE_USE",
+      "block_id": 10,
+      "is_block_start": false,
+      "reason": "interdiction d'envoyer du materiel nuisible ou des virus",
+      "legal_nature": "PROHIBITION",
+      "legal_nature_marker": "agree not to"
+    },
+    {
+      "id": 54,
+      "theme": "TERMINATION",
+      "block_id": 11,
+      "is_block_start": true,
+      "rationale": "droit de resiliation en cas de violation des termes, cite « we may terminate or restrict your use of our service »",
+      "rationale_codes": {
+        "decision_trigger": "topic_keyword",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "we may terminate or restrict your use of our service",
+        "revised_from_plan": false,
+        "confidence": 0.8
+      },
+      "legal_nature": "GOVERNANCE",
+      "legal_nature_marker": "terminate"
+    },
+    {
+      "id": 55,
+      "theme": "MISC_BOILERPLATE",
+      "block_id": 12,
+      "is_block_start": true,
+      "rationale": "passage a la qualite d'affichage et aux facteurs techniques, cite « the quality of the display »",
+      "rationale_codes": {
+        "decision_trigger": "lexical_shift",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "the quality of the display",
+        "revised_from_plan": false,
+        "confidence": 0.78
+      },
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 56,
+      "theme": "MISC_BOILERPLATE",
+      "block_id": 12,
+      "is_block_start": false,
+      "reason": "disponibilite HD/Ultra HD/HDR selon le service et l'appareil",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 57,
+      "theme": "MISC_BOILERPLATE",
+      "block_id": 12,
+      "is_block_start": false,
+      "reason": "formats non tous disponibles selon le plan",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 58,
+      "theme": "MISC_BOILERPLATE",
+      "block_id": 12,
+      "is_block_start": false,
+      "reason": "reglages par defaut sur reseaux cellulaires",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 59,
+      "theme": "MISC_BOILERPLATE",
+      "block_id": 12,
+      "is_block_start": false,
+      "reason": "vitesse minimale recommandee pour la qualite SD",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 60,
+      "theme": "MISC_BOILERPLATE",
+      "block_id": 12,
+      "is_block_start": false,
+      "reason": "vitesse recommandee pour le contenu HD",
+      "legal_nature": "DEFINITION",
+      "legal_nature_marker": "defined as"
+    },
+    {
+      "id": 61,
+      "theme": "MISC_BOILERPLATE",
+      "block_id": 12,
+      "is_block_start": false,
+      "reason": "vitesse recommandee pour Ultra HD et HDR",
+      "legal_nature": "DEFINITION",
+      "legal_nature_marker": "defined as"
+    },
+    {
+      "id": 62,
+      "theme": "MISC_BOILERPLATE",
+      "block_id": 12,
+      "is_block_start": false,
+      "reason": "responsabilite des frais d'acces internet",
+      "legal_nature": "OBLIGATION",
+      "legal_nature_marker": "you are responsible"
+    },
+    {
+      "id": 63,
+      "theme": "MISC_BOILERPLATE",
+      "block_id": 12,
+      "is_block_start": false,
+      "reason": "verification des frais de donnees aupres du fournisseur internet",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 64,
+      "theme": "MISC_BOILERPLATE",
+      "block_id": 12,
+      "is_block_start": false,
+      "reason": "facteurs affectant le temps de demarrage du visionnage",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 65,
+      "theme": "LICENSE_IP",
+      "block_id": 13,
+      "is_block_start": true,
+      "rationale": "le logiciel Netflix permettant le visionnage, cite « the netflix software is developed by »",
+      "rationale_codes": {
+        "decision_trigger": "topic_keyword",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "the netflix software is developed by",
+        "revised_from_plan": false,
+        "confidence": 0.79
+      },
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 66,
+      "theme": "LICENSE_IP",
+      "block_id": 13,
+      "is_block_start": false,
+      "reason": "variation du logiciel selon l'appareil et le support",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 67,
+      "theme": "LICENSE_IP",
+      "block_id": 13,
+      "is_block_start": false,
+      "reason": "logiciel tiers soumis a des licences tierces, prolonge le sujet logiciel",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 68,
+      "theme": "LICENSE_IP",
+      "block_id": 13,
+      "is_block_start": false,
+      "reason": "reception automatique des mises a jour du logiciel",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 69,
+      "theme": "ELIGIBILITY_ACCOUNT",
+      "block_id": 14,
+      "is_block_start": true,
+      "rationale": "proprietaire du compte et controle de l'acces, cite « the member who created the netflix account »",
+      "rationale_codes": {
+        "decision_trigger": "topic_keyword",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "the member who created the netflix account",
+        "revised_from_plan": false,
+        "confidence": 0.83
+      },
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 70,
+      "theme": "ELIGIBILITY_ACCOUNT",
+      "block_id": 14,
+      "is_block_start": false,
+      "reason": "maintien du controle du compte et confidentialite du mot de passe",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 71,
+      "theme": "ELIGIBILITY_ACCOUNT",
+      "block_id": 14,
+      "is_block_start": false,
+      "reason": "responsabilite de la mise a jour des informations du compte",
+      "legal_nature": "OBLIGATION",
+      "legal_nature_marker": "you are responsible"
+    },
+    {
+      "id": 72,
+      "theme": "ELIGIBILITY_ACCOUNT",
+      "block_id": 14,
+      "is_block_start": false,
+      "reason": "mise en suspens du compte pour proteger contre la fraude",
+      "legal_nature": "GOVERNANCE",
+      "legal_nature_marker": "terminate"
+    },
+    {
+      "id": 73,
+      "theme": "GOVERNING_LAW",
+      "block_id": 15,
+      "is_block_start": true,
+      "rationale": "designation de la loi applicable des Pays-Bas, cite « shall be governed by »",
+      "rationale_codes": {
+        "decision_trigger": "topic_keyword",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "shall be governed by",
+        "revised_from_plan": false,
+        "confidence": 0.9
+      },
+      "legal_nature": "GOVERNANCE",
+      "legal_nature_marker": "governed by"
+    },
+    {
+      "id": 74,
+      "theme": "GOVERNING_LAW",
+      "block_id": 15,
+      "is_block_start": false,
+      "reason": "preservation des droits imperatifs de protection des consommateurs",
+      "legal_nature": "PROHIBITION",
+      "legal_nature_marker": "will not"
+    },
+    {
+      "id": 75,
+      "theme": "LICENSE_IP",
+      "block_id": 16,
+      "is_block_start": true,
+      "rationale": "refus des materiaux et idees non sollicites pour le contenu, cite « unsolicited materials or ideas »",
+      "rationale_codes": {
+        "decision_trigger": "topic_keyword",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "unsolicited materials or ideas",
+        "revised_from_plan": false,
+        "confidence": 0.72
+      },
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 76,
+      "theme": "MISC_BOILERPLATE",
+      "block_id": 17,
+      "is_block_start": true,
+      "rationale": "renvoi au centre d'aide et au support client, cite « the netflix help center »",
+      "rationale_codes": {
+        "decision_trigger": "lexical_shift",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "the netflix help center",
+        "revised_from_plan": false,
+        "confidence": 0.78
+      },
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 77,
+      "theme": "MISC_BOILERPLATE",
+      "block_id": 17,
+      "is_block_start": false,
+      "reason": "outil de support a acces a distance",
+      "legal_nature": "SCOPE_APPLICABILITY",
+      "legal_nature_marker": "by using"
+    },
+    {
+      "id": 78,
+      "theme": "MISC_BOILERPLATE",
+      "block_id": 17,
+      "is_block_start": false,
+      "reason": "consentement a l'acces a distance et alternatives",
+      "legal_nature": "DEFINITION",
+      "legal_nature_marker": "means"
+    },
+    {
+      "id": 79,
+      "theme": "MISC_BOILERPLATE",
+      "block_id": 18,
+      "is_block_start": true,
+      "rationale": "clause de preseance des termes en cas de conflit, cite « these terms of use will control »",
+      "rationale_codes": {
+        "decision_trigger": "topic_keyword",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "these terms of use will control",
+        "revised_from_plan": false,
+        "confidence": 0.7
+      },
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 80,
+      "theme": "MISC_BOILERPLATE",
+      "block_id": 19,
+      "is_block_start": true,
+      "rationale": "clause de divisibilite des dispositions, cite « invalid , illegal , or unenforceable »",
+      "rationale_codes": {
+        "decision_trigger": "topic_keyword",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "invalid , illegal , or unenforceable",
+        "revised_from_plan": false,
+        "confidence": 0.74
+      },
+      "legal_nature": "OBLIGATION",
+      "legal_nature_marker": "shall"
+    },
+    {
+      "id": 81,
+      "theme": "MODIFICATION_OF_TERMS",
+      "block_id": 20,
+      "is_block_start": true,
+      "rationale": "titre nominal court annoncant la modification des termes, cite « changes to terms of use »",
+      "rationale_codes": {
+        "decision_trigger": "title_marker",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "changes to terms of use",
+        "revised_from_plan": false,
+        "confidence": 0.9
+      },
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 82,
+      "theme": "MODIFICATION_OF_TERMS",
+      "block_id": 20,
+      "is_block_start": false,
+      "reason": "Netflix peut modifier les termes de temps a autre",
+      "legal_nature": "GOVERNANCE",
+      "legal_nature_marker": "change these terms"
+    },
+    {
+      "id": 83,
+      "theme": "MODIFICATION_OF_TERMS",
+      "block_id": 20,
+      "is_block_start": false,
+      "reason": "preavis de 30 jours avant l'entree en vigueur des nouveaux termes",
+      "legal_nature": "PROHIBITION",
+      "legal_nature_marker": "will not"
+    },
+    {
+      "id": 84,
+      "theme": "MISC_BOILERPLATE",
+      "block_id": 21,
+      "is_block_start": true,
+      "rationale": "communications relatives au compte envoyees sous forme electronique, cite « in electronic form only »",
+      "rationale_codes": {
+        "decision_trigger": "lexical_shift",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "in electronic form only",
+        "revised_from_plan": false,
+        "confidence": 0.72
+      },
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 85,
+      "theme": "META",
+      "block_id": 22,
+      "is_block_start": true,
+      "rationale": "metadonnee de date de derniere mise a jour, cite « last updated »",
+      "rationale_codes": {
+        "decision_trigger": "title_marker",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "last updated",
+        "revised_from_plan": false,
+        "confidence": 0.95
+      },
+      "legal_nature": "META",
+      "legal_nature_marker": "last updated"
+    }
+  ]
+}

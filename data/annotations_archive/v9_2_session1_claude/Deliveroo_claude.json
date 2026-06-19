@@ -1,0 +1,1716 @@
+{
+  "doc": "Deliveroo",
+  "judge": "claude",
+  "version": "v9.2-nature-derived",
+  "document_plan": {
+    "estimated_n_blocks": 32,
+    "rationale_global": "Document composite Deliveroo : un premier contrat « terms and conditions of service » (commande de repas, id 0-75) suivi d'un second document « terms of use for website and applications » (id 76-142). Le premier enchaine preambule/portee, identite d'entite (META), nature du service, zones et processus de commande, formation du contrat, qualite, disponibilite/allergenes, alcool (eligibilite par age), delais de livraison, annulation, prix, paiement, garantie 'as-is', limitation de responsabilite, force majeure, divisibilite/integralite, modification des conditions, droit applicable. Le second document reprend preambule, identite (META), acces/compte, usage acceptable, services interactifs, standards de contenu, sanctions, PI, mises a jour/garantie, donnees, licence sur contenu, liens tiers, droit applicable, modification, contact. Granularite cible ~32 blocs ; superieure a la borne OBJ haute (28) car le document concatene deux jeux de conditions distincts, chacun avec son propre preambule, META, droit applicable et clause de modification.",
+    "segments": [
+      {
+        "start_id": 0,
+        "theme": "PREAMBLE_SCOPE",
+        "rationale": "titre du document",
+        "evidence_span": "deliveroo terms and conditions of service"
+      },
+      {
+        "start_id": 7,
+        "theme": "META",
+        "rationale": "identite de l'entite operatrice et adresse enregistree",
+        "evidence_span": "is a website operated by roofoods limited"
+      },
+      {
+        "start_id": 10,
+        "theme": "PREAMBLE_SCOPE",
+        "rationale": "nature et objet du service Deliveroo",
+        "evidence_span": "deliveroo is a business where the food is prepared"
+      },
+      {
+        "start_id": 14,
+        "theme": "PREAMBLE_SCOPE",
+        "rationale": "zones de livraison et processus de commande",
+        "evidence_span": "each partner restaurant has a prescribed delivery area"
+      },
+      {
+        "start_id": 20,
+        "theme": "PREAMBLE_SCOPE",
+        "rationale": "confirmation et formation du contrat",
+        "evidence_span": "the `` confirmation email ''"
+      },
+      {
+        "start_id": 25,
+        "theme": "PREAMBLE_SCOPE",
+        "rationale": "qualite du service et reclamations",
+        "evidence_span": "deliveroo seeks to provide a quality service"
+      },
+      {
+        "start_id": 28,
+        "theme": "PREAMBLE_SCOPE",
+        "rationale": "disponibilite des repas et allergenes",
+        "evidence_span": "all meals are subject to availability"
+      },
+      {
+        "start_id": 33,
+        "theme": "ELIGIBILITY_ACCOUNT",
+        "rationale": "verification de l'age pour l'alcool",
+        "evidence_span": "must be aged 18 or over"
+      },
+      {
+        "start_id": 39,
+        "theme": "WARRANTY_DISCLAIMER",
+        "rationale": "objectifs de delai de livraison sans garantie",
+        "evidence_span": "to provide the best delivery service possible"
+      },
+      {
+        "start_id": 43,
+        "theme": "TERMINATION",
+        "rationale": "annulation des commandes",
+        "evidence_span": "the right to cancel an order"
+      },
+      {
+        "start_id": 51,
+        "theme": "PAYMENT_BILLING",
+        "rationale": "prix des repas",
+        "evidence_span": "the price of any meals will be listed"
+      },
+      {
+        "start_id": 57,
+        "theme": "PAYMENT_BILLING",
+        "rationale": "modalites de paiement",
+        "evidence_span": "payment for all meals can be made"
+      },
+      {
+        "start_id": 62,
+        "theme": "WARRANTY_DISCLAIMER",
+        "rationale": "service fourni 'as-is' sans garantie",
+        "evidence_span": "as-is"
+      },
+      {
+        "start_id": 63,
+        "theme": "LIABILITY_LIMITATION",
+        "rationale": "limitation de responsabilite",
+        "evidence_span": "any liability to you"
+      },
+      {
+        "start_id": 66,
+        "theme": "MISC_BOILERPLATE",
+        "rationale": "force majeure",
+        "evidence_span": "no party shall be liable to the other"
+      },
+      {
+        "start_id": 69,
+        "theme": "MISC_BOILERPLATE",
+        "rationale": "divisibilite et integralite de l'accord",
+        "evidence_span": "illegal or unenforceable"
+      },
+      {
+        "start_id": 71,
+        "theme": "MODIFICATION_OF_TERMS",
+        "rationale": "droit de modifier les conditions",
+        "evidence_span": "our right to vary these terms and conditions"
+      },
+      {
+        "start_id": 74,
+        "theme": "GOVERNING_LAW",
+        "rationale": "competence des tribunaux et droit applicable",
+        "evidence_span": "the english courts will have jurisdiction"
+      },
+      {
+        "start_id": 76,
+        "theme": "PREAMBLE_SCOPE",
+        "rationale": "titre du second document : terms of use",
+        "evidence_span": "deliveroo terms of use for website and applications"
+      },
+      {
+        "start_id": 81,
+        "theme": "META",
+        "rationale": "identite de l'entite operatrice",
+        "evidence_span": "is a website operated by roofoods limited"
+      },
+      {
+        "start_id": 85,
+        "theme": "ELIGIBILITY_ACCOUNT",
+        "rationale": "acces au service et gestion du compte",
+        "evidence_span": "accessing our service or our services"
+      },
+      {
+        "start_id": 92,
+        "theme": "ACCEPTABLE_USE",
+        "rationale": "usage acceptable du service",
+        "evidence_span": "only for lawful purposes"
+      },
+      {
+        "start_id": 95,
+        "theme": "USER_CONTENT",
+        "rationale": "services interactifs et moderation",
+        "evidence_span": "interact through our site"
+      },
+      {
+        "start_id": 98,
+        "theme": "USER_CONTENT",
+        "rationale": "standards de contenu des contributions",
+        "evidence_span": "these content standards apply"
+      },
+      {
+        "start_id": 108,
+        "theme": "ACCEPTABLE_USE",
+        "rationale": "sanctions en cas de manquement",
+        "evidence_span": "constitutes a material breach"
+      },
+      {
+        "start_id": 115,
+        "theme": "LICENSE_IP",
+        "rationale": "propriete intellectuelle du site",
+        "evidence_span": "intellectual property rights"
+      },
+      {
+        "start_id": 121,
+        "theme": "WARRANTY_DISCLAIMER",
+        "rationale": "mises a jour du site et exclusion de responsabilite editoriale",
+        "evidence_span": "our site and our service change regularly"
+      },
+      {
+        "start_id": 130,
+        "theme": "PRIVACY_DATA",
+        "rationale": "donnees personnelles et politique de confidentialite",
+        "evidence_span": "information about you and your visits"
+      },
+      {
+        "start_id": 133,
+        "theme": "USER_CONTENT",
+        "rationale": "licence sur le contenu uploade",
+        "evidence_span": "uploading material to our site"
+      },
+      {
+        "start_id": 136,
+        "theme": "THIRD_PARTY",
+        "rationale": "liens vers des sites tiers",
+        "evidence_span": "links to other sites and resources provided by third parties"
+      },
+      {
+        "start_id": 138,
+        "theme": "GOVERNING_LAW",
+        "rationale": "competence et droit applicable du second document",
+        "evidence_span": "the english courts will have jurisdiction"
+      },
+      {
+        "start_id": 140,
+        "theme": "MODIFICATION_OF_TERMS",
+        "rationale": "droit de modifier les conditions d'utilisation",
+        "evidence_span": "revise these terms of use at any time"
+      }
+    ]
+  },
+  "annotations": [
+    {
+      "id": 0,
+      "theme": "PREAMBLE_SCOPE",
+      "block_id": 0,
+      "is_block_start": true,
+      "rationale": "titre du document, ouverture, cite « terms and conditions of service »",
+      "rationale_codes": {
+        "decision_trigger": "document_start",
+        "relation_to_prev": "document_start",
+        "evidence_span": "deliveroo terms and conditions of service",
+        "revised_from_plan": false,
+        "confidence": 0.97
+      },
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 1,
+      "theme": "PREAMBLE_SCOPE",
+      "block_id": 0,
+      "is_block_start": false,
+      "reason": "souhaite de bienvenue, definit le 'service'",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 2,
+      "theme": "PREAMBLE_SCOPE",
+      "block_id": 0,
+      "is_block_start": false,
+      "reason": "portee : ce que la page enonce",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 3,
+      "theme": "PREAMBLE_SCOPE",
+      "block_id": 0,
+      "is_block_start": false,
+      "reason": "invitation a lire les conditions",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 4,
+      "theme": "PREAMBLE_SCOPE",
+      "block_id": 0,
+      "is_block_start": false,
+      "reason": "acceptation par usage",
+      "legal_nature": "SCOPE_APPLICABILITY",
+      "legal_nature_marker": "by accessing"
+    },
+    {
+      "id": 5,
+      "theme": "PREAMBLE_SCOPE",
+      "block_id": 0,
+      "is_block_start": false,
+      "reason": "contact pour questions, prolonge le preambule",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 6,
+      "theme": "PREAMBLE_SCOPE",
+      "block_id": 0,
+      "is_block_start": false,
+      "reason": "consequence du refus des conditions",
+      "legal_nature": "PROHIBITION",
+      "legal_nature_marker": "do not"
+    },
+    {
+      "id": 7,
+      "theme": "META",
+      "block_id": 1,
+      "is_block_start": true,
+      "rationale": "identite d'entite : operateur, adresse enregistree, cite « operated by roofoods limited »",
+      "rationale_codes": {
+        "decision_trigger": "topic_keyword",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "is a website operated by roofoods limited",
+        "revised_from_plan": false,
+        "confidence": 0.9
+      },
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 8,
+      "theme": "META",
+      "block_id": 1,
+      "is_block_start": false,
+      "reason": "numero d'immatriculation de la societe",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 9,
+      "theme": "META",
+      "block_id": 1,
+      "is_block_start": false,
+      "reason": "numero de TVA",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 10,
+      "theme": "PREAMBLE_SCOPE",
+      "block_id": 2,
+      "is_block_start": true,
+      "rationale": "nature/objet du service : modele restaurants partenaires, cite « deliveroo is a business where the food is prepared »",
+      "rationale_codes": {
+        "decision_trigger": "topic_keyword",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "deliveroo is a business where the food is prepared",
+        "revised_from_plan": false,
+        "confidence": 0.82
+      },
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 11,
+      "theme": "PREAMBLE_SCOPE",
+      "block_id": 2,
+      "is_block_start": false,
+      "reason": "but du service, prolonge la description",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 12,
+      "theme": "PREAMBLE_SCOPE",
+      "block_id": 2,
+      "is_block_start": false,
+      "reason": "role de Deliveroo (marche/conclut/livre), prolonge",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 13,
+      "theme": "PREAMBLE_SCOPE",
+      "block_id": 2,
+      "is_block_start": false,
+      "reason": "offre d'ordering/delivery, prolonge la description",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 14,
+      "theme": "PREAMBLE_SCOPE",
+      "block_id": 3,
+      "is_block_start": true,
+      "rationale": "zones de livraison et processus de commande, cite « each partner restaurant has a prescribed delivery area »",
+      "rationale_codes": {
+        "decision_trigger": "lexical_shift",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "each partner restaurant has a prescribed delivery area",
+        "revised_from_plan": false,
+        "confidence": 0.6
+      },
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 15,
+      "theme": "PREAMBLE_SCOPE",
+      "block_id": 3,
+      "is_block_start": false,
+      "reason": "justification de la zone, prolonge",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 16,
+      "theme": "PREAMBLE_SCOPE",
+      "block_id": 3,
+      "is_block_start": false,
+      "reason": "consequence hors zone, prolonge",
+      "legal_nature": "PROHIBITION",
+      "legal_nature_marker": "will not"
+    },
+    {
+      "id": 17,
+      "theme": "PREAMBLE_SCOPE",
+      "block_id": 3,
+      "is_block_start": false,
+      "reason": "refus de commande hors zone, prolonge",
+      "legal_nature": "PROHIBITION",
+      "legal_nature_marker": "do not"
+    },
+    {
+      "id": 18,
+      "theme": "PREAMBLE_SCOPE",
+      "block_id": 3,
+      "is_block_start": false,
+      "reason": "horaires d'exploitation, prolonge",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 19,
+      "theme": "PREAMBLE_SCOPE",
+      "block_id": 3,
+      "is_block_start": false,
+      "reason": "etapes de soumission de commande, prolonge",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 20,
+      "theme": "PREAMBLE_SCOPE",
+      "block_id": 4,
+      "is_block_start": true,
+      "rationale": "confirmation et formation du contrat, cite « confirmation email »",
+      "rationale_codes": {
+        "decision_trigger": "topic_keyword",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "the `` confirmation email ''",
+        "revised_from_plan": false,
+        "confidence": 0.62
+      },
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 21,
+      "theme": "PREAMBLE_SCOPE",
+      "block_id": 4,
+      "is_block_start": false,
+      "reason": "formation du contrat avec le restaurant, prolonge",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 22,
+      "theme": "PREAMBLE_SCOPE",
+      "block_id": 4,
+      "is_block_start": false,
+      "reason": "exactitude de l'email, prolonge",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 23,
+      "theme": "PREAMBLE_SCOPE",
+      "block_id": 4,
+      "is_block_start": false,
+      "reason": "exactitude adresse/telephone, prolonge",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 24,
+      "theme": "PREAMBLE_SCOPE",
+      "block_id": 4,
+      "is_block_start": false,
+      "reason": "consequence non-reponse a la livraison, prolonge",
+      "legal_nature": "PROHIBITION",
+      "legal_nature_marker": "do not"
+    },
+    {
+      "id": 25,
+      "theme": "PREAMBLE_SCOPE",
+      "block_id": 5,
+      "is_block_start": true,
+      "rationale": "qualite du service et reclamations, cite « deliveroo seeks to provide a quality service »",
+      "rationale_codes": {
+        "decision_trigger": "lexical_shift",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "deliveroo seeks to provide a quality service",
+        "revised_from_plan": false,
+        "confidence": 0.58
+      },
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 26,
+      "theme": "PREAMBLE_SCOPE",
+      "block_id": 5,
+      "is_block_start": false,
+      "reason": "suivi des restaurants partenaires, prolonge",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 27,
+      "theme": "PREAMBLE_SCOPE",
+      "block_id": 5,
+      "is_block_start": false,
+      "reason": "invitation aux commentaires, prolonge",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 28,
+      "theme": "PREAMBLE_SCOPE",
+      "block_id": 6,
+      "is_block_start": true,
+      "rationale": "disponibilite des repas et allergenes, cite « all meals are subject to availability »",
+      "rationale_codes": {
+        "decision_trigger": "lexical_shift",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "all meals are subject to availability",
+        "revised_from_plan": false,
+        "confidence": 0.6
+      },
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 29,
+      "theme": "PREAMBLE_SCOPE",
+      "block_id": 6,
+      "is_block_start": false,
+      "reason": "alternative en cas d'indisponibilite, prolonge",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 30,
+      "theme": "PREAMBLE_SCOPE",
+      "block_id": 6,
+      "is_block_start": false,
+      "reason": "usage de noix, allergenes, prolonge",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 31,
+      "theme": "PREAMBLE_SCOPE",
+      "block_id": 6,
+      "is_block_start": false,
+      "reason": "appeler en cas d'allergie, prolonge",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 32,
+      "theme": "PREAMBLE_SCOPE",
+      "block_id": 6,
+      "is_block_start": false,
+      "reason": "pas de garantie d'absence d'allergenes, prolonge",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 33,
+      "theme": "ELIGIBILITY_ACCOUNT",
+      "block_id": 7,
+      "is_block_start": true,
+      "rationale": "condition d'age pour commander de l'alcool, cite « must be aged 18 or over »",
+      "rationale_codes": {
+        "decision_trigger": "topic_keyword",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "must be aged 18 or over",
+        "revised_from_plan": false,
+        "confidence": 0.78
+      },
+      "legal_nature": "OBLIGATION",
+      "legal_nature_marker": "must"
+    },
+    {
+      "id": 34,
+      "theme": "ELIGIBILITY_ACCOUNT",
+      "block_id": 7,
+      "is_block_start": false,
+      "reason": "vente limitee aux 18 ans et plus, prolonge",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 35,
+      "theme": "ELIGIBILITY_ACCOUNT",
+      "block_id": 7,
+      "is_block_start": false,
+      "reason": "politique de verification challenge 25, prolonge",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 36,
+      "theme": "ELIGIBILITY_ACCOUNT",
+      "block_id": 7,
+      "is_block_start": false,
+      "reason": "confirmation d'age a la commande, prolonge",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 37,
+      "theme": "ELIGIBILITY_ACCOUNT",
+      "block_id": 7,
+      "is_block_start": false,
+      "reason": "droit de refuser la livraison d'alcool, prolonge",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 38,
+      "theme": "ELIGIBILITY_ACCOUNT",
+      "block_id": 7,
+      "is_block_start": false,
+      "reason": "refus si sous influence, prolonge",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 39,
+      "theme": "WARRANTY_DISCLAIMER",
+      "block_id": 8,
+      "is_block_start": true,
+      "rationale": "objectif de delai de livraison sans engagement ferme, cite « to provide the best delivery service possible »",
+      "rationale_codes": {
+        "decision_trigger": "lexical_shift",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "to provide the best delivery service possible",
+        "revised_from_plan": false,
+        "confidence": 0.55
+      },
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 40,
+      "theme": "WARRANTY_DISCLAIMER",
+      "block_id": 8,
+      "is_block_start": false,
+      "reason": "facteurs empechant le respect des delais, prolonge",
+      "legal_nature": "PROHIBITION",
+      "legal_nature_marker": "do not"
+    },
+    {
+      "id": 41,
+      "theme": "WARRANTY_DISCLAIMER",
+      "block_id": 8,
+      "is_block_start": false,
+      "reason": "engagement de moyens sur le delai, prolonge",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 42,
+      "theme": "WARRANTY_DISCLAIMER",
+      "block_id": 8,
+      "is_block_start": false,
+      "reason": "determination du timing, prolonge",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 43,
+      "theme": "TERMINATION",
+      "block_id": 9,
+      "is_block_start": true,
+      "rationale": "droit d'annuler une commande, cite « the right to cancel an order »",
+      "rationale_codes": {
+        "decision_trigger": "topic_keyword",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "the right to cancel an order",
+        "revised_from_plan": false,
+        "confidence": 0.7
+      },
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 44,
+      "theme": "TERMINATION",
+      "block_id": 9,
+      "is_block_start": false,
+      "reason": "definition de 'started order', prolonge l'annulation",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 45,
+      "theme": "TERMINATION",
+      "block_id": 9,
+      "is_block_start": false,
+      "reason": "modalite d'annulation par le client, prolonge",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 46,
+      "theme": "TERMINATION",
+      "block_id": 9,
+      "is_block_start": false,
+      "reason": "annulation par Deliveroo/restaurant, prolonge",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 47,
+      "theme": "TERMINATION",
+      "block_id": 9,
+      "is_block_start": false,
+      "reason": "pas de facturation si annule conformement, prolonge",
+      "legal_nature": "PROHIBITION",
+      "legal_nature_marker": "will not"
+    },
+    {
+      "id": 48,
+      "theme": "TERMINATION",
+      "block_id": 9,
+      "is_block_start": false,
+      "reason": "remboursement apres annulation, prolonge",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 49,
+      "theme": "TERMINATION",
+      "block_id": 9,
+      "is_block_start": false,
+      "reason": "facturation si annule apres started order, prolonge",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 50,
+      "theme": "TERMINATION",
+      "block_id": 9,
+      "is_block_start": false,
+      "reason": "determination du started order, prolonge",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 51,
+      "theme": "PAYMENT_BILLING",
+      "block_id": 10,
+      "is_block_start": true,
+      "rationale": "prix des repas, cite « the price of any meals will be listed »",
+      "rationale_codes": {
+        "decision_trigger": "topic_keyword",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "the price of any meals will be listed",
+        "revised_from_plan": false,
+        "confidence": 0.78
+      },
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 52,
+      "theme": "PAYMENT_BILLING",
+      "block_id": 10,
+      "is_block_start": false,
+      "reason": "variation des prix entre menus, prolonge",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 53,
+      "theme": "PAYMENT_BILLING",
+      "block_id": 10,
+      "is_block_start": false,
+      "reason": "modification des prix, prolonge",
+      "legal_nature": "PROHIBITION",
+      "legal_nature_marker": "will not"
+    },
+    {
+      "id": 54,
+      "theme": "PAYMENT_BILLING",
+      "block_id": 10,
+      "is_block_start": false,
+      "reason": "possibilite d'annuler en cas d'erreur de prix, prolonge",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 55,
+      "theme": "PAYMENT_BILLING",
+      "block_id": 10,
+      "is_block_start": false,
+      "reason": "erreurs de tarification, prolonge",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 56,
+      "theme": "PAYMENT_BILLING",
+      "block_id": 10,
+      "is_block_start": false,
+      "reason": "verification des prix par le restaurant, prolonge",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 57,
+      "theme": "PAYMENT_BILLING",
+      "block_id": 11,
+      "is_block_start": true,
+      "rationale": "modalites de paiement par carte, cite « payment for all meals can be made »",
+      "rationale_codes": {
+        "decision_trigger": "topic_keyword",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "payment for all meals can be made",
+        "revised_from_plan": false,
+        "confidence": 0.6
+      },
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 58,
+      "theme": "PAYMENT_BILLING",
+      "block_id": 11,
+      "is_block_start": false,
+      "reason": "autorisation de la carte, prolonge",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 59,
+      "theme": "PAYMENT_BILLING",
+      "block_id": 11,
+      "is_block_start": false,
+      "reason": "flux de paiement vers le restaurant, prolonge",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 60,
+      "theme": "PAYMENT_BILLING",
+      "block_id": 11,
+      "is_block_start": false,
+      "reason": "decharge de l'obligation de paiement, prolonge",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 61,
+      "theme": "PAYMENT_BILLING",
+      "block_id": 11,
+      "is_block_start": false,
+      "reason": "frais de livraison, prolonge",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 62,
+      "theme": "WARRANTY_DISCLAIMER",
+      "block_id": 12,
+      "is_block_start": true,
+      "rationale": "absence de garantie, service fourni 'as-is', cite « as-is »",
+      "rationale_codes": {
+        "decision_trigger": "topic_keyword",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "as-is",
+        "revised_from_plan": false,
+        "confidence": 0.85
+      },
+      "legal_nature": "LIMITATION_DISCLAIMER",
+      "legal_nature_marker": "as available"
+    },
+    {
+      "id": 63,
+      "theme": "LIABILITY_LIMITATION",
+      "block_id": 13,
+      "is_block_start": true,
+      "rationale": "exclusion de responsabilite pour dommages, cite « any liability to you »",
+      "rationale_codes": {
+        "decision_trigger": "topic_keyword",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "any liability to you",
+        "revised_from_plan": false,
+        "confidence": 0.78
+      },
+      "legal_nature": "OBLIGATION",
+      "legal_nature_marker": "shall"
+    },
+    {
+      "id": 64,
+      "theme": "LIABILITY_LIMITATION",
+      "block_id": 13,
+      "is_block_start": false,
+      "reason": "plafond de responsabilite au prix d'achat, prolonge",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 65,
+      "theme": "LIABILITY_LIMITATION",
+      "block_id": 13,
+      "is_block_start": false,
+      "reason": "reserve sur les exclusions illegales, prolonge",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 66,
+      "theme": "MISC_BOILERPLATE",
+      "block_id": 14,
+      "is_block_start": true,
+      "rationale": "clause de force majeure, cite « no party shall be liable to the other »",
+      "rationale_codes": {
+        "decision_trigger": "topic_keyword",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "no party shall be liable to the other",
+        "revised_from_plan": false,
+        "confidence": 0.65
+      },
+      "legal_nature": "OBLIGATION",
+      "legal_nature_marker": "shall"
+    },
+    {
+      "id": 67,
+      "theme": "MISC_BOILERPLATE",
+      "block_id": 14,
+      "is_block_start": false,
+      "reason": "reserve sur les obligations de paiement, prolonge force majeure",
+      "legal_nature": "OBLIGATION",
+      "legal_nature_marker": "shall"
+    },
+    {
+      "id": 68,
+      "theme": "MISC_BOILERPLATE",
+      "block_id": 14,
+      "is_block_start": false,
+      "reason": "reformulation de la force majeure pour toutes les parties, prolonge",
+      "legal_nature": "OBLIGATION",
+      "legal_nature_marker": "shall"
+    },
+    {
+      "id": 69,
+      "theme": "MISC_BOILERPLATE",
+      "block_id": 15,
+      "is_block_start": true,
+      "rationale": "clause de divisibilite, cite « illegal or unenforceable »",
+      "rationale_codes": {
+        "decision_trigger": "topic_keyword",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "illegal or unenforceable",
+        "revised_from_plan": false,
+        "confidence": 0.6
+      },
+      "legal_nature": "PROHIBITION",
+      "legal_nature_marker": "shall not"
+    },
+    {
+      "id": 70,
+      "theme": "MISC_BOILERPLATE",
+      "block_id": 15,
+      "is_block_start": false,
+      "reason": "clause d'integralite de l'accord, meme boilerplate final",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 71,
+      "theme": "MODIFICATION_OF_TERMS",
+      "block_id": 16,
+      "is_block_start": true,
+      "rationale": "titre de section : droit de modifier les conditions, cite « our right to vary these terms and conditions »",
+      "rationale_codes": {
+        "decision_trigger": "title_marker",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "our right to vary these terms and conditions",
+        "revised_from_plan": false,
+        "confidence": 0.9
+      },
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 72,
+      "theme": "MODIFICATION_OF_TERMS",
+      "block_id": 16,
+      "is_block_start": false,
+      "reason": "modification par amendement de la page, prolonge",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 73,
+      "theme": "MODIFICATION_OF_TERMS",
+      "block_id": 16,
+      "is_block_start": false,
+      "reason": "obligation de verifier les changements, prolonge",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 74,
+      "theme": "GOVERNING_LAW",
+      "block_id": 17,
+      "is_block_start": true,
+      "rationale": "competence des tribunaux anglais, cite « the english courts will have jurisdiction »",
+      "rationale_codes": {
+        "decision_trigger": "topic_keyword",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "the english courts will have jurisdiction",
+        "revised_from_plan": false,
+        "confidence": 0.85
+      },
+      "legal_nature": "GOVERNANCE",
+      "legal_nature_marker": "jurisdiction"
+    },
+    {
+      "id": 75,
+      "theme": "GOVERNING_LAW",
+      "block_id": 17,
+      "is_block_start": false,
+      "reason": "droit applicable d'angleterre et pays de galles, prolonge",
+      "legal_nature": "GOVERNANCE",
+      "legal_nature_marker": "governed by"
+    },
+    {
+      "id": 76,
+      "theme": "PREAMBLE_SCOPE",
+      "block_id": 18,
+      "is_block_start": true,
+      "rationale": "titre du second document : conditions d'utilisation, cite « deliveroo terms of use for website and applications »",
+      "rationale_codes": {
+        "decision_trigger": "title_marker",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "deliveroo terms of use for website and applications",
+        "revised_from_plan": false,
+        "confidence": 0.92
+      },
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 77,
+      "theme": "PREAMBLE_SCOPE",
+      "block_id": 18,
+      "is_block_start": false,
+      "reason": "portee des conditions d'utilisation, prolonge",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 78,
+      "theme": "PREAMBLE_SCOPE",
+      "block_id": 18,
+      "is_block_start": false,
+      "reason": "invitation a lire, prolonge",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 79,
+      "theme": "PREAMBLE_SCOPE",
+      "block_id": 18,
+      "is_block_start": false,
+      "reason": "acceptation par usage, prolonge",
+      "legal_nature": "SCOPE_APPLICABILITY",
+      "legal_nature_marker": "by using"
+    },
+    {
+      "id": 80,
+      "theme": "PREAMBLE_SCOPE",
+      "block_id": 18,
+      "is_block_start": false,
+      "reason": "consequence du refus, prolonge",
+      "legal_nature": "PROHIBITION",
+      "legal_nature_marker": "do not"
+    },
+    {
+      "id": 81,
+      "theme": "META",
+      "block_id": 19,
+      "is_block_start": true,
+      "rationale": "identite de l'entite operatrice, cite « operated by roofoods limited »",
+      "rationale_codes": {
+        "decision_trigger": "topic_keyword",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "is a website operated by roofoods limited",
+        "revised_from_plan": false,
+        "confidence": 0.88
+      },
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 82,
+      "theme": "META",
+      "block_id": 19,
+      "is_block_start": false,
+      "reason": "numero d'immatriculation, prolonge META",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 83,
+      "theme": "META",
+      "block_id": 19,
+      "is_block_start": false,
+      "reason": "numero de TVA, prolonge META",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 84,
+      "theme": "META",
+      "block_id": 19,
+      "is_block_start": false,
+      "reason": "rappel de la nature du business, prolonge",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 85,
+      "theme": "ELIGIBILITY_ACCOUNT",
+      "block_id": 20,
+      "is_block_start": true,
+      "rationale": "titre de section : acces au service, cite « accessing our service or our services »",
+      "rationale_codes": {
+        "decision_trigger": "title_marker",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "accessing our service or our services",
+        "revised_from_plan": false,
+        "confidence": 0.78
+      },
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 86,
+      "theme": "ELIGIBILITY_ACCOUNT",
+      "block_id": 20,
+      "is_block_start": false,
+      "reason": "acces temporaire et droit de retrait, prolonge",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 87,
+      "theme": "ELIGIBILITY_ACCOUNT",
+      "block_id": 20,
+      "is_block_start": false,
+      "reason": "non-responsabilite en cas d'indisponibilite, prolonge",
+      "legal_nature": "PROHIBITION",
+      "legal_nature_marker": "will not"
+    },
+    {
+      "id": 88,
+      "theme": "ELIGIBILITY_ACCOUNT",
+      "block_id": 20,
+      "is_block_start": false,
+      "reason": "restriction d'acces aux utilisateurs enregistres, prolonge",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 89,
+      "theme": "ELIGIBILITY_ACCOUNT",
+      "block_id": 20,
+      "is_block_start": false,
+      "reason": "responsabilite des identifiants de connexion, prolonge",
+      "legal_nature": "OBLIGATION",
+      "legal_nature_marker": "you are responsible"
+    },
+    {
+      "id": 90,
+      "theme": "ELIGIBILITY_ACCOUNT",
+      "block_id": 20,
+      "is_block_start": false,
+      "reason": "contact en cas d'usage abusif des identifiants, prolonge",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 91,
+      "theme": "ELIGIBILITY_ACCOUNT",
+      "block_id": 20,
+      "is_block_start": false,
+      "reason": "droit de desactiver le compte, prolonge",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 92,
+      "theme": "ACCEPTABLE_USE",
+      "block_id": 21,
+      "is_block_start": true,
+      "rationale": "usage licite uniquement, cite « only for lawful purposes »",
+      "rationale_codes": {
+        "decision_trigger": "topic_keyword",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "only for lawful purposes",
+        "revised_from_plan": false,
+        "confidence": 0.8
+      },
+      "legal_nature": "RIGHT_GRANT",
+      "legal_nature_marker": "you may use"
+    },
+    {
+      "id": 93,
+      "theme": "ACCEPTABLE_USE",
+      "block_id": 21,
+      "is_block_start": false,
+      "reason": "interdictions d'usage illicite, prolonge",
+      "legal_nature": "PROHIBITION",
+      "legal_nature_marker": "may not"
+    },
+    {
+      "id": 94,
+      "theme": "ACCEPTABLE_USE",
+      "block_id": 21,
+      "is_block_start": false,
+      "reason": "interdiction d'interference avec le service, prolonge",
+      "legal_nature": "PROHIBITION",
+      "legal_nature_marker": "agree not to"
+    },
+    {
+      "id": 95,
+      "theme": "USER_CONTENT",
+      "block_id": 22,
+      "is_block_start": true,
+      "rationale": "services interactifs et moderation du contenu, cite « interact through our site »",
+      "rationale_codes": {
+        "decision_trigger": "topic_keyword",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "interact through our site",
+        "revised_from_plan": false,
+        "confidence": 0.58
+      },
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 96,
+      "theme": "USER_CONTENT",
+      "block_id": 22,
+      "is_block_start": false,
+      "reason": "absence de moderation generale, prolonge",
+      "legal_nature": "PROHIBITION",
+      "legal_nature_marker": "do not"
+    },
+    {
+      "id": 97,
+      "theme": "USER_CONTENT",
+      "block_id": 22,
+      "is_block_start": false,
+      "reason": "modalites en cas de moderation, prolonge",
+      "legal_nature": "DEFINITION",
+      "legal_nature_marker": "means"
+    },
+    {
+      "id": 98,
+      "theme": "USER_CONTENT",
+      "block_id": 23,
+      "is_block_start": true,
+      "rationale": "standards de contenu applicables aux contributions, cite « these content standards apply »",
+      "rationale_codes": {
+        "decision_trigger": "topic_keyword",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "these content standards apply",
+        "revised_from_plan": false,
+        "confidence": 0.68
+      },
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 99,
+      "theme": "USER_CONTENT",
+      "block_id": 23,
+      "is_block_start": false,
+      "reason": "respect de l'esprit des standards, prolonge",
+      "legal_nature": "OBLIGATION",
+      "legal_nature_marker": "you must"
+    },
+    {
+      "id": 100,
+      "theme": "USER_CONTENT",
+      "block_id": 23,
+      "is_block_start": false,
+      "reason": "application a chaque partie des contributions, prolonge",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 101,
+      "theme": "USER_CONTENT",
+      "block_id": 23,
+      "is_block_start": false,
+      "reason": "exigence d'exactitude des contributions, prolonge",
+      "legal_nature": "OBLIGATION",
+      "legal_nature_marker": "must"
+    },
+    {
+      "id": 102,
+      "theme": "USER_CONTENT",
+      "block_id": 23,
+      "is_block_start": false,
+      "reason": "item de liste : interdiction contenu diffamatoire, herite du chapeau",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 103,
+      "theme": "USER_CONTENT",
+      "block_id": 23,
+      "is_block_start": false,
+      "reason": "item de liste : interdiction d'infraction PI, herite du chapeau",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 104,
+      "theme": "USER_CONTENT",
+      "block_id": 23,
+      "is_block_start": false,
+      "reason": "item de liste : tromperie/devoir envers tiers, herite du chapeau",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 105,
+      "theme": "USER_CONTENT",
+      "block_id": 23,
+      "is_block_start": false,
+      "reason": "item de liste : menace/harcelement, herite du chapeau",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 106,
+      "theme": "USER_CONTENT",
+      "block_id": 23,
+      "is_block_start": false,
+      "reason": "item de liste : usurpation d'identite, herite du chapeau",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 107,
+      "theme": "USER_CONTENT",
+      "block_id": 23,
+      "is_block_start": false,
+      "reason": "item de liste : promotion d'actes illicites, herite du chapeau",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 108,
+      "theme": "ACCEPTABLE_USE",
+      "block_id": 24,
+      "is_block_start": true,
+      "rationale": "sanctions en cas de manquement aux clauses d'usage/contenu, cite « constitutes a material breach »",
+      "rationale_codes": {
+        "decision_trigger": "exception_marker",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "constitutes a material breach",
+        "revised_from_plan": false,
+        "confidence": 0.62
+      },
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 109,
+      "theme": "ACCEPTABLE_USE",
+      "block_id": 24,
+      "is_block_start": false,
+      "reason": "item de liste : retrait du droit d'usage, herite du chapeau",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 110,
+      "theme": "ACCEPTABLE_USE",
+      "block_id": 24,
+      "is_block_start": false,
+      "reason": "item de liste : retrait du contenu, herite du chapeau",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 111,
+      "theme": "ACCEPTABLE_USE",
+      "block_id": 24,
+      "is_block_start": false,
+      "reason": "item de liste : avertissement, herite du chapeau",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 112,
+      "theme": "ACCEPTABLE_USE",
+      "block_id": 24,
+      "is_block_start": false,
+      "reason": "item de liste : action en justice, herite du chapeau",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 113,
+      "theme": "ACCEPTABLE_USE",
+      "block_id": 24,
+      "is_block_start": false,
+      "reason": "item de liste : divulgation aux autorites, herite du chapeau",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 114,
+      "theme": "ACCEPTABLE_USE",
+      "block_id": 24,
+      "is_block_start": false,
+      "reason": "reponses non limitatives, prolonge les sanctions",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 115,
+      "theme": "LICENSE_IP",
+      "block_id": 25,
+      "is_block_start": true,
+      "rationale": "propriete intellectuelle du site et du service, cite « intellectual property rights »",
+      "rationale_codes": {
+        "decision_trigger": "topic_keyword",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "intellectual property rights",
+        "revised_from_plan": false,
+        "confidence": 0.85
+      },
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 116,
+      "theme": "LICENSE_IP",
+      "block_id": 25,
+      "is_block_start": false,
+      "reason": "protection par le droit d'auteur, prolonge PI",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 117,
+      "theme": "LICENSE_IP",
+      "block_id": 25,
+      "is_block_start": false,
+      "reason": "reserve de tous les droits, prolonge PI",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 118,
+      "theme": "LICENSE_IP",
+      "block_id": 25,
+      "is_block_start": false,
+      "reason": "interdiction de copie/reproduction, prolonge PI",
+      "legal_nature": "PROHIBITION",
+      "legal_nature_marker": "may not"
+    },
+    {
+      "id": 119,
+      "theme": "LICENSE_IP",
+      "block_id": 25,
+      "is_block_start": false,
+      "reason": "contenu non destine a conseil, prolonge",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 120,
+      "theme": "LICENSE_IP",
+      "block_id": 25,
+      "is_block_start": false,
+      "reason": "exclusion de responsabilite sur la fiabilite du contenu, prolonge",
+      "legal_nature": "LIMITATION_DISCLAIMER",
+      "legal_nature_marker": "disclaim"
+    },
+    {
+      "id": 121,
+      "theme": "WARRANTY_DISCLAIMER",
+      "block_id": 26,
+      "is_block_start": true,
+      "rationale": "titre de section : changements reguliers du site, cite « our site and our service change regularly »",
+      "rationale_codes": {
+        "decision_trigger": "title_marker",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "our site and our service change regularly",
+        "revised_from_plan": false,
+        "confidence": 0.6
+      },
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 122,
+      "theme": "WARRANTY_DISCLAIMER",
+      "block_id": 26,
+      "is_block_start": false,
+      "reason": "mises a jour et changement de contenu, prolonge",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 123,
+      "theme": "WARRANTY_DISCLAIMER",
+      "block_id": 26,
+      "is_block_start": false,
+      "reason": "suspension/fermeture possible, prolonge",
+      "legal_nature": "GOVERNANCE",
+      "legal_nature_marker": "suspend"
+    },
+    {
+      "id": 124,
+      "theme": "WARRANTY_DISCLAIMER",
+      "block_id": 26,
+      "is_block_start": false,
+      "reason": "contenu possiblement perime, pas d'obligation de mise a jour, prolonge",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 125,
+      "theme": "WARRANTY_DISCLAIMER",
+      "block_id": 26,
+      "is_block_start": false,
+      "reason": "soin apporte a la preparation, prolonge",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 126,
+      "theme": "WARRANTY_DISCLAIMER",
+      "block_id": 26,
+      "is_block_start": false,
+      "reason": "non-responsabilite pour erreurs/omissions, prolonge",
+      "legal_nature": "PROHIBITION",
+      "legal_nature_marker": "will not"
+    },
+    {
+      "id": 127,
+      "theme": "WARRANTY_DISCLAIMER",
+      "block_id": 26,
+      "is_block_start": false,
+      "reason": "correction des inexactitudes, prolonge",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 128,
+      "theme": "WARRANTY_DISCLAIMER",
+      "block_id": 26,
+      "is_block_start": false,
+      "reason": "exclusion de responsabilite pour perte/dommage, prolonge",
+      "legal_nature": "LIMITATION_DISCLAIMER",
+      "legal_nature_marker": "to the extent permitted"
+    },
+    {
+      "id": 129,
+      "theme": "WARRANTY_DISCLAIMER",
+      "block_id": 26,
+      "is_block_start": false,
+      "reason": "reserve sur deces/dommage corporel, prolonge",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 130,
+      "theme": "PRIVACY_DATA",
+      "block_id": 27,
+      "is_block_start": true,
+      "rationale": "titre de section : informations vous concernant et visites, cite « information about you and your visits »",
+      "rationale_codes": {
+        "decision_trigger": "title_marker",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "information about you and your visits",
+        "revised_from_plan": false,
+        "confidence": 0.82
+      },
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 131,
+      "theme": "PRIVACY_DATA",
+      "block_id": 27,
+      "is_block_start": false,
+      "reason": "collecte de donnees lors de l'usage, prolonge",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 132,
+      "theme": "PRIVACY_DATA",
+      "block_id": 27,
+      "is_block_start": false,
+      "reason": "renvoi a la politique de confidentialite, prolonge",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 133,
+      "theme": "USER_CONTENT",
+      "block_id": 28,
+      "is_block_start": true,
+      "rationale": "titre de section : upload de materiel et licence sur le contenu, cite « uploading material to our site »",
+      "rationale_codes": {
+        "decision_trigger": "title_marker",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "uploading material to our site",
+        "revised_from_plan": false,
+        "confidence": 0.62
+      },
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 134,
+      "theme": "USER_CONTENT",
+      "block_id": 28,
+      "is_block_start": false,
+      "reason": "materiel non confidentiel, droit d'usage par Deliveroo, prolonge",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 135,
+      "theme": "USER_CONTENT",
+      "block_id": 28,
+      "is_block_start": false,
+      "reason": "octroi d'une licence perpetuelle sur le contenu, prolonge",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 136,
+      "theme": "THIRD_PARTY",
+      "block_id": 29,
+      "is_block_start": true,
+      "rationale": "liens vers sites tiers, cite « links to other sites and resources provided by third parties »",
+      "rationale_codes": {
+        "decision_trigger": "topic_keyword",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "links to other sites and resources provided by third parties",
+        "revised_from_plan": false,
+        "confidence": 0.78
+      },
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 137,
+      "theme": "THIRD_PARTY",
+      "block_id": 29,
+      "is_block_start": false,
+      "reason": "absence de controle et de responsabilite sur ces sites, prolonge",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 138,
+      "theme": "GOVERNING_LAW",
+      "block_id": 30,
+      "is_block_start": true,
+      "rationale": "competence des tribunaux anglais pour le second document, cite « the english courts will have jurisdiction »",
+      "rationale_codes": {
+        "decision_trigger": "topic_keyword",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "the english courts will have jurisdiction",
+        "revised_from_plan": false,
+        "confidence": 0.85
+      },
+      "legal_nature": "GOVERNANCE",
+      "legal_nature_marker": "jurisdiction"
+    },
+    {
+      "id": 139,
+      "theme": "GOVERNING_LAW",
+      "block_id": 30,
+      "is_block_start": false,
+      "reason": "droit applicable d'angleterre et pays de galles, prolonge",
+      "legal_nature": "GOVERNANCE",
+      "legal_nature_marker": "governed by"
+    },
+    {
+      "id": 140,
+      "theme": "MODIFICATION_OF_TERMS",
+      "block_id": 31,
+      "is_block_start": true,
+      "rationale": "droit de modifier les conditions d'utilisation, cite « revise these terms of use at any time »",
+      "rationale_codes": {
+        "decision_trigger": "topic_keyword",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "revise these terms of use at any time",
+        "revised_from_plan": false,
+        "confidence": 0.82
+      },
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 141,
+      "theme": "MODIFICATION_OF_TERMS",
+      "block_id": 31,
+      "is_block_start": false,
+      "reason": "obligation de verifier les changements, prolonge",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 142,
+      "theme": "MODIFICATION_OF_TERMS",
+      "block_id": 31,
+      "is_block_start": false,
+      "reason": "contact final pour les preoccupations, rattache a la cloture des conditions d'utilisation",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    }
+  ]
+}

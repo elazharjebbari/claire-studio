@@ -1,0 +1,1027 @@
+{
+  "doc": "Skyscanner",
+  "judge": "claude",
+  "version": "v9.2-nature-derived",
+  "document_plan": {
+    "estimated_n_blocks": 15,
+    "rationale_global": "ToS Skyscanner profil narratif, sans numerotation ni titres (hors id 0). Flux thematique : date (META), presentation de l'entreprise et des services (PREAMBLE_SCOPE), portee/acceptation des termes (PREAMBLE_SCOPE), modification des termes (MODIFICATION_OF_TERMS), licence d'usage + interdictions a-h (LICENSE_IP), compte/log-in (ELIGIBILITY_ACCOUNT), age minimum 13 ans (ELIGIBILITY_ACCOUNT/PRIVACY), sites tiers (THIRD_PARTY), confidentialite des donnees (PRIVACY_DATA), contenu utilisateur + feedback (USER_CONTENT), propriete intellectuelle (LICENSE_IP), risque/disclaimer de garantie (WARRANTY_DISCLAIMER), responsabilite vis-a-vis des fournisseurs tiers de voyage (THIRD_PARTY), limitation de responsabilite (LIABILITY_LIMITATION), indemnisation (INDEMNIFICATION), resiliation (TERMINATION), recours injonctif (TERMINATION), clauses diverses (MISC_BOILERPLATE), notification d'infraction (LICENSE_IP), droit applicable (GOVERNING_LAW), contact (META). Doublon source aux ids 13-15 repete aux ids 16-18.",
+    "segments": [
+      {
+        "start_id": 0,
+        "theme": "META",
+        "rationale": "date de mise a jour",
+        "evidence_span": "last updated : 5 january 2016"
+      },
+      {
+        "start_id": 1,
+        "theme": "PREAMBLE_SCOPE",
+        "rationale": "presentation de l'entreprise et des services",
+        "evidence_span": "skyscanner -lrb- `` us '' , `` we '' or `` our ''"
+      },
+      {
+        "start_id": 6,
+        "theme": "PREAMBLE_SCOPE",
+        "rationale": "ces termes regissent l'acces et l'usage",
+        "evidence_span": "these terms and conditions"
+      },
+      {
+        "start_id": 10,
+        "theme": "MODIFICATION_OF_TERMS",
+        "rationale": "modification des termes a tout moment",
+        "evidence_span": "we may amend these terms at any time"
+      },
+      {
+        "start_id": 14,
+        "theme": "LICENSE_IP",
+        "rationale": "octroi de licence d'usage",
+        "evidence_span": "we grant you a non-transferable , non-exclusive licence"
+      },
+      {
+        "start_id": 26,
+        "theme": "ELIGIBILITY_ACCOUNT",
+        "rationale": "compte log-in et mot de passe",
+        "evidence_span": "log-in account or password"
+      },
+      {
+        "start_id": 28,
+        "theme": "ELIGIBILITY_ACCOUNT",
+        "rationale": "age minimum 13 ans",
+        "evidence_span": "not intended for children under 13 years of age"
+      },
+      {
+        "start_id": 30,
+        "theme": "THIRD_PARTY",
+        "rationale": "sites tiers heberges",
+        "evidence_span": "hosted on a third party website"
+      },
+      {
+        "start_id": 31,
+        "theme": "PRIVACY_DATA",
+        "rationale": "protection des donnees",
+        "evidence_span": "we take your privacy seriously"
+      },
+      {
+        "start_id": 34,
+        "theme": "USER_CONTENT",
+        "rationale": "contenu utilisateur poste/uploade",
+        "evidence_span": "`` user content ''"
+      },
+      {
+        "start_id": 40,
+        "theme": "LICENSE_IP",
+        "rationale": "droits de propriete intellectuelle",
+        "evidence_span": "all intellectual property rights"
+      },
+      {
+        "start_id": 45,
+        "theme": "WARRANTY_DISCLAIMER",
+        "rationale": "usage a vos risques, pas de garantie",
+        "evidence_span": "at your own risk"
+      },
+      {
+        "start_id": 49,
+        "theme": "THIRD_PARTY",
+        "rationale": "fournisseurs tiers de voyage",
+        "evidence_span": "travel providers"
+      },
+      {
+        "start_id": 63,
+        "theme": "LIABILITY_LIMITATION",
+        "rationale": "limitation/exclusion de responsabilite",
+        "evidence_span": "do not accept any liability"
+      },
+      {
+        "start_id": 66,
+        "theme": "INDEMNIFICATION",
+        "rationale": "vous etes responsable et redevable envers nous",
+        "evidence_span": "you will be responsible and liable to us"
+      },
+      {
+        "start_id": 67,
+        "theme": "TERMINATION",
+        "rationale": "resiliation et suspension",
+        "evidence_span": "immediately terminate any agreement"
+      },
+      {
+        "start_id": 71,
+        "theme": "MISC_BOILERPLATE",
+        "rationale": "divisibilite, cession, integralite",
+        "evidence_span": "the invalidity or unenforceability"
+      },
+      {
+        "start_id": 76,
+        "theme": "LICENSE_IP",
+        "rationale": "notification d'infraction au copyright",
+        "evidence_span": "works belonging to you have been infringed"
+      },
+      {
+        "start_id": 80,
+        "theme": "GOVERNING_LAW",
+        "rationale": "droit applicable et juridiction",
+        "evidence_span": "governed in accordance with the laws of england and wales"
+      },
+      {
+        "start_id": 81,
+        "theme": "META",
+        "rationale": "coordonnees de contact",
+        "evidence_span": "please contact us here"
+      }
+    ]
+  },
+  "annotations": [
+    {
+      "id": 0,
+      "theme": "META",
+      "block_id": 0,
+      "is_block_start": true,
+      "rationale": "ouverture du document, metadonnee de date cite « last updated : 5 january 2016 »",
+      "rationale_codes": {
+        "decision_trigger": "document_start",
+        "relation_to_prev": "document_start",
+        "evidence_span": "last updated : 5 january 2016",
+        "revised_from_plan": false,
+        "confidence": 0.97
+      },
+      "legal_nature": "META",
+      "legal_nature_marker": "last updated"
+    },
+    {
+      "id": 1,
+      "theme": "PREAMBLE_SCOPE",
+      "block_id": 1,
+      "is_block_start": true,
+      "rationale": "presentation de l'identite de l'entreprise et des services fournis « skyscanner -lrb- `` us '' »",
+      "rationale_codes": {
+        "decision_trigger": "topic_keyword",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "skyscanner -lrb- `` us '' , `` we '' or `` our ''",
+        "revised_from_plan": false,
+        "confidence": 0.92
+      },
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 2,
+      "theme": "PREAMBLE_SCOPE",
+      "block_id": 1,
+      "is_block_start": false,
+      "reason": "precise la nature des services : skyscanner n'est pas agent de voyage",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 3,
+      "theme": "PREAMBLE_SCOPE",
+      "block_id": 1,
+      "is_block_start": false,
+      "reason": "prolongement : les produits tiers sont fournis par des tiers",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 4,
+      "theme": "PREAMBLE_SCOPE",
+      "block_id": 1,
+      "is_block_start": false,
+      "reason": "identite juridique de la societe skyscanner limited",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 5,
+      "theme": "PREAMBLE_SCOPE",
+      "block_id": 1,
+      "is_block_start": false,
+      "reason": "coordonnees de la societe, prolonge la presentation",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 6,
+      "theme": "PREAMBLE_SCOPE",
+      "block_id": 2,
+      "is_block_start": true,
+      "rationale": "nouveau sujet : portee et effet juridique des termes « these terms and conditions … govern your access »",
+      "rationale_codes": {
+        "decision_trigger": "topic_keyword",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "these terms and conditions",
+        "revised_from_plan": false,
+        "confidence": 0.88
+      },
+      "legal_nature": "SCOPE_APPLICABILITY",
+      "legal_nature_marker": "govern your access"
+    },
+    {
+      "id": 7,
+      "theme": "PREAMBLE_SCOPE",
+      "block_id": 2,
+      "is_block_start": false,
+      "reason": "acceptation par l'usage des termes",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 8,
+      "theme": "PREAMBLE_SCOPE",
+      "block_id": 2,
+      "is_block_start": false,
+      "reason": "cas des services soumis a d'autres termes, prolonge la portee",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 9,
+      "theme": "PREAMBLE_SCOPE",
+      "block_id": 2,
+      "is_block_start": false,
+      "reason": "procedure de notification et acceptation de ces autres termes",
+      "legal_nature": "OBLIGATION",
+      "legal_nature_marker": "you will"
+    },
+    {
+      "id": 10,
+      "theme": "MODIFICATION_OF_TERMS",
+      "block_id": 3,
+      "is_block_start": true,
+      "rationale": "nouveau sujet autonome : modification des termes « we may amend these terms at any time »",
+      "rationale_codes": {
+        "decision_trigger": "topic_keyword",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "we may amend these terms at any time",
+        "revised_from_plan": false,
+        "confidence": 0.9
+      },
+      "legal_nature": "GOVERNANCE",
+      "legal_nature_marker": "we may amend"
+    },
+    {
+      "id": 11,
+      "theme": "MODIFICATION_OF_TERMS",
+      "block_id": 3,
+      "is_block_start": false,
+      "reason": "effet de la modification et acceptation reputee",
+      "legal_nature": "OBLIGATION",
+      "legal_nature_marker": "you will"
+    },
+    {
+      "id": 12,
+      "theme": "MODIFICATION_OF_TERMS",
+      "block_id": 3,
+      "is_block_start": false,
+      "reason": "consequence du non-accord, prolonge la clause de modification",
+      "legal_nature": "PROHIBITION",
+      "legal_nature_marker": "do not"
+    },
+    {
+      "id": 13,
+      "theme": "LICENSE_IP",
+      "block_id": 4,
+      "is_block_start": true,
+      "rationale": "ouverture de la clause d'usage/licence : conformite legale prealable a l'octroi de licence « you may only use the skyscanner services … in compliance with applicable laws »",
+      "rationale_codes": {
+        "decision_trigger": "topic_keyword",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "you may only use the skyscanner services and skyscanner platforms in compliance with applicable laws",
+        "revised_from_plan": true,
+        "confidence": 0.74
+      },
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 14,
+      "theme": "LICENSE_IP",
+      "block_id": 4,
+      "is_block_start": false,
+      "reason": "octroi de la licence non-transferable non-exclusive",
+      "legal_nature": "RIGHT_GRANT",
+      "legal_nature_marker": "grant you"
+    },
+    {
+      "id": 15,
+      "theme": "LICENSE_IP",
+      "block_id": 4,
+      "is_block_start": false,
+      "reason": "chapeau de la liste des interdictions",
+      "legal_nature": "PROHIBITION",
+      "legal_nature_marker": "shall not"
+    },
+    {
+      "id": 16,
+      "theme": "LICENSE_IP",
+      "block_id": 4,
+      "is_block_start": false,
+      "reason": "doublon source de l'id 13 : conformite legale, prolonge la clause de licence",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 17,
+      "theme": "LICENSE_IP",
+      "block_id": 4,
+      "is_block_start": false,
+      "reason": "doublon source de l'id 14 : octroi de la licence",
+      "legal_nature": "RIGHT_GRANT",
+      "legal_nature_marker": "grant you"
+    },
+    {
+      "id": 18,
+      "theme": "LICENSE_IP",
+      "block_id": 4,
+      "is_block_start": false,
+      "reason": "doublon source de l'id 15 : chapeau des interdictions",
+      "legal_nature": "PROHIBITION",
+      "legal_nature_marker": "shall not"
+    },
+    {
+      "id": 19,
+      "theme": "LICENSE_IP",
+      "block_id": 4,
+      "is_block_start": false,
+      "reason": "item b : usage commercial interdit",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 20,
+      "theme": "LICENSE_IP",
+      "block_id": 4,
+      "is_block_start": false,
+      "reason": "item c : ingenierie inverse interdite",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 21,
+      "theme": "LICENSE_IP",
+      "block_id": 4,
+      "is_block_start": false,
+      "reason": "item d : copie/distribution/contournement interdits",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 22,
+      "theme": "LICENSE_IP",
+      "block_id": 4,
+      "is_block_start": false,
+      "reason": "item e : interference avec les systemes interdite",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 23,
+      "theme": "LICENSE_IP",
+      "block_id": 4,
+      "is_block_start": false,
+      "reason": "item f : introduction de code malveillant interdite",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 24,
+      "theme": "LICENSE_IP",
+      "block_id": 4,
+      "is_block_start": false,
+      "reason": "item g : suppression de mentions/marques interdite",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 25,
+      "theme": "LICENSE_IP",
+      "block_id": 4,
+      "is_block_start": false,
+      "reason": "item h : exploitation automatisee interdite",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 26,
+      "theme": "ELIGIBILITY_ACCOUNT",
+      "block_id": 5,
+      "is_block_start": true,
+      "rationale": "nouveau sujet : compte log-in et obligation de securite des identifiants « requires the use of a log-in account or password »",
+      "rationale_codes": {
+        "decision_trigger": "topic_keyword",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "log-in account or password",
+        "revised_from_plan": false,
+        "confidence": 0.85
+      },
+      "legal_nature": "OBLIGATION",
+      "legal_nature_marker": "you shall"
+    },
+    {
+      "id": 27,
+      "theme": "ELIGIBILITY_ACCOUNT",
+      "block_id": 5,
+      "is_block_start": false,
+      "reason": "procedure en cas de compromission des identifiants",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 28,
+      "theme": "ELIGIBILITY_ACCOUNT",
+      "block_id": 6,
+      "is_block_start": true,
+      "rationale": "nouveau sujet autonome : restriction d'age, eligibilite des moins de 13 ans « not intended for children under 13 years of age »",
+      "rationale_codes": {
+        "decision_trigger": "topic_keyword",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "not intended for children under 13 years of age",
+        "revised_from_plan": false,
+        "confidence": 0.8
+      },
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 29,
+      "theme": "ELIGIBILITY_ACCOUNT",
+      "block_id": 6,
+      "is_block_start": false,
+      "reason": "consequence : suppression des donnees collectees de mineurs",
+      "legal_nature": "PROHIBITION",
+      "legal_nature_marker": "do not"
+    },
+    {
+      "id": 30,
+      "theme": "THIRD_PARTY",
+      "block_id": 7,
+      "is_block_start": true,
+      "rationale": "nouveau sujet : conformite aux termes des sites tiers hebergeant le service « hosted on a third party website »",
+      "rationale_codes": {
+        "decision_trigger": "topic_keyword",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "hosted on a third party website",
+        "revised_from_plan": false,
+        "confidence": 0.72
+      },
+      "legal_nature": "OBLIGATION",
+      "legal_nature_marker": "you agree to"
+    },
+    {
+      "id": 31,
+      "theme": "PRIVACY_DATA",
+      "block_id": 8,
+      "is_block_start": true,
+      "rationale": "nouveau sujet autonome : protection des donnees personnelles « we take your privacy seriously »",
+      "rationale_codes": {
+        "decision_trigger": "topic_keyword",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "we take your privacy seriously",
+        "revised_from_plan": false,
+        "confidence": 0.88
+      },
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 32,
+      "theme": "PRIVACY_DATA",
+      "block_id": 8,
+      "is_block_start": false,
+      "reason": "usage des informations personnellement identifiables selon la politique de confidentialite",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 33,
+      "theme": "PRIVACY_DATA",
+      "block_id": 8,
+      "is_block_start": false,
+      "reason": "obligation d'exactitude et de consentements, prolonge la clause donnees",
+      "legal_nature": "OBLIGATION",
+      "legal_nature_marker": "you agree to"
+    },
+    {
+      "id": 34,
+      "theme": "USER_CONTENT",
+      "block_id": 9,
+      "is_block_start": true,
+      "rationale": "nouveau sujet : contenu utilisateur poste/uploade « `` user content '' »",
+      "rationale_codes": {
+        "decision_trigger": "definition_marker",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "`` user content ''",
+        "revised_from_plan": false,
+        "confidence": 0.86
+      },
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 35,
+      "theme": "USER_CONTENT",
+      "block_id": 9,
+      "is_block_start": false,
+      "reason": "item a : responsabilite de l'utilisateur sur son contenu",
+      "legal_nature": "PROHIBITION",
+      "legal_nature_marker": "will not"
+    },
+    {
+      "id": 36,
+      "theme": "USER_CONTENT",
+      "block_id": 9,
+      "is_block_start": false,
+      "reason": "item b : licence accordee a skyscanner sur le contenu utilisateur",
+      "legal_nature": "RIGHT_GRANT",
+      "legal_nature_marker": "hereby grant"
+    },
+    {
+      "id": 37,
+      "theme": "USER_CONTENT",
+      "block_id": 9,
+      "is_block_start": false,
+      "reason": "item c : aucune obligation de stockage du contenu",
+      "legal_nature": "OBLIGATION",
+      "legal_nature_marker": "you shall"
+    },
+    {
+      "id": 38,
+      "theme": "USER_CONTENT",
+      "block_id": 9,
+      "is_block_start": false,
+      "reason": "feedback : cession des droits, prolonge le contenu fourni par l'utilisateur",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 39,
+      "theme": "USER_CONTENT",
+      "block_id": 9,
+      "is_block_start": false,
+      "reason": "procedure : comment fournir le feedback",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 40,
+      "theme": "LICENSE_IP",
+      "block_id": 10,
+      "is_block_start": true,
+      "rationale": "nouveau sujet : propriete intellectuelle de skyscanner « all intellectual property rights … are owned by or licensed to skyscanner »",
+      "rationale_codes": {
+        "decision_trigger": "topic_keyword",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "all intellectual property rights",
+        "revised_from_plan": false,
+        "confidence": 0.88
+      },
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 41,
+      "theme": "LICENSE_IP",
+      "block_id": 10,
+      "is_block_start": false,
+      "reason": "aucun droit acquis sur la PI hors licence limitee",
+      "legal_nature": "PROHIBITION",
+      "legal_nature_marker": "will not"
+    },
+    {
+      "id": 42,
+      "theme": "LICENSE_IP",
+      "block_id": 10,
+      "is_block_start": false,
+      "reason": "pas d'acces au code source, prolonge la clause PI",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 43,
+      "theme": "LICENSE_IP",
+      "block_id": 10,
+      "is_block_start": false,
+      "reason": "respect de la PI d'autrui, prolonge la clause PI",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 44,
+      "theme": "LICENSE_IP",
+      "block_id": 10,
+      "is_block_start": false,
+      "reason": "procedure de notification d'infraction au copyright (DMCA-like) -> PI prime",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 45,
+      "theme": "WARRANTY_DISCLAIMER",
+      "block_id": 11,
+      "is_block_start": true,
+      "rationale": "nouveau sujet : usage a vos risques et exclusion de garantie « at your own risk »",
+      "rationale_codes": {
+        "decision_trigger": "topic_keyword",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "at your own risk",
+        "revised_from_plan": false,
+        "confidence": 0.82
+      },
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 46,
+      "theme": "WARRANTY_DISCLAIMER",
+      "block_id": 11,
+      "is_block_start": false,
+      "reason": "pas de garantie de fiabilite/exactitude du contenu",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 47,
+      "theme": "WARRANTY_DISCLAIMER",
+      "block_id": 11,
+      "is_block_start": false,
+      "reason": "fourniture 'as is' et exclusion expresse des garanties",
+      "legal_nature": "LIMITATION_DISCLAIMER",
+      "legal_nature_marker": "as is"
+    },
+    {
+      "id": 48,
+      "theme": "WARRANTY_DISCLAIMER",
+      "block_id": 11,
+      "is_block_start": false,
+      "reason": "absence de representations a-d, prolonge le disclaimer de garantie",
+      "legal_nature": "PROHIBITION",
+      "legal_nature_marker": "do not"
+    },
+    {
+      "id": 49,
+      "theme": "THIRD_PARTY",
+      "block_id": 12,
+      "is_block_start": true,
+      "rationale": "nouveau sujet : skyscanner n'est pas agent de voyage et n'est pas responsable des produits tiers de voyage « not a travel agent »",
+      "rationale_codes": {
+        "decision_trigger": "topic_keyword",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "skyscanner is not a travel agentand is not responsible",
+        "revised_from_plan": false,
+        "confidence": 0.75
+      },
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 50,
+      "theme": "THIRD_PARTY",
+      "block_id": 12,
+      "is_block_start": false,
+      "reason": "definition des fournisseurs de voyage tiers",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 51,
+      "theme": "THIRD_PARTY",
+      "block_id": 12,
+      "is_block_start": false,
+      "reason": "skyscanner facilite mais n'est pas responsable des reservations",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 52,
+      "theme": "THIRD_PARTY",
+      "block_id": 12,
+      "is_block_start": false,
+      "reason": "notification des termes du fournisseur de voyage",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 53,
+      "theme": "THIRD_PARTY",
+      "block_id": 12,
+      "is_block_start": false,
+      "reason": "les termes du fournisseur definissent vos droits",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 54,
+      "theme": "THIRD_PARTY",
+      "block_id": 12,
+      "is_block_start": false,
+      "reason": "obligation de respecter les termes du fournisseur",
+      "legal_nature": "OBLIGATION",
+      "legal_nature_marker": "you agree to"
+    },
+    {
+      "id": 55,
+      "theme": "THIRD_PARTY",
+      "block_id": 12,
+      "is_block_start": false,
+      "reason": "consequence d'un manquement aux termes du fournisseur",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 56,
+      "theme": "THIRD_PARTY",
+      "block_id": 12,
+      "is_block_start": false,
+      "reason": "ces termes definissent l'etendue des obligations de skyscanner",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 57,
+      "theme": "THIRD_PARTY",
+      "block_id": 12,
+      "is_block_start": false,
+      "reason": "aucune responsabilite pour les arrangements avec des tiers",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 58,
+      "theme": "THIRD_PARTY",
+      "block_id": 12,
+      "is_block_start": false,
+      "reason": "recours unique aupres du fournisseur de voyage",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 59,
+      "theme": "THIRD_PARTY",
+      "block_id": 12,
+      "is_block_start": false,
+      "reason": "liens vers d'autres sites tiers, prolonge la clause tiers",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 60,
+      "theme": "THIRD_PARTY",
+      "block_id": 12,
+      "is_block_start": false,
+      "reason": "aucun controle ni responsabilite sur les sites tiers",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 61,
+      "theme": "THIRD_PARTY",
+      "block_id": 12,
+      "is_block_start": false,
+      "reason": "materiel publicitaire de tiers, prolonge la clause tiers",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 62,
+      "theme": "THIRD_PARTY",
+      "block_id": 12,
+      "is_block_start": false,
+      "reason": "responsabilite de l'annonceur tiers pour son contenu",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 63,
+      "theme": "LIABILITY_LIMITATION",
+      "block_id": 13,
+      "is_block_start": true,
+      "rationale": "nouveau sujet : exclusion de responsabilite pour dommages « do not accept any liability »",
+      "rationale_codes": {
+        "decision_trigger": "topic_keyword",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "do not accept any liability",
+        "revised_from_plan": false,
+        "confidence": 0.85
+      },
+      "legal_nature": "PROHIBITION",
+      "legal_nature_marker": "do not"
+    },
+    {
+      "id": 64,
+      "theme": "LIABILITY_LIMITATION",
+      "block_id": 13,
+      "is_block_start": false,
+      "reason": "plafond d'indemnisation maximale a 100 livres",
+      "legal_nature": "LIMITATION_DISCLAIMER",
+      "legal_nature_marker": "to the extent permitted"
+    },
+    {
+      "id": 65,
+      "theme": "LIABILITY_LIMITATION",
+      "block_id": 13,
+      "is_block_start": false,
+      "reason": "exceptions a la limitation (deces, fraude), prolonge la clause",
+      "legal_nature": "OBLIGATION",
+      "legal_nature_marker": "shall"
+    },
+    {
+      "id": 66,
+      "theme": "INDEMNIFICATION",
+      "block_id": 14,
+      "is_block_start": true,
+      "rationale": "nouveau sujet autonome : indemnisation de skyscanner par l'utilisateur « you will be responsible and liable to us »",
+      "rationale_codes": {
+        "decision_trigger": "topic_keyword",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "you will be responsible and liable to us",
+        "revised_from_plan": false,
+        "confidence": 0.78
+      },
+      "legal_nature": "OBLIGATION",
+      "legal_nature_marker": "you will"
+    },
+    {
+      "id": 67,
+      "theme": "TERMINATION",
+      "block_id": 15,
+      "is_block_start": true,
+      "rationale": "nouveau sujet : resiliation de l'accord par skyscanner « immediately terminate any agreement »",
+      "rationale_codes": {
+        "decision_trigger": "topic_keyword",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "immediately terminate any agreement",
+        "revised_from_plan": false,
+        "confidence": 0.86
+      },
+      "legal_nature": "GOVERNANCE",
+      "legal_nature_marker": "terminate"
+    },
+    {
+      "id": 68,
+      "theme": "TERMINATION",
+      "block_id": 15,
+      "is_block_start": false,
+      "reason": "suspension de l'usage sans preavis, prolonge la resiliation",
+      "legal_nature": "GOVERNANCE",
+      "legal_nature_marker": "suspend"
+    },
+    {
+      "id": 69,
+      "theme": "TERMINATION",
+      "block_id": 15,
+      "is_block_start": false,
+      "reason": "reconnaissance que l'usage non autorise cause un dommage irreparable",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 70,
+      "theme": "TERMINATION",
+      "block_id": 15,
+      "is_block_start": false,
+      "reason": "consequence : droit a une injonction immediate, prolonge la clause de mise en oeuvre",
+      "legal_nature": "OBLIGATION",
+      "legal_nature_marker": "shall"
+    },
+    {
+      "id": 71,
+      "theme": "MISC_BOILERPLATE",
+      "block_id": 16,
+      "is_block_start": true,
+      "rationale": "nouveau sujet : divisibilite des clauses « the invalidity or unenforceability of any provision »",
+      "rationale_codes": {
+        "decision_trigger": "topic_keyword",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "the invalidity or unenforceability",
+        "revised_from_plan": false,
+        "confidence": 0.82
+      },
+      "legal_nature": "PROHIBITION",
+      "legal_nature_marker": "shall not"
+    },
+    {
+      "id": 72,
+      "theme": "MISC_BOILERPLATE",
+      "block_id": 16,
+      "is_block_start": false,
+      "reason": "suppression reputee de la clause invalide, prolonge la divisibilite",
+      "legal_nature": "GOVERNANCE",
+      "legal_nature_marker": "jurisdiction"
+    },
+    {
+      "id": 73,
+      "theme": "MISC_BOILERPLATE",
+      "block_id": 16,
+      "is_block_start": false,
+      "reason": "termes personnels a l'utilisateur (non cessibles)",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 74,
+      "theme": "MISC_BOILERPLATE",
+      "block_id": 16,
+      "is_block_start": false,
+      "reason": "interdiction de cession, prolonge le boilerplate",
+      "legal_nature": "PROHIBITION",
+      "legal_nature_marker": "shall not"
+    },
+    {
+      "id": 75,
+      "theme": "MISC_BOILERPLATE",
+      "block_id": 16,
+      "is_block_start": false,
+      "reason": "clause d'integralite de l'accord, prolonge le boilerplate",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 76,
+      "theme": "LICENSE_IP",
+      "block_id": 17,
+      "is_block_start": true,
+      "rationale": "nouveau sujet : action contre le contenu en infraction et notification d'infraction (copyright -> PI prime) « works belonging to you have been infringed »",
+      "rationale_codes": {
+        "decision_trigger": "topic_keyword",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "we will act promptly to any indications of user content that is in breach",
+        "revised_from_plan": true,
+        "confidence": 0.6
+      },
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 77,
+      "theme": "LICENSE_IP",
+      "block_id": 17,
+      "is_block_start": false,
+      "reason": "procedure de notification d'activites illegales ou d'infraction",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 78,
+      "theme": "MISC_BOILERPLATE",
+      "block_id": 18,
+      "is_block_start": true,
+      "rationale": "nouveau sujet : clause de non-renonciation « any failure by us to enforce … shall not be considered to be a waiver »",
+      "rationale_codes": {
+        "decision_trigger": "topic_keyword",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "shall not be considered to be a waiver",
+        "revised_from_plan": false,
+        "confidence": 0.78
+      },
+      "legal_nature": "PROHIBITION",
+      "legal_nature_marker": "shall not"
+    },
+    {
+      "id": 79,
+      "theme": "MISC_BOILERPLATE",
+      "block_id": 18,
+      "is_block_start": false,
+      "reason": "droits des tiers exclus (third party rights), prolonge le boilerplate",
+      "legal_nature": "OBLIGATION",
+      "legal_nature_marker": "shall"
+    },
+    {
+      "id": 80,
+      "theme": "GOVERNING_LAW",
+      "block_id": 19,
+      "is_block_start": true,
+      "rationale": "nouveau sujet : droit applicable et juridiction « governed in accordance with the laws of england and wales »",
+      "rationale_codes": {
+        "decision_trigger": "topic_keyword",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "governed in accordance with the laws of england and wales",
+        "revised_from_plan": false,
+        "confidence": 0.9
+      },
+      "legal_nature": "LIMITATION_DISCLAIMER",
+      "legal_nature_marker": "to the extent permitted"
+    },
+    {
+      "id": 81,
+      "theme": "META",
+      "block_id": 20,
+      "is_block_start": true,
+      "rationale": "fin du document : coordonnees de contact « please contact us here »",
+      "rationale_codes": {
+        "decision_trigger": "topic_keyword",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "please contact us here",
+        "revised_from_plan": false,
+        "confidence": 0.8
+      },
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 82,
+      "theme": "META",
+      "block_id": 20,
+      "is_block_start": false,
+      "reason": "adresse postale alternative, prolonge le bloc contact",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    }
+  ]
+}

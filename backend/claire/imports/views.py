@@ -22,10 +22,19 @@ class PreAnnotationViewSet(viewsets.ReadOnlyModelViewSet):
         qs = super().get_queryset()
         project = self.request.query_params.get("project")
         if project:
-            qs = qs.filter(project__slug=project)
+            qs = qs.filter(project__slug=project) if not project.isdigit() else (
+                qs.filter(project__pk=project)
+            )
         document = self.request.query_params.get("document")
         if document:
-            qs = qs.filter(document__external_id=document)
+            # Le frontend envoie l'id numérique ; on tolère aussi l'external_id.
+            qs = qs.filter(document__pk=document) if document.isdigit() else (
+                qs.filter(document__external_id=document)
+            )
+        # Sélection de version (multi-versions) : ?version=v9.2
+        version = self.request.query_params.get("version")
+        if version:
+            qs = qs.filter(schema_version=version)
         return qs
 
     # Note: the import endpoint lives on ProjectViewSet.import_preannotations

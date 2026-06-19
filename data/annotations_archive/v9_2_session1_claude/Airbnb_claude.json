@@ -1,0 +1,4221 @@
+{
+  "doc": "Airbnb",
+  "judge": "claude",
+  "version": "v9.2-nature-derived",
+  "document_plan": {
+    "estimated_n_blocks": 53,
+    "rationale_global": "ToS Airbnb fortement numerote (profil NUMBERED). Preambule de mise a jour (MODIFICATION_OF_TERMS) avec acceptation (PREAMBLE_SCOPE) et notice d'arbitrage (DISPUTE_ARBITRATION), puis l'accord avec definitions de l'entite contractante, renvois privacy/payments et responsabilite des hotes ; suit une mini-table des matieres puis les sections numerotees 1-22. Chaque sous-numero introduisant un sujet juridique autonome (ou un titre nominal court) ouvre un bloc ; les phrases qui prolongent (consequence, procedure, exemple, item de liste) restent dans le bloc. Themes dominants : ELIGIBILITY_ACCOUNT, LICENSE_IP/USER_CONTENT, PAYMENT_BILLING, ACCEPTABLE_USE, TERMINATION, WARRANTY_DISCLAIMER, LIABILITY_LIMITATION, INDEMNIFICATION, DISPUTE_ARBITRATION, GOVERNING_LAW, MISC_BOILERPLATE.",
+    "segments": [
+      {
+        "start_id": 0,
+        "theme": "MODIFICATION_OF_TERMS",
+        "rationale": "ouverture du document : annonce de la mise a jour des conditions",
+        "evidence_span": "we 've recently updated our"
+      },
+      {
+        "start_id": 6,
+        "theme": "PREAMBLE_SCOPE",
+        "rationale": "portee et acceptation : l'acces/usage vaut acceptation des conditions",
+        "evidence_span": "you agree to comply with and be bound by these terms of service"
+      },
+      {
+        "start_id": 7,
+        "theme": "DISPUTE_ARBITRATION",
+        "rationale": "notice autonome : la section 19 contient une clause d'arbitrage et renonciation aux actions collectives",
+        "evidence_span": "contains an arbitration clause and class action waiver"
+      },
+      {
+        "start_id": 12,
+        "theme": "META",
+        "rationale": "metadonnee : date de derniere mise a jour",
+        "evidence_span": "last updated"
+      },
+      {
+        "start_id": 14,
+        "theme": "PREAMBLE_SCOPE",
+        "rationale": "ouverture de l'accord legalement contraignant regissant l'acces et l'usage",
+        "evidence_span": "constitute a legally binding agreement"
+      },
+      {
+        "start_id": 17,
+        "theme": "DEFINITIONS",
+        "rationale": "definition de l'entite contractante selon la residence",
+        "evidence_span": "it refers to the airbnb company you are contracting with"
+      },
+      {
+        "start_id": 23,
+        "theme": "PRIVACY_DATA",
+        "rationale": "nouveau sujet : collecte et usage des donnees personnelles, renvoi a la privacy policy",
+        "evidence_span": "our collection and use of personal information"
+      },
+      {
+        "start_id": 24,
+        "theme": "PAYMENT_BILLING",
+        "rationale": "nouveau sujet : services de paiement fournis par airbnb payments",
+        "evidence_span": "payment processing services"
+      },
+      {
+        "start_id": 25,
+        "theme": "ACCEPTABLE_USE",
+        "rationale": "nouveau sujet : obligation des hotes de respecter lois, regles et reglements applicables",
+        "evidence_span": "hosts alone are responsible for identifying"
+      },
+      {
+        "start_id": 34,
+        "theme": "PREAMBLE_SCOPE",
+        "rationale": "titres de table des matieres listant les sections a venir",
+        "evidence_span": "eligibility , using the airbnb platform , member verification"
+      },
+      {
+        "start_id": 38,
+        "theme": "PREAMBLE_SCOPE",
+        "rationale": "1.1 description de la marketplace airbnb (portee du service)",
+        "evidence_span": "the airbnb platform is an online marketplace"
+      },
+      {
+        "start_id": 40,
+        "theme": "WARRANTY_DISCLAIMER",
+        "rationale": "1.2 airbnb non proprietaire ni fournisseur des listings/host services",
+        "evidence_span": "airbnb does not own"
+      },
+      {
+        "start_id": 52,
+        "theme": "USER_CONTENT",
+        "rationale": "1.5 affichage et traduction des listings et member content",
+        "evidence_span": "to increase the exposure of listings"
+      },
+      {
+        "start_id": 57,
+        "theme": "THIRD_PARTY",
+        "rationale": "1.6 liens vers des services tiers",
+        "evidence_span": "links to third-party websites or resources"
+      },
+      {
+        "start_id": 61,
+        "theme": "WARRANTY_DISCLAIMER",
+        "rationale": "1.7 disponibilite de la plateforme non garantie",
+        "evidence_span": "can not guarantee the continuous and uninterrupted availability"
+      },
+      {
+        "start_id": 64,
+        "theme": "ELIGIBILITY_ACCOUNT",
+        "rationale": "titre + section 2 : eligibilite et acces a la plateforme",
+        "evidence_span": "eligibility , using the airbnb platform , member verification"
+      },
+      {
+        "start_id": 74,
+        "theme": "THIRD_PARTY",
+        "rationale": "2.6 conditions de tiers (Apple, Google Maps) regissant certaines fonctionnalites",
+        "evidence_span": "apple 's licensed application end user license agreement"
+      },
+      {
+        "start_id": 77,
+        "theme": "MODIFICATION_OF_TERMS",
+        "rationale": "section 3 : droit d'airbnb de modifier les conditions",
+        "evidence_span": "reserves the right to modify these terms"
+      },
+      {
+        "start_id": 83,
+        "theme": "ELIGIBILITY_ACCOUNT",
+        "rationale": "section 4 : obligation d'enregistrer un compte airbnb",
+        "evidence_span": "you must register an account"
+      },
+      {
+        "start_id": 97,
+        "theme": "USER_CONTENT",
+        "rationale": "5.1 creation et upload de member content, acces au collective content",
+        "evidence_span": "create , upload , post"
+      },
+      {
+        "start_id": 98,
+        "theme": "LICENSE_IP",
+        "rationale": "5.2 PI exclusive d'airbnb, copyright/marque (la PI prime, par.3.1)",
+        "evidence_span": "protected by copyright"
+      },
+      {
+        "start_id": 106,
+        "theme": "USER_CONTENT",
+        "rationale": "5.5 licence accordee a airbnb sur le member content poste",
+        "evidence_span": "you grant to airbnb"
+      },
+      {
+        "start_id": 117,
+        "theme": "LICENSE_IP",
+        "rationale": "5.9 respect du copyright et politique copyright (DMCA -> LICENSE_IP, par.3.1)",
+        "evidence_span": "airbnb respects copyright law"
+      },
+      {
+        "start_id": 119,
+        "theme": "PAYMENT_BILLING",
+        "rationale": "section 6 : service fees factures aux hotes et invites",
+        "evidence_span": "airbnb may charge fees"
+      },
+      {
+        "start_id": 126,
+        "theme": "ELIGIBILITY_ACCOUNT",
+        "rationale": "titre 7.1 : obligations de l'hote creant un listing",
+        "evidence_span": "terms applicable to all listings"
+      },
+      {
+        "start_id": 129,
+        "theme": "PAYMENT_BILLING",
+        "rationale": "7.1.2 fixation du prix du listing (listing fee)",
+        "evidence_span": "setting a price"
+      },
+      {
+        "start_id": 131,
+        "theme": "ELIGIBILITY_ACCOUNT",
+        "rationale": "7.1.3 conditions du listing ne doivent pas entrer en conflit",
+        "evidence_span": "any terms and conditions included in your listing"
+      },
+      {
+        "start_id": 137,
+        "theme": "ELIGIBILITY_ACCOUNT",
+        "rationale": "7.1.7 recommandation d'assurance pour les hotes (reste obligations listing)",
+        "evidence_span": "airbnb recommends that hosts obtain appropriate insurance"
+      },
+      {
+        "start_id": 139,
+        "theme": "ELIGIBILITY_ACCOUNT",
+        "rationale": "7.2 listing accommodations : un seul logement par listing",
+        "evidence_span": "you may only list one accommodation per listing"
+      },
+      {
+        "start_id": 145,
+        "theme": "ELIGIBILITY_ACCOUNT",
+        "rationale": "titre 7.3 : listing d'experiences, events et autres host services",
+        "evidence_span": "listing experiences , events and other host services"
+      },
+      {
+        "start_id": 158,
+        "theme": "ELIGIBILITY_ACCOUNT",
+        "rationale": "7.4 co-hosts : autorisation et administration du listing",
+        "evidence_span": "co-hosts"
+      },
+      {
+        "start_id": 162,
+        "theme": "PAYMENT_BILLING",
+        "rationale": "7.4.2 co-host services fee : remuneration des co-hotes",
+        "evidence_span": "co-host services fee"
+      },
+      {
+        "start_id": 168,
+        "theme": "ELIGIBILITY_ACCOUNT",
+        "rationale": "7.4.4 diligence et responsabilite dans le choix d'un co-host",
+        "evidence_span": "due diligence and care when deciding who to add as a co-host"
+      },
+      {
+        "start_id": 173,
+        "theme": "TERMINATION",
+        "rationale": "7.4.5 resiliation de l'accord de co-hosting",
+        "evidence_span": "may terminate the co-host agreement"
+      },
+      {
+        "start_id": 179,
+        "theme": "USER_CONTENT",
+        "rationale": "7.4.6 co-host non evalue par les guests, impact sur reviews/ratings",
+        "evidence_span": "you will not be reviewed by guests"
+      },
+      {
+        "start_id": 182,
+        "theme": "ELIGIBILITY_ACCOUNT",
+        "rationale": "titre 8.1 : processus de reservation",
+        "evidence_span": "terms applicable to all bookings"
+      },
+      {
+        "start_id": 191,
+        "theme": "ELIGIBILITY_ACCOUNT",
+        "rationale": "8.2 accommodation bookings : licence limitee d'occupation accordee par l'hote",
+        "evidence_span": "confirmed booking of an accommodation"
+      },
+      {
+        "start_id": 194,
+        "theme": "PAYMENT_BILLING",
+        "rationale": "overstay fees : frais supplementaires en cas de depassement",
+        "evidence_span": "you agree to pay"
+      },
+      {
+        "start_id": 198,
+        "theme": "ELIGIBILITY_ACCOUNT",
+        "rationale": "titre 8.3 : reservation d'experiences, events et autres host services",
+        "evidence_span": "booking experiences , events and other host services"
+      },
+      {
+        "start_id": 205,
+        "theme": "PAYMENT_BILLING",
+        "rationale": "titre section 9 : modifications, annulations et remboursements payants",
+        "evidence_span": "booking modifications , cancellations and refunds , resolution center"
+      },
+      {
+        "start_id": 218,
+        "theme": "USER_CONTENT",
+        "rationale": "section 10 : reviews et ratings publics laisses par les membres",
+        "evidence_span": "leave a public review"
+      },
+      {
+        "start_id": 224,
+        "theme": "LIABILITY_LIMITATION",
+        "rationale": "titre section 11 : dommages aux accommodations, litiges entre membres",
+        "evidence_span": "damage to accommodations , disputes between members"
+      },
+      {
+        "start_id": 235,
+        "theme": "PAYMENT_BILLING",
+        "rationale": "section 12 : arrondis monetaires des montants payables",
+        "evidence_span": "round up or round down amounts"
+      },
+      {
+        "start_id": 240,
+        "theme": "PAYMENT_BILLING",
+        "rationale": "section 13 : taxes, responsabilite de l'hote de declarer/percevoir",
+        "evidence_span": "any applicable vat or other indirect sales taxes"
+      },
+      {
+        "start_id": 252,
+        "theme": "ACCEPTABLE_USE",
+        "rationale": "section 14 : conformite aux lois et liste des activites interdites",
+        "evidence_span": "compliance with any and all laws"
+      },
+      {
+        "start_id": 276,
+        "theme": "TERMINATION",
+        "rationale": "titre section 15 : duree, resiliation, suspension et autres mesures",
+        "evidence_span": "term and termination , suspension and other measures"
+      },
+      {
+        "start_id": 294,
+        "theme": "WARRANTY_DISCLAIMER",
+        "rationale": "section 16 : usage volontaire a ses risques, plateforme fournie as is",
+        "evidence_span": "you do so voluntarily and at your sole risk"
+      },
+      {
+        "start_id": 305,
+        "theme": "LIABILITY_LIMITATION",
+        "rationale": "section 17 : limitation de responsabilite, le risque reste avec l'utilisateur",
+        "evidence_span": "the entire risk arising out of your access"
+      },
+      {
+        "start_id": 316,
+        "theme": "INDEMNIFICATION",
+        "rationale": "section 18 : indemnisation - release, defend, indemnify, hold harmless",
+        "evidence_span": "indemnify , and hold airbnb"
+      },
+      {
+        "start_id": 317,
+        "theme": "DISPUTE_ARBITRATION",
+        "rationale": "section 19 : accord de resolution des litiges et d'arbitrage",
+        "evidence_span": "this dispute resolution and arbitration agreement shall apply"
+      },
+      {
+        "start_id": 359,
+        "theme": "LICENSE_IP",
+        "rationale": "section 20 : feedback - licence accordee a airbnb sur les idees soumises (PI prime)",
+        "evidence_span": "feedback"
+      },
+      {
+        "start_id": 363,
+        "theme": "GOVERNING_LAW",
+        "rationale": "section 21 : loi applicable et juridiction selon la residence",
+        "evidence_span": "interpreted in accordance with the laws of the state of california"
+      },
+      {
+        "start_id": 377,
+        "theme": "MISC_BOILERPLATE",
+        "rationale": "section 22 : dispositions generales (entire agreement, severability, etc.)",
+        "evidence_span": "entire agreement between airbnb and you"
+      }
+    ]
+  },
+  "annotations": [
+    {
+      "id": 0,
+      "theme": "MODIFICATION_OF_TERMS",
+      "block_id": 0,
+      "is_block_start": true,
+      "rationale": "ouverture du document : annonce de la mise a jour des conditions",
+      "rationale_codes": {
+        "decision_trigger": "document_start",
+        "relation_to_prev": "document_start",
+        "evidence_span": "we 've recently updated our",
+        "revised_from_plan": false,
+        "confidence": 0.9
+      },
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 1,
+      "theme": "MODIFICATION_OF_TERMS",
+      "block_id": 0,
+      "is_block_start": false,
+      "reason": "date d'entree en vigueur selon la date d'inscription",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 2,
+      "theme": "MODIFICATION_OF_TERMS",
+      "block_id": 0,
+      "is_block_start": false,
+      "reason": "injonction de lire attentivement les conditions",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 3,
+      "theme": "MODIFICATION_OF_TERMS",
+      "block_id": 0,
+      "is_block_start": false,
+      "reason": "application des conditions mises a jour",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 4,
+      "theme": "MODIFICATION_OF_TERMS",
+      "block_id": 0,
+      "is_block_start": false,
+      "reason": "renvoi 'learn more about what 's changing'",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 5,
+      "theme": "MODIFICATION_OF_TERMS",
+      "block_id": 0,
+      "is_block_start": false,
+      "reason": "rappel de lecture des conditions",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 6,
+      "theme": "PREAMBLE_SCOPE",
+      "block_id": 1,
+      "is_block_start": true,
+      "rationale": "portee et acceptation : l'acces/usage vaut acceptation des conditions",
+      "rationale_codes": {
+        "decision_trigger": "topic_keyword",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "you agree to comply with and be bound by these terms of service",
+        "revised_from_plan": false,
+        "confidence": 0.72
+      },
+      "legal_nature": "SCOPE_APPLICABILITY",
+      "legal_nature_marker": "by accessing"
+    },
+    {
+      "id": 7,
+      "theme": "DISPUTE_ARBITRATION",
+      "block_id": 2,
+      "is_block_start": true,
+      "rationale": "notice autonome : la section 19 contient une clause d'arbitrage et renonciation aux actions collectives",
+      "rationale_codes": {
+        "decision_trigger": "topic_keyword",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "contains an arbitration clause and class action waiver",
+        "revised_from_plan": false,
+        "confidence": 0.8
+      },
+      "legal_nature": "GOVERNANCE",
+      "legal_nature_marker": "arbitration"
+    },
+    {
+      "id": 8,
+      "theme": "DISPUTE_ARBITRATION",
+      "block_id": 2,
+      "is_block_start": false,
+      "reason": "application de la clause aux residents US",
+      "legal_nature": "SCOPE_APPLICABILITY",
+      "legal_nature_marker": "applies to"
+    },
+    {
+      "id": 9,
+      "theme": "DISPUTE_ARBITRATION",
+      "block_id": 2,
+      "is_block_start": false,
+      "reason": "application aux residents hors US",
+      "legal_nature": "SCOPE_APPLICABILITY",
+      "legal_nature_marker": "applies to"
+    },
+    {
+      "id": 10,
+      "theme": "DISPUTE_ARBITRATION",
+      "block_id": 2,
+      "is_block_start": false,
+      "reason": "effet sur la resolution des litiges",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 11,
+      "theme": "DISPUTE_ARBITRATION",
+      "block_id": 2,
+      "is_block_start": false,
+      "reason": "acceptation de la clause d'arbitrage",
+      "legal_nature": "GOVERNANCE",
+      "legal_nature_marker": "arbitration"
+    },
+    {
+      "id": 12,
+      "theme": "META",
+      "block_id": 3,
+      "is_block_start": true,
+      "rationale": "metadonnee : date de derniere mise a jour",
+      "rationale_codes": {
+        "decision_trigger": "title_marker",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "last updated",
+        "revised_from_plan": false,
+        "confidence": 0.9
+      },
+      "legal_nature": "META",
+      "legal_nature_marker": "last updated"
+    },
+    {
+      "id": 13,
+      "theme": "META",
+      "block_id": 3,
+      "is_block_start": false,
+      "reason": "remerciement, prolonge la zone meta du preambule",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 14,
+      "theme": "PREAMBLE_SCOPE",
+      "block_id": 4,
+      "is_block_start": true,
+      "rationale": "ouverture de l'accord legalement contraignant regissant l'acces et l'usage",
+      "rationale_codes": {
+        "decision_trigger": "topic_keyword",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "constitute a legally binding agreement",
+        "revised_from_plan": false,
+        "confidence": 0.78
+      },
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 15,
+      "theme": "PREAMBLE_SCOPE",
+      "block_id": 4,
+      "is_block_start": false,
+      "reason": "definition collective 'airbnb platform', prolonge la portee",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 16,
+      "theme": "PREAMBLE_SCOPE",
+      "block_id": 4,
+      "is_block_start": false,
+      "reason": "incorporation par reference d'autres politiques",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 17,
+      "theme": "DEFINITIONS",
+      "block_id": 5,
+      "is_block_start": true,
+      "rationale": "definition de l'entite contractante selon la residence",
+      "rationale_codes": {
+        "decision_trigger": "definition_marker",
+        "relation_to_prev": "definition_chain",
+        "evidence_span": "it refers to the airbnb company you are contracting with",
+        "revised_from_plan": false,
+        "confidence": 0.7
+      },
+      "legal_nature": "DEFINITION",
+      "legal_nature_marker": "refers to"
+    },
+    {
+      "id": 18,
+      "theme": "DEFINITIONS",
+      "block_id": 5,
+      "is_block_start": false,
+      "reason": "entite contractante pour les residents US",
+      "legal_nature": "META",
+      "legal_nature_marker": "inc."
+    },
+    {
+      "id": 19,
+      "theme": "DEFINITIONS",
+      "block_id": 5,
+      "is_block_start": false,
+      "reason": "entite contractante hors US",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 20,
+      "theme": "DEFINITIONS",
+      "block_id": 5,
+      "is_block_start": false,
+      "reason": "entite contractante pour la Chine",
+      "legal_nature": "META",
+      "legal_nature_marker": "ltd"
+    },
+    {
+      "id": 21,
+      "theme": "DEFINITIONS",
+      "block_id": 5,
+      "is_block_start": false,
+      "reason": "cas airbnb china et bookings anterieurs",
+      "legal_nature": "OBLIGATION",
+      "legal_nature_marker": "you will"
+    },
+    {
+      "id": 22,
+      "theme": "DEFINITIONS",
+      "block_id": 5,
+      "is_block_start": false,
+      "reason": "le changement de residence determine l'entite",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 23,
+      "theme": "PRIVACY_DATA",
+      "block_id": 6,
+      "is_block_start": true,
+      "rationale": "nouveau sujet : collecte et usage des donnees personnelles, renvoi a la privacy policy",
+      "rationale_codes": {
+        "decision_trigger": "topic_keyword",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "our collection and use of personal information",
+        "revised_from_plan": false,
+        "confidence": 0.82
+      },
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 24,
+      "theme": "PAYMENT_BILLING",
+      "block_id": 7,
+      "is_block_start": true,
+      "rationale": "nouveau sujet : services de paiement fournis par airbnb payments",
+      "rationale_codes": {
+        "decision_trigger": "topic_keyword",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "payment processing services",
+        "revised_from_plan": false,
+        "confidence": 0.72
+      },
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 25,
+      "theme": "ACCEPTABLE_USE",
+      "block_id": 8,
+      "is_block_start": true,
+      "rationale": "nouveau sujet : obligation des hotes de respecter lois, regles et reglements applicables",
+      "rationale_codes": {
+        "decision_trigger": "topic_keyword",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "hosts alone are responsible for identifying",
+        "revised_from_plan": false,
+        "confidence": 0.7
+      },
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 26,
+      "theme": "ACCEPTABLE_USE",
+      "block_id": 8,
+      "is_block_start": false,
+      "reason": "exemple : villes restreignant l'hebergement",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 27,
+      "theme": "ACCEPTABLE_USE",
+      "block_id": 8,
+      "is_block_start": false,
+      "reason": "exemple : permis ou licence requis",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 28,
+      "theme": "ACCEPTABLE_USE",
+      "block_id": 8,
+      "is_block_start": false,
+      "reason": "exemple : licence pour guides ou navigation",
+      "legal_nature": "RIGHT_GRANT",
+      "legal_nature_marker": "license to"
+    },
+    {
+      "id": 29,
+      "theme": "ACCEPTABLE_USE",
+      "block_id": 8,
+      "is_block_start": false,
+      "reason": "reformulation : responsabilite d'obtenir les licences",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 30,
+      "theme": "ACCEPTABLE_USE",
+      "block_id": 8,
+      "is_block_start": false,
+      "reason": "certains host services peuvent etre interdits",
+      "legal_nature": "PROHIBITION",
+      "legal_nature_marker": "prohibited"
+    },
+    {
+      "id": 31,
+      "theme": "ACCEPTABLE_USE",
+      "block_id": 8,
+      "is_block_start": false,
+      "reason": "consequence : sanctions / amendes",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 32,
+      "theme": "ACCEPTABLE_USE",
+      "block_id": 8,
+      "is_block_start": false,
+      "reason": "airbnb fournit de l'information d'aide",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 33,
+      "theme": "ACCEPTABLE_USE",
+      "block_id": 8,
+      "is_block_start": false,
+      "reason": "conseil de chercher un avis juridique",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 34,
+      "theme": "PREAMBLE_SCOPE",
+      "block_id": 9,
+      "is_block_start": true,
+      "rationale": "titres de table des matieres listant les sections a venir",
+      "rationale_codes": {
+        "decision_trigger": "title_marker",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "eligibility , using the airbnb platform , member verification",
+        "revised_from_plan": false,
+        "confidence": 0.55
+      },
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 35,
+      "theme": "PREAMBLE_SCOPE",
+      "block_id": 9,
+      "is_block_start": false,
+      "reason": "titre de table des matieres (booking modifications)",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 36,
+      "theme": "PREAMBLE_SCOPE",
+      "block_id": 9,
+      "is_block_start": false,
+      "reason": "titre de table des matieres (damage to accommodations)",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 37,
+      "theme": "PREAMBLE_SCOPE",
+      "block_id": 9,
+      "is_block_start": false,
+      "reason": "titre de table des matieres (term and termination)",
+      "legal_nature": "GOVERNANCE",
+      "legal_nature_marker": "termination"
+    },
+    {
+      "id": 38,
+      "theme": "PREAMBLE_SCOPE",
+      "block_id": 10,
+      "is_block_start": true,
+      "rationale": "1.1 description de la marketplace airbnb (portee du service)",
+      "rationale_codes": {
+        "decision_trigger": "numbering",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "the airbnb platform is an online marketplace",
+        "revised_from_plan": false,
+        "confidence": 0.65
+      },
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 39,
+      "theme": "PREAMBLE_SCOPE",
+      "block_id": 10,
+      "is_block_start": false,
+      "reason": "details des host services offerts",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 40,
+      "theme": "WARRANTY_DISCLAIMER",
+      "block_id": 11,
+      "is_block_start": true,
+      "rationale": "1.2 airbnb non proprietaire ni fournisseur des listings/host services",
+      "rationale_codes": {
+        "decision_trigger": "numbering",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "airbnb does not own",
+        "revised_from_plan": false,
+        "confidence": 0.6
+      },
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 41,
+      "theme": "WARRANTY_DISCLAIMER",
+      "block_id": 11,
+      "is_block_start": false,
+      "reason": "hotes seuls responsables de leurs listings",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 42,
+      "theme": "WARRANTY_DISCLAIMER",
+      "block_id": 11,
+      "is_block_start": false,
+      "reason": "membres contractent directement entre eux",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 43,
+      "theme": "WARRANTY_DISCLAIMER",
+      "block_id": 11,
+      "is_block_start": false,
+      "reason": "airbnb non partie au contrat entre membres",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 44,
+      "theme": "WARRANTY_DISCLAIMER",
+      "block_id": 11,
+      "is_block_start": false,
+      "reason": "airbnb pas un agent sauf exception payments",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 45,
+      "theme": "WARRANTY_DISCLAIMER",
+      "block_id": 11,
+      "is_block_start": false,
+      "reason": "1.3 airbnb ne garantit pas qualite/legalite des listings",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 46,
+      "theme": "WARRANTY_DISCLAIMER",
+      "block_id": 11,
+      "is_block_start": false,
+      "reason": "airbnb n'endosse aucun membre",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 47,
+      "theme": "WARRANTY_DISCLAIMER",
+      "block_id": 11,
+      "is_block_start": false,
+      "reason": "sens limite de 'verified'",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 48,
+      "theme": "WARRANTY_DISCLAIMER",
+      "block_id": 11,
+      "is_block_start": false,
+      "reason": "pas d'endossement / certification par airbnb",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 49,
+      "theme": "WARRANTY_DISCLAIMER",
+      "block_id": 11,
+      "is_block_start": false,
+      "reason": "devoir de diligence de l'utilisateur",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 50,
+      "theme": "WARRANTY_DISCLAIMER",
+      "block_id": 11,
+      "is_block_start": false,
+      "reason": "sens limite des verified images, pas d'endossement",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 51,
+      "theme": "WARRANTY_DISCLAIMER",
+      "block_id": 11,
+      "is_block_start": false,
+      "reason": "prolonge le theme du bloc courant",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 52,
+      "theme": "USER_CONTENT",
+      "block_id": 12,
+      "is_block_start": true,
+      "rationale": "1.5 affichage et traduction des listings et member content",
+      "rationale_codes": {
+        "decision_trigger": "numbering",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "to increase the exposure of listings",
+        "revised_from_plan": false,
+        "confidence": 0.6
+      },
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 53,
+      "theme": "USER_CONTENT",
+      "block_id": 12,
+      "is_block_start": false,
+      "reason": "traduction des listings et member content",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 54,
+      "theme": "USER_CONTENT",
+      "block_id": 12,
+      "is_block_start": false,
+      "reason": "airbnb ne garantit pas la qualite des traductions",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 55,
+      "theme": "USER_CONTENT",
+      "block_id": 12,
+      "is_block_start": false,
+      "reason": "traductions powered by google",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 56,
+      "theme": "USER_CONTENT",
+      "block_id": 12,
+      "is_block_start": false,
+      "reason": "google decline ses garanties sur les traductions",
+      "legal_nature": "LIMITATION_DISCLAIMER",
+      "legal_nature_marker": "warranties"
+    },
+    {
+      "id": 57,
+      "theme": "THIRD_PARTY",
+      "block_id": 13,
+      "is_block_start": true,
+      "rationale": "1.6 liens vers des services tiers",
+      "rationale_codes": {
+        "decision_trigger": "numbering",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "links to third-party websites or resources",
+        "revised_from_plan": false,
+        "confidence": 0.68
+      },
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 58,
+      "theme": "THIRD_PARTY",
+      "block_id": 13,
+      "is_block_start": false,
+      "reason": "services tiers soumis a leurs propres conditions",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 59,
+      "theme": "THIRD_PARTY",
+      "block_id": 13,
+      "is_block_start": false,
+      "reason": "airbnb non responsable des services tiers",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 60,
+      "theme": "THIRD_PARTY",
+      "block_id": 13,
+      "is_block_start": false,
+      "reason": "liens ne constituent pas un endossement",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 61,
+      "theme": "WARRANTY_DISCLAIMER",
+      "block_id": 14,
+      "is_block_start": true,
+      "rationale": "1.7 disponibilite de la plateforme non garantie",
+      "rationale_codes": {
+        "decision_trigger": "numbering",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "can not guarantee the continuous and uninterrupted availability",
+        "revised_from_plan": false,
+        "confidence": 0.6
+      },
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 62,
+      "theme": "WARRANTY_DISCLAIMER",
+      "block_id": 14,
+      "is_block_start": false,
+      "reason": "airbnb peut restreindre la disponibilite",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 63,
+      "theme": "WARRANTY_DISCLAIMER",
+      "block_id": 14,
+      "is_block_start": false,
+      "reason": "airbnb peut ameliorer/modifier la plateforme",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 64,
+      "theme": "ELIGIBILITY_ACCOUNT",
+      "block_id": 15,
+      "is_block_start": true,
+      "rationale": "titre + section 2 : eligibilite et acces a la plateforme",
+      "rationale_codes": {
+        "decision_trigger": "title_marker",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "eligibility , using the airbnb platform , member verification",
+        "revised_from_plan": false,
+        "confidence": 0.7
+      },
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 65,
+      "theme": "ELIGIBILITY_ACCOUNT",
+      "block_id": 15,
+      "is_block_start": false,
+      "reason": "representation/garantie d'age et de capacite",
+      "legal_nature": "OBLIGATION",
+      "legal_nature_marker": "you must"
+    },
+    {
+      "id": 66,
+      "theme": "ELIGIBILITY_ACCOUNT",
+      "block_id": 15,
+      "is_block_start": false,
+      "reason": "2.2 conformite aux lois de controle des exportations",
+      "legal_nature": "SCOPE_APPLICABILITY",
+      "legal_nature_marker": "by accessing"
+    },
+    {
+      "id": 67,
+      "theme": "ELIGIBILITY_ACCOUNT",
+      "block_id": 15,
+      "is_block_start": false,
+      "reason": "garanties d'embargo/sanctions, prolonge l'eligibilite",
+      "legal_nature": "GOVERNANCE",
+      "legal_nature_marker": "jurisdiction"
+    },
+    {
+      "id": 68,
+      "theme": "ELIGIBILITY_ACCOUNT",
+      "block_id": 15,
+      "is_block_start": false,
+      "reason": "2.3 conditions d'acces a certaines fonctionnalites",
+      "legal_nature": "PROHIBITION",
+      "legal_nature_marker": "prohibited"
+    },
+    {
+      "id": 69,
+      "theme": "ELIGIBILITY_ACCOUNT",
+      "block_id": 15,
+      "is_block_start": false,
+      "reason": "2.4 verification d'identite, pas de responsabilite",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 70,
+      "theme": "ELIGIBILITY_ACCOUNT",
+      "block_id": 15,
+      "is_block_start": false,
+      "reason": "moyens de verification / screening des membres",
+      "legal_nature": "PROHIBITION",
+      "legal_nature_marker": "do not"
+    },
+    {
+      "id": 71,
+      "theme": "ELIGIBILITY_ACCOUNT",
+      "block_id": 15,
+      "is_block_start": false,
+      "reason": "2.5 politiques/standards separes applicables",
+      "legal_nature": "GOVERNANCE",
+      "legal_nature_marker": "jurisdiction"
+    },
+    {
+      "id": 72,
+      "theme": "ELIGIBILITY_ACCOUNT",
+      "block_id": 15,
+      "is_block_start": false,
+      "reason": "preseance des conditions specifiques en cas de conflit",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 73,
+      "theme": "ELIGIBILITY_ACCOUNT",
+      "block_id": 15,
+      "is_block_start": false,
+      "reason": "prolonge le theme du bloc courant",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 74,
+      "theme": "THIRD_PARTY",
+      "block_id": 16,
+      "is_block_start": true,
+      "rationale": "2.6 conditions de tiers (Apple, Google Maps) regissant certaines fonctionnalites",
+      "rationale_codes": {
+        "decision_trigger": "topic_keyword",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "apple 's licensed application end user license agreement",
+        "revised_from_plan": true,
+        "confidence": 0.55
+      },
+      "legal_nature": "OBLIGATION",
+      "legal_nature_marker": "you agree to"
+    },
+    {
+      "id": 75,
+      "theme": "THIRD_PARTY",
+      "block_id": 16,
+      "is_block_start": false,
+      "reason": "google maps/earth dans certaines zones",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 76,
+      "theme": "THIRD_PARTY",
+      "block_id": 16,
+      "is_block_start": false,
+      "reason": "usage soumis aux conditions google maps/earth",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 77,
+      "theme": "MODIFICATION_OF_TERMS",
+      "block_id": 17,
+      "is_block_start": true,
+      "rationale": "section 3 : droit d'airbnb de modifier les conditions",
+      "rationale_codes": {
+        "decision_trigger": "topic_keyword",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "reserves the right to modify these terms",
+        "revised_from_plan": false,
+        "confidence": 0.85
+      },
+      "legal_nature": "GOVERNANCE",
+      "legal_nature_marker": "modify these terms"
+    },
+    {
+      "id": 78,
+      "theme": "MODIFICATION_OF_TERMS",
+      "block_id": 17,
+      "is_block_start": false,
+      "reason": "publication des conditions revisees et date",
+      "legal_nature": "META",
+      "legal_nature_marker": "last updated"
+    },
+    {
+      "id": 79,
+      "theme": "MODIFICATION_OF_TERMS",
+      "block_id": 17,
+      "is_block_start": false,
+      "reason": "notice par email 30 jours avant effet",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 80,
+      "theme": "MODIFICATION_OF_TERMS",
+      "block_id": 17,
+      "is_block_start": false,
+      "reason": "droit de resilier en cas de desaccord",
+      "legal_nature": "GOVERNANCE",
+      "legal_nature_marker": "terminate"
+    },
+    {
+      "id": 81,
+      "theme": "MODIFICATION_OF_TERMS",
+      "block_id": 17,
+      "is_block_start": false,
+      "reason": "information sur le droit de resiliation dans l'email",
+      "legal_nature": "GOVERNANCE",
+      "legal_nature_marker": "terminate"
+    },
+    {
+      "id": 82,
+      "theme": "MODIFICATION_OF_TERMS",
+      "block_id": 17,
+      "is_block_start": false,
+      "reason": "usage continu vaut acceptation des conditions revisees",
+      "legal_nature": "PROHIBITION",
+      "legal_nature_marker": "do not"
+    },
+    {
+      "id": 83,
+      "theme": "ELIGIBILITY_ACCOUNT",
+      "block_id": 18,
+      "is_block_start": true,
+      "rationale": "section 4 : obligation d'enregistrer un compte airbnb",
+      "rationale_codes": {
+        "decision_trigger": "numbering",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "you must register an account",
+        "revised_from_plan": false,
+        "confidence": 0.78
+      },
+      "legal_nature": "OBLIGATION",
+      "legal_nature_marker": "you must"
+    },
+    {
+      "id": 84,
+      "theme": "ELIGIBILITY_ACCOUNT",
+      "block_id": 18,
+      "is_block_start": false,
+      "reason": "enregistrement pour une entite, autorite de lier",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 85,
+      "theme": "ELIGIBILITY_ACCOUNT",
+      "block_id": 18,
+      "is_block_start": false,
+      "reason": "4.2 enregistrement via email ou SNS account",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 86,
+      "theme": "ELIGIBILITY_ACCOUNT",
+      "block_id": 18,
+      "is_block_start": false,
+      "reason": "deconnexion du compte SNS",
+      "legal_nature": "SCOPE_APPLICABILITY",
+      "legal_nature_marker": "by accessing"
+    },
+    {
+      "id": 87,
+      "theme": "ELIGIBILITY_ACCOUNT",
+      "block_id": 18,
+      "is_block_start": false,
+      "reason": "4.3 informations exactes et a jour",
+      "legal_nature": "OBLIGATION",
+      "legal_nature_marker": "you must"
+    },
+    {
+      "id": 88,
+      "theme": "ELIGIBILITY_ACCOUNT",
+      "block_id": 18,
+      "is_block_start": false,
+      "reason": "4.4 pas plus d'un compte / pas de transfert",
+      "legal_nature": "PROHIBITION",
+      "legal_nature_marker": "may not"
+    },
+    {
+      "id": 89,
+      "theme": "ELIGIBILITY_ACCOUNT",
+      "block_id": 18,
+      "is_block_start": false,
+      "reason": "interdiction de ceder le compte",
+      "legal_nature": "PROHIBITION",
+      "legal_nature_marker": "may not"
+    },
+    {
+      "id": 90,
+      "theme": "ELIGIBILITY_ACCOUNT",
+      "block_id": 18,
+      "is_block_start": false,
+      "reason": "4.5 confidentialite et securite des credentials",
+      "legal_nature": "PROHIBITION",
+      "legal_nature_marker": "may not"
+    },
+    {
+      "id": 91,
+      "theme": "ELIGIBILITY_ACCOUNT",
+      "block_id": 18,
+      "is_block_start": false,
+      "reason": "notification en cas de compromission",
+      "legal_nature": "OBLIGATION",
+      "legal_nature_marker": "you must"
+    },
+    {
+      "id": 92,
+      "theme": "ELIGIBILITY_ACCOUNT",
+      "block_id": 18,
+      "is_block_start": false,
+      "reason": "responsabilite des activites sur le compte",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 93,
+      "theme": "ELIGIBILITY_ACCOUNT",
+      "block_id": 18,
+      "is_block_start": false,
+      "reason": "4.6 fonctionnalites d'autorisation d'autres membres",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 94,
+      "theme": "ELIGIBILITY_ACCOUNT",
+      "block_id": 18,
+      "is_block_start": false,
+      "reason": "exemple : enterprise / co-hosts",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 95,
+      "theme": "ELIGIBILITY_ACCOUNT",
+      "block_id": 18,
+      "is_block_start": false,
+      "reason": "ces fonctionnalites n'exigent pas de partager les credentials",
+      "legal_nature": "PROHIBITION",
+      "legal_nature_marker": "do not"
+    },
+    {
+      "id": 96,
+      "theme": "ELIGIBILITY_ACCOUNT",
+      "block_id": 18,
+      "is_block_start": false,
+      "reason": "interdiction de demander les credentials d'autrui",
+      "legal_nature": "PROHIBITION",
+      "legal_nature_marker": "shall not"
+    },
+    {
+      "id": 97,
+      "theme": "USER_CONTENT",
+      "block_id": 19,
+      "is_block_start": true,
+      "rationale": "5.1 creation et upload de member content, acces au collective content",
+      "rationale_codes": {
+        "decision_trigger": "numbering",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "create , upload , post",
+        "revised_from_plan": false,
+        "confidence": 0.6
+      },
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 98,
+      "theme": "LICENSE_IP",
+      "block_id": 20,
+      "is_block_start": true,
+      "rationale": "5.2 PI exclusive d'airbnb, copyright/marque (la PI prime, par.3.1)",
+      "rationale_codes": {
+        "decision_trigger": "numbering",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "protected by copyright",
+        "revised_from_plan": false,
+        "confidence": 0.72
+      },
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 99,
+      "theme": "LICENSE_IP",
+      "block_id": 20,
+      "is_block_start": false,
+      "reason": "PI propriete exclusive d'airbnb",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 100,
+      "theme": "LICENSE_IP",
+      "block_id": 20,
+      "is_block_start": false,
+      "reason": "interdiction de retirer les mentions de PI",
+      "legal_nature": "PROHIBITION",
+      "legal_nature_marker": "will not"
+    },
+    {
+      "id": 101,
+      "theme": "LICENSE_IP",
+      "block_id": 20,
+      "is_block_start": false,
+      "reason": "marques d'airbnb",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 102,
+      "theme": "LICENSE_IP",
+      "block_id": 20,
+      "is_block_start": false,
+      "reason": "marques de tiers utilisees a des fins d'identification",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 103,
+      "theme": "LICENSE_IP",
+      "block_id": 20,
+      "is_block_start": false,
+      "reason": "5.3 interdiction d'exploiter la plateforme/collective content",
+      "legal_nature": "PROHIBITION",
+      "legal_nature_marker": "will not"
+    },
+    {
+      "id": 104,
+      "theme": "LICENSE_IP",
+      "block_id": 20,
+      "is_block_start": false,
+      "reason": "aucune licence implicite accordee",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 105,
+      "theme": "LICENSE_IP",
+      "block_id": 20,
+      "is_block_start": false,
+      "reason": "5.4 licence limitee d'utilisation de l'application/collective content",
+      "legal_nature": "RIGHT_GRANT",
+      "legal_nature_marker": "grants you"
+    },
+    {
+      "id": 106,
+      "theme": "USER_CONTENT",
+      "block_id": 21,
+      "is_block_start": true,
+      "rationale": "5.5 licence accordee a airbnb sur le member content poste",
+      "rationale_codes": {
+        "decision_trigger": "numbering",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "you grant to airbnb",
+        "revised_from_plan": false,
+        "confidence": 0.6
+      },
+      "legal_nature": "RIGHT_GRANT",
+      "legal_nature_marker": "license to"
+    },
+    {
+      "id": 107,
+      "theme": "USER_CONTENT",
+      "block_id": 21,
+      "is_block_start": false,
+      "reason": "airbnb ne revendique pas la propriete du member content",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 108,
+      "theme": "USER_CONTENT",
+      "block_id": 21,
+      "is_block_start": false,
+      "reason": "5.6 verified images, prolonge le sujet member content/images",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 109,
+      "theme": "USER_CONTENT",
+      "block_id": 21,
+      "is_block_start": false,
+      "reason": "responsabilite de l'exactitude des verified images",
+      "legal_nature": "GOVERNANCE",
+      "legal_nature_marker": "terminate"
+    },
+    {
+      "id": 110,
+      "theme": "USER_CONTENT",
+      "block_id": 21,
+      "is_block_start": false,
+      "reason": "droit d'airbnb d'utiliser les verified images",
+      "legal_nature": "OBLIGATION",
+      "legal_nature_marker": "shall"
+    },
+    {
+      "id": 111,
+      "theme": "USER_CONTENT",
+      "block_id": 21,
+      "is_block_start": false,
+      "reason": "licence exclusive sur les verified images",
+      "legal_nature": "RIGHT_GRANT",
+      "legal_nature_marker": "license to"
+    },
+    {
+      "id": 112,
+      "theme": "USER_CONTENT",
+      "block_id": 21,
+      "is_block_start": false,
+      "reason": "licence en retour a l'utilisateur sur les verified images",
+      "legal_nature": "RIGHT_GRANT",
+      "legal_nature_marker": "grants you"
+    },
+    {
+      "id": 113,
+      "theme": "USER_CONTENT",
+      "block_id": 21,
+      "is_block_start": false,
+      "reason": "5.7 responsabilite de l'utilisateur sur son member content",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 114,
+      "theme": "USER_CONTENT",
+      "block_id": 21,
+      "is_block_start": false,
+      "reason": "garanties de propriete / non-infraction du member content",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 115,
+      "theme": "USER_CONTENT",
+      "block_id": 21,
+      "is_block_start": false,
+      "reason": "5.8 contenus interdits (member content)",
+      "legal_nature": "PROHIBITION",
+      "legal_nature_marker": "will not"
+    },
+    {
+      "id": 116,
+      "theme": "USER_CONTENT",
+      "block_id": 21,
+      "is_block_start": false,
+      "reason": "airbnb peut retirer le member content en violation",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 117,
+      "theme": "LICENSE_IP",
+      "block_id": 22,
+      "is_block_start": true,
+      "rationale": "5.9 respect du copyright et politique copyright (DMCA -> LICENSE_IP, par.3.1)",
+      "rationale_codes": {
+        "decision_trigger": "topic_keyword",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "airbnb respects copyright law",
+        "revised_from_plan": false,
+        "confidence": 0.7
+      },
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 118,
+      "theme": "LICENSE_IP",
+      "block_id": 22,
+      "is_block_start": false,
+      "reason": "procedure de notification d'infraction au copyright",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 119,
+      "theme": "PAYMENT_BILLING",
+      "block_id": 23,
+      "is_block_start": true,
+      "rationale": "section 6 : service fees factures aux hotes et invites",
+      "rationale_codes": {
+        "decision_trigger": "numbering",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "airbnb may charge fees",
+        "revised_from_plan": false,
+        "confidence": 0.8
+      },
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 120,
+      "theme": "PAYMENT_BILLING",
+      "block_id": 23,
+      "is_block_start": false,
+      "reason": "informations sur quand les service fees s'appliquent",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 121,
+      "theme": "PAYMENT_BILLING",
+      "block_id": 23,
+      "is_block_start": false,
+      "reason": "6.2 affichage des service fees avant booking",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 122,
+      "theme": "PAYMENT_BILLING",
+      "block_id": 23,
+      "is_block_start": false,
+      "reason": "droit de changer les service fees avec preavis",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 123,
+      "theme": "PAYMENT_BILLING",
+      "block_id": 23,
+      "is_block_start": false,
+      "reason": "6.3 responsabilite de payer les service fees",
+      "legal_nature": "OBLIGATION",
+      "legal_nature_marker": "you are responsible"
+    },
+    {
+      "id": 124,
+      "theme": "PAYMENT_BILLING",
+      "block_id": 23,
+      "is_block_start": false,
+      "reason": "service fees collectes par airbnb payments",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 125,
+      "theme": "PAYMENT_BILLING",
+      "block_id": 23,
+      "is_block_start": false,
+      "reason": "service fees non remboursables",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 126,
+      "theme": "ELIGIBILITY_ACCOUNT",
+      "block_id": 24,
+      "is_block_start": true,
+      "rationale": "titre 7.1 : obligations de l'hote creant un listing",
+      "rationale_codes": {
+        "decision_trigger": "title_marker",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "terms applicable to all listings",
+        "revised_from_plan": false,
+        "confidence": 0.6
+      },
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 127,
+      "theme": "ELIGIBILITY_ACCOUNT",
+      "block_id": 24,
+      "is_block_start": false,
+      "reason": "7.1.1 informations a fournir lors de la creation d'un listing",
+      "legal_nature": "OBLIGATION",
+      "legal_nature_marker": "you must"
+    },
+    {
+      "id": 128,
+      "theme": "ELIGIBILITY_ACCOUNT",
+      "block_id": 24,
+      "is_block_start": false,
+      "reason": "responsabilite de tenir a jour le listing",
+      "legal_nature": "OBLIGATION",
+      "legal_nature_marker": "you are responsible"
+    },
+    {
+      "id": 129,
+      "theme": "PAYMENT_BILLING",
+      "block_id": 25,
+      "is_block_start": true,
+      "rationale": "7.1.2 fixation du prix du listing (listing fee)",
+      "rationale_codes": {
+        "decision_trigger": "numbering",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "setting a price",
+        "revised_from_plan": true,
+        "confidence": 0.5
+      },
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 130,
+      "theme": "PAYMENT_BILLING",
+      "block_id": 25,
+      "is_block_start": false,
+      "reason": "interdiction de demander un prix superieur a la demande de booking",
+      "legal_nature": "PROHIBITION",
+      "legal_nature_marker": "may not"
+    },
+    {
+      "id": 131,
+      "theme": "ELIGIBILITY_ACCOUNT",
+      "block_id": 26,
+      "is_block_start": true,
+      "rationale": "7.1.3 conditions du listing ne doivent pas entrer en conflit",
+      "rationale_codes": {
+        "decision_trigger": "numbering",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "any terms and conditions included in your listing",
+        "revised_from_plan": true,
+        "confidence": 0.5
+      },
+      "legal_nature": "PROHIBITION",
+      "legal_nature_marker": "must not"
+    },
+    {
+      "id": 132,
+      "theme": "ELIGIBILITY_ACCOUNT",
+      "block_id": 26,
+      "is_block_start": false,
+      "reason": "7.1.4 images du listing doivent refleter la qualite",
+      "legal_nature": "OBLIGATION",
+      "legal_nature_marker": "must"
+    },
+    {
+      "id": 133,
+      "theme": "ELIGIBILITY_ACCOUNT",
+      "block_id": 26,
+      "is_block_start": false,
+      "reason": "airbnb peut exiger un nombre minimal d'images",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 134,
+      "theme": "ELIGIBILITY_ACCOUNT",
+      "block_id": 26,
+      "is_block_start": false,
+      "reason": "7.1.5 placement et classement des listings dans les recherches",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 135,
+      "theme": "ELIGIBILITY_ACCOUNT",
+      "block_id": 26,
+      "is_block_start": false,
+      "reason": "7.1.6 accord contraignant avec le guest a l'acceptation",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 136,
+      "theme": "ELIGIBILITY_ACCOUNT",
+      "block_id": 26,
+      "is_block_start": false,
+      "reason": "accord de payer le host fee, prolonge l'obligation listing",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 137,
+      "theme": "ELIGIBILITY_ACCOUNT",
+      "block_id": 27,
+      "is_block_start": true,
+      "rationale": "7.1.7 recommandation d'assurance pour les hotes (reste obligations listing)",
+      "rationale_codes": {
+        "decision_trigger": "numbering",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "airbnb recommends that hosts obtain appropriate insurance",
+        "revised_from_plan": true,
+        "confidence": 0.45
+      },
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 138,
+      "theme": "ELIGIBILITY_ACCOUNT",
+      "block_id": 27,
+      "is_block_start": false,
+      "reason": "details sur l'examen de la police d'assurance",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 139,
+      "theme": "ELIGIBILITY_ACCOUNT",
+      "block_id": 28,
+      "is_block_start": true,
+      "rationale": "7.2 listing accommodations : un seul logement par listing",
+      "rationale_codes": {
+        "decision_trigger": "numbering",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "you may only list one accommodation per listing",
+        "revised_from_plan": true,
+        "confidence": 0.5
+      },
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 140,
+      "theme": "ELIGIBILITY_ACCOUNT",
+      "block_id": 28,
+      "is_block_start": false,
+      "reason": "7.2.2 security deposit a specifier dans le listing",
+      "legal_nature": "OBLIGATION",
+      "legal_nature_marker": "you must"
+    },
+    {
+      "id": 141,
+      "theme": "ELIGIBILITY_ACCOUNT",
+      "block_id": 28,
+      "is_block_start": false,
+      "reason": "interdiction de demander un depot apres confirmation",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 142,
+      "theme": "ELIGIBILITY_ACCOUNT",
+      "block_id": 28,
+      "is_block_start": false,
+      "reason": "airbnb non responsable des claims sur security deposits",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 143,
+      "theme": "ELIGIBILITY_ACCOUNT",
+      "block_id": 28,
+      "is_block_start": false,
+      "reason": "7.2.3 garanties que le listing respecte lois/accords tiers",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 144,
+      "theme": "ELIGIBILITY_ACCOUNT",
+      "block_id": 28,
+      "is_block_start": false,
+      "reason": "responsabilite de l'hote pour ses actes et ceux de tiers presents",
+      "legal_nature": "OBLIGATION",
+      "legal_nature_marker": "you are responsible"
+    },
+    {
+      "id": 145,
+      "theme": "ELIGIBILITY_ACCOUNT",
+      "block_id": 29,
+      "is_block_start": true,
+      "rationale": "titre 7.3 : listing d'experiences, events et autres host services",
+      "rationale_codes": {
+        "decision_trigger": "title_marker",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "listing experiences , events and other host services",
+        "revised_from_plan": false,
+        "confidence": 0.6
+      },
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 146,
+      "theme": "ELIGIBILITY_ACCOUNT",
+      "block_id": 29,
+      "is_block_start": false,
+      "reason": "7.3.1 soumission de l'experience a airbnb",
+      "legal_nature": "OBLIGATION",
+      "legal_nature_marker": "you must"
+    },
+    {
+      "id": 147,
+      "theme": "ELIGIBILITY_ACCOUNT",
+      "block_id": 29,
+      "is_block_start": false,
+      "reason": "standards de qualite pour publication",
+      "legal_nature": "OBLIGATION",
+      "legal_nature_marker": "must"
+    },
+    {
+      "id": 148,
+      "theme": "ELIGIBILITY_ACCOUNT",
+      "block_id": 29,
+      "is_block_start": false,
+      "reason": "airbnb decide de la publication",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 149,
+      "theme": "ELIGIBILITY_ACCOUNT",
+      "block_id": 29,
+      "is_block_start": false,
+      "reason": "7.3.2 obligation d'informer les guests des risques",
+      "legal_nature": "OBLIGATION",
+      "legal_nature_marker": "you must"
+    },
+    {
+      "id": 150,
+      "theme": "ELIGIBILITY_ACCOUNT",
+      "block_id": 29,
+      "is_block_start": false,
+      "reason": "7.3.3 social impact experience, exigences d'eligibilite",
+      "legal_nature": "OBLIGATION",
+      "legal_nature_marker": "you must"
+    },
+    {
+      "id": 151,
+      "theme": "ELIGIBILITY_ACCOUNT",
+      "block_id": 29,
+      "is_block_start": false,
+      "reason": "garanties d'autorisation pour le nonprofit",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 152,
+      "theme": "ELIGIBILITY_ACCOUNT",
+      "block_id": 29,
+      "is_block_start": false,
+      "reason": "pas de relation de fundraising avec airbnb",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 153,
+      "theme": "ELIGIBILITY_ACCOUNT",
+      "block_id": 29,
+      "is_block_start": false,
+      "reason": "nonprofits responsables des recus fiscaux",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 154,
+      "theme": "ELIGIBILITY_ACCOUNT",
+      "block_id": 29,
+      "is_block_start": false,
+      "reason": "responsabilite de conformite aux lois",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 155,
+      "theme": "ELIGIBILITY_ACCOUNT",
+      "block_id": 29,
+      "is_block_start": false,
+      "reason": "7.3.4 garanties de conformite et de licences pour experiences",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 156,
+      "theme": "ELIGIBILITY_ACCOUNT",
+      "block_id": 29,
+      "is_block_start": false,
+      "reason": "information sur les obligations legales",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 157,
+      "theme": "ELIGIBILITY_ACCOUNT",
+      "block_id": 29,
+      "is_block_start": false,
+      "reason": "7.3.5 obligation de fournir l'experience en personne",
+      "legal_nature": "PROHIBITION",
+      "legal_nature_marker": "may not"
+    },
+    {
+      "id": 158,
+      "theme": "ELIGIBILITY_ACCOUNT",
+      "block_id": 30,
+      "is_block_start": true,
+      "rationale": "7.4 co-hosts : autorisation et administration du listing",
+      "rationale_codes": {
+        "decision_trigger": "numbering",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "co-hosts",
+        "revised_from_plan": true,
+        "confidence": 0.55
+      },
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 159,
+      "theme": "ELIGIBILITY_ACCOUNT",
+      "block_id": 30,
+      "is_block_start": false,
+      "reason": "accord host/co-host ne doit pas entrer en conflit",
+      "legal_nature": "PROHIBITION",
+      "legal_nature_marker": "may not"
+    },
+    {
+      "id": 160,
+      "theme": "ELIGIBILITY_ACCOUNT",
+      "block_id": 30,
+      "is_block_start": false,
+      "reason": "co-hosts agissent a titre individuel",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 161,
+      "theme": "ELIGIBILITY_ACCOUNT",
+      "block_id": 30,
+      "is_block_start": false,
+      "reason": "airbnb peut limiter le nombre de co-hosts",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 162,
+      "theme": "PAYMENT_BILLING",
+      "block_id": 31,
+      "is_block_start": true,
+      "rationale": "7.4.2 co-host services fee : remuneration des co-hotes",
+      "rationale_codes": {
+        "decision_trigger": "numbering",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "co-host services fee",
+        "revised_from_plan": true,
+        "confidence": 0.5
+      },
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 163,
+      "theme": "PAYMENT_BILLING",
+      "block_id": 31,
+      "is_block_start": false,
+      "reason": "deduction du co-host fee du listing fee",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 164,
+      "theme": "PAYMENT_BILLING",
+      "block_id": 31,
+      "is_block_start": false,
+      "reason": "services ponctuels demandes au co-host",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 165,
+      "theme": "PAYMENT_BILLING",
+      "block_id": 31,
+      "is_block_start": false,
+      "reason": "paiement via resolution center",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 166,
+      "theme": "PAYMENT_BILLING",
+      "block_id": 31,
+      "is_block_start": false,
+      "reason": "airbnb payments traite les paiements",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 167,
+      "theme": "PAYMENT_BILLING",
+      "block_id": 31,
+      "is_block_start": false,
+      "reason": "7.4.3 transactions reputees exactes sauf contestation",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 168,
+      "theme": "ELIGIBILITY_ACCOUNT",
+      "block_id": 32,
+      "is_block_start": true,
+      "rationale": "7.4.4 diligence et responsabilite dans le choix d'un co-host",
+      "rationale_codes": {
+        "decision_trigger": "numbering",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "due diligence and care when deciding who to add as a co-host",
+        "revised_from_plan": true,
+        "confidence": 0.5
+      },
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 169,
+      "theme": "ELIGIBILITY_ACCOUNT",
+      "block_id": 32,
+      "is_block_start": false,
+      "reason": "hotes restent responsables des listings / member content",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 170,
+      "theme": "ELIGIBILITY_ACCOUNT",
+      "block_id": 32,
+      "is_block_start": false,
+      "reason": "hotes responsables de leurs propres actes",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 171,
+      "theme": "ELIGIBILITY_ACCOUNT",
+      "block_id": 32,
+      "is_block_start": false,
+      "reason": "co-hosts responsables de leurs propres actes",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 172,
+      "theme": "ELIGIBILITY_ACCOUNT",
+      "block_id": 32,
+      "is_block_start": false,
+      "reason": "responsabilite solidaire pour claims de tiers",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 173,
+      "theme": "TERMINATION",
+      "block_id": 33,
+      "is_block_start": true,
+      "rationale": "7.4.5 resiliation de l'accord de co-hosting",
+      "rationale_codes": {
+        "decision_trigger": "topic_keyword",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "may terminate the co-host agreement",
+        "revised_from_plan": true,
+        "confidence": 0.5
+      },
+      "legal_nature": "GOVERNANCE",
+      "legal_nature_marker": "terminate"
+    },
+    {
+      "id": 174,
+      "theme": "TERMINATION",
+      "block_id": 33,
+      "is_block_start": false,
+      "reason": "resiliation par airbnb du co-host service",
+      "legal_nature": "GOVERNANCE",
+      "legal_nature_marker": "terminate"
+    },
+    {
+      "id": 175,
+      "theme": "TERMINATION",
+      "block_id": 33,
+      "is_block_start": false,
+      "reason": "responsabilite residuelle apres resiliation",
+      "legal_nature": "GOVERNANCE",
+      "legal_nature_marker": "terminate"
+    },
+    {
+      "id": 176,
+      "theme": "TERMINATION",
+      "block_id": 33,
+      "is_block_start": false,
+      "reason": "perte d'acces aux infos apres retrait du co-host",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 177,
+      "theme": "TERMINATION",
+      "block_id": 33,
+      "is_block_start": false,
+      "reason": "paiement des services co-host avant resiliation",
+      "legal_nature": "GOVERNANCE",
+      "legal_nature_marker": "termination"
+    },
+    {
+      "id": 178,
+      "theme": "TERMINATION",
+      "block_id": 33,
+      "is_block_start": false,
+      "reason": "pas de fees pour services non completes",
+      "legal_nature": "PROHIBITION",
+      "legal_nature_marker": "will not"
+    },
+    {
+      "id": 179,
+      "theme": "USER_CONTENT",
+      "block_id": 34,
+      "is_block_start": true,
+      "rationale": "7.4.6 co-host non evalue par les guests, impact sur reviews/ratings",
+      "rationale_codes": {
+        "decision_trigger": "topic_keyword",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "you will not be reviewed by guests",
+        "revised_from_plan": true,
+        "confidence": 0.5
+      },
+      "legal_nature": "PROHIBITION",
+      "legal_nature_marker": "will not"
+    },
+    {
+      "id": 180,
+      "theme": "USER_CONTENT",
+      "block_id": 34,
+      "is_block_start": false,
+      "reason": "l'hote est evalue a la place du co-host",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 181,
+      "theme": "USER_CONTENT",
+      "block_id": 34,
+      "is_block_start": false,
+      "reason": "reviews de l'hote impactes par le co-host",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 182,
+      "theme": "ELIGIBILITY_ACCOUNT",
+      "block_id": 35,
+      "is_block_start": true,
+      "rationale": "titre 8.1 : processus de reservation",
+      "rationale_codes": {
+        "decision_trigger": "title_marker",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "terms applicable to all bookings",
+        "revised_from_plan": false,
+        "confidence": 0.6
+      },
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 183,
+      "theme": "ELIGIBILITY_ACCOUNT",
+      "block_id": 35,
+      "is_block_start": false,
+      "reason": "8.1.1 reservation d'un listing en suivant le process",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 184,
+      "theme": "ELIGIBILITY_ACCOUNT",
+      "block_id": 35,
+      "is_block_start": false,
+      "reason": "presentation des total fees avant booking",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 185,
+      "theme": "ELIGIBILITY_ACCOUNT",
+      "block_id": 35,
+      "is_block_start": false,
+      "reason": "accord de payer les total fees",
+      "legal_nature": "OBLIGATION",
+      "legal_nature_marker": "you agree to"
+    },
+    {
+      "id": 186,
+      "theme": "ELIGIBILITY_ACCOUNT",
+      "block_id": 35,
+      "is_block_start": false,
+      "reason": "8.1.2 accord contraignant a la confirmation",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 187,
+      "theme": "ELIGIBILITY_ACCOUNT",
+      "block_id": 35,
+      "is_block_start": false,
+      "reason": "collecte des total fees par airbnb payments",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 188,
+      "theme": "ELIGIBILITY_ACCOUNT",
+      "block_id": 35,
+      "is_block_start": false,
+      "reason": "8.1.3 reservation pour des guests additionnels",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 189,
+      "theme": "ELIGIBILITY_ACCOUNT",
+      "block_id": 35,
+      "is_block_start": false,
+      "reason": "reservation pour un mineur",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 190,
+      "theme": "ELIGIBILITY_ACCOUNT",
+      "block_id": 35,
+      "is_block_start": false,
+      "reason": "mineurs accompagnes d'un adulte",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 191,
+      "theme": "ELIGIBILITY_ACCOUNT",
+      "block_id": 36,
+      "is_block_start": true,
+      "rationale": "8.2 accommodation bookings : licence limitee d'occupation accordee par l'hote",
+      "rationale_codes": {
+        "decision_trigger": "numbering",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "confirmed booking of an accommodation",
+        "revised_from_plan": true,
+        "confidence": 0.5
+      },
+      "legal_nature": "LIMITATION_DISCLAIMER",
+      "legal_nature_marker": "to the extent permitted"
+    },
+    {
+      "id": 192,
+      "theme": "ELIGIBILITY_ACCOUNT",
+      "block_id": 36,
+      "is_block_start": false,
+      "reason": "8.2.2 obligation de quitter a l'heure de checkout",
+      "legal_nature": "OBLIGATION",
+      "legal_nature_marker": "you agree to"
+    },
+    {
+      "id": 193,
+      "theme": "ELIGIBILITY_ACCOUNT",
+      "block_id": 36,
+      "is_block_start": false,
+      "reason": "overstay : perte de licence d'occupation",
+      "legal_nature": "RIGHT_GRANT",
+      "legal_nature_marker": "license to"
+    },
+    {
+      "id": 194,
+      "theme": "PAYMENT_BILLING",
+      "block_id": 37,
+      "is_block_start": true,
+      "rationale": "overstay fees : frais supplementaires en cas de depassement",
+      "rationale_codes": {
+        "decision_trigger": "numbering",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "you agree to pay",
+        "revised_from_plan": true,
+        "confidence": 0.45
+      },
+      "legal_nature": "OBLIGATION",
+      "legal_nature_marker": "you agree to"
+    },
+    {
+      "id": 195,
+      "theme": "PAYMENT_BILLING",
+      "block_id": 37,
+      "is_block_start": false,
+      "reason": "limitation des overstay fees pour late checkout",
+      "legal_nature": "PROHIBITION",
+      "legal_nature_marker": "do not"
+    },
+    {
+      "id": 196,
+      "theme": "PAYMENT_BILLING",
+      "block_id": 37,
+      "is_block_start": false,
+      "reason": "collecte des overstay fees par airbnb payments",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 197,
+      "theme": "PAYMENT_BILLING",
+      "block_id": 37,
+      "is_block_start": false,
+      "reason": "security deposit applique aux overstay fees",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 198,
+      "theme": "ELIGIBILITY_ACCOUNT",
+      "block_id": 38,
+      "is_block_start": true,
+      "rationale": "titre 8.3 : reservation d'experiences, events et autres host services",
+      "rationale_codes": {
+        "decision_trigger": "title_marker",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "booking experiences , events and other host services",
+        "revised_from_plan": true,
+        "confidence": 0.55
+      },
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 199,
+      "theme": "ELIGIBILITY_ACCOUNT",
+      "block_id": 38,
+      "is_block_start": false,
+      "reason": "8.3.1 verifier les exigences avant de booker",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 200,
+      "theme": "ELIGIBILITY_ACCOUNT",
+      "block_id": 38,
+      "is_block_start": false,
+      "reason": "informer l'hote des conditions medicales",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 201,
+      "theme": "ELIGIBILITY_ACCOUNT",
+      "block_id": 38,
+      "is_block_start": false,
+      "reason": "lois locales applicables (age legal de consommation)",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 202,
+      "theme": "ELIGIBILITY_ACCOUNT",
+      "block_id": 38,
+      "is_block_start": false,
+      "reason": "responsabilite de conformite aux lois",
+      "legal_nature": "OBLIGATION",
+      "legal_nature_marker": "you are responsible"
+    },
+    {
+      "id": 203,
+      "theme": "ELIGIBILITY_ACCOUNT",
+      "block_id": 38,
+      "is_block_start": false,
+      "reason": "8.3.2 adherer aux instructions de l'hote",
+      "legal_nature": "OBLIGATION",
+      "legal_nature_marker": "you must"
+    },
+    {
+      "id": 204,
+      "theme": "ELIGIBILITY_ACCOUNT",
+      "block_id": 38,
+      "is_block_start": false,
+      "reason": "8.3.3 pas d'individus additionnels non declares",
+      "legal_nature": "PROHIBITION",
+      "legal_nature_marker": "may not"
+    },
+    {
+      "id": 205,
+      "theme": "PAYMENT_BILLING",
+      "block_id": 39,
+      "is_block_start": true,
+      "rationale": "titre section 9 : modifications, annulations et remboursements payants",
+      "rationale_codes": {
+        "decision_trigger": "title_marker",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "booking modifications , cancellations and refunds , resolution center",
+        "revised_from_plan": false,
+        "confidence": 0.6
+      },
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 206,
+      "theme": "PAYMENT_BILLING",
+      "block_id": 39,
+      "is_block_start": false,
+      "reason": "9.1 responsabilite des frais des booking modifications",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 207,
+      "theme": "PAYMENT_BILLING",
+      "block_id": 39,
+      "is_block_start": false,
+      "reason": "9.2 annulation par le guest et remboursement",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 208,
+      "theme": "PAYMENT_BILLING",
+      "block_id": 39,
+      "is_block_start": false,
+      "reason": "remise des montants dus a l'hote",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 209,
+      "theme": "PAYMENT_BILLING",
+      "block_id": 39,
+      "is_block_start": false,
+      "reason": "9.3 annulation par l'hote, remboursement complet",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 210,
+      "theme": "PAYMENT_BILLING",
+      "block_id": 39,
+      "is_block_start": false,
+      "reason": "mesures et cancellation fee en cas d'annulation hote",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 211,
+      "theme": "PAYMENT_BILLING",
+      "block_id": 39,
+      "is_block_start": false,
+      "reason": "9.4 modification/annulation pour intemperies",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 212,
+      "theme": "PAYMENT_BILLING",
+      "block_id": 39,
+      "is_block_start": false,
+      "reason": "remboursement ou rebooking en cas de changement",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 213,
+      "theme": "PAYMENT_BILLING",
+      "block_id": 39,
+      "is_block_start": false,
+      "reason": "9.5 annulation discretionnaire par airbnb",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 214,
+      "theme": "PAYMENT_BILLING",
+      "block_id": 39,
+      "is_block_start": false,
+      "reason": "raisons de l'annulation par airbnb",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 215,
+      "theme": "PAYMENT_BILLING",
+      "block_id": 39,
+      "is_block_start": false,
+      "reason": "9.6 remboursement pour travel issue",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 216,
+      "theme": "PAYMENT_BILLING",
+      "block_id": 39,
+      "is_block_start": false,
+      "reason": "9.7 usage du resolution center pour les paiements",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 217,
+      "theme": "PAYMENT_BILLING",
+      "block_id": 39,
+      "is_block_start": false,
+      "reason": "accord de payer via resolution center",
+      "legal_nature": "OBLIGATION",
+      "legal_nature_marker": "you agree to"
+    },
+    {
+      "id": 218,
+      "theme": "USER_CONTENT",
+      "block_id": 40,
+      "is_block_start": true,
+      "rationale": "section 10 : reviews et ratings publics laisses par les membres",
+      "rationale_codes": {
+        "decision_trigger": "numbering",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "leave a public review",
+        "revised_from_plan": false,
+        "confidence": 0.72
+      },
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 219,
+      "theme": "USER_CONTENT",
+      "block_id": 40,
+      "is_block_start": false,
+      "reason": "reviews refletent l'opinion individuelle",
+      "legal_nature": "PROHIBITION",
+      "legal_nature_marker": "do not"
+    },
+    {
+      "id": 220,
+      "theme": "USER_CONTENT",
+      "block_id": 40,
+      "is_block_start": false,
+      "reason": "reviews non verifies par airbnb",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 221,
+      "theme": "USER_CONTENT",
+      "block_id": 40,
+      "is_block_start": false,
+      "reason": "10.2 reviews doivent etre justes et conformes",
+      "legal_nature": "PROHIBITION",
+      "legal_nature_marker": "may not"
+    },
+    {
+      "id": 222,
+      "theme": "USER_CONTENT",
+      "block_id": 40,
+      "is_block_start": false,
+      "reason": "reviews doivent respecter content/extortion policy",
+      "legal_nature": "OBLIGATION",
+      "legal_nature_marker": "must"
+    },
+    {
+      "id": 223,
+      "theme": "USER_CONTENT",
+      "block_id": 40,
+      "is_block_start": false,
+      "reason": "10.3 interdiction de manipuler le systeme de ratings",
+      "legal_nature": "PROHIBITION",
+      "legal_nature_marker": "prohibited"
+    },
+    {
+      "id": 224,
+      "theme": "LIABILITY_LIMITATION",
+      "block_id": 41,
+      "is_block_start": true,
+      "rationale": "titre section 11 : dommages aux accommodations, litiges entre membres",
+      "rationale_codes": {
+        "decision_trigger": "title_marker",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "damage to accommodations , disputes between members",
+        "revised_from_plan": false,
+        "confidence": 0.58
+      },
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 225,
+      "theme": "LIABILITY_LIMITATION",
+      "block_id": 41,
+      "is_block_start": false,
+      "reason": "11.1 responsabilite du guest pour l'etat de l'accommodation",
+      "legal_nature": "OBLIGATION",
+      "legal_nature_marker": "you are responsible"
+    },
+    {
+      "id": 226,
+      "theme": "LIABILITY_LIMITATION",
+      "block_id": 41,
+      "is_block_start": false,
+      "reason": "responsabilite pour les actes des invites du guest",
+      "legal_nature": "OBLIGATION",
+      "legal_nature_marker": "you are responsible"
+    },
+    {
+      "id": 227,
+      "theme": "LIABILITY_LIMITATION",
+      "block_id": 41,
+      "is_block_start": false,
+      "reason": "11.2 damage claim via resolution center",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 228,
+      "theme": "LIABILITY_LIMITATION",
+      "block_id": 41,
+      "is_block_start": false,
+      "reason": "escalade du damage claim a airbnb",
+      "legal_nature": "OBLIGATION",
+      "legal_nature_marker": "you will"
+    },
+    {
+      "id": 229,
+      "theme": "LIABILITY_LIMITATION",
+      "block_id": 41,
+      "is_block_start": false,
+      "reason": "collecte du paiement contre security deposit",
+      "legal_nature": "OBLIGATION",
+      "legal_nature_marker": "you agree to"
+    },
+    {
+      "id": 230,
+      "theme": "LIABILITY_LIMITATION",
+      "block_id": 41,
+      "is_block_start": false,
+      "reason": "droit d'airbnb de poursuivre des remedes",
+      "legal_nature": "OBLIGATION",
+      "legal_nature_marker": "you are responsible"
+    },
+    {
+      "id": 231,
+      "theme": "LIABILITY_LIMITATION",
+      "block_id": 41,
+      "is_block_start": false,
+      "reason": "11.3 cooperation des membres sur les damage claims",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 232,
+      "theme": "LIABILITY_LIMITATION",
+      "block_id": 41,
+      "is_block_start": false,
+      "reason": "participation a la mediation",
+      "legal_nature": "OBLIGATION",
+      "legal_nature_marker": "shall"
+    },
+    {
+      "id": 233,
+      "theme": "LIABILITY_LIMITATION",
+      "block_id": 41,
+      "is_block_start": false,
+      "reason": "11.4 claim sur l'assurance du guest/co-host",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 234,
+      "theme": "LIABILITY_LIMITATION",
+      "block_id": 41,
+      "is_block_start": false,
+      "reason": "cooperation pour faire un claim d'assurance",
+      "legal_nature": "OBLIGATION",
+      "legal_nature_marker": "you agree to"
+    },
+    {
+      "id": 235,
+      "theme": "PAYMENT_BILLING",
+      "block_id": 42,
+      "is_block_start": true,
+      "rationale": "section 12 : arrondis monetaires des montants payables",
+      "rationale_codes": {
+        "decision_trigger": "numbering",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "round up or round down amounts",
+        "revised_from_plan": false,
+        "confidence": 0.7
+      },
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 236,
+      "theme": "PAYMENT_BILLING",
+      "block_id": 42,
+      "is_block_start": false,
+      "reason": "arrondis pour grandes devises",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 237,
+      "theme": "PAYMENT_BILLING",
+      "block_id": 42,
+      "is_block_start": false,
+      "reason": "12.2 conversions de devises",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 238,
+      "theme": "PAYMENT_BILLING",
+      "block_id": 42,
+      "is_block_start": false,
+      "reason": "devises disponibles limitees",
+      "legal_nature": "PROHIBITION",
+      "legal_nature_marker": "may not"
+    },
+    {
+      "id": 239,
+      "theme": "PAYMENT_BILLING",
+      "block_id": 42,
+      "is_block_start": false,
+      "reason": "details de conversion dans payments terms",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 240,
+      "theme": "PAYMENT_BILLING",
+      "block_id": 43,
+      "is_block_start": true,
+      "rationale": "section 13 : taxes, responsabilite de l'hote de declarer/percevoir",
+      "rationale_codes": {
+        "decision_trigger": "numbering",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "any applicable vat or other indirect sales taxes",
+        "revised_from_plan": false,
+        "confidence": 0.7
+      },
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 241,
+      "theme": "PAYMENT_BILLING",
+      "block_id": 43,
+      "is_block_start": false,
+      "reason": "13.2 collecte d'infos fiscales / retenue de taxes",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 242,
+      "theme": "PAYMENT_BILLING",
+      "block_id": 43,
+      "is_block_start": false,
+      "reason": "gel des payouts en cas de documentation insuffisante",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 243,
+      "theme": "PAYMENT_BILLING",
+      "block_id": 43,
+      "is_block_start": false,
+      "reason": "13.3 occupancy taxes exigees par les autorites",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 244,
+      "theme": "PAYMENT_BILLING",
+      "block_id": 43,
+      "is_block_start": false,
+      "reason": "definition des occupancy taxes",
+      "legal_nature": "GOVERNANCE",
+      "legal_nature_marker": "jurisdiction"
+    },
+    {
+      "id": 245,
+      "theme": "PAYMENT_BILLING",
+      "block_id": 43,
+      "is_block_start": false,
+      "reason": "13.4 facilitation de collecte/remise des occupancy taxes",
+      "legal_nature": "GOVERNANCE",
+      "legal_nature_marker": "jurisdiction"
+    },
+    {
+      "id": 246,
+      "theme": "PAYMENT_BILLING",
+      "block_id": 43,
+      "is_block_start": false,
+      "reason": "autorisation de collecter les taxes des guests",
+      "legal_nature": "GOVERNANCE",
+      "legal_nature_marker": "jurisdiction"
+    },
+    {
+      "id": 247,
+      "theme": "PAYMENT_BILLING",
+      "block_id": 43,
+      "is_block_start": false,
+      "reason": "montant des occupancy taxes affiche",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 248,
+      "theme": "PAYMENT_BILLING",
+      "block_id": 43,
+      "is_block_start": false,
+      "reason": "hotes ne collectent pas les taxes collectees par airbnb",
+      "legal_nature": "GOVERNANCE",
+      "legal_nature_marker": "jurisdiction"
+    },
+    {
+      "id": 249,
+      "theme": "PAYMENT_BILLING",
+      "block_id": 43,
+      "is_block_start": false,
+      "reason": "13.5 limitation des claims sur la facilitation fiscale",
+      "legal_nature": "PROHIBITION",
+      "legal_nature_marker": "shall not"
+    },
+    {
+      "id": 250,
+      "theme": "PAYMENT_BILLING",
+      "block_id": 43,
+      "is_block_start": false,
+      "reason": "montants additionnels et remede en cas d'insuffisance",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 251,
+      "theme": "PAYMENT_BILLING",
+      "block_id": 43,
+      "is_block_start": false,
+      "reason": "13.6 droit d'airbnb de cesser la collecte",
+      "legal_nature": "GOVERNANCE",
+      "legal_nature_marker": "jurisdiction"
+    },
+    {
+      "id": 252,
+      "theme": "ACCEPTABLE_USE",
+      "block_id": 44,
+      "is_block_start": true,
+      "rationale": "section 14 : conformite aux lois et liste des activites interdites",
+      "rationale_codes": {
+        "decision_trigger": "numbering",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "compliance with any and all laws",
+        "revised_from_plan": false,
+        "confidence": 0.72
+      },
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 253,
+      "theme": "ACCEPTABLE_USE",
+      "block_id": 44,
+      "is_block_start": false,
+      "reason": "chapeau de la liste : 'you will not and will not assist'",
+      "legal_nature": "PROHIBITION",
+      "legal_nature_marker": "will not"
+    },
+    {
+      "id": 254,
+      "theme": "ACCEPTABLE_USE",
+      "block_id": 44,
+      "is_block_start": false,
+      "reason": "item : contournement des lois",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 255,
+      "theme": "ACCEPTABLE_USE",
+      "block_id": 44,
+      "is_block_start": false,
+      "reason": "item : usage commercial non permis",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 256,
+      "theme": "ACCEPTABLE_USE",
+      "block_id": 44,
+      "is_block_start": false,
+      "reason": "item : copie/usage des infos d'autres membres",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 257,
+      "theme": "ACCEPTABLE_USE",
+      "block_id": 44,
+      "is_block_start": false,
+      "reason": "item : spam",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 258,
+      "theme": "ACCEPTABLE_USE",
+      "block_id": 44,
+      "is_block_start": false,
+      "reason": "item : offrir un logement non possede",
+      "legal_nature": "PROHIBITION",
+      "legal_nature_marker": "do not"
+    },
+    {
+      "id": 259,
+      "theme": "ACCEPTABLE_USE",
+      "block_id": 44,
+      "is_block_start": false,
+      "reason": "item : booker sans utiliser le service",
+      "legal_nature": "PROHIBITION",
+      "legal_nature_marker": "will not"
+    },
+    {
+      "id": 260,
+      "theme": "ACCEPTABLE_USE",
+      "block_id": 44,
+      "is_block_start": false,
+      "reason": "item : contacter un membre hors objet",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 261,
+      "theme": "ACCEPTABLE_USE",
+      "block_id": 44,
+      "is_block_start": false,
+      "reason": "item : booker hors plateforme",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 262,
+      "theme": "ACCEPTABLE_USE",
+      "block_id": 44,
+      "is_block_start": false,
+      "reason": "item : paiement hors plateforme",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 263,
+      "theme": "ACCEPTABLE_USE",
+      "block_id": 44,
+      "is_block_start": false,
+      "reason": "consequence : breach et risques du paiement hors plateforme",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 264,
+      "theme": "ACCEPTABLE_USE",
+      "block_id": 44,
+      "is_block_start": false,
+      "reason": "item : discrimination / harcelement",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 265,
+      "theme": "ACCEPTABLE_USE",
+      "block_id": 44,
+      "is_block_start": false,
+      "reason": "item : usage des marques/layout sans consentement",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 266,
+      "theme": "ACCEPTABLE_USE",
+      "block_id": 44,
+      "is_block_start": false,
+      "reason": "item : ternir la marque airbnb",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 267,
+      "theme": "ACCEPTABLE_USE",
+      "block_id": 44,
+      "is_block_start": false,
+      "reason": "item : robots / scraping",
+      "legal_nature": "DEFINITION",
+      "legal_nature_marker": "means"
+    },
+    {
+      "id": 268,
+      "theme": "ACCEPTABLE_USE",
+      "block_id": 44,
+      "is_block_start": false,
+      "reason": "item : contournement des mesures techniques",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 269,
+      "theme": "ACCEPTABLE_USE",
+      "block_id": 44,
+      "is_block_start": false,
+      "reason": "item : reverse engineering",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 270,
+      "theme": "ACCEPTABLE_USE",
+      "block_id": 44,
+      "is_block_start": false,
+      "reason": "item : atteinte a la performance de la plateforme",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 271,
+      "theme": "ACCEPTABLE_USE",
+      "block_id": 44,
+      "is_block_start": false,
+      "reason": "item : export non autorise de l'application",
+      "legal_nature": "GOVERNANCE",
+      "legal_nature_marker": "jurisdiction"
+    },
+    {
+      "id": 272,
+      "theme": "ACCEPTABLE_USE",
+      "block_id": 44,
+      "is_block_start": false,
+      "reason": "item : violation des droits d'autrui",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 273,
+      "theme": "ACCEPTABLE_USE",
+      "block_id": 44,
+      "is_block_start": false,
+      "reason": "14.2 airbnb sans obligation de monitorer mais avec droit de le faire",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 274,
+      "theme": "ACCEPTABLE_USE",
+      "block_id": 44,
+      "is_block_start": false,
+      "reason": "cooperation des membres aux enquetes",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 275,
+      "theme": "ACCEPTABLE_USE",
+      "block_id": 44,
+      "is_block_start": false,
+      "reason": "14.3 signalement de comportement inapproprie",
+      "legal_nature": "PROHIBITION",
+      "legal_nature_marker": "will not"
+    },
+    {
+      "id": 276,
+      "theme": "TERMINATION",
+      "block_id": 45,
+      "is_block_start": true,
+      "rationale": "titre section 15 : duree, resiliation, suspension et autres mesures",
+      "rationale_codes": {
+        "decision_trigger": "title_marker",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "term and termination , suspension and other measures",
+        "revised_from_plan": false,
+        "confidence": 0.78
+      },
+      "legal_nature": "GOVERNANCE",
+      "legal_nature_marker": "termination"
+    },
+    {
+      "id": 277,
+      "theme": "TERMINATION",
+      "block_id": 45,
+      "is_block_start": false,
+      "reason": "15.1 duree et reconduction de 30 jours",
+      "legal_nature": "GOVERNANCE",
+      "legal_nature_marker": "terminate"
+    },
+    {
+      "id": 278,
+      "theme": "TERMINATION",
+      "block_id": 45,
+      "is_block_start": false,
+      "reason": "15.2 resiliation par l'utilisateur",
+      "legal_nature": "GOVERNANCE",
+      "legal_nature_marker": "terminate"
+    },
+    {
+      "id": 279,
+      "theme": "TERMINATION",
+      "block_id": 45,
+      "is_block_start": false,
+      "reason": "effet de l'annulation du compte hote",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 280,
+      "theme": "TERMINATION",
+      "block_id": 45,
+      "is_block_start": false,
+      "reason": "effet de l'annulation du compte guest",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 281,
+      "theme": "TERMINATION",
+      "block_id": 45,
+      "is_block_start": false,
+      "reason": "15.3 resiliation par airbnb pour convenance avec preavis",
+      "legal_nature": "GOVERNANCE",
+      "legal_nature_marker": "terminate"
+    },
+    {
+      "id": 282,
+      "theme": "TERMINATION",
+      "block_id": 45,
+      "is_block_start": false,
+      "reason": "15.4 resiliation immediate pour breach",
+      "legal_nature": "GOVERNANCE",
+      "legal_nature_marker": "terminate"
+    },
+    {
+      "id": 283,
+      "theme": "TERMINATION",
+      "block_id": 45,
+      "is_block_start": false,
+      "reason": "15.5 mesures additionnelles d'airbnb (chapeau de liste)",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 284,
+      "theme": "TERMINATION",
+      "block_id": 45,
+      "is_block_start": false,
+      "reason": "item : retirer/supprimer du member content",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 285,
+      "theme": "TERMINATION",
+      "block_id": 45,
+      "is_block_start": false,
+      "reason": "item : annuler les bookings",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 286,
+      "theme": "TERMINATION",
+      "block_id": 45,
+      "is_block_start": false,
+      "reason": "item : limiter l'acces",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 287,
+      "theme": "TERMINATION",
+      "block_id": 45,
+      "is_block_start": false,
+      "reason": "item : revoquer un statut special",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 288,
+      "theme": "TERMINATION",
+      "block_id": 45,
+      "is_block_start": false,
+      "reason": "item : suspendre le compte",
+      "legal_nature": "GOVERNANCE",
+      "legal_nature_marker": "suspend"
+    },
+    {
+      "id": 289,
+      "theme": "TERMINATION",
+      "block_id": 45,
+      "is_block_start": false,
+      "reason": "notice en cas de breach non materiel",
+      "legal_nature": "OBLIGATION",
+      "legal_nature_marker": "you will"
+    },
+    {
+      "id": 290,
+      "theme": "TERMINATION",
+      "block_id": 45,
+      "is_block_start": false,
+      "reason": "15.6 consequences des mesures (remboursements/pas de compensation)",
+      "legal_nature": "PROHIBITION",
+      "legal_nature_marker": "will not"
+    },
+    {
+      "id": 291,
+      "theme": "TERMINATION",
+      "block_id": 45,
+      "is_block_start": false,
+      "reason": "15.7 pas de restauration du compte apres resiliation",
+      "legal_nature": "GOVERNANCE",
+      "legal_nature_marker": "terminate"
+    },
+    {
+      "id": 292,
+      "theme": "TERMINATION",
+      "block_id": 45,
+      "is_block_start": false,
+      "reason": "interdiction de reenregistrer un compte",
+      "legal_nature": "PROHIBITION",
+      "legal_nature_marker": "may not"
+    },
+    {
+      "id": 293,
+      "theme": "TERMINATION",
+      "block_id": 45,
+      "is_block_start": false,
+      "reason": "15.8 survie des clauses apres resiliation",
+      "legal_nature": "GOVERNANCE",
+      "legal_nature_marker": "terminate"
+    },
+    {
+      "id": 294,
+      "theme": "WARRANTY_DISCLAIMER",
+      "block_id": 46,
+      "is_block_start": true,
+      "rationale": "section 16 : usage volontaire a ses risques, plateforme fournie as is",
+      "rationale_codes": {
+        "decision_trigger": "topic_keyword",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "you do so voluntarily and at your sole risk",
+        "revised_from_plan": false,
+        "confidence": 0.68
+      },
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 295,
+      "theme": "WARRANTY_DISCLAIMER",
+      "block_id": 46,
+      "is_block_start": false,
+      "reason": "plateforme fournie 'as is' sans garantie",
+      "legal_nature": "LIMITATION_DISCLAIMER",
+      "legal_nature_marker": "as is"
+    },
+    {
+      "id": 296,
+      "theme": "WARRANTY_DISCLAIMER",
+      "block_id": 46,
+      "is_block_start": false,
+      "reason": "pas de recours a une declaration d'airbnb",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 297,
+      "theme": "WARRANTY_DISCLAIMER",
+      "block_id": 46,
+      "is_block_start": false,
+      "reason": "deni de garantie sur les background checks",
+      "legal_nature": "PROHIBITION",
+      "legal_nature_marker": "will not"
+    },
+    {
+      "id": 298,
+      "theme": "WARRANTY_DISCLAIMER",
+      "block_id": 46,
+      "is_block_start": false,
+      "reason": "risque inherent assume volontairement",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 299,
+      "theme": "WARRANTY_DISCLAIMER",
+      "block_id": 46,
+      "is_block_start": false,
+      "reason": "exemples de risques assumes",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 300,
+      "theme": "WARRANTY_DISCLAIMER",
+      "block_id": 46,
+      "is_block_start": false,
+      "reason": "pleine responsabilite des choix",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 301,
+      "theme": "WARRANTY_DISCLAIMER",
+      "block_id": 46,
+      "is_block_start": false,
+      "reason": "supervision d'un mineur, release des claims",
+      "legal_nature": "RISK_ALLOCATION",
+      "legal_nature_marker": "hold harmless"
+    },
+    {
+      "id": 302,
+      "theme": "WARRANTY_DISCLAIMER",
+      "block_id": 46,
+      "is_block_start": false,
+      "reason": "disclaimers applicables au maximum permis par la loi",
+      "legal_nature": "LIMITATION_DISCLAIMER",
+      "legal_nature_marker": "disclaim"
+    },
+    {
+      "id": 303,
+      "theme": "WARRANTY_DISCLAIMER",
+      "block_id": 46,
+      "is_block_start": false,
+      "reason": "autres droits statutaires possibles",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 304,
+      "theme": "WARRANTY_DISCLAIMER",
+      "block_id": 46,
+      "is_block_start": false,
+      "reason": "duree des garanties statutaires limitee",
+      "legal_nature": "LIMITATION_DISCLAIMER",
+      "legal_nature_marker": "warranties"
+    },
+    {
+      "id": 305,
+      "theme": "LIABILITY_LIMITATION",
+      "block_id": 47,
+      "is_block_start": true,
+      "rationale": "section 17 : limitation de responsabilite, le risque reste avec l'utilisateur",
+      "rationale_codes": {
+        "decision_trigger": "numbering",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "the entire risk arising out of your access",
+        "revised_from_plan": false,
+        "confidence": 0.7
+      },
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 306,
+      "theme": "LIABILITY_LIMITATION",
+      "block_id": 47,
+      "is_block_start": false,
+      "reason": "exclusion des dommages indirects / consecutifs",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 307,
+      "theme": "LIABILITY_LIMITATION",
+      "block_id": 47,
+      "is_block_start": false,
+      "reason": "plafond de la responsabilite agregee d'airbnb",
+      "legal_nature": "LIMITATION_DISCLAIMER",
+      "legal_nature_marker": "in no event"
+    },
+    {
+      "id": 308,
+      "theme": "LIABILITY_LIMITATION",
+      "block_id": 47,
+      "is_block_start": false,
+      "reason": "limitations comme elements fondamentaux du marche",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 309,
+      "theme": "LIABILITY_LIMITATION",
+      "block_id": 47,
+      "is_block_start": false,
+      "reason": "certaines juridictions n'autorisent pas la limitation",
+      "legal_nature": "PROHIBITION",
+      "legal_nature_marker": "may not"
+    },
+    {
+      "id": 310,
+      "theme": "LIABILITY_LIMITATION",
+      "block_id": 47,
+      "is_block_start": false,
+      "reason": "exception hors US : responsabilite pour negligence/deces non exclue",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 311,
+      "theme": "LIABILITY_LIMITATION",
+      "block_id": 47,
+      "is_block_start": false,
+      "reason": "17.2 responsabilite statutaire pour residents UE",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 312,
+      "theme": "LIABILITY_LIMITATION",
+      "block_id": 47,
+      "is_block_start": false,
+      "reason": "responsabilite pour garanties / atteinte a la vie",
+      "legal_nature": "SCOPE_APPLICABILITY",
+      "legal_nature_marker": "applies to"
+    },
+    {
+      "id": 313,
+      "theme": "LIABILITY_LIMITATION",
+      "block_id": 47,
+      "is_block_start": false,
+      "reason": "responsabilite pour manquement aux obligations essentielles",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 314,
+      "theme": "LIABILITY_LIMITATION",
+      "block_id": 47,
+      "is_block_start": false,
+      "reason": "definition des obligations contractuelles essentielles",
+      "legal_nature": "OBLIGATION",
+      "legal_nature_marker": "must"
+    },
+    {
+      "id": 315,
+      "theme": "LIABILITY_LIMITATION",
+      "block_id": 47,
+      "is_block_start": false,
+      "reason": "toute responsabilite additionnelle exclue",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 316,
+      "theme": "INDEMNIFICATION",
+      "block_id": 48,
+      "is_block_start": true,
+      "rationale": "section 18 : indemnisation - release, defend, indemnify, hold harmless",
+      "rationale_codes": {
+        "decision_trigger": "topic_keyword",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "indemnify , and hold airbnb",
+        "revised_from_plan": false,
+        "confidence": 0.85
+      },
+      "legal_nature": "RISK_ALLOCATION",
+      "legal_nature_marker": "indemnify"
+    },
+    {
+      "id": 317,
+      "theme": "DISPUTE_ARBITRATION",
+      "block_id": 49,
+      "is_block_start": true,
+      "rationale": "section 19 : accord de resolution des litiges et d'arbitrage",
+      "rationale_codes": {
+        "decision_trigger": "numbering",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "this dispute resolution and arbitration agreement shall apply",
+        "revised_from_plan": false,
+        "confidence": 0.85
+      },
+      "legal_nature": "PROHIBITION",
+      "legal_nature_marker": "do not"
+    },
+    {
+      "id": 318,
+      "theme": "DISPUTE_ARBITRATION",
+      "block_id": 49,
+      "is_block_start": false,
+      "reason": "19.2 apercu du processus de resolution",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 319,
+      "theme": "DISPUTE_ARBITRATION",
+      "block_id": 49,
+      "is_block_start": false,
+      "reason": "engagement a un processus consumer-friendly",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 320,
+      "theme": "DISPUTE_ARBITRATION",
+      "block_id": 49,
+      "is_block_start": false,
+      "reason": "processus en deux parties (negociation + arbitrage AAA)",
+      "legal_nature": "GOVERNANCE",
+      "legal_nature_marker": "arbitration"
+    },
+    {
+      "id": 321,
+      "theme": "DISPUTE_ARBITRATION",
+      "block_id": 49,
+      "is_block_start": false,
+      "reason": "chapeau de liste : 'the process provides'",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 322,
+      "theme": "DISPUTE_ARBITRATION",
+      "block_id": 49,
+      "is_block_start": false,
+      "reason": "item : claims deposes en ligne",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 323,
+      "theme": "DISPUTE_ARBITRATION",
+      "block_id": 49,
+      "is_block_start": false,
+      "reason": "item : arbitres neutres",
+      "legal_nature": "OBLIGATION",
+      "legal_nature_marker": "must"
+    },
+    {
+      "id": 324,
+      "theme": "DISPUTE_ARBITRATION",
+      "block_id": 49,
+      "is_block_start": false,
+      "reason": "item : divulgation de biais",
+      "legal_nature": "GOVERNANCE",
+      "legal_nature_marker": "arbitration"
+    },
+    {
+      "id": 325,
+      "theme": "DISPUTE_ARBITRATION",
+      "block_id": 49,
+      "is_block_start": false,
+      "reason": "item : recours en small claims court",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 326,
+      "theme": "DISPUTE_ARBITRATION",
+      "block_id": 49,
+      "is_block_start": false,
+      "reason": "item : frais de depot plafonnes",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 327,
+      "theme": "DISPUTE_ARBITRATION",
+      "block_id": 49,
+      "is_block_start": false,
+      "reason": "item : choix du lieu d'audience",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 328,
+      "theme": "DISPUTE_ARBITRATION",
+      "block_id": 49,
+      "is_block_start": false,
+      "reason": "item : pouvoir de l'arbitre d'accorder un remede",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 329,
+      "theme": "DISPUTE_ARBITRATION",
+      "block_id": 49,
+      "is_block_start": false,
+      "reason": "19.3 resolution pre-arbitrage et notification",
+      "legal_nature": "GOVERNANCE",
+      "legal_nature_marker": "arbitration"
+    },
+    {
+      "id": 330,
+      "theme": "DISPUTE_ARBITRATION",
+      "block_id": 49,
+      "is_block_start": false,
+      "reason": "obligation de notifier et negocier d'abord",
+      "legal_nature": "GOVERNANCE",
+      "legal_nature_marker": "arbitration"
+    },
+    {
+      "id": 331,
+      "theme": "DISPUTE_ARBITRATION",
+      "block_id": 49,
+      "is_block_start": false,
+      "reason": "contact par email",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 332,
+      "theme": "DISPUTE_ARBITRATION",
+      "block_id": 49,
+      "is_block_start": false,
+      "reason": "notification avant d'initier l'arbitrage",
+      "legal_nature": "GOVERNANCE",
+      "legal_nature_marker": "arbitration"
+    },
+    {
+      "id": 333,
+      "theme": "DISPUTE_ARBITRATION",
+      "block_id": 49,
+      "is_block_start": false,
+      "reason": "procedure de depot aupres de l'AAA",
+      "legal_nature": "GOVERNANCE",
+      "legal_nature_marker": "arbitration"
+    },
+    {
+      "id": 334,
+      "theme": "DISPUTE_ARBITRATION",
+      "block_id": 49,
+      "is_block_start": false,
+      "reason": "accord d'arbitrage contraignant pour les disputes",
+      "legal_nature": "GOVERNANCE",
+      "legal_nature_marker": "arbitration"
+    },
+    {
+      "id": 335,
+      "theme": "DISPUTE_ARBITRATION",
+      "block_id": 49,
+      "is_block_start": false,
+      "reason": "l'arbitre decide de l'applicabilite de l'accord",
+      "legal_nature": "GOVERNANCE",
+      "legal_nature_marker": "arbitration"
+    },
+    {
+      "id": 336,
+      "theme": "DISPUTE_ARBITRATION",
+      "block_id": 49,
+      "is_block_start": false,
+      "reason": "19.5 exceptions a l'accord d'arbitrage",
+      "legal_nature": "GOVERNANCE",
+      "legal_nature_marker": "arbitration"
+    },
+    {
+      "id": 337,
+      "theme": "DISPUTE_ARBITRATION",
+      "block_id": 49,
+      "is_block_start": false,
+      "reason": "claims exclus portes en justice (PI, injonctions)",
+      "legal_nature": "GOVERNANCE",
+      "legal_nature_marker": "jurisdiction"
+    },
+    {
+      "id": 338,
+      "theme": "DISPUTE_ARBITRATION",
+      "block_id": 49,
+      "is_block_start": false,
+      "reason": "19.6 regles d'arbitrage et loi applicable (FAA)",
+      "legal_nature": "GOVERNANCE",
+      "legal_nature_marker": "governing law"
+    },
+    {
+      "id": 339,
+      "theme": "DISPUTE_ARBITRATION",
+      "block_id": 49,
+      "is_block_start": false,
+      "reason": "FAA regit l'interpretation",
+      "legal_nature": "GOVERNANCE",
+      "legal_nature_marker": "arbitration"
+    },
+    {
+      "id": 340,
+      "theme": "DISPUTE_ARBITRATION",
+      "block_id": 49,
+      "is_block_start": false,
+      "reason": "arbitrage administre par AAA",
+      "legal_nature": "GOVERNANCE",
+      "legal_nature_marker": "arbitration"
+    },
+    {
+      "id": 341,
+      "theme": "DISPUTE_ARBITRATION",
+      "block_id": 49,
+      "is_block_start": false,
+      "reason": "disponibilite des regles AAA",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 342,
+      "theme": "DISPUTE_ARBITRATION",
+      "block_id": 49,
+      "is_block_start": false,
+      "reason": "19.7 lieu de l'audience d'arbitrage",
+      "legal_nature": "GOVERNANCE",
+      "legal_nature_marker": "arbitration"
+    },
+    {
+      "id": 343,
+      "theme": "DISPUTE_ARBITRATION",
+      "block_id": 49,
+      "is_block_start": false,
+      "reason": "options de lieu/format d'audience",
+      "legal_nature": "GOVERNANCE",
+      "legal_nature_marker": "arbitration"
+    },
+    {
+      "id": 344,
+      "theme": "DISPUTE_ARBITRATION",
+      "block_id": 49,
+      "is_block_start": false,
+      "reason": "19.8 frais et honoraires d'avocat",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 345,
+      "theme": "DISPUTE_ARBITRATION",
+      "block_id": 49,
+      "is_block_start": false,
+      "reason": "droit de demander des honoraires si on prevaut",
+      "legal_nature": "GOVERNANCE",
+      "legal_nature_marker": "arbitration"
+    },
+    {
+      "id": 346,
+      "theme": "DISPUTE_ARBITRATION",
+      "block_id": 49,
+      "is_block_start": false,
+      "reason": "renonciation d'airbnb aux honoraires",
+      "legal_nature": "PROHIBITION",
+      "legal_nature_marker": "will not"
+    },
+    {
+      "id": 347,
+      "theme": "DISPUTE_ARBITRATION",
+      "block_id": 49,
+      "is_block_start": false,
+      "reason": "decision de l'arbitre avec conclusions",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 348,
+      "theme": "DISPUTE_ARBITRATION",
+      "block_id": 49,
+      "is_block_start": false,
+      "reason": "jugement sur la sentence d'arbitrage",
+      "legal_nature": "GOVERNANCE",
+      "legal_nature_marker": "jurisdiction"
+    },
+    {
+      "id": 349,
+      "theme": "DISPUTE_ARBITRATION",
+      "block_id": 49,
+      "is_block_start": false,
+      "reason": "relief individuel seulement",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 350,
+      "theme": "DISPUTE_ARBITRATION",
+      "block_id": 49,
+      "is_block_start": false,
+      "reason": "renonciation au jury trial",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 351,
+      "theme": "DISPUTE_ARBITRATION",
+      "block_id": 49,
+      "is_block_start": false,
+      "reason": "19.11 pas d'actions collectives",
+      "legal_nature": "GOVERNANCE",
+      "legal_nature_marker": "class action"
+    },
+    {
+      "id": 352,
+      "theme": "DISPUTE_ARBITRATION",
+      "block_id": 49,
+      "is_block_start": false,
+      "reason": "renonciation aux class actions",
+      "legal_nature": "GOVERNANCE",
+      "legal_nature_marker": "arbitration"
+    },
+    {
+      "id": 353,
+      "theme": "DISPUTE_ARBITRATION",
+      "block_id": 49,
+      "is_block_start": false,
+      "reason": "pas de consolidation des claims",
+      "legal_nature": "PROHIBITION",
+      "legal_nature_marker": "may not"
+    },
+    {
+      "id": 354,
+      "theme": "DISPUTE_ARBITRATION",
+      "block_id": 49,
+      "is_block_start": false,
+      "reason": "effet d'une clause inapplicable sur l'accord",
+      "legal_nature": "GOVERNANCE",
+      "legal_nature_marker": "arbitration"
+    },
+    {
+      "id": 355,
+      "theme": "DISPUTE_ARBITRATION",
+      "block_id": 49,
+      "is_block_start": false,
+      "reason": "severability de l'accord d'arbitrage",
+      "legal_nature": "GOVERNANCE",
+      "legal_nature_marker": "arbitration"
+    },
+    {
+      "id": 356,
+      "theme": "DISPUTE_ARBITRATION",
+      "block_id": 49,
+      "is_block_start": false,
+      "reason": "droit de rejeter une modification de la section 19",
+      "legal_nature": "META",
+      "legal_nature_marker": "last updated"
+    },
+    {
+      "id": 357,
+      "theme": "DISPUTE_ARBITRATION",
+      "block_id": 49,
+      "is_block_start": false,
+      "reason": "effet du rejet d'une modification",
+      "legal_nature": "GOVERNANCE",
+      "legal_nature_marker": "arbitration"
+    },
+    {
+      "id": 358,
+      "theme": "DISPUTE_ARBITRATION",
+      "block_id": 49,
+      "is_block_start": false,
+      "reason": "survie de la section 19 apres resiliation",
+      "legal_nature": "GOVERNANCE",
+      "legal_nature_marker": "terminate"
+    },
+    {
+      "id": 359,
+      "theme": "LICENSE_IP",
+      "block_id": 50,
+      "is_block_start": true,
+      "rationale": "section 20 : feedback - licence accordee a airbnb sur les idees soumises (PI prime)",
+      "rationale_codes": {
+        "decision_trigger": "topic_keyword",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "feedback",
+        "revised_from_plan": false,
+        "confidence": 0.6
+      },
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 360,
+      "theme": "LICENSE_IP",
+      "block_id": 50,
+      "is_block_start": false,
+      "reason": "soumission du feedback par email",
+      "legal_nature": "DEFINITION",
+      "legal_nature_marker": "means"
+    },
+    {
+      "id": 361,
+      "theme": "LICENSE_IP",
+      "block_id": 50,
+      "is_block_start": false,
+      "reason": "feedback non confidentiel",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 362,
+      "theme": "LICENSE_IP",
+      "block_id": 50,
+      "is_block_start": false,
+      "reason": "licence accordee a airbnb sur le feedback",
+      "legal_nature": "RIGHT_GRANT",
+      "legal_nature_marker": "license to"
+    },
+    {
+      "id": 363,
+      "theme": "GOVERNING_LAW",
+      "block_id": 51,
+      "is_block_start": true,
+      "rationale": "section 21 : loi applicable et juridiction selon la residence",
+      "rationale_codes": {
+        "decision_trigger": "numbering",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "interpreted in accordance with the laws of the state of california",
+        "revised_from_plan": false,
+        "confidence": 0.82
+      },
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 364,
+      "theme": "GOVERNING_LAW",
+      "block_id": 51,
+      "is_block_start": false,
+      "reason": "lieu des procedures judiciaires (san francisco)",
+      "legal_nature": "GOVERNANCE",
+      "legal_nature_marker": "arbitration"
+    },
+    {
+      "id": 365,
+      "theme": "GOVERNING_LAW",
+      "block_id": 51,
+      "is_block_start": false,
+      "reason": "consentement a la juridiction",
+      "legal_nature": "GOVERNANCE",
+      "legal_nature_marker": "jurisdiction"
+    },
+    {
+      "id": 366,
+      "theme": "GOVERNING_LAW",
+      "block_id": 51,
+      "is_block_start": false,
+      "reason": "21.2 loi chinoise pour residents en Chine",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 367,
+      "theme": "GOVERNING_LAW",
+      "block_id": 51,
+      "is_block_start": false,
+      "reason": "arbitrage CIETAC a Beijing",
+      "legal_nature": "PROHIBITION",
+      "legal_nature_marker": "shall not"
+    },
+    {
+      "id": 368,
+      "theme": "GOVERNING_LAW",
+      "block_id": 51,
+      "is_block_start": false,
+      "reason": "procedure d'arbitrage en anglais",
+      "legal_nature": "GOVERNANCE",
+      "legal_nature_marker": "arbitration"
+    },
+    {
+      "id": 369,
+      "theme": "GOVERNING_LAW",
+      "block_id": 51,
+      "is_block_start": false,
+      "reason": "sentence finale et contraignante",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 370,
+      "theme": "GOVERNING_LAW",
+      "block_id": 51,
+      "is_block_start": false,
+      "reason": "21.3 loi irlandaise hors US/Chine",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 371,
+      "theme": "GOVERNING_LAW",
+      "block_id": 51,
+      "is_block_start": false,
+      "reason": "exclusion de la CISG",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 372,
+      "theme": "GOVERNING_LAW",
+      "block_id": 51,
+      "is_block_start": false,
+      "reason": "preservation des droits du consommateur",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 373,
+      "theme": "GOVERNING_LAW",
+      "block_id": 51,
+      "is_block_start": false,
+      "reason": "juridiction des tribunaux irlandais pour consommateurs",
+      "legal_nature": "GOVERNANCE",
+      "legal_nature_marker": "jurisdiction"
+    },
+    {
+      "id": 374,
+      "theme": "GOVERNING_LAW",
+      "block_id": 51,
+      "is_block_start": false,
+      "reason": "lieu des procedures judiciaires",
+      "legal_nature": "GOVERNANCE",
+      "legal_nature_marker": "jurisdiction"
+    },
+    {
+      "id": 375,
+      "theme": "GOVERNING_LAW",
+      "block_id": 51,
+      "is_block_start": false,
+      "reason": "airbnb agit dans la juridiction du resident",
+      "legal_nature": "GOVERNANCE",
+      "legal_nature_marker": "jurisdiction"
+    },
+    {
+      "id": 376,
+      "theme": "GOVERNING_LAW",
+      "block_id": 51,
+      "is_block_start": false,
+      "reason": "juridiction exclusive pour les business",
+      "legal_nature": "GOVERNANCE",
+      "legal_nature_marker": "jurisdiction"
+    },
+    {
+      "id": 377,
+      "theme": "MISC_BOILERPLATE",
+      "block_id": 52,
+      "is_block_start": true,
+      "rationale": "section 22 : dispositions generales (entire agreement, severability, etc.)",
+      "rationale_codes": {
+        "decision_trigger": "numbering",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "entire agreement between airbnb and you",
+        "revised_from_plan": false,
+        "confidence": 0.78
+      },
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 378,
+      "theme": "MISC_BOILERPLATE",
+      "block_id": 52,
+      "is_block_start": false,
+      "reason": "22.2 absence de joint venture / partenariat",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 379,
+      "theme": "MISC_BOILERPLATE",
+      "block_id": 52,
+      "is_block_start": false,
+      "reason": "22.3 pas de droits pour des tiers",
+      "legal_nature": "PROHIBITION",
+      "legal_nature_marker": "do not"
+    },
+    {
+      "id": 380,
+      "theme": "MISC_BOILERPLATE",
+      "block_id": 52,
+      "is_block_start": false,
+      "reason": "22.4 severability",
+      "legal_nature": "PROHIBITION",
+      "legal_nature_marker": "will not"
+    },
+    {
+      "id": 381,
+      "theme": "MISC_BOILERPLATE",
+      "block_id": 52,
+      "is_block_start": false,
+      "reason": "22.5 absence de waiver",
+      "legal_nature": "PROHIBITION",
+      "legal_nature_marker": "will not"
+    },
+    {
+      "id": 382,
+      "theme": "MISC_BOILERPLATE",
+      "block_id": 52,
+      "is_block_start": false,
+      "reason": "exercice des remedes sans prejudice",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 383,
+      "theme": "MISC_BOILERPLATE",
+      "block_id": 52,
+      "is_block_start": false,
+      "reason": "22.6 interdiction de cession par l'utilisateur",
+      "legal_nature": "PROHIBITION",
+      "legal_nature_marker": "may not"
+    },
+    {
+      "id": 384,
+      "theme": "MISC_BOILERPLATE",
+      "block_id": 52,
+      "is_block_start": false,
+      "reason": "airbnb peut ceder l'accord",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 385,
+      "theme": "MISC_BOILERPLATE",
+      "block_id": 52,
+      "is_block_start": false,
+      "reason": "droit de resiliation inaffecte",
+      "legal_nature": "GOVERNANCE",
+      "legal_nature_marker": "terminate"
+    },
+    {
+      "id": 386,
+      "theme": "MISC_BOILERPLATE",
+      "block_id": 52,
+      "is_block_start": false,
+      "reason": "22.7 notices et communications",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 387,
+      "theme": "MISC_BOILERPLATE",
+      "block_id": 52,
+      "is_block_start": false,
+      "reason": "date de reception des notices",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 388,
+      "theme": "MISC_BOILERPLATE",
+      "block_id": 52,
+      "is_block_start": false,
+      "reason": "22.8 plateforme ODR de l'UE",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 389,
+      "theme": "MISC_BOILERPLATE",
+      "block_id": 52,
+      "is_block_start": false,
+      "reason": "airbnb ireland non obligee d'utiliser un ADR",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 390,
+      "theme": "MISC_BOILERPLATE",
+      "block_id": 52,
+      "is_block_start": false,
+      "reason": "22.9 questions : contacter airbnb par email",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    }
+  ]
+}

@@ -1,0 +1,1007 @@
+{
+  "doc": "Skyscanner",
+  "judge": "codex",
+  "version": "v9.2-nature-derived",
+  "document_plan": {
+    "estimated_n_blocks": 19,
+    "rationale_global": "lecture globale V9.2 ; segmentation conservatrice par sujet juridique autonome, avec continuité par défaut.",
+    "segments": [
+      {
+        "start_id": 0,
+        "theme": "META",
+        "rationale": "ouverture prévue pour date, adresse, URL ou identité d'entité",
+        "evidence_span": "last updated : 5 january 2016"
+      },
+      {
+        "start_id": 1,
+        "theme": "PAYMENT_BILLING",
+        "rationale": "ouverture prévue pour prix, frais, paiement, taxes, remboursement ou facturation",
+        "evidence_span": "skyscanner -lrb- `` us '' , `` we '' or"
+      },
+      {
+        "start_id": 2,
+        "theme": "THIRD_PARTY",
+        "rationale": "ouverture prévue pour services, liens, contenus ou applications de tiers",
+        "evidence_span": "skyscanner is not a travel agent and is not responsible"
+      },
+      {
+        "start_id": 4,
+        "theme": "PREAMBLE_SCOPE",
+        "rationale": "ouverture prévue pour cadre, acceptation ou périmètre du service",
+        "evidence_span": "the skyscanner services and skyscanner platforms are provided by skyscanner"
+      },
+      {
+        "start_id": 13,
+        "theme": "ELIGIBILITY_ACCOUNT",
+        "rationale": "ouverture prévue pour compte, inscription, âge, identifiants ou sécurité d'accès",
+        "evidence_span": "you may only use the skyscanner services and skyscanner platforms"
+      },
+      {
+        "start_id": 30,
+        "theme": "PREAMBLE_SCOPE",
+        "rationale": "ouverture prévue pour cadre, acceptation ou périmètre du service",
+        "evidence_span": "to the extent that any element of the skyscanner services"
+      },
+      {
+        "start_id": 31,
+        "theme": "PRIVACY_DATA",
+        "rationale": "ouverture prévue pour données personnelles, confidentialité ou communications",
+        "evidence_span": "we take your privacy seriously and operate at all times"
+      },
+      {
+        "start_id": 38,
+        "theme": "USER_CONTENT",
+        "rationale": "ouverture prévue pour contenu utilisateur, publication, avis ou feedback",
+        "evidence_span": "to the extent that you provide us with any suggestions"
+      },
+      {
+        "start_id": 43,
+        "theme": "LICENSE_IP",
+        "rationale": "ouverture prévue pour licence, propriété intellectuelle, copyright, marque ou DMCA",
+        "evidence_span": "we respect the intellectual property rights of others ."
+      },
+      {
+        "start_id": 45,
+        "theme": "PREAMBLE_SCOPE",
+        "rationale": "ouverture prévue pour cadre, acceptation ou périmètre du service",
+        "evidence_span": "your use of the skyscanner services and/or skyscanner platforms is"
+      },
+      {
+        "start_id": 46,
+        "theme": "WARRANTY_DISCLAIMER",
+        "rationale": "ouverture prévue pour exclusion de garanties",
+        "evidence_span": "although we enforce strict ` price accuracy ' policies with"
+      },
+      {
+        "start_id": 49,
+        "theme": "PREAMBLE_SCOPE",
+        "rationale": "ouverture prévue pour cadre, acceptation ou périmètre du service",
+        "evidence_span": "skyscanner is not a travel agentand is not responsible for"
+      },
+      {
+        "start_id": 57,
+        "theme": "THIRD_PARTY",
+        "rationale": "ouverture prévue pour services, liens, contenus ou applications de tiers",
+        "evidence_span": "skyscanner has no responsibility whatsoever for any arrangements you make"
+      },
+      {
+        "start_id": 63,
+        "theme": "LIABILITY_LIMITATION",
+        "rationale": "ouverture prévue pour limitation de responsabilité ou dommages",
+        "evidence_span": "to the maximum extent permitted by law , we -lrb-"
+      },
+      {
+        "start_id": 64,
+        "theme": "PREAMBLE_SCOPE",
+        "rationale": "ouverture prévue pour cadre, acceptation ou périmètre du service",
+        "evidence_span": "subject to these terms and to the extent permitted by"
+      },
+      {
+        "start_id": 66,
+        "theme": "LIABILITY_LIMITATION",
+        "rationale": "ouverture prévue pour limitation de responsabilité ou dommages",
+        "evidence_span": "subject to these terms , you will be responsible and"
+      },
+      {
+        "start_id": 67,
+        "theme": "PREAMBLE_SCOPE",
+        "rationale": "ouverture prévue pour cadre, acceptation ou périmètre du service",
+        "evidence_span": "skyscanner may in its absolute discretion immediately terminate any agreement"
+      },
+      {
+        "start_id": 80,
+        "theme": "GOVERNING_LAW",
+        "rationale": "ouverture prévue pour droit applicable, juridiction ou venue",
+        "evidence_span": "irrespective of the country from which you access or use"
+      },
+      {
+        "start_id": 81,
+        "theme": "MISC_BOILERPLATE",
+        "rationale": "ouverture prévue pour clauses finales, cession, divisibilité, avis ou intégralité",
+        "evidence_span": "if you require further information about skyscanner or have any"
+      }
+    ]
+  },
+  "annotations": [
+    {
+      "id": 0,
+      "theme": "META",
+      "block_id": 0,
+      "is_block_start": true,
+      "rationale": "ouvre date, adresse, URL ou identité d'entité ; indice « last updated : 5 january 2016 »",
+      "rationale_codes": {
+        "decision_trigger": "document_start",
+        "relation_to_prev": "document_start",
+        "evidence_span": "last updated : 5 january 2016",
+        "revised_from_plan": false,
+        "confidence": 0.95
+      },
+      "legal_nature": "META",
+      "legal_nature_marker": "last updated"
+    },
+    {
+      "id": 1,
+      "theme": "PAYMENT_BILLING",
+      "block_id": 1,
+      "is_block_start": true,
+      "rationale": "ouvre prix, frais, paiement, taxes, remboursement ou facturation ; indice « skyscanner -lrb- `` us '' , `` we '' or »",
+      "rationale_codes": {
+        "decision_trigger": "topic_keyword",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "skyscanner -lrb- `` us '' , `` we '' or",
+        "revised_from_plan": false,
+        "confidence": 0.82
+      },
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 2,
+      "theme": "THIRD_PARTY",
+      "block_id": 2,
+      "is_block_start": true,
+      "rationale": "ouvre services, liens, contenus ou applications de tiers ; indice « skyscanner is not a travel agent and is not responsible »",
+      "rationale_codes": {
+        "decision_trigger": "modal_verb",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "skyscanner is not a travel agent and is not responsible",
+        "revised_from_plan": false,
+        "confidence": 0.82
+      },
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 3,
+      "theme": "THIRD_PARTY",
+      "block_id": 2,
+      "is_block_start": false,
+      "reason": "continue THIRD_PARTY, précision ou effet du même sujet",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 4,
+      "theme": "PREAMBLE_SCOPE",
+      "block_id": 3,
+      "is_block_start": true,
+      "rationale": "ouvre cadre, acceptation ou périmètre du service ; indice « the skyscanner services and skyscanner platforms are provided by skyscanner »",
+      "rationale_codes": {
+        "decision_trigger": "topic_keyword",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "the skyscanner services and skyscanner platforms are provided by skyscanner",
+        "revised_from_plan": false,
+        "confidence": 0.82
+      },
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 5,
+      "theme": "PREAMBLE_SCOPE",
+      "block_id": 3,
+      "is_block_start": false,
+      "reason": "continue PREAMBLE_SCOPE, précision ou effet du même sujet",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 6,
+      "theme": "PREAMBLE_SCOPE",
+      "block_id": 3,
+      "is_block_start": false,
+      "reason": "continue PREAMBLE_SCOPE, précision ou effet du même sujet",
+      "legal_nature": "SCOPE_APPLICABILITY",
+      "legal_nature_marker": "govern your access"
+    },
+    {
+      "id": 7,
+      "theme": "PREAMBLE_SCOPE",
+      "block_id": 3,
+      "is_block_start": false,
+      "reason": "continue PREAMBLE_SCOPE, précision ou effet du même sujet",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 8,
+      "theme": "PREAMBLE_SCOPE",
+      "block_id": 3,
+      "is_block_start": false,
+      "reason": "continue PREAMBLE_SCOPE, précision ou effet du même sujet",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 9,
+      "theme": "PREAMBLE_SCOPE",
+      "block_id": 3,
+      "is_block_start": false,
+      "reason": "continue PREAMBLE_SCOPE, précision ou effet du même sujet",
+      "legal_nature": "OBLIGATION",
+      "legal_nature_marker": "you will"
+    },
+    {
+      "id": 10,
+      "theme": "PREAMBLE_SCOPE",
+      "block_id": 3,
+      "is_block_start": false,
+      "reason": "continue PREAMBLE_SCOPE, précision ou effet du même sujet",
+      "legal_nature": "GOVERNANCE",
+      "legal_nature_marker": "we may amend"
+    },
+    {
+      "id": 11,
+      "theme": "PREAMBLE_SCOPE",
+      "block_id": 3,
+      "is_block_start": false,
+      "reason": "continue PREAMBLE_SCOPE, précision ou effet du même sujet",
+      "legal_nature": "OBLIGATION",
+      "legal_nature_marker": "you will"
+    },
+    {
+      "id": 12,
+      "theme": "PREAMBLE_SCOPE",
+      "block_id": 3,
+      "is_block_start": false,
+      "reason": "continue PREAMBLE_SCOPE, précision ou effet du même sujet",
+      "legal_nature": "PROHIBITION",
+      "legal_nature_marker": "do not"
+    },
+    {
+      "id": 13,
+      "theme": "ELIGIBILITY_ACCOUNT",
+      "block_id": 4,
+      "is_block_start": true,
+      "rationale": "ouvre compte, inscription, âge, identifiants ou sécurité d'accès ; indice « you may only use the skyscanner services and skyscanner platforms »",
+      "rationale_codes": {
+        "decision_trigger": "modal_verb",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "you may only use the skyscanner services and skyscanner platforms",
+        "revised_from_plan": false,
+        "confidence": 0.82
+      },
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 14,
+      "theme": "ELIGIBILITY_ACCOUNT",
+      "block_id": 4,
+      "is_block_start": false,
+      "reason": "continue ELIGIBILITY_ACCOUNT, précision ou effet du même sujet",
+      "legal_nature": "RIGHT_GRANT",
+      "legal_nature_marker": "grant you"
+    },
+    {
+      "id": 15,
+      "theme": "ELIGIBILITY_ACCOUNT",
+      "block_id": 4,
+      "is_block_start": false,
+      "reason": "continue ELIGIBILITY_ACCOUNT, précision ou effet du même sujet",
+      "legal_nature": "PROHIBITION",
+      "legal_nature_marker": "shall not"
+    },
+    {
+      "id": 16,
+      "theme": "ELIGIBILITY_ACCOUNT",
+      "block_id": 4,
+      "is_block_start": false,
+      "reason": "continue ELIGIBILITY_ACCOUNT, précision ou effet du même sujet",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 17,
+      "theme": "ELIGIBILITY_ACCOUNT",
+      "block_id": 4,
+      "is_block_start": false,
+      "reason": "continue ELIGIBILITY_ACCOUNT, précision ou effet du même sujet",
+      "legal_nature": "RIGHT_GRANT",
+      "legal_nature_marker": "grant you"
+    },
+    {
+      "id": 18,
+      "theme": "ELIGIBILITY_ACCOUNT",
+      "block_id": 4,
+      "is_block_start": false,
+      "reason": "continue ELIGIBILITY_ACCOUNT, précision ou effet du même sujet",
+      "legal_nature": "PROHIBITION",
+      "legal_nature_marker": "shall not"
+    },
+    {
+      "id": 19,
+      "theme": "ELIGIBILITY_ACCOUNT",
+      "block_id": 4,
+      "is_block_start": false,
+      "reason": "continue ELIGIBILITY_ACCOUNT, précision ou effet du même sujet",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 20,
+      "theme": "ELIGIBILITY_ACCOUNT",
+      "block_id": 4,
+      "is_block_start": false,
+      "reason": "continue ELIGIBILITY_ACCOUNT, précision ou effet du même sujet",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 21,
+      "theme": "ELIGIBILITY_ACCOUNT",
+      "block_id": 4,
+      "is_block_start": false,
+      "reason": "continue ELIGIBILITY_ACCOUNT, précision ou effet du même sujet",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 22,
+      "theme": "ELIGIBILITY_ACCOUNT",
+      "block_id": 4,
+      "is_block_start": false,
+      "reason": "continue ELIGIBILITY_ACCOUNT, précision ou effet du même sujet",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 23,
+      "theme": "ELIGIBILITY_ACCOUNT",
+      "block_id": 4,
+      "is_block_start": false,
+      "reason": "continue ELIGIBILITY_ACCOUNT, précision ou effet du même sujet",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 24,
+      "theme": "ELIGIBILITY_ACCOUNT",
+      "block_id": 4,
+      "is_block_start": false,
+      "reason": "continue ELIGIBILITY_ACCOUNT, précision ou effet du même sujet",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 25,
+      "theme": "ELIGIBILITY_ACCOUNT",
+      "block_id": 4,
+      "is_block_start": false,
+      "reason": "continue ELIGIBILITY_ACCOUNT, précision ou effet du même sujet",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 26,
+      "theme": "ELIGIBILITY_ACCOUNT",
+      "block_id": 4,
+      "is_block_start": false,
+      "reason": "continue ELIGIBILITY_ACCOUNT, précision ou effet du même sujet",
+      "legal_nature": "OBLIGATION",
+      "legal_nature_marker": "you shall"
+    },
+    {
+      "id": 27,
+      "theme": "ELIGIBILITY_ACCOUNT",
+      "block_id": 4,
+      "is_block_start": false,
+      "reason": "continue ELIGIBILITY_ACCOUNT, précision ou effet du même sujet",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 28,
+      "theme": "ELIGIBILITY_ACCOUNT",
+      "block_id": 4,
+      "is_block_start": false,
+      "reason": "continue ELIGIBILITY_ACCOUNT, précision ou effet du même sujet",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 29,
+      "theme": "ELIGIBILITY_ACCOUNT",
+      "block_id": 4,
+      "is_block_start": false,
+      "reason": "continue ELIGIBILITY_ACCOUNT, précision ou effet du même sujet",
+      "legal_nature": "PROHIBITION",
+      "legal_nature_marker": "do not"
+    },
+    {
+      "id": 30,
+      "theme": "PREAMBLE_SCOPE",
+      "block_id": 5,
+      "is_block_start": true,
+      "rationale": "ouvre cadre, acceptation ou périmètre du service ; indice « to the extent that any element of the skyscanner services »",
+      "rationale_codes": {
+        "decision_trigger": "modal_verb",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "to the extent that any element of the skyscanner services",
+        "revised_from_plan": false,
+        "confidence": 0.82
+      },
+      "legal_nature": "OBLIGATION",
+      "legal_nature_marker": "you agree to"
+    },
+    {
+      "id": 31,
+      "theme": "PRIVACY_DATA",
+      "block_id": 6,
+      "is_block_start": true,
+      "rationale": "ouvre données personnelles, confidentialité ou communications ; indice « we take your privacy seriously and operate at all times »",
+      "rationale_codes": {
+        "decision_trigger": "topic_keyword",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "we take your privacy seriously and operate at all times",
+        "revised_from_plan": false,
+        "confidence": 0.82
+      },
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 32,
+      "theme": "PRIVACY_DATA",
+      "block_id": 6,
+      "is_block_start": false,
+      "reason": "continue PRIVACY_DATA, précision ou effet du même sujet",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 33,
+      "theme": "PRIVACY_DATA",
+      "block_id": 6,
+      "is_block_start": false,
+      "reason": "continue PRIVACY_DATA, précision ou effet du même sujet",
+      "legal_nature": "OBLIGATION",
+      "legal_nature_marker": "you agree to"
+    },
+    {
+      "id": 34,
+      "theme": "PRIVACY_DATA",
+      "block_id": 6,
+      "is_block_start": false,
+      "reason": "continue PRIVACY_DATA, précision ou effet du même sujet",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 35,
+      "theme": "PRIVACY_DATA",
+      "block_id": 6,
+      "is_block_start": false,
+      "reason": "continue PRIVACY_DATA, précision ou effet du même sujet",
+      "legal_nature": "PROHIBITION",
+      "legal_nature_marker": "will not"
+    },
+    {
+      "id": 36,
+      "theme": "PRIVACY_DATA",
+      "block_id": 6,
+      "is_block_start": false,
+      "reason": "continue PRIVACY_DATA, précision ou effet du même sujet",
+      "legal_nature": "RIGHT_GRANT",
+      "legal_nature_marker": "hereby grant"
+    },
+    {
+      "id": 37,
+      "theme": "PRIVACY_DATA",
+      "block_id": 6,
+      "is_block_start": false,
+      "reason": "continue PRIVACY_DATA, précision ou effet du même sujet",
+      "legal_nature": "OBLIGATION",
+      "legal_nature_marker": "you shall"
+    },
+    {
+      "id": 38,
+      "theme": "USER_CONTENT",
+      "block_id": 7,
+      "is_block_start": true,
+      "rationale": "ouvre contenu utilisateur, publication, avis ou feedback ; indice « to the extent that you provide us with any suggestions »",
+      "rationale_codes": {
+        "decision_trigger": "topic_keyword",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "to the extent that you provide us with any suggestions",
+        "revised_from_plan": false,
+        "confidence": 0.82
+      },
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 39,
+      "theme": "USER_CONTENT",
+      "block_id": 7,
+      "is_block_start": false,
+      "reason": "continue USER_CONTENT, précision ou effet du même sujet",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 40,
+      "theme": "USER_CONTENT",
+      "block_id": 7,
+      "is_block_start": false,
+      "reason": "continue USER_CONTENT, précision ou effet du même sujet",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 41,
+      "theme": "USER_CONTENT",
+      "block_id": 7,
+      "is_block_start": false,
+      "reason": "continue USER_CONTENT, précision ou effet du même sujet",
+      "legal_nature": "PROHIBITION",
+      "legal_nature_marker": "will not"
+    },
+    {
+      "id": 42,
+      "theme": "USER_CONTENT",
+      "block_id": 7,
+      "is_block_start": false,
+      "reason": "continue USER_CONTENT, précision ou effet du même sujet",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 43,
+      "theme": "LICENSE_IP",
+      "block_id": 8,
+      "is_block_start": true,
+      "rationale": "ouvre licence, propriété intellectuelle, copyright, marque ou DMCA ; indice « we respect the intellectual property rights of others . »",
+      "rationale_codes": {
+        "decision_trigger": "topic_keyword",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "we respect the intellectual property rights of others .",
+        "revised_from_plan": false,
+        "confidence": 0.82
+      },
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 44,
+      "theme": "LICENSE_IP",
+      "block_id": 8,
+      "is_block_start": false,
+      "reason": "continue LICENSE_IP, précision ou effet du même sujet",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 45,
+      "theme": "PREAMBLE_SCOPE",
+      "block_id": 9,
+      "is_block_start": true,
+      "rationale": "ouvre cadre, acceptation ou périmètre du service ; indice « your use of the skyscanner services and/or skyscanner platforms is »",
+      "rationale_codes": {
+        "decision_trigger": "topic_keyword",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "your use of the skyscanner services and/or skyscanner platforms is",
+        "revised_from_plan": false,
+        "confidence": 0.82
+      },
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 46,
+      "theme": "WARRANTY_DISCLAIMER",
+      "block_id": 10,
+      "is_block_start": true,
+      "rationale": "ouvre exclusion de garanties ; indice « although we enforce strict ` price accuracy ' policies with »",
+      "rationale_codes": {
+        "decision_trigger": "topic_keyword",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "although we enforce strict ` price accuracy ' policies with",
+        "revised_from_plan": false,
+        "confidence": 0.82
+      },
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 47,
+      "theme": "WARRANTY_DISCLAIMER",
+      "block_id": 10,
+      "is_block_start": false,
+      "reason": "continue WARRANTY_DISCLAIMER, précision ou effet du même sujet",
+      "legal_nature": "LIMITATION_DISCLAIMER",
+      "legal_nature_marker": "as is"
+    },
+    {
+      "id": 48,
+      "theme": "WARRANTY_DISCLAIMER",
+      "block_id": 10,
+      "is_block_start": false,
+      "reason": "continue WARRANTY_DISCLAIMER, précision ou effet du même sujet",
+      "legal_nature": "PROHIBITION",
+      "legal_nature_marker": "do not"
+    },
+    {
+      "id": 49,
+      "theme": "PREAMBLE_SCOPE",
+      "block_id": 11,
+      "is_block_start": true,
+      "rationale": "ouvre cadre, acceptation ou périmètre du service ; indice « skyscanner is not a travel agentand is not responsible for »",
+      "rationale_codes": {
+        "decision_trigger": "topic_keyword",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "skyscanner is not a travel agentand is not responsible for",
+        "revised_from_plan": false,
+        "confidence": 0.82
+      },
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 50,
+      "theme": "PREAMBLE_SCOPE",
+      "block_id": 11,
+      "is_block_start": false,
+      "reason": "continue PREAMBLE_SCOPE, précision ou effet du même sujet",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 51,
+      "theme": "PREAMBLE_SCOPE",
+      "block_id": 11,
+      "is_block_start": false,
+      "reason": "continue PREAMBLE_SCOPE, précision ou effet du même sujet",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 52,
+      "theme": "PREAMBLE_SCOPE",
+      "block_id": 11,
+      "is_block_start": false,
+      "reason": "continue PREAMBLE_SCOPE, précision ou effet du même sujet",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 53,
+      "theme": "PREAMBLE_SCOPE",
+      "block_id": 11,
+      "is_block_start": false,
+      "reason": "continue PREAMBLE_SCOPE, précision ou effet du même sujet",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 54,
+      "theme": "PREAMBLE_SCOPE",
+      "block_id": 11,
+      "is_block_start": false,
+      "reason": "continue PREAMBLE_SCOPE, précision ou effet du même sujet",
+      "legal_nature": "OBLIGATION",
+      "legal_nature_marker": "you agree to"
+    },
+    {
+      "id": 55,
+      "theme": "PREAMBLE_SCOPE",
+      "block_id": 11,
+      "is_block_start": false,
+      "reason": "continue PREAMBLE_SCOPE, précision ou effet du même sujet",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 56,
+      "theme": "PREAMBLE_SCOPE",
+      "block_id": 11,
+      "is_block_start": false,
+      "reason": "continue PREAMBLE_SCOPE, précision ou effet du même sujet",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 57,
+      "theme": "THIRD_PARTY",
+      "block_id": 12,
+      "is_block_start": true,
+      "rationale": "ouvre services, liens, contenus ou applications de tiers ; indice « skyscanner has no responsibility whatsoever for any arrangements you make »",
+      "rationale_codes": {
+        "decision_trigger": "topic_keyword",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "skyscanner has no responsibility whatsoever for any arrangements you make",
+        "revised_from_plan": false,
+        "confidence": 0.82
+      },
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 58,
+      "theme": "THIRD_PARTY",
+      "block_id": 12,
+      "is_block_start": false,
+      "reason": "continue THIRD_PARTY, précision ou effet du même sujet",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 59,
+      "theme": "THIRD_PARTY",
+      "block_id": 12,
+      "is_block_start": false,
+      "reason": "continue THIRD_PARTY, précision ou effet du même sujet",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 60,
+      "theme": "THIRD_PARTY",
+      "block_id": 12,
+      "is_block_start": false,
+      "reason": "continue THIRD_PARTY, précision ou effet du même sujet",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 61,
+      "theme": "THIRD_PARTY",
+      "block_id": 12,
+      "is_block_start": false,
+      "reason": "continue THIRD_PARTY, précision ou effet du même sujet",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 62,
+      "theme": "THIRD_PARTY",
+      "block_id": 12,
+      "is_block_start": false,
+      "reason": "continue THIRD_PARTY, précision ou effet du même sujet",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 63,
+      "theme": "LIABILITY_LIMITATION",
+      "block_id": 13,
+      "is_block_start": true,
+      "rationale": "ouvre limitation de responsabilité ou dommages ; indice « to the maximum extent permitted by law , we -lrb- »",
+      "rationale_codes": {
+        "decision_trigger": "topic_keyword",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "to the maximum extent permitted by law , we -lrb-",
+        "revised_from_plan": false,
+        "confidence": 0.82
+      },
+      "legal_nature": "PROHIBITION",
+      "legal_nature_marker": "do not"
+    },
+    {
+      "id": 64,
+      "theme": "PREAMBLE_SCOPE",
+      "block_id": 14,
+      "is_block_start": true,
+      "rationale": "ouvre cadre, acceptation ou périmètre du service ; indice « subject to these terms and to the extent permitted by »",
+      "rationale_codes": {
+        "decision_trigger": "modal_verb",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "subject to these terms and to the extent permitted by",
+        "revised_from_plan": false,
+        "confidence": 0.82
+      },
+      "legal_nature": "LIMITATION_DISCLAIMER",
+      "legal_nature_marker": "to the extent permitted"
+    },
+    {
+      "id": 65,
+      "theme": "PREAMBLE_SCOPE",
+      "block_id": 14,
+      "is_block_start": false,
+      "reason": "continue PREAMBLE_SCOPE, précision ou effet du même sujet",
+      "legal_nature": "OBLIGATION",
+      "legal_nature_marker": "shall"
+    },
+    {
+      "id": 66,
+      "theme": "LIABILITY_LIMITATION",
+      "block_id": 15,
+      "is_block_start": true,
+      "rationale": "ouvre limitation de responsabilité ou dommages ; indice « subject to these terms , you will be responsible and »",
+      "rationale_codes": {
+        "decision_trigger": "topic_keyword",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "subject to these terms , you will be responsible and",
+        "revised_from_plan": false,
+        "confidence": 0.82
+      },
+      "legal_nature": "OBLIGATION",
+      "legal_nature_marker": "you will"
+    },
+    {
+      "id": 67,
+      "theme": "PREAMBLE_SCOPE",
+      "block_id": 16,
+      "is_block_start": true,
+      "rationale": "ouvre cadre, acceptation ou périmètre du service ; indice « skyscanner may in its absolute discretion immediately terminate any agreement »",
+      "rationale_codes": {
+        "decision_trigger": "modal_verb",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "skyscanner may in its absolute discretion immediately terminate any agreement",
+        "revised_from_plan": false,
+        "confidence": 0.82
+      },
+      "legal_nature": "GOVERNANCE",
+      "legal_nature_marker": "terminate"
+    },
+    {
+      "id": 68,
+      "theme": "PREAMBLE_SCOPE",
+      "block_id": 16,
+      "is_block_start": false,
+      "reason": "continue PREAMBLE_SCOPE, précision ou effet du même sujet",
+      "legal_nature": "GOVERNANCE",
+      "legal_nature_marker": "suspend"
+    },
+    {
+      "id": 69,
+      "theme": "PREAMBLE_SCOPE",
+      "block_id": 16,
+      "is_block_start": false,
+      "reason": "continue PREAMBLE_SCOPE, précision ou effet du même sujet",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 70,
+      "theme": "PREAMBLE_SCOPE",
+      "block_id": 16,
+      "is_block_start": false,
+      "reason": "continue PREAMBLE_SCOPE, précision ou effet du même sujet",
+      "legal_nature": "OBLIGATION",
+      "legal_nature_marker": "shall"
+    },
+    {
+      "id": 71,
+      "theme": "PREAMBLE_SCOPE",
+      "block_id": 16,
+      "is_block_start": false,
+      "reason": "continue PREAMBLE_SCOPE, précision ou effet du même sujet",
+      "legal_nature": "PROHIBITION",
+      "legal_nature_marker": "shall not"
+    },
+    {
+      "id": 72,
+      "theme": "PREAMBLE_SCOPE",
+      "block_id": 16,
+      "is_block_start": false,
+      "reason": "continue PREAMBLE_SCOPE, précision ou effet du même sujet",
+      "legal_nature": "GOVERNANCE",
+      "legal_nature_marker": "jurisdiction"
+    },
+    {
+      "id": 73,
+      "theme": "PREAMBLE_SCOPE",
+      "block_id": 16,
+      "is_block_start": false,
+      "reason": "continue PREAMBLE_SCOPE, précision ou effet du même sujet",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 74,
+      "theme": "PREAMBLE_SCOPE",
+      "block_id": 16,
+      "is_block_start": false,
+      "reason": "continue PREAMBLE_SCOPE, précision ou effet du même sujet",
+      "legal_nature": "PROHIBITION",
+      "legal_nature_marker": "shall not"
+    },
+    {
+      "id": 75,
+      "theme": "PREAMBLE_SCOPE",
+      "block_id": 16,
+      "is_block_start": false,
+      "reason": "continue PREAMBLE_SCOPE, précision ou effet du même sujet",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 76,
+      "theme": "PREAMBLE_SCOPE",
+      "block_id": 16,
+      "is_block_start": false,
+      "reason": "continue PREAMBLE_SCOPE, précision ou effet du même sujet",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 77,
+      "theme": "PREAMBLE_SCOPE",
+      "block_id": 16,
+      "is_block_start": false,
+      "reason": "continue PREAMBLE_SCOPE, précision ou effet du même sujet",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 78,
+      "theme": "PREAMBLE_SCOPE",
+      "block_id": 16,
+      "is_block_start": false,
+      "reason": "continue PREAMBLE_SCOPE, précision ou effet du même sujet",
+      "legal_nature": "PROHIBITION",
+      "legal_nature_marker": "shall not"
+    },
+    {
+      "id": 79,
+      "theme": "PREAMBLE_SCOPE",
+      "block_id": 16,
+      "is_block_start": false,
+      "reason": "continue PREAMBLE_SCOPE, précision ou effet du même sujet",
+      "legal_nature": "OBLIGATION",
+      "legal_nature_marker": "shall"
+    },
+    {
+      "id": 80,
+      "theme": "GOVERNING_LAW",
+      "block_id": 17,
+      "is_block_start": true,
+      "rationale": "ouvre droit applicable, juridiction ou venue ; indice « irrespective of the country from which you access or use »",
+      "rationale_codes": {
+        "decision_trigger": "modal_verb",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "irrespective of the country from which you access or use",
+        "revised_from_plan": false,
+        "confidence": 0.82
+      },
+      "legal_nature": "LIMITATION_DISCLAIMER",
+      "legal_nature_marker": "to the extent permitted"
+    },
+    {
+      "id": 81,
+      "theme": "MISC_BOILERPLATE",
+      "block_id": 18,
+      "is_block_start": true,
+      "rationale": "ouvre clauses finales, cession, divisibilité, avis ou intégralité ; indice « if you require further information about skyscanner or have any »",
+      "rationale_codes": {
+        "decision_trigger": "topic_keyword",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "if you require further information about skyscanner or have any",
+        "revised_from_plan": false,
+        "confidence": 0.82
+      },
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 82,
+      "theme": "MISC_BOILERPLATE",
+      "block_id": 18,
+      "is_block_start": false,
+      "reason": "continue MISC_BOILERPLATE, précision ou effet du même sujet",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    }
+  ]
+}

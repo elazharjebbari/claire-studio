@@ -1,0 +1,781 @@
+{
+  "doc": "Twitter",
+  "judge": "claude",
+  "version": "v9.0",
+  "document_plan": {
+    "estimated_n_blocks": 14,
+    "rationale_global": "Document NARRATIVE (peu de numerotation, un seul item numerote a l'id 18, deux libelles nominaux de section aux id 50 et 62). ToS Twitter structure en ~14 sujets juridiques : cadrage/acceptation, donnees, contenu utilisateur, propriete intellectuelle/copyright, licence concedee, regles/usage acceptable, changements du service, fonctionnalites tierces (dev/ads/commerce), compte et communications, licence d'usage du logiciel, resiliation, garanties as-is + limitation de responsabilite, modification des conditions, clauses balais, et coordonnees META. On applique la continuite par defaut : les consequences/mecanismes restent dans leur bloc-chapeau.",
+    "segments": [
+      {"start_id": 0, "theme": "PREAMBLE_SCOPE", "rationale": "ouvre le cadre general et l'acceptation des termes", "evidence_span": "these terms of service"},
+      {"start_id": 5, "theme": "PRIVACY_DATA", "rationale": "passe au traitement des donnees", "evidence_span": "our privacy policy"},
+      {"start_id": 7, "theme": "USER_CONTENT", "rationale": "responsabilite de l'utilisateur sur son contenu", "evidence_span": "any content you provide"},
+      {"start_id": 14, "theme": "LICENSE_IP", "rationale": "propriete intellectuelle et copyright", "evidence_span": "intellectual property rights"},
+      {"start_id": 19, "theme": "LICENSE_IP", "rationale": "vous conservez vos droits puis concedez une licence", "evidence_span": "you retain your rights"},
+      {"start_id": 29, "theme": "ACCEPTABLE_USE", "rationale": "regles Twitter et usage interdit", "evidence_span": "what is prohibited on the services"},
+      {"start_id": 31, "theme": "TERMINATION", "rationale": "droit de Twitter de modifier/arreter/retirer le service", "evidence_span": "the services may change from time to time"},
+      {"start_id": 39, "theme": "THIRD_PARTY", "rationale": "fonctionnalites developpeur/ads/commerce regies par des accords tiers", "evidence_span": "developer features of the services"},
+      {"start_id": 43, "theme": "ELIGIBILITY_ACCOUNT", "rationale": "creation et securite du compte, communications", "evidence_span": "create an account"},
+      {"start_id": 50, "theme": "LICENSE_IP", "rationale": "titre nominal : licence d'usage du logiciel", "evidence_span": "your license to use the services"},
+      {"start_id": 57, "theme": "TERMINATION", "rationale": "fin de l'accord, desactivation, suspension", "evidence_span": "end your legal agreement"},
+      {"start_id": 62, "theme": "WARRANTY_DISCLAIMER", "rationale": "titre nominal as-is puis exclusion de garanties", "evidence_span": "the services are available"},
+      {"start_id": 70, "theme": "LIABILITY_LIMITATION", "rationale": "limitation de responsabilite et dommages", "evidence_span": "shall not be liable"},
+      {"start_id": 72, "theme": "MODIFICATION_OF_TERMS", "rationale": "revision des conditions", "evidence_span": "we may revise these terms"},
+      {"start_id": 76, "theme": "MISC_BOILERPLATE", "rationale": "divisibilite et renonciation", "evidence_span": "invalid or unenforceable"},
+      {"start_id": 78, "theme": "META", "rationale": "identite de l'entite et coordonnees", "evidence_span": "twitter international company"}
+    ]
+  },
+  "annotations": [
+    {
+      "id": 0,
+      "theme": "PREAMBLE_SCOPE",
+      "function": "SCOPE_APPLICABILITY",
+      "block_id": 0,
+      "is_block_start": true,
+      "rationale": "ouverture du document : parenthese de cadrage geographique introduisant les conditions applicables ; cite « if you live outside of the us ».",
+      "rationale_codes": {
+        "decision_trigger": "document_start",
+        "relation_to_prev": "document_start",
+        "evidence_span": "if you live outside of the us",
+        "revised_from_plan": false,
+        "confidence": 0.9
+      }
+    },
+    {
+      "id": 1,
+      "theme": "PREAMBLE_SCOPE",
+      "function": "SCOPE_APPLICABILITY",
+      "block_id": 0,
+      "is_block_start": false,
+      "reason": "continue PREAMBLE_SCOPE : definit le champ d'application des termes et des services."
+    },
+    {
+      "id": 2,
+      "theme": "PREAMBLE_SCOPE",
+      "function": "SCOPE_APPLICABILITY",
+      "block_id": 0,
+      "is_block_start": false,
+      "reason": "continue PREAMBLE_SCOPE : modalite d'acceptation par l'usage."
+    },
+    {
+      "id": 3,
+      "theme": "PREAMBLE_SCOPE",
+      "function": "SCOPE_APPLICABILITY",
+      "block_id": 0,
+      "is_block_start": false,
+      "reason": "continue PREAMBLE_SCOPE : condition d'usage (contrat contraignant), reste dans le cadrage."
+    },
+    {
+      "id": 4,
+      "theme": "PREAMBLE_SCOPE",
+      "function": "SCOPE_APPLICABILITY",
+      "block_id": 0,
+      "is_block_start": false,
+      "reason": "continue PREAMBLE_SCOPE : acceptation au nom d'une entite, prolonge le cadre d'acceptation."
+    },
+    {
+      "id": 5,
+      "theme": "PRIVACY_DATA",
+      "function": "PROCEDURE_MECHANISM",
+      "block_id": 1,
+      "is_block_start": true,
+      "rationale": "nouveau sujet : traitement des informations renvoyant a la politique de confidentialite ; cite « our privacy policy ».",
+      "rationale_codes": {
+        "decision_trigger": "topic_keyword",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "our privacy policy",
+        "revised_from_plan": false,
+        "confidence": 0.85
+      }
+    },
+    {
+      "id": 6,
+      "theme": "PRIVACY_DATA",
+      "function": "PROCEDURE_MECHANISM",
+      "block_id": 1,
+      "is_block_start": false,
+      "reason": "continue PRIVACY_DATA : consentement a la collecte et au transfert des informations."
+    },
+    {
+      "id": 7,
+      "theme": "USER_CONTENT",
+      "function": "OBLIGATION",
+      "block_id": 2,
+      "is_block_start": true,
+      "rationale": "nouveau sujet : responsabilite de l'utilisateur sur son usage et son contenu ; cite « any content you provide ».",
+      "rationale_codes": {
+        "decision_trigger": "topic_keyword",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "any content you provide",
+        "revised_from_plan": false,
+        "confidence": 0.8
+      }
+    },
+    {
+      "id": 8,
+      "theme": "USER_CONTENT",
+      "function": "OBLIGATION",
+      "block_id": 2,
+      "is_block_start": false,
+      "reason": "continue USER_CONTENT : recommandation sur le contenu partage."
+    },
+    {
+      "id": 9,
+      "theme": "USER_CONTENT",
+      "function": "RISK_ALLOCATION",
+      "block_id": 2,
+      "is_block_start": false,
+      "reason": "continue USER_CONTENT : usage du contenu a vos propres risques."
+    },
+    {
+      "id": 10,
+      "theme": "USER_CONTENT",
+      "function": "LIMITATION_DISCLAIMER",
+      "block_id": 2,
+      "is_block_start": false,
+      "reason": "continue USER_CONTENT : non-endossement du contenu, prolonge le bloc contenu."
+    },
+    {
+      "id": 11,
+      "theme": "USER_CONTENT",
+      "function": "PROCEDURE_MECHANISM",
+      "block_id": 2,
+      "is_block_start": false,
+      "reason": "continue USER_CONTENT : avertissement sur l'exposition a du contenu offensant."
+    },
+    {
+      "id": 12,
+      "theme": "USER_CONTENT",
+      "function": "RISK_ALLOCATION",
+      "block_id": 2,
+      "is_block_start": false,
+      "reason": "continue USER_CONTENT : responsabilite incombe a l'auteur du contenu."
+    },
+    {
+      "id": 13,
+      "theme": "USER_CONTENT",
+      "function": "LIMITATION_DISCLAIMER",
+      "block_id": 2,
+      "is_block_start": false,
+      "reason": "continue USER_CONTENT : Twitter ne controle pas le contenu, conclut le bloc."
+    },
+    {
+      "id": 14,
+      "theme": "LICENSE_IP",
+      "function": "RIGHT_GRANT",
+      "block_id": 3,
+      "is_block_start": true,
+      "rationale": "nouveau sujet : propriete intellectuelle / copyright ; cite « intellectual property rights ».",
+      "rationale_codes": {
+        "decision_trigger": "topic_keyword",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "intellectual property rights",
+        "revised_from_plan": false,
+        "confidence": 0.82
+      }
+    },
+    {
+      "id": 15,
+      "theme": "LICENSE_IP",
+      "function": "PROCEDURE_MECHANISM",
+      "block_id": 3,
+      "is_block_start": false,
+      "reason": "continue LICENSE_IP : retrait de contenu contrefaisant, mecanisme lie au copyright."
+    },
+    {
+      "id": 16,
+      "theme": "LICENSE_IP",
+      "function": "PROCEDURE_MECHANISM",
+      "block_id": 3,
+      "is_block_start": false,
+      "reason": "continue LICENSE_IP : reponse aux notifications de contrefacon (politique copyright)."
+    },
+    {
+      "id": 17,
+      "theme": "LICENSE_IP",
+      "function": "PROCEDURE_MECHANISM",
+      "block_id": 3,
+      "is_block_start": false,
+      "reason": "continue LICENSE_IP : procedure de signalement et agent copyright."
+    },
+    {
+      "id": 18,
+      "theme": "LICENSE_IP",
+      "function": "META",
+      "block_id": 3,
+      "is_block_start": false,
+      "reason": "donnee factuelle (adresse de l'agent copyright) ; herite du theme LICENSE_IP du bloc-chapeau, fonction META qui n'ouvre pas de bloc."
+    },
+    {
+      "id": 19,
+      "theme": "LICENSE_IP",
+      "function": "RIGHT_GRANT",
+      "block_id": 4,
+      "is_block_start": true,
+      "rationale": "nouveau sujet : retention des droits de l'utilisateur puis licence concedee a Twitter ; cite « you retain your rights ».",
+      "rationale_codes": {
+        "decision_trigger": "lexical_shift",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "you retain your rights",
+        "revised_from_plan": false,
+        "confidence": 0.8
+      }
+    },
+    {
+      "id": 20,
+      "theme": "LICENSE_IP",
+      "function": "RIGHT_GRANT",
+      "block_id": 4,
+      "is_block_start": false,
+      "reason": "continue LICENSE_IP : reformulation de la propriete du contenu par l'utilisateur."
+    },
+    {
+      "id": 21,
+      "theme": "LICENSE_IP",
+      "function": "RIGHT_GRANT",
+      "block_id": 4,
+      "is_block_start": false,
+      "reason": "continue LICENSE_IP : octroi de la licence mondiale a Twitter, coeur du bloc."
+    },
+    {
+      "id": 22,
+      "theme": "LICENSE_IP",
+      "function": "PROCEDURE_MECHANISM",
+      "block_id": 4,
+      "is_block_start": false,
+      "reason": "continue LICENSE_IP : portee de la licence, prolonge l'octroi."
+    },
+    {
+      "id": 23,
+      "theme": "LICENSE_IP",
+      "function": "PROCEDURE_MECHANISM",
+      "block_id": 4,
+      "is_block_start": false,
+      "reason": "continue LICENSE_IP : etendue de la sous-licence et de la syndication."
+    },
+    {
+      "id": 24,
+      "theme": "LICENSE_IP",
+      "function": "PROCEDURE_MECHANISM",
+      "block_id": 4,
+      "is_block_start": false,
+      "reason": "continue LICENSE_IP : absence de compensation, consequence de la licence."
+    },
+    {
+      "id": 25,
+      "theme": "LICENSE_IP",
+      "function": "PROCEDURE_MECHANISM",
+      "block_id": 4,
+      "is_block_start": false,
+      "reason": "continue LICENSE_IP : regles pour les partenaires de l'ecosysteme autour du contenu."
+    },
+    {
+      "id": 26,
+      "theme": "LICENSE_IP",
+      "function": "PROCEDURE_MECHANISM",
+      "block_id": 4,
+      "is_block_start": false,
+      "reason": "continue LICENSE_IP : finalite de ces regles, prolonge le bloc licence."
+    },
+    {
+      "id": 27,
+      "theme": "LICENSE_IP",
+      "function": "PROCEDURE_MECHANISM",
+      "block_id": 4,
+      "is_block_start": false,
+      "reason": "continue LICENSE_IP : modification/adaptation du contenu pour distribution."
+    },
+    {
+      "id": 28,
+      "theme": "LICENSE_IP",
+      "function": "OBLIGATION",
+      "block_id": 4,
+      "is_block_start": false,
+      "reason": "continue LICENSE_IP : garantie que l'utilisateur a les droits pour concéder la licence, clot le bloc."
+    },
+    {
+      "id": 29,
+      "theme": "ACCEPTABLE_USE",
+      "function": "PROHIBITION",
+      "block_id": 5,
+      "is_block_start": true,
+      "rationale": "nouveau sujet : regles Twitter et conduite interdite ; cite « what is prohibited on the services ».",
+      "rationale_codes": {
+        "decision_trigger": "topic_keyword",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "what is prohibited on the services",
+        "revised_from_plan": false,
+        "confidence": 0.78
+      }
+    },
+    {
+      "id": 30,
+      "theme": "ACCEPTABLE_USE",
+      "function": "OBLIGATION",
+      "block_id": 5,
+      "is_block_start": false,
+      "reason": "continue ACCEPTABLE_USE : usage des services seulement en conformite avec les termes et lois."
+    },
+    {
+      "id": 31,
+      "theme": "TERMINATION",
+      "function": "RIGHT_GRANT",
+      "block_id": 6,
+      "is_block_start": true,
+      "rationale": "nouveau sujet : droit de Twitter de modifier, suspendre ou arreter le service ; cite « the services may change from time to time ».",
+      "rationale_codes": {
+        "decision_trigger": "lexical_shift",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "the services may change from time to time",
+        "revised_from_plan": false,
+        "confidence": 0.72
+      }
+    },
+    {
+      "id": 32,
+      "theme": "TERMINATION",
+      "function": "RIGHT_GRANT",
+      "block_id": 6,
+      "is_block_start": false,
+      "reason": "continue TERMINATION : Twitter peut cesser de fournir le service."
+    },
+    {
+      "id": 33,
+      "theme": "TERMINATION",
+      "function": "RIGHT_GRANT",
+      "block_id": 6,
+      "is_block_start": false,
+      "reason": "continue TERMINATION : reserve de creer des limites d'usage et de stockage."
+    },
+    {
+      "id": 34,
+      "theme": "TERMINATION",
+      "function": "RIGHT_GRANT",
+      "block_id": 6,
+      "is_block_start": false,
+      "reason": "continue TERMINATION : retrait de contenu, suspension/resiliation des utilisateurs."
+    },
+    {
+      "id": 35,
+      "theme": "TERMINATION",
+      "function": "RIGHT_GRANT",
+      "block_id": 6,
+      "is_block_start": false,
+      "reason": "continue TERMINATION : repetition (changement du service), reste dans le bloc."
+    },
+    {
+      "id": 36,
+      "theme": "TERMINATION",
+      "function": "RIGHT_GRANT",
+      "block_id": 6,
+      "is_block_start": false,
+      "reason": "continue TERMINATION : repetition (cessation du service), reste dans le bloc."
+    },
+    {
+      "id": 37,
+      "theme": "TERMINATION",
+      "function": "RIGHT_GRANT",
+      "block_id": 6,
+      "is_block_start": false,
+      "reason": "continue TERMINATION : repetition (limites d'usage/stockage), reste dans le bloc."
+    },
+    {
+      "id": 38,
+      "theme": "TERMINATION",
+      "function": "RIGHT_GRANT",
+      "block_id": 6,
+      "is_block_start": false,
+      "reason": "continue TERMINATION : repetition (retrait de contenu, suspension), clot le bloc."
+    },
+    {
+      "id": 39,
+      "theme": "THIRD_PARTY",
+      "function": "OBLIGATION",
+      "block_id": 7,
+      "is_block_start": true,
+      "rationale": "nouveau sujet : fonctionnalites developpeur soumises a des accords tiers ; cite « developer features of the services ».",
+      "rationale_codes": {
+        "decision_trigger": "topic_keyword",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "developer features of the services",
+        "revised_from_plan": false,
+        "confidence": 0.75
+      }
+    },
+    {
+      "id": 40,
+      "theme": "THIRD_PARTY",
+      "function": "OBLIGATION",
+      "block_id": 7,
+      "is_block_start": false,
+      "reason": "continue THIRD_PARTY : usage des interfaces fournies pour reproduire/modifier les services."
+    },
+    {
+      "id": 41,
+      "theme": "THIRD_PARTY",
+      "function": "OBLIGATION",
+      "block_id": 7,
+      "is_block_start": false,
+      "reason": "continue THIRD_PARTY : fonctionnalites publicitaires soumises au master services agreement."
+    },
+    {
+      "id": 42,
+      "theme": "THIRD_PARTY",
+      "function": "OBLIGATION",
+      "block_id": 7,
+      "is_block_start": false,
+      "reason": "continue THIRD_PARTY : fonctionnalites commerce soumises aux commerce terms, clot le bloc."
+    },
+    {
+      "id": 43,
+      "theme": "ELIGIBILITY_ACCOUNT",
+      "function": "OBLIGATION",
+      "block_id": 8,
+      "is_block_start": true,
+      "rationale": "nouveau sujet : creation et securite du compte ; cite « create an account ».",
+      "rationale_codes": {
+        "decision_trigger": "topic_keyword",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "create an account",
+        "revised_from_plan": false,
+        "confidence": 0.8
+      }
+    },
+    {
+      "id": 44,
+      "theme": "ELIGIBILITY_ACCOUNT",
+      "function": "OBLIGATION",
+      "block_id": 8,
+      "is_block_start": false,
+      "reason": "continue ELIGIBILITY_ACCOUNT : obligation de proteger son compte et son mot de passe."
+    },
+    {
+      "id": 45,
+      "theme": "ELIGIBILITY_ACCOUNT",
+      "function": "LIMITATION_DISCLAIMER",
+      "block_id": 8,
+      "is_block_start": false,
+      "reason": "continue ELIGIBILITY_ACCOUNT : exclusion de responsabilite en cas de manquement, consequence liee au compte."
+    },
+    {
+      "id": 46,
+      "theme": "ELIGIBILITY_ACCOUNT",
+      "function": "PROCEDURE_MECHANISM",
+      "block_id": 8,
+      "is_block_start": false,
+      "reason": "continue ELIGIBILITY_ACCOUNT : controle des communications, mecanisme lie au compte."
+    },
+    {
+      "id": 47,
+      "theme": "ELIGIBILITY_ACCOUNT",
+      "function": "PROCEDURE_MECHANISM",
+      "block_id": 8,
+      "is_block_start": false,
+      "reason": "continue ELIGIBILITY_ACCOUNT : communications administratives liees au compte."
+    },
+    {
+      "id": 48,
+      "theme": "ELIGIBILITY_ACCOUNT",
+      "function": "PROCEDURE_MECHANISM",
+      "block_id": 8,
+      "is_block_start": false,
+      "reason": "continue ELIGIBILITY_ACCOUNT : statut de ces communications et impossibilite d'opt-out."
+    },
+    {
+      "id": 49,
+      "theme": "ELIGIBILITY_ACCOUNT",
+      "function": "OBLIGATION",
+      "block_id": 8,
+      "is_block_start": false,
+      "reason": "continue ELIGIBILITY_ACCOUNT : mise a jour des informations du compte (numero de telephone), clot le bloc."
+    },
+    {
+      "id": 50,
+      "theme": "LICENSE_IP",
+      "function": "SCOPE_APPLICABILITY",
+      "block_id": 9,
+      "is_block_start": true,
+      "rationale": "titre nominal court sans verbe conjugue annoncant la section licence d'usage ; cite « your license to use the services ».",
+      "rationale_codes": {
+        "decision_trigger": "title_marker",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "your license to use the services",
+        "revised_from_plan": false,
+        "confidence": 0.85
+      }
+    },
+    {
+      "id": 51,
+      "theme": "LICENSE_IP",
+      "function": "RIGHT_GRANT",
+      "block_id": 9,
+      "is_block_start": false,
+      "reason": "continue LICENSE_IP : Twitter accorde une licence d'usage du logiciel."
+    },
+    {
+      "id": 52,
+      "theme": "LICENSE_IP",
+      "function": "PROCEDURE_MECHANISM",
+      "block_id": 9,
+      "is_block_start": false,
+      "reason": "continue LICENSE_IP : finalite de cette licence, prolonge l'octroi."
+    },
+    {
+      "id": 53,
+      "theme": "LICENSE_IP",
+      "function": "PROCEDURE_MECHANISM",
+      "block_id": 9,
+      "is_block_start": false,
+      "reason": "continue LICENSE_IP : protection des services par copyright et marques."
+    },
+    {
+      "id": 54,
+      "theme": "LICENSE_IP",
+      "function": "LIMITATION_DISCLAIMER",
+      "block_id": 9,
+      "is_block_start": false,
+      "reason": "continue LICENSE_IP : aucun droit sur le nom et les marques Twitter."
+    },
+    {
+      "id": 55,
+      "theme": "LICENSE_IP",
+      "function": "PROCEDURE_MECHANISM",
+      "block_id": 9,
+      "is_block_start": false,
+      "reason": "continue LICENSE_IP : propriete exclusive des services par Twitter."
+    },
+    {
+      "id": 56,
+      "theme": "LICENSE_IP",
+      "function": "RIGHT_GRANT",
+      "block_id": 9,
+      "is_block_start": false,
+      "reason": "continue LICENSE_IP : usage libre du feedback fourni, prolonge le bloc licence/droits, clot le bloc."
+    },
+    {
+      "id": 57,
+      "theme": "TERMINATION",
+      "function": "GOVERNANCE",
+      "block_id": 10,
+      "is_block_start": true,
+      "rationale": "nouveau sujet : fin de l'accord par l'utilisateur ; cite « end your legal agreement ».",
+      "rationale_codes": {
+        "decision_trigger": "topic_keyword",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "end your legal agreement",
+        "revised_from_plan": false,
+        "confidence": 0.82
+      }
+    },
+    {
+      "id": 58,
+      "theme": "TERMINATION",
+      "function": "PROCEDURE_MECHANISM",
+      "block_id": 10,
+      "is_block_start": false,
+      "reason": "continue TERMINATION : instructions de desactivation du compte, mecanisme."
+    },
+    {
+      "id": 59,
+      "theme": "TERMINATION",
+      "function": "GOVERNANCE",
+      "block_id": 10,
+      "is_block_start": false,
+      "reason": "continue TERMINATION : droit de Twitter de suspendre ou resilier le compte."
+    },
+    {
+      "id": 60,
+      "theme": "TERMINATION",
+      "function": "PROCEDURE_MECHANISM",
+      "block_id": 10,
+      "is_block_start": false,
+      "reason": "continue TERMINATION : notification de la resiliation, mecanisme."
+    },
+    {
+      "id": 61,
+      "theme": "TERMINATION",
+      "function": "PROCEDURE_MECHANISM",
+      "block_id": 10,
+      "is_block_start": false,
+      "reason": "continue TERMINATION : effets de la resiliation et survie de certaines sections, clot le bloc."
+    },
+    {
+      "id": 62,
+      "theme": "WARRANTY_DISCLAIMER",
+      "function": "SCOPE_APPLICABILITY",
+      "block_id": 11,
+      "is_block_start": true,
+      "rationale": "titre nominal court annoncant la section as-is/garanties ; cite « the services are available ».",
+      "rationale_codes": {
+        "decision_trigger": "title_marker",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "the services are available",
+        "revised_from_plan": false,
+        "confidence": 0.78
+      }
+    },
+    {
+      "id": 63,
+      "theme": "WARRANTY_DISCLAIMER",
+      "function": "RISK_ALLOCATION",
+      "block_id": 11,
+      "is_block_start": false,
+      "reason": "continue WARRANTY_DISCLAIMER : usage des services a vos propres risques."
+    },
+    {
+      "id": 64,
+      "theme": "WARRANTY_DISCLAIMER",
+      "function": "LIMITATION_DISCLAIMER",
+      "block_id": 11,
+      "is_block_start": false,
+      "reason": "continue WARRANTY_DISCLAIMER : services fournis as-is et as-available."
+    },
+    {
+      "id": 65,
+      "theme": "WARRANTY_DISCLAIMER",
+      "function": "DEFINITION",
+      "block_id": 11,
+      "is_block_start": false,
+      "reason": "continue WARRANTY_DISCLAIMER : definition de twitter entities, prolonge la section disclaimer (definition incidente non autonome)."
+    },
+    {
+      "id": 66,
+      "theme": "WARRANTY_DISCLAIMER",
+      "function": "LIMITATION_DISCLAIMER",
+      "block_id": 11,
+      "is_block_start": false,
+      "reason": "continue WARRANTY_DISCLAIMER : exclusion de toutes garanties par les twitter entities."
+    },
+    {
+      "id": 67,
+      "theme": "WARRANTY_DISCLAIMER",
+      "function": "LIMITATION_DISCLAIMER",
+      "block_id": 11,
+      "is_block_start": false,
+      "reason": "continue WARRANTY_DISCLAIMER : detail des garanties exclues (items i-iv)."
+    },
+    {
+      "id": 68,
+      "theme": "WARRANTY_DISCLAIMER",
+      "function": "LIMITATION_DISCLAIMER",
+      "block_id": 11,
+      "is_block_start": false,
+      "reason": "continue WARRANTY_DISCLAIMER : aucun conseil ne cree de garantie, prolonge le disclaimer."
+    },
+    {
+      "id": 69,
+      "theme": "LIABILITY_LIMITATION",
+      "function": "LIMITATION_DISCLAIMER",
+      "block_id": 12,
+      "is_block_start": true,
+      "rationale": "nouveau sujet : limitation de responsabilite pour dommages ; cite « shall not be liable ».",
+      "rationale_codes": {
+        "decision_trigger": "lexical_shift",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "shall not be liable",
+        "revised_from_plan": false,
+        "confidence": 0.8
+      }
+    },
+    {
+      "id": 70,
+      "theme": "LIABILITY_LIMITATION",
+      "function": "LIMITATION_DISCLAIMER",
+      "block_id": 12,
+      "is_block_start": false,
+      "reason": "continue LIABILITY_LIMITATION : portee de la limitation a toute theorie de responsabilite."
+    },
+    {
+      "id": 71,
+      "theme": "LIABILITY_LIMITATION",
+      "function": "LIMITATION_DISCLAIMER",
+      "block_id": 12,
+      "is_block_start": false,
+      "reason": "continue LIABILITY_LIMITATION : reserve juridictionnelle sur l'exclusion des garanties, clot le bloc responsabilite."
+    },
+    {
+      "id": 72,
+      "theme": "MODIFICATION_OF_TERMS",
+      "function": "GOVERNANCE",
+      "block_id": 13,
+      "is_block_start": true,
+      "rationale": "nouveau sujet : revision des conditions ; cite « we may revise these terms ».",
+      "rationale_codes": {
+        "decision_trigger": "topic_keyword",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "we may revise these terms",
+        "revised_from_plan": false,
+        "confidence": 0.88
+      }
+    },
+    {
+      "id": 73,
+      "theme": "MODIFICATION_OF_TERMS",
+      "function": "PROCEDURE_MECHANISM",
+      "block_id": 13,
+      "is_block_start": false,
+      "reason": "continue MODIFICATION_OF_TERMS : non-retroactivite et version courante prevalente, consequence de la revision."
+    },
+    {
+      "id": 74,
+      "theme": "MODIFICATION_OF_TERMS",
+      "function": "PROCEDURE_MECHANISM",
+      "block_id": 13,
+      "is_block_start": false,
+      "reason": "continue MODIFICATION_OF_TERMS : notification des revisions materielles, mecanisme."
+    },
+    {
+      "id": 75,
+      "theme": "MODIFICATION_OF_TERMS",
+      "function": "PROCEDURE_MECHANISM",
+      "block_id": 13,
+      "is_block_start": false,
+      "reason": "continue MODIFICATION_OF_TERMS : acceptation par usage continu apres revision, consequence, clot le bloc."
+    },
+    {
+      "id": 76,
+      "theme": "MISC_BOILERPLATE",
+      "function": "GOVERNANCE",
+      "block_id": 14,
+      "is_block_start": true,
+      "rationale": "nouveau sujet : clause de divisibilite ; cite « invalid or unenforceable ».",
+      "rationale_codes": {
+        "decision_trigger": "topic_keyword",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "invalid or unenforceable",
+        "revised_from_plan": false,
+        "confidence": 0.8
+      }
+    },
+    {
+      "id": 77,
+      "theme": "MISC_BOILERPLATE",
+      "function": "GOVERNANCE",
+      "block_id": 14,
+      "is_block_start": false,
+      "reason": "continue MISC_BOILERPLATE : clause de non-renonciation (waiver), meme registre balai."
+    },
+    {
+      "id": 78,
+      "theme": "META",
+      "function": "META",
+      "block_id": 15,
+      "is_block_start": true,
+      "rationale": "donnee factuelle non normative : identite de l'entite contractante et adresse ; cite « twitter international company ».",
+      "rationale_codes": {
+        "decision_trigger": "topic_keyword",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "twitter international company",
+        "revised_from_plan": false,
+        "confidence": 0.7
+      }
+    },
+    {
+      "id": 79,
+      "theme": "META",
+      "function": "META",
+      "block_id": 15,
+      "is_block_start": false,
+      "reason": "continue META : invitation a contacter Twitter pour toute question, donnee factuelle de contact."
+    }
+  ]
+}

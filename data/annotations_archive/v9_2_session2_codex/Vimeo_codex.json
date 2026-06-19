@@ -1,0 +1,1961 @@
+{
+  "doc": "Vimeo",
+  "judge": "codex",
+  "version": "v9.2-nature-derived",
+  "document_plan": {
+    "estimated_n_blocks": 37,
+    "rationale_global": "lecture globale V9.2 ; segmentation conservatrice par sujet juridique autonome, avec continuité par défaut.",
+    "segments": [
+      {
+        "start_id": 0,
+        "theme": "META",
+        "rationale": "ouverture prévue pour date, adresse, URL ou identité d'entité",
+        "evidence_span": "last updated : march 3 , 2017"
+      },
+      {
+        "start_id": 1,
+        "theme": "PREAMBLE_SCOPE",
+        "rationale": "ouverture prévue pour cadre, acceptation ou périmètre du service",
+        "evidence_span": "** please read this document carefully ."
+      },
+      {
+        "start_id": 7,
+        "theme": "ELIGIBILITY_ACCOUNT",
+        "rationale": "ouverture prévue pour compte, inscription, âge, identifiants ou sécurité d'accès",
+        "evidence_span": "term and termination ; account deletion"
+      },
+      {
+        "start_id": 8,
+        "theme": "PREAMBLE_SCOPE",
+        "rationale": "ouverture prévue pour cadre, acceptation ou périmètre du service",
+        "evidence_span": "third party copyrights and other rights"
+      },
+      {
+        "start_id": 11,
+        "theme": "ELIGIBILITY_ACCOUNT",
+        "rationale": "ouverture prévue pour compte, inscription, âge, identifiants ou sécurité d'accès",
+        "evidence_span": "age requirement : you must be at least 13 years"
+      },
+      {
+        "start_id": 14,
+        "theme": "PREAMBLE_SCOPE",
+        "rationale": "ouverture prévue pour cadre, acceptation ou périmètre du service",
+        "evidence_span": "notice to parents and guardians : by granting your child"
+      },
+      {
+        "start_id": 29,
+        "theme": "ACCEPTABLE_USE",
+        "rationale": "ouverture prévue pour règles d'usage, restrictions, conduite ou interdictions",
+        "evidence_span": "restrictions : except as expressly permitted by vimeo in writing"
+      },
+      {
+        "start_id": 32,
+        "theme": "PREAMBLE_SCOPE",
+        "rationale": "ouverture prévue pour cadre, acceptation ou périmètre du service",
+        "evidence_span": "mobile app : your use of the vimeo service through"
+      },
+      {
+        "start_id": 33,
+        "theme": "PRIVACY_DATA",
+        "rationale": "ouverture prévue pour données personnelles, confidentialité ou communications",
+        "evidence_span": "your privacy rights are set forth in our privacy policy"
+      },
+      {
+        "start_id": 38,
+        "theme": "ELIGIBILITY_ACCOUNT",
+        "rationale": "ouverture prévue pour compte, inscription, âge, identifiants ou sécurité d'accès",
+        "evidence_span": "registration : to fully use the vimeo service , you"
+      },
+      {
+        "start_id": 41,
+        "theme": "ACCEPTABLE_USE",
+        "rationale": "ouverture prévue pour règles d'usage, restrictions, conduite ou interdictions",
+        "evidence_span": "user name : we encourage you to use your real"
+      },
+      {
+        "start_id": 44,
+        "theme": "ELIGIBILITY_ACCOUNT",
+        "rationale": "ouverture prévue pour compte, inscription, âge, identifiants ou sécurité d'accès",
+        "evidence_span": "account security : you are responsible for all activity that"
+      },
+      {
+        "start_id": 51,
+        "theme": "SUBSCRIPTION_RENEWAL",
+        "rationale": "ouverture prévue pour abonnement, essai, reconduction ou renouvellement",
+        "evidence_span": "vimeo plus , pro and business : in addition to"
+      },
+      {
+        "start_id": 55,
+        "theme": "PAYMENT_BILLING",
+        "rationale": "ouverture prévue pour prix, frais, paiement, taxes, remboursement ou facturation",
+        "evidence_span": "we reserve the right to charge for excessive use of"
+      },
+      {
+        "start_id": 64,
+        "theme": "SUBSCRIPTION_RENEWAL",
+        "rationale": "ouverture prévue pour abonnement, essai, reconduction ou renouvellement",
+        "evidence_span": "renewals : subject to the terms hereof , you may"
+      },
+      {
+        "start_id": 72,
+        "theme": "PREAMBLE_SCOPE",
+        "rationale": "ouverture prévue pour cadre, acceptation ou périmètre du service",
+        "evidence_span": "other purchases : purchases of other products and services through"
+      },
+      {
+        "start_id": 73,
+        "theme": "ELIGIBILITY_ACCOUNT",
+        "rationale": "ouverture prévue pour compte, inscription, âge, identifiants ou sécurité d'accès",
+        "evidence_span": "term and termination ; account deletion"
+      },
+      {
+        "start_id": 74,
+        "theme": "PREAMBLE_SCOPE",
+        "rationale": "ouverture prévue pour cadre, acceptation ou périmètre du service",
+        "evidence_span": "term : this agreement begins on the date you first"
+      },
+      {
+        "start_id": 75,
+        "theme": "ELIGIBILITY_ACCOUNT",
+        "rationale": "ouverture prévue pour compte, inscription, âge, identifiants ou sécurité d'accès",
+        "evidence_span": "account deletion : you may delete your account at any"
+      },
+      {
+        "start_id": 78,
+        "theme": "TERMINATION",
+        "rationale": "ouverture prévue pour suspension, annulation, suppression ou résiliation",
+        "evidence_span": "termination for breach : vimeo may suspend , disable ,"
+      },
+      {
+        "start_id": 92,
+        "theme": "USER_CONTENT",
+        "rationale": "ouverture prévue pour contenu utilisateur, publication, avis ou feedback",
+        "evidence_span": "all videos you submit must also comply with the vimeo"
+      },
+      {
+        "start_id": 93,
+        "theme": "PREAMBLE_SCOPE",
+        "rationale": "ouverture prévue pour cadre, acceptation ou périmètre du service",
+        "evidence_span": "in using the vimeo service , you must behave in"
+      },
+      {
+        "start_id": 102,
+        "theme": "LICENSE_IP",
+        "rationale": "ouverture prévue pour licence, propriété intellectuelle, copyright, marque ou DMCA",
+        "evidence_span": "license to vimeo : as between you and vimeo ,"
+      },
+      {
+        "start_id": 107,
+        "theme": "TERMINATION",
+        "rationale": "ouverture prévue pour suspension, annulation, suppression ou résiliation",
+        "evidence_span": "duration of licenses : the above licenses will continue unless"
+      },
+      {
+        "start_id": 110,
+        "theme": "USER_CONTENT",
+        "rationale": "ouverture prévue pour contenu utilisateur, publication, avis ou feedback",
+        "evidence_span": "as between you and vimeo , you own all non-video"
+      },
+      {
+        "start_id": 115,
+        "theme": "LICENSE_IP",
+        "rationale": "ouverture prévue pour licence, propriété intellectuelle, copyright, marque ou DMCA",
+        "evidence_span": "for each piece of content that you submit , you"
+      },
+      {
+        "start_id": 117,
+        "theme": "THIRD_PARTY",
+        "rationale": "ouverture prévue pour services, liens, contenus ou applications de tiers",
+        "evidence_span": "third party copyrights and other rights"
+      },
+      {
+        "start_id": 118,
+        "theme": "LICENSE_IP",
+        "rationale": "ouverture prévue pour licence, propriété intellectuelle, copyright, marque ou DMCA",
+        "evidence_span": "vimeo respects the intellectual property rights of others ."
+      },
+      {
+        "start_id": 121,
+        "theme": "PREAMBLE_SCOPE",
+        "rationale": "ouverture prévue pour cadre, acceptation ou périmètre du service",
+        "evidence_span": "vimeo reserves the right to modify the vimeo service ."
+      },
+      {
+        "start_id": 124,
+        "theme": "WARRANTY_DISCLAIMER",
+        "rationale": "ouverture prévue pour exclusion de garanties",
+        "evidence_span": "vimeo provides the vimeo service on an `` as is"
+      },
+      {
+        "start_id": 137,
+        "theme": "LIABILITY_LIMITATION",
+        "rationale": "ouverture prévue pour limitation de responsabilité ou dommages",
+        "evidence_span": "to the fullest extent permitted by law : -lrb- i"
+      },
+      {
+        "start_id": 141,
+        "theme": "GOVERNING_LAW",
+        "rationale": "ouverture prévue pour droit applicable, juridiction ou venue",
+        "evidence_span": "governing law : this agreement shall be governed by the"
+      },
+      {
+        "start_id": 142,
+        "theme": "ACCEPTABLE_USE",
+        "rationale": "ouverture prévue pour règles d'usage, restrictions, conduite ou interdictions",
+        "evidence_span": "the uniform commercial code , the uniform computer information transaction"
+      },
+      {
+        "start_id": 143,
+        "theme": "PREAMBLE_SCOPE",
+        "rationale": "ouverture prévue pour cadre, acceptation ou périmètre du service",
+        "evidence_span": "disputes : any action arising out of or relating to"
+      },
+      {
+        "start_id": 145,
+        "theme": "MISC_BOILERPLATE",
+        "rationale": "ouverture prévue pour clauses finales, cession, divisibilité, avis ou intégralité",
+        "evidence_span": "interpretation ; severability ; waiver ; remedies : headings are"
+      },
+      {
+        "start_id": 157,
+        "theme": "DISPUTE_ARBITRATION",
+        "rationale": "ouverture prévue pour litige, arbitrage, action collective ou tribunal",
+        "evidence_span": "nothing herein shall limit vimeo 's right to object to"
+      },
+      {
+        "start_id": 158,
+        "theme": "PREAMBLE_SCOPE",
+        "rationale": "ouverture prévue pour cadre, acceptation ou périmètre du service",
+        "evidence_span": "modification : this agreement may not be modified except by"
+      }
+    ]
+  },
+  "annotations": [
+    {
+      "id": 0,
+      "theme": "META",
+      "block_id": 0,
+      "is_block_start": true,
+      "rationale": "ouvre date, adresse, URL ou identité d'entité ; indice « last updated : march 3 , 2017 »",
+      "rationale_codes": {
+        "decision_trigger": "document_start",
+        "relation_to_prev": "document_start",
+        "evidence_span": "last updated : march 3 , 2017",
+        "revised_from_plan": false,
+        "confidence": 0.95
+      },
+      "legal_nature": "META",
+      "legal_nature_marker": "last updated"
+    },
+    {
+      "id": 1,
+      "theme": "PREAMBLE_SCOPE",
+      "block_id": 1,
+      "is_block_start": true,
+      "rationale": "ouvre cadre, acceptation ou périmètre du service ; indice « ** please read this document carefully . »",
+      "rationale_codes": {
+        "decision_trigger": "topic_keyword",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "** please read this document carefully .",
+        "revised_from_plan": false,
+        "confidence": 0.82
+      },
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 2,
+      "theme": "PREAMBLE_SCOPE",
+      "block_id": 1,
+      "is_block_start": false,
+      "reason": "continue PREAMBLE_SCOPE, précision ou effet du même sujet",
+      "legal_nature": "META",
+      "legal_nature_marker": "inc."
+    },
+    {
+      "id": 3,
+      "theme": "PREAMBLE_SCOPE",
+      "block_id": 1,
+      "is_block_start": false,
+      "reason": "continue PREAMBLE_SCOPE, précision ou effet du même sujet",
+      "legal_nature": "SCOPE_APPLICABILITY",
+      "legal_nature_marker": "by using"
+    },
+    {
+      "id": 4,
+      "theme": "PREAMBLE_SCOPE",
+      "block_id": 1,
+      "is_block_start": false,
+      "reason": "continue PREAMBLE_SCOPE, précision ou effet du même sujet",
+      "legal_nature": "PROHIBITION",
+      "legal_nature_marker": "do not"
+    },
+    {
+      "id": 5,
+      "theme": "PREAMBLE_SCOPE",
+      "block_id": 1,
+      "is_block_start": false,
+      "reason": "continue PREAMBLE_SCOPE, précision ou effet du même sujet",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 6,
+      "theme": "PREAMBLE_SCOPE",
+      "block_id": 1,
+      "is_block_start": false,
+      "reason": "continue PREAMBLE_SCOPE, précision ou effet du même sujet",
+      "legal_nature": "RIGHT_GRANT",
+      "legal_nature_marker": "license to"
+    },
+    {
+      "id": 7,
+      "theme": "ELIGIBILITY_ACCOUNT",
+      "block_id": 2,
+      "is_block_start": true,
+      "rationale": "ouvre compte, inscription, âge, identifiants ou sécurité d'accès ; indice « term and termination ; account deletion »",
+      "rationale_codes": {
+        "decision_trigger": "title_marker",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "term and termination ; account deletion",
+        "revised_from_plan": false,
+        "confidence": 0.82
+      },
+      "legal_nature": "GOVERNANCE",
+      "legal_nature_marker": "termination"
+    },
+    {
+      "id": 8,
+      "theme": "PREAMBLE_SCOPE",
+      "block_id": 3,
+      "is_block_start": true,
+      "rationale": "ouvre cadre, acceptation ou périmètre du service ; indice « third party copyrights and other rights »",
+      "rationale_codes": {
+        "decision_trigger": "title_marker",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "third party copyrights and other rights",
+        "revised_from_plan": false,
+        "confidence": 0.82
+      },
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 9,
+      "theme": "PREAMBLE_SCOPE",
+      "block_id": 3,
+      "is_block_start": false,
+      "reason": "continue PREAMBLE_SCOPE, précision ou effet du même sujet",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 10,
+      "theme": "PREAMBLE_SCOPE",
+      "block_id": 3,
+      "is_block_start": false,
+      "reason": "continue PREAMBLE_SCOPE, précision ou effet du même sujet",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 11,
+      "theme": "ELIGIBILITY_ACCOUNT",
+      "block_id": 4,
+      "is_block_start": true,
+      "rationale": "ouvre compte, inscription, âge, identifiants ou sécurité d'accès ; indice « age requirement : you must be at least 13 years »",
+      "rationale_codes": {
+        "decision_trigger": "modal_verb",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "age requirement : you must be at least 13 years",
+        "revised_from_plan": false,
+        "confidence": 0.82
+      },
+      "legal_nature": "OBLIGATION",
+      "legal_nature_marker": "you must"
+    },
+    {
+      "id": 12,
+      "theme": "ELIGIBILITY_ACCOUNT",
+      "block_id": 4,
+      "is_block_start": false,
+      "reason": "continue ELIGIBILITY_ACCOUNT, précision ou effet du même sujet",
+      "legal_nature": "RIGHT_GRANT",
+      "legal_nature_marker": "permission to"
+    },
+    {
+      "id": 13,
+      "theme": "ELIGIBILITY_ACCOUNT",
+      "block_id": 4,
+      "is_block_start": false,
+      "reason": "continue ELIGIBILITY_ACCOUNT, précision ou effet du même sujet",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 14,
+      "theme": "PREAMBLE_SCOPE",
+      "block_id": 5,
+      "is_block_start": true,
+      "rationale": "ouvre cadre, acceptation ou périmètre du service ; indice « notice to parents and guardians : by granting your child »",
+      "rationale_codes": {
+        "decision_trigger": "modal_verb",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "notice to parents and guardians : by granting your child",
+        "revised_from_plan": false,
+        "confidence": 0.82
+      },
+      "legal_nature": "RIGHT_GRANT",
+      "legal_nature_marker": "permission to"
+    },
+    {
+      "id": 15,
+      "theme": "PREAMBLE_SCOPE",
+      "block_id": 5,
+      "is_block_start": false,
+      "reason": "continue PREAMBLE_SCOPE, précision ou effet du même sujet",
+      "legal_nature": "OBLIGATION",
+      "legal_nature_marker": "you are responsible"
+    },
+    {
+      "id": 16,
+      "theme": "PREAMBLE_SCOPE",
+      "block_id": 5,
+      "is_block_start": false,
+      "reason": "continue PREAMBLE_SCOPE, précision ou effet du même sujet",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 17,
+      "theme": "PREAMBLE_SCOPE",
+      "block_id": 5,
+      "is_block_start": false,
+      "reason": "continue PREAMBLE_SCOPE, précision ou effet du même sujet",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 18,
+      "theme": "PREAMBLE_SCOPE",
+      "block_id": 5,
+      "is_block_start": false,
+      "reason": "continue PREAMBLE_SCOPE, précision ou effet du même sujet",
+      "legal_nature": "PROHIBITION",
+      "legal_nature_marker": "may not"
+    },
+    {
+      "id": 19,
+      "theme": "PREAMBLE_SCOPE",
+      "block_id": 5,
+      "is_block_start": false,
+      "reason": "continue PREAMBLE_SCOPE, précision ou effet du même sujet",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 20,
+      "theme": "PREAMBLE_SCOPE",
+      "block_id": 5,
+      "is_block_start": false,
+      "reason": "continue PREAMBLE_SCOPE, précision ou effet du même sujet",
+      "legal_nature": "PROHIBITION",
+      "legal_nature_marker": "do not"
+    },
+    {
+      "id": 21,
+      "theme": "PREAMBLE_SCOPE",
+      "block_id": 5,
+      "is_block_start": false,
+      "reason": "continue PREAMBLE_SCOPE, précision ou effet du même sujet",
+      "legal_nature": "RIGHT_GRANT",
+      "legal_nature_marker": "license to"
+    },
+    {
+      "id": 22,
+      "theme": "PREAMBLE_SCOPE",
+      "block_id": 5,
+      "is_block_start": false,
+      "reason": "continue PREAMBLE_SCOPE, précision ou effet du même sujet",
+      "legal_nature": "RIGHT_GRANT",
+      "legal_nature_marker": "grants you"
+    },
+    {
+      "id": 23,
+      "theme": "PREAMBLE_SCOPE",
+      "block_id": 5,
+      "is_block_start": false,
+      "reason": "continue PREAMBLE_SCOPE, précision ou effet du même sujet",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 24,
+      "theme": "PREAMBLE_SCOPE",
+      "block_id": 5,
+      "is_block_start": false,
+      "reason": "continue PREAMBLE_SCOPE, précision ou effet du même sujet",
+      "legal_nature": "PROHIBITION",
+      "legal_nature_marker": "may not"
+    },
+    {
+      "id": 25,
+      "theme": "PREAMBLE_SCOPE",
+      "block_id": 5,
+      "is_block_start": false,
+      "reason": "continue PREAMBLE_SCOPE, précision ou effet du même sujet",
+      "legal_nature": "PROHIBITION",
+      "legal_nature_marker": "may not"
+    },
+    {
+      "id": 26,
+      "theme": "PREAMBLE_SCOPE",
+      "block_id": 5,
+      "is_block_start": false,
+      "reason": "continue PREAMBLE_SCOPE, précision ou effet du même sujet",
+      "legal_nature": "RIGHT_GRANT",
+      "legal_nature_marker": "you may use"
+    },
+    {
+      "id": 27,
+      "theme": "PREAMBLE_SCOPE",
+      "block_id": 5,
+      "is_block_start": false,
+      "reason": "continue PREAMBLE_SCOPE, précision ou effet du même sujet",
+      "legal_nature": "RIGHT_GRANT",
+      "legal_nature_marker": "you may use"
+    },
+    {
+      "id": 28,
+      "theme": "PREAMBLE_SCOPE",
+      "block_id": 5,
+      "is_block_start": false,
+      "reason": "continue PREAMBLE_SCOPE, précision ou effet du même sujet",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 29,
+      "theme": "ACCEPTABLE_USE",
+      "block_id": 6,
+      "is_block_start": true,
+      "rationale": "ouvre règles d'usage, restrictions, conduite ou interdictions ; indice « restrictions : except as expressly permitted by vimeo in writing »",
+      "rationale_codes": {
+        "decision_trigger": "topic_keyword",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "restrictions : except as expressly permitted by vimeo in writing",
+        "revised_from_plan": false,
+        "confidence": 0.82
+      },
+      "legal_nature": "PROHIBITION",
+      "legal_nature_marker": "will not"
+    },
+    {
+      "id": 30,
+      "theme": "ACCEPTABLE_USE",
+      "block_id": 6,
+      "is_block_start": false,
+      "reason": "continue ACCEPTABLE_USE, précision ou effet du même sujet",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 31,
+      "theme": "ACCEPTABLE_USE",
+      "block_id": 6,
+      "is_block_start": false,
+      "reason": "continue ACCEPTABLE_USE, précision ou effet du même sujet",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 32,
+      "theme": "PREAMBLE_SCOPE",
+      "block_id": 7,
+      "is_block_start": true,
+      "rationale": "ouvre cadre, acceptation ou périmètre du service ; indice « mobile app : your use of the vimeo service through »",
+      "rationale_codes": {
+        "decision_trigger": "topic_keyword",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "mobile app : your use of the vimeo service through",
+        "revised_from_plan": false,
+        "confidence": 0.82
+      },
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 33,
+      "theme": "PRIVACY_DATA",
+      "block_id": 8,
+      "is_block_start": true,
+      "rationale": "ouvre données personnelles, confidentialité ou communications ; indice « your privacy rights are set forth in our privacy policy »",
+      "rationale_codes": {
+        "decision_trigger": "modal_verb",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "your privacy rights are set forth in our privacy policy",
+        "revised_from_plan": false,
+        "confidence": 0.82
+      },
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 34,
+      "theme": "PRIVACY_DATA",
+      "block_id": 8,
+      "is_block_start": false,
+      "reason": "continue PRIVACY_DATA, précision ou effet du même sujet",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 35,
+      "theme": "PRIVACY_DATA",
+      "block_id": 8,
+      "is_block_start": false,
+      "reason": "continue PRIVACY_DATA, précision ou effet du même sujet",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 36,
+      "theme": "PRIVACY_DATA",
+      "block_id": 8,
+      "is_block_start": false,
+      "reason": "continue PRIVACY_DATA, précision ou effet du même sujet",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 37,
+      "theme": "PRIVACY_DATA",
+      "block_id": 8,
+      "is_block_start": false,
+      "reason": "continue PRIVACY_DATA, précision ou effet du même sujet",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 38,
+      "theme": "ELIGIBILITY_ACCOUNT",
+      "block_id": 9,
+      "is_block_start": true,
+      "rationale": "ouvre compte, inscription, âge, identifiants ou sécurité d'accès ; indice « registration : to fully use the vimeo service , you »",
+      "rationale_codes": {
+        "decision_trigger": "modal_verb",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "registration : to fully use the vimeo service , you",
+        "revised_from_plan": false,
+        "confidence": 0.82
+      },
+      "legal_nature": "OBLIGATION",
+      "legal_nature_marker": "you must"
+    },
+    {
+      "id": 39,
+      "theme": "ELIGIBILITY_ACCOUNT",
+      "block_id": 9,
+      "is_block_start": false,
+      "reason": "continue ELIGIBILITY_ACCOUNT, précision ou effet du même sujet",
+      "legal_nature": "OBLIGATION",
+      "legal_nature_marker": "you must"
+    },
+    {
+      "id": 40,
+      "theme": "ELIGIBILITY_ACCOUNT",
+      "block_id": 9,
+      "is_block_start": false,
+      "reason": "continue ELIGIBILITY_ACCOUNT, précision ou effet du même sujet",
+      "legal_nature": "OBLIGATION",
+      "legal_nature_marker": "must"
+    },
+    {
+      "id": 41,
+      "theme": "ACCEPTABLE_USE",
+      "block_id": 10,
+      "is_block_start": true,
+      "rationale": "ouvre règles d'usage, restrictions, conduite ou interdictions ; indice « user name : we encourage you to use your real »",
+      "rationale_codes": {
+        "decision_trigger": "topic_keyword",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "user name : we encourage you to use your real",
+        "revised_from_plan": false,
+        "confidence": 0.82
+      },
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 42,
+      "theme": "ACCEPTABLE_USE",
+      "block_id": 10,
+      "is_block_start": false,
+      "reason": "continue ACCEPTABLE_USE, précision ou effet du même sujet",
+      "legal_nature": "OBLIGATION",
+      "legal_nature_marker": "you must"
+    },
+    {
+      "id": 43,
+      "theme": "ACCEPTABLE_USE",
+      "block_id": 10,
+      "is_block_start": false,
+      "reason": "continue ACCEPTABLE_USE, précision ou effet du même sujet",
+      "legal_nature": "PROHIBITION",
+      "legal_nature_marker": "may not"
+    },
+    {
+      "id": 44,
+      "theme": "ELIGIBILITY_ACCOUNT",
+      "block_id": 11,
+      "is_block_start": true,
+      "rationale": "ouvre compte, inscription, âge, identifiants ou sécurité d'accès ; indice « account security : you are responsible for all activity that »",
+      "rationale_codes": {
+        "decision_trigger": "topic_keyword",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "account security : you are responsible for all activity that",
+        "revised_from_plan": false,
+        "confidence": 0.82
+      },
+      "legal_nature": "OBLIGATION",
+      "legal_nature_marker": "you are responsible"
+    },
+    {
+      "id": 45,
+      "theme": "ELIGIBILITY_ACCOUNT",
+      "block_id": 11,
+      "is_block_start": false,
+      "reason": "continue ELIGIBILITY_ACCOUNT, précision ou effet du même sujet",
+      "legal_nature": "PROHIBITION",
+      "legal_nature_marker": "must not"
+    },
+    {
+      "id": 46,
+      "theme": "ELIGIBILITY_ACCOUNT",
+      "block_id": 11,
+      "is_block_start": false,
+      "reason": "continue ELIGIBILITY_ACCOUNT, précision ou effet du même sujet",
+      "legal_nature": "OBLIGATION",
+      "legal_nature_marker": "you must"
+    },
+    {
+      "id": 47,
+      "theme": "ELIGIBILITY_ACCOUNT",
+      "block_id": 11,
+      "is_block_start": false,
+      "reason": "continue ELIGIBILITY_ACCOUNT, précision ou effet du même sujet",
+      "legal_nature": "OBLIGATION",
+      "legal_nature_marker": "you must"
+    },
+    {
+      "id": 48,
+      "theme": "ELIGIBILITY_ACCOUNT",
+      "block_id": 11,
+      "is_block_start": false,
+      "reason": "continue ELIGIBILITY_ACCOUNT, précision ou effet du même sujet",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 49,
+      "theme": "ELIGIBILITY_ACCOUNT",
+      "block_id": 11,
+      "is_block_start": false,
+      "reason": "continue ELIGIBILITY_ACCOUNT, précision ou effet du même sujet",
+      "legal_nature": "OBLIGATION",
+      "legal_nature_marker": "you are responsible"
+    },
+    {
+      "id": 50,
+      "theme": "ELIGIBILITY_ACCOUNT",
+      "block_id": 11,
+      "is_block_start": false,
+      "reason": "continue ELIGIBILITY_ACCOUNT, précision ou effet du même sujet",
+      "legal_nature": "OBLIGATION",
+      "legal_nature_marker": "you must"
+    },
+    {
+      "id": 51,
+      "theme": "SUBSCRIPTION_RENEWAL",
+      "block_id": 12,
+      "is_block_start": true,
+      "rationale": "ouvre abonnement, essai, reconduction ou renouvellement ; indice « vimeo plus , pro and business : in addition to »",
+      "rationale_codes": {
+        "decision_trigger": "topic_keyword",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "vimeo plus , pro and business : in addition to",
+        "revised_from_plan": false,
+        "confidence": 0.82
+      },
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 52,
+      "theme": "SUBSCRIPTION_RENEWAL",
+      "block_id": 12,
+      "is_block_start": false,
+      "reason": "continue SUBSCRIPTION_RENEWAL, précision ou effet du même sujet",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 53,
+      "theme": "SUBSCRIPTION_RENEWAL",
+      "block_id": 12,
+      "is_block_start": false,
+      "reason": "continue SUBSCRIPTION_RENEWAL, précision ou effet du même sujet",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 54,
+      "theme": "SUBSCRIPTION_RENEWAL",
+      "block_id": 12,
+      "is_block_start": false,
+      "reason": "continue SUBSCRIPTION_RENEWAL, précision ou effet du même sujet",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 55,
+      "theme": "PAYMENT_BILLING",
+      "block_id": 13,
+      "is_block_start": true,
+      "rationale": "ouvre prix, frais, paiement, taxes, remboursement ou facturation ; indice « we reserve the right to charge for excessive use of »",
+      "rationale_codes": {
+        "decision_trigger": "modal_verb",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "we reserve the right to charge for excessive use of",
+        "revised_from_plan": false,
+        "confidence": 0.82
+      },
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 56,
+      "theme": "PAYMENT_BILLING",
+      "block_id": 13,
+      "is_block_start": false,
+      "reason": "continue PAYMENT_BILLING, précision ou effet du même sujet",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 57,
+      "theme": "PAYMENT_BILLING",
+      "block_id": 13,
+      "is_block_start": false,
+      "reason": "continue PAYMENT_BILLING, précision ou effet du même sujet",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 58,
+      "theme": "PAYMENT_BILLING",
+      "block_id": 13,
+      "is_block_start": false,
+      "reason": "continue PAYMENT_BILLING, précision ou effet du même sujet",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 59,
+      "theme": "PAYMENT_BILLING",
+      "block_id": 13,
+      "is_block_start": false,
+      "reason": "continue PAYMENT_BILLING, précision ou effet du même sujet",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 60,
+      "theme": "PAYMENT_BILLING",
+      "block_id": 13,
+      "is_block_start": false,
+      "reason": "continue PAYMENT_BILLING, précision ou effet du même sujet",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 61,
+      "theme": "PAYMENT_BILLING",
+      "block_id": 13,
+      "is_block_start": false,
+      "reason": "continue PAYMENT_BILLING, précision ou effet du même sujet",
+      "legal_nature": "GOVERNANCE",
+      "legal_nature_marker": "terminate"
+    },
+    {
+      "id": 62,
+      "theme": "PAYMENT_BILLING",
+      "block_id": 13,
+      "is_block_start": false,
+      "reason": "continue PAYMENT_BILLING, précision ou effet du même sujet",
+      "legal_nature": "PROHIBITION",
+      "legal_nature_marker": "will not"
+    },
+    {
+      "id": 63,
+      "theme": "PAYMENT_BILLING",
+      "block_id": 13,
+      "is_block_start": false,
+      "reason": "continue PAYMENT_BILLING, précision ou effet du même sujet",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 64,
+      "theme": "SUBSCRIPTION_RENEWAL",
+      "block_id": 14,
+      "is_block_start": true,
+      "rationale": "ouvre abonnement, essai, reconduction ou renouvellement ; indice « renewals : subject to the terms hereof , you may »",
+      "rationale_codes": {
+        "decision_trigger": "modal_verb",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "renewals : subject to the terms hereof , you may",
+        "revised_from_plan": false,
+        "confidence": 0.82
+      },
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 65,
+      "theme": "SUBSCRIPTION_RENEWAL",
+      "block_id": 14,
+      "is_block_start": false,
+      "reason": "continue SUBSCRIPTION_RENEWAL, précision ou effet du même sujet",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 66,
+      "theme": "SUBSCRIPTION_RENEWAL",
+      "block_id": 14,
+      "is_block_start": false,
+      "reason": "continue SUBSCRIPTION_RENEWAL, précision ou effet du même sujet",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 67,
+      "theme": "SUBSCRIPTION_RENEWAL",
+      "block_id": 14,
+      "is_block_start": false,
+      "reason": "continue SUBSCRIPTION_RENEWAL, précision ou effet du même sujet",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 68,
+      "theme": "SUBSCRIPTION_RENEWAL",
+      "block_id": 14,
+      "is_block_start": false,
+      "reason": "continue SUBSCRIPTION_RENEWAL, précision ou effet du même sujet",
+      "legal_nature": "PROHIBITION",
+      "legal_nature_marker": "do not"
+    },
+    {
+      "id": 69,
+      "theme": "SUBSCRIPTION_RENEWAL",
+      "block_id": 14,
+      "is_block_start": false,
+      "reason": "continue SUBSCRIPTION_RENEWAL, précision ou effet du même sujet",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 70,
+      "theme": "SUBSCRIPTION_RENEWAL",
+      "block_id": 14,
+      "is_block_start": false,
+      "reason": "continue SUBSCRIPTION_RENEWAL, précision ou effet du même sujet",
+      "legal_nature": "OBLIGATION",
+      "legal_nature_marker": "you will"
+    },
+    {
+      "id": 71,
+      "theme": "SUBSCRIPTION_RENEWAL",
+      "block_id": 14,
+      "is_block_start": false,
+      "reason": "continue SUBSCRIPTION_RENEWAL, précision ou effet du même sujet",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 72,
+      "theme": "PREAMBLE_SCOPE",
+      "block_id": 15,
+      "is_block_start": true,
+      "rationale": "ouvre cadre, acceptation ou périmètre du service ; indice « other purchases : purchases of other products and services through »",
+      "rationale_codes": {
+        "decision_trigger": "topic_keyword",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "other purchases : purchases of other products and services through",
+        "revised_from_plan": false,
+        "confidence": 0.82
+      },
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 73,
+      "theme": "ELIGIBILITY_ACCOUNT",
+      "block_id": 16,
+      "is_block_start": true,
+      "rationale": "ouvre compte, inscription, âge, identifiants ou sécurité d'accès ; indice « term and termination ; account deletion »",
+      "rationale_codes": {
+        "decision_trigger": "title_marker",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "term and termination ; account deletion",
+        "revised_from_plan": false,
+        "confidence": 0.82
+      },
+      "legal_nature": "GOVERNANCE",
+      "legal_nature_marker": "termination"
+    },
+    {
+      "id": 74,
+      "theme": "PREAMBLE_SCOPE",
+      "block_id": 17,
+      "is_block_start": true,
+      "rationale": "ouvre cadre, acceptation ou périmètre du service ; indice « term : this agreement begins on the date you first »",
+      "rationale_codes": {
+        "decision_trigger": "modal_verb",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "term : this agreement begins on the date you first",
+        "revised_from_plan": false,
+        "confidence": 0.82
+      },
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 75,
+      "theme": "ELIGIBILITY_ACCOUNT",
+      "block_id": 18,
+      "is_block_start": true,
+      "rationale": "ouvre compte, inscription, âge, identifiants ou sécurité d'accès ; indice « account deletion : you may delete your account at any »",
+      "rationale_codes": {
+        "decision_trigger": "modal_verb",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "account deletion : you may delete your account at any",
+        "revised_from_plan": false,
+        "confidence": 0.82
+      },
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 76,
+      "theme": "ELIGIBILITY_ACCOUNT",
+      "block_id": 18,
+      "is_block_start": false,
+      "reason": "continue ELIGIBILITY_ACCOUNT, précision ou effet du même sujet",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 77,
+      "theme": "ELIGIBILITY_ACCOUNT",
+      "block_id": 18,
+      "is_block_start": false,
+      "reason": "continue ELIGIBILITY_ACCOUNT, précision ou effet du même sujet",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 78,
+      "theme": "TERMINATION",
+      "block_id": 19,
+      "is_block_start": true,
+      "rationale": "ouvre suspension, annulation, suppression ou résiliation ; indice « termination for breach : vimeo may suspend , disable , »",
+      "rationale_codes": {
+        "decision_trigger": "modal_verb",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "termination for breach : vimeo may suspend , disable ,",
+        "revised_from_plan": false,
+        "confidence": 0.82
+      },
+      "legal_nature": "GOVERNANCE",
+      "legal_nature_marker": "termination"
+    },
+    {
+      "id": 79,
+      "theme": "TERMINATION",
+      "block_id": 19,
+      "is_block_start": false,
+      "reason": "continue TERMINATION, précision ou effet du même sujet",
+      "legal_nature": "PROHIBITION",
+      "legal_nature_marker": "may not"
+    },
+    {
+      "id": 80,
+      "theme": "TERMINATION",
+      "block_id": 19,
+      "is_block_start": false,
+      "reason": "continue TERMINATION, précision ou effet du même sujet",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 81,
+      "theme": "TERMINATION",
+      "block_id": 19,
+      "is_block_start": false,
+      "reason": "continue TERMINATION, précision ou effet du même sujet",
+      "legal_nature": "GOVERNANCE",
+      "legal_nature_marker": "terminate"
+    },
+    {
+      "id": 82,
+      "theme": "TERMINATION",
+      "block_id": 19,
+      "is_block_start": false,
+      "reason": "continue TERMINATION, précision ou effet du même sujet",
+      "legal_nature": "GOVERNANCE",
+      "legal_nature_marker": "termination"
+    },
+    {
+      "id": 83,
+      "theme": "TERMINATION",
+      "block_id": 19,
+      "is_block_start": false,
+      "reason": "continue TERMINATION, précision ou effet du même sujet",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 84,
+      "theme": "TERMINATION",
+      "block_id": 19,
+      "is_block_start": false,
+      "reason": "continue TERMINATION, précision ou effet du même sujet",
+      "legal_nature": "PROHIBITION",
+      "legal_nature_marker": "shall not"
+    },
+    {
+      "id": 85,
+      "theme": "TERMINATION",
+      "block_id": 19,
+      "is_block_start": false,
+      "reason": "continue TERMINATION, précision ou effet du même sujet",
+      "legal_nature": "PROHIBITION",
+      "legal_nature_marker": "may not"
+    },
+    {
+      "id": 86,
+      "theme": "TERMINATION",
+      "block_id": 19,
+      "is_block_start": false,
+      "reason": "continue TERMINATION, précision ou effet du même sujet",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 87,
+      "theme": "TERMINATION",
+      "block_id": 19,
+      "is_block_start": false,
+      "reason": "continue TERMINATION, précision ou effet du même sujet",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 88,
+      "theme": "TERMINATION",
+      "block_id": 19,
+      "is_block_start": false,
+      "reason": "continue TERMINATION, précision ou effet du même sujet",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 89,
+      "theme": "TERMINATION",
+      "block_id": 19,
+      "is_block_start": false,
+      "reason": "continue TERMINATION, précision ou effet du même sujet",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 90,
+      "theme": "TERMINATION",
+      "block_id": 19,
+      "is_block_start": false,
+      "reason": "continue TERMINATION, précision ou effet du même sujet",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 91,
+      "theme": "TERMINATION",
+      "block_id": 19,
+      "is_block_start": false,
+      "reason": "continue TERMINATION, précision ou effet du même sujet",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 92,
+      "theme": "USER_CONTENT",
+      "block_id": 20,
+      "is_block_start": true,
+      "rationale": "ouvre contenu utilisateur, publication, avis ou feedback ; indice « all videos you submit must also comply with the vimeo »",
+      "rationale_codes": {
+        "decision_trigger": "modal_verb",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "all videos you submit must also comply with the vimeo",
+        "revised_from_plan": false,
+        "confidence": 0.82
+      },
+      "legal_nature": "OBLIGATION",
+      "legal_nature_marker": "must"
+    },
+    {
+      "id": 93,
+      "theme": "PREAMBLE_SCOPE",
+      "block_id": 21,
+      "is_block_start": true,
+      "rationale": "ouvre cadre, acceptation ou périmètre du service ; indice « in using the vimeo service , you must behave in »",
+      "rationale_codes": {
+        "decision_trigger": "modal_verb",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "in using the vimeo service , you must behave in",
+        "revised_from_plan": false,
+        "confidence": 0.82
+      },
+      "legal_nature": "OBLIGATION",
+      "legal_nature_marker": "you must"
+    },
+    {
+      "id": 94,
+      "theme": "PREAMBLE_SCOPE",
+      "block_id": 21,
+      "is_block_start": false,
+      "reason": "continue PREAMBLE_SCOPE, précision ou effet du même sujet",
+      "legal_nature": "PROHIBITION",
+      "legal_nature_marker": "will not"
+    },
+    {
+      "id": 95,
+      "theme": "PREAMBLE_SCOPE",
+      "block_id": 21,
+      "is_block_start": false,
+      "reason": "continue PREAMBLE_SCOPE, précision ou effet du même sujet",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 96,
+      "theme": "PREAMBLE_SCOPE",
+      "block_id": 21,
+      "is_block_start": false,
+      "reason": "continue PREAMBLE_SCOPE, précision ou effet du même sujet",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 97,
+      "theme": "PREAMBLE_SCOPE",
+      "block_id": 21,
+      "is_block_start": false,
+      "reason": "continue PREAMBLE_SCOPE, précision ou effet du même sujet",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 98,
+      "theme": "PREAMBLE_SCOPE",
+      "block_id": 21,
+      "is_block_start": false,
+      "reason": "continue PREAMBLE_SCOPE, précision ou effet du même sujet",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 99,
+      "theme": "PREAMBLE_SCOPE",
+      "block_id": 21,
+      "is_block_start": false,
+      "reason": "continue PREAMBLE_SCOPE, précision ou effet du même sujet",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 100,
+      "theme": "PREAMBLE_SCOPE",
+      "block_id": 21,
+      "is_block_start": false,
+      "reason": "continue PREAMBLE_SCOPE, précision ou effet du même sujet",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 101,
+      "theme": "PREAMBLE_SCOPE",
+      "block_id": 21,
+      "is_block_start": false,
+      "reason": "continue PREAMBLE_SCOPE, précision ou effet du même sujet",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 102,
+      "theme": "LICENSE_IP",
+      "block_id": 22,
+      "is_block_start": true,
+      "rationale": "ouvre licence, propriété intellectuelle, copyright, marque ou DMCA ; indice « license to vimeo : as between you and vimeo , »",
+      "rationale_codes": {
+        "decision_trigger": "topic_keyword",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "license to vimeo : as between you and vimeo ,",
+        "revised_from_plan": false,
+        "confidence": 0.82
+      },
+      "legal_nature": "RIGHT_GRANT",
+      "legal_nature_marker": "license to"
+    },
+    {
+      "id": 103,
+      "theme": "LICENSE_IP",
+      "block_id": 22,
+      "is_block_start": false,
+      "reason": "continue LICENSE_IP, précision ou effet du même sujet",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 104,
+      "theme": "LICENSE_IP",
+      "block_id": 22,
+      "is_block_start": false,
+      "reason": "continue LICENSE_IP, précision ou effet du même sujet",
+      "legal_nature": "RIGHT_GRANT",
+      "legal_nature_marker": "license to"
+    },
+    {
+      "id": 105,
+      "theme": "LICENSE_IP",
+      "block_id": 22,
+      "is_block_start": false,
+      "reason": "continue LICENSE_IP, précision ou effet du même sujet",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 106,
+      "theme": "LICENSE_IP",
+      "block_id": 22,
+      "is_block_start": false,
+      "reason": "continue LICENSE_IP, précision ou effet du même sujet",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 107,
+      "theme": "TERMINATION",
+      "block_id": 23,
+      "is_block_start": true,
+      "rationale": "ouvre suspension, annulation, suppression ou résiliation ; indice « duration of licenses : the above licenses will continue unless »",
+      "rationale_codes": {
+        "decision_trigger": "topic_keyword",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "duration of licenses : the above licenses will continue unless",
+        "revised_from_plan": false,
+        "confidence": 0.82
+      },
+      "legal_nature": "GOVERNANCE",
+      "legal_nature_marker": "terminate"
+    },
+    {
+      "id": 108,
+      "theme": "TERMINATION",
+      "block_id": 23,
+      "is_block_start": false,
+      "reason": "continue TERMINATION, précision ou effet du même sujet",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 109,
+      "theme": "TERMINATION",
+      "block_id": 23,
+      "is_block_start": false,
+      "reason": "continue TERMINATION, précision ou effet du même sujet",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 110,
+      "theme": "USER_CONTENT",
+      "block_id": 24,
+      "is_block_start": true,
+      "rationale": "ouvre contenu utilisateur, publication, avis ou feedback ; indice « as between you and vimeo , you own all non-video »",
+      "rationale_codes": {
+        "decision_trigger": "topic_keyword",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "as between you and vimeo , you own all non-video",
+        "revised_from_plan": false,
+        "confidence": 0.82
+      },
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 111,
+      "theme": "USER_CONTENT",
+      "block_id": 24,
+      "is_block_start": false,
+      "reason": "continue USER_CONTENT, précision ou effet du même sujet",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 112,
+      "theme": "USER_CONTENT",
+      "block_id": 24,
+      "is_block_start": false,
+      "reason": "continue USER_CONTENT, précision ou effet du même sujet",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 113,
+      "theme": "USER_CONTENT",
+      "block_id": 24,
+      "is_block_start": false,
+      "reason": "continue USER_CONTENT, précision ou effet du même sujet",
+      "legal_nature": "RIGHT_GRANT",
+      "legal_nature_marker": "permission to"
+    },
+    {
+      "id": 114,
+      "theme": "USER_CONTENT",
+      "block_id": 24,
+      "is_block_start": false,
+      "reason": "continue USER_CONTENT, précision ou effet du même sujet",
+      "legal_nature": "OBLIGATION",
+      "legal_nature_marker": "shall"
+    },
+    {
+      "id": 115,
+      "theme": "LICENSE_IP",
+      "block_id": 25,
+      "is_block_start": true,
+      "rationale": "ouvre licence, propriété intellectuelle, copyright, marque ou DMCA ; indice « for each piece of content that you submit , you »",
+      "rationale_codes": {
+        "decision_trigger": "modal_verb",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "for each piece of content that you submit , you",
+        "revised_from_plan": false,
+        "confidence": 0.82
+      },
+      "legal_nature": "PROHIBITION",
+      "legal_nature_marker": "will not"
+    },
+    {
+      "id": 116,
+      "theme": "LICENSE_IP",
+      "block_id": 25,
+      "is_block_start": false,
+      "reason": "continue LICENSE_IP, précision ou effet du même sujet",
+      "legal_nature": "RISK_ALLOCATION",
+      "legal_nature_marker": "indemnify"
+    },
+    {
+      "id": 117,
+      "theme": "THIRD_PARTY",
+      "block_id": 26,
+      "is_block_start": true,
+      "rationale": "ouvre services, liens, contenus ou applications de tiers ; indice « third party copyrights and other rights »",
+      "rationale_codes": {
+        "decision_trigger": "title_marker",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "third party copyrights and other rights",
+        "revised_from_plan": false,
+        "confidence": 0.82
+      },
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 118,
+      "theme": "LICENSE_IP",
+      "block_id": 27,
+      "is_block_start": true,
+      "rationale": "ouvre licence, propriété intellectuelle, copyright, marque ou DMCA ; indice « vimeo respects the intellectual property rights of others . »",
+      "rationale_codes": {
+        "decision_trigger": "topic_keyword",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "vimeo respects the intellectual property rights of others .",
+        "revised_from_plan": false,
+        "confidence": 0.82
+      },
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 119,
+      "theme": "LICENSE_IP",
+      "block_id": 27,
+      "is_block_start": false,
+      "reason": "continue LICENSE_IP, précision ou effet du même sujet",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 120,
+      "theme": "LICENSE_IP",
+      "block_id": 27,
+      "is_block_start": false,
+      "reason": "continue LICENSE_IP, précision ou effet du même sujet",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 121,
+      "theme": "PREAMBLE_SCOPE",
+      "block_id": 28,
+      "is_block_start": true,
+      "rationale": "ouvre cadre, acceptation ou périmètre du service ; indice « vimeo reserves the right to modify the vimeo service . »",
+      "rationale_codes": {
+        "decision_trigger": "topic_keyword",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "vimeo reserves the right to modify the vimeo service .",
+        "revised_from_plan": false,
+        "confidence": 0.82
+      },
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 122,
+      "theme": "PREAMBLE_SCOPE",
+      "block_id": 28,
+      "is_block_start": false,
+      "reason": "continue PREAMBLE_SCOPE, précision ou effet du même sujet",
+      "legal_nature": "OBLIGATION",
+      "legal_nature_marker": "you are responsible"
+    },
+    {
+      "id": 123,
+      "theme": "PREAMBLE_SCOPE",
+      "block_id": 28,
+      "is_block_start": false,
+      "reason": "continue PREAMBLE_SCOPE, précision ou effet du même sujet",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 124,
+      "theme": "WARRANTY_DISCLAIMER",
+      "block_id": 29,
+      "is_block_start": true,
+      "rationale": "ouvre exclusion de garanties ; indice « vimeo provides the vimeo service on an `` as is »",
+      "rationale_codes": {
+        "decision_trigger": "topic_keyword",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "vimeo provides the vimeo service on an `` as is",
+        "revised_from_plan": false,
+        "confidence": 0.82
+      },
+      "legal_nature": "LIMITATION_DISCLAIMER",
+      "legal_nature_marker": "as is"
+    },
+    {
+      "id": 125,
+      "theme": "WARRANTY_DISCLAIMER",
+      "block_id": 29,
+      "is_block_start": false,
+      "reason": "continue WARRANTY_DISCLAIMER, précision ou effet du même sujet",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 126,
+      "theme": "WARRANTY_DISCLAIMER",
+      "block_id": 29,
+      "is_block_start": false,
+      "reason": "continue WARRANTY_DISCLAIMER, précision ou effet du même sujet",
+      "legal_nature": "LIMITATION_DISCLAIMER",
+      "legal_nature_marker": "warranties"
+    },
+    {
+      "id": 127,
+      "theme": "WARRANTY_DISCLAIMER",
+      "block_id": 29,
+      "is_block_start": false,
+      "reason": "continue WARRANTY_DISCLAIMER, précision ou effet du même sujet",
+      "legal_nature": "LIMITATION_DISCLAIMER",
+      "legal_nature_marker": "warranties"
+    },
+    {
+      "id": 128,
+      "theme": "WARRANTY_DISCLAIMER",
+      "block_id": 29,
+      "is_block_start": false,
+      "reason": "continue WARRANTY_DISCLAIMER, précision ou effet du même sujet",
+      "legal_nature": "GOVERNANCE",
+      "legal_nature_marker": "jurisdiction"
+    },
+    {
+      "id": 129,
+      "theme": "WARRANTY_DISCLAIMER",
+      "block_id": 29,
+      "is_block_start": false,
+      "reason": "continue WARRANTY_DISCLAIMER, précision ou effet du même sujet",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 130,
+      "theme": "WARRANTY_DISCLAIMER",
+      "block_id": 29,
+      "is_block_start": false,
+      "reason": "continue WARRANTY_DISCLAIMER, précision ou effet du même sujet",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 131,
+      "theme": "WARRANTY_DISCLAIMER",
+      "block_id": 29,
+      "is_block_start": false,
+      "reason": "continue WARRANTY_DISCLAIMER, précision ou effet du même sujet",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 132,
+      "theme": "WARRANTY_DISCLAIMER",
+      "block_id": 29,
+      "is_block_start": false,
+      "reason": "continue WARRANTY_DISCLAIMER, précision ou effet du même sujet",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 133,
+      "theme": "WARRANTY_DISCLAIMER",
+      "block_id": 29,
+      "is_block_start": false,
+      "reason": "continue WARRANTY_DISCLAIMER, précision ou effet du même sujet",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 134,
+      "theme": "WARRANTY_DISCLAIMER",
+      "block_id": 29,
+      "is_block_start": false,
+      "reason": "continue WARRANTY_DISCLAIMER, précision ou effet du même sujet",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 135,
+      "theme": "WARRANTY_DISCLAIMER",
+      "block_id": 29,
+      "is_block_start": false,
+      "reason": "continue WARRANTY_DISCLAIMER, précision ou effet du même sujet",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 136,
+      "theme": "WARRANTY_DISCLAIMER",
+      "block_id": 29,
+      "is_block_start": false,
+      "reason": "continue WARRANTY_DISCLAIMER, précision ou effet du même sujet",
+      "legal_nature": "LIMITATION_DISCLAIMER",
+      "legal_nature_marker": "warranties"
+    },
+    {
+      "id": 137,
+      "theme": "LIABILITY_LIMITATION",
+      "block_id": 30,
+      "is_block_start": true,
+      "rationale": "ouvre limitation de responsabilité ou dommages ; indice « to the fullest extent permitted by law : -lrb- i »",
+      "rationale_codes": {
+        "decision_trigger": "modal_verb",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "to the fullest extent permitted by law : -lrb- i",
+        "revised_from_plan": false,
+        "confidence": 0.82
+      },
+      "legal_nature": "PROHIBITION",
+      "legal_nature_marker": "shall not"
+    },
+    {
+      "id": 138,
+      "theme": "LIABILITY_LIMITATION",
+      "block_id": 30,
+      "is_block_start": false,
+      "reason": "continue LIABILITY_LIMITATION, précision ou effet du même sujet",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 139,
+      "theme": "LIABILITY_LIMITATION",
+      "block_id": 30,
+      "is_block_start": false,
+      "reason": "continue LIABILITY_LIMITATION, précision ou effet du même sujet",
+      "legal_nature": "PROHIBITION",
+      "legal_nature_marker": "do not"
+    },
+    {
+      "id": 140,
+      "theme": "LIABILITY_LIMITATION",
+      "block_id": 30,
+      "is_block_start": false,
+      "reason": "continue LIABILITY_LIMITATION, précision ou effet du même sujet",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 141,
+      "theme": "GOVERNING_LAW",
+      "block_id": 31,
+      "is_block_start": true,
+      "rationale": "ouvre droit applicable, juridiction ou venue ; indice « governing law : this agreement shall be governed by the »",
+      "rationale_codes": {
+        "decision_trigger": "modal_verb",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "governing law : this agreement shall be governed by the",
+        "revised_from_plan": false,
+        "confidence": 0.82
+      },
+      "legal_nature": "GOVERNANCE",
+      "legal_nature_marker": "governed by"
+    },
+    {
+      "id": 142,
+      "theme": "ACCEPTABLE_USE",
+      "block_id": 32,
+      "is_block_start": true,
+      "rationale": "ouvre règles d'usage, restrictions, conduite ou interdictions ; indice « the uniform commercial code , the uniform computer information transaction »",
+      "rationale_codes": {
+        "decision_trigger": "modal_verb",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "the uniform commercial code , the uniform computer information transaction",
+        "revised_from_plan": false,
+        "confidence": 0.82
+      },
+      "legal_nature": "PROHIBITION",
+      "legal_nature_marker": "shall not"
+    },
+    {
+      "id": 143,
+      "theme": "PREAMBLE_SCOPE",
+      "block_id": 33,
+      "is_block_start": true,
+      "rationale": "ouvre cadre, acceptation ou périmètre du service ; indice « disputes : any action arising out of or relating to »",
+      "rationale_codes": {
+        "decision_trigger": "modal_verb",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "disputes : any action arising out of or relating to",
+        "revised_from_plan": false,
+        "confidence": 0.82
+      },
+      "legal_nature": "GOVERNANCE",
+      "legal_nature_marker": "jurisdiction"
+    },
+    {
+      "id": 144,
+      "theme": "PREAMBLE_SCOPE",
+      "block_id": 33,
+      "is_block_start": false,
+      "reason": "continue PREAMBLE_SCOPE, précision ou effet du même sujet",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 145,
+      "theme": "MISC_BOILERPLATE",
+      "block_id": 34,
+      "is_block_start": true,
+      "rationale": "ouvre clauses finales, cession, divisibilité, avis ou intégralité ; indice « interpretation ; severability ; waiver ; remedies : headings are »",
+      "rationale_codes": {
+        "decision_trigger": "modal_verb",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "interpretation ; severability ; waiver ; remedies : headings are",
+        "revised_from_plan": false,
+        "confidence": 0.82
+      },
+      "legal_nature": "PROHIBITION",
+      "legal_nature_marker": "shall not"
+    },
+    {
+      "id": 146,
+      "theme": "MISC_BOILERPLATE",
+      "block_id": 34,
+      "is_block_start": false,
+      "reason": "continue MISC_BOILERPLATE, précision ou effet du même sujet",
+      "legal_nature": "GOVERNANCE",
+      "legal_nature_marker": "jurisdiction"
+    },
+    {
+      "id": 147,
+      "theme": "MISC_BOILERPLATE",
+      "block_id": 34,
+      "is_block_start": false,
+      "reason": "continue MISC_BOILERPLATE, précision ou effet du même sujet",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 148,
+      "theme": "MISC_BOILERPLATE",
+      "block_id": 34,
+      "is_block_start": false,
+      "reason": "continue MISC_BOILERPLATE, précision ou effet du même sujet",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 149,
+      "theme": "MISC_BOILERPLATE",
+      "block_id": 34,
+      "is_block_start": false,
+      "reason": "continue MISC_BOILERPLATE, précision ou effet du même sujet",
+      "legal_nature": "OBLIGATION",
+      "legal_nature_marker": "shall"
+    },
+    {
+      "id": 150,
+      "theme": "MISC_BOILERPLATE",
+      "block_id": 34,
+      "is_block_start": false,
+      "reason": "continue MISC_BOILERPLATE, précision ou effet du même sujet",
+      "legal_nature": "PROHIBITION",
+      "legal_nature_marker": "may not"
+    },
+    {
+      "id": 151,
+      "theme": "MISC_BOILERPLATE",
+      "block_id": 34,
+      "is_block_start": false,
+      "reason": "continue MISC_BOILERPLATE, précision ou effet du même sujet",
+      "legal_nature": "OBLIGATION",
+      "legal_nature_marker": "shall"
+    },
+    {
+      "id": 152,
+      "theme": "MISC_BOILERPLATE",
+      "block_id": 34,
+      "is_block_start": false,
+      "reason": "continue MISC_BOILERPLATE, précision ou effet du même sujet",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 153,
+      "theme": "MISC_BOILERPLATE",
+      "block_id": 34,
+      "is_block_start": false,
+      "reason": "continue MISC_BOILERPLATE, précision ou effet du même sujet",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 154,
+      "theme": "MISC_BOILERPLATE",
+      "block_id": 34,
+      "is_block_start": false,
+      "reason": "continue MISC_BOILERPLATE, précision ou effet du même sujet",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 155,
+      "theme": "MISC_BOILERPLATE",
+      "block_id": 34,
+      "is_block_start": false,
+      "reason": "continue MISC_BOILERPLATE, précision ou effet du même sujet",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 156,
+      "theme": "MISC_BOILERPLATE",
+      "block_id": 34,
+      "is_block_start": false,
+      "reason": "continue MISC_BOILERPLATE, précision ou effet du même sujet",
+      "legal_nature": "META",
+      "legal_nature_marker": "inc."
+    },
+    {
+      "id": 157,
+      "theme": "DISPUTE_ARBITRATION",
+      "block_id": 35,
+      "is_block_start": true,
+      "rationale": "ouvre litige, arbitrage, action collective ou tribunal ; indice « nothing herein shall limit vimeo 's right to object to »",
+      "rationale_codes": {
+        "decision_trigger": "modal_verb",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "nothing herein shall limit vimeo 's right to object to",
+        "revised_from_plan": false,
+        "confidence": 0.82
+      },
+      "legal_nature": "OBLIGATION",
+      "legal_nature_marker": "shall"
+    },
+    {
+      "id": 158,
+      "theme": "PREAMBLE_SCOPE",
+      "block_id": 36,
+      "is_block_start": true,
+      "rationale": "ouvre cadre, acceptation ou périmètre du service ; indice « modification : this agreement may not be modified except by »",
+      "rationale_codes": {
+        "decision_trigger": "modal_verb",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "modification : this agreement may not be modified except by",
+        "revised_from_plan": false,
+        "confidence": 0.82
+      },
+      "legal_nature": "PROHIBITION",
+      "legal_nature_marker": "may not"
+    },
+    {
+      "id": 159,
+      "theme": "PREAMBLE_SCOPE",
+      "block_id": 36,
+      "is_block_start": false,
+      "reason": "continue PREAMBLE_SCOPE, précision ou effet du même sujet",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 160,
+      "theme": "PREAMBLE_SCOPE",
+      "block_id": 36,
+      "is_block_start": false,
+      "reason": "continue PREAMBLE_SCOPE, précision ou effet du même sujet",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 161,
+      "theme": "PREAMBLE_SCOPE",
+      "block_id": 36,
+      "is_block_start": false,
+      "reason": "continue PREAMBLE_SCOPE, précision ou effet du même sujet",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 162,
+      "theme": "PREAMBLE_SCOPE",
+      "block_id": 36,
+      "is_block_start": false,
+      "reason": "continue PREAMBLE_SCOPE, précision ou effet du même sujet",
+      "legal_nature": "GOVERNANCE",
+      "legal_nature_marker": "governed by"
+    }
+  ]
+}

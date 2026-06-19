@@ -1,0 +1,1277 @@
+{
+  "doc": "YouTube",
+  "judge": "claude",
+  "version": "v9.2-nature-derived",
+  "document_plan": {
+    "estimated_n_blocks": 18,
+    "rationale_global": "ToS YouTube numéroté en 14 sections. Le plan thématique suit l'arc classique : préambule + définition d'entité (sec 1.1), définition de content (1.4), acceptation/éligibilité (sec 2.1-2.3), conservation d'une copie + modification des termes (sec 2.4), compte (sec 4), conditions d'usage/licence d'accès et restrictions = ACCEPTABLE_USE avec sous-bloc innovation/cessation du service (sec 5), politique copyright/repeat infringer (sec 6 = LICENSE_IP, PI prime §3.1), contenu utilisateur (sec 7), licence accordée à YouTube/users sur le contenu (sec 8 = LICENSE_IP), PI YouTube/marques (sec 9 = LICENSE_IP), liens vers sites tiers (sec 10 = THIRD_PARTY), résiliation (sec 11), exclusion de garanties (sec 12 = WARRANTY_DISCLAIMER), limitation de responsabilité (sec 13 = LIABILITY_LIMITATION), boilerplate divers (sec 14.1-14.5), droit applicable/juridiction (sec 14.6 = GOVERNING_LAW). Règles §3.1 appliquées : copyright/licence → LICENSE_IP même quand cela touche le contenu.",
+    "segments": [
+      {
+        "start_id": 0,
+        "theme": "PREAMBLE_SCOPE",
+        "rationale": "ouverture, définit le champ d'application des termes",
+        "evidence_span": "is subject to the terms of a legal agreement between you and youtube"
+      },
+      {
+        "start_id": 1,
+        "theme": "DEFINITIONS",
+        "rationale": "définition de l'entité YouTube",
+        "evidence_span": "youtube '' means youtube llc"
+      },
+      {
+        "start_id": 2,
+        "theme": "PREAMBLE_SCOPE",
+        "rationale": "composition de l'accord légal (1.2)",
+        "evidence_span": "your legal agreement with youtube is made up of"
+      },
+      {
+        "start_id": 6,
+        "theme": "DEFINITIONS",
+        "rationale": "définition de « content »",
+        "evidence_span": "content '' includes the text"
+      },
+      {
+        "start_id": 7,
+        "theme": "ELIGIBILITY_ACCOUNT",
+        "rationale": "acceptation/condition d'accès (2.1)",
+        "evidence_span": "you must firstly agree to the terms"
+      },
+      {
+        "start_id": 12,
+        "theme": "MODIFICATION_OF_TERMS",
+        "rationale": "conservation d'une copie + modification des termes (2.4)",
+        "evidence_span": "you should print off or save a local copy of the terms"
+      },
+      {
+        "start_id": 18,
+        "theme": "ELIGIBILITY_ACCOUNT",
+        "rationale": "création de compte (4.1)",
+        "evidence_span": "you will have to create a youtube account"
+      },
+      {
+        "start_id": 23,
+        "theme": "ACCEPTABLE_USE",
+        "rationale": "octroi conditionnel d'accès + restrictions d'usage (5.1)",
+        "evidence_span": "subject to the following express conditions"
+      },
+      {
+        "start_id": 44,
+        "theme": "ACCEPTABLE_USE",
+        "rationale": "innovation/changement et cessation du service (5.4)",
+        "evidence_span": "youtube is constantly innovating"
+      },
+      {
+        "start_id": 50,
+        "theme": "LICENSE_IP",
+        "rationale": "politique copyright (PI prime §3.1)",
+        "evidence_span": "youtube operates a clear copyright policy"
+      },
+      {
+        "start_id": 54,
+        "theme": "USER_CONTENT",
+        "rationale": "soumission de contenu par l'utilisateur (7.1)",
+        "evidence_span": "you may submit content"
+      },
+      {
+        "start_id": 67,
+        "theme": "LICENSE_IP",
+        "rationale": "octroi de licence sur le contenu (8.1, PI)",
+        "evidence_span": "you grant"
+      },
+      {
+        "start_id": 72,
+        "theme": "LICENSE_IP",
+        "rationale": "PI YouTube/marques (9.1)",
+        "evidence_span": "owned by or licensed to youtube"
+      },
+      {
+        "start_id": 76,
+        "theme": "THIRD_PARTY",
+        "rationale": "liens vers sites tiers (10.1)",
+        "evidence_span": "hyperlinks to other web sites that are not owned or controlled by youtube"
+      },
+      {
+        "start_id": 81,
+        "theme": "TERMINATION",
+        "rationale": "résiliation (11.1)",
+        "evidence_span": "until terminated by either you or youtube"
+      },
+      {
+        "start_id": 87,
+        "theme": "WARRANTY_DISCLAIMER",
+        "rationale": "exclusion de garanties (12.1-12.2)",
+        "evidence_span": "as is"
+      },
+      {
+        "start_id": 95,
+        "theme": "LIABILITY_LIMITATION",
+        "rationale": "limitation de responsabilité (13.1)",
+        "evidence_span": "exclude or limit youtube 's liability"
+      },
+      {
+        "start_id": 102,
+        "theme": "MISC_BOILERPLATE",
+        "rationale": "clauses finales (intégralité, notices, waiver, divisibilité, bénéficiaires)",
+        "evidence_span": "the terms constitute the whole legal agreement"
+      },
+      {
+        "start_id": 110,
+        "theme": "GOVERNING_LAW",
+        "rationale": "droit applicable et juridiction (14.6)",
+        "evidence_span": "shall be governed by english law"
+      }
+    ]
+  },
+  "annotations": [
+    {
+      "id": 0,
+      "theme": "PREAMBLE_SCOPE",
+      "block_id": 0,
+      "is_block_start": true,
+      "rationale": "ouverture du document, définit le champ d'application des termes",
+      "rationale_codes": {
+        "decision_trigger": "document_start",
+        "relation_to_prev": "document_start",
+        "evidence_span": "is subject to the terms of a legal agreement between you and youtube",
+        "revised_from_plan": false,
+        "confidence": 0.97
+      },
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 1,
+      "theme": "DEFINITIONS",
+      "block_id": 1,
+      "is_block_start": true,
+      "rationale": "définition de l'entité YouTube, effet définitionnel autonome",
+      "rationale_codes": {
+        "decision_trigger": "definition_marker",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "youtube '' means youtube llc",
+        "revised_from_plan": false,
+        "confidence": 0.9
+      },
+      "legal_nature": "META",
+      "legal_nature_marker": "llc"
+    },
+    {
+      "id": 2,
+      "theme": "PREAMBLE_SCOPE",
+      "block_id": 2,
+      "is_block_start": true,
+      "rationale": "retour au champ : composition de l'accord légal (1.2)",
+      "rationale_codes": {
+        "decision_trigger": "numbering",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "your legal agreement with youtube is made up of",
+        "revised_from_plan": false,
+        "confidence": 0.85
+      },
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 3,
+      "theme": "PREAMBLE_SCOPE",
+      "block_id": 2,
+      "is_block_start": false,
+      "reason": "1.3 prolonge le champ : caractère contraignant de l'accord",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 4,
+      "theme": "PREAMBLE_SCOPE",
+      "block_id": 2,
+      "is_block_start": false,
+      "reason": "exhortation à lire, prolonge le préambule",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 5,
+      "theme": "PREAMBLE_SCOPE",
+      "block_id": 2,
+      "is_block_start": false,
+      "reason": "1.4 portée des termes à tous les usagers, prolonge le champ",
+      "legal_nature": "SCOPE_APPLICABILITY",
+      "legal_nature_marker": "apply to all"
+    },
+    {
+      "id": 6,
+      "theme": "DEFINITIONS",
+      "block_id": 3,
+      "is_block_start": true,
+      "rationale": "définition de « content », effet définitionnel autonome",
+      "rationale_codes": {
+        "decision_trigger": "definition_marker",
+        "relation_to_prev": "definition_chain",
+        "evidence_span": "content '' includes the text",
+        "revised_from_plan": false,
+        "confidence": 0.82
+      },
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 7,
+      "theme": "ELIGIBILITY_ACCOUNT",
+      "block_id": 4,
+      "is_block_start": true,
+      "rationale": "2.1 ouvre l'acceptation/condition d'accès : il faut d'abord accepter les termes",
+      "rationale_codes": {
+        "decision_trigger": "numbering",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "you must firstly agree to the terms",
+        "revised_from_plan": false,
+        "confidence": 0.8
+      },
+      "legal_nature": "OBLIGATION",
+      "legal_nature_marker": "you must"
+    },
+    {
+      "id": 8,
+      "theme": "ELIGIBILITY_ACCOUNT",
+      "block_id": 4,
+      "is_block_start": false,
+      "reason": "conséquence : pas d'usage sans acceptation",
+      "legal_nature": "PROHIBITION",
+      "legal_nature_marker": "may not"
+    },
+    {
+      "id": 9,
+      "theme": "ELIGIBILITY_ACCOUNT",
+      "block_id": 4,
+      "is_block_start": false,
+      "reason": "2.2 modalité d'acceptation, prolonge",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 10,
+      "theme": "ELIGIBILITY_ACCOUNT",
+      "block_id": 4,
+      "is_block_start": false,
+      "reason": "effet : usage = acceptation",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 11,
+      "theme": "ELIGIBILITY_ACCOUNT",
+      "block_id": 4,
+      "is_block_start": false,
+      "reason": "2.3 conditions d'éligibilité (âge légal, interdiction), prolonge l'accès",
+      "legal_nature": "PROHIBITION",
+      "legal_nature_marker": "may not"
+    },
+    {
+      "id": 12,
+      "theme": "MODIFICATION_OF_TERMS",
+      "block_id": 5,
+      "is_block_start": true,
+      "rationale": "2.4 imprimer/sauvegarder une copie puis annonce du droit de modifier les termes",
+      "rationale_codes": {
+        "decision_trigger": "numbering",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "you should print off or save a local copy of the terms",
+        "revised_from_plan": false,
+        "confidence": 0.72
+      },
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 13,
+      "theme": "MODIFICATION_OF_TERMS",
+      "block_id": 5,
+      "is_block_start": false,
+      "reason": "droit de YouTube de modifier les termes, cœur du thème",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 14,
+      "theme": "MODIFICATION_OF_TERMS",
+      "block_id": 5,
+      "is_block_start": false,
+      "reason": "conséquence : vérifier régulièrement les changements",
+      "legal_nature": "OBLIGATION",
+      "legal_nature_marker": "you must"
+    },
+    {
+      "id": 15,
+      "theme": "MODIFICATION_OF_TERMS",
+      "block_id": 5,
+      "is_block_start": false,
+      "reason": "modalité de publication de la version modifiée",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 16,
+      "theme": "MODIFICATION_OF_TERMS",
+      "block_id": 5,
+      "is_block_start": false,
+      "reason": "effet : cesser l'usage si désaccord",
+      "legal_nature": "PROHIBITION",
+      "legal_nature_marker": "do not"
+    },
+    {
+      "id": 17,
+      "theme": "MODIFICATION_OF_TERMS",
+      "block_id": 5,
+      "is_block_start": false,
+      "reason": "effet : usage continu vaut acceptation des termes modifiés",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 18,
+      "theme": "ELIGIBILITY_ACCOUNT",
+      "block_id": 6,
+      "is_block_start": true,
+      "rationale": "4.1 ouvre le thème compte : création de compte YouTube",
+      "rationale_codes": {
+        "decision_trigger": "numbering",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "you will have to create a youtube account",
+        "revised_from_plan": false,
+        "confidence": 0.9
+      },
+      "legal_nature": "OBLIGATION",
+      "legal_nature_marker": "you will"
+    },
+    {
+      "id": 19,
+      "theme": "ELIGIBILITY_ACCOUNT",
+      "block_id": 6,
+      "is_block_start": false,
+      "reason": "obligation d'informations exactes lors de la création",
+      "legal_nature": "OBLIGATION",
+      "legal_nature_marker": "you must"
+    },
+    {
+      "id": 20,
+      "theme": "ELIGIBILITY_ACCOUNT",
+      "block_id": 6,
+      "is_block_start": false,
+      "reason": "sécurité/confidentialité du mot de passe, prolonge le compte",
+      "legal_nature": "OBLIGATION",
+      "legal_nature_marker": "you must"
+    },
+    {
+      "id": 21,
+      "theme": "ELIGIBILITY_ACCOUNT",
+      "block_id": 6,
+      "is_block_start": false,
+      "reason": "4.2 notification des atteintes à la sécurité du compte",
+      "legal_nature": "PROHIBITION",
+      "legal_nature_marker": "must not"
+    },
+    {
+      "id": 22,
+      "theme": "ELIGIBILITY_ACCOUNT",
+      "block_id": 6,
+      "is_block_start": false,
+      "reason": "4.3 responsabilité pour l'activité sous le compte, prolonge",
+      "legal_nature": "OBLIGATION",
+      "legal_nature_marker": "you will"
+    },
+    {
+      "id": 23,
+      "theme": "ACCEPTABLE_USE",
+      "block_id": 7,
+      "is_block_start": true,
+      "rationale": "5.1 octroi conditionnel d'accès assorti de restrictions d'usage : « subject to the following express conditions »",
+      "rationale_codes": {
+        "decision_trigger": "numbering",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "subject to the following express conditions",
+        "revised_from_plan": false,
+        "confidence": 0.85
+      },
+      "legal_nature": "RIGHT_GRANT",
+      "legal_nature_marker": "hereby grant"
+    },
+    {
+      "id": 24,
+      "theme": "ACCEPTABLE_USE",
+      "block_id": 7,
+      "is_block_start": false,
+      "reason": "item a : interdiction de distribuer le service/contenu",
+      "legal_nature": "DEFINITION",
+      "legal_nature_marker": "means"
+    },
+    {
+      "id": 25,
+      "theme": "ACCEPTABLE_USE",
+      "block_id": 7,
+      "is_block_start": false,
+      "reason": "item b : interdiction d'altérer/modifier",
+      "legal_nature": "PROHIBITION",
+      "legal_nature_marker": "agree not to"
+    },
+    {
+      "id": 26,
+      "theme": "ACCEPTABLE_USE",
+      "block_id": 7,
+      "is_block_start": false,
+      "reason": "item c : interdiction d'accès par d'autres moyens",
+      "legal_nature": "DEFINITION",
+      "legal_nature_marker": "means"
+    },
+    {
+      "id": 27,
+      "theme": "ACCEPTABLE_USE",
+      "block_id": 7,
+      "is_block_start": false,
+      "reason": "item d : interdiction de contourner les sécurités",
+      "legal_nature": "PROHIBITION",
+      "legal_nature_marker": "agree not to"
+    },
+    {
+      "id": 28,
+      "theme": "ACCEPTABLE_USE",
+      "block_id": 7,
+      "is_block_start": false,
+      "reason": "item e : usages commerciaux interdits sans accord",
+      "legal_nature": "PROHIBITION",
+      "legal_nature_marker": "agree not to"
+    },
+    {
+      "id": 29,
+      "theme": "ACCEPTABLE_USE",
+      "block_id": 7,
+      "is_block_start": false,
+      "reason": "sous-item : vente d'accès au service",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 30,
+      "theme": "ACCEPTABLE_USE",
+      "block_id": 7,
+      "is_block_start": false,
+      "reason": "sous-item : vente de publicité/sponsoring",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 31,
+      "theme": "ACCEPTABLE_USE",
+      "block_id": 7,
+      "is_block_start": false,
+      "reason": "sous-item : vente de publicité sur blog/site ad-enabled",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 32,
+      "theme": "ACCEPTABLE_USE",
+      "block_id": 7,
+      "is_block_start": false,
+      "reason": "item f : exceptions aux usages commerciaux interdits",
+      "legal_nature": "PROHIBITION",
+      "legal_nature_marker": "shall not"
+    },
+    {
+      "id": 33,
+      "theme": "ACCEPTABLE_USE",
+      "block_id": 7,
+      "is_block_start": false,
+      "reason": "item g : usage du player sur son site",
+      "legal_nature": "PROHIBITION",
+      "legal_nature_marker": "may not"
+    },
+    {
+      "id": 34,
+      "theme": "ACCEPTABLE_USE",
+      "block_id": 7,
+      "is_block_start": false,
+      "reason": "item h : interdiction des systèmes automatisés",
+      "legal_nature": "PROHIBITION",
+      "legal_nature_marker": "agree not to"
+    },
+    {
+      "id": 35,
+      "theme": "ACCEPTABLE_USE",
+      "block_id": 7,
+      "is_block_start": false,
+      "reason": "item i : interdiction de collecter des données personnelles",
+      "legal_nature": "PROHIBITION",
+      "legal_nature_marker": "agree not to"
+    },
+    {
+      "id": 36,
+      "theme": "ACCEPTABLE_USE",
+      "block_id": 7,
+      "is_block_start": false,
+      "reason": "item j : interdiction de sollicitation commerciale",
+      "legal_nature": "PROHIBITION",
+      "legal_nature_marker": "agree not to"
+    },
+    {
+      "id": 37,
+      "theme": "ACCEPTABLE_USE",
+      "block_id": 7,
+      "is_block_start": false,
+      "reason": "item k : interdiction de solliciter les usagers",
+      "legal_nature": "PROHIBITION",
+      "legal_nature_marker": "agree not to"
+    },
+    {
+      "id": 38,
+      "theme": "ACCEPTABLE_USE",
+      "block_id": 7,
+      "is_block_start": false,
+      "reason": "item l : accès limité à un usage personnel non commercial/streaming",
+      "legal_nature": "PROHIBITION",
+      "legal_nature_marker": "agree not to"
+    },
+    {
+      "id": 39,
+      "theme": "ACCEPTABLE_USE",
+      "block_id": 7,
+      "is_block_start": false,
+      "reason": "définition incise de « streaming » au sein de l'item l, prolonge la restriction",
+      "legal_nature": "DEFINITION",
+      "legal_nature_marker": "means"
+    },
+    {
+      "id": 40,
+      "theme": "ACCEPTABLE_USE",
+      "block_id": 7,
+      "is_block_start": false,
+      "reason": "interdiction de copier/exploiter le contenu sans consentement, prolonge les restrictions",
+      "legal_nature": "PROHIBITION",
+      "legal_nature_marker": "shall not"
+    },
+    {
+      "id": 41,
+      "theme": "ACCEPTABLE_USE",
+      "block_id": 7,
+      "is_block_start": false,
+      "reason": "5.2 obligation de respecter les community guidelines, prolonge l'usage acceptable",
+      "legal_nature": "OBLIGATION",
+      "legal_nature_marker": "you will"
+    },
+    {
+      "id": 42,
+      "theme": "ACCEPTABLE_USE",
+      "block_id": 7,
+      "is_block_start": false,
+      "reason": "5.3 exception accordée aux moteurs de recherche, prolonge les conditions d'usage",
+      "legal_nature": "RIGHT_GRANT",
+      "legal_nature_marker": "permission to"
+    },
+    {
+      "id": 43,
+      "theme": "ACCEPTABLE_USE",
+      "block_id": 7,
+      "is_block_start": false,
+      "reason": "droit de révoquer ces exceptions, prolonge",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 44,
+      "theme": "ACCEPTABLE_USE",
+      "block_id": 8,
+      "is_block_start": true,
+      "rationale": "5.4 ouvre le sujet de l'innovation/changement et cessation du service par YouTube",
+      "rationale_codes": {
+        "decision_trigger": "lexical_shift",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "youtube is constantly innovating",
+        "revised_from_plan": false,
+        "confidence": 0.6
+      },
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 45,
+      "theme": "ACCEPTABLE_USE",
+      "block_id": 8,
+      "is_block_start": false,
+      "reason": "le service peut changer de forme et de nature sans préavis",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 46,
+      "theme": "ACCEPTABLE_USE",
+      "block_id": 8,
+      "is_block_start": false,
+      "reason": "5.5 YouTube peut cesser de fournir le service",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 47,
+      "theme": "ACCEPTABLE_USE",
+      "block_id": 8,
+      "is_block_start": false,
+      "reason": "l'utilisateur peut cesser d'utiliser le service à tout moment",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 48,
+      "theme": "ACCEPTABLE_USE",
+      "block_id": 8,
+      "is_block_start": false,
+      "reason": "pas besoin d'informer YouTube de l'arrêt, prolonge",
+      "legal_nature": "PROHIBITION",
+      "legal_nature_marker": "do not"
+    },
+    {
+      "id": 49,
+      "theme": "ACCEPTABLE_USE",
+      "block_id": 8,
+      "is_block_start": false,
+      "reason": "5.6 responsabilité de l'utilisateur pour ses manquements aux obligations d'usage, prolonge la section 5",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 50,
+      "theme": "LICENSE_IP",
+      "block_id": 9,
+      "is_block_start": true,
+      "rationale": "6.1 ouvre la politique copyright (PI prime §3.1) : « youtube operates a clear copyright policy »",
+      "rationale_codes": {
+        "decision_trigger": "topic_keyword",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "youtube operates a clear copyright policy",
+        "revised_from_plan": false,
+        "confidence": 0.85
+      },
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 51,
+      "theme": "LICENSE_IP",
+      "block_id": 9,
+      "is_block_start": false,
+      "reason": "renvoi vers les détails de la politique copyright",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 52,
+      "theme": "LICENSE_IP",
+      "block_id": 9,
+      "is_block_start": false,
+      "reason": "6.2 résiliation pour repeat infringer dans le cadre de la politique copyright (PI prime)",
+      "legal_nature": "GOVERNANCE",
+      "legal_nature_marker": "terminate"
+    },
+    {
+      "id": 53,
+      "theme": "LICENSE_IP",
+      "block_id": 9,
+      "is_block_start": false,
+      "reason": "définition de « repeat infringer », prolonge la politique copyright",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 54,
+      "theme": "USER_CONTENT",
+      "block_id": 10,
+      "is_block_start": true,
+      "rationale": "7.1 ouvre le contenu utilisateur : « as a youtube account holder you may submit content »",
+      "rationale_codes": {
+        "decision_trigger": "topic_keyword",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "you may submit content",
+        "revised_from_plan": false,
+        "confidence": 0.82
+      },
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 55,
+      "theme": "USER_CONTENT",
+      "block_id": 10,
+      "is_block_start": false,
+      "reason": "pas de confidentialité garantie sur le contenu, prolonge",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 56,
+      "theme": "USER_CONTENT",
+      "block_id": 10,
+      "is_block_start": false,
+      "reason": "7.2 conservation des droits de propriété sur son contenu",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 57,
+      "theme": "USER_CONTENT",
+      "block_id": 10,
+      "is_block_start": false,
+      "reason": "renvoi au paragraphe 8 sur la licence",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 58,
+      "theme": "USER_CONTENT",
+      "block_id": 10,
+      "is_block_start": false,
+      "reason": "7.3 responsabilité de l'utilisateur pour son propre contenu",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 59,
+      "theme": "USER_CONTENT",
+      "block_id": 10,
+      "is_block_start": false,
+      "reason": "YouTube n'endosse pas le contenu, prolonge",
+      "legal_nature": "LIMITATION_DISCLAIMER",
+      "legal_nature_marker": "disclaim"
+    },
+    {
+      "id": 60,
+      "theme": "USER_CONTENT",
+      "block_id": 10,
+      "is_block_start": false,
+      "reason": "7.4 garanties de l'utilisateur sur ses droits/licences sur le contenu",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 61,
+      "theme": "USER_CONTENT",
+      "block_id": 10,
+      "is_block_start": false,
+      "reason": "7.5 le contenu doit respecter les community guidelines",
+      "legal_nature": "OBLIGATION",
+      "legal_nature_marker": "shall"
+    },
+    {
+      "id": 62,
+      "theme": "USER_CONTENT",
+      "block_id": 10,
+      "is_block_start": false,
+      "reason": "7.6 interdiction de poster du contenu illégal",
+      "legal_nature": "PROHIBITION",
+      "legal_nature_marker": "will not"
+    },
+    {
+      "id": 63,
+      "theme": "USER_CONTENT",
+      "block_id": 10,
+      "is_block_start": false,
+      "reason": "7.7 pas de contenu protégé par des droits de tiers",
+      "legal_nature": "PROHIBITION",
+      "legal_nature_marker": "will not"
+    },
+    {
+      "id": 64,
+      "theme": "USER_CONTENT",
+      "block_id": 10,
+      "is_block_start": false,
+      "reason": "7.8 droit de YouTube de retirer le contenu non conforme",
+      "legal_nature": "GOVERNANCE",
+      "legal_nature_marker": "terminate"
+    },
+    {
+      "id": 65,
+      "theme": "USER_CONTENT",
+      "block_id": 10,
+      "is_block_start": false,
+      "reason": "7.9 exposition possible à du contenu choquant, prolonge le contenu utilisateur",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 66,
+      "theme": "USER_CONTENT",
+      "block_id": 10,
+      "is_block_start": false,
+      "reason": "renonciation aux recours contre YouTube relative à ce contenu, prolonge 7.9",
+      "legal_nature": "OBLIGATION",
+      "legal_nature_marker": "you agree to"
+    },
+    {
+      "id": 67,
+      "theme": "LICENSE_IP",
+      "block_id": 11,
+      "is_block_start": true,
+      "rationale": "8.1 ouvre l'octroi de licence sur le contenu (PI) : « when you upload or post content to youtube , you grant »",
+      "rationale_codes": {
+        "decision_trigger": "topic_keyword",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "you grant",
+        "revised_from_plan": false,
+        "confidence": 0.78
+      },
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 68,
+      "theme": "LICENSE_IP",
+      "block_id": 11,
+      "is_block_start": false,
+      "reason": "item a : licence accordée à YouTube",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 69,
+      "theme": "LICENSE_IP",
+      "block_id": 11,
+      "is_block_start": false,
+      "reason": "item b : licence accordée aux autres usagers",
+      "legal_nature": "LIMITATION_DISCLAIMER",
+      "legal_nature_marker": "to the extent permitted"
+    },
+    {
+      "id": 70,
+      "theme": "LICENSE_IP",
+      "block_id": 11,
+      "is_block_start": false,
+      "reason": "8.2 fin/perpétuité des licences accordées, prolonge l'octroi de licence",
+      "legal_nature": "GOVERNANCE",
+      "legal_nature_marker": "terminate"
+    },
+    {
+      "id": 71,
+      "theme": "LICENSE_IP",
+      "block_id": 11,
+      "is_block_start": false,
+      "reason": "licences sur commentaires perpétuelles et irrévocables, prolonge 8.2",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 72,
+      "theme": "LICENSE_IP",
+      "block_id": 12,
+      "is_block_start": true,
+      "rationale": "9.1 ouvre la PI de YouTube : tout autre contenu appartient ou est licencié à YouTube",
+      "rationale_codes": {
+        "decision_trigger": "topic_keyword",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "owned by or licensed to youtube",
+        "revised_from_plan": false,
+        "confidence": 0.7
+      },
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 73,
+      "theme": "LICENSE_IP",
+      "block_id": 12,
+      "is_block_start": false,
+      "reason": "marques de tiers présentes sur le contenu, prolonge la PI",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 74,
+      "theme": "LICENSE_IP",
+      "block_id": 12,
+      "is_block_start": false,
+      "reason": "interdiction d'exploiter ce contenu sans consentement, prolonge",
+      "legal_nature": "PROHIBITION",
+      "legal_nature_marker": "may not"
+    },
+    {
+      "id": 75,
+      "theme": "LICENSE_IP",
+      "block_id": 12,
+      "is_block_start": false,
+      "reason": "YouTube réserve tous les droits non expressément accordés, prolonge la PI",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 76,
+      "theme": "THIRD_PARTY",
+      "block_id": 13,
+      "is_block_start": true,
+      "rationale": "10.1 ouvre les liens vers des sites tiers : « the service may include hyperlinks to other web sites »",
+      "rationale_codes": {
+        "decision_trigger": "topic_keyword",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "hyperlinks to other web sites that are not owned or controlled by youtube",
+        "revised_from_plan": false,
+        "confidence": 0.88
+      },
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 77,
+      "theme": "THIRD_PARTY",
+      "block_id": 13,
+      "is_block_start": false,
+      "reason": "pas de contrôle/responsabilité sur les sites tiers, prolonge",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 78,
+      "theme": "THIRD_PARTY",
+      "block_id": 13,
+      "is_block_start": false,
+      "reason": "10.2 pas responsable de la disponibilité des sites externes",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 79,
+      "theme": "THIRD_PARTY",
+      "block_id": 13,
+      "is_block_start": false,
+      "reason": "10.3 pas responsable des pertes liées aux sites externes",
+      "legal_nature": "LIMITATION_DISCLAIMER",
+      "legal_nature_marker": "not liable"
+    },
+    {
+      "id": 80,
+      "theme": "THIRD_PARTY",
+      "block_id": 13,
+      "is_block_start": false,
+      "reason": "10.4 invitation à lire les conditions des autres sites, prolonge le thème tiers",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 81,
+      "theme": "TERMINATION",
+      "block_id": 14,
+      "is_block_start": true,
+      "rationale": "11.1 ouvre la résiliation : « the terms will continue to apply until terminated »",
+      "rationale_codes": {
+        "decision_trigger": "topic_keyword",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "until terminated by either you or youtube",
+        "revised_from_plan": false,
+        "confidence": 0.9
+      },
+      "legal_nature": "GOVERNANCE",
+      "legal_nature_marker": "terminate"
+    },
+    {
+      "id": 82,
+      "theme": "TERMINATION",
+      "block_id": 14,
+      "is_block_start": false,
+      "reason": "11.2 modalité de résiliation par l'utilisateur",
+      "legal_nature": "GOVERNANCE",
+      "legal_nature_marker": "terminate"
+    },
+    {
+      "id": 83,
+      "theme": "TERMINATION",
+      "block_id": 14,
+      "is_block_start": false,
+      "reason": "modalité d'envoi de la notification, prolonge",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 84,
+      "theme": "TERMINATION",
+      "block_id": 14,
+      "is_block_start": false,
+      "reason": "11.3 motifs de résiliation par YouTube",
+      "legal_nature": "PROHIBITION",
+      "legal_nature_marker": "do not"
+    },
+    {
+      "id": 85,
+      "theme": "TERMINATION",
+      "block_id": 14,
+      "is_block_start": false,
+      "reason": "11.4 autres motifs de résiliation par YouTube",
+      "legal_nature": "GOVERNANCE",
+      "legal_nature_marker": "terminate"
+    },
+    {
+      "id": 86,
+      "theme": "TERMINATION",
+      "block_id": 14,
+      "is_block_start": false,
+      "reason": "11.5 survie des droits/obligations après la fin des termes, prolonge la résiliation",
+      "legal_nature": "OBLIGATION",
+      "legal_nature_marker": "shall"
+    },
+    {
+      "id": 87,
+      "theme": "WARRANTY_DISCLAIMER",
+      "block_id": 15,
+      "is_block_start": true,
+      "rationale": "12.1-12.2 ouvre l'exclusion de garanties : service fourni « as is », aucune garantie ; 12.1 préserve les droits légaux du consommateur en chapeau de la section garantie",
+      "rationale_codes": {
+        "decision_trigger": "topic_keyword",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "statutory rights",
+        "revised_from_plan": false,
+        "confidence": 0.7
+      },
+      "legal_nature": "OBLIGATION",
+      "legal_nature_marker": "shall"
+    },
+    {
+      "id": 88,
+      "theme": "WARRANTY_DISCLAIMER",
+      "block_id": 15,
+      "is_block_start": false,
+      "reason": "12.2 service fourni « as is », aucune garantie ni représentation",
+      "legal_nature": "LIMITATION_DISCLAIMER",
+      "legal_nature_marker": "as is"
+    },
+    {
+      "id": 89,
+      "theme": "WARRANTY_DISCLAIMER",
+      "block_id": 15,
+      "is_block_start": false,
+      "reason": "12.3 chapeau : YouTube ne garantit pas que",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 90,
+      "theme": "WARRANTY_DISCLAIMER",
+      "block_id": 15,
+      "is_block_start": false,
+      "reason": "item a : l'usage répondra aux besoins",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 91,
+      "theme": "WARRANTY_DISCLAIMER",
+      "block_id": 15,
+      "is_block_start": false,
+      "reason": "item b : usage ininterrompu/sécurisé",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 92,
+      "theme": "WARRANTY_DISCLAIMER",
+      "block_id": 15,
+      "is_block_start": false,
+      "reason": "item c : exactitude des informations obtenues",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 93,
+      "theme": "WARRANTY_DISCLAIMER",
+      "block_id": 15,
+      "is_block_start": false,
+      "reason": "item d : correction des défauts du logiciel",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 94,
+      "theme": "WARRANTY_DISCLAIMER",
+      "block_id": 15,
+      "is_block_start": false,
+      "reason": "12.4 exclusion des conditions/garanties implicites, prolonge le disclaimer",
+      "legal_nature": "LIMITATION_DISCLAIMER",
+      "legal_nature_marker": "warranties"
+    },
+    {
+      "id": 95,
+      "theme": "LIABILITY_LIMITATION",
+      "block_id": 16,
+      "is_block_start": true,
+      "rationale": "13.1 ouvre la limitation de responsabilité : rien n'exclut la responsabilité non excluable, cadre de la limitation",
+      "rationale_codes": {
+        "decision_trigger": "topic_keyword",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "exclude or limit youtube 's liability",
+        "revised_from_plan": false,
+        "confidence": 0.8
+      },
+      "legal_nature": "PROHIBITION",
+      "legal_nature_marker": "may not"
+    },
+    {
+      "id": 96,
+      "theme": "LIABILITY_LIMITATION",
+      "block_id": 16,
+      "is_block_start": false,
+      "reason": "13.2 YouTube non responsable des pertes indirectes/consécutives",
+      "legal_nature": "PROHIBITION",
+      "legal_nature_marker": "shall not"
+    },
+    {
+      "id": 97,
+      "theme": "LIABILITY_LIMITATION",
+      "block_id": 16,
+      "is_block_start": false,
+      "reason": "liste des pertes exclues, prolonge",
+      "legal_nature": "OBLIGATION",
+      "legal_nature_marker": "shall"
+    },
+    {
+      "id": 98,
+      "theme": "LIABILITY_LIMITATION",
+      "block_id": 16,
+      "is_block_start": false,
+      "reason": "sous-item : changements/cessation du service",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 99,
+      "theme": "LIABILITY_LIMITATION",
+      "block_id": 16,
+      "is_block_start": false,
+      "reason": "sous-item : suppression/corruption de contenu",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 100,
+      "theme": "LIABILITY_LIMITATION",
+      "block_id": 16,
+      "is_block_start": false,
+      "reason": "sous-items : défaut d'informations exactes / mot de passe non sécurisé",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 101,
+      "theme": "LIABILITY_LIMITATION",
+      "block_id": 16,
+      "is_block_start": false,
+      "reason": "13.3 les limitations s'appliquent indépendamment de l'avertissement, prolonge",
+      "legal_nature": "OBLIGATION",
+      "legal_nature_marker": "shall"
+    },
+    {
+      "id": 102,
+      "theme": "MISC_BOILERPLATE",
+      "block_id": 17,
+      "is_block_start": true,
+      "rationale": "14.1 ouvre les clauses finales : « the terms constitute the whole legal agreement » (intégralité)",
+      "rationale_codes": {
+        "decision_trigger": "topic_keyword",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "the terms constitute the whole legal agreement",
+        "revised_from_plan": false,
+        "confidence": 0.78
+      },
+      "legal_nature": "SCOPE_APPLICABILITY",
+      "legal_nature_marker": "govern your use"
+    },
+    {
+      "id": 103,
+      "theme": "MISC_BOILERPLATE",
+      "block_id": 17,
+      "is_block_start": false,
+      "reason": "exclusion des autres terms de Google, prolonge l'intégralité",
+      "legal_nature": "META",
+      "legal_nature_marker": "inc."
+    },
+    {
+      "id": 104,
+      "theme": "MISC_BOILERPLATE",
+      "block_id": 17,
+      "is_block_start": false,
+      "reason": "14.2 modalités de notification",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 105,
+      "theme": "MISC_BOILERPLATE",
+      "block_id": 17,
+      "is_block_start": false,
+      "reason": "14.3 non-renonciation (no waiver)",
+      "legal_nature": "PROHIBITION",
+      "legal_nature_marker": "will not"
+    },
+    {
+      "id": 106,
+      "theme": "MISC_BOILERPLATE",
+      "block_id": 17,
+      "is_block_start": false,
+      "reason": "14.4 divisibilité (severability)",
+      "legal_nature": "GOVERNANCE",
+      "legal_nature_marker": "jurisdiction"
+    },
+    {
+      "id": 107,
+      "theme": "MISC_BOILERPLATE",
+      "block_id": 17,
+      "is_block_start": false,
+      "reason": "suite de la divisibilité : maintien des autres dispositions",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 108,
+      "theme": "MISC_BOILERPLATE",
+      "block_id": 17,
+      "is_block_start": false,
+      "reason": "14.5 bénéficiaires tiers (sociétés du groupe), boilerplate",
+      "legal_nature": "OBLIGATION",
+      "legal_nature_marker": "shall"
+    },
+    {
+      "id": 109,
+      "theme": "MISC_BOILERPLATE",
+      "block_id": 17,
+      "is_block_start": false,
+      "reason": "pas d'autre bénéficiaire tiers, prolonge",
+      "legal_nature": "OBLIGATION",
+      "legal_nature_marker": "shall"
+    },
+    {
+      "id": 110,
+      "theme": "GOVERNING_LAW",
+      "block_id": 18,
+      "is_block_start": true,
+      "rationale": "14.6 ouvre le droit applicable : « shall be governed by english law »",
+      "rationale_codes": {
+        "decision_trigger": "topic_keyword",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "shall be governed by english law",
+        "revised_from_plan": false,
+        "confidence": 0.85
+      },
+      "legal_nature": "GOVERNANCE",
+      "legal_nature_marker": "governed by"
+    },
+    {
+      "id": 111,
+      "theme": "GOVERNING_LAW",
+      "block_id": 18,
+      "is_block_start": false,
+      "reason": "soumission à la juridiction exclusive des tribunaux anglais, prolonge le droit applicable",
+      "legal_nature": "GOVERNANCE",
+      "legal_nature_marker": "jurisdiction"
+    },
+    {
+      "id": 112,
+      "theme": "GOVERNING_LAW",
+      "block_id": 18,
+      "is_block_start": false,
+      "reason": "réserve des recours injonctifs dans toute juridiction, prolonge le droit applicable/juridiction",
+      "legal_nature": "GOVERNANCE",
+      "legal_nature_marker": "jurisdiction"
+    }
+  ]
+}

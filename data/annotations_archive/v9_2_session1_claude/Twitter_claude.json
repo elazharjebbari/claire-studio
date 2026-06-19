@@ -1,0 +1,1000 @@
+{
+  "doc": "Twitter",
+  "judge": "claude",
+  "version": "v9.2-nature-derived",
+  "document_plan": {
+    "estimated_n_blocks": 18,
+    "rationale_global": "ToS Twitter, profil narratif (80 phrases). Ouverture preambule/scope (terms govern access). Bloc eligibilite (binding contract, authorized to accept). Privacy/data. Long developpement responsabilite du contenu utilisateur (user content). Bloc copyright/DMCA (LICENSE_IP prime sur USER_CONTENT par §3.1). Adresse de l'agent copyright = META. Octroi de licence sur le contenu (USER_CONTENT). Twitter rules / prohibe (ACCEPTABLE_USE). Modification/retrait des services (MODIFICATION_OF_TERMS + droit de retrait). Accords tiers developpeur/ads/commerce (THIRD_PARTY). Creation et securite du compte (ELIGIBILITY_ACCOUNT). Communications (PRIVACY_DATA). Titre 'your license to use the services' (LICENSE_IP). Fin/resiliation (TERMINATION). Titre 'as-is' + disclaimer de garantie (WARRANTY_DISCLAIMER), avec definition 'twitter entities'. Limitation de responsabilite (LIABILITY_LIMITATION). Revision des termes (MODIFICATION_OF_TERMS). Severabilite/waiver (MISC_BOILERPLATE). Entite irlandaise + contact (META).",
+    "segments": [
+      {
+        "start_id": 0,
+        "theme": "PREAMBLE_SCOPE",
+        "rationale": "ouverture, les termes regissent l'acces aux services",
+        "evidence_span": "these terms of service"
+      },
+      {
+        "start_id": 3,
+        "theme": "ELIGIBILITY_ACCOUNT",
+        "rationale": "condition d'usage : contrat contraignant, personne non interdite",
+        "evidence_span": "you may use the services only if you agree to form a binding contract"
+      },
+      {
+        "start_id": 5,
+        "theme": "PRIVACY_DATA",
+        "rationale": "politique de confidentialite et traitement des informations",
+        "evidence_span": "our privacy policy"
+      },
+      {
+        "start_id": 7,
+        "theme": "USER_CONTENT",
+        "rationale": "responsabilite de l'utilisateur quant au contenu fourni",
+        "evidence_span": "you are responsible for your use of the services and for any content you provide"
+      },
+      {
+        "start_id": 14,
+        "theme": "LICENSE_IP",
+        "rationale": "droits de propriete intellectuelle / copyright, PI prime (§3.1)",
+        "evidence_span": "twitter respects the intellectual property rights of others"
+      },
+      {
+        "start_id": 18,
+        "theme": "META",
+        "rationale": "adresse postale de l'agent copyright",
+        "evidence_span": "1355 market street"
+      },
+      {
+        "start_id": 19,
+        "theme": "USER_CONTENT",
+        "rationale": "vous conservez vos droits sur le contenu poste / octroi de licence",
+        "evidence_span": "you retain your rights to any content you submit"
+      },
+      {
+        "start_id": 29,
+        "theme": "ACCEPTABLE_USE",
+        "rationale": "twitter rules, ce qui est prohibe sur les services",
+        "evidence_span": "please review the twitter rules"
+      },
+      {
+        "start_id": 31,
+        "theme": "MODIFICATION_OF_TERMS",
+        "rationale": "les services peuvent changer / droit d'arret et de retrait",
+        "evidence_span": "the services may change from time to time"
+      },
+      {
+        "start_id": 39,
+        "theme": "THIRD_PARTY",
+        "rationale": "accords distincts developpeur, ads, commerce",
+        "evidence_span": "if you use developer features of the services"
+      },
+      {
+        "start_id": 43,
+        "theme": "ELIGIBILITY_ACCOUNT",
+        "rationale": "creation et securite du compte",
+        "evidence_span": "you may need to create an account"
+      },
+      {
+        "start_id": 46,
+        "theme": "PRIVACY_DATA",
+        "rationale": "controle des communications du service",
+        "evidence_span": "you can control most communications from the services"
+      },
+      {
+        "start_id": 50,
+        "theme": "LICENSE_IP",
+        "rationale": "titre : licence d'utilisation du logiciel des services",
+        "evidence_span": "your license to use the services"
+      },
+      {
+        "start_id": 57,
+        "theme": "TERMINATION",
+        "rationale": "fin de l'accord / desactivation et resiliation",
+        "evidence_span": "you may end your legal agreement with twitter at any time"
+      },
+      {
+        "start_id": 62,
+        "theme": "WARRANTY_DISCLAIMER",
+        "rationale": "titre 'as-is' + absence de garantie",
+        "evidence_span": "the services are available"
+      },
+      {
+        "start_id": 65,
+        "theme": "DEFINITIONS",
+        "rationale": "definition de 'twitter entities'",
+        "evidence_span": "the `` twitter entities '' refers to"
+      },
+      {
+        "start_id": 69,
+        "theme": "LIABILITY_LIMITATION",
+        "rationale": "limitation des dommages indirects",
+        "evidence_span": "shall not be liable for any indirect"
+      },
+      {
+        "start_id": 72,
+        "theme": "MODIFICATION_OF_TERMS",
+        "rationale": "revision des termes dans le temps",
+        "evidence_span": "we may revise these terms from time to time"
+      },
+      {
+        "start_id": 76,
+        "theme": "MISC_BOILERPLATE",
+        "rationale": "severabilite et non-renonciation",
+        "evidence_span": "any provision of these terms is held to be invalid"
+      },
+      {
+        "start_id": 78,
+        "theme": "META",
+        "rationale": "entite irlandaise + contact",
+        "evidence_span": "twitter international company"
+      }
+    ]
+  },
+  "annotations": [
+    {
+      "id": 0,
+      "theme": "PREAMBLE_SCOPE",
+      "block_id": 0,
+      "is_block_start": true,
+      "rationale": "ouverture du document, cite « these terms of service »",
+      "rationale_codes": {
+        "decision_trigger": "document_start",
+        "relation_to_prev": "document_start",
+        "evidence_span": "if you live outside of the us",
+        "revised_from_plan": false,
+        "confidence": 0.7
+      },
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 1,
+      "theme": "PREAMBLE_SCOPE",
+      "block_id": 0,
+      "is_block_start": false,
+      "reason": "definit le perimetre des services regis par les termes",
+      "legal_nature": "SCOPE_APPLICABILITY",
+      "legal_nature_marker": "govern your access"
+    },
+    {
+      "id": 2,
+      "theme": "PREAMBLE_SCOPE",
+      "block_id": 0,
+      "is_block_start": false,
+      "reason": "acceptation des termes par l'usage",
+      "legal_nature": "SCOPE_APPLICABILITY",
+      "legal_nature_marker": "by using"
+    },
+    {
+      "id": 3,
+      "theme": "ELIGIBILITY_ACCOUNT",
+      "block_id": 1,
+      "is_block_start": true,
+      "rationale": "condition d'eligibilite, cite « binding contract »",
+      "rationale_codes": {
+        "decision_trigger": "topic_keyword",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "form a binding contract",
+        "revised_from_plan": false,
+        "confidence": 0.8
+      },
+      "legal_nature": "GOVERNANCE",
+      "legal_nature_marker": "jurisdiction"
+    },
+    {
+      "id": 4,
+      "theme": "ELIGIBILITY_ACCOUNT",
+      "block_id": 1,
+      "is_block_start": false,
+      "reason": "autorisation a accepter au nom d'une entite",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 5,
+      "theme": "PRIVACY_DATA",
+      "block_id": 2,
+      "is_block_start": true,
+      "rationale": "passage a la confidentialite, cite « our privacy policy »",
+      "rationale_codes": {
+        "decision_trigger": "topic_keyword",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "our privacy policy",
+        "revised_from_plan": false,
+        "confidence": 0.88
+      },
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 6,
+      "theme": "PRIVACY_DATA",
+      "block_id": 2,
+      "is_block_start": false,
+      "reason": "consentement a la collecte et au transfert des informations",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 7,
+      "theme": "USER_CONTENT",
+      "block_id": 3,
+      "is_block_start": true,
+      "rationale": "responsabilite sur le contenu fourni, cite « any content you provide »",
+      "rationale_codes": {
+        "decision_trigger": "topic_keyword",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "any content you provide",
+        "revised_from_plan": false,
+        "confidence": 0.8
+      },
+      "legal_nature": "OBLIGATION",
+      "legal_nature_marker": "you are responsible"
+    },
+    {
+      "id": 8,
+      "theme": "USER_CONTENT",
+      "block_id": 3,
+      "is_block_start": false,
+      "reason": "recommandation sur le contenu partage",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 9,
+      "theme": "USER_CONTENT",
+      "block_id": 3,
+      "is_block_start": false,
+      "reason": "usage du contenu a vos risques",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 10,
+      "theme": "USER_CONTENT",
+      "block_id": 3,
+      "is_block_start": false,
+      "reason": "non-endossement du contenu poste",
+      "legal_nature": "PROHIBITION",
+      "legal_nature_marker": "do not"
+    },
+    {
+      "id": 11,
+      "theme": "USER_CONTENT",
+      "block_id": 3,
+      "is_block_start": false,
+      "reason": "exposition possible a du contenu inapproprie",
+      "legal_nature": "SCOPE_APPLICABILITY",
+      "legal_nature_marker": "by using"
+    },
+    {
+      "id": 12,
+      "theme": "USER_CONTENT",
+      "block_id": 3,
+      "is_block_start": false,
+      "reason": "responsabilite de l'auteur du contenu",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 13,
+      "theme": "USER_CONTENT",
+      "block_id": 3,
+      "is_block_start": false,
+      "reason": "absence de controle/monitoring du contenu",
+      "legal_nature": "PROHIBITION",
+      "legal_nature_marker": "may not"
+    },
+    {
+      "id": 14,
+      "theme": "LICENSE_IP",
+      "block_id": 4,
+      "is_block_start": true,
+      "rationale": "passage a la propriete intellectuelle, cite « intellectual property rights »",
+      "rationale_codes": {
+        "decision_trigger": "topic_keyword",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "the intellectual property rights of others",
+        "revised_from_plan": false,
+        "confidence": 0.82
+      },
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 15,
+      "theme": "LICENSE_IP",
+      "block_id": 4,
+      "is_block_start": false,
+      "reason": "retrait du contenu allegue contrefaisant",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 16,
+      "theme": "LICENSE_IP",
+      "block_id": 4,
+      "is_block_start": false,
+      "reason": "reponse aux notices de copyright",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 17,
+      "theme": "LICENSE_IP",
+      "block_id": 4,
+      "is_block_start": false,
+      "reason": "procedure de signalement DMCA / agent copyright",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 18,
+      "theme": "META",
+      "block_id": 5,
+      "is_block_start": true,
+      "rationale": "adresse postale de l'agent copyright, cite « 1355 market street »",
+      "rationale_codes": {
+        "decision_trigger": "title_marker",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "1355 market street",
+        "revised_from_plan": false,
+        "confidence": 0.85
+      },
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 19,
+      "theme": "USER_CONTENT",
+      "block_id": 6,
+      "is_block_start": true,
+      "rationale": "droits sur le contenu poste, cite « you retain your rights »",
+      "rationale_codes": {
+        "decision_trigger": "topic_keyword",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "you retain your rights to any content you submit",
+        "revised_from_plan": false,
+        "confidence": 0.78
+      },
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 20,
+      "theme": "USER_CONTENT",
+      "block_id": 6,
+      "is_block_start": false,
+      "reason": "vous possedez votre contenu",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 21,
+      "theme": "USER_CONTENT",
+      "block_id": 6,
+      "is_block_start": false,
+      "reason": "octroi de la licence sur le contenu soumis",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 22,
+      "theme": "USER_CONTENT",
+      "block_id": 6,
+      "is_block_start": false,
+      "reason": "etendue de la licence accordee",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 23,
+      "theme": "USER_CONTENT",
+      "block_id": 6,
+      "is_block_start": false,
+      "reason": "syndication/diffusion du contenu par twitter et partenaires",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 24,
+      "theme": "USER_CONTENT",
+      "block_id": 6,
+      "is_block_start": false,
+      "reason": "absence de compensation pour ces usages",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 25,
+      "theme": "USER_CONTENT",
+      "block_id": 6,
+      "is_block_start": false,
+      "reason": "regles d'interaction des partenaires avec le contenu",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 26,
+      "theme": "USER_CONTENT",
+      "block_id": 6,
+      "is_block_start": false,
+      "reason": "finalite des regles ecosysteme",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 27,
+      "theme": "USER_CONTENT",
+      "block_id": 6,
+      "is_block_start": false,
+      "reason": "modification/adaptation du contenu lors de la distribution",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 28,
+      "theme": "USER_CONTENT",
+      "block_id": 6,
+      "is_block_start": false,
+      "reason": "garantie des droits pour octroyer la licence",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 29,
+      "theme": "ACCEPTABLE_USE",
+      "block_id": 7,
+      "is_block_start": true,
+      "rationale": "renvoi aux twitter rules et a ce qui est prohibe, cite « what is prohibited »",
+      "rationale_codes": {
+        "decision_trigger": "topic_keyword",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "outline what is prohibited on the services",
+        "revised_from_plan": false,
+        "confidence": 0.72
+      },
+      "legal_nature": "PROHIBITION",
+      "legal_nature_marker": "prohibited"
+    },
+    {
+      "id": 30,
+      "theme": "ACCEPTABLE_USE",
+      "block_id": 7,
+      "is_block_start": false,
+      "reason": "usage des services en conformite avec les termes et lois",
+      "legal_nature": "RIGHT_GRANT",
+      "legal_nature_marker": "you may use"
+    },
+    {
+      "id": 31,
+      "theme": "MODIFICATION_OF_TERMS",
+      "block_id": 8,
+      "is_block_start": true,
+      "rationale": "les services peuvent changer / droit d'arret et de retrait, cite « the services may change »",
+      "rationale_codes": {
+        "decision_trigger": "topic_keyword",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "the services may change from time to time",
+        "revised_from_plan": false,
+        "confidence": 0.65
+      },
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 32,
+      "theme": "MODIFICATION_OF_TERMS",
+      "block_id": 8,
+      "is_block_start": false,
+      "reason": "arret possible des services ou fonctionnalites",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 33,
+      "theme": "MODIFICATION_OF_TERMS",
+      "block_id": 8,
+      "is_block_start": false,
+      "reason": "droit de limiter usage et stockage",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 34,
+      "theme": "MODIFICATION_OF_TERMS",
+      "block_id": 8,
+      "is_block_start": false,
+      "reason": "droit de retrait de contenu / suspension d'utilisateurs",
+      "legal_nature": "GOVERNANCE",
+      "legal_nature_marker": "terminate"
+    },
+    {
+      "id": 35,
+      "theme": "MODIFICATION_OF_TERMS",
+      "block_id": 8,
+      "is_block_start": false,
+      "reason": "repetition : les services peuvent changer",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 36,
+      "theme": "MODIFICATION_OF_TERMS",
+      "block_id": 8,
+      "is_block_start": false,
+      "reason": "repetition : arret possible des services",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 37,
+      "theme": "MODIFICATION_OF_TERMS",
+      "block_id": 8,
+      "is_block_start": false,
+      "reason": "repetition : droit de limiter usage et stockage",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 38,
+      "theme": "MODIFICATION_OF_TERMS",
+      "block_id": 8,
+      "is_block_start": false,
+      "reason": "repetition : droit de retrait / suspension",
+      "legal_nature": "GOVERNANCE",
+      "legal_nature_marker": "terminate"
+    },
+    {
+      "id": 39,
+      "theme": "THIRD_PARTY",
+      "block_id": 9,
+      "is_block_start": true,
+      "rationale": "accords distincts selon les fonctionnalites, cite « developer features »",
+      "rationale_codes": {
+        "decision_trigger": "topic_keyword",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "if you use developer features of the services",
+        "revised_from_plan": false,
+        "confidence": 0.68
+      },
+      "legal_nature": "OBLIGATION",
+      "legal_nature_marker": "you agree to"
+    },
+    {
+      "id": 40,
+      "theme": "THIRD_PARTY",
+      "block_id": 9,
+      "is_block_start": false,
+      "reason": "conditions d'usage des services/contenu via interfaces fournies",
+      "legal_nature": "OBLIGATION",
+      "legal_nature_marker": "you must"
+    },
+    {
+      "id": 41,
+      "theme": "THIRD_PARTY",
+      "block_id": 9,
+      "is_block_start": false,
+      "reason": "accord publicitaire master services agreement",
+      "legal_nature": "OBLIGATION",
+      "legal_nature_marker": "you must"
+    },
+    {
+      "id": 42,
+      "theme": "THIRD_PARTY",
+      "block_id": 9,
+      "is_block_start": false,
+      "reason": "conditions commerce / buy now",
+      "legal_nature": "OBLIGATION",
+      "legal_nature_marker": "you agree to"
+    },
+    {
+      "id": 43,
+      "theme": "ELIGIBILITY_ACCOUNT",
+      "block_id": 10,
+      "is_block_start": true,
+      "rationale": "creation de compte, cite « create an account »",
+      "rationale_codes": {
+        "decision_trigger": "topic_keyword",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "you may need to create an account to use some of our services",
+        "revised_from_plan": false,
+        "confidence": 0.8
+      },
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 44,
+      "theme": "ELIGIBILITY_ACCOUNT",
+      "block_id": 10,
+      "is_block_start": false,
+      "reason": "responsabilite de securisation du compte",
+      "legal_nature": "OBLIGATION",
+      "legal_nature_marker": "you are responsible"
+    },
+    {
+      "id": 45,
+      "theme": "ELIGIBILITY_ACCOUNT",
+      "block_id": 10,
+      "is_block_start": false,
+      "reason": "non-responsabilite en cas de defaut de l'utilisateur",
+      "legal_nature": "PROHIBITION",
+      "legal_nature_marker": "will not"
+    },
+    {
+      "id": 46,
+      "theme": "PRIVACY_DATA",
+      "block_id": 11,
+      "is_block_start": true,
+      "rationale": "controle des communications, cite « communications from the services »",
+      "rationale_codes": {
+        "decision_trigger": "topic_keyword",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "you can control most communications from the services",
+        "revised_from_plan": false,
+        "confidence": 0.62
+      },
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 47,
+      "theme": "PRIVACY_DATA",
+      "block_id": 11,
+      "is_block_start": false,
+      "reason": "communications de service obligatoires",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 48,
+      "theme": "PRIVACY_DATA",
+      "block_id": 11,
+      "is_block_start": false,
+      "reason": "communications non desactivables",
+      "legal_nature": "PROHIBITION",
+      "legal_nature_marker": "may not"
+    },
+    {
+      "id": 49,
+      "theme": "PRIVACY_DATA",
+      "block_id": 11,
+      "is_block_start": false,
+      "reason": "mise a jour du numero de telephone du compte",
+      "legal_nature": "OBLIGATION",
+      "legal_nature_marker": "you must"
+    },
+    {
+      "id": 50,
+      "theme": "LICENSE_IP",
+      "block_id": 12,
+      "is_block_start": true,
+      "rationale": "titre nominal court de section, cite « your license to use the services »",
+      "rationale_codes": {
+        "decision_trigger": "title_marker",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "your license to use the services",
+        "revised_from_plan": false,
+        "confidence": 0.88
+      },
+      "legal_nature": "RIGHT_GRANT",
+      "legal_nature_marker": "license to"
+    },
+    {
+      "id": 51,
+      "theme": "LICENSE_IP",
+      "block_id": 12,
+      "is_block_start": false,
+      "reason": "octroi de licence d'usage du logiciel des services",
+      "legal_nature": "RIGHT_GRANT",
+      "legal_nature_marker": "license to"
+    },
+    {
+      "id": 52,
+      "theme": "LICENSE_IP",
+      "block_id": 12,
+      "is_block_start": false,
+      "reason": "finalite de la licence",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 53,
+      "theme": "LICENSE_IP",
+      "block_id": 12,
+      "is_block_start": false,
+      "reason": "services proteges par copyright et marques",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 54,
+      "theme": "LICENSE_IP",
+      "block_id": 12,
+      "is_block_start": false,
+      "reason": "aucun droit sur les marques twitter",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 55,
+      "theme": "LICENSE_IP",
+      "block_id": 12,
+      "is_block_start": false,
+      "reason": "propriete exclusive des services par twitter",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 56,
+      "theme": "LICENSE_IP",
+      "block_id": 12,
+      "is_block_start": false,
+      "reason": "droit d'usage du feedback fourni",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 57,
+      "theme": "TERMINATION",
+      "block_id": 13,
+      "is_block_start": true,
+      "rationale": "fin de l'accord par l'utilisateur, cite « end your legal agreement »",
+      "rationale_codes": {
+        "decision_trigger": "topic_keyword",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "you may end your legal agreement with twitter at any time",
+        "revised_from_plan": false,
+        "confidence": 0.82
+      },
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 58,
+      "theme": "TERMINATION",
+      "block_id": 13,
+      "is_block_start": false,
+      "reason": "instructions de desactivation du compte",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 59,
+      "theme": "TERMINATION",
+      "block_id": 13,
+      "is_block_start": false,
+      "reason": "suspension/resiliation par twitter",
+      "legal_nature": "GOVERNANCE",
+      "legal_nature_marker": "terminate"
+    },
+    {
+      "id": 60,
+      "theme": "TERMINATION",
+      "block_id": 13,
+      "is_block_start": false,
+      "reason": "notification de la resiliation",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 61,
+      "theme": "TERMINATION",
+      "block_id": 13,
+      "is_block_start": false,
+      "reason": "survie de certaines sections apres resiliation",
+      "legal_nature": "GOVERNANCE",
+      "legal_nature_marker": "terminate"
+    },
+    {
+      "id": 62,
+      "theme": "WARRANTY_DISCLAIMER",
+      "block_id": 14,
+      "is_block_start": true,
+      "rationale": "titre 'as-is', cite « the services are available »",
+      "rationale_codes": {
+        "decision_trigger": "title_marker",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "the services are available",
+        "revised_from_plan": false,
+        "confidence": 0.8
+      },
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 63,
+      "theme": "WARRANTY_DISCLAIMER",
+      "block_id": 14,
+      "is_block_start": false,
+      "reason": "usage des services a vos risques",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 64,
+      "theme": "WARRANTY_DISCLAIMER",
+      "block_id": 14,
+      "is_block_start": false,
+      "reason": "services fournis 'as is' et 'as available'",
+      "legal_nature": "LIMITATION_DISCLAIMER",
+      "legal_nature_marker": "as is"
+    },
+    {
+      "id": 65,
+      "theme": "DEFINITIONS",
+      "block_id": 15,
+      "is_block_start": true,
+      "rationale": "definition d'un terme, cite « twitter entities » refers to",
+      "rationale_codes": {
+        "decision_trigger": "definition_marker",
+        "relation_to_prev": "definition_chain",
+        "evidence_span": "the `` twitter entities '' refers to",
+        "revised_from_plan": false,
+        "confidence": 0.7
+      },
+      "legal_nature": "DEFINITION",
+      "legal_nature_marker": "refers to"
+    },
+    {
+      "id": 66,
+      "theme": "WARRANTY_DISCLAIMER",
+      "block_id": 16,
+      "is_block_start": true,
+      "rationale": "disclaimer de garanties, cite « disclaim all warranties »",
+      "rationale_codes": {
+        "decision_trigger": "topic_keyword",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "disclaim all warranties and conditions",
+        "revised_from_plan": true,
+        "confidence": 0.7
+      },
+      "legal_nature": "LIMITATION_DISCLAIMER",
+      "legal_nature_marker": "warranties"
+    },
+    {
+      "id": 67,
+      "theme": "WARRANTY_DISCLAIMER",
+      "block_id": 16,
+      "is_block_start": false,
+      "reason": "absence de garantie sur completude/securite/fiabilite",
+      "legal_nature": "LIMITATION_DISCLAIMER",
+      "legal_nature_marker": "no warranty"
+    },
+    {
+      "id": 68,
+      "theme": "WARRANTY_DISCLAIMER",
+      "block_id": 16,
+      "is_block_start": false,
+      "reason": "aucun conseil ne cree de garantie",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 69,
+      "theme": "LIABILITY_LIMITATION",
+      "block_id": 17,
+      "is_block_start": true,
+      "rationale": "limitation des dommages, cite « shall not be liable for any indirect »",
+      "rationale_codes": {
+        "decision_trigger": "topic_keyword",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "shall not be liable for any indirect",
+        "revised_from_plan": false,
+        "confidence": 0.82
+      },
+      "legal_nature": "PROHIBITION",
+      "legal_nature_marker": "shall not"
+    },
+    {
+      "id": 70,
+      "theme": "LIABILITY_LIMITATION",
+      "block_id": 17,
+      "is_block_start": false,
+      "reason": "etendue des limitations a toute theorie de responsabilite",
+      "legal_nature": "OBLIGATION",
+      "legal_nature_marker": "shall"
+    },
+    {
+      "id": 71,
+      "theme": "LIABILITY_LIMITATION",
+      "block_id": 17,
+      "is_block_start": false,
+      "reason": "exception selon les juridictions (limitation applicable au maximum permis)",
+      "legal_nature": "PROHIBITION",
+      "legal_nature_marker": "may not"
+    },
+    {
+      "id": 72,
+      "theme": "MODIFICATION_OF_TERMS",
+      "block_id": 18,
+      "is_block_start": true,
+      "rationale": "revision des termes, cite « we may revise these terms »",
+      "rationale_codes": {
+        "decision_trigger": "topic_keyword",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "we may revise these terms from time to time",
+        "revised_from_plan": false,
+        "confidence": 0.85
+      },
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 73,
+      "theme": "MODIFICATION_OF_TERMS",
+      "block_id": 18,
+      "is_block_start": false,
+      "reason": "non-retroactivite des changements",
+      "legal_nature": "PROHIBITION",
+      "legal_nature_marker": "will not"
+    },
+    {
+      "id": 74,
+      "theme": "MODIFICATION_OF_TERMS",
+      "block_id": 18,
+      "is_block_start": false,
+      "reason": "notification des revisions materielles",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 75,
+      "theme": "MODIFICATION_OF_TERMS",
+      "block_id": 18,
+      "is_block_start": false,
+      "reason": "acceptation par usage continu apres revision",
+      "legal_nature": "OBLIGATION",
+      "legal_nature_marker": "you agree to"
+    },
+    {
+      "id": 76,
+      "theme": "MISC_BOILERPLATE",
+      "block_id": 19,
+      "is_block_start": true,
+      "rationale": "clause de severabilite, cite « invalid or unenforceable »",
+      "rationale_codes": {
+        "decision_trigger": "topic_keyword",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "invalid or unenforceable",
+        "revised_from_plan": false,
+        "confidence": 0.78
+      },
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 77,
+      "theme": "MISC_BOILERPLATE",
+      "block_id": 19,
+      "is_block_start": false,
+      "reason": "clause de non-renonciation (waiver)",
+      "legal_nature": "PROHIBITION",
+      "legal_nature_marker": "will not"
+    },
+    {
+      "id": 78,
+      "theme": "META",
+      "block_id": 20,
+      "is_block_start": true,
+      "rationale": "identite et siege de l'entite contractante, cite « twitter international company »",
+      "rationale_codes": {
+        "decision_trigger": "topic_keyword",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "twitter international company",
+        "revised_from_plan": false,
+        "confidence": 0.8
+      },
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 79,
+      "theme": "META",
+      "block_id": 20,
+      "is_block_start": false,
+      "reason": "invitation a contacter pour toute question",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    }
+  ]
+}

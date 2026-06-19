@@ -1,0 +1,1962 @@
+{
+  "doc": "Yahoo",
+  "judge": "claude",
+  "version": "v9.2-nature-derived",
+  "document_plan": {
+    "estimated_n_blocks": 35,
+    "rationale_global": "ToS Yahoo narratif (peu de numerotation, quelques titres nominaux). Ouverture/portee (acceptation des TOS, services), description du service, responsabilites d'acces et frais tiers, eligibilite/age/enregistrement, lien vie privee, securite du compte/mot de passe, responsabilite du contenu utilisateur, usage acceptable (longue liste d'interdictions), pre-screening/retrait de contenu, divulgation legale des donnees, usage rules/anti-circumvention, nature interstate des communications, conformite export/import, licence sur le contenu soumis, indemnisation, non-reutilisation commerciale, pratiques de stockage, modification/discontinuation/terminaison du service, dealings avec annonceurs, liens tiers, PI/logiciel/licence d'usage, disclaimer de garantie (avec admonition epilepsie et financiere), limitation de responsabilite, third-party beneficiaries, notices, marques Yahoo, procedure DMCA/copyright, closed captioning, entire agreement, choix de la loi/forum, et boilerplate divers (waiver/severability, survivorship, delai de prescription, titres/cession/report).",
+    "segments": [
+      {
+        "start_id": 0,
+        "theme": "PREAMBLE_SCOPE",
+        "rationale": "ouverture, accueil et soumission aux TOS",
+        "evidence_span": "welcomes you"
+      },
+      {
+        "start_id": 8,
+        "theme": "PREAMBLE_SCOPE",
+        "rationale": "description des yahoo services",
+        "evidence_span": "rich collection of resources"
+      },
+      {
+        "start_id": 13,
+        "theme": "THIRD_PARTY",
+        "rationale": "responsabilite d'acces et frais tiers",
+        "evidence_span": "third-party fees"
+      },
+      {
+        "start_id": 17,
+        "theme": "ELIGIBILITY_ACCOUNT",
+        "rationale": "age, capacite et donnees d'enregistrement",
+        "evidence_span": "adult or mature content"
+      },
+      {
+        "start_id": 24,
+        "theme": "PRIVACY_DATA",
+        "rationale": "donnees d'enregistrement soumises a la privacy policy",
+        "evidence_span": "privacy policy"
+      },
+      {
+        "start_id": 27,
+        "theme": "ELIGIBILITY_ACCOUNT",
+        "rationale": "titre member account, password and security",
+        "evidence_span": "member account , password and security"
+      },
+      {
+        "start_id": 32,
+        "theme": "USER_CONTENT",
+        "rationale": "responsabilite du contenu utilisateur",
+        "evidence_span": "are the sole responsibility of the person from whom such content originated"
+      },
+      {
+        "start_id": 37,
+        "theme": "ACCEPTABLE_USE",
+        "rationale": "chapeau de la liste d'interdictions d'usage",
+        "evidence_span": "you agree to not use the yahoo services to"
+      },
+      {
+        "start_id": 52,
+        "theme": "USER_CONTENT",
+        "rationale": "droit de pre-screening et retrait de contenu",
+        "evidence_span": "pre-screen content"
+      },
+      {
+        "start_id": 56,
+        "theme": "PRIVACY_DATA",
+        "rationale": "acces/preservation/divulgation des infos du compte",
+        "evidence_span": "access , preserve and disclose your account information"
+      },
+      {
+        "start_id": 57,
+        "theme": "LICENSE_IP",
+        "rationale": "usage rules et anti-circumvention",
+        "evidence_span": "usage rules set by yahoo"
+      },
+      {
+        "start_id": 60,
+        "theme": "MISC_BOILERPLATE",
+        "rationale": "titre nature interstate des communications",
+        "evidence_span": "interstate nature of communications on yahoo network"
+      },
+      {
+        "start_id": 64,
+        "theme": "MISC_BOILERPLATE",
+        "rationale": "titre admonitions export/import compliance",
+        "evidence_span": "export and import compliance"
+      },
+      {
+        "start_id": 69,
+        "theme": "LICENSE_IP",
+        "rationale": "titre + licence sur le contenu soumis",
+        "evidence_span": "content submitted or made available for inclusion"
+      },
+      {
+        "start_id": 81,
+        "theme": "INDEMNIFICATION",
+        "rationale": "obligation d'indemniser Yahoo",
+        "evidence_span": "you agree to indemnify and hold yahoo"
+      },
+      {
+        "start_id": 82,
+        "theme": "ACCEPTABLE_USE",
+        "rationale": "titre no commercial reuse + interdiction",
+        "evidence_span": "no commercial reuse of yahoo services"
+      },
+      {
+        "start_id": 84,
+        "theme": "PRIVACY_DATA",
+        "rationale": "titre general practices regarding use and storage",
+        "evidence_span": "general practices regarding use and storage"
+      },
+      {
+        "start_id": 93,
+        "theme": "TERMINATION",
+        "rationale": "modification/discontinuation et terminaison",
+        "evidence_span": "modify or discontinue"
+      },
+      {
+        "start_id": 100,
+        "theme": "THIRD_PARTY",
+        "rationale": "dealings avec les advertisers",
+        "evidence_span": "business dealings with , or participation in promotions of , advertisers"
+      },
+      {
+        "start_id": 102,
+        "theme": "THIRD_PARTY",
+        "rationale": "liens vers sites/ressources tiers",
+        "evidence_span": "links to other world wide web sites"
+      },
+      {
+        "start_id": 105,
+        "theme": "LICENSE_IP",
+        "rationale": "PI/logiciel proprietaire et licence d'usage",
+        "evidence_span": "proprietary and confidential information"
+      },
+      {
+        "start_id": 111,
+        "theme": "WARRANTY_DISCLAIMER",
+        "rationale": "chapeau disclaimer as is / no warranty",
+        "evidence_span": "you expressly understand and agree that"
+      },
+      {
+        "start_id": 122,
+        "theme": "LIABILITY_LIMITATION",
+        "rationale": "limitation de dommages",
+        "evidence_span": "shall not be liable to you for any punitive"
+      },
+      {
+        "start_id": 125,
+        "theme": "WARRANTY_DISCLAIMER",
+        "rationale": "titre admonition financiere, renvoi aux disclaimers",
+        "evidence_span": "relating to financial matters"
+      },
+      {
+        "start_id": 131,
+        "theme": "THIRD_PARTY",
+        "rationale": "no third-party beneficiaries",
+        "evidence_span": "no third-party beneficiaries"
+      },
+      {
+        "start_id": 132,
+        "theme": "MISC_BOILERPLATE",
+        "rationale": "notices",
+        "evidence_span": "yahoo may provide you with notices"
+      },
+      {
+        "start_id": 135,
+        "theme": "LICENSE_IP",
+        "rationale": "marques Yahoo",
+        "evidence_span": "trademarks"
+      },
+      {
+        "start_id": 137,
+        "theme": "LICENSE_IP",
+        "rationale": "titre procedure DMCA/copyright infringement",
+        "evidence_span": "claims of copyright or intellectual property infringement"
+      },
+      {
+        "start_id": 149,
+        "theme": "MISC_BOILERPLATE",
+        "rationale": "closed captioning compliance",
+        "evidence_span": "closed captioning"
+      },
+      {
+        "start_id": 151,
+        "theme": "MISC_BOILERPLATE",
+        "rationale": "entire agreement",
+        "evidence_span": "entire agreement"
+      },
+      {
+        "start_id": 153,
+        "theme": "GOVERNING_LAW",
+        "rationale": "titre choice of law and forum",
+        "evidence_span": "choice of law and forum"
+      },
+      {
+        "start_id": 156,
+        "theme": "MISC_BOILERPLATE",
+        "rationale": "titre waiver and severability",
+        "evidence_span": "waiver and severability of terms"
+      },
+      {
+        "start_id": 159,
+        "theme": "MISC_BOILERPLATE",
+        "rationale": "titre survivorship/non-transferability",
+        "evidence_span": "no right of survivorship and non-transferability"
+      },
+      {
+        "start_id": 162,
+        "theme": "DISPUTE_ARBITRATION",
+        "rationale": "delai de prescription des actions",
+        "evidence_span": "must be filed within one"
+      },
+      {
+        "start_id": 163,
+        "theme": "MISC_BOILERPLATE",
+        "rationale": "titres sans effet legal, cession et report",
+        "evidence_span": "section titles in the tos are for convenience only"
+      }
+    ]
+  },
+  "annotations": [
+    {
+      "id": 0,
+      "theme": "PREAMBLE_SCOPE",
+      "block_id": 0,
+      "is_block_start": true,
+      "rationale": "ouverture du document, accueil de l'utilisateur cite « welcomes you »",
+      "rationale_codes": {
+        "decision_trigger": "document_start",
+        "relation_to_prev": "document_start",
+        "evidence_span": "welcomes you",
+        "revised_from_plan": false,
+        "confidence": 0.95
+      },
+      "legal_nature": "META",
+      "legal_nature_marker": "inc."
+    },
+    {
+      "id": 1,
+      "theme": "PREAMBLE_SCOPE",
+      "block_id": 0,
+      "is_block_start": false,
+      "reason": "fourniture des services soumis aux TOS, prolonge la portee",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 2,
+      "theme": "PREAMBLE_SCOPE",
+      "block_id": 0,
+      "is_block_start": false,
+      "reason": "ou consulter la version courante des TOS",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 3,
+      "theme": "PREAMBLE_SCOPE",
+      "block_id": 0,
+      "is_block_start": false,
+      "reason": "acceptation par l'usage des services",
+      "legal_nature": "SCOPE_APPLICABILITY",
+      "legal_nature_marker": "by accessing"
+    },
+    {
+      "id": 4,
+      "theme": "PREAMBLE_SCOPE",
+      "block_id": 0,
+      "is_block_start": false,
+      "reason": "soumission aux guidelines/regles additionnelles",
+      "legal_nature": "OBLIGATION",
+      "legal_nature_marker": "shall"
+    },
+    {
+      "id": 5,
+      "theme": "PREAMBLE_SCOPE",
+      "block_id": 0,
+      "is_block_start": false,
+      "reason": "incorporation par reference des guidelines",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 6,
+      "theme": "PREAMBLE_SCOPE",
+      "block_id": 0,
+      "is_block_start": false,
+      "reason": "autres services regis par d'autres TOS",
+      "legal_nature": "GOVERNANCE",
+      "legal_nature_marker": "governed by"
+    },
+    {
+      "id": 7,
+      "theme": "PREAMBLE_SCOPE",
+      "block_id": 0,
+      "is_block_start": false,
+      "reason": "ces autres TOS seront postes, prolonge la portee",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 8,
+      "theme": "PREAMBLE_SCOPE",
+      "block_id": 1,
+      "is_block_start": true,
+      "rationale": "description du perimetre des services, definit « yahoo services », cite « rich collection of resources »",
+      "rationale_codes": {
+        "decision_trigger": "definition_marker",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "rich collection of resources",
+        "revised_from_plan": false,
+        "confidence": 0.7
+      },
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 9,
+      "theme": "PREAMBLE_SCOPE",
+      "block_id": 1,
+      "is_block_start": false,
+      "reason": "les services peuvent inclure des publicites",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 10,
+      "theme": "PREAMBLE_SCOPE",
+      "block_id": 1,
+      "is_block_start": false,
+      "reason": "communications faisant partie du service, pas d'opt-out",
+      "legal_nature": "PROHIBITION",
+      "legal_nature_marker": "will not"
+    },
+    {
+      "id": 11,
+      "theme": "PREAMBLE_SCOPE",
+      "block_id": 1,
+      "is_block_start": false,
+      "reason": "nouvelles fonctionnalites soumises aux TOS",
+      "legal_nature": "OBLIGATION",
+      "legal_nature_marker": "shall"
+    },
+    {
+      "id": 12,
+      "theme": "PREAMBLE_SCOPE",
+      "block_id": 1,
+      "is_block_start": false,
+      "reason": "service fourni as-is, aucune responsabilite de stockage; prolonge la description du service",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 13,
+      "theme": "THIRD_PARTY",
+      "block_id": 2,
+      "is_block_start": true,
+      "rationale": "responsabilite d'obtenir l'acces avec frais de tiers, cite « third-party fees »",
+      "rationale_codes": {
+        "decision_trigger": "topic_keyword",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "third-party fees",
+        "revised_from_plan": false,
+        "confidence": 0.6
+      },
+      "legal_nature": "OBLIGATION",
+      "legal_nature_marker": "you are responsible"
+    },
+    {
+      "id": 14,
+      "theme": "THIRD_PARTY",
+      "block_id": 2,
+      "is_block_start": false,
+      "reason": "responsabilite des frais, prolonge",
+      "legal_nature": "OBLIGATION",
+      "legal_nature_marker": "you are responsible"
+    },
+    {
+      "id": 15,
+      "theme": "THIRD_PARTY",
+      "block_id": 2,
+      "is_block_start": false,
+      "reason": "responsabilite de l'equipement d'acces, prolonge",
+      "legal_nature": "OBLIGATION",
+      "legal_nature_marker": "you must"
+    },
+    {
+      "id": 16,
+      "theme": "THIRD_PARTY",
+      "block_id": 2,
+      "is_block_start": false,
+      "reason": "traitement technique sur des reseaux tiers, prolonge",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 17,
+      "theme": "ELIGIBILITY_ACCOUNT",
+      "block_id": 3,
+      "is_block_start": true,
+      "rationale": "contenu adulte avec exigence d'age, cite « adult or mature content »",
+      "rationale_codes": {
+        "decision_trigger": "topic_keyword",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "adult or mature content",
+        "revised_from_plan": false,
+        "confidence": 0.6
+      },
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 18,
+      "theme": "ELIGIBILITY_ACCOUNT",
+      "block_id": 3,
+      "is_block_start": false,
+      "reason": "exigence d'age 18 ans pour ces zones, prolonge",
+      "legal_nature": "OBLIGATION",
+      "legal_nature_marker": "you must"
+    },
+    {
+      "id": 19,
+      "theme": "ELIGIBILITY_ACCOUNT",
+      "block_id": 3,
+      "is_block_start": false,
+      "reason": "representation d'age legal pour contracter",
+      "legal_nature": "GOVERNANCE",
+      "legal_nature_marker": "jurisdiction"
+    },
+    {
+      "id": 20,
+      "theme": "ELIGIBILITY_ACCOUNT",
+      "block_id": 3,
+      "is_block_start": false,
+      "reason": "fourniture de donnees d'enregistrement exactes",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 21,
+      "theme": "ELIGIBILITY_ACCOUNT",
+      "block_id": 3,
+      "is_block_start": false,
+      "reason": "suspension/terminaison si infos inexactes, prolonge",
+      "legal_nature": "GOVERNANCE",
+      "legal_nature_marker": "terminate"
+    },
+    {
+      "id": 22,
+      "theme": "ELIGIBILITY_ACCOUNT",
+      "block_id": 3,
+      "is_block_start": false,
+      "reason": "age minimum 13 ans pour utiliser les services",
+      "legal_nature": "OBLIGATION",
+      "legal_nature_marker": "you must"
+    },
+    {
+      "id": 23,
+      "theme": "ELIGIBILITY_ACCOUNT",
+      "block_id": 3,
+      "is_block_start": false,
+      "reason": "responsabilite parentale pour comptes familiaux, prolonge",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 24,
+      "theme": "PRIVACY_DATA",
+      "block_id": 4,
+      "is_block_start": true,
+      "rationale": "donnees d'enregistrement soumises a la privacy policy, cite « privacy policy »",
+      "rationale_codes": {
+        "decision_trigger": "topic_keyword",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "privacy policy",
+        "revised_from_plan": false,
+        "confidence": 0.7
+      },
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 25,
+      "theme": "PRIVACY_DATA",
+      "block_id": 4,
+      "is_block_start": false,
+      "reason": "renvoi vers la privacy policy complete",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 26,
+      "theme": "PRIVACY_DATA",
+      "block_id": 4,
+      "is_block_start": false,
+      "reason": "consentement a la collecte et au transfert des donnees, prolonge",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 27,
+      "theme": "ELIGIBILITY_ACCOUNT",
+      "block_id": 5,
+      "is_block_start": true,
+      "rationale": "titre nominal court de section, cite « member account , password and security »",
+      "rationale_codes": {
+        "decision_trigger": "title_marker",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "member account , password and security",
+        "revised_from_plan": false,
+        "confidence": 0.9
+      },
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 28,
+      "theme": "ELIGIBILITY_ACCOUNT",
+      "block_id": 5,
+      "is_block_start": false,
+      "reason": "reception d'un mot de passe et compte",
+      "legal_nature": "OBLIGATION",
+      "legal_nature_marker": "you will"
+    },
+    {
+      "id": 29,
+      "theme": "ELIGIBILITY_ACCOUNT",
+      "block_id": 5,
+      "is_block_start": false,
+      "reason": "responsabilite de la confidentialite du compte",
+      "legal_nature": "OBLIGATION",
+      "legal_nature_marker": "you are responsible"
+    },
+    {
+      "id": 30,
+      "theme": "ELIGIBILITY_ACCOUNT",
+      "block_id": 5,
+      "is_block_start": false,
+      "reason": "obligations de notification et de deconnexion",
+      "legal_nature": "OBLIGATION",
+      "legal_nature_marker": "you agree to"
+    },
+    {
+      "id": 31,
+      "theme": "ELIGIBILITY_ACCOUNT",
+      "block_id": 5,
+      "is_block_start": false,
+      "reason": "non-responsabilite de Yahoo, prolonge la section securite du compte",
+      "legal_nature": "PROHIBITION",
+      "legal_nature_marker": "will not"
+    },
+    {
+      "id": 32,
+      "theme": "USER_CONTENT",
+      "block_id": 6,
+      "is_block_start": true,
+      "rationale": "responsabilite du contenu utilisateur, cite « sole responsibility of the person from whom such content originated »",
+      "rationale_codes": {
+        "decision_trigger": "topic_keyword",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "are the sole responsibility of the person from whom such content originated",
+        "revised_from_plan": false,
+        "confidence": 0.75
+      },
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 33,
+      "theme": "USER_CONTENT",
+      "block_id": 6,
+      "is_block_start": false,
+      "reason": "responsabilite entiere de l'utilisateur pour son contenu",
+      "legal_nature": "DEFINITION",
+      "legal_nature_marker": "means"
+    },
+    {
+      "id": 34,
+      "theme": "USER_CONTENT",
+      "block_id": 6,
+      "is_block_start": false,
+      "reason": "Yahoo ne controle pas le contenu poste",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 35,
+      "theme": "USER_CONTENT",
+      "block_id": 6,
+      "is_block_start": false,
+      "reason": "exposition possible a du contenu offensant",
+      "legal_nature": "SCOPE_APPLICABILITY",
+      "legal_nature_marker": "by using"
+    },
+    {
+      "id": 36,
+      "theme": "USER_CONTENT",
+      "block_id": 6,
+      "is_block_start": false,
+      "reason": "non-responsabilite pour tout contenu, prolonge",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 37,
+      "theme": "ACCEPTABLE_USE",
+      "block_id": 7,
+      "is_block_start": true,
+      "rationale": "chapeau de la liste des usages interdits, cite « you agree to not use the yahoo services to »",
+      "rationale_codes": {
+        "decision_trigger": "topic_keyword",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "you agree to not use the yahoo services to",
+        "revised_from_plan": false,
+        "confidence": 0.85
+      },
+      "legal_nature": "OBLIGATION",
+      "legal_nature_marker": "you agree to"
+    },
+    {
+      "id": 38,
+      "theme": "ACCEPTABLE_USE",
+      "block_id": 7,
+      "is_block_start": false,
+      "reason": "item de liste: contenu illegal/nuisible",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 39,
+      "theme": "ACCEPTABLE_USE",
+      "block_id": 7,
+      "is_block_start": false,
+      "reason": "item de liste: nuire aux mineurs",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 40,
+      "theme": "ACCEPTABLE_USE",
+      "block_id": 7,
+      "is_block_start": false,
+      "reason": "item de liste: usurpation d'identite",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 41,
+      "theme": "ACCEPTABLE_USE",
+      "block_id": 7,
+      "is_block_start": false,
+      "reason": "item de liste: falsifier des en-tetes",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 42,
+      "theme": "ACCEPTABLE_USE",
+      "block_id": 7,
+      "is_block_start": false,
+      "reason": "item de liste: contenu sans droit de diffusion",
+      "legal_nature": "PROHIBITION",
+      "legal_nature_marker": "do not"
+    },
+    {
+      "id": 43,
+      "theme": "ACCEPTABLE_USE",
+      "block_id": 7,
+      "is_block_start": false,
+      "reason": "item de liste: contenu portant atteinte aux droits PI (heberge dans la liste d'usage)",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 44,
+      "theme": "ACCEPTABLE_USE",
+      "block_id": 7,
+      "is_block_start": false,
+      "reason": "item de liste: spam/sollicitations",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 45,
+      "theme": "ACCEPTABLE_USE",
+      "block_id": 7,
+      "is_block_start": false,
+      "reason": "item de liste: virus/code malveillant",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 46,
+      "theme": "ACCEPTABLE_USE",
+      "block_id": 7,
+      "is_block_start": false,
+      "reason": "item de liste: perturber le flux de dialogue",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 47,
+      "theme": "ACCEPTABLE_USE",
+      "block_id": 7,
+      "is_block_start": false,
+      "reason": "item de liste: interferer avec les services/serveurs",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 48,
+      "theme": "ACCEPTABLE_USE",
+      "block_id": 7,
+      "is_block_start": false,
+      "reason": "item de liste: violer des lois applicables",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 49,
+      "theme": "ACCEPTABLE_USE",
+      "block_id": 7,
+      "is_block_start": false,
+      "reason": "item de liste: support a une organisation terroriste",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 50,
+      "theme": "ACCEPTABLE_USE",
+      "block_id": 7,
+      "is_block_start": false,
+      "reason": "item de liste: stalk/harceler",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 51,
+      "theme": "ACCEPTABLE_USE",
+      "block_id": 7,
+      "is_block_start": false,
+      "reason": "item de liste: collecter des donnees personnelles, prolonge la liste",
+      "legal_nature": "PROHIBITION",
+      "legal_nature_marker": "prohibited"
+    },
+    {
+      "id": 52,
+      "theme": "USER_CONTENT",
+      "block_id": 8,
+      "is_block_start": true,
+      "rationale": "droit de pre-screening et de retrait de contenu, cite « pre-screen content »",
+      "rationale_codes": {
+        "decision_trigger": "topic_keyword",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "pre-screen content",
+        "revised_from_plan": false,
+        "confidence": 0.6
+      },
+      "legal_nature": "PROHIBITION",
+      "legal_nature_marker": "may not"
+    },
+    {
+      "id": 53,
+      "theme": "USER_CONTENT",
+      "block_id": 8,
+      "is_block_start": false,
+      "reason": "droit de retirer le contenu objectionnable, prolonge",
+      "legal_nature": "OBLIGATION",
+      "legal_nature_marker": "shall"
+    },
+    {
+      "id": 54,
+      "theme": "USER_CONTENT",
+      "block_id": 8,
+      "is_block_start": false,
+      "reason": "l'utilisateur assume les risques lies au contenu",
+      "legal_nature": "OBLIGATION",
+      "legal_nature_marker": "you must"
+    },
+    {
+      "id": 55,
+      "theme": "USER_CONTENT",
+      "block_id": 8,
+      "is_block_start": false,
+      "reason": "pas de fiabilite garantie du contenu, prolonge",
+      "legal_nature": "PROHIBITION",
+      "legal_nature_marker": "may not"
+    },
+    {
+      "id": 56,
+      "theme": "PRIVACY_DATA",
+      "block_id": 9,
+      "is_block_start": true,
+      "rationale": "acces, preservation et divulgation des infos du compte, cite « access , preserve and disclose your account information »",
+      "rationale_codes": {
+        "decision_trigger": "topic_keyword",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "access , preserve and disclose your account information",
+        "revised_from_plan": false,
+        "confidence": 0.55
+      },
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 57,
+      "theme": "LICENSE_IP",
+      "block_id": 10,
+      "is_block_start": true,
+      "rationale": "usage rules et protection des materiels numeriques, cite « usage rules set by yahoo »",
+      "rationale_codes": {
+        "decision_trigger": "topic_keyword",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "usage rules set by yahoo",
+        "revised_from_plan": false,
+        "confidence": 0.55
+      },
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 58,
+      "theme": "LICENSE_IP",
+      "block_id": 10,
+      "is_block_start": false,
+      "reason": "interdiction de contourner les usage rules, prolonge",
+      "legal_nature": "PROHIBITION",
+      "legal_nature_marker": "may not"
+    },
+    {
+      "id": 59,
+      "theme": "LICENSE_IP",
+      "block_id": 10,
+      "is_block_start": false,
+      "reason": "interdiction de reproduction non autorisee des materiels, prolonge la protection PI",
+      "legal_nature": "PROHIBITION",
+      "legal_nature_marker": "prohibited"
+    },
+    {
+      "id": 60,
+      "theme": "MISC_BOILERPLATE",
+      "block_id": 11,
+      "is_block_start": true,
+      "rationale": "titre de section, cite « interstate nature of communications on yahoo network »",
+      "rationale_codes": {
+        "decision_trigger": "title_marker",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "interstate nature of communications on yahoo network",
+        "revised_from_plan": false,
+        "confidence": 0.7
+      },
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 61,
+      "theme": "MISC_BOILERPLATE",
+      "block_id": 11,
+      "is_block_start": false,
+      "reason": "communications via les reseaux situes dans plusieurs etats",
+      "legal_nature": "OBLIGATION",
+      "legal_nature_marker": "you will"
+    },
+    {
+      "id": 62,
+      "theme": "MISC_BOILERPLATE",
+      "block_id": 11,
+      "is_block_start": false,
+      "reason": "consequence: transmissions interstate",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 63,
+      "theme": "MISC_BOILERPLATE",
+      "block_id": 11,
+      "is_block_start": false,
+      "reason": "acknowledgement de transmissions interstate, prolonge",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 64,
+      "theme": "MISC_BOILERPLATE",
+      "block_id": 12,
+      "is_block_start": true,
+      "rationale": "titre de section sur la conformite export/import, cite « export and import compliance »",
+      "rationale_codes": {
+        "decision_trigger": "title_marker",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "export and import compliance",
+        "revised_from_plan": false,
+        "confidence": 0.7
+      },
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 65,
+      "theme": "MISC_BOILERPLATE",
+      "block_id": 12,
+      "is_block_start": false,
+      "reason": "respect des regles locales de conduite en ligne",
+      "legal_nature": "OBLIGATION",
+      "legal_nature_marker": "you agree to"
+    },
+    {
+      "id": 66,
+      "theme": "MISC_BOILERPLATE",
+      "block_id": 12,
+      "is_block_start": false,
+      "reason": "soumission aux lois export/import",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 67,
+      "theme": "MISC_BOILERPLATE",
+      "block_id": 12,
+      "is_block_start": false,
+      "reason": "conformite aux regulations export",
+      "legal_nature": "OBLIGATION",
+      "legal_nature_marker": "you agree to"
+    },
+    {
+      "id": 68,
+      "theme": "MISC_BOILERPLATE",
+      "block_id": 12,
+      "is_block_start": false,
+      "reason": "representations/garanties de conformite export, prolonge",
+      "legal_nature": "PROHIBITION",
+      "legal_nature_marker": "will not"
+    },
+    {
+      "id": 69,
+      "theme": "LICENSE_IP",
+      "block_id": 13,
+      "is_block_start": true,
+      "rationale": "titre de section, cite « content submitted or made available for inclusion »",
+      "rationale_codes": {
+        "decision_trigger": "title_marker",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "content submitted or made available for inclusion",
+        "revised_from_plan": false,
+        "confidence": 0.7
+      },
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 70,
+      "theme": "LICENSE_IP",
+      "block_id": 13,
+      "is_block_start": false,
+      "reason": "Yahoo ne revendique pas la propriete du contenu",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 71,
+      "theme": "LICENSE_IP",
+      "block_id": 13,
+      "is_block_start": false,
+      "reason": "chapeau de l'octroi de licence",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 72,
+      "theme": "LICENSE_IP",
+      "block_id": 13,
+      "is_block_start": false,
+      "reason": "licence pour le contenu sur yahoo groups",
+      "legal_nature": "RIGHT_GRANT",
+      "legal_nature_marker": "license to"
+    },
+    {
+      "id": 73,
+      "theme": "LICENSE_IP",
+      "block_id": 13,
+      "is_block_start": false,
+      "reason": "duree de cette licence",
+      "legal_nature": "GOVERNANCE",
+      "legal_nature_marker": "terminate"
+    },
+    {
+      "id": 74,
+      "theme": "LICENSE_IP",
+      "block_id": 13,
+      "is_block_start": false,
+      "reason": "licence pour photos/video hors yahoo groups",
+      "legal_nature": "RIGHT_GRANT",
+      "legal_nature_marker": "license to"
+    },
+    {
+      "id": 75,
+      "theme": "LICENSE_IP",
+      "block_id": 13,
+      "is_block_start": false,
+      "reason": "duree de cette licence",
+      "legal_nature": "GOVERNANCE",
+      "legal_nature_marker": "terminate"
+    },
+    {
+      "id": 76,
+      "theme": "LICENSE_IP",
+      "block_id": 13,
+      "is_block_start": false,
+      "reason": "licence perpetuelle pour contenu autre",
+      "legal_nature": "RIGHT_GRANT",
+      "legal_nature_marker": "license to"
+    },
+    {
+      "id": 77,
+      "theme": "LICENSE_IP",
+      "block_id": 13,
+      "is_block_start": false,
+      "reason": "definition des zones publiquement accessibles",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 78,
+      "theme": "LICENSE_IP",
+      "block_id": 13,
+      "is_block_start": false,
+      "reason": "exemple de zones publiquement accessibles",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 79,
+      "theme": "LICENSE_IP",
+      "block_id": 13,
+      "is_block_start": false,
+      "reason": "exclusions des zones publiquement accessibles",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 80,
+      "theme": "LICENSE_IP",
+      "block_id": 13,
+      "is_block_start": false,
+      "reason": "licence sur les contributions/suggestions, prolonge le regime de licence",
+      "legal_nature": "PROHIBITION",
+      "legal_nature_marker": "do not"
+    },
+    {
+      "id": 81,
+      "theme": "INDEMNIFICATION",
+      "block_id": 14,
+      "is_block_start": true,
+      "rationale": "obligation d'indemniser et tenir Yahoo indemne, cite « you agree to indemnify and hold yahoo »",
+      "rationale_codes": {
+        "decision_trigger": "topic_keyword",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "you agree to indemnify and hold yahoo",
+        "revised_from_plan": false,
+        "confidence": 0.85
+      },
+      "legal_nature": "RISK_ALLOCATION",
+      "legal_nature_marker": "indemnify"
+    },
+    {
+      "id": 82,
+      "theme": "ACCEPTABLE_USE",
+      "block_id": 15,
+      "is_block_start": true,
+      "rationale": "titre de section sur l'absence de reutilisation commerciale, cite « no commercial reuse of yahoo services »",
+      "rationale_codes": {
+        "decision_trigger": "title_marker",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "no commercial reuse of yahoo services",
+        "revised_from_plan": false,
+        "confidence": 0.65
+      },
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 83,
+      "theme": "ACCEPTABLE_USE",
+      "block_id": 15,
+      "is_block_start": false,
+      "reason": "interdiction d'exploitation commerciale, prolonge",
+      "legal_nature": "PROHIBITION",
+      "legal_nature_marker": "agree not to"
+    },
+    {
+      "id": 84,
+      "theme": "PRIVACY_DATA",
+      "block_id": 16,
+      "is_block_start": true,
+      "rationale": "titre de section sur les pratiques d'usage et de stockage, cite « general practices regarding use and storage »",
+      "rationale_codes": {
+        "decision_trigger": "title_marker",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "general practices regarding use and storage",
+        "revised_from_plan": false,
+        "confidence": 0.6
+      },
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 85,
+      "theme": "PRIVACY_DATA",
+      "block_id": 16,
+      "is_block_start": false,
+      "reason": "limites de retention et de stockage",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 86,
+      "theme": "PRIVACY_DATA",
+      "block_id": 16,
+      "is_block_start": false,
+      "reason": "pas de responsabilite pour suppression de messages",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 87,
+      "theme": "PRIVACY_DATA",
+      "block_id": 16,
+      "is_block_start": false,
+      "reason": "droit de deconnecter les comptes inactifs",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 88,
+      "theme": "PRIVACY_DATA",
+      "block_id": 16,
+      "is_block_start": false,
+      "reason": "droit de modifier ces pratiques",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 89,
+      "theme": "PRIVACY_DATA",
+      "block_id": 16,
+      "is_block_start": false,
+      "reason": "messenger permet de sauvegarder les conversations",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 90,
+      "theme": "PRIVACY_DATA",
+      "block_id": 16,
+      "is_block_start": false,
+      "reason": "acces a l'historique des messages",
+      "legal_nature": "DEFINITION",
+      "legal_nature_marker": "means"
+    },
+    {
+      "id": 91,
+      "theme": "PRIVACY_DATA",
+      "block_id": 16,
+      "is_block_start": false,
+      "reason": "d'autres utilisateurs peuvent sauvegarder les conversations",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 92,
+      "theme": "PRIVACY_DATA",
+      "block_id": 16,
+      "is_block_start": false,
+      "reason": "consentement au stockage des communications, prolonge le stockage",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 93,
+      "theme": "TERMINATION",
+      "block_id": 17,
+      "is_block_start": true,
+      "rationale": "droit de modifier ou discontinuer le service, cite « modify or discontinue »",
+      "rationale_codes": {
+        "decision_trigger": "topic_keyword",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "modify or discontinue",
+        "revised_from_plan": false,
+        "confidence": 0.6
+      },
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 94,
+      "theme": "TERMINATION",
+      "block_id": 17,
+      "is_block_start": false,
+      "reason": "non-responsabilite pour modification/discontinuation",
+      "legal_nature": "PROHIBITION",
+      "legal_nature_marker": "shall not"
+    },
+    {
+      "id": 95,
+      "theme": "TERMINATION",
+      "block_id": 17,
+      "is_block_start": false,
+      "reason": "l'utilisateur peut terminer son compte",
+      "legal_nature": "GOVERNANCE",
+      "legal_nature_marker": "terminate"
+    },
+    {
+      "id": 96,
+      "theme": "TERMINATION",
+      "block_id": 17,
+      "is_block_start": false,
+      "reason": "Yahoo peut terminer/suspendre sans preavis",
+      "legal_nature": "GOVERNANCE",
+      "legal_nature_marker": "terminate"
+    },
+    {
+      "id": 97,
+      "theme": "TERMINATION",
+      "block_id": 17,
+      "is_block_start": false,
+      "reason": "causes de terminaison",
+      "legal_nature": "GOVERNANCE",
+      "legal_nature_marker": "termination"
+    },
+    {
+      "id": 98,
+      "theme": "TERMINATION",
+      "block_id": 17,
+      "is_block_start": false,
+      "reason": "terminaisons a la discretion de Yahoo, non-responsabilite",
+      "legal_nature": "PROHIBITION",
+      "legal_nature_marker": "shall not"
+    },
+    {
+      "id": 99,
+      "theme": "TERMINATION",
+      "block_id": 17,
+      "is_block_start": false,
+      "reason": "effets de la terminaison du compte, prolonge",
+      "legal_nature": "GOVERNANCE",
+      "legal_nature_marker": "termination"
+    },
+    {
+      "id": 100,
+      "theme": "THIRD_PARTY",
+      "block_id": 18,
+      "is_block_start": true,
+      "rationale": "relations/dealings avec les annonceurs, cite « business dealings with , or participation in promotions of , advertisers »",
+      "rationale_codes": {
+        "decision_trigger": "topic_keyword",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "business dealings with , or participation in promotions of , advertisers",
+        "revised_from_plan": false,
+        "confidence": 0.6
+      },
+      "legal_nature": "LIMITATION_DISCLAIMER",
+      "legal_nature_marker": "warranties"
+    },
+    {
+      "id": 101,
+      "theme": "THIRD_PARTY",
+      "block_id": 18,
+      "is_block_start": false,
+      "reason": "non-responsabilite pour ces dealings, prolonge",
+      "legal_nature": "PROHIBITION",
+      "legal_nature_marker": "shall not"
+    },
+    {
+      "id": 102,
+      "theme": "THIRD_PARTY",
+      "block_id": 19,
+      "is_block_start": true,
+      "rationale": "liens vers d'autres sites/ressources tiers, cite « links to other world wide web sites »",
+      "rationale_codes": {
+        "decision_trigger": "topic_keyword",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "links to other world wide web sites",
+        "revised_from_plan": false,
+        "confidence": 0.55
+      },
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 103,
+      "theme": "THIRD_PARTY",
+      "block_id": 19,
+      "is_block_start": false,
+      "reason": "non-responsabilite pour le contenu des sites externes",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 104,
+      "theme": "THIRD_PARTY",
+      "block_id": 19,
+      "is_block_start": false,
+      "reason": "non-responsabilite pour dommages lies aux sites externes, prolonge",
+      "legal_nature": "PROHIBITION",
+      "legal_nature_marker": "shall not"
+    },
+    {
+      "id": 105,
+      "theme": "LICENSE_IP",
+      "block_id": 20,
+      "is_block_start": true,
+      "rationale": "le service/logiciel contient des infos proprietaires protegees, cite « proprietary and confidential information »",
+      "rationale_codes": {
+        "decision_trigger": "topic_keyword",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "proprietary and confidential information",
+        "revised_from_plan": false,
+        "confidence": 0.65
+      },
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 106,
+      "theme": "LICENSE_IP",
+      "block_id": 20,
+      "is_block_start": false,
+      "reason": "contenu protege par copyrights/trademarks",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 107,
+      "theme": "LICENSE_IP",
+      "block_id": 20,
+      "is_block_start": false,
+      "reason": "interdiction de modifier/distribuer le service/contenu",
+      "legal_nature": "PROHIBITION",
+      "legal_nature_marker": "agree not to"
+    },
+    {
+      "id": 108,
+      "theme": "LICENSE_IP",
+      "block_id": 20,
+      "is_block_start": false,
+      "reason": "licence d'usage du code objet du logiciel",
+      "legal_nature": "PROHIBITION",
+      "legal_nature_marker": "do not"
+    },
+    {
+      "id": 109,
+      "theme": "LICENSE_IP",
+      "block_id": 20,
+      "is_block_start": false,
+      "reason": "interdiction de modifier le logiciel",
+      "legal_nature": "PROHIBITION",
+      "legal_nature_marker": "agree not to"
+    },
+    {
+      "id": 110,
+      "theme": "LICENSE_IP",
+      "block_id": 20,
+      "is_block_start": false,
+      "reason": "interdiction d'acceder autrement que via l'interface, prolonge la licence logiciel",
+      "legal_nature": "DEFINITION",
+      "legal_nature_marker": "means"
+    },
+    {
+      "id": 111,
+      "theme": "WARRANTY_DISCLAIMER",
+      "block_id": 21,
+      "is_block_start": true,
+      "rationale": "chapeau du disclaimer, cite « you expressly understand and agree that »",
+      "rationale_codes": {
+        "decision_trigger": "lexical_shift",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "you expressly understand and agree that",
+        "revised_from_plan": false,
+        "confidence": 0.6
+      },
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 112,
+      "theme": "WARRANTY_DISCLAIMER",
+      "block_id": 21,
+      "is_block_start": false,
+      "reason": "usage a vos propres risques",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 113,
+      "theme": "WARRANTY_DISCLAIMER",
+      "block_id": 21,
+      "is_block_start": false,
+      "reason": "service fourni as is / as available",
+      "legal_nature": "LIMITATION_DISCLAIMER",
+      "legal_nature_marker": "as is"
+    },
+    {
+      "id": 114,
+      "theme": "WARRANTY_DISCLAIMER",
+      "block_id": 21,
+      "is_block_start": false,
+      "reason": "exclusion de toutes garanties",
+      "legal_nature": "LIMITATION_DISCLAIMER",
+      "legal_nature_marker": "warranties"
+    },
+    {
+      "id": 115,
+      "theme": "WARRANTY_DISCLAIMER",
+      "block_id": 21,
+      "is_block_start": false,
+      "reason": "aucune garantie sur les resultats",
+      "legal_nature": "LIMITATION_DISCLAIMER",
+      "legal_nature_marker": "no warranty"
+    },
+    {
+      "id": 116,
+      "theme": "WARRANTY_DISCLAIMER",
+      "block_id": 21,
+      "is_block_start": false,
+      "reason": "materiel telecharge a vos risques",
+      "legal_nature": "OBLIGATION",
+      "legal_nature_marker": "you will"
+    },
+    {
+      "id": 117,
+      "theme": "WARRANTY_DISCLAIMER",
+      "block_id": 21,
+      "is_block_start": false,
+      "reason": "aucun conseil ne cree de garantie",
+      "legal_nature": "OBLIGATION",
+      "legal_nature_marker": "shall"
+    },
+    {
+      "id": 118,
+      "theme": "WARRANTY_DISCLAIMER",
+      "block_id": 21,
+      "is_block_start": false,
+      "reason": "avertissement epilepsie (admonition de risque liee au disclaimer)",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 119,
+      "theme": "WARRANTY_DISCLAIMER",
+      "block_id": 21,
+      "is_block_start": false,
+      "reason": "conditions epileptiques induites",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 120,
+      "theme": "WARRANTY_DISCLAIMER",
+      "block_id": 21,
+      "is_block_start": false,
+      "reason": "consulter un medecin avant usage",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 121,
+      "theme": "WARRANTY_DISCLAIMER",
+      "block_id": 21,
+      "is_block_start": false,
+      "reason": "cesser l'usage en cas de symptomes, prolonge l'admonition",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 122,
+      "theme": "LIABILITY_LIMITATION",
+      "block_id": 22,
+      "is_block_start": true,
+      "rationale": "limitation des dommages, cite « shall not be liable to you for any punitive »",
+      "rationale_codes": {
+        "decision_trigger": "topic_keyword",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "shall not be liable to you for any punitive",
+        "revised_from_plan": false,
+        "confidence": 0.7
+      },
+      "legal_nature": "PROHIBITION",
+      "legal_nature_marker": "shall not"
+    },
+    {
+      "id": 123,
+      "theme": "LIABILITY_LIMITATION",
+      "block_id": 22,
+      "is_block_start": false,
+      "reason": "certaines juridictions n'autorisent pas l'exclusion",
+      "legal_nature": "PROHIBITION",
+      "legal_nature_marker": "do not"
+    },
+    {
+      "id": 124,
+      "theme": "LIABILITY_LIMITATION",
+      "block_id": 22,
+      "is_block_start": false,
+      "reason": "certaines limitations peuvent ne pas s'appliquer, prolonge",
+      "legal_nature": "PROHIBITION",
+      "legal_nature_marker": "may not"
+    },
+    {
+      "id": 125,
+      "theme": "WARRANTY_DISCLAIMER",
+      "block_id": 23,
+      "is_block_start": true,
+      "rationale": "titre admonition pour les services financiers, cite « relating to financial matters »",
+      "rationale_codes": {
+        "decision_trigger": "title_marker",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "relating to financial matters",
+        "revised_from_plan": false,
+        "confidence": 0.55
+      },
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 126,
+      "theme": "WARRANTY_DISCLAIMER",
+      "block_id": 23,
+      "is_block_start": false,
+      "reason": "renvoi aux sections 19 et 20 pour l'info financiere",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 127,
+      "theme": "WARRANTY_DISCLAIMER",
+      "block_id": 23,
+      "is_block_start": false,
+      "reason": "elles s'appliquent doublement",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 128,
+      "theme": "WARRANTY_DISCLAIMER",
+      "block_id": 23,
+      "is_block_start": false,
+      "reason": "avertissement let the investor beware",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 129,
+      "theme": "WARRANTY_DISCLAIMER",
+      "block_id": 23,
+      "is_block_start": false,
+      "reason": "info a but informatif seulement",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 130,
+      "theme": "WARRANTY_DISCLAIMER",
+      "block_id": 23,
+      "is_block_start": false,
+      "reason": "non-responsabilite pour les decisions d'investissement, prolonge",
+      "legal_nature": "PROHIBITION",
+      "legal_nature_marker": "shall not"
+    },
+    {
+      "id": 131,
+      "theme": "THIRD_PARTY",
+      "block_id": 24,
+      "is_block_start": true,
+      "rationale": "absence de tiers beneficiaires, cite « no third-party beneficiaries »",
+      "rationale_codes": {
+        "decision_trigger": "topic_keyword",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "no third-party beneficiaries",
+        "revised_from_plan": false,
+        "confidence": 0.6
+      },
+      "legal_nature": "OBLIGATION",
+      "legal_nature_marker": "shall"
+    },
+    {
+      "id": 132,
+      "theme": "MISC_BOILERPLATE",
+      "block_id": 25,
+      "is_block_start": true,
+      "rationale": "modalites de notification a l'utilisateur, cite « yahoo may provide you with notices »",
+      "rationale_codes": {
+        "decision_trigger": "topic_keyword",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "yahoo may provide you with notices",
+        "revised_from_plan": false,
+        "confidence": 0.55
+      },
+      "legal_nature": "DEFINITION",
+      "legal_nature_marker": "means"
+    },
+    {
+      "id": 133,
+      "theme": "MISC_BOILERPLATE",
+      "block_id": 25,
+      "is_block_start": false,
+      "reason": "notices non recues si acces non autorise",
+      "legal_nature": "PROHIBITION",
+      "legal_nature_marker": "may not"
+    },
+    {
+      "id": 134,
+      "theme": "MISC_BOILERPLATE",
+      "block_id": 25,
+      "is_block_start": false,
+      "reason": "repute avoir recu les notices, prolonge",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 135,
+      "theme": "LICENSE_IP",
+      "block_id": 26,
+      "is_block_start": true,
+      "rationale": "marques et logos Yahoo sont la propriete de Yahoo, cite « trademarks »",
+      "rationale_codes": {
+        "decision_trigger": "topic_keyword",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "trademarks",
+        "revised_from_plan": false,
+        "confidence": 0.6
+      },
+      "legal_nature": "META",
+      "legal_nature_marker": "inc."
+    },
+    {
+      "id": 136,
+      "theme": "LICENSE_IP",
+      "block_id": 26,
+      "is_block_start": false,
+      "reason": "interdiction d'utiliser les marques sans permission, prolonge",
+      "legal_nature": "PROHIBITION",
+      "legal_nature_marker": "agree not to"
+    },
+    {
+      "id": 137,
+      "theme": "LICENSE_IP",
+      "block_id": 27,
+      "is_block_start": true,
+      "rationale": "titre de section procedure DMCA/copyright, cite « claims of copyright or intellectual property infringement »",
+      "rationale_codes": {
+        "decision_trigger": "title_marker",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "claims of copyright or intellectual property infringement",
+        "revised_from_plan": false,
+        "confidence": 0.75
+      },
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 138,
+      "theme": "LICENSE_IP",
+      "block_id": 27,
+      "is_block_start": false,
+      "reason": "Yahoo respecte la PI d'autrui",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 139,
+      "theme": "LICENSE_IP",
+      "block_id": 27,
+      "is_block_start": false,
+      "reason": "terminaison des comptes de recidivistes",
+      "legal_nature": "GOVERNANCE",
+      "legal_nature_marker": "terminate"
+    },
+    {
+      "id": 140,
+      "theme": "LICENSE_IP",
+      "block_id": 27,
+      "is_block_start": false,
+      "reason": "chapeau de la liste d'infos a fournir",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 141,
+      "theme": "LICENSE_IP",
+      "block_id": 27,
+      "is_block_start": false,
+      "reason": "item: signature electronique/physique",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 142,
+      "theme": "LICENSE_IP",
+      "block_id": 27,
+      "is_block_start": false,
+      "reason": "item: description de l'oeuvre",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 143,
+      "theme": "LICENSE_IP",
+      "block_id": 27,
+      "is_block_start": false,
+      "reason": "item: localisation du materiel infractionnel",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 144,
+      "theme": "LICENSE_IP",
+      "block_id": 27,
+      "is_block_start": false,
+      "reason": "item: coordonnees",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 145,
+      "theme": "LICENSE_IP",
+      "block_id": 27,
+      "is_block_start": false,
+      "reason": "item: declaration de bonne foi",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 146,
+      "theme": "LICENSE_IP",
+      "block_id": 27,
+      "is_block_start": false,
+      "reason": "item: declaration sous peine de parjure",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 147,
+      "theme": "LICENSE_IP",
+      "block_id": 27,
+      "is_block_start": false,
+      "reason": "coordonnees de l'agent copyright",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 148,
+      "theme": "LICENSE_IP",
+      "block_id": 27,
+      "is_block_start": false,
+      "reason": "adresse de l'agent, prolonge la procedure DMCA",
+      "legal_nature": "META",
+      "legal_nature_marker": "inc."
+    },
+    {
+      "id": 149,
+      "theme": "MISC_BOILERPLATE",
+      "block_id": 28,
+      "is_block_start": true,
+      "rationale": "conformite au closed captioning des contenus video, cite « closed captioning »",
+      "rationale_codes": {
+        "decision_trigger": "topic_keyword",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "closed captioning",
+        "revised_from_plan": false,
+        "confidence": 0.6
+      },
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 150,
+      "theme": "MISC_BOILERPLATE",
+      "block_id": 28,
+      "is_block_start": false,
+      "reason": "URL pour plus d'info sur le closed captioning, prolonge",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 151,
+      "theme": "MISC_BOILERPLATE",
+      "block_id": 29,
+      "is_block_start": true,
+      "rationale": "les TOS constituent l'accord integral, cite « entire agreement »",
+      "rationale_codes": {
+        "decision_trigger": "topic_keyword",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "entire agreement",
+        "revised_from_plan": false,
+        "confidence": 0.6
+      },
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 152,
+      "theme": "MISC_BOILERPLATE",
+      "block_id": 29,
+      "is_block_start": false,
+      "reason": "termes additionnels possibles, prolonge l'entire agreement",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 153,
+      "theme": "GOVERNING_LAW",
+      "block_id": 30,
+      "is_block_start": true,
+      "rationale": "titre de section, cite « choice of law and forum »",
+      "rationale_codes": {
+        "decision_trigger": "title_marker",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "choice of law and forum",
+        "revised_from_plan": false,
+        "confidence": 0.8
+      },
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 154,
+      "theme": "GOVERNING_LAW",
+      "block_id": 30,
+      "is_block_start": false,
+      "reason": "loi de Californie et juridiction exclusive",
+      "legal_nature": "GOVERNANCE",
+      "legal_nature_marker": "governed by"
+    },
+    {
+      "id": 155,
+      "theme": "GOVERNING_LAW",
+      "block_id": 30,
+      "is_block_start": false,
+      "reason": "soumission a la juridiction personnelle, prolonge",
+      "legal_nature": "GOVERNANCE",
+      "legal_nature_marker": "jurisdiction"
+    },
+    {
+      "id": 156,
+      "theme": "MISC_BOILERPLATE",
+      "block_id": 31,
+      "is_block_start": true,
+      "rationale": "titre de section, cite « waiver and severability of terms »",
+      "rationale_codes": {
+        "decision_trigger": "title_marker",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "waiver and severability of terms",
+        "revised_from_plan": false,
+        "confidence": 0.75
+      },
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 157,
+      "theme": "MISC_BOILERPLATE",
+      "block_id": 31,
+      "is_block_start": false,
+      "reason": "absence d'exercice d'un droit n'est pas une renonciation",
+      "legal_nature": "PROHIBITION",
+      "legal_nature_marker": "shall not"
+    },
+    {
+      "id": 158,
+      "theme": "MISC_BOILERPLATE",
+      "block_id": 31,
+      "is_block_start": false,
+      "reason": "severabilite des clauses invalides, prolonge",
+      "legal_nature": "GOVERNANCE",
+      "legal_nature_marker": "jurisdiction"
+    },
+    {
+      "id": 159,
+      "theme": "MISC_BOILERPLATE",
+      "block_id": 32,
+      "is_block_start": true,
+      "rationale": "titre de section, cite « no right of survivorship and non-transferability »",
+      "rationale_codes": {
+        "decision_trigger": "title_marker",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "no right of survivorship and non-transferability",
+        "revised_from_plan": false,
+        "confidence": 0.7
+      },
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 160,
+      "theme": "MISC_BOILERPLATE",
+      "block_id": 32,
+      "is_block_start": false,
+      "reason": "compte non transferable, droits terminent au deces",
+      "legal_nature": "GOVERNANCE",
+      "legal_nature_marker": "terminate"
+    },
+    {
+      "id": 161,
+      "theme": "MISC_BOILERPLATE",
+      "block_id": 32,
+      "is_block_start": false,
+      "reason": "terminaison du compte sur certificat de deces, prolonge",
+      "legal_nature": "GOVERNANCE",
+      "legal_nature_marker": "terminate"
+    },
+    {
+      "id": 162,
+      "theme": "DISPUTE_ARBITRATION",
+      "block_id": 33,
+      "is_block_start": true,
+      "rationale": "delai de prescription des actions, cite « must be filed within one »",
+      "rationale_codes": {
+        "decision_trigger": "topic_keyword",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "must be filed within one",
+        "revised_from_plan": false,
+        "confidence": 0.55
+      },
+      "legal_nature": "OBLIGATION",
+      "legal_nature_marker": "must"
+    },
+    {
+      "id": 163,
+      "theme": "MISC_BOILERPLATE",
+      "block_id": 34,
+      "is_block_start": true,
+      "rationale": "titres sans effet legal, cite « section titles in the tos are for convenience only »",
+      "rationale_codes": {
+        "decision_trigger": "topic_keyword",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "section titles in the tos are for convenience only",
+        "revised_from_plan": false,
+        "confidence": 0.55
+      },
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 164,
+      "theme": "MISC_BOILERPLATE",
+      "block_id": 34,
+      "is_block_start": false,
+      "reason": "cession des TOS par Yahoo, prolonge le boilerplate final",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 165,
+      "theme": "MISC_BOILERPLATE",
+      "block_id": 34,
+      "is_block_start": false,
+      "reason": "report des violations au service client, cloture boilerplate",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    }
+  ]
+}

@@ -1,0 +1,2421 @@
+{
+  "doc": "WorldOfWarcraft",
+  "judge": "claude",
+  "version": "v9.2-nature-derived",
+  "document_plan": {
+    "estimated_n_blocks": 35,
+    "rationale_global": "ToS narratif long (217 phrases, profil NARRATIVE_LONG, peu de numbering). Ouverture: titre (PREAMBLE_SCOPE), date (META), preambule/portee de l'accord. Puis eligibilite/compte (age, enregistrement battle.net), octroi de licence limitee (LICENSE_IP), facturation/droit d'acces payant (PAYMENT_BILLING), transfert/revente de comptes interdit (ELIGIBILITY_ACCOUNT), absence de remboursement (PAYMENT_BILLING), controle parental (ELIGIBILITY_ACCOUNT). Vient un long bloc 'limitations on use' (ACCEPTABLE_USE) puis les rules of conduct (chapeau, noms de personnages, chat, game play) tous en ACCEPTABLE_USE, puis migration de personnages (ELIGIBILITY_ACCOUNT), consequences/sanctions (TERMINATION), rappel sur la revente de contenu (LICENSE_IP), disponibilite/out-of-publication du service (THIRD_PARTY), maintenance/interruptions (THIRD_PARTY), regime de remboursement detaille (PAYMENT_BILLING), responsabilite/securite du compte (ELIGIBILITY_ACCOUNT), modification des termes (MODIFICATION_OF_TERMS), propriete intellectuelle (LICENSE_IP), service TV/abonnement (SUBSCRIPTION_RENEWAL), duree et resiliation (TERMINATION), consentement au monitoring anti-triche (PRIVACY_DATA), disclaimer de garantie (WARRANTY_DISCLAIMER), indemnisation interface tierce (INDEMNIFICATION), indisponibilite/force majeure (LIABILITY_LIMITATION), donnees de jeu (PRIVACY_DATA), regime legal de responsabilite (LIABILITY_LIMITATION), droit applicable et export (GOVERNING_LAW), boilerplate final (severabilite, integration, headings, acceptation - MISC_BOILERPLATE) et copyright/marques final (META). Continuite par defaut: les listes a puces heritent du chapeau.",
+    "segments": [
+      {
+        "start_id": 0,
+        "theme": "PREAMBLE_SCOPE",
+        "rationale": "titre du document",
+        "evidence_span": "world of warcraft terms of use"
+      },
+      {
+        "start_id": 1,
+        "theme": "META",
+        "rationale": "date de mise a jour",
+        "evidence_span": "last updated november 23 , 2012"
+      },
+      {
+        "start_id": 2,
+        "theme": "PREAMBLE_SCOPE",
+        "rationale": "welcome et portee de l'accord",
+        "evidence_span": "welcome to blizzard entertainment"
+      },
+      {
+        "start_id": 9,
+        "theme": "ELIGIBILITY_ACCOUNT",
+        "rationale": "representation d'age et capacite",
+        "evidence_span": "over the age of eighteen"
+      },
+      {
+        "start_id": 10,
+        "theme": "ELIGIBILITY_ACCOUNT",
+        "rationale": "titre enregistrement battle.net",
+        "evidence_span": "registering on battle.net to use the service"
+      },
+      {
+        "start_id": 14,
+        "theme": "LICENSE_IP",
+        "rationale": "titre octroi de licence limitee",
+        "evidence_span": "grant of a limited license to use the service"
+      },
+      {
+        "start_id": 17,
+        "theme": "PAYMENT_BILLING",
+        "rationale": "paiement des charges et taxes",
+        "evidence_span": "pay all charges incurred by the account"
+      },
+      {
+        "start_id": 20,
+        "theme": "ELIGIBILITY_ACCOUNT",
+        "rationale": "transfert de compte non reconnu",
+        "evidence_span": "does not recognize the transfer of accounts"
+      },
+      {
+        "start_id": 22,
+        "theme": "PAYMENT_BILLING",
+        "rationale": "absence de remboursement avant fin d'abonnement",
+        "evidence_span": "there are no refunds"
+      },
+      {
+        "start_id": 23,
+        "theme": "ELIGIBILITY_ACCOUNT",
+        "rationale": "controle parental",
+        "evidence_span": "parents can restrict the use"
+      },
+      {
+        "start_id": 25,
+        "theme": "ACCEPTABLE_USE",
+        "rationale": "titre limitations sur l'usage",
+        "evidence_span": "limitations on your use of world of warcraft"
+      },
+      {
+        "start_id": 48,
+        "theme": "ACCEPTABLE_USE",
+        "rationale": "titre rules of conduct",
+        "evidence_span": "world of warcraft rules of conduct"
+      },
+      {
+        "start_id": 53,
+        "theme": "ACCEPTABLE_USE",
+        "rationale": "titre rules related to character names",
+        "evidence_span": "rules related to character names"
+      },
+      {
+        "start_id": 74,
+        "theme": "ACCEPTABLE_USE",
+        "rationale": "titre rules related to chat",
+        "evidence_span": "rules related to"
+      },
+      {
+        "start_id": 91,
+        "theme": "ACCEPTABLE_USE",
+        "rationale": "titre rules related to game play",
+        "evidence_span": "rules related to game play"
+      },
+      {
+        "start_id": 103,
+        "theme": "ELIGIBILITY_ACCOUNT",
+        "rationale": "migration de personnages entre serveurs",
+        "evidence_span": "character migration"
+      },
+      {
+        "start_id": 118,
+        "theme": "TERMINATION",
+        "rationale": "titre consequences de violation",
+        "evidence_span": "consequences of violating the rules of conduct"
+      },
+      {
+        "start_id": 126,
+        "theme": "LICENSE_IP",
+        "rationale": "rappel licence limitee et propriete du contenu",
+        "evidence_span": "you were `` licensed ''"
+      },
+      {
+        "start_id": 133,
+        "theme": "THIRD_PARTY",
+        "rationale": "service en ligne, disponibilite et connexion internet",
+        "evidence_span": "must be played over the internet through the service"
+      },
+      {
+        "start_id": 144,
+        "theme": "THIRD_PARTY",
+        "rationale": "titre testing, maintenance, interruptions",
+        "evidence_span": "testing , maintenance , and other potential interruptions in the service"
+      },
+      {
+        "start_id": 149,
+        "theme": "PAYMENT_BILLING",
+        "rationale": "regime de remboursement et game time adjustment",
+        "evidence_span": "refund regulations"
+      },
+      {
+        "start_id": 160,
+        "theme": "ELIGIBILITY_ACCOUNT",
+        "rationale": "responsabilite et securite du compte",
+        "evidence_span": "liable for all activities conducted through the account"
+      },
+      {
+        "start_id": 162,
+        "theme": "MODIFICATION_OF_TERMS",
+        "rationale": "titre changements aux terms of use",
+        "evidence_span": "changes to the terms of use"
+      },
+      {
+        "start_id": 167,
+        "theme": "LICENSE_IP",
+        "rationale": "droits de propriete intellectuelle",
+        "evidence_span": "intellectual property rights"
+      },
+      {
+        "start_id": 170,
+        "theme": "SUBSCRIPTION_RENEWAL",
+        "rationale": "titre service tv inclus dans l'abonnement",
+        "evidence_span": "world of warcraft and television service"
+      },
+      {
+        "start_id": 172,
+        "theme": "TERMINATION",
+        "rationale": "duree et conditions de resiliation",
+        "evidence_span": "effective until the end of the term"
+      },
+      {
+        "start_id": 178,
+        "theme": "PRIVACY_DATA",
+        "rationale": "consentement au monitoring anti-triche",
+        "evidence_span": "grant your consent"
+      },
+      {
+        "start_id": 185,
+        "theme": "WARRANTY_DISCLAIMER",
+        "rationale": "absence de garantie sur le logiciel",
+        "evidence_span": "does not warrant that world of warcraft will be uninterrupted"
+      },
+      {
+        "start_id": 188,
+        "theme": "INDEMNIFICATION",
+        "rationale": "indemnisation pour interface tierce",
+        "evidence_span": "indemnify and hold harmless"
+      },
+      {
+        "start_id": 190,
+        "theme": "LIABILITY_LIMITATION",
+        "rationale": "indisponibilite et force majeure, non-responsabilite",
+        "evidence_span": "shall not be held liable"
+      },
+      {
+        "start_id": 192,
+        "theme": "PRIVACY_DATA",
+        "rationale": "donnees de jeu stockees et restauration",
+        "evidence_span": "creation and retention of electronic files"
+      },
+      {
+        "start_id": 196,
+        "theme": "LIABILITY_LIMITATION",
+        "rationale": "regime legal de responsabilite",
+        "evidence_span": "liable in accordance with statutory law"
+      },
+      {
+        "start_id": 203,
+        "theme": "GOVERNING_LAW",
+        "rationale": "droit applicable et controles d'exportation",
+        "evidence_span": "governed by and construed in accordance with the laws"
+      },
+      {
+        "start_id": 208,
+        "theme": "MISC_BOILERPLATE",
+        "rationale": "severabilite, integration, headings, acceptation",
+        "evidence_span": "severable from this agreement"
+      },
+      {
+        "start_id": 215,
+        "theme": "META",
+        "rationale": "copyright et marques final",
+        "evidence_span": "© 2012 blizzard entertainment"
+      }
+    ]
+  },
+  "annotations": [
+    {
+      "id": 0,
+      "theme": "PREAMBLE_SCOPE",
+      "block_id": 0,
+      "is_block_start": true,
+      "rationale": "debut de document, titre nominal « world of warcraft terms of use »",
+      "rationale_codes": {
+        "decision_trigger": "document_start",
+        "relation_to_prev": "document_start",
+        "evidence_span": "world of warcraft terms of use",
+        "revised_from_plan": false,
+        "confidence": 0.95
+      },
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 1,
+      "theme": "META",
+      "block_id": 1,
+      "is_block_start": true,
+      "rationale": "metadonnee de date de mise a jour « last updated november 23 , 2012 »",
+      "rationale_codes": {
+        "decision_trigger": "title_marker",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "last updated november 23 , 2012",
+        "revised_from_plan": false,
+        "confidence": 0.9
+      },
+      "legal_nature": "META",
+      "legal_nature_marker": "last updated"
+    },
+    {
+      "id": 2,
+      "theme": "PREAMBLE_SCOPE",
+      "block_id": 2,
+      "is_block_start": true,
+      "rationale": "ouverture du preambule, « welcome to blizzard entertainment »",
+      "rationale_codes": {
+        "decision_trigger": "lexical_shift",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "welcome to blizzard entertainment",
+        "revised_from_plan": false,
+        "confidence": 0.88
+      },
+      "legal_nature": "META",
+      "legal_nature_marker": "inc."
+    },
+    {
+      "id": 3,
+      "theme": "PREAMBLE_SCOPE",
+      "block_id": 2,
+      "is_block_start": false,
+      "reason": "wow est l'oeuvre copyrightee de blizzard, contexte du preambule",
+      "legal_nature": "META",
+      "legal_nature_marker": "inc."
+    },
+    {
+      "id": 4,
+      "theme": "PREAMBLE_SCOPE",
+      "block_id": 2,
+      "is_block_start": false,
+      "reason": "effective date et portee: l'usage du service est regi par ces terms of use",
+      "legal_nature": "META",
+      "legal_nature_marker": "effective date"
+    },
+    {
+      "id": 5,
+      "theme": "PREAMBLE_SCOPE",
+      "block_id": 2,
+      "is_block_start": false,
+      "reason": "precision sur le battle.net service, rattachement de portee",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 6,
+      "theme": "PREAMBLE_SCOPE",
+      "block_id": 2,
+      "is_block_start": false,
+      "reason": "relation des terms avec bnet tou et eula, portee",
+      "legal_nature": "PROHIBITION",
+      "legal_nature_marker": "do not"
+    },
+    {
+      "id": 7,
+      "theme": "PREAMBLE_SCOPE",
+      "block_id": 2,
+      "is_block_start": false,
+      "reason": "acceptation prealable des blizzard agreements",
+      "legal_nature": "OBLIGATION",
+      "legal_nature_marker": "you must"
+    },
+    {
+      "id": 8,
+      "theme": "PREAMBLE_SCOPE",
+      "block_id": 2,
+      "is_block_start": false,
+      "reason": "usage non conforme prohibe, conclusion de portee",
+      "legal_nature": "PROHIBITION",
+      "legal_nature_marker": "prohibited"
+    },
+    {
+      "id": 9,
+      "theme": "ELIGIBILITY_ACCOUNT",
+      "block_id": 3,
+      "is_block_start": true,
+      "rationale": "representation d'age et capacite, « over the age of eighteen »",
+      "rationale_codes": {
+        "decision_trigger": "topic_keyword",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "over the age of eighteen",
+        "revised_from_plan": false,
+        "confidence": 0.78
+      },
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 10,
+      "theme": "ELIGIBILITY_ACCOUNT",
+      "block_id": 4,
+      "is_block_start": true,
+      "rationale": "titre nominal court « registering on battle.net to use the service »",
+      "rationale_codes": {
+        "decision_trigger": "title_marker",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "registering on battle.net to use the service",
+        "revised_from_plan": false,
+        "confidence": 0.82
+      },
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 11,
+      "theme": "ELIGIBILITY_ACCOUNT",
+      "block_id": 4,
+      "is_block_start": false,
+      "reason": "procedure d'enregistrement (code, compte, accord), prolonge le titre",
+      "legal_nature": "OBLIGATION",
+      "legal_nature_marker": "you must"
+    },
+    {
+      "id": 12,
+      "theme": "ELIGIBILITY_ACCOUNT",
+      "block_id": 4,
+      "is_block_start": false,
+      "reason": "usage reserve aux end users autorises, prolonge l'enregistrement",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 13,
+      "theme": "ELIGIBILITY_ACCOUNT",
+      "block_id": 4,
+      "is_block_start": false,
+      "reason": "reproduction/modification non autorisee prohibee, conclusion de la section enregistrement",
+      "legal_nature": "PROHIBITION",
+      "legal_nature_marker": "prohibited"
+    },
+    {
+      "id": 14,
+      "theme": "LICENSE_IP",
+      "block_id": 5,
+      "is_block_start": true,
+      "rationale": "titre nominal « grant of a limited license to use the service »",
+      "rationale_codes": {
+        "decision_trigger": "title_marker",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "grant of a limited license to use the service",
+        "revised_from_plan": false,
+        "confidence": 0.9
+      },
+      "legal_nature": "RIGHT_GRANT",
+      "legal_nature_marker": "license to"
+    },
+    {
+      "id": 15,
+      "theme": "LICENSE_IP",
+      "block_id": 5,
+      "is_block_start": false,
+      "reason": "octroi effectif de la licence limitee, prolonge le titre",
+      "legal_nature": "RIGHT_GRANT",
+      "legal_nature_marker": "hereby grant"
+    },
+    {
+      "id": 16,
+      "theme": "LICENSE_IP",
+      "block_id": 5,
+      "is_block_start": false,
+      "reason": "restriction d'usage de la licence, prolonge l'octroi",
+      "legal_nature": "PROHIBITION",
+      "legal_nature_marker": "may not"
+    },
+    {
+      "id": 17,
+      "theme": "PAYMENT_BILLING",
+      "block_id": 6,
+      "is_block_start": true,
+      "rationale": "obligation de paiement des charges et taxes, « pay all charges incurred by the account »",
+      "rationale_codes": {
+        "decision_trigger": "topic_keyword",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "pay all charges incurred by the account",
+        "revised_from_plan": false,
+        "confidence": 0.85
+      },
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 18,
+      "theme": "PAYMENT_BILLING",
+      "block_id": 6,
+      "is_block_start": false,
+      "reason": "limites d'acces liees aux moyens de paiement, prolonge la facturation",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 19,
+      "theme": "PAYMENT_BILLING",
+      "block_id": 6,
+      "is_block_start": false,
+      "reason": "prelevement des frais impayes sur carte, prolonge la facturation",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 20,
+      "theme": "ELIGIBILITY_ACCOUNT",
+      "block_id": 7,
+      "is_block_start": true,
+      "rationale": "non-reconnaissance du transfert de compte, « does not recognize the transfer of accounts »",
+      "rationale_codes": {
+        "decision_trigger": "topic_keyword",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "does not recognize the transfer of accounts",
+        "revised_from_plan": false,
+        "confidence": 0.74
+      },
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 21,
+      "theme": "ELIGIBILITY_ACCOUNT",
+      "block_id": 7,
+      "is_block_start": false,
+      "reason": "interdiction de vendre/echanger un compte, prolonge le transfert de compte",
+      "legal_nature": "PROHIBITION",
+      "legal_nature_marker": "may not"
+    },
+    {
+      "id": 22,
+      "theme": "PAYMENT_BILLING",
+      "block_id": 8,
+      "is_block_start": true,
+      "rationale": "regle de remboursement: aucun refund avant fin d'abonnement, « there are no refunds »",
+      "rationale_codes": {
+        "decision_trigger": "topic_keyword",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "there are no refunds",
+        "revised_from_plan": false,
+        "confidence": 0.72
+      },
+      "legal_nature": "GOVERNANCE",
+      "legal_nature_marker": "terminate"
+    },
+    {
+      "id": 23,
+      "theme": "ELIGIBILITY_ACCOUNT",
+      "block_id": 9,
+      "is_block_start": true,
+      "rationale": "controle parental de l'usage par l'enfant, « parents can restrict the use »",
+      "rationale_codes": {
+        "decision_trigger": "topic_keyword",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "parents can restrict the use",
+        "revised_from_plan": false,
+        "confidence": 0.7
+      },
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 24,
+      "theme": "ELIGIBILITY_ACCOUNT",
+      "block_id": 9,
+      "is_block_start": false,
+      "reason": "url d'information complementaire sur le controle parental, prolonge",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 25,
+      "theme": "ACCEPTABLE_USE",
+      "block_id": 10,
+      "is_block_start": true,
+      "rationale": "titre nominal « limitations on your use of world of warcraft »",
+      "rationale_codes": {
+        "decision_trigger": "title_marker",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "limitations on your use of world of warcraft",
+        "revised_from_plan": false,
+        "confidence": 0.85
+      },
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 26,
+      "theme": "ACCEPTABLE_USE",
+      "block_id": 10,
+      "is_block_start": false,
+      "reason": "renvoi a la licence article i section 2, chapeau des limitations",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 27,
+      "theme": "ACCEPTABLE_USE",
+      "block_id": 10,
+      "is_block_start": false,
+      "reason": "la licence est soumise aux limitations, prolonge le chapeau",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 28,
+      "theme": "ACCEPTABLE_USE",
+      "block_id": 10,
+      "is_block_start": false,
+      "reason": "introduction de la liste des limitations, prolonge",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 29,
+      "theme": "ACCEPTABLE_USE",
+      "block_id": 10,
+      "is_block_start": false,
+      "reason": "item: reserve du droit de creer des oeuvres derivees",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 30,
+      "theme": "ACCEPTABLE_USE",
+      "block_id": 10,
+      "is_block_start": false,
+      "reason": "consequence: interdiction de creer des oeuvres derivees",
+      "legal_nature": "DEFINITION",
+      "legal_nature_marker": "means"
+    },
+    {
+      "id": 31,
+      "theme": "ACCEPTABLE_USE",
+      "block_id": 10,
+      "is_block_start": false,
+      "reason": "item: seul blizzard peut heberger wow",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 32,
+      "theme": "ACCEPTABLE_USE",
+      "block_id": 10,
+      "is_block_start": false,
+      "reason": "interdiction d'heberger/intercepter les protocoles, prolonge",
+      "legal_nature": "PROHIBITION",
+      "legal_nature_marker": "may not"
+    },
+    {
+      "id": 33,
+      "theme": "ACCEPTABLE_USE",
+      "block_id": 10,
+      "is_block_start": false,
+      "reason": "exemples de methodes prohibees, prolonge",
+      "legal_nature": "PROHIBITION",
+      "legal_nature_marker": "prohibited"
+    },
+    {
+      "id": 34,
+      "theme": "ACCEPTABLE_USE",
+      "block_id": 10,
+      "is_block_start": false,
+      "reason": "chapeau de la liste 'you will not', prolonge les limitations",
+      "legal_nature": "PROHIBITION",
+      "legal_nature_marker": "will not"
+    },
+    {
+      "id": 35,
+      "theme": "ACCEPTABLE_USE",
+      "block_id": 10,
+      "is_block_start": false,
+      "reason": "item de liste: ne pas modifier les fichiers wow",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 36,
+      "theme": "ACCEPTABLE_USE",
+      "block_id": 10,
+      "is_block_start": false,
+      "reason": "item: pas de cheats/mods/hacks",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 37,
+      "theme": "ACCEPTABLE_USE",
+      "block_id": 10,
+      "is_block_start": false,
+      "reason": "item: pas de logiciel tiers collectant des infos",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 38,
+      "theme": "ACCEPTABLE_USE",
+      "block_id": 10,
+      "is_block_start": false,
+      "reason": "item: pas de communication alliance/horde croisee",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 39,
+      "theme": "ACCEPTABLE_USE",
+      "block_id": 10,
+      "is_block_start": false,
+      "reason": "item: pas d'achat/vente d'objets virtuels contre argent reel",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 40,
+      "theme": "ACCEPTABLE_USE",
+      "block_id": 10,
+      "is_block_start": false,
+      "reason": "item: pas de power leveling (jouer sur le compte d'autrui)",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 41,
+      "theme": "ACCEPTABLE_USE",
+      "block_id": 10,
+      "is_block_start": false,
+      "reason": "item: pas de jeu sur le compte d'un tiers",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 42,
+      "theme": "ACCEPTABLE_USE",
+      "block_id": 10,
+      "is_block_start": false,
+      "reason": "item: pas d'ecoute/interception des communications orales",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 43,
+      "theme": "ACCEPTABLE_USE",
+      "block_id": 10,
+      "is_block_start": false,
+      "reason": "exception: patches autorises permis, prolonge la liste",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 44,
+      "theme": "ACCEPTABLE_USE",
+      "block_id": 10,
+      "is_block_start": false,
+      "reason": "item: pas de violation de lois applicables",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 45,
+      "theme": "ACCEPTABLE_USE",
+      "block_id": 10,
+      "is_block_start": false,
+      "reason": "interdiction d'attaquer les serveurs wow, prolonge les limitations",
+      "legal_nature": "PROHIBITION",
+      "legal_nature_marker": "may not"
+    },
+    {
+      "id": 46,
+      "theme": "ACCEPTABLE_USE",
+      "block_id": 10,
+      "is_block_start": false,
+      "reason": "interdiction d'attaque perturbant l'experience des autres, prolonge",
+      "legal_nature": "PROHIBITION",
+      "legal_nature_marker": "may not"
+    },
+    {
+      "id": 47,
+      "theme": "ACCEPTABLE_USE",
+      "block_id": 10,
+      "is_block_start": false,
+      "reason": "consequence: violation de lois et reserve de dommages, conclusion des limitations",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 48,
+      "theme": "ACCEPTABLE_USE",
+      "block_id": 11,
+      "is_block_start": true,
+      "rationale": "titre nominal « world of warcraft rules of conduct »",
+      "rationale_codes": {
+        "decision_trigger": "title_marker",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "world of warcraft rules of conduct",
+        "revised_from_plan": false,
+        "confidence": 0.83
+      },
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 49,
+      "theme": "ACCEPTABLE_USE",
+      "block_id": 11,
+      "is_block_start": false,
+      "reason": "wow est regi par des rules of conduct, prolonge le titre",
+      "legal_nature": "GOVERNANCE",
+      "legal_nature_marker": "governed by"
+    },
+    {
+      "id": 50,
+      "theme": "ACCEPTABLE_USE",
+      "block_id": 11,
+      "is_block_start": false,
+      "reason": "responsabilite de connaitre et respecter les regles, prolonge",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 51,
+      "theme": "ACCEPTABLE_USE",
+      "block_id": 11,
+      "is_block_start": false,
+      "reason": "regles non exhaustives, reserve de mesures disciplinaires, prolonge",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 52,
+      "theme": "ACCEPTABLE_USE",
+      "block_id": 11,
+      "is_block_start": false,
+      "reason": "reserve de modifier les regles, conclusion du chapeau rules of conduct",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 53,
+      "theme": "ACCEPTABLE_USE",
+      "block_id": 12,
+      "is_block_start": true,
+      "rationale": "titre nominal « rules related to character names »",
+      "rationale_codes": {
+        "decision_trigger": "title_marker",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "rules related to character names",
+        "revised_from_plan": false,
+        "confidence": 0.82
+      },
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 54,
+      "theme": "ACCEPTABLE_USE",
+      "block_id": 12,
+      "is_block_start": false,
+      "reason": "selection du nom de personnage, prolonge le titre",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 55,
+      "theme": "ACCEPTABLE_USE",
+      "block_id": 12,
+      "is_block_start": false,
+      "reason": "noms de guildes, prolonge",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 56,
+      "theme": "ACCEPTABLE_USE",
+      "block_id": 12,
+      "is_block_start": false,
+      "reason": "obligation de respecter les guidelines de nommage, prolonge",
+      "legal_nature": "OBLIGATION",
+      "legal_nature_marker": "you must"
+    },
+    {
+      "id": 57,
+      "theme": "ACCEPTABLE_USE",
+      "block_id": 12,
+      "is_block_start": false,
+      "reason": "consequence: changement/suppression de label offensant, prolonge",
+      "legal_nature": "GOVERNANCE",
+      "legal_nature_marker": "terminate"
+    },
+    {
+      "id": 58,
+      "theme": "ACCEPTABLE_USE",
+      "block_id": 12,
+      "is_block_start": false,
+      "reason": "chapeau de la liste de noms interdits, prolonge",
+      "legal_nature": "PROHIBITION",
+      "legal_nature_marker": "may not"
+    },
+    {
+      "id": 59,
+      "theme": "ACCEPTABLE_USE",
+      "block_id": 12,
+      "is_block_start": false,
+      "reason": "item: nom usurpant une autre personne",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 60,
+      "theme": "ACCEPTABLE_USE",
+      "block_id": 12,
+      "is_block_start": false,
+      "reason": "item: nom avec jurons/offensant",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 61,
+      "theme": "ACCEPTABLE_USE",
+      "block_id": 12,
+      "is_block_start": false,
+      "reason": "item: nom soumis aux droits d'autrui",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 62,
+      "theme": "ACCEPTABLE_USE",
+      "block_id": 12,
+      "is_block_start": false,
+      "reason": "item: nom de figure de la pop culture",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 63,
+      "theme": "ACCEPTABLE_USE",
+      "block_id": 12,
+      "is_block_start": false,
+      "reason": "item: nom proche d'une marque",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 64,
+      "theme": "ACCEPTABLE_USE",
+      "block_id": 12,
+      "is_block_start": false,
+      "reason": "item: nom de figure religieuse",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 65,
+      "theme": "ACCEPTABLE_USE",
+      "block_id": 12,
+      "is_block_start": false,
+      "reason": "item: nom tire des produits warcraft",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 66,
+      "theme": "ACCEPTABLE_USE",
+      "block_id": 12,
+      "is_block_start": false,
+      "reason": "item: nom lie a drogues/sexe/alcool/crime",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 67,
+      "theme": "ACCEPTABLE_USE",
+      "block_id": 12,
+      "is_block_start": false,
+      "reason": "item: nom forme de phrase complete",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 68,
+      "theme": "ACCEPTABLE_USE",
+      "block_id": 12,
+      "is_block_start": false,
+      "reason": "item: nom de charabia",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 69,
+      "theme": "ACCEPTABLE_USE",
+      "block_id": 12,
+      "is_block_start": false,
+      "reason": "item: nom referant a des icones pop culture",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 70,
+      "theme": "ACCEPTABLE_USE",
+      "block_id": 12,
+      "is_block_start": false,
+      "reason": "item: nom en leet speak",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 71,
+      "theme": "ACCEPTABLE_USE",
+      "block_id": 12,
+      "is_block_start": false,
+      "reason": "item: nom incorporant des titres",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 72,
+      "theme": "ACCEPTABLE_USE",
+      "block_id": 12,
+      "is_block_start": false,
+      "reason": "definition de 'titles' pour la sous-section, prolonge",
+      "legal_nature": "OBLIGATION",
+      "legal_nature_marker": "shall"
+    },
+    {
+      "id": 73,
+      "theme": "ACCEPTABLE_USE",
+      "block_id": 12,
+      "is_block_start": false,
+      "reason": "interdiction de contournement par orthographe, conclusion de la section noms",
+      "legal_nature": "PROHIBITION",
+      "legal_nature_marker": "may not"
+    },
+    {
+      "id": 74,
+      "theme": "ACCEPTABLE_USE",
+      "block_id": 13,
+      "is_block_start": true,
+      "rationale": "titre nominal « rules related to `` chat '' , interaction with other users »",
+      "rationale_codes": {
+        "decision_trigger": "title_marker",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "rules related to",
+        "revised_from_plan": false,
+        "confidence": 0.8
+      },
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 75,
+      "theme": "ACCEPTABLE_USE",
+      "block_id": 13,
+      "is_block_start": false,
+      "reason": "communication ecrite et orale, prolonge le titre chat",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 76,
+      "theme": "ACCEPTABLE_USE",
+      "block_id": 13,
+      "is_block_start": false,
+      "reason": "voice client, prolonge",
+      "legal_nature": "SCOPE_APPLICABILITY",
+      "legal_nature_marker": "by using"
+    },
+    {
+      "id": 77,
+      "theme": "ACCEPTABLE_USE",
+      "block_id": 13,
+      "is_block_start": false,
+      "reason": "definition de 'chat', prolonge",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 78,
+      "theme": "ACCEPTABLE_USE",
+      "block_id": 13,
+      "is_block_start": false,
+      "reason": "blizzard ne surveille pas l'oral, prolonge",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 79,
+      "theme": "ACCEPTABLE_USE",
+      "block_id": 13,
+      "is_block_start": false,
+      "reason": "communication ecrite sujette a revision/suppression, prolonge",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 80,
+      "theme": "ACCEPTABLE_USE",
+      "block_id": 13,
+      "is_block_start": false,
+      "reason": "pas d'obligation de monitorer le chat, risque assume, prolonge",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 81,
+      "theme": "ACCEPTABLE_USE",
+      "block_id": 13,
+      "is_block_start": false,
+      "reason": "chapeau de la liste des interdictions de chat, prolonge",
+      "legal_nature": "PROHIBITION",
+      "legal_nature_marker": "may not"
+    },
+    {
+      "id": 82,
+      "theme": "ACCEPTABLE_USE",
+      "block_id": 13,
+      "is_block_start": false,
+      "reason": "item: pas de contenu offensant",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 83,
+      "theme": "ACCEPTABLE_USE",
+      "block_id": 13,
+      "is_block_start": false,
+      "reason": "item: pas d'action perturbatrice (scroll/macros)",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 84,
+      "theme": "ACCEPTABLE_USE",
+      "block_id": 13,
+      "is_block_start": false,
+      "reason": "item: pas de perturbation du dialogue/publicite",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 85,
+      "theme": "ACCEPTABLE_USE",
+      "block_id": 13,
+      "is_block_start": false,
+      "reason": "item: pas de spam/messages repetes",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 86,
+      "theme": "ACCEPTABLE_USE",
+      "block_id": 13,
+      "is_block_start": false,
+      "reason": "item: pas de divulgation d'infos personnelles d'autrui",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 87,
+      "theme": "ACCEPTABLE_USE",
+      "block_id": 13,
+      "is_block_start": false,
+      "reason": "item: pas de bots de collecte d'infos",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 88,
+      "theme": "ACCEPTABLE_USE",
+      "block_id": 13,
+      "is_block_start": false,
+      "reason": "item: pas de harcelement",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 89,
+      "theme": "ACCEPTABLE_USE",
+      "block_id": 13,
+      "is_block_start": false,
+      "reason": "item: pas de triche/exploits",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 90,
+      "theme": "ACCEPTABLE_USE",
+      "block_id": 13,
+      "is_block_start": false,
+      "reason": "item: pas de participation a une escroquerie, conclusion de la section chat",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 91,
+      "theme": "ACCEPTABLE_USE",
+      "block_id": 14,
+      "is_block_start": true,
+      "rationale": "titre nominal « rules related to game play »",
+      "rationale_codes": {
+        "decision_trigger": "title_marker",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "rules related to game play",
+        "revised_from_plan": false,
+        "confidence": 0.8
+      },
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 92,
+      "theme": "ACCEPTABLE_USE",
+      "block_id": 14,
+      "is_block_start": false,
+      "reason": "le game play est l'essence de wow, prolonge le titre",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 93,
+      "theme": "ACCEPTABLE_USE",
+      "block_id": 14,
+      "is_block_start": false,
+      "reason": "les regles de game play sont prises au serieux, prolonge",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 94,
+      "theme": "ACCEPTABLE_USE",
+      "block_id": 14,
+      "is_block_start": false,
+      "reason": "les styles de jeu valides ne sont pas du harcelement, prolonge",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 95,
+      "theme": "ACCEPTABLE_USE",
+      "block_id": 14,
+      "is_block_start": false,
+      "reason": "wow est un jeu pvp, se proteger soi-meme, prolonge",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 96,
+      "theme": "ACCEPTABLE_USE",
+      "block_id": 14,
+      "is_block_start": false,
+      "reason": "certains actes sont des violations serieuses, prolonge",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 97,
+      "theme": "ACCEPTABLE_USE",
+      "block_id": 14,
+      "is_block_start": false,
+      "reason": "chapeau de la liste des actes prohibes, prolonge",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 98,
+      "theme": "ACCEPTABLE_USE",
+      "block_id": 14,
+      "is_block_start": false,
+      "reason": "item: exploiter erreurs de design/bugs",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 99,
+      "theme": "ACCEPTABLE_USE",
+      "block_id": 14,
+      "is_block_start": false,
+      "reason": "item: se connecter via outils non autorises",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 100,
+      "theme": "ACCEPTABLE_USE",
+      "block_id": 14,
+      "is_block_start": false,
+      "reason": "item: utiliser des outils de hack du client/serveur",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 101,
+      "theme": "ACCEPTABLE_USE",
+      "block_id": 14,
+      "is_block_start": false,
+      "reason": "item: packet sniffing/scripting",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 102,
+      "theme": "ACCEPTABLE_USE",
+      "block_id": 14,
+      "is_block_start": false,
+      "reason": "item: tout ce qui est contraire a l'essence de wow, conclusion de la liste game play",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 103,
+      "theme": "ELIGIBILITY_ACCOUNT",
+      "block_id": 15,
+      "is_block_start": true,
+      "rationale": "nouveau sujet: migration de personnages entre serveurs, « character migration »",
+      "rationale_codes": {
+        "decision_trigger": "topic_keyword",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "character migration",
+        "revised_from_plan": false,
+        "confidence": 0.72
+      },
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 104,
+      "theme": "ELIGIBILITY_ACCOUNT",
+      "block_id": 15,
+      "is_block_start": false,
+      "reason": "chapeau: conditions de migration si proposee, prolonge",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 105,
+      "theme": "ELIGIBILITY_ACCOUNT",
+      "block_id": 15,
+      "is_block_start": false,
+      "reason": "un guild master ne peut migrer, prolonge",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 106,
+      "theme": "ELIGIBILITY_ACCOUNT",
+      "block_id": 15,
+      "is_block_start": false,
+      "reason": "moins de 10 personnages sur le serveur cible, prolonge",
+      "legal_nature": "OBLIGATION",
+      "legal_nature_marker": "you must"
+    },
+    {
+      "id": 107,
+      "theme": "ELIGIBILITY_ACCOUNT",
+      "block_id": 15,
+      "is_block_start": false,
+      "reason": "migration seulement quand le compte n'est pas utilise, prolonge",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 108,
+      "theme": "ELIGIBILITY_ACCOUNT",
+      "block_id": 15,
+      "is_block_start": false,
+      "reason": "pas de migration si nom deja utilise, prolonge",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 109,
+      "theme": "ELIGIBILITY_ACCOUNT",
+      "block_id": 15,
+      "is_block_start": false,
+      "reason": "renommage si conflit de nom, prolonge",
+      "legal_nature": "OBLIGATION",
+      "legal_nature_marker": "you will"
+    },
+    {
+      "id": 110,
+      "theme": "ELIGIBILITY_ACCOUNT",
+      "block_id": 15,
+      "is_block_start": false,
+      "reason": "le nom doit respecter les conventions, prolonge",
+      "legal_nature": "OBLIGATION",
+      "legal_nature_marker": "must"
+    },
+    {
+      "id": 111,
+      "theme": "ELIGIBILITY_ACCOUNT",
+      "block_id": 15,
+      "is_block_start": false,
+      "reason": "le mail en transit n'est pas migre, prolonge",
+      "legal_nature": "PROHIBITION",
+      "legal_nature_marker": "will not"
+    },
+    {
+      "id": 112,
+      "theme": "ELIGIBILITY_ACCOUNT",
+      "block_id": 15,
+      "is_block_start": false,
+      "reason": "les encheres sont annulees a la migration, prolonge",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 113,
+      "theme": "ELIGIBILITY_ACCOUNT",
+      "block_id": 15,
+      "is_block_start": false,
+      "reason": "l'objet/bid apparait dans le mail au serveur cible, prolonge",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 114,
+      "theme": "ELIGIBILITY_ACCOUNT",
+      "block_id": 15,
+      "is_block_start": false,
+      "reason": "non-responsabilite pour perte de fonds a la migration, prolonge",
+      "legal_nature": "PROHIBITION",
+      "legal_nature_marker": "will not"
+    },
+    {
+      "id": 115,
+      "theme": "ELIGIBILITY_ACCOUNT",
+      "block_id": 15,
+      "is_block_start": false,
+      "reason": "la friends list ne migre pas, prolonge",
+      "legal_nature": "PROHIBITION",
+      "legal_nature_marker": "will not"
+    },
+    {
+      "id": 116,
+      "theme": "ELIGIBILITY_ACCOUNT",
+      "block_id": 15,
+      "is_block_start": false,
+      "reason": "l'affiliation de guilde ne migre pas, prolonge",
+      "legal_nature": "PROHIBITION",
+      "legal_nature_marker": "will not"
+    },
+    {
+      "id": 117,
+      "theme": "ELIGIBILITY_ACCOUNT",
+      "block_id": 15,
+      "is_block_start": false,
+      "reason": "l'ignore list ne migre pas, conclusion de la section migration",
+      "legal_nature": "PROHIBITION",
+      "legal_nature_marker": "will not"
+    },
+    {
+      "id": 118,
+      "theme": "TERMINATION",
+      "block_id": 16,
+      "is_block_start": true,
+      "rationale": "titre nominal « consequences of violating the rules of conduct »",
+      "rationale_codes": {
+        "decision_trigger": "title_marker",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "consequences of violating the rules of conduct",
+        "revised_from_plan": false,
+        "confidence": 0.8
+      },
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 119,
+      "theme": "TERMINATION",
+      "block_id": 16,
+      "is_block_start": false,
+      "reason": "blizzard peut prendre toute action necessaire, prolonge le titre",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 120,
+      "theme": "TERMINATION",
+      "block_id": 16,
+      "is_block_start": false,
+      "reason": "sanctions: suspension/resiliation/modification de compte, prolonge",
+      "legal_nature": "GOVERNANCE",
+      "legal_nature_marker": "terminate"
+    },
+    {
+      "id": 121,
+      "theme": "TERMINATION",
+      "block_id": 16,
+      "is_block_start": false,
+      "reason": "droit de refuser le service en cas de violation, prolonge",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 122,
+      "theme": "TERMINATION",
+      "block_id": 16,
+      "is_block_start": false,
+      "reason": "pas de devoir de rembourser l'experience perdue, prolonge les consequences",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 123,
+      "theme": "TERMINATION",
+      "block_id": 16,
+      "is_block_start": false,
+      "reason": "blizzard peut rembourser l'experience en cas extreme, prolonge",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 124,
+      "theme": "TERMINATION",
+      "block_id": 16,
+      "is_block_start": false,
+      "reason": "exemple: panne serveur catastrophique, prolonge",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 125,
+      "theme": "TERMINATION",
+      "block_id": 16,
+      "is_block_start": false,
+      "reason": "aucune obligation de remboursement monetaire, conclusion",
+      "legal_nature": "LIMITATION_DISCLAIMER",
+      "legal_nature_marker": "in no event"
+    },
+    {
+      "id": 126,
+      "theme": "LICENSE_IP",
+      "block_id": 17,
+      "is_block_start": true,
+      "rationale": "rappel de la licence limitee, « you were `` licensed '' the right »",
+      "rationale_codes": {
+        "decision_trigger": "anaphora",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "you were `` licensed ''",
+        "revised_from_plan": false,
+        "confidence": 0.7
+      },
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 127,
+      "theme": "LICENSE_IP",
+      "block_id": 17,
+      "is_block_start": false,
+      "reason": "les limites de licence interviennent ici, prolonge",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 128,
+      "theme": "LICENSE_IP",
+      "block_id": 17,
+      "is_block_start": false,
+      "reason": "blizzard possede/licencie tout le contenu, prolonge",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 129,
+      "theme": "LICENSE_IP",
+      "block_id": 17,
+      "is_block_start": false,
+      "reason": "personne ne peut vendre le contenu de blizzard, prolonge",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 130,
+      "theme": "LICENSE_IP",
+      "block_id": 17,
+      "is_block_start": false,
+      "reason": "blizzard ne reconnait pas les revendications de propriete hors wow, prolonge",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 131,
+      "theme": "LICENSE_IP",
+      "block_id": 17,
+      "is_block_start": false,
+      "reason": "interdiction de vendre/acheter des objets virtuels contre argent reel, prolonge",
+      "legal_nature": "PROHIBITION",
+      "legal_nature_marker": "may not"
+    },
+    {
+      "id": 132,
+      "theme": "LICENSE_IP",
+      "block_id": 17,
+      "is_block_start": false,
+      "reason": "blizzard previendra les ventes illegales, conclusion du rappel licence",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 133,
+      "theme": "THIRD_PARTY",
+      "block_id": 18,
+      "is_block_start": true,
+      "rationale": "nouveau sujet: jeu en ligne, connexion internet et disponibilite du service, « must be played over the internet through the service »",
+      "rationale_codes": {
+        "decision_trigger": "topic_keyword",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "must be played over the internet through the service",
+        "revised_from_plan": false,
+        "confidence": 0.66
+      },
+      "legal_nature": "OBLIGATION",
+      "legal_nature_marker": "must"
+    },
+    {
+      "id": 134,
+      "theme": "THIRD_PARTY",
+      "block_id": 18,
+      "is_block_start": false,
+      "reason": "responsabilite de l'utilisateur pour sa connexion internet, prolonge",
+      "legal_nature": "OBLIGATION",
+      "legal_nature_marker": "shall"
+    },
+    {
+      "id": 135,
+      "theme": "THIRD_PARTY",
+      "block_id": 18,
+      "is_block_start": false,
+      "reason": "efforts raisonnables pour fournir le service en continu, prolonge",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 136,
+      "theme": "THIRD_PARTY",
+      "block_id": 18,
+      "is_block_start": false,
+      "reason": "reserve de suspendre le service pour maintenance, prolonge",
+      "legal_nature": "GOVERNANCE",
+      "legal_nature_marker": "suspend"
+    },
+    {
+      "id": 137,
+      "theme": "THIRD_PARTY",
+      "block_id": 18,
+      "is_block_start": false,
+      "reason": "preavis de 24h en cas de suspension, prolonge",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 138,
+      "theme": "THIRD_PARTY",
+      "block_id": 18,
+      "is_block_start": false,
+      "reason": "fourniture du service jusqu'a 'out of publication', prolonge",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 139,
+      "theme": "THIRD_PARTY",
+      "block_id": 18,
+      "is_block_start": false,
+      "reason": "definition de 'out of publication', prolonge",
+      "legal_nature": "OBLIGATION",
+      "legal_nature_marker": "shall"
+    },
+    {
+      "id": 140,
+      "theme": "THIRD_PARTY",
+      "block_id": 18,
+      "is_block_start": false,
+      "reason": "blizzard peut continuer ou licencier le service, prolonge",
+      "legal_nature": "RIGHT_GRANT",
+      "legal_nature_marker": "license to"
+    },
+    {
+      "id": 141,
+      "theme": "THIRD_PARTY",
+      "block_id": 18,
+      "is_block_start": false,
+      "reason": "pas d'obligation de fournir le service apres out of publication, prolonge",
+      "legal_nature": "OBLIGATION",
+      "legal_nature_marker": "shall"
+    },
+    {
+      "id": 142,
+      "theme": "THIRD_PARTY",
+      "block_id": 18,
+      "is_block_start": false,
+      "reason": "preavis de 3 mois si blizzard cesse le service, prolonge",
+      "legal_nature": "RIGHT_GRANT",
+      "legal_nature_marker": "license to"
+    },
+    {
+      "id": 143,
+      "theme": "THIRD_PARTY",
+      "block_id": 18,
+      "is_block_start": false,
+      "reason": "le service n'est pas une location de capacite serveur, conclusion",
+      "legal_nature": "OBLIGATION",
+      "legal_nature_marker": "shall"
+    },
+    {
+      "id": 144,
+      "theme": "THIRD_PARTY",
+      "block_id": 19,
+      "is_block_start": true,
+      "rationale": "titre nominal « x. testing , maintenance , and other potential interruptions in the service »",
+      "rationale_codes": {
+        "decision_trigger": "title_marker",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "testing , maintenance , and other potential interruptions in the service",
+        "revised_from_plan": false,
+        "confidence": 0.75
+      },
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 145,
+      "theme": "THIRD_PARTY",
+      "block_id": 19,
+      "is_block_start": false,
+      "reason": "notice avant upgrades/maintenance, prolonge le titre",
+      "legal_nature": "OBLIGATION",
+      "legal_nature_marker": "shall"
+    },
+    {
+      "id": 146,
+      "theme": "THIRD_PARTY",
+      "block_id": 19,
+      "is_block_start": false,
+      "reason": "responsabilite de l'utilisateur de lire les notices, prolonge",
+      "legal_nature": "PROHIBITION",
+      "legal_nature_marker": "shall not"
+    },
+    {
+      "id": 147,
+      "theme": "THIRD_PARTY",
+      "block_id": 19,
+      "is_block_start": false,
+      "reason": "blizzard peut arreter des serveurs pour reparation, prolonge",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 148,
+      "theme": "THIRD_PARTY",
+      "block_id": 19,
+      "is_block_start": false,
+      "reason": "reserve de suspendre le service pour maintenance, conclusion de la section interruptions",
+      "legal_nature": "GOVERNANCE",
+      "legal_nature_marker": "suspend"
+    },
+    {
+      "id": 149,
+      "theme": "PAYMENT_BILLING",
+      "block_id": 20,
+      "is_block_start": true,
+      "rationale": "nouveau sujet: regime de remboursement contractuel, « the present refund regulations »",
+      "rationale_codes": {
+        "decision_trigger": "topic_keyword",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "the present refund regulations",
+        "revised_from_plan": false,
+        "confidence": 0.7
+      },
+      "legal_nature": "PROHIBITION",
+      "legal_nature_marker": "do not"
+    },
+    {
+      "id": 150,
+      "theme": "PAYMENT_BILLING",
+      "block_id": 20,
+      "is_block_start": false,
+      "reason": "remboursement additionnel offert contractuellement, prolonge",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 151,
+      "theme": "PAYMENT_BILLING",
+      "block_id": 20,
+      "is_block_start": false,
+      "reason": "droit de resilier/game time adjustment si interruption >72h, prolonge",
+      "legal_nature": "GOVERNANCE",
+      "legal_nature_marker": "terminate"
+    },
+    {
+      "id": 152,
+      "theme": "PAYMENT_BILLING",
+      "block_id": 20,
+      "is_block_start": false,
+      "reason": "exceptions a ce droit (force majeure, fait du tiers, etc.), prolonge",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 153,
+      "theme": "PAYMENT_BILLING",
+      "block_id": 20,
+      "is_block_start": false,
+      "reason": "credit de game time quadruple, prolonge",
+      "legal_nature": "OBLIGATION",
+      "legal_nature_marker": "shall"
+    },
+    {
+      "id": 154,
+      "theme": "PAYMENT_BILLING",
+      "block_id": 20,
+      "is_block_start": false,
+      "reason": "seuls les comptes en bon etat eligibles, prolonge",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 155,
+      "theme": "PAYMENT_BILLING",
+      "block_id": 20,
+      "is_block_start": false,
+      "reason": "chapeau: conditions de remboursement si resiliation, prolonge",
+      "legal_nature": "GOVERNANCE",
+      "legal_nature_marker": "terminate"
+    },
+    {
+      "id": 156,
+      "theme": "PAYMENT_BILLING",
+      "block_id": 20,
+      "is_block_start": false,
+      "reason": "seuls les comptes en bon etat eligibles au refund, prolonge",
+      "legal_nature": "OBLIGATION",
+      "legal_nature_marker": "shall"
+    },
+    {
+      "id": 157,
+      "theme": "PAYMENT_BILLING",
+      "block_id": 20,
+      "is_block_start": false,
+      "reason": "comptes suspendus non eligibles, prolonge",
+      "legal_nature": "GOVERNANCE",
+      "legal_nature_marker": "suspend"
+    },
+    {
+      "id": 158,
+      "theme": "PAYMENT_BILLING",
+      "block_id": 20,
+      "is_block_start": false,
+      "reason": "calcul du refund pro rata pour fixed fees, prolonge",
+      "legal_nature": "LIMITATION_DISCLAIMER",
+      "legal_nature_marker": "as available"
+    },
+    {
+      "id": 159,
+      "theme": "PAYMENT_BILLING",
+      "block_id": 20,
+      "is_block_start": false,
+      "reason": "calcul du refund pour discounted fees, conclusion de la section refund",
+      "legal_nature": "GOVERNANCE",
+      "legal_nature_marker": "terminate"
+    },
+    {
+      "id": 160,
+      "theme": "ELIGIBILITY_ACCOUNT",
+      "block_id": 21,
+      "is_block_start": true,
+      "rationale": "nouveau sujet: responsabilite et securite du compte, « liable for all activities conducted through the account »",
+      "rationale_codes": {
+        "decision_trigger": "topic_keyword",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "liable for all activities conducted through the account",
+        "revised_from_plan": false,
+        "confidence": 0.7
+      },
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 161,
+      "theme": "ELIGIBILITY_ACCOUNT",
+      "block_id": 21,
+      "is_block_start": false,
+      "reason": "procedure de recuperation en cas de breach de securite, prolonge",
+      "legal_nature": "OBLIGATION",
+      "legal_nature_marker": "you will"
+    },
+    {
+      "id": 162,
+      "theme": "MODIFICATION_OF_TERMS",
+      "block_id": 22,
+      "is_block_start": true,
+      "rationale": "titre nominal « our administration of world of warcraft ; changes to the terms of use »",
+      "rationale_codes": {
+        "decision_trigger": "title_marker",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "changes to the terms of use",
+        "revised_from_plan": false,
+        "confidence": 0.8
+      },
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 163,
+      "theme": "MODIFICATION_OF_TERMS",
+      "block_id": 22,
+      "is_block_start": false,
+      "reason": "blizzard peut modifier les terms of use, prolonge le titre",
+      "legal_nature": "GOVERNANCE",
+      "legal_nature_marker": "modify these terms"
+    },
+    {
+      "id": 164,
+      "theme": "MODIFICATION_OF_TERMS",
+      "block_id": 22,
+      "is_block_start": false,
+      "reason": "notification par special notice, prolonge",
+      "legal_nature": "PROHIBITION",
+      "legal_nature_marker": "will not"
+    },
+    {
+      "id": 165,
+      "theme": "MODIFICATION_OF_TERMS",
+      "block_id": 22,
+      "is_block_start": false,
+      "reason": "acceptation tacite sans objection sous 1 mois, prolonge",
+      "legal_nature": "PROHIBITION",
+      "legal_nature_marker": "do not"
+    },
+    {
+      "id": 166,
+      "theme": "MODIFICATION_OF_TERMS",
+      "block_id": 22,
+      "is_block_start": false,
+      "reason": "rappel de l'acceptation apres expiration du delai, conclusion",
+      "legal_nature": "DEFINITION",
+      "legal_nature_marker": "means"
+    },
+    {
+      "id": 167,
+      "theme": "LICENSE_IP",
+      "block_id": 23,
+      "is_block_start": true,
+      "rationale": "droits de propriete intellectuelle dans wow, « all title , ownership rights and intellectual property rights »",
+      "rationale_codes": {
+        "decision_trigger": "topic_keyword",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "intellectual property rights",
+        "revised_from_plan": false,
+        "confidence": 0.85
+      },
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 168,
+      "theme": "LICENSE_IP",
+      "block_id": 23,
+      "is_block_start": false,
+      "reason": "wow protege par les lois du copyright, prolonge",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 169,
+      "theme": "LICENSE_IP",
+      "block_id": 23,
+      "is_block_start": false,
+      "reason": "materiaux sous licence et protection des licensors, conclusion de la section PI",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 170,
+      "theme": "SUBSCRIPTION_RENEWAL",
+      "block_id": 24,
+      "is_block_start": true,
+      "rationale": "titre nominal « world of warcraft and television service »",
+      "rationale_codes": {
+        "decision_trigger": "title_marker",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "world of warcraft and television service",
+        "revised_from_plan": false,
+        "confidence": 0.66
+      },
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 171,
+      "theme": "SUBSCRIPTION_RENEWAL",
+      "block_id": 24,
+      "is_block_start": false,
+      "reason": "service tv inclus dans la souscription mensuelle, prolonge le titre",
+      "legal_nature": "META",
+      "legal_nature_marker": "effective date"
+    },
+    {
+      "id": 172,
+      "theme": "TERMINATION",
+      "block_id": 25,
+      "is_block_start": true,
+      "rationale": "duree et conditions de resiliation de l'accord, « effective until the end of the term »",
+      "rationale_codes": {
+        "decision_trigger": "topic_keyword",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "effective until the end of the term",
+        "revised_from_plan": false,
+        "confidence": 0.75
+      },
+      "legal_nature": "GOVERNANCE",
+      "legal_nature_marker": "terminate"
+    },
+    {
+      "id": 173,
+      "theme": "TERMINATION",
+      "block_id": 25,
+      "is_block_start": false,
+      "reason": "droit de resilier de l'utilisateur (faillite, etc.), prolonge",
+      "legal_nature": "GOVERNANCE",
+      "legal_nature_marker": "terminate"
+    },
+    {
+      "id": 174,
+      "theme": "TERMINATION",
+      "block_id": 25,
+      "is_block_start": false,
+      "reason": "droit de blizzard de resilier apres avertissement, prolonge",
+      "legal_nature": "GOVERNANCE",
+      "legal_nature_marker": "terminate"
+    },
+    {
+      "id": 175,
+      "theme": "TERMINATION",
+      "block_id": 25,
+      "is_block_start": false,
+      "reason": "resiliation immediate en cas de violation serieuse, prolonge",
+      "legal_nature": "GOVERNANCE",
+      "legal_nature_marker": "terminate"
+    },
+    {
+      "id": 176,
+      "theme": "TERMINATION",
+      "block_id": 25,
+      "is_block_start": false,
+      "reason": "definition des violations serieuses, prolonge",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 177,
+      "theme": "TERMINATION",
+      "block_id": 25,
+      "is_block_start": false,
+      "reason": "forfait des paiements pre-payes en cas de resiliation pour breach, conclusion",
+      "legal_nature": "GOVERNANCE",
+      "legal_nature_marker": "terminate"
+    },
+    {
+      "id": 178,
+      "theme": "PRIVACY_DATA",
+      "block_id": 26,
+      "is_block_start": true,
+      "rationale": "consentement au monitoring de la ram/cpu pour anti-triche, « you grant your consent »",
+      "rationale_codes": {
+        "decision_trigger": "topic_keyword",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "grant your consent",
+        "revised_from_plan": false,
+        "confidence": 0.7
+      },
+      "legal_nature": "RIGHT_GRANT",
+      "legal_nature_marker": "grant you"
+    },
+    {
+      "id": 179,
+      "theme": "PRIVACY_DATA",
+      "block_id": 26,
+      "is_block_start": false,
+      "reason": "definition de 'unauthorized third party program' et collecte d'infos, prolonge",
+      "legal_nature": "DEFINITION",
+      "legal_nature_marker": "defined as"
+    },
+    {
+      "id": 180,
+      "theme": "PRIVACY_DATA",
+      "block_id": 26,
+      "is_block_start": false,
+      "reason": "couts d'acces telephone/internet assumes par l'utilisateur, prolonge",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 181,
+      "theme": "PRIVACY_DATA",
+      "block_id": 26,
+      "is_block_start": false,
+      "reason": "droit d'obtenir des infos d'identification de l'ordinateur, prolonge",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 182,
+      "theme": "PRIVACY_DATA",
+      "block_id": 26,
+      "is_block_start": false,
+      "reason": "droit d'obtenir des donnees non personnelles demographiques, prolonge",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 183,
+      "theme": "PRIVACY_DATA",
+      "block_id": 26,
+      "is_block_start": false,
+      "reason": "droit d'obtenir des infos de l'ordinateur pour policer les hacks, prolonge",
+      "legal_nature": "OBLIGATION",
+      "legal_nature_marker": "shall"
+    },
+    {
+      "id": 184,
+      "theme": "PRIVACY_DATA",
+      "block_id": 26,
+      "is_block_start": false,
+      "reason": "ces infos servent uniquement a identifier les tricheurs, conclusion",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 185,
+      "theme": "WARRANTY_DISCLAIMER",
+      "block_id": 27,
+      "is_block_start": true,
+      "rationale": "absence de garantie sur le service, « does not warrant that world of warcraft will be uninterrupted »",
+      "rationale_codes": {
+        "decision_trigger": "topic_keyword",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "does not warrant that world of warcraft will be uninterrupted",
+        "revised_from_plan": false,
+        "confidence": 0.8
+      },
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 186,
+      "theme": "WARRANTY_DISCLAIMER",
+      "block_id": 27,
+      "is_block_start": false,
+      "reason": "impossible de developper un logiciel sans defauts, prolonge",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 187,
+      "theme": "WARRANTY_DISCLAIMER",
+      "block_id": 27,
+      "is_block_start": false,
+      "reason": "caracteristiques contractuelles: pas exempt de toute erreur, conclusion du disclaimer",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 188,
+      "theme": "INDEMNIFICATION",
+      "block_id": 28,
+      "is_block_start": true,
+      "rationale": "indemnisation pour usage d'une interface tierce, « indemnify and hold harmless »",
+      "rationale_codes": {
+        "decision_trigger": "topic_keyword",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "indemnify and hold harmless",
+        "revised_from_plan": false,
+        "confidence": 0.72
+      },
+      "legal_nature": "RISK_ALLOCATION",
+      "legal_nature_marker": "indemnify"
+    },
+    {
+      "id": 189,
+      "theme": "INDEMNIFICATION",
+      "block_id": 28,
+      "is_block_start": false,
+      "reason": "obligation d'utiliser seulement les interfaces tierces approuvees, prolonge le sujet de l'interface tierce",
+      "legal_nature": "OBLIGATION",
+      "legal_nature_marker": "you will"
+    },
+    {
+      "id": 190,
+      "theme": "LIABILITY_LIMITATION",
+      "block_id": 29,
+      "is_block_start": true,
+      "rationale": "indisponibilite possible du service, « you may not be able to access world of warcraft whenever you want »",
+      "rationale_codes": {
+        "decision_trigger": "lexical_shift",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "you may not be able to access world of warcraft whenever you want",
+        "revised_from_plan": false,
+        "confidence": 0.62
+      },
+      "legal_nature": "PROHIBITION",
+      "legal_nature_marker": "may not"
+    },
+    {
+      "id": 191,
+      "theme": "LIABILITY_LIMITATION",
+      "block_id": 29,
+      "is_block_start": false,
+      "reason": "non-responsabilite pour causes hors controle (force majeure), prolonge",
+      "legal_nature": "PROHIBITION",
+      "legal_nature_marker": "shall not"
+    },
+    {
+      "id": 192,
+      "theme": "PRIVACY_DATA",
+      "block_id": 30,
+      "is_block_start": true,
+      "rationale": "creation et stockage des game data, « creation and retention of electronic files »",
+      "rationale_codes": {
+        "decision_trigger": "topic_keyword",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "creation and retention of electronic files",
+        "revised_from_plan": false,
+        "confidence": 0.62
+      },
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 193,
+      "theme": "PRIVACY_DATA",
+      "block_id": 30,
+      "is_block_start": false,
+      "reason": "garder les game data en securite est une priorite, prolonge",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 194,
+      "theme": "PRIVACY_DATA",
+      "block_id": 30,
+      "is_block_start": false,
+      "reason": "efforts raisonnables pour restaurer les game data, prolonge",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 195,
+      "theme": "PRIVACY_DATA",
+      "block_id": 30,
+      "is_block_start": false,
+      "reason": "reserve de modifier/supprimer les game data, conclusion de la section donnees de jeu",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 196,
+      "theme": "LIABILITY_LIMITATION",
+      "block_id": 31,
+      "is_block_start": true,
+      "rationale": "regime legal de responsabilite de blizzard, « liable in accordance with statutory law »",
+      "rationale_codes": {
+        "decision_trigger": "topic_keyword",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "liable in accordance with statutory law",
+        "revised_from_plan": false,
+        "confidence": 0.78
+      },
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 197,
+      "theme": "LIABILITY_LIMITATION",
+      "block_id": 31,
+      "is_block_start": false,
+      "reason": "definition de gross negligence, prolonge",
+      "legal_nature": "DEFINITION",
+      "legal_nature_marker": "refers to"
+    },
+    {
+      "id": 198,
+      "theme": "LIABILITY_LIMITATION",
+      "block_id": 31,
+      "is_block_start": false,
+      "reason": "renvoi a l'article xvii.1, prolonge",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 199,
+      "theme": "LIABILITY_LIMITATION",
+      "block_id": 31,
+      "is_block_start": false,
+      "reason": "responsabilite limitee pour negligence legere en cas de breach materiel, prolonge",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 200,
+      "theme": "LIABILITY_LIMITATION",
+      "block_id": 31,
+      "is_block_start": false,
+      "reason": "definition de material contractual obligation, prolonge",
+      "legal_nature": "DEFINITION",
+      "legal_nature_marker": "means"
+    },
+    {
+      "id": 201,
+      "theme": "LIABILITY_LIMITATION",
+      "block_id": 31,
+      "is_block_start": false,
+      "reason": "responsabilite limitee aux dommages typiques et previsibles, prolonge",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 202,
+      "theme": "LIABILITY_LIMITATION",
+      "block_id": 31,
+      "is_block_start": false,
+      "reason": "definition de slight negligence, conclusion du regime de responsabilite",
+      "legal_nature": "DEFINITION",
+      "legal_nature_marker": "means"
+    },
+    {
+      "id": 203,
+      "theme": "GOVERNING_LAW",
+      "block_id": 32,
+      "is_block_start": true,
+      "rationale": "droit applicable, « governed by and construed in accordance with the laws »",
+      "rationale_codes": {
+        "decision_trigger": "topic_keyword",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "governed by and construed in accordance with the laws",
+        "revised_from_plan": false,
+        "confidence": 0.85
+      },
+      "legal_nature": "GOVERNANCE",
+      "legal_nature_marker": "governed by"
+    },
+    {
+      "id": 204,
+      "theme": "GOVERNING_LAW",
+      "block_id": 32,
+      "is_block_start": false,
+      "reason": "responsabilite de conformite aux lois locales pour acces d'autres lieux, prolonge",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 205,
+      "theme": "GOVERNING_LAW",
+      "block_id": 32,
+      "is_block_start": false,
+      "reason": "soumission aux controles d'exportation, prolonge",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 206,
+      "theme": "GOVERNING_LAW",
+      "block_id": 32,
+      "is_block_start": false,
+      "reason": "restrictions d'export vers pays embargoes, prolonge",
+      "legal_nature": "PROHIBITION",
+      "legal_nature_marker": "may not"
+    },
+    {
+      "id": 207,
+      "theme": "GOVERNING_LAW",
+      "block_id": 32,
+      "is_block_start": false,
+      "reason": "representation de ne pas etre dans un pays embargoe, conclusion",
+      "legal_nature": "SCOPE_APPLICABILITY",
+      "legal_nature_marker": "by using"
+    },
+    {
+      "id": 208,
+      "theme": "MISC_BOILERPLATE",
+      "block_id": 33,
+      "is_block_start": true,
+      "rationale": "clause de severabilite, « severable from this agreement »",
+      "rationale_codes": {
+        "decision_trigger": "topic_keyword",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "severable from this agreement",
+        "revised_from_plan": false,
+        "confidence": 0.78
+      },
+      "legal_nature": "PROHIBITION",
+      "legal_nature_marker": "shall not"
+    },
+    {
+      "id": 209,
+      "theme": "MISC_BOILERPLATE",
+      "block_id": 33,
+      "is_block_start": false,
+      "reason": "clause d'integration (complete and exclusive statement), prolonge le boilerplate",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 210,
+      "theme": "MISC_BOILERPLATE",
+      "block_id": 33,
+      "is_block_start": false,
+      "reason": "regle de conflit avec le bnet tou, prolonge",
+      "legal_nature": "OBLIGATION",
+      "legal_nature_marker": "shall"
+    },
+    {
+      "id": 211,
+      "theme": "MISC_BOILERPLATE",
+      "block_id": 33,
+      "is_block_start": false,
+      "reason": "renvoi a la modification par section xii, prolonge",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 212,
+      "theme": "MISC_BOILERPLATE",
+      "block_id": 33,
+      "is_block_start": false,
+      "reason": "cooperation avec les autorites, prolonge le boilerplate final",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 213,
+      "theme": "MISC_BOILERPLATE",
+      "block_id": 33,
+      "is_block_start": false,
+      "reason": "clause sur les section headings (aucun effet legal), prolonge",
+      "legal_nature": "PROHIBITION",
+      "legal_nature_marker": "shall not"
+    },
+    {
+      "id": 214,
+      "theme": "MISC_BOILERPLATE",
+      "block_id": 33,
+      "is_block_start": false,
+      "reason": "acknowledgment d'acceptation des terms, conclusion du boilerplate",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 215,
+      "theme": "META",
+      "block_id": 34,
+      "is_block_start": true,
+      "rationale": "mention de copyright en fin de document, « © 2012 blizzard entertainment »",
+      "rationale_codes": {
+        "decision_trigger": "title_marker",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "© 2012 blizzard entertainment",
+        "revised_from_plan": false,
+        "confidence": 0.85
+      },
+      "legal_nature": "META",
+      "legal_nature_marker": "©"
+    },
+    {
+      "id": 216,
+      "theme": "META",
+      "block_id": 34,
+      "is_block_start": false,
+      "reason": "mention des marques, prolonge la zone meta finale",
+      "legal_nature": "META",
+      "legal_nature_marker": "inc."
+    }
+  ]
+}

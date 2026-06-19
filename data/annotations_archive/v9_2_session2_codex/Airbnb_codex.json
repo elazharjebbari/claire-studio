@@ -1,0 +1,4806 @@
+{
+  "doc": "Airbnb",
+  "judge": "codex",
+  "version": "v9.2-nature-derived",
+  "document_plan": {
+    "estimated_n_blocks": 98,
+    "rationale_global": "lecture globale V9.2 ; segmentation conservatrice par sujet juridique autonome, avec continuité par défaut.",
+    "segments": [
+      {
+        "start_id": 0,
+        "theme": "PREAMBLE_SCOPE",
+        "rationale": "ouverture prévue pour cadre, acceptation ou périmètre du service",
+        "evidence_span": "we 've recently updated our : -lrb- 1 -rrb- terms"
+      },
+      {
+        "start_id": 7,
+        "theme": "DISPUTE_ARBITRATION",
+        "rationale": "ouverture prévue pour litige, arbitrage, action collective ou tribunal",
+        "evidence_span": "please note : section 19 of these terms of service"
+      },
+      {
+        "start_id": 13,
+        "theme": "PREAMBLE_SCOPE",
+        "rationale": "ouverture prévue pour cadre, acceptation ou périmètre du service",
+        "evidence_span": "thank you for using airbnb !"
+      },
+      {
+        "start_id": 23,
+        "theme": "PRIVACY_DATA",
+        "rationale": "ouverture prévue pour données personnelles, confidentialité ou communications",
+        "evidence_span": "our collection and use of personal information in connection with"
+      },
+      {
+        "start_id": 24,
+        "theme": "PREAMBLE_SCOPE",
+        "rationale": "ouverture prévue pour cadre, acceptation ou périmètre du service",
+        "evidence_span": "any and all payment processing services through or in connection"
+      },
+      {
+        "start_id": 34,
+        "theme": "ELIGIBILITY_ACCOUNT",
+        "rationale": "ouverture prévue pour compte, inscription, âge, identifiants ou sécurité d'accès",
+        "evidence_span": "eligibility , using the airbnb platform , member verification"
+      },
+      {
+        "start_id": 36,
+        "theme": "DISPUTE_ARBITRATION",
+        "rationale": "ouverture prévue pour litige, arbitrage, action collective ou tribunal",
+        "evidence_span": "damage to accommodations , disputes between members"
+      },
+      {
+        "start_id": 37,
+        "theme": "TERMINATION",
+        "rationale": "ouverture prévue pour suspension, annulation, suppression ou résiliation",
+        "evidence_span": "term and termination , suspension and other measures"
+      },
+      {
+        "start_id": 38,
+        "theme": "THIRD_PARTY",
+        "rationale": "ouverture prévue pour services, liens, contenus ou applications de tiers",
+        "evidence_span": "1.1 the airbnb platform is an online marketplace that enables"
+      },
+      {
+        "start_id": 40,
+        "theme": "PREAMBLE_SCOPE",
+        "rationale": "ouverture prévue pour cadre, acceptation ou périmètre du service",
+        "evidence_span": "1.2 as the provider of the airbnb platform , airbnb"
+      },
+      {
+        "start_id": 45,
+        "theme": "USER_CONTENT",
+        "rationale": "ouverture prévue pour contenu utilisateur, publication, avis ou feedback",
+        "evidence_span": "1.3 while we may help facilitate the resolution of disputes"
+      },
+      {
+        "start_id": 51,
+        "theme": "THIRD_PARTY",
+        "rationale": "ouverture prévue pour services, liens, contenus ou applications de tiers",
+        "evidence_span": "1.4 if you choose to use the airbnb platform as"
+      },
+      {
+        "start_id": 52,
+        "theme": "WARRANTY_DISCLAIMER",
+        "rationale": "ouverture prévue pour exclusion de garanties",
+        "evidence_span": "1.5 to promote the airbnb platform and to increase the"
+      },
+      {
+        "start_id": 57,
+        "theme": "THIRD_PARTY",
+        "rationale": "ouverture prévue pour services, liens, contenus ou applications de tiers",
+        "evidence_span": "1.6 the airbnb platform may contain links to third-party websites"
+      },
+      {
+        "start_id": 61,
+        "theme": "ELIGIBILITY_ACCOUNT",
+        "rationale": "ouverture prévue pour compte, inscription, âge, identifiants ou sécurité d'accès",
+        "evidence_span": "1.7 due to the nature of the internet , airbnb"
+      },
+      {
+        "start_id": 67,
+        "theme": "GOVERNING_LAW",
+        "rationale": "ouverture prévue pour droit applicable, juridiction ou venue",
+        "evidence_span": "2.2 you will comply with any applicable export control laws"
+      },
+      {
+        "start_id": 69,
+        "theme": "USER_CONTENT",
+        "rationale": "ouverture prévue pour contenu utilisateur, publication, avis ou feedback",
+        "evidence_span": "2.3 airbnb may make the access to and use of"
+      },
+      {
+        "start_id": 70,
+        "theme": "ACCEPTABLE_USE",
+        "rationale": "ouverture prévue pour règles d'usage, restrictions, conduite ou interdictions",
+        "evidence_span": "2.4 user verification on the internet is difficult and we"
+      },
+      {
+        "start_id": 72,
+        "theme": "PREAMBLE_SCOPE",
+        "rationale": "ouverture prévue pour cadre, acceptation ou périmètre du service",
+        "evidence_span": "2.5 the access to or use of certain areas and"
+      },
+      {
+        "start_id": 74,
+        "theme": "THIRD_PARTY",
+        "rationale": "ouverture prévue pour services, liens, contenus ou applications de tiers",
+        "evidence_span": "2.6 if you access or download the application from the"
+      },
+      {
+        "start_id": 77,
+        "theme": "MODIFICATION_OF_TERMS",
+        "rationale": "ouverture prévue pour modification des conditions ou du service",
+        "evidence_span": "airbnb reserves the right to modify these terms at any"
+      },
+      {
+        "start_id": 83,
+        "theme": "ELIGIBILITY_ACCOUNT",
+        "rationale": "ouverture prévue pour compte, inscription, âge, identifiants ou sécurité d'accès",
+        "evidence_span": "4.1 you must register an account -lrb- `` airbnb account"
+      },
+      {
+        "start_id": 93,
+        "theme": "THIRD_PARTY",
+        "rationale": "ouverture prévue pour services, liens, contenus ou applications de tiers",
+        "evidence_span": "4.6 airbnb may enable features that allow you to authorize"
+      },
+      {
+        "start_id": 97,
+        "theme": "USER_CONTENT",
+        "rationale": "ouverture prévue pour contenu utilisateur, publication, avis ou feedback",
+        "evidence_span": "5.1 airbnb may , at its sole discretion , enable"
+      },
+      {
+        "start_id": 98,
+        "theme": "LICENSE_IP",
+        "rationale": "ouverture prévue pour licence, propriété intellectuelle, copyright, marque ou DMCA",
+        "evidence_span": "5.2 the airbnb platform , airbnb content , and member"
+      },
+      {
+        "start_id": 106,
+        "theme": "USER_CONTENT",
+        "rationale": "ouverture prévue pour contenu utilisateur, publication, avis ou feedback",
+        "evidence_span": "5.5 by creating , uploading , posting , sending ,"
+      },
+      {
+        "start_id": 108,
+        "theme": "PREAMBLE_SCOPE",
+        "rationale": "ouverture prévue pour cadre, acceptation ou périmètre du service",
+        "evidence_span": "5.6 airbnb may offer hosts the option of having professional"
+      },
+      {
+        "start_id": 113,
+        "theme": "LICENSE_IP",
+        "rationale": "ouverture prévue pour licence, propriété intellectuelle, copyright, marque ou DMCA",
+        "evidence_span": "5.7 you are solely responsible for all member content that"
+      },
+      {
+        "start_id": 115,
+        "theme": "USER_CONTENT",
+        "rationale": "ouverture prévue pour contenu utilisateur, publication, avis ou feedback",
+        "evidence_span": "5.8 you will not post , upload , publish ,"
+      },
+      {
+        "start_id": 117,
+        "theme": "LICENSE_IP",
+        "rationale": "ouverture prévue pour licence, propriété intellectuelle, copyright, marque ou DMCA",
+        "evidence_span": "5.9 airbnb respects copyright law and expects its members to"
+      },
+      {
+        "start_id": 119,
+        "theme": "PAYMENT_BILLING",
+        "rationale": "ouverture prévue pour prix, frais, paiement, taxes, remboursement ou facturation",
+        "evidence_span": "6.1 airbnb may charge fees to hosts -lrb- `` host"
+      },
+      {
+        "start_id": 123,
+        "theme": "PREAMBLE_SCOPE",
+        "rationale": "ouverture prévue pour cadre, acceptation ou périmètre du service",
+        "evidence_span": "6.3 you are responsible for paying any service fees that"
+      },
+      {
+        "start_id": 129,
+        "theme": "PAYMENT_BILLING",
+        "rationale": "ouverture prévue pour prix, frais, paiement, taxes, remboursement ou facturation",
+        "evidence_span": "7.1.2 you are solely responsible for setting a price -lrb-"
+      },
+      {
+        "start_id": 131,
+        "theme": "TERMINATION",
+        "rationale": "ouverture prévue pour suspension, annulation, suppression ou résiliation",
+        "evidence_span": "7.1.3 any terms and conditions included in your listing ,"
+      },
+      {
+        "start_id": 132,
+        "theme": "PREAMBLE_SCOPE",
+        "rationale": "ouverture prévue pour cadre, acceptation ou périmètre du service",
+        "evidence_span": "7.1.4 pictures , animations or videos -lrb- collectively , ``"
+      },
+      {
+        "start_id": 134,
+        "theme": "USER_CONTENT",
+        "rationale": "ouverture prévue pour contenu utilisateur, publication, avis ou feedback",
+        "evidence_span": "7.1.5 the placement and ranking of listings in search results"
+      },
+      {
+        "start_id": 135,
+        "theme": "PREAMBLE_SCOPE",
+        "rationale": "ouverture prévue pour cadre, acceptation ou périmètre du service",
+        "evidence_span": "7.1.6 when you accept or have pre-approved a booking request"
+      },
+      {
+        "start_id": 140,
+        "theme": "ELIGIBILITY_ACCOUNT",
+        "rationale": "ouverture prévue pour compte, inscription, âge, identifiants ou sécurité d'accès",
+        "evidence_span": "7.2.2 if you choose to require a security deposit for"
+      },
+      {
+        "start_id": 143,
+        "theme": "PAYMENT_BILLING",
+        "rationale": "ouverture prévue pour prix, frais, paiement, taxes, remboursement ou facturation",
+        "evidence_span": "7.2.3 you represent and warrant that any listing you post"
+      },
+      {
+        "start_id": 145,
+        "theme": "PREAMBLE_SCOPE",
+        "rationale": "ouverture prévue pour cadre, acceptation ou périmètre du service",
+        "evidence_span": "7.3 listing experiences , events and other host services"
+      },
+      {
+        "start_id": 150,
+        "theme": "ELIGIBILITY_ACCOUNT",
+        "rationale": "ouverture prévue pour compte, inscription, âge, identifiants ou sécurité d'accès",
+        "evidence_span": "7.3.3 if you wish to list an experience on behalf"
+      },
+      {
+        "start_id": 155,
+        "theme": "PREAMBLE_SCOPE",
+        "rationale": "ouverture prévue pour cadre, acceptation ou périmètre du service",
+        "evidence_span": "7.3.4 you represent and warrant that you -lrb- i -rrb-"
+      },
+      {
+        "start_id": 179,
+        "theme": "USER_CONTENT",
+        "rationale": "ouverture prévue pour contenu utilisateur, publication, avis ou feedback",
+        "evidence_span": "7.4.6 as a co-host , you will not be reviewed"
+      },
+      {
+        "start_id": 182,
+        "theme": "PREAMBLE_SCOPE",
+        "rationale": "ouverture prévue pour cadre, acceptation ou périmètre du service",
+        "evidence_span": "8.1 terms applicable to all bookings"
+      },
+      {
+        "start_id": 183,
+        "theme": "PAYMENT_BILLING",
+        "rationale": "ouverture prévue pour prix, frais, paiement, taxes, remboursement ou facturation",
+        "evidence_span": "8.1.1 subject to meeting any requirements -lrb- such as completing"
+      },
+      {
+        "start_id": 186,
+        "theme": "PREAMBLE_SCOPE",
+        "rationale": "ouverture prévue pour cadre, acceptation ou périmètre du service",
+        "evidence_span": "8.1.2 upon receipt of a booking confirmation from airbnb ,"
+      },
+      {
+        "start_id": 192,
+        "theme": "PAYMENT_BILLING",
+        "rationale": "ouverture prévue pour prix, frais, paiement, taxes, remboursement ou facturation",
+        "evidence_span": "8.2.2 you agree to leave the accommodation no later than"
+      },
+      {
+        "start_id": 198,
+        "theme": "PREAMBLE_SCOPE",
+        "rationale": "ouverture prévue pour cadre, acceptation ou périmètre du service",
+        "evidence_span": "8.3 booking experiences , events and other host services"
+      },
+      {
+        "start_id": 206,
+        "theme": "PAYMENT_BILLING",
+        "rationale": "ouverture prévue pour prix, frais, paiement, taxes, remboursement ou facturation",
+        "evidence_span": "9.1 hosts and guests are responsible for any modifications to"
+      },
+      {
+        "start_id": 211,
+        "theme": "TERMINATION",
+        "rationale": "ouverture prévue pour suspension, annulation, suppression ou résiliation",
+        "evidence_span": "9.4 for experiences , events and other host services ,"
+      },
+      {
+        "start_id": 215,
+        "theme": "PAYMENT_BILLING",
+        "rationale": "ouverture prévue pour prix, frais, paiement, taxes, remboursement ou facturation",
+        "evidence_span": "9.6 if a guest suffers a travel issue pursuant to"
+      },
+      {
+        "start_id": 216,
+        "theme": "PREAMBLE_SCOPE",
+        "rationale": "ouverture prévue pour cadre, acceptation ou périmètre du service",
+        "evidence_span": "9.7 members may use the resolution center to send or"
+      },
+      {
+        "start_id": 218,
+        "theme": "USER_CONTENT",
+        "rationale": "ouverture prévue pour contenu utilisateur, publication, avis ou feedback",
+        "evidence_span": "10.1 within a certain timeframe after completing a booking ,"
+      },
+      {
+        "start_id": 224,
+        "theme": "DISPUTE_ARBITRATION",
+        "rationale": "ouverture prévue pour litige, arbitrage, action collective ou tribunal",
+        "evidence_span": "damage to accommodations , disputes between members"
+      },
+      {
+        "start_id": 237,
+        "theme": "PAYMENT_BILLING",
+        "rationale": "ouverture prévue pour prix, frais, paiement, taxes, remboursement ou facturation",
+        "evidence_span": "12.2 the airbnb platform facilitates bookings between guests and hosts"
+      },
+      {
+        "start_id": 254,
+        "theme": "THIRD_PARTY",
+        "rationale": "ouverture prévue pour services, liens, contenus ou applications de tiers",
+        "evidence_span": "breach or circumvent any applicable laws or regulations , agreements"
+      },
+      {
+        "start_id": 255,
+        "theme": "PREAMBLE_SCOPE",
+        "rationale": "ouverture prévue pour cadre, acceptation ou périmètre du service",
+        "evidence_span": "use the airbnb platform or collective content for any commercial"
+      },
+      {
+        "start_id": 257,
+        "theme": "USER_CONTENT",
+        "rationale": "ouverture prévue pour contenu utilisateur, publication, avis ou feedback",
+        "evidence_span": "use the airbnb platform in connection with the distribution of"
+      },
+      {
+        "start_id": 258,
+        "theme": "PREAMBLE_SCOPE",
+        "rationale": "ouverture prévue pour cadre, acceptation ou périmètre du service",
+        "evidence_span": "offer , as a host , any accommodation that you"
+      },
+      {
+        "start_id": 262,
+        "theme": "PAYMENT_BILLING",
+        "rationale": "ouverture prévue pour prix, frais, paiement, taxes, remboursement ou facturation",
+        "evidence_span": "request , accept or make any payment for listing fees"
+      },
+      {
+        "start_id": 264,
+        "theme": "ACCEPTABLE_USE",
+        "rationale": "ouverture prévue pour règles d'usage, restrictions, conduite ou interdictions",
+        "evidence_span": "discriminate against or harass anyone on the basis of race"
+      },
+      {
+        "start_id": 265,
+        "theme": "LICENSE_IP",
+        "rationale": "ouverture prévue pour licence, propriété intellectuelle, copyright, marque ou DMCA",
+        "evidence_span": "use , display , mirror or frame the airbnb platform"
+      },
+      {
+        "start_id": 266,
+        "theme": "ACCEPTABLE_USE",
+        "rationale": "ouverture prévue pour règles d'usage, restrictions, conduite ou interdictions",
+        "evidence_span": "dilute , tarnish or otherwise harm the airbnb brand in"
+      },
+      {
+        "start_id": 267,
+        "theme": "PRIVACY_DATA",
+        "rationale": "ouverture prévue pour données personnelles, confidentialité ou communications",
+        "evidence_span": "use any robots , spider , crawler , scraper or"
+      },
+      {
+        "start_id": 268,
+        "theme": "TERMINATION",
+        "rationale": "ouverture prévue pour suspension, annulation, suppression ou résiliation",
+        "evidence_span": "avoid , bypass , remove , deactivate , impair ,"
+      },
+      {
+        "start_id": 269,
+        "theme": "LICENSE_IP",
+        "rationale": "ouverture prévue pour licence, propriété intellectuelle, copyright, marque ou DMCA",
+        "evidence_span": "attempt to decipher , decompile , disassemble or reverse engineer"
+      },
+      {
+        "start_id": 270,
+        "theme": "LIABILITY_LIMITATION",
+        "rationale": "ouverture prévue pour limitation de responsabilité ou dommages",
+        "evidence_span": "take any action that damages or adversely affects , or"
+      },
+      {
+        "start_id": 271,
+        "theme": "GOVERNING_LAW",
+        "rationale": "ouverture prévue pour droit applicable, juridiction ou venue",
+        "evidence_span": "export , re-export , import , or transfer the application"
+      },
+      {
+        "start_id": 272,
+        "theme": "LICENSE_IP",
+        "rationale": "ouverture prévue pour licence, propriété intellectuelle, copyright, marque ou DMCA",
+        "evidence_span": "violate or infringe anyone else 's rights or otherwise cause"
+      },
+      {
+        "start_id": 273,
+        "theme": "ACCEPTABLE_USE",
+        "rationale": "ouverture prévue pour règles d'usage, restrictions, conduite ou interdictions",
+        "evidence_span": "14.2 you acknowledge that airbnb has no obligation to monitor"
+      },
+      {
+        "start_id": 276,
+        "theme": "TERMINATION",
+        "rationale": "ouverture prévue pour suspension, annulation, suppression ou résiliation",
+        "evidence_span": "term and termination , suspension and other measures"
+      },
+      {
+        "start_id": 277,
+        "theme": "PREAMBLE_SCOPE",
+        "rationale": "ouverture prévue pour cadre, acceptation ou périmètre du service",
+        "evidence_span": "15.1 this agreement shall be effective for a 30-day term"
+      },
+      {
+        "start_id": 278,
+        "theme": "TERMINATION",
+        "rationale": "ouverture prévue pour suspension, annulation, suppression ou résiliation",
+        "evidence_span": "15.2 you may terminate this agreement at any time via"
+      },
+      {
+        "start_id": 282,
+        "theme": "THIRD_PARTY",
+        "rationale": "ouverture prévue pour services, liens, contenus ou applications de tiers",
+        "evidence_span": "15.4 airbnb may immediately , without notice terminate this agreement"
+      },
+      {
+        "start_id": 284,
+        "theme": "TERMINATION",
+        "rationale": "ouverture prévue pour suspension, annulation, suppression ou résiliation",
+        "evidence_span": "refuse to surface , delete or delay any listings ,"
+      },
+      {
+        "start_id": 287,
+        "theme": "ELIGIBILITY_ACCOUNT",
+        "rationale": "ouverture prévue pour compte, inscription, âge, identifiants ou sécurité d'accès",
+        "evidence_span": "temporarily or permanently revoke any special status associated with your"
+      },
+      {
+        "start_id": 289,
+        "theme": "MISC_BOILERPLATE",
+        "rationale": "ouverture prévue pour clauses finales, cession, divisibilité, avis ou intégralité",
+        "evidence_span": "in case of non-material breaches and where appropriate , you"
+      },
+      {
+        "start_id": 290,
+        "theme": "PAYMENT_BILLING",
+        "rationale": "ouverture prévue pour prix, frais, paiement, taxes, remboursement ou facturation",
+        "evidence_span": "15.6 if we take any of the measures described above"
+      },
+      {
+        "start_id": 291,
+        "theme": "ELIGIBILITY_ACCOUNT",
+        "rationale": "ouverture prévue pour compte, inscription, âge, identifiants ou sécurité d'accès",
+        "evidence_span": "15.7 when this agreement has been terminated , you are"
+      },
+      {
+        "start_id": 293,
+        "theme": "PREAMBLE_SCOPE",
+        "rationale": "ouverture prévue pour cadre, acceptation ou périmètre du service",
+        "evidence_span": "15.8 unless you reside in germany , if you or"
+      },
+      {
+        "start_id": 294,
+        "theme": "WARRANTY_DISCLAIMER",
+        "rationale": "ouverture prévue pour exclusion de garanties",
+        "evidence_span": "if you choose to use the airbnb platform or collective"
+      },
+      {
+        "start_id": 296,
+        "theme": "PREAMBLE_SCOPE",
+        "rationale": "ouverture prévue pour cadre, acceptation ou périmètre du service",
+        "evidence_span": "you agree that you have had whatever opportunity you deem"
+      },
+      {
+        "start_id": 297,
+        "theme": "WARRANTY_DISCLAIMER",
+        "rationale": "ouverture prévue pour exclusion de garanties",
+        "evidence_span": "if we choose to conduct identity verification or background checks"
+      },
+      {
+        "start_id": 298,
+        "theme": "PREAMBLE_SCOPE",
+        "rationale": "ouverture prévue pour cadre, acceptation ou périmètre du service",
+        "evidence_span": "you agree that some experiences , events or other host"
+      },
+      {
+        "start_id": 302,
+        "theme": "WARRANTY_DISCLAIMER",
+        "rationale": "ouverture prévue pour exclusion de garanties",
+        "evidence_span": "the foregoing disclaimers apply to the maximum extent permitted by"
+      },
+      {
+        "start_id": 305,
+        "theme": "LIABILITY_LIMITATION",
+        "rationale": "ouverture prévue pour limitation de responsabilité ou dommages",
+        "evidence_span": "17.1 unless you reside in the eu , you acknowledge"
+      },
+      {
+        "start_id": 317,
+        "theme": "PAYMENT_BILLING",
+        "rationale": "ouverture prévue pour prix, frais, paiement, taxes, remboursement ou facturation",
+        "evidence_span": "19.1 this dispute resolution and arbitration agreement shall apply if"
+      },
+      {
+        "start_id": 327,
+        "theme": "USER_CONTENT",
+        "rationale": "ouverture prévue pour contenu utilisateur, publication, avis ou feedback",
+        "evidence_span": "the consumer gets to elect the hearing location and can"
+      },
+      {
+        "start_id": 328,
+        "theme": "DISPUTE_ARBITRATION",
+        "rationale": "ouverture prévue pour litige, arbitrage, action collective ou tribunal",
+        "evidence_span": "the arbitrator can grant any remedy that the parties could"
+      },
+      {
+        "start_id": 359,
+        "theme": "USER_CONTENT",
+        "rationale": "ouverture prévue pour contenu utilisateur, publication, avis ou feedback",
+        "evidence_span": "we welcome and encourage you to provide feedback , comments"
+      },
+      {
+        "start_id": 363,
+        "theme": "DISPUTE_ARBITRATION",
+        "rationale": "ouverture prévue pour litige, arbitrage, action collective ou tribunal",
+        "evidence_span": "21.1 if you reside in the united states , these"
+      },
+      {
+        "start_id": 370,
+        "theme": "GOVERNING_LAW",
+        "rationale": "ouverture prévue pour droit applicable, juridiction ou venue",
+        "evidence_span": "21.3 if you reside outside of the united states and"
+      },
+      {
+        "start_id": 377,
+        "theme": "PREAMBLE_SCOPE",
+        "rationale": "ouverture prévue pour cadre, acceptation ou périmètre du service",
+        "evidence_span": "22.1 except as they may be supplemented by additional terms"
+      },
+      {
+        "start_id": 383,
+        "theme": "ACCEPTABLE_USE",
+        "rationale": "ouverture prévue pour règles d'usage, restrictions, conduite ou interdictions",
+        "evidence_span": "22.6 you may not assign , transfer or delegate this"
+      },
+      {
+        "start_id": 385,
+        "theme": "TERMINATION",
+        "rationale": "ouverture prévue pour suspension, annulation, suppression ou résiliation",
+        "evidence_span": "your right to terminate this agreement at any time remains"
+      },
+      {
+        "start_id": 386,
+        "theme": "PREAMBLE_SCOPE",
+        "rationale": "ouverture prévue pour cadre, acceptation ou périmètre du service",
+        "evidence_span": "22.7 unless specified otherwise , any notices or other communications"
+      },
+      {
+        "start_id": 388,
+        "theme": "META",
+        "rationale": "ouverture prévue pour date, adresse, URL ou identité d'entité",
+        "evidence_span": "22.8 if you reside in the eu you can access"
+      },
+      {
+        "start_id": 390,
+        "theme": "PREAMBLE_SCOPE",
+        "rationale": "ouverture prévue pour cadre, acceptation ou périmètre du service",
+        "evidence_span": "22.9 if you have any questions about these terms please"
+      }
+    ]
+  },
+  "annotations": [
+    {
+      "id": 0,
+      "theme": "PREAMBLE_SCOPE",
+      "block_id": 0,
+      "is_block_start": true,
+      "rationale": "ouvre cadre, acceptation ou périmètre du service ; indice « we 've recently updated our : -lrb- 1 -rrb- terms »",
+      "rationale_codes": {
+        "decision_trigger": "document_start",
+        "relation_to_prev": "document_start",
+        "evidence_span": "we 've recently updated our : -lrb- 1 -rrb- terms",
+        "revised_from_plan": false,
+        "confidence": 0.95
+      },
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 1,
+      "theme": "PREAMBLE_SCOPE",
+      "block_id": 0,
+      "is_block_start": false,
+      "reason": "continue PREAMBLE_SCOPE, précision ou effet du même sujet",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 2,
+      "theme": "PREAMBLE_SCOPE",
+      "block_id": 0,
+      "is_block_start": false,
+      "reason": "continue PREAMBLE_SCOPE, précision ou effet du même sujet",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 3,
+      "theme": "PREAMBLE_SCOPE",
+      "block_id": 0,
+      "is_block_start": false,
+      "reason": "continue PREAMBLE_SCOPE, précision ou effet du même sujet",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 4,
+      "theme": "PREAMBLE_SCOPE",
+      "block_id": 0,
+      "is_block_start": false,
+      "reason": "continue PREAMBLE_SCOPE, précision ou effet du même sujet",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 5,
+      "theme": "PREAMBLE_SCOPE",
+      "block_id": 0,
+      "is_block_start": false,
+      "reason": "continue PREAMBLE_SCOPE, précision ou effet du même sujet",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 6,
+      "theme": "PREAMBLE_SCOPE",
+      "block_id": 0,
+      "is_block_start": false,
+      "reason": "continue PREAMBLE_SCOPE, précision ou effet du même sujet",
+      "legal_nature": "SCOPE_APPLICABILITY",
+      "legal_nature_marker": "by accessing"
+    },
+    {
+      "id": 7,
+      "theme": "DISPUTE_ARBITRATION",
+      "block_id": 1,
+      "is_block_start": true,
+      "rationale": "ouvre litige, arbitrage, action collective ou tribunal ; indice « please note : section 19 of these terms of service »",
+      "rationale_codes": {
+        "decision_trigger": "topic_keyword",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "please note : section 19 of these terms of service",
+        "revised_from_plan": false,
+        "confidence": 0.82
+      },
+      "legal_nature": "GOVERNANCE",
+      "legal_nature_marker": "arbitration"
+    },
+    {
+      "id": 8,
+      "theme": "DISPUTE_ARBITRATION",
+      "block_id": 1,
+      "is_block_start": false,
+      "reason": "continue DISPUTE_ARBITRATION, précision ou effet du même sujet",
+      "legal_nature": "SCOPE_APPLICABILITY",
+      "legal_nature_marker": "applies to"
+    },
+    {
+      "id": 9,
+      "theme": "DISPUTE_ARBITRATION",
+      "block_id": 1,
+      "is_block_start": false,
+      "reason": "continue DISPUTE_ARBITRATION, précision ou effet du même sujet",
+      "legal_nature": "SCOPE_APPLICABILITY",
+      "legal_nature_marker": "applies to"
+    },
+    {
+      "id": 10,
+      "theme": "DISPUTE_ARBITRATION",
+      "block_id": 1,
+      "is_block_start": false,
+      "reason": "continue DISPUTE_ARBITRATION, précision ou effet du même sujet",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 11,
+      "theme": "DISPUTE_ARBITRATION",
+      "block_id": 1,
+      "is_block_start": false,
+      "reason": "continue DISPUTE_ARBITRATION, précision ou effet du même sujet",
+      "legal_nature": "GOVERNANCE",
+      "legal_nature_marker": "arbitration"
+    },
+    {
+      "id": 12,
+      "theme": "DISPUTE_ARBITRATION",
+      "block_id": 1,
+      "is_block_start": false,
+      "reason": "continue DISPUTE_ARBITRATION, précision ou effet du même sujet",
+      "legal_nature": "META",
+      "legal_nature_marker": "last updated"
+    },
+    {
+      "id": 13,
+      "theme": "PREAMBLE_SCOPE",
+      "block_id": 2,
+      "is_block_start": true,
+      "rationale": "ouvre cadre, acceptation ou périmètre du service ; indice « thank you for using airbnb ! »",
+      "rationale_codes": {
+        "decision_trigger": "topic_keyword",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "thank you for using airbnb !",
+        "revised_from_plan": false,
+        "confidence": 0.82
+      },
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 14,
+      "theme": "PREAMBLE_SCOPE",
+      "block_id": 2,
+      "is_block_start": false,
+      "reason": "continue PREAMBLE_SCOPE, précision ou effet du même sujet",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 15,
+      "theme": "PREAMBLE_SCOPE",
+      "block_id": 2,
+      "is_block_start": false,
+      "reason": "continue PREAMBLE_SCOPE, précision ou effet du même sujet",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 16,
+      "theme": "PREAMBLE_SCOPE",
+      "block_id": 2,
+      "is_block_start": false,
+      "reason": "continue PREAMBLE_SCOPE, précision ou effet du même sujet",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 17,
+      "theme": "PREAMBLE_SCOPE",
+      "block_id": 2,
+      "is_block_start": false,
+      "reason": "continue PREAMBLE_SCOPE, précision ou effet du même sujet",
+      "legal_nature": "DEFINITION",
+      "legal_nature_marker": "refers to"
+    },
+    {
+      "id": 18,
+      "theme": "PREAMBLE_SCOPE",
+      "block_id": 2,
+      "is_block_start": false,
+      "reason": "continue PREAMBLE_SCOPE, précision ou effet du même sujet",
+      "legal_nature": "META",
+      "legal_nature_marker": "inc."
+    },
+    {
+      "id": 19,
+      "theme": "PREAMBLE_SCOPE",
+      "block_id": 2,
+      "is_block_start": false,
+      "reason": "continue PREAMBLE_SCOPE, précision ou effet du même sujet",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 20,
+      "theme": "PREAMBLE_SCOPE",
+      "block_id": 2,
+      "is_block_start": false,
+      "reason": "continue PREAMBLE_SCOPE, précision ou effet du même sujet",
+      "legal_nature": "META",
+      "legal_nature_marker": "ltd"
+    },
+    {
+      "id": 21,
+      "theme": "PREAMBLE_SCOPE",
+      "block_id": 2,
+      "is_block_start": false,
+      "reason": "continue PREAMBLE_SCOPE, précision ou effet du même sujet",
+      "legal_nature": "OBLIGATION",
+      "legal_nature_marker": "you will"
+    },
+    {
+      "id": 22,
+      "theme": "PREAMBLE_SCOPE",
+      "block_id": 2,
+      "is_block_start": false,
+      "reason": "continue PREAMBLE_SCOPE, précision ou effet du même sujet",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 23,
+      "theme": "PRIVACY_DATA",
+      "block_id": 3,
+      "is_block_start": true,
+      "rationale": "ouvre données personnelles, confidentialité ou communications ; indice « our collection and use of personal information in connection with »",
+      "rationale_codes": {
+        "decision_trigger": "topic_keyword",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "our collection and use of personal information in connection with",
+        "revised_from_plan": false,
+        "confidence": 0.82
+      },
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 24,
+      "theme": "PREAMBLE_SCOPE",
+      "block_id": 4,
+      "is_block_start": true,
+      "rationale": "ouvre cadre, acceptation ou périmètre du service ; indice « any and all payment processing services through or in connection »",
+      "rationale_codes": {
+        "decision_trigger": "topic_keyword",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "any and all payment processing services through or in connection",
+        "revised_from_plan": false,
+        "confidence": 0.82
+      },
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 25,
+      "theme": "PREAMBLE_SCOPE",
+      "block_id": 4,
+      "is_block_start": false,
+      "reason": "continue PREAMBLE_SCOPE, précision ou effet du même sujet",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 26,
+      "theme": "PREAMBLE_SCOPE",
+      "block_id": 4,
+      "is_block_start": false,
+      "reason": "continue PREAMBLE_SCOPE, précision ou effet du même sujet",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 27,
+      "theme": "PREAMBLE_SCOPE",
+      "block_id": 4,
+      "is_block_start": false,
+      "reason": "continue PREAMBLE_SCOPE, précision ou effet du même sujet",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 28,
+      "theme": "PREAMBLE_SCOPE",
+      "block_id": 4,
+      "is_block_start": false,
+      "reason": "continue PREAMBLE_SCOPE, précision ou effet du même sujet",
+      "legal_nature": "RIGHT_GRANT",
+      "legal_nature_marker": "license to"
+    },
+    {
+      "id": 29,
+      "theme": "PREAMBLE_SCOPE",
+      "block_id": 4,
+      "is_block_start": false,
+      "reason": "continue PREAMBLE_SCOPE, précision ou effet du même sujet",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 30,
+      "theme": "PREAMBLE_SCOPE",
+      "block_id": 4,
+      "is_block_start": false,
+      "reason": "continue PREAMBLE_SCOPE, précision ou effet du même sujet",
+      "legal_nature": "PROHIBITION",
+      "legal_nature_marker": "prohibited"
+    },
+    {
+      "id": 31,
+      "theme": "PREAMBLE_SCOPE",
+      "block_id": 4,
+      "is_block_start": false,
+      "reason": "continue PREAMBLE_SCOPE, précision ou effet du même sujet",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 32,
+      "theme": "PREAMBLE_SCOPE",
+      "block_id": 4,
+      "is_block_start": false,
+      "reason": "continue PREAMBLE_SCOPE, précision ou effet du même sujet",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 33,
+      "theme": "PREAMBLE_SCOPE",
+      "block_id": 4,
+      "is_block_start": false,
+      "reason": "continue PREAMBLE_SCOPE, précision ou effet du même sujet",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 34,
+      "theme": "ELIGIBILITY_ACCOUNT",
+      "block_id": 5,
+      "is_block_start": true,
+      "rationale": "ouvre compte, inscription, âge, identifiants ou sécurité d'accès ; indice « eligibility , using the airbnb platform , member verification »",
+      "rationale_codes": {
+        "decision_trigger": "title_marker",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "eligibility , using the airbnb platform , member verification",
+        "revised_from_plan": false,
+        "confidence": 0.82
+      },
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 35,
+      "theme": "ELIGIBILITY_ACCOUNT",
+      "block_id": 5,
+      "is_block_start": false,
+      "reason": "continue ELIGIBILITY_ACCOUNT, précision ou effet du même sujet",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 36,
+      "theme": "DISPUTE_ARBITRATION",
+      "block_id": 6,
+      "is_block_start": true,
+      "rationale": "ouvre litige, arbitrage, action collective ou tribunal ; indice « damage to accommodations , disputes between members »",
+      "rationale_codes": {
+        "decision_trigger": "title_marker",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "damage to accommodations , disputes between members",
+        "revised_from_plan": false,
+        "confidence": 0.82
+      },
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 37,
+      "theme": "TERMINATION",
+      "block_id": 7,
+      "is_block_start": true,
+      "rationale": "ouvre suspension, annulation, suppression ou résiliation ; indice « term and termination , suspension and other measures »",
+      "rationale_codes": {
+        "decision_trigger": "title_marker",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "term and termination , suspension and other measures",
+        "revised_from_plan": false,
+        "confidence": 0.82
+      },
+      "legal_nature": "GOVERNANCE",
+      "legal_nature_marker": "termination"
+    },
+    {
+      "id": 38,
+      "theme": "THIRD_PARTY",
+      "block_id": 8,
+      "is_block_start": true,
+      "rationale": "ouvre services, liens, contenus ou applications de tiers ; indice « 1.1 the airbnb platform is an online marketplace that enables »",
+      "rationale_codes": {
+        "decision_trigger": "numbering",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "1.1 the airbnb platform is an online marketplace that enables",
+        "revised_from_plan": false,
+        "confidence": 0.82
+      },
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 39,
+      "theme": "THIRD_PARTY",
+      "block_id": 8,
+      "is_block_start": false,
+      "reason": "continue THIRD_PARTY, précision ou effet du même sujet",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 40,
+      "theme": "PREAMBLE_SCOPE",
+      "block_id": 9,
+      "is_block_start": true,
+      "rationale": "ouvre cadre, acceptation ou périmètre du service ; indice « 1.2 as the provider of the airbnb platform , airbnb »",
+      "rationale_codes": {
+        "decision_trigger": "numbering",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "1.2 as the provider of the airbnb platform , airbnb",
+        "revised_from_plan": false,
+        "confidence": 0.82
+      },
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 41,
+      "theme": "PREAMBLE_SCOPE",
+      "block_id": 9,
+      "is_block_start": false,
+      "reason": "continue PREAMBLE_SCOPE, précision ou effet du même sujet",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 42,
+      "theme": "PREAMBLE_SCOPE",
+      "block_id": 9,
+      "is_block_start": false,
+      "reason": "continue PREAMBLE_SCOPE, précision ou effet du même sujet",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 43,
+      "theme": "PREAMBLE_SCOPE",
+      "block_id": 9,
+      "is_block_start": false,
+      "reason": "continue PREAMBLE_SCOPE, précision ou effet du même sujet",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 44,
+      "theme": "PREAMBLE_SCOPE",
+      "block_id": 9,
+      "is_block_start": false,
+      "reason": "continue PREAMBLE_SCOPE, précision ou effet du même sujet",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 45,
+      "theme": "USER_CONTENT",
+      "block_id": 10,
+      "is_block_start": true,
+      "rationale": "ouvre contenu utilisateur, publication, avis ou feedback ; indice « 1.3 while we may help facilitate the resolution of disputes »",
+      "rationale_codes": {
+        "decision_trigger": "numbering",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "1.3 while we may help facilitate the resolution of disputes",
+        "revised_from_plan": false,
+        "confidence": 0.82
+      },
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 46,
+      "theme": "USER_CONTENT",
+      "block_id": 10,
+      "is_block_start": false,
+      "reason": "continue USER_CONTENT, précision ou effet du même sujet",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 47,
+      "theme": "USER_CONTENT",
+      "block_id": 10,
+      "is_block_start": false,
+      "reason": "continue USER_CONTENT, précision ou effet du même sujet",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 48,
+      "theme": "USER_CONTENT",
+      "block_id": 10,
+      "is_block_start": false,
+      "reason": "continue USER_CONTENT, précision ou effet du même sujet",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 49,
+      "theme": "USER_CONTENT",
+      "block_id": 10,
+      "is_block_start": false,
+      "reason": "continue USER_CONTENT, précision ou effet du même sujet",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 50,
+      "theme": "USER_CONTENT",
+      "block_id": 10,
+      "is_block_start": false,
+      "reason": "continue USER_CONTENT, précision ou effet du même sujet",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 51,
+      "theme": "THIRD_PARTY",
+      "block_id": 11,
+      "is_block_start": true,
+      "rationale": "ouvre services, liens, contenus ou applications de tiers ; indice « 1.4 if you choose to use the airbnb platform as »",
+      "rationale_codes": {
+        "decision_trigger": "numbering",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "1.4 if you choose to use the airbnb platform as",
+        "revised_from_plan": false,
+        "confidence": 0.82
+      },
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 52,
+      "theme": "WARRANTY_DISCLAIMER",
+      "block_id": 12,
+      "is_block_start": true,
+      "rationale": "ouvre exclusion de garanties ; indice « 1.5 to promote the airbnb platform and to increase the »",
+      "rationale_codes": {
+        "decision_trigger": "numbering",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "1.5 to promote the airbnb platform and to increase the",
+        "revised_from_plan": false,
+        "confidence": 0.82
+      },
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 53,
+      "theme": "WARRANTY_DISCLAIMER",
+      "block_id": 12,
+      "is_block_start": false,
+      "reason": "continue WARRANTY_DISCLAIMER, précision ou effet du même sujet",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 54,
+      "theme": "WARRANTY_DISCLAIMER",
+      "block_id": 12,
+      "is_block_start": false,
+      "reason": "continue WARRANTY_DISCLAIMER, précision ou effet du même sujet",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 55,
+      "theme": "WARRANTY_DISCLAIMER",
+      "block_id": 12,
+      "is_block_start": false,
+      "reason": "continue WARRANTY_DISCLAIMER, précision ou effet du même sujet",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 56,
+      "theme": "WARRANTY_DISCLAIMER",
+      "block_id": 12,
+      "is_block_start": false,
+      "reason": "continue WARRANTY_DISCLAIMER, précision ou effet du même sujet",
+      "legal_nature": "LIMITATION_DISCLAIMER",
+      "legal_nature_marker": "warranties"
+    },
+    {
+      "id": 57,
+      "theme": "THIRD_PARTY",
+      "block_id": 13,
+      "is_block_start": true,
+      "rationale": "ouvre services, liens, contenus ou applications de tiers ; indice « 1.6 the airbnb platform may contain links to third-party websites »",
+      "rationale_codes": {
+        "decision_trigger": "numbering",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "1.6 the airbnb platform may contain links to third-party websites",
+        "revised_from_plan": false,
+        "confidence": 0.82
+      },
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 58,
+      "theme": "THIRD_PARTY",
+      "block_id": 13,
+      "is_block_start": false,
+      "reason": "continue THIRD_PARTY, précision ou effet du même sujet",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 59,
+      "theme": "THIRD_PARTY",
+      "block_id": 13,
+      "is_block_start": false,
+      "reason": "continue THIRD_PARTY, précision ou effet du même sujet",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 60,
+      "theme": "THIRD_PARTY",
+      "block_id": 13,
+      "is_block_start": false,
+      "reason": "continue THIRD_PARTY, précision ou effet du même sujet",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 61,
+      "theme": "ELIGIBILITY_ACCOUNT",
+      "block_id": 14,
+      "is_block_start": true,
+      "rationale": "ouvre compte, inscription, âge, identifiants ou sécurité d'accès ; indice « 1.7 due to the nature of the internet , airbnb »",
+      "rationale_codes": {
+        "decision_trigger": "numbering",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "1.7 due to the nature of the internet , airbnb",
+        "revised_from_plan": false,
+        "confidence": 0.82
+      },
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 62,
+      "theme": "ELIGIBILITY_ACCOUNT",
+      "block_id": 14,
+      "is_block_start": false,
+      "reason": "continue ELIGIBILITY_ACCOUNT, précision ou effet du même sujet",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 63,
+      "theme": "ELIGIBILITY_ACCOUNT",
+      "block_id": 14,
+      "is_block_start": false,
+      "reason": "continue ELIGIBILITY_ACCOUNT, précision ou effet du même sujet",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 64,
+      "theme": "ELIGIBILITY_ACCOUNT",
+      "block_id": 14,
+      "is_block_start": false,
+      "reason": "continue ELIGIBILITY_ACCOUNT, précision ou effet du même sujet",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 65,
+      "theme": "ELIGIBILITY_ACCOUNT",
+      "block_id": 14,
+      "is_block_start": false,
+      "reason": "continue ELIGIBILITY_ACCOUNT, précision ou effet du même sujet",
+      "legal_nature": "OBLIGATION",
+      "legal_nature_marker": "you must"
+    },
+    {
+      "id": 66,
+      "theme": "ELIGIBILITY_ACCOUNT",
+      "block_id": 14,
+      "is_block_start": false,
+      "reason": "continue ELIGIBILITY_ACCOUNT, précision ou effet du même sujet",
+      "legal_nature": "SCOPE_APPLICABILITY",
+      "legal_nature_marker": "by accessing"
+    },
+    {
+      "id": 67,
+      "theme": "GOVERNING_LAW",
+      "block_id": 15,
+      "is_block_start": true,
+      "rationale": "ouvre droit applicable, juridiction ou venue ; indice « 2.2 you will comply with any applicable export control laws »",
+      "rationale_codes": {
+        "decision_trigger": "numbering",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "2.2 you will comply with any applicable export control laws",
+        "revised_from_plan": false,
+        "confidence": 0.82
+      },
+      "legal_nature": "GOVERNANCE",
+      "legal_nature_marker": "jurisdiction"
+    },
+    {
+      "id": 68,
+      "theme": "GOVERNING_LAW",
+      "block_id": 15,
+      "is_block_start": false,
+      "reason": "continue GOVERNING_LAW, précision ou effet du même sujet",
+      "legal_nature": "PROHIBITION",
+      "legal_nature_marker": "prohibited"
+    },
+    {
+      "id": 69,
+      "theme": "USER_CONTENT",
+      "block_id": 16,
+      "is_block_start": true,
+      "rationale": "ouvre contenu utilisateur, publication, avis ou feedback ; indice « 2.3 airbnb may make the access to and use of »",
+      "rationale_codes": {
+        "decision_trigger": "numbering",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "2.3 airbnb may make the access to and use of",
+        "revised_from_plan": false,
+        "confidence": 0.82
+      },
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 70,
+      "theme": "ACCEPTABLE_USE",
+      "block_id": 17,
+      "is_block_start": true,
+      "rationale": "ouvre règles d'usage, restrictions, conduite ou interdictions ; indice « 2.4 user verification on the internet is difficult and we »",
+      "rationale_codes": {
+        "decision_trigger": "numbering",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "2.4 user verification on the internet is difficult and we",
+        "revised_from_plan": false,
+        "confidence": 0.82
+      },
+      "legal_nature": "PROHIBITION",
+      "legal_nature_marker": "do not"
+    },
+    {
+      "id": 71,
+      "theme": "ACCEPTABLE_USE",
+      "block_id": 17,
+      "is_block_start": false,
+      "reason": "continue ACCEPTABLE_USE, précision ou effet du même sujet",
+      "legal_nature": "GOVERNANCE",
+      "legal_nature_marker": "jurisdiction"
+    },
+    {
+      "id": 72,
+      "theme": "PREAMBLE_SCOPE",
+      "block_id": 18,
+      "is_block_start": true,
+      "rationale": "ouvre cadre, acceptation ou périmètre du service ; indice « 2.5 the access to or use of certain areas and »",
+      "rationale_codes": {
+        "decision_trigger": "numbering",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "2.5 the access to or use of certain areas and",
+        "revised_from_plan": false,
+        "confidence": 0.82
+      },
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 73,
+      "theme": "PREAMBLE_SCOPE",
+      "block_id": 18,
+      "is_block_start": false,
+      "reason": "continue PREAMBLE_SCOPE, précision ou effet du même sujet",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 74,
+      "theme": "THIRD_PARTY",
+      "block_id": 19,
+      "is_block_start": true,
+      "rationale": "ouvre services, liens, contenus ou applications de tiers ; indice « 2.6 if you access or download the application from the »",
+      "rationale_codes": {
+        "decision_trigger": "numbering",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "2.6 if you access or download the application from the",
+        "revised_from_plan": false,
+        "confidence": 0.82
+      },
+      "legal_nature": "OBLIGATION",
+      "legal_nature_marker": "you agree to"
+    },
+    {
+      "id": 75,
+      "theme": "THIRD_PARTY",
+      "block_id": 19,
+      "is_block_start": false,
+      "reason": "continue THIRD_PARTY, précision ou effet du même sujet",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 76,
+      "theme": "THIRD_PARTY",
+      "block_id": 19,
+      "is_block_start": false,
+      "reason": "continue THIRD_PARTY, précision ou effet du même sujet",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 77,
+      "theme": "MODIFICATION_OF_TERMS",
+      "block_id": 20,
+      "is_block_start": true,
+      "rationale": "ouvre modification des conditions ou du service ; indice « airbnb reserves the right to modify these terms at any »",
+      "rationale_codes": {
+        "decision_trigger": "topic_keyword",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "airbnb reserves the right to modify these terms at any",
+        "revised_from_plan": false,
+        "confidence": 0.82
+      },
+      "legal_nature": "GOVERNANCE",
+      "legal_nature_marker": "modify these terms"
+    },
+    {
+      "id": 78,
+      "theme": "MODIFICATION_OF_TERMS",
+      "block_id": 20,
+      "is_block_start": false,
+      "reason": "continue MODIFICATION_OF_TERMS, précision ou effet du même sujet",
+      "legal_nature": "META",
+      "legal_nature_marker": "last updated"
+    },
+    {
+      "id": 79,
+      "theme": "MODIFICATION_OF_TERMS",
+      "block_id": 20,
+      "is_block_start": false,
+      "reason": "continue MODIFICATION_OF_TERMS, précision ou effet du même sujet",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 80,
+      "theme": "MODIFICATION_OF_TERMS",
+      "block_id": 20,
+      "is_block_start": false,
+      "reason": "continue MODIFICATION_OF_TERMS, précision ou effet du même sujet",
+      "legal_nature": "GOVERNANCE",
+      "legal_nature_marker": "terminate"
+    },
+    {
+      "id": 81,
+      "theme": "MODIFICATION_OF_TERMS",
+      "block_id": 20,
+      "is_block_start": false,
+      "reason": "continue MODIFICATION_OF_TERMS, précision ou effet du même sujet",
+      "legal_nature": "GOVERNANCE",
+      "legal_nature_marker": "terminate"
+    },
+    {
+      "id": 82,
+      "theme": "MODIFICATION_OF_TERMS",
+      "block_id": 20,
+      "is_block_start": false,
+      "reason": "continue MODIFICATION_OF_TERMS, précision ou effet du même sujet",
+      "legal_nature": "PROHIBITION",
+      "legal_nature_marker": "do not"
+    },
+    {
+      "id": 83,
+      "theme": "ELIGIBILITY_ACCOUNT",
+      "block_id": 21,
+      "is_block_start": true,
+      "rationale": "ouvre compte, inscription, âge, identifiants ou sécurité d'accès ; indice « 4.1 you must register an account -lrb- `` airbnb account »",
+      "rationale_codes": {
+        "decision_trigger": "numbering",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "4.1 you must register an account -lrb- `` airbnb account",
+        "revised_from_plan": false,
+        "confidence": 0.82
+      },
+      "legal_nature": "OBLIGATION",
+      "legal_nature_marker": "you must"
+    },
+    {
+      "id": 84,
+      "theme": "ELIGIBILITY_ACCOUNT",
+      "block_id": 21,
+      "is_block_start": false,
+      "reason": "continue ELIGIBILITY_ACCOUNT, précision ou effet du même sujet",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 85,
+      "theme": "ELIGIBILITY_ACCOUNT",
+      "block_id": 21,
+      "is_block_start": false,
+      "reason": "continue ELIGIBILITY_ACCOUNT, précision ou effet du même sujet",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 86,
+      "theme": "ELIGIBILITY_ACCOUNT",
+      "block_id": 21,
+      "is_block_start": false,
+      "reason": "continue ELIGIBILITY_ACCOUNT, précision ou effet du même sujet",
+      "legal_nature": "SCOPE_APPLICABILITY",
+      "legal_nature_marker": "by accessing"
+    },
+    {
+      "id": 87,
+      "theme": "ELIGIBILITY_ACCOUNT",
+      "block_id": 21,
+      "is_block_start": false,
+      "reason": "continue ELIGIBILITY_ACCOUNT, précision ou effet du même sujet",
+      "legal_nature": "OBLIGATION",
+      "legal_nature_marker": "you must"
+    },
+    {
+      "id": 88,
+      "theme": "ELIGIBILITY_ACCOUNT",
+      "block_id": 21,
+      "is_block_start": false,
+      "reason": "continue ELIGIBILITY_ACCOUNT, précision ou effet du même sujet",
+      "legal_nature": "PROHIBITION",
+      "legal_nature_marker": "may not"
+    },
+    {
+      "id": 89,
+      "theme": "ELIGIBILITY_ACCOUNT",
+      "block_id": 21,
+      "is_block_start": false,
+      "reason": "continue ELIGIBILITY_ACCOUNT, précision ou effet du même sujet",
+      "legal_nature": "PROHIBITION",
+      "legal_nature_marker": "may not"
+    },
+    {
+      "id": 90,
+      "theme": "ELIGIBILITY_ACCOUNT",
+      "block_id": 21,
+      "is_block_start": false,
+      "reason": "continue ELIGIBILITY_ACCOUNT, précision ou effet du même sujet",
+      "legal_nature": "PROHIBITION",
+      "legal_nature_marker": "may not"
+    },
+    {
+      "id": 91,
+      "theme": "ELIGIBILITY_ACCOUNT",
+      "block_id": 21,
+      "is_block_start": false,
+      "reason": "continue ELIGIBILITY_ACCOUNT, précision ou effet du même sujet",
+      "legal_nature": "OBLIGATION",
+      "legal_nature_marker": "you must"
+    },
+    {
+      "id": 92,
+      "theme": "ELIGIBILITY_ACCOUNT",
+      "block_id": 21,
+      "is_block_start": false,
+      "reason": "continue ELIGIBILITY_ACCOUNT, précision ou effet du même sujet",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 93,
+      "theme": "THIRD_PARTY",
+      "block_id": 22,
+      "is_block_start": true,
+      "rationale": "ouvre services, liens, contenus ou applications de tiers ; indice « 4.6 airbnb may enable features that allow you to authorize »",
+      "rationale_codes": {
+        "decision_trigger": "numbering",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "4.6 airbnb may enable features that allow you to authorize",
+        "revised_from_plan": false,
+        "confidence": 0.82
+      },
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 94,
+      "theme": "THIRD_PARTY",
+      "block_id": 22,
+      "is_block_start": false,
+      "reason": "continue THIRD_PARTY, précision ou effet du même sujet",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 95,
+      "theme": "THIRD_PARTY",
+      "block_id": 22,
+      "is_block_start": false,
+      "reason": "continue THIRD_PARTY, précision ou effet du même sujet",
+      "legal_nature": "PROHIBITION",
+      "legal_nature_marker": "do not"
+    },
+    {
+      "id": 96,
+      "theme": "THIRD_PARTY",
+      "block_id": 22,
+      "is_block_start": false,
+      "reason": "continue THIRD_PARTY, précision ou effet du même sujet",
+      "legal_nature": "PROHIBITION",
+      "legal_nature_marker": "shall not"
+    },
+    {
+      "id": 97,
+      "theme": "USER_CONTENT",
+      "block_id": 23,
+      "is_block_start": true,
+      "rationale": "ouvre contenu utilisateur, publication, avis ou feedback ; indice « 5.1 airbnb may , at its sole discretion , enable »",
+      "rationale_codes": {
+        "decision_trigger": "numbering",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "5.1 airbnb may , at its sole discretion , enable",
+        "revised_from_plan": false,
+        "confidence": 0.82
+      },
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 98,
+      "theme": "LICENSE_IP",
+      "block_id": 24,
+      "is_block_start": true,
+      "rationale": "ouvre licence, propriété intellectuelle, copyright, marque ou DMCA ; indice « 5.2 the airbnb platform , airbnb content , and member »",
+      "rationale_codes": {
+        "decision_trigger": "numbering",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "5.2 the airbnb platform , airbnb content , and member",
+        "revised_from_plan": false,
+        "confidence": 0.82
+      },
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 99,
+      "theme": "LICENSE_IP",
+      "block_id": 24,
+      "is_block_start": false,
+      "reason": "continue LICENSE_IP, précision ou effet du même sujet",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 100,
+      "theme": "LICENSE_IP",
+      "block_id": 24,
+      "is_block_start": false,
+      "reason": "continue LICENSE_IP, précision ou effet du même sujet",
+      "legal_nature": "PROHIBITION",
+      "legal_nature_marker": "will not"
+    },
+    {
+      "id": 101,
+      "theme": "LICENSE_IP",
+      "block_id": 24,
+      "is_block_start": false,
+      "reason": "continue LICENSE_IP, précision ou effet du même sujet",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 102,
+      "theme": "LICENSE_IP",
+      "block_id": 24,
+      "is_block_start": false,
+      "reason": "continue LICENSE_IP, précision ou effet du même sujet",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 103,
+      "theme": "LICENSE_IP",
+      "block_id": 24,
+      "is_block_start": false,
+      "reason": "continue LICENSE_IP, précision ou effet du même sujet",
+      "legal_nature": "PROHIBITION",
+      "legal_nature_marker": "will not"
+    },
+    {
+      "id": 104,
+      "theme": "LICENSE_IP",
+      "block_id": 24,
+      "is_block_start": false,
+      "reason": "continue LICENSE_IP, précision ou effet du même sujet",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 105,
+      "theme": "LICENSE_IP",
+      "block_id": 24,
+      "is_block_start": false,
+      "reason": "continue LICENSE_IP, précision ou effet du même sujet",
+      "legal_nature": "RIGHT_GRANT",
+      "legal_nature_marker": "grants you"
+    },
+    {
+      "id": 106,
+      "theme": "USER_CONTENT",
+      "block_id": 25,
+      "is_block_start": true,
+      "rationale": "ouvre contenu utilisateur, publication, avis ou feedback ; indice « 5.5 by creating , uploading , posting , sending , »",
+      "rationale_codes": {
+        "decision_trigger": "numbering",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "5.5 by creating , uploading , posting , sending ,",
+        "revised_from_plan": false,
+        "confidence": 0.82
+      },
+      "legal_nature": "RIGHT_GRANT",
+      "legal_nature_marker": "license to"
+    },
+    {
+      "id": 107,
+      "theme": "USER_CONTENT",
+      "block_id": 25,
+      "is_block_start": false,
+      "reason": "continue USER_CONTENT, précision ou effet du même sujet",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 108,
+      "theme": "PREAMBLE_SCOPE",
+      "block_id": 26,
+      "is_block_start": true,
+      "rationale": "ouvre cadre, acceptation ou périmètre du service ; indice « 5.6 airbnb may offer hosts the option of having professional »",
+      "rationale_codes": {
+        "decision_trigger": "numbering",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "5.6 airbnb may offer hosts the option of having professional",
+        "revised_from_plan": false,
+        "confidence": 0.82
+      },
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 109,
+      "theme": "PREAMBLE_SCOPE",
+      "block_id": 26,
+      "is_block_start": false,
+      "reason": "continue PREAMBLE_SCOPE, précision ou effet du même sujet",
+      "legal_nature": "GOVERNANCE",
+      "legal_nature_marker": "terminate"
+    },
+    {
+      "id": 110,
+      "theme": "PREAMBLE_SCOPE",
+      "block_id": 26,
+      "is_block_start": false,
+      "reason": "continue PREAMBLE_SCOPE, précision ou effet du même sujet",
+      "legal_nature": "OBLIGATION",
+      "legal_nature_marker": "shall"
+    },
+    {
+      "id": 111,
+      "theme": "PREAMBLE_SCOPE",
+      "block_id": 26,
+      "is_block_start": false,
+      "reason": "continue PREAMBLE_SCOPE, précision ou effet du même sujet",
+      "legal_nature": "RIGHT_GRANT",
+      "legal_nature_marker": "license to"
+    },
+    {
+      "id": 112,
+      "theme": "PREAMBLE_SCOPE",
+      "block_id": 26,
+      "is_block_start": false,
+      "reason": "continue PREAMBLE_SCOPE, précision ou effet du même sujet",
+      "legal_nature": "RIGHT_GRANT",
+      "legal_nature_marker": "grants you"
+    },
+    {
+      "id": 113,
+      "theme": "LICENSE_IP",
+      "block_id": 27,
+      "is_block_start": true,
+      "rationale": "ouvre licence, propriété intellectuelle, copyright, marque ou DMCA ; indice « 5.7 you are solely responsible for all member content that »",
+      "rationale_codes": {
+        "decision_trigger": "numbering",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "5.7 you are solely responsible for all member content that",
+        "revised_from_plan": false,
+        "confidence": 0.82
+      },
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 114,
+      "theme": "LICENSE_IP",
+      "block_id": 27,
+      "is_block_start": false,
+      "reason": "continue LICENSE_IP, précision ou effet du même sujet",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 115,
+      "theme": "USER_CONTENT",
+      "block_id": 28,
+      "is_block_start": true,
+      "rationale": "ouvre contenu utilisateur, publication, avis ou feedback ; indice « 5.8 you will not post , upload , publish , »",
+      "rationale_codes": {
+        "decision_trigger": "numbering",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "5.8 you will not post , upload , publish ,",
+        "revised_from_plan": false,
+        "confidence": 0.82
+      },
+      "legal_nature": "PROHIBITION",
+      "legal_nature_marker": "will not"
+    },
+    {
+      "id": 116,
+      "theme": "USER_CONTENT",
+      "block_id": 28,
+      "is_block_start": false,
+      "reason": "continue USER_CONTENT, précision ou effet du même sujet",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 117,
+      "theme": "LICENSE_IP",
+      "block_id": 29,
+      "is_block_start": true,
+      "rationale": "ouvre licence, propriété intellectuelle, copyright, marque ou DMCA ; indice « 5.9 airbnb respects copyright law and expects its members to »",
+      "rationale_codes": {
+        "decision_trigger": "numbering",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "5.9 airbnb respects copyright law and expects its members to",
+        "revised_from_plan": false,
+        "confidence": 0.82
+      },
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 118,
+      "theme": "LICENSE_IP",
+      "block_id": 29,
+      "is_block_start": false,
+      "reason": "continue LICENSE_IP, précision ou effet du même sujet",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 119,
+      "theme": "PAYMENT_BILLING",
+      "block_id": 30,
+      "is_block_start": true,
+      "rationale": "ouvre prix, frais, paiement, taxes, remboursement ou facturation ; indice « 6.1 airbnb may charge fees to hosts -lrb- `` host »",
+      "rationale_codes": {
+        "decision_trigger": "numbering",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "6.1 airbnb may charge fees to hosts -lrb- `` host",
+        "revised_from_plan": false,
+        "confidence": 0.82
+      },
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 120,
+      "theme": "PAYMENT_BILLING",
+      "block_id": 30,
+      "is_block_start": false,
+      "reason": "continue PAYMENT_BILLING, précision ou effet du même sujet",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 121,
+      "theme": "PAYMENT_BILLING",
+      "block_id": 30,
+      "is_block_start": false,
+      "reason": "continue PAYMENT_BILLING, précision ou effet du même sujet",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 122,
+      "theme": "PAYMENT_BILLING",
+      "block_id": 30,
+      "is_block_start": false,
+      "reason": "continue PAYMENT_BILLING, précision ou effet du même sujet",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 123,
+      "theme": "PREAMBLE_SCOPE",
+      "block_id": 31,
+      "is_block_start": true,
+      "rationale": "ouvre cadre, acceptation ou périmètre du service ; indice « 6.3 you are responsible for paying any service fees that »",
+      "rationale_codes": {
+        "decision_trigger": "numbering",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "6.3 you are responsible for paying any service fees that",
+        "revised_from_plan": false,
+        "confidence": 0.82
+      },
+      "legal_nature": "OBLIGATION",
+      "legal_nature_marker": "you are responsible"
+    },
+    {
+      "id": 124,
+      "theme": "PREAMBLE_SCOPE",
+      "block_id": 31,
+      "is_block_start": false,
+      "reason": "continue PREAMBLE_SCOPE, précision ou effet du même sujet",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 125,
+      "theme": "PREAMBLE_SCOPE",
+      "block_id": 31,
+      "is_block_start": false,
+      "reason": "continue PREAMBLE_SCOPE, précision ou effet du même sujet",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 126,
+      "theme": "PREAMBLE_SCOPE",
+      "block_id": 31,
+      "is_block_start": false,
+      "reason": "continue PREAMBLE_SCOPE, précision ou effet du même sujet",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 127,
+      "theme": "PREAMBLE_SCOPE",
+      "block_id": 31,
+      "is_block_start": false,
+      "reason": "continue PREAMBLE_SCOPE, précision ou effet du même sujet",
+      "legal_nature": "OBLIGATION",
+      "legal_nature_marker": "you must"
+    },
+    {
+      "id": 128,
+      "theme": "PREAMBLE_SCOPE",
+      "block_id": 31,
+      "is_block_start": false,
+      "reason": "continue PREAMBLE_SCOPE, précision ou effet du même sujet",
+      "legal_nature": "OBLIGATION",
+      "legal_nature_marker": "you are responsible"
+    },
+    {
+      "id": 129,
+      "theme": "PAYMENT_BILLING",
+      "block_id": 32,
+      "is_block_start": true,
+      "rationale": "ouvre prix, frais, paiement, taxes, remboursement ou facturation ; indice « 7.1.2 you are solely responsible for setting a price -lrb- »",
+      "rationale_codes": {
+        "decision_trigger": "numbering",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "7.1.2 you are solely responsible for setting a price -lrb-",
+        "revised_from_plan": false,
+        "confidence": 0.82
+      },
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 130,
+      "theme": "PAYMENT_BILLING",
+      "block_id": 32,
+      "is_block_start": false,
+      "reason": "continue PAYMENT_BILLING, précision ou effet du même sujet",
+      "legal_nature": "PROHIBITION",
+      "legal_nature_marker": "may not"
+    },
+    {
+      "id": 131,
+      "theme": "TERMINATION",
+      "block_id": 33,
+      "is_block_start": true,
+      "rationale": "ouvre suspension, annulation, suppression ou résiliation ; indice « 7.1.3 any terms and conditions included in your listing , »",
+      "rationale_codes": {
+        "decision_trigger": "numbering",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "7.1.3 any terms and conditions included in your listing ,",
+        "revised_from_plan": false,
+        "confidence": 0.82
+      },
+      "legal_nature": "PROHIBITION",
+      "legal_nature_marker": "must not"
+    },
+    {
+      "id": 132,
+      "theme": "PREAMBLE_SCOPE",
+      "block_id": 34,
+      "is_block_start": true,
+      "rationale": "ouvre cadre, acceptation ou périmètre du service ; indice « 7.1.4 pictures , animations or videos -lrb- collectively , `` »",
+      "rationale_codes": {
+        "decision_trigger": "numbering",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "7.1.4 pictures , animations or videos -lrb- collectively , ``",
+        "revised_from_plan": false,
+        "confidence": 0.82
+      },
+      "legal_nature": "OBLIGATION",
+      "legal_nature_marker": "must"
+    },
+    {
+      "id": 133,
+      "theme": "PREAMBLE_SCOPE",
+      "block_id": 34,
+      "is_block_start": false,
+      "reason": "continue PREAMBLE_SCOPE, précision ou effet du même sujet",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 134,
+      "theme": "USER_CONTENT",
+      "block_id": 35,
+      "is_block_start": true,
+      "rationale": "ouvre contenu utilisateur, publication, avis ou feedback ; indice « 7.1.5 the placement and ranking of listings in search results »",
+      "rationale_codes": {
+        "decision_trigger": "numbering",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "7.1.5 the placement and ranking of listings in search results",
+        "revised_from_plan": false,
+        "confidence": 0.82
+      },
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 135,
+      "theme": "PREAMBLE_SCOPE",
+      "block_id": 36,
+      "is_block_start": true,
+      "rationale": "ouvre cadre, acceptation ou périmètre du service ; indice « 7.1.6 when you accept or have pre-approved a booking request »",
+      "rationale_codes": {
+        "decision_trigger": "numbering",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "7.1.6 when you accept or have pre-approved a booking request",
+        "revised_from_plan": false,
+        "confidence": 0.82
+      },
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 136,
+      "theme": "PREAMBLE_SCOPE",
+      "block_id": 36,
+      "is_block_start": false,
+      "reason": "continue PREAMBLE_SCOPE, précision ou effet du même sujet",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 137,
+      "theme": "PREAMBLE_SCOPE",
+      "block_id": 36,
+      "is_block_start": false,
+      "reason": "continue PREAMBLE_SCOPE, précision ou effet du même sujet",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 138,
+      "theme": "PREAMBLE_SCOPE",
+      "block_id": 36,
+      "is_block_start": false,
+      "reason": "continue PREAMBLE_SCOPE, précision ou effet du même sujet",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 139,
+      "theme": "PREAMBLE_SCOPE",
+      "block_id": 36,
+      "is_block_start": false,
+      "reason": "continue PREAMBLE_SCOPE, précision ou effet du même sujet",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 140,
+      "theme": "ELIGIBILITY_ACCOUNT",
+      "block_id": 37,
+      "is_block_start": true,
+      "rationale": "ouvre compte, inscription, âge, identifiants ou sécurité d'accès ; indice « 7.2.2 if you choose to require a security deposit for »",
+      "rationale_codes": {
+        "decision_trigger": "numbering",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "7.2.2 if you choose to require a security deposit for",
+        "revised_from_plan": false,
+        "confidence": 0.82
+      },
+      "legal_nature": "OBLIGATION",
+      "legal_nature_marker": "you must"
+    },
+    {
+      "id": 141,
+      "theme": "ELIGIBILITY_ACCOUNT",
+      "block_id": 37,
+      "is_block_start": false,
+      "reason": "continue ELIGIBILITY_ACCOUNT, précision ou effet du même sujet",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 142,
+      "theme": "ELIGIBILITY_ACCOUNT",
+      "block_id": 37,
+      "is_block_start": false,
+      "reason": "continue ELIGIBILITY_ACCOUNT, précision ou effet du même sujet",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 143,
+      "theme": "PAYMENT_BILLING",
+      "block_id": 38,
+      "is_block_start": true,
+      "rationale": "ouvre prix, frais, paiement, taxes, remboursement ou facturation ; indice « 7.2.3 you represent and warrant that any listing you post »",
+      "rationale_codes": {
+        "decision_trigger": "numbering",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "7.2.3 you represent and warrant that any listing you post",
+        "revised_from_plan": false,
+        "confidence": 0.82
+      },
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 144,
+      "theme": "PAYMENT_BILLING",
+      "block_id": 38,
+      "is_block_start": false,
+      "reason": "continue PAYMENT_BILLING, précision ou effet du même sujet",
+      "legal_nature": "OBLIGATION",
+      "legal_nature_marker": "you are responsible"
+    },
+    {
+      "id": 145,
+      "theme": "PREAMBLE_SCOPE",
+      "block_id": 39,
+      "is_block_start": true,
+      "rationale": "ouvre cadre, acceptation ou périmètre du service ; indice « 7.3 listing experiences , events and other host services »",
+      "rationale_codes": {
+        "decision_trigger": "numbering",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "7.3 listing experiences , events and other host services",
+        "revised_from_plan": false,
+        "confidence": 0.82
+      },
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 146,
+      "theme": "PREAMBLE_SCOPE",
+      "block_id": 39,
+      "is_block_start": false,
+      "reason": "continue PREAMBLE_SCOPE, précision ou effet du même sujet",
+      "legal_nature": "OBLIGATION",
+      "legal_nature_marker": "you must"
+    },
+    {
+      "id": 147,
+      "theme": "PREAMBLE_SCOPE",
+      "block_id": 39,
+      "is_block_start": false,
+      "reason": "continue PREAMBLE_SCOPE, précision ou effet du même sujet",
+      "legal_nature": "OBLIGATION",
+      "legal_nature_marker": "must"
+    },
+    {
+      "id": 148,
+      "theme": "PREAMBLE_SCOPE",
+      "block_id": 39,
+      "is_block_start": false,
+      "reason": "continue PREAMBLE_SCOPE, précision ou effet du même sujet",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 149,
+      "theme": "PREAMBLE_SCOPE",
+      "block_id": 39,
+      "is_block_start": false,
+      "reason": "continue PREAMBLE_SCOPE, précision ou effet du même sujet",
+      "legal_nature": "OBLIGATION",
+      "legal_nature_marker": "you must"
+    },
+    {
+      "id": 150,
+      "theme": "ELIGIBILITY_ACCOUNT",
+      "block_id": 40,
+      "is_block_start": true,
+      "rationale": "ouvre compte, inscription, âge, identifiants ou sécurité d'accès ; indice « 7.3.3 if you wish to list an experience on behalf »",
+      "rationale_codes": {
+        "decision_trigger": "numbering",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "7.3.3 if you wish to list an experience on behalf",
+        "revised_from_plan": false,
+        "confidence": 0.82
+      },
+      "legal_nature": "OBLIGATION",
+      "legal_nature_marker": "you must"
+    },
+    {
+      "id": 151,
+      "theme": "ELIGIBILITY_ACCOUNT",
+      "block_id": 40,
+      "is_block_start": false,
+      "reason": "continue ELIGIBILITY_ACCOUNT, précision ou effet du même sujet",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 152,
+      "theme": "ELIGIBILITY_ACCOUNT",
+      "block_id": 40,
+      "is_block_start": false,
+      "reason": "continue ELIGIBILITY_ACCOUNT, précision ou effet du même sujet",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 153,
+      "theme": "ELIGIBILITY_ACCOUNT",
+      "block_id": 40,
+      "is_block_start": false,
+      "reason": "continue ELIGIBILITY_ACCOUNT, précision ou effet du même sujet",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 154,
+      "theme": "ELIGIBILITY_ACCOUNT",
+      "block_id": 40,
+      "is_block_start": false,
+      "reason": "continue ELIGIBILITY_ACCOUNT, précision ou effet du même sujet",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 155,
+      "theme": "PREAMBLE_SCOPE",
+      "block_id": 41,
+      "is_block_start": true,
+      "rationale": "ouvre cadre, acceptation ou périmètre du service ; indice « 7.3.4 you represent and warrant that you -lrb- i -rrb- »",
+      "rationale_codes": {
+        "decision_trigger": "numbering",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "7.3.4 you represent and warrant that you -lrb- i -rrb-",
+        "revised_from_plan": false,
+        "confidence": 0.82
+      },
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 156,
+      "theme": "PREAMBLE_SCOPE",
+      "block_id": 41,
+      "is_block_start": false,
+      "reason": "continue PREAMBLE_SCOPE, précision ou effet du même sujet",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 157,
+      "theme": "PREAMBLE_SCOPE",
+      "block_id": 41,
+      "is_block_start": false,
+      "reason": "continue PREAMBLE_SCOPE, précision ou effet du même sujet",
+      "legal_nature": "PROHIBITION",
+      "legal_nature_marker": "may not"
+    },
+    {
+      "id": 158,
+      "theme": "PREAMBLE_SCOPE",
+      "block_id": 41,
+      "is_block_start": false,
+      "reason": "continue PREAMBLE_SCOPE, précision ou effet du même sujet",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 159,
+      "theme": "PREAMBLE_SCOPE",
+      "block_id": 41,
+      "is_block_start": false,
+      "reason": "continue PREAMBLE_SCOPE, précision ou effet du même sujet",
+      "legal_nature": "PROHIBITION",
+      "legal_nature_marker": "may not"
+    },
+    {
+      "id": 160,
+      "theme": "PREAMBLE_SCOPE",
+      "block_id": 41,
+      "is_block_start": false,
+      "reason": "continue PREAMBLE_SCOPE, précision ou effet du même sujet",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 161,
+      "theme": "PREAMBLE_SCOPE",
+      "block_id": 41,
+      "is_block_start": false,
+      "reason": "continue PREAMBLE_SCOPE, précision ou effet du même sujet",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 162,
+      "theme": "PREAMBLE_SCOPE",
+      "block_id": 41,
+      "is_block_start": false,
+      "reason": "continue PREAMBLE_SCOPE, précision ou effet du même sujet",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 163,
+      "theme": "PREAMBLE_SCOPE",
+      "block_id": 41,
+      "is_block_start": false,
+      "reason": "continue PREAMBLE_SCOPE, précision ou effet du même sujet",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 164,
+      "theme": "PREAMBLE_SCOPE",
+      "block_id": 41,
+      "is_block_start": false,
+      "reason": "continue PREAMBLE_SCOPE, précision ou effet du même sujet",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 165,
+      "theme": "PREAMBLE_SCOPE",
+      "block_id": 41,
+      "is_block_start": false,
+      "reason": "continue PREAMBLE_SCOPE, précision ou effet du même sujet",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 166,
+      "theme": "PREAMBLE_SCOPE",
+      "block_id": 41,
+      "is_block_start": false,
+      "reason": "continue PREAMBLE_SCOPE, précision ou effet du même sujet",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 167,
+      "theme": "PREAMBLE_SCOPE",
+      "block_id": 41,
+      "is_block_start": false,
+      "reason": "continue PREAMBLE_SCOPE, précision ou effet du même sujet",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 168,
+      "theme": "PREAMBLE_SCOPE",
+      "block_id": 41,
+      "is_block_start": false,
+      "reason": "continue PREAMBLE_SCOPE, précision ou effet du même sujet",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 169,
+      "theme": "PREAMBLE_SCOPE",
+      "block_id": 41,
+      "is_block_start": false,
+      "reason": "continue PREAMBLE_SCOPE, précision ou effet du même sujet",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 170,
+      "theme": "PREAMBLE_SCOPE",
+      "block_id": 41,
+      "is_block_start": false,
+      "reason": "continue PREAMBLE_SCOPE, précision ou effet du même sujet",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 171,
+      "theme": "PREAMBLE_SCOPE",
+      "block_id": 41,
+      "is_block_start": false,
+      "reason": "continue PREAMBLE_SCOPE, précision ou effet du même sujet",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 172,
+      "theme": "PREAMBLE_SCOPE",
+      "block_id": 41,
+      "is_block_start": false,
+      "reason": "continue PREAMBLE_SCOPE, précision ou effet du même sujet",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 173,
+      "theme": "PREAMBLE_SCOPE",
+      "block_id": 41,
+      "is_block_start": false,
+      "reason": "continue PREAMBLE_SCOPE, précision ou effet du même sujet",
+      "legal_nature": "GOVERNANCE",
+      "legal_nature_marker": "terminate"
+    },
+    {
+      "id": 174,
+      "theme": "PREAMBLE_SCOPE",
+      "block_id": 41,
+      "is_block_start": false,
+      "reason": "continue PREAMBLE_SCOPE, précision ou effet du même sujet",
+      "legal_nature": "GOVERNANCE",
+      "legal_nature_marker": "terminate"
+    },
+    {
+      "id": 175,
+      "theme": "PREAMBLE_SCOPE",
+      "block_id": 41,
+      "is_block_start": false,
+      "reason": "continue PREAMBLE_SCOPE, précision ou effet du même sujet",
+      "legal_nature": "GOVERNANCE",
+      "legal_nature_marker": "terminate"
+    },
+    {
+      "id": 176,
+      "theme": "PREAMBLE_SCOPE",
+      "block_id": 41,
+      "is_block_start": false,
+      "reason": "continue PREAMBLE_SCOPE, précision ou effet du même sujet",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 177,
+      "theme": "PREAMBLE_SCOPE",
+      "block_id": 41,
+      "is_block_start": false,
+      "reason": "continue PREAMBLE_SCOPE, précision ou effet du même sujet",
+      "legal_nature": "GOVERNANCE",
+      "legal_nature_marker": "termination"
+    },
+    {
+      "id": 178,
+      "theme": "PREAMBLE_SCOPE",
+      "block_id": 41,
+      "is_block_start": false,
+      "reason": "continue PREAMBLE_SCOPE, précision ou effet du même sujet",
+      "legal_nature": "PROHIBITION",
+      "legal_nature_marker": "will not"
+    },
+    {
+      "id": 179,
+      "theme": "USER_CONTENT",
+      "block_id": 42,
+      "is_block_start": true,
+      "rationale": "ouvre contenu utilisateur, publication, avis ou feedback ; indice « 7.4.6 as a co-host , you will not be reviewed »",
+      "rationale_codes": {
+        "decision_trigger": "numbering",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "7.4.6 as a co-host , you will not be reviewed",
+        "revised_from_plan": false,
+        "confidence": 0.82
+      },
+      "legal_nature": "PROHIBITION",
+      "legal_nature_marker": "will not"
+    },
+    {
+      "id": 180,
+      "theme": "USER_CONTENT",
+      "block_id": 42,
+      "is_block_start": false,
+      "reason": "continue USER_CONTENT, précision ou effet du même sujet",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 181,
+      "theme": "USER_CONTENT",
+      "block_id": 42,
+      "is_block_start": false,
+      "reason": "continue USER_CONTENT, précision ou effet du même sujet",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 182,
+      "theme": "PREAMBLE_SCOPE",
+      "block_id": 43,
+      "is_block_start": true,
+      "rationale": "ouvre cadre, acceptation ou périmètre du service ; indice « 8.1 terms applicable to all bookings »",
+      "rationale_codes": {
+        "decision_trigger": "numbering",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "8.1 terms applicable to all bookings",
+        "revised_from_plan": false,
+        "confidence": 0.82
+      },
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 183,
+      "theme": "PAYMENT_BILLING",
+      "block_id": 44,
+      "is_block_start": true,
+      "rationale": "ouvre prix, frais, paiement, taxes, remboursement ou facturation ; indice « 8.1.1 subject to meeting any requirements -lrb- such as completing »",
+      "rationale_codes": {
+        "decision_trigger": "numbering",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "8.1.1 subject to meeting any requirements -lrb- such as completing",
+        "revised_from_plan": false,
+        "confidence": 0.82
+      },
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 184,
+      "theme": "PAYMENT_BILLING",
+      "block_id": 44,
+      "is_block_start": false,
+      "reason": "continue PAYMENT_BILLING, précision ou effet du même sujet",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 185,
+      "theme": "PAYMENT_BILLING",
+      "block_id": 44,
+      "is_block_start": false,
+      "reason": "continue PAYMENT_BILLING, précision ou effet du même sujet",
+      "legal_nature": "OBLIGATION",
+      "legal_nature_marker": "you agree to"
+    },
+    {
+      "id": 186,
+      "theme": "PREAMBLE_SCOPE",
+      "block_id": 45,
+      "is_block_start": true,
+      "rationale": "ouvre cadre, acceptation ou périmètre du service ; indice « 8.1.2 upon receipt of a booking confirmation from airbnb , »",
+      "rationale_codes": {
+        "decision_trigger": "numbering",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "8.1.2 upon receipt of a booking confirmation from airbnb ,",
+        "revised_from_plan": false,
+        "confidence": 0.82
+      },
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 187,
+      "theme": "PREAMBLE_SCOPE",
+      "block_id": 45,
+      "is_block_start": false,
+      "reason": "continue PREAMBLE_SCOPE, précision ou effet du même sujet",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 188,
+      "theme": "PREAMBLE_SCOPE",
+      "block_id": 45,
+      "is_block_start": false,
+      "reason": "continue PREAMBLE_SCOPE, précision ou effet du même sujet",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 189,
+      "theme": "PREAMBLE_SCOPE",
+      "block_id": 45,
+      "is_block_start": false,
+      "reason": "continue PREAMBLE_SCOPE, précision ou effet du même sujet",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 190,
+      "theme": "PREAMBLE_SCOPE",
+      "block_id": 45,
+      "is_block_start": false,
+      "reason": "continue PREAMBLE_SCOPE, précision ou effet du même sujet",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 191,
+      "theme": "PREAMBLE_SCOPE",
+      "block_id": 45,
+      "is_block_start": false,
+      "reason": "continue PREAMBLE_SCOPE, précision ou effet du même sujet",
+      "legal_nature": "LIMITATION_DISCLAIMER",
+      "legal_nature_marker": "to the extent permitted"
+    },
+    {
+      "id": 192,
+      "theme": "PAYMENT_BILLING",
+      "block_id": 46,
+      "is_block_start": true,
+      "rationale": "ouvre prix, frais, paiement, taxes, remboursement ou facturation ; indice « 8.2.2 you agree to leave the accommodation no later than »",
+      "rationale_codes": {
+        "decision_trigger": "numbering",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "8.2.2 you agree to leave the accommodation no later than",
+        "revised_from_plan": false,
+        "confidence": 0.82
+      },
+      "legal_nature": "OBLIGATION",
+      "legal_nature_marker": "you agree to"
+    },
+    {
+      "id": 193,
+      "theme": "PAYMENT_BILLING",
+      "block_id": 46,
+      "is_block_start": false,
+      "reason": "continue PAYMENT_BILLING, précision ou effet du même sujet",
+      "legal_nature": "RIGHT_GRANT",
+      "legal_nature_marker": "license to"
+    },
+    {
+      "id": 194,
+      "theme": "PAYMENT_BILLING",
+      "block_id": 46,
+      "is_block_start": false,
+      "reason": "continue PAYMENT_BILLING, précision ou effet du même sujet",
+      "legal_nature": "OBLIGATION",
+      "legal_nature_marker": "you agree to"
+    },
+    {
+      "id": 195,
+      "theme": "PAYMENT_BILLING",
+      "block_id": 46,
+      "is_block_start": false,
+      "reason": "continue PAYMENT_BILLING, précision ou effet du même sujet",
+      "legal_nature": "PROHIBITION",
+      "legal_nature_marker": "do not"
+    },
+    {
+      "id": 196,
+      "theme": "PAYMENT_BILLING",
+      "block_id": 46,
+      "is_block_start": false,
+      "reason": "continue PAYMENT_BILLING, précision ou effet du même sujet",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 197,
+      "theme": "PAYMENT_BILLING",
+      "block_id": 46,
+      "is_block_start": false,
+      "reason": "continue PAYMENT_BILLING, précision ou effet du même sujet",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 198,
+      "theme": "PREAMBLE_SCOPE",
+      "block_id": 47,
+      "is_block_start": true,
+      "rationale": "ouvre cadre, acceptation ou périmètre du service ; indice « 8.3 booking experiences , events and other host services »",
+      "rationale_codes": {
+        "decision_trigger": "numbering",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "8.3 booking experiences , events and other host services",
+        "revised_from_plan": false,
+        "confidence": 0.82
+      },
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 199,
+      "theme": "PREAMBLE_SCOPE",
+      "block_id": 47,
+      "is_block_start": false,
+      "reason": "continue PREAMBLE_SCOPE, précision ou effet du même sujet",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 200,
+      "theme": "PREAMBLE_SCOPE",
+      "block_id": 47,
+      "is_block_start": false,
+      "reason": "continue PREAMBLE_SCOPE, précision ou effet du même sujet",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 201,
+      "theme": "PREAMBLE_SCOPE",
+      "block_id": 47,
+      "is_block_start": false,
+      "reason": "continue PREAMBLE_SCOPE, précision ou effet du même sujet",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 202,
+      "theme": "PREAMBLE_SCOPE",
+      "block_id": 47,
+      "is_block_start": false,
+      "reason": "continue PREAMBLE_SCOPE, précision ou effet du même sujet",
+      "legal_nature": "OBLIGATION",
+      "legal_nature_marker": "you are responsible"
+    },
+    {
+      "id": 203,
+      "theme": "PREAMBLE_SCOPE",
+      "block_id": 47,
+      "is_block_start": false,
+      "reason": "continue PREAMBLE_SCOPE, précision ou effet du même sujet",
+      "legal_nature": "OBLIGATION",
+      "legal_nature_marker": "you must"
+    },
+    {
+      "id": 204,
+      "theme": "PREAMBLE_SCOPE",
+      "block_id": 47,
+      "is_block_start": false,
+      "reason": "continue PREAMBLE_SCOPE, précision ou effet du même sujet",
+      "legal_nature": "PROHIBITION",
+      "legal_nature_marker": "may not"
+    },
+    {
+      "id": 205,
+      "theme": "PREAMBLE_SCOPE",
+      "block_id": 47,
+      "is_block_start": false,
+      "reason": "continue PREAMBLE_SCOPE, précision ou effet du même sujet",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 206,
+      "theme": "PAYMENT_BILLING",
+      "block_id": 48,
+      "is_block_start": true,
+      "rationale": "ouvre prix, frais, paiement, taxes, remboursement ou facturation ; indice « 9.1 hosts and guests are responsible for any modifications to »",
+      "rationale_codes": {
+        "decision_trigger": "numbering",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "9.1 hosts and guests are responsible for any modifications to",
+        "revised_from_plan": false,
+        "confidence": 0.82
+      },
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 207,
+      "theme": "PAYMENT_BILLING",
+      "block_id": 48,
+      "is_block_start": false,
+      "reason": "continue PAYMENT_BILLING, précision ou effet du même sujet",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 208,
+      "theme": "PAYMENT_BILLING",
+      "block_id": 48,
+      "is_block_start": false,
+      "reason": "continue PAYMENT_BILLING, précision ou effet du même sujet",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 209,
+      "theme": "PAYMENT_BILLING",
+      "block_id": 48,
+      "is_block_start": false,
+      "reason": "continue PAYMENT_BILLING, précision ou effet du même sujet",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 210,
+      "theme": "PAYMENT_BILLING",
+      "block_id": 48,
+      "is_block_start": false,
+      "reason": "continue PAYMENT_BILLING, précision ou effet du même sujet",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 211,
+      "theme": "TERMINATION",
+      "block_id": 49,
+      "is_block_start": true,
+      "rationale": "ouvre suspension, annulation, suppression ou résiliation ; indice « 9.4 for experiences , events and other host services , »",
+      "rationale_codes": {
+        "decision_trigger": "numbering",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "9.4 for experiences , events and other host services ,",
+        "revised_from_plan": false,
+        "confidence": 0.82
+      },
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 212,
+      "theme": "TERMINATION",
+      "block_id": 49,
+      "is_block_start": false,
+      "reason": "continue TERMINATION, précision ou effet du même sujet",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 213,
+      "theme": "TERMINATION",
+      "block_id": 49,
+      "is_block_start": false,
+      "reason": "continue TERMINATION, précision ou effet du même sujet",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 214,
+      "theme": "TERMINATION",
+      "block_id": 49,
+      "is_block_start": false,
+      "reason": "continue TERMINATION, précision ou effet du même sujet",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 215,
+      "theme": "PAYMENT_BILLING",
+      "block_id": 50,
+      "is_block_start": true,
+      "rationale": "ouvre prix, frais, paiement, taxes, remboursement ou facturation ; indice « 9.6 if a guest suffers a travel issue pursuant to »",
+      "rationale_codes": {
+        "decision_trigger": "numbering",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "9.6 if a guest suffers a travel issue pursuant to",
+        "revised_from_plan": false,
+        "confidence": 0.82
+      },
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 216,
+      "theme": "PREAMBLE_SCOPE",
+      "block_id": 51,
+      "is_block_start": true,
+      "rationale": "ouvre cadre, acceptation ou périmètre du service ; indice « 9.7 members may use the resolution center to send or »",
+      "rationale_codes": {
+        "decision_trigger": "numbering",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "9.7 members may use the resolution center to send or",
+        "revised_from_plan": false,
+        "confidence": 0.82
+      },
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 217,
+      "theme": "PREAMBLE_SCOPE",
+      "block_id": 51,
+      "is_block_start": false,
+      "reason": "continue PREAMBLE_SCOPE, précision ou effet du même sujet",
+      "legal_nature": "OBLIGATION",
+      "legal_nature_marker": "you agree to"
+    },
+    {
+      "id": 218,
+      "theme": "USER_CONTENT",
+      "block_id": 52,
+      "is_block_start": true,
+      "rationale": "ouvre contenu utilisateur, publication, avis ou feedback ; indice « 10.1 within a certain timeframe after completing a booking , »",
+      "rationale_codes": {
+        "decision_trigger": "numbering",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "10.1 within a certain timeframe after completing a booking ,",
+        "revised_from_plan": false,
+        "confidence": 0.82
+      },
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 219,
+      "theme": "USER_CONTENT",
+      "block_id": 52,
+      "is_block_start": false,
+      "reason": "continue USER_CONTENT, précision ou effet du même sujet",
+      "legal_nature": "PROHIBITION",
+      "legal_nature_marker": "do not"
+    },
+    {
+      "id": 220,
+      "theme": "USER_CONTENT",
+      "block_id": 52,
+      "is_block_start": false,
+      "reason": "continue USER_CONTENT, précision ou effet du même sujet",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 221,
+      "theme": "USER_CONTENT",
+      "block_id": 52,
+      "is_block_start": false,
+      "reason": "continue USER_CONTENT, précision ou effet du même sujet",
+      "legal_nature": "PROHIBITION",
+      "legal_nature_marker": "may not"
+    },
+    {
+      "id": 222,
+      "theme": "USER_CONTENT",
+      "block_id": 52,
+      "is_block_start": false,
+      "reason": "continue USER_CONTENT, précision ou effet du même sujet",
+      "legal_nature": "OBLIGATION",
+      "legal_nature_marker": "must"
+    },
+    {
+      "id": 223,
+      "theme": "USER_CONTENT",
+      "block_id": 52,
+      "is_block_start": false,
+      "reason": "continue USER_CONTENT, précision ou effet du même sujet",
+      "legal_nature": "PROHIBITION",
+      "legal_nature_marker": "prohibited"
+    },
+    {
+      "id": 224,
+      "theme": "DISPUTE_ARBITRATION",
+      "block_id": 53,
+      "is_block_start": true,
+      "rationale": "ouvre litige, arbitrage, action collective ou tribunal ; indice « damage to accommodations , disputes between members »",
+      "rationale_codes": {
+        "decision_trigger": "title_marker",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "damage to accommodations , disputes between members",
+        "revised_from_plan": false,
+        "confidence": 0.82
+      },
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 225,
+      "theme": "DISPUTE_ARBITRATION",
+      "block_id": 53,
+      "is_block_start": false,
+      "reason": "continue DISPUTE_ARBITRATION, précision ou effet du même sujet",
+      "legal_nature": "OBLIGATION",
+      "legal_nature_marker": "you are responsible"
+    },
+    {
+      "id": 226,
+      "theme": "DISPUTE_ARBITRATION",
+      "block_id": 53,
+      "is_block_start": false,
+      "reason": "continue DISPUTE_ARBITRATION, précision ou effet du même sujet",
+      "legal_nature": "OBLIGATION",
+      "legal_nature_marker": "you are responsible"
+    },
+    {
+      "id": 227,
+      "theme": "DISPUTE_ARBITRATION",
+      "block_id": 53,
+      "is_block_start": false,
+      "reason": "continue DISPUTE_ARBITRATION, précision ou effet du même sujet",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 228,
+      "theme": "DISPUTE_ARBITRATION",
+      "block_id": 53,
+      "is_block_start": false,
+      "reason": "continue DISPUTE_ARBITRATION, précision ou effet du même sujet",
+      "legal_nature": "OBLIGATION",
+      "legal_nature_marker": "you will"
+    },
+    {
+      "id": 229,
+      "theme": "DISPUTE_ARBITRATION",
+      "block_id": 53,
+      "is_block_start": false,
+      "reason": "continue DISPUTE_ARBITRATION, précision ou effet du même sujet",
+      "legal_nature": "OBLIGATION",
+      "legal_nature_marker": "you agree to"
+    },
+    {
+      "id": 230,
+      "theme": "DISPUTE_ARBITRATION",
+      "block_id": 53,
+      "is_block_start": false,
+      "reason": "continue DISPUTE_ARBITRATION, précision ou effet du même sujet",
+      "legal_nature": "OBLIGATION",
+      "legal_nature_marker": "you are responsible"
+    },
+    {
+      "id": 231,
+      "theme": "DISPUTE_ARBITRATION",
+      "block_id": 53,
+      "is_block_start": false,
+      "reason": "continue DISPUTE_ARBITRATION, précision ou effet du même sujet",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 232,
+      "theme": "DISPUTE_ARBITRATION",
+      "block_id": 53,
+      "is_block_start": false,
+      "reason": "continue DISPUTE_ARBITRATION, précision ou effet du même sujet",
+      "legal_nature": "OBLIGATION",
+      "legal_nature_marker": "shall"
+    },
+    {
+      "id": 233,
+      "theme": "DISPUTE_ARBITRATION",
+      "block_id": 53,
+      "is_block_start": false,
+      "reason": "continue DISPUTE_ARBITRATION, précision ou effet du même sujet",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 234,
+      "theme": "DISPUTE_ARBITRATION",
+      "block_id": 53,
+      "is_block_start": false,
+      "reason": "continue DISPUTE_ARBITRATION, précision ou effet du même sujet",
+      "legal_nature": "OBLIGATION",
+      "legal_nature_marker": "you agree to"
+    },
+    {
+      "id": 235,
+      "theme": "DISPUTE_ARBITRATION",
+      "block_id": 53,
+      "is_block_start": false,
+      "reason": "continue DISPUTE_ARBITRATION, précision ou effet du même sujet",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 236,
+      "theme": "DISPUTE_ARBITRATION",
+      "block_id": 53,
+      "is_block_start": false,
+      "reason": "continue DISPUTE_ARBITRATION, précision ou effet du même sujet",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 237,
+      "theme": "PAYMENT_BILLING",
+      "block_id": 54,
+      "is_block_start": true,
+      "rationale": "ouvre prix, frais, paiement, taxes, remboursement ou facturation ; indice « 12.2 the airbnb platform facilitates bookings between guests and hosts »",
+      "rationale_codes": {
+        "decision_trigger": "numbering",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "12.2 the airbnb platform facilitates bookings between guests and hosts",
+        "revised_from_plan": false,
+        "confidence": 0.82
+      },
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 238,
+      "theme": "PAYMENT_BILLING",
+      "block_id": 54,
+      "is_block_start": false,
+      "reason": "continue PAYMENT_BILLING, précision ou effet du même sujet",
+      "legal_nature": "PROHIBITION",
+      "legal_nature_marker": "may not"
+    },
+    {
+      "id": 239,
+      "theme": "PAYMENT_BILLING",
+      "block_id": 54,
+      "is_block_start": false,
+      "reason": "continue PAYMENT_BILLING, précision ou effet du même sujet",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 240,
+      "theme": "PAYMENT_BILLING",
+      "block_id": 54,
+      "is_block_start": false,
+      "reason": "continue PAYMENT_BILLING, précision ou effet du même sujet",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 241,
+      "theme": "PAYMENT_BILLING",
+      "block_id": 54,
+      "is_block_start": false,
+      "reason": "continue PAYMENT_BILLING, précision ou effet du même sujet",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 242,
+      "theme": "PAYMENT_BILLING",
+      "block_id": 54,
+      "is_block_start": false,
+      "reason": "continue PAYMENT_BILLING, précision ou effet du même sujet",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 243,
+      "theme": "PAYMENT_BILLING",
+      "block_id": 54,
+      "is_block_start": false,
+      "reason": "continue PAYMENT_BILLING, précision ou effet du même sujet",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 244,
+      "theme": "PAYMENT_BILLING",
+      "block_id": 54,
+      "is_block_start": false,
+      "reason": "continue PAYMENT_BILLING, précision ou effet du même sujet",
+      "legal_nature": "GOVERNANCE",
+      "legal_nature_marker": "jurisdiction"
+    },
+    {
+      "id": 245,
+      "theme": "PAYMENT_BILLING",
+      "block_id": 54,
+      "is_block_start": false,
+      "reason": "continue PAYMENT_BILLING, précision ou effet du même sujet",
+      "legal_nature": "GOVERNANCE",
+      "legal_nature_marker": "jurisdiction"
+    },
+    {
+      "id": 246,
+      "theme": "PAYMENT_BILLING",
+      "block_id": 54,
+      "is_block_start": false,
+      "reason": "continue PAYMENT_BILLING, précision ou effet du même sujet",
+      "legal_nature": "GOVERNANCE",
+      "legal_nature_marker": "jurisdiction"
+    },
+    {
+      "id": 247,
+      "theme": "PAYMENT_BILLING",
+      "block_id": 54,
+      "is_block_start": false,
+      "reason": "continue PAYMENT_BILLING, précision ou effet du même sujet",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 248,
+      "theme": "PAYMENT_BILLING",
+      "block_id": 54,
+      "is_block_start": false,
+      "reason": "continue PAYMENT_BILLING, précision ou effet du même sujet",
+      "legal_nature": "GOVERNANCE",
+      "legal_nature_marker": "jurisdiction"
+    },
+    {
+      "id": 249,
+      "theme": "PAYMENT_BILLING",
+      "block_id": 54,
+      "is_block_start": false,
+      "reason": "continue PAYMENT_BILLING, précision ou effet du même sujet",
+      "legal_nature": "PROHIBITION",
+      "legal_nature_marker": "shall not"
+    },
+    {
+      "id": 250,
+      "theme": "PAYMENT_BILLING",
+      "block_id": 54,
+      "is_block_start": false,
+      "reason": "continue PAYMENT_BILLING, précision ou effet du même sujet",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 251,
+      "theme": "PAYMENT_BILLING",
+      "block_id": 54,
+      "is_block_start": false,
+      "reason": "continue PAYMENT_BILLING, précision ou effet du même sujet",
+      "legal_nature": "GOVERNANCE",
+      "legal_nature_marker": "jurisdiction"
+    },
+    {
+      "id": 252,
+      "theme": "PAYMENT_BILLING",
+      "block_id": 54,
+      "is_block_start": false,
+      "reason": "continue PAYMENT_BILLING, précision ou effet du même sujet",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 253,
+      "theme": "PAYMENT_BILLING",
+      "block_id": 54,
+      "is_block_start": false,
+      "reason": "continue PAYMENT_BILLING, précision ou effet du même sujet",
+      "legal_nature": "PROHIBITION",
+      "legal_nature_marker": "will not"
+    },
+    {
+      "id": 254,
+      "theme": "THIRD_PARTY",
+      "block_id": 55,
+      "is_block_start": true,
+      "rationale": "ouvre services, liens, contenus ou applications de tiers ; indice « breach or circumvent any applicable laws or regulations , agreements »",
+      "rationale_codes": {
+        "decision_trigger": "modal_verb",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "breach or circumvent any applicable laws or regulations , agreements",
+        "revised_from_plan": false,
+        "confidence": 0.82
+      },
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 255,
+      "theme": "PREAMBLE_SCOPE",
+      "block_id": 56,
+      "is_block_start": true,
+      "rationale": "ouvre cadre, acceptation ou périmètre du service ; indice « use the airbnb platform or collective content for any commercial »",
+      "rationale_codes": {
+        "decision_trigger": "topic_keyword",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "use the airbnb platform or collective content for any commercial",
+        "revised_from_plan": false,
+        "confidence": 0.82
+      },
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 256,
+      "theme": "PREAMBLE_SCOPE",
+      "block_id": 56,
+      "is_block_start": false,
+      "reason": "continue PREAMBLE_SCOPE, précision ou effet du même sujet",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 257,
+      "theme": "USER_CONTENT",
+      "block_id": 57,
+      "is_block_start": true,
+      "rationale": "ouvre contenu utilisateur, publication, avis ou feedback ; indice « use the airbnb platform in connection with the distribution of »",
+      "rationale_codes": {
+        "decision_trigger": "topic_keyword",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "use the airbnb platform in connection with the distribution of",
+        "revised_from_plan": false,
+        "confidence": 0.82
+      },
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 258,
+      "theme": "PREAMBLE_SCOPE",
+      "block_id": 58,
+      "is_block_start": true,
+      "rationale": "ouvre cadre, acceptation ou périmètre du service ; indice « offer , as a host , any accommodation that you »",
+      "rationale_codes": {
+        "decision_trigger": "topic_keyword",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "offer , as a host , any accommodation that you",
+        "revised_from_plan": false,
+        "confidence": 0.82
+      },
+      "legal_nature": "PROHIBITION",
+      "legal_nature_marker": "do not"
+    },
+    {
+      "id": 259,
+      "theme": "PREAMBLE_SCOPE",
+      "block_id": 58,
+      "is_block_start": false,
+      "reason": "continue PREAMBLE_SCOPE, précision ou effet du même sujet",
+      "legal_nature": "PROHIBITION",
+      "legal_nature_marker": "will not"
+    },
+    {
+      "id": 260,
+      "theme": "PREAMBLE_SCOPE",
+      "block_id": 58,
+      "is_block_start": false,
+      "reason": "continue PREAMBLE_SCOPE, précision ou effet du même sujet",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 261,
+      "theme": "PREAMBLE_SCOPE",
+      "block_id": 58,
+      "is_block_start": false,
+      "reason": "continue PREAMBLE_SCOPE, précision ou effet du même sujet",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 262,
+      "theme": "PAYMENT_BILLING",
+      "block_id": 59,
+      "is_block_start": true,
+      "rationale": "ouvre prix, frais, paiement, taxes, remboursement ou facturation ; indice « request , accept or make any payment for listing fees »",
+      "rationale_codes": {
+        "decision_trigger": "topic_keyword",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "request , accept or make any payment for listing fees",
+        "revised_from_plan": false,
+        "confidence": 0.82
+      },
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 263,
+      "theme": "PAYMENT_BILLING",
+      "block_id": 59,
+      "is_block_start": false,
+      "reason": "continue PAYMENT_BILLING, précision ou effet du même sujet",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 264,
+      "theme": "ACCEPTABLE_USE",
+      "block_id": 60,
+      "is_block_start": true,
+      "rationale": "ouvre règles d'usage, restrictions, conduite ou interdictions ; indice « discriminate against or harass anyone on the basis of race »",
+      "rationale_codes": {
+        "decision_trigger": "topic_keyword",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "discriminate against or harass anyone on the basis of race",
+        "revised_from_plan": false,
+        "confidence": 0.82
+      },
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 265,
+      "theme": "LICENSE_IP",
+      "block_id": 61,
+      "is_block_start": true,
+      "rationale": "ouvre licence, propriété intellectuelle, copyright, marque ou DMCA ; indice « use , display , mirror or frame the airbnb platform »",
+      "rationale_codes": {
+        "decision_trigger": "topic_keyword",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "use , display , mirror or frame the airbnb platform",
+        "revised_from_plan": false,
+        "confidence": 0.82
+      },
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 266,
+      "theme": "ACCEPTABLE_USE",
+      "block_id": 62,
+      "is_block_start": true,
+      "rationale": "ouvre règles d'usage, restrictions, conduite ou interdictions ; indice « dilute , tarnish or otherwise harm the airbnb brand in »",
+      "rationale_codes": {
+        "decision_trigger": "topic_keyword",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "dilute , tarnish or otherwise harm the airbnb brand in",
+        "revised_from_plan": false,
+        "confidence": 0.82
+      },
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 267,
+      "theme": "PRIVACY_DATA",
+      "block_id": 63,
+      "is_block_start": true,
+      "rationale": "ouvre données personnelles, confidentialité ou communications ; indice « use any robots , spider , crawler , scraper or »",
+      "rationale_codes": {
+        "decision_trigger": "topic_keyword",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "use any robots , spider , crawler , scraper or",
+        "revised_from_plan": false,
+        "confidence": 0.82
+      },
+      "legal_nature": "DEFINITION",
+      "legal_nature_marker": "means"
+    },
+    {
+      "id": 268,
+      "theme": "TERMINATION",
+      "block_id": 64,
+      "is_block_start": true,
+      "rationale": "ouvre suspension, annulation, suppression ou résiliation ; indice « avoid , bypass , remove , deactivate , impair , »",
+      "rationale_codes": {
+        "decision_trigger": "topic_keyword",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "avoid , bypass , remove , deactivate , impair ,",
+        "revised_from_plan": false,
+        "confidence": 0.82
+      },
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 269,
+      "theme": "LICENSE_IP",
+      "block_id": 65,
+      "is_block_start": true,
+      "rationale": "ouvre licence, propriété intellectuelle, copyright, marque ou DMCA ; indice « attempt to decipher , decompile , disassemble or reverse engineer »",
+      "rationale_codes": {
+        "decision_trigger": "topic_keyword",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "attempt to decipher , decompile , disassemble or reverse engineer",
+        "revised_from_plan": false,
+        "confidence": 0.82
+      },
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 270,
+      "theme": "LIABILITY_LIMITATION",
+      "block_id": 66,
+      "is_block_start": true,
+      "rationale": "ouvre limitation de responsabilité ou dommages ; indice « take any action that damages or adversely affects , or »",
+      "rationale_codes": {
+        "decision_trigger": "topic_keyword",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "take any action that damages or adversely affects , or",
+        "revised_from_plan": false,
+        "confidence": 0.82
+      },
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 271,
+      "theme": "GOVERNING_LAW",
+      "block_id": 67,
+      "is_block_start": true,
+      "rationale": "ouvre droit applicable, juridiction ou venue ; indice « export , re-export , import , or transfer the application »",
+      "rationale_codes": {
+        "decision_trigger": "topic_keyword",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "export , re-export , import , or transfer the application",
+        "revised_from_plan": false,
+        "confidence": 0.82
+      },
+      "legal_nature": "GOVERNANCE",
+      "legal_nature_marker": "jurisdiction"
+    },
+    {
+      "id": 272,
+      "theme": "LICENSE_IP",
+      "block_id": 68,
+      "is_block_start": true,
+      "rationale": "ouvre licence, propriété intellectuelle, copyright, marque ou DMCA ; indice « violate or infringe anyone else 's rights or otherwise cause »",
+      "rationale_codes": {
+        "decision_trigger": "topic_keyword",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "violate or infringe anyone else 's rights or otherwise cause",
+        "revised_from_plan": false,
+        "confidence": 0.82
+      },
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 273,
+      "theme": "ACCEPTABLE_USE",
+      "block_id": 69,
+      "is_block_start": true,
+      "rationale": "ouvre règles d'usage, restrictions, conduite ou interdictions ; indice « 14.2 you acknowledge that airbnb has no obligation to monitor »",
+      "rationale_codes": {
+        "decision_trigger": "numbering",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "14.2 you acknowledge that airbnb has no obligation to monitor",
+        "revised_from_plan": false,
+        "confidence": 0.82
+      },
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 274,
+      "theme": "ACCEPTABLE_USE",
+      "block_id": 69,
+      "is_block_start": false,
+      "reason": "continue ACCEPTABLE_USE, précision ou effet du même sujet",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 275,
+      "theme": "ACCEPTABLE_USE",
+      "block_id": 69,
+      "is_block_start": false,
+      "reason": "continue ACCEPTABLE_USE, précision ou effet du même sujet",
+      "legal_nature": "PROHIBITION",
+      "legal_nature_marker": "will not"
+    },
+    {
+      "id": 276,
+      "theme": "TERMINATION",
+      "block_id": 70,
+      "is_block_start": true,
+      "rationale": "ouvre suspension, annulation, suppression ou résiliation ; indice « term and termination , suspension and other measures »",
+      "rationale_codes": {
+        "decision_trigger": "title_marker",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "term and termination , suspension and other measures",
+        "revised_from_plan": false,
+        "confidence": 0.82
+      },
+      "legal_nature": "GOVERNANCE",
+      "legal_nature_marker": "termination"
+    },
+    {
+      "id": 277,
+      "theme": "PREAMBLE_SCOPE",
+      "block_id": 71,
+      "is_block_start": true,
+      "rationale": "ouvre cadre, acceptation ou périmètre du service ; indice « 15.1 this agreement shall be effective for a 30-day term »",
+      "rationale_codes": {
+        "decision_trigger": "numbering",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "15.1 this agreement shall be effective for a 30-day term",
+        "revised_from_plan": false,
+        "confidence": 0.82
+      },
+      "legal_nature": "GOVERNANCE",
+      "legal_nature_marker": "terminate"
+    },
+    {
+      "id": 278,
+      "theme": "TERMINATION",
+      "block_id": 72,
+      "is_block_start": true,
+      "rationale": "ouvre suspension, annulation, suppression ou résiliation ; indice « 15.2 you may terminate this agreement at any time via »",
+      "rationale_codes": {
+        "decision_trigger": "numbering",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "15.2 you may terminate this agreement at any time via",
+        "revised_from_plan": false,
+        "confidence": 0.82
+      },
+      "legal_nature": "GOVERNANCE",
+      "legal_nature_marker": "terminate"
+    },
+    {
+      "id": 279,
+      "theme": "TERMINATION",
+      "block_id": 72,
+      "is_block_start": false,
+      "reason": "continue TERMINATION, précision ou effet du même sujet",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 280,
+      "theme": "TERMINATION",
+      "block_id": 72,
+      "is_block_start": false,
+      "reason": "continue TERMINATION, précision ou effet du même sujet",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 281,
+      "theme": "TERMINATION",
+      "block_id": 72,
+      "is_block_start": false,
+      "reason": "continue TERMINATION, précision ou effet du même sujet",
+      "legal_nature": "GOVERNANCE",
+      "legal_nature_marker": "terminate"
+    },
+    {
+      "id": 282,
+      "theme": "THIRD_PARTY",
+      "block_id": 73,
+      "is_block_start": true,
+      "rationale": "ouvre services, liens, contenus ou applications de tiers ; indice « 15.4 airbnb may immediately , without notice terminate this agreement »",
+      "rationale_codes": {
+        "decision_trigger": "numbering",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "15.4 airbnb may immediately , without notice terminate this agreement",
+        "revised_from_plan": false,
+        "confidence": 0.82
+      },
+      "legal_nature": "GOVERNANCE",
+      "legal_nature_marker": "terminate"
+    },
+    {
+      "id": 283,
+      "theme": "THIRD_PARTY",
+      "block_id": 73,
+      "is_block_start": false,
+      "reason": "continue THIRD_PARTY, précision ou effet du même sujet",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 284,
+      "theme": "TERMINATION",
+      "block_id": 74,
+      "is_block_start": true,
+      "rationale": "ouvre suspension, annulation, suppression ou résiliation ; indice « refuse to surface , delete or delay any listings , »",
+      "rationale_codes": {
+        "decision_trigger": "topic_keyword",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "refuse to surface , delete or delay any listings ,",
+        "revised_from_plan": false,
+        "confidence": 0.82
+      },
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 285,
+      "theme": "TERMINATION",
+      "block_id": 74,
+      "is_block_start": false,
+      "reason": "continue TERMINATION, précision ou effet du même sujet",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 286,
+      "theme": "TERMINATION",
+      "block_id": 74,
+      "is_block_start": false,
+      "reason": "continue TERMINATION, précision ou effet du même sujet",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 287,
+      "theme": "ELIGIBILITY_ACCOUNT",
+      "block_id": 75,
+      "is_block_start": true,
+      "rationale": "ouvre compte, inscription, âge, identifiants ou sécurité d'accès ; indice « temporarily or permanently revoke any special status associated with your »",
+      "rationale_codes": {
+        "decision_trigger": "topic_keyword",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "temporarily or permanently revoke any special status associated with your",
+        "revised_from_plan": false,
+        "confidence": 0.82
+      },
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 288,
+      "theme": "ELIGIBILITY_ACCOUNT",
+      "block_id": 75,
+      "is_block_start": false,
+      "reason": "continue ELIGIBILITY_ACCOUNT, précision ou effet du même sujet",
+      "legal_nature": "GOVERNANCE",
+      "legal_nature_marker": "suspend"
+    },
+    {
+      "id": 289,
+      "theme": "MISC_BOILERPLATE",
+      "block_id": 76,
+      "is_block_start": true,
+      "rationale": "ouvre clauses finales, cession, divisibilité, avis ou intégralité ; indice « in case of non-material breaches and where appropriate , you »",
+      "rationale_codes": {
+        "decision_trigger": "topic_keyword",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "in case of non-material breaches and where appropriate , you",
+        "revised_from_plan": false,
+        "confidence": 0.82
+      },
+      "legal_nature": "OBLIGATION",
+      "legal_nature_marker": "you will"
+    },
+    {
+      "id": 290,
+      "theme": "PAYMENT_BILLING",
+      "block_id": 77,
+      "is_block_start": true,
+      "rationale": "ouvre prix, frais, paiement, taxes, remboursement ou facturation ; indice « 15.6 if we take any of the measures described above »",
+      "rationale_codes": {
+        "decision_trigger": "numbering",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "15.6 if we take any of the measures described above",
+        "revised_from_plan": false,
+        "confidence": 0.82
+      },
+      "legal_nature": "PROHIBITION",
+      "legal_nature_marker": "will not"
+    },
+    {
+      "id": 291,
+      "theme": "ELIGIBILITY_ACCOUNT",
+      "block_id": 78,
+      "is_block_start": true,
+      "rationale": "ouvre compte, inscription, âge, identifiants ou sécurité d'accès ; indice « 15.7 when this agreement has been terminated , you are »",
+      "rationale_codes": {
+        "decision_trigger": "numbering",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "15.7 when this agreement has been terminated , you are",
+        "revised_from_plan": false,
+        "confidence": 0.82
+      },
+      "legal_nature": "GOVERNANCE",
+      "legal_nature_marker": "terminate"
+    },
+    {
+      "id": 292,
+      "theme": "ELIGIBILITY_ACCOUNT",
+      "block_id": 78,
+      "is_block_start": false,
+      "reason": "continue ELIGIBILITY_ACCOUNT, précision ou effet du même sujet",
+      "legal_nature": "PROHIBITION",
+      "legal_nature_marker": "may not"
+    },
+    {
+      "id": 293,
+      "theme": "PREAMBLE_SCOPE",
+      "block_id": 79,
+      "is_block_start": true,
+      "rationale": "ouvre cadre, acceptation ou périmètre du service ; indice « 15.8 unless you reside in germany , if you or »",
+      "rationale_codes": {
+        "decision_trigger": "numbering",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "15.8 unless you reside in germany , if you or",
+        "revised_from_plan": false,
+        "confidence": 0.82
+      },
+      "legal_nature": "GOVERNANCE",
+      "legal_nature_marker": "terminate"
+    },
+    {
+      "id": 294,
+      "theme": "WARRANTY_DISCLAIMER",
+      "block_id": 80,
+      "is_block_start": true,
+      "rationale": "ouvre exclusion de garanties ; indice « if you choose to use the airbnb platform or collective »",
+      "rationale_codes": {
+        "decision_trigger": "topic_keyword",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "if you choose to use the airbnb platform or collective",
+        "revised_from_plan": false,
+        "confidence": 0.82
+      },
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 295,
+      "theme": "WARRANTY_DISCLAIMER",
+      "block_id": 80,
+      "is_block_start": false,
+      "reason": "continue WARRANTY_DISCLAIMER, précision ou effet du même sujet",
+      "legal_nature": "LIMITATION_DISCLAIMER",
+      "legal_nature_marker": "as is"
+    },
+    {
+      "id": 296,
+      "theme": "PREAMBLE_SCOPE",
+      "block_id": 81,
+      "is_block_start": true,
+      "rationale": "ouvre cadre, acceptation ou périmètre du service ; indice « you agree that you have had whatever opportunity you deem »",
+      "rationale_codes": {
+        "decision_trigger": "modal_verb",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "you agree that you have had whatever opportunity you deem",
+        "revised_from_plan": false,
+        "confidence": 0.82
+      },
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 297,
+      "theme": "WARRANTY_DISCLAIMER",
+      "block_id": 82,
+      "is_block_start": true,
+      "rationale": "ouvre exclusion de garanties ; indice « if we choose to conduct identity verification or background checks »",
+      "rationale_codes": {
+        "decision_trigger": "topic_keyword",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "if we choose to conduct identity verification or background checks",
+        "revised_from_plan": false,
+        "confidence": 0.82
+      },
+      "legal_nature": "PROHIBITION",
+      "legal_nature_marker": "will not"
+    },
+    {
+      "id": 298,
+      "theme": "PREAMBLE_SCOPE",
+      "block_id": 83,
+      "is_block_start": true,
+      "rationale": "ouvre cadre, acceptation ou périmètre du service ; indice « you agree that some experiences , events or other host »",
+      "rationale_codes": {
+        "decision_trigger": "modal_verb",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "you agree that some experiences , events or other host",
+        "revised_from_plan": false,
+        "confidence": 0.82
+      },
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 299,
+      "theme": "PREAMBLE_SCOPE",
+      "block_id": 83,
+      "is_block_start": false,
+      "reason": "continue PREAMBLE_SCOPE, précision ou effet du même sujet",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 300,
+      "theme": "PREAMBLE_SCOPE",
+      "block_id": 83,
+      "is_block_start": false,
+      "reason": "continue PREAMBLE_SCOPE, précision ou effet du même sujet",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 301,
+      "theme": "PREAMBLE_SCOPE",
+      "block_id": 83,
+      "is_block_start": false,
+      "reason": "continue PREAMBLE_SCOPE, précision ou effet du même sujet",
+      "legal_nature": "RISK_ALLOCATION",
+      "legal_nature_marker": "hold harmless"
+    },
+    {
+      "id": 302,
+      "theme": "WARRANTY_DISCLAIMER",
+      "block_id": 84,
+      "is_block_start": true,
+      "rationale": "ouvre exclusion de garanties ; indice « the foregoing disclaimers apply to the maximum extent permitted by »",
+      "rationale_codes": {
+        "decision_trigger": "topic_keyword",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "the foregoing disclaimers apply to the maximum extent permitted by",
+        "revised_from_plan": false,
+        "confidence": 0.82
+      },
+      "legal_nature": "LIMITATION_DISCLAIMER",
+      "legal_nature_marker": "disclaim"
+    },
+    {
+      "id": 303,
+      "theme": "WARRANTY_DISCLAIMER",
+      "block_id": 84,
+      "is_block_start": false,
+      "reason": "continue WARRANTY_DISCLAIMER, précision ou effet du même sujet",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 304,
+      "theme": "WARRANTY_DISCLAIMER",
+      "block_id": 84,
+      "is_block_start": false,
+      "reason": "continue WARRANTY_DISCLAIMER, précision ou effet du même sujet",
+      "legal_nature": "LIMITATION_DISCLAIMER",
+      "legal_nature_marker": "warranties"
+    },
+    {
+      "id": 305,
+      "theme": "LIABILITY_LIMITATION",
+      "block_id": 85,
+      "is_block_start": true,
+      "rationale": "ouvre limitation de responsabilité ou dommages ; indice « 17.1 unless you reside in the eu , you acknowledge »",
+      "rationale_codes": {
+        "decision_trigger": "numbering",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "17.1 unless you reside in the eu , you acknowledge",
+        "revised_from_plan": false,
+        "confidence": 0.82
+      },
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 306,
+      "theme": "LIABILITY_LIMITATION",
+      "block_id": 85,
+      "is_block_start": false,
+      "reason": "continue LIABILITY_LIMITATION, précision ou effet du même sujet",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 307,
+      "theme": "LIABILITY_LIMITATION",
+      "block_id": 85,
+      "is_block_start": false,
+      "reason": "continue LIABILITY_LIMITATION, précision ou effet du même sujet",
+      "legal_nature": "LIMITATION_DISCLAIMER",
+      "legal_nature_marker": "in no event"
+    },
+    {
+      "id": 308,
+      "theme": "LIABILITY_LIMITATION",
+      "block_id": 85,
+      "is_block_start": false,
+      "reason": "continue LIABILITY_LIMITATION, précision ou effet du même sujet",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 309,
+      "theme": "LIABILITY_LIMITATION",
+      "block_id": 85,
+      "is_block_start": false,
+      "reason": "continue LIABILITY_LIMITATION, précision ou effet du même sujet",
+      "legal_nature": "PROHIBITION",
+      "legal_nature_marker": "may not"
+    },
+    {
+      "id": 310,
+      "theme": "LIABILITY_LIMITATION",
+      "block_id": 85,
+      "is_block_start": false,
+      "reason": "continue LIABILITY_LIMITATION, précision ou effet du même sujet",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 311,
+      "theme": "LIABILITY_LIMITATION",
+      "block_id": 85,
+      "is_block_start": false,
+      "reason": "continue LIABILITY_LIMITATION, précision ou effet du même sujet",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 312,
+      "theme": "LIABILITY_LIMITATION",
+      "block_id": 85,
+      "is_block_start": false,
+      "reason": "continue LIABILITY_LIMITATION, précision ou effet du même sujet",
+      "legal_nature": "SCOPE_APPLICABILITY",
+      "legal_nature_marker": "applies to"
+    },
+    {
+      "id": 313,
+      "theme": "LIABILITY_LIMITATION",
+      "block_id": 85,
+      "is_block_start": false,
+      "reason": "continue LIABILITY_LIMITATION, précision ou effet du même sujet",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 314,
+      "theme": "LIABILITY_LIMITATION",
+      "block_id": 85,
+      "is_block_start": false,
+      "reason": "continue LIABILITY_LIMITATION, précision ou effet du même sujet",
+      "legal_nature": "OBLIGATION",
+      "legal_nature_marker": "must"
+    },
+    {
+      "id": 315,
+      "theme": "LIABILITY_LIMITATION",
+      "block_id": 85,
+      "is_block_start": false,
+      "reason": "continue LIABILITY_LIMITATION, précision ou effet du même sujet",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 316,
+      "theme": "LIABILITY_LIMITATION",
+      "block_id": 85,
+      "is_block_start": false,
+      "reason": "continue LIABILITY_LIMITATION, précision ou effet du même sujet",
+      "legal_nature": "RISK_ALLOCATION",
+      "legal_nature_marker": "indemnify"
+    },
+    {
+      "id": 317,
+      "theme": "PAYMENT_BILLING",
+      "block_id": 86,
+      "is_block_start": true,
+      "rationale": "ouvre prix, frais, paiement, taxes, remboursement ou facturation ; indice « 19.1 this dispute resolution and arbitration agreement shall apply if »",
+      "rationale_codes": {
+        "decision_trigger": "numbering",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "19.1 this dispute resolution and arbitration agreement shall apply if",
+        "revised_from_plan": false,
+        "confidence": 0.82
+      },
+      "legal_nature": "PROHIBITION",
+      "legal_nature_marker": "do not"
+    },
+    {
+      "id": 318,
+      "theme": "PAYMENT_BILLING",
+      "block_id": 86,
+      "is_block_start": false,
+      "reason": "continue PAYMENT_BILLING, précision ou effet du même sujet",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 319,
+      "theme": "PAYMENT_BILLING",
+      "block_id": 86,
+      "is_block_start": false,
+      "reason": "continue PAYMENT_BILLING, précision ou effet du même sujet",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 320,
+      "theme": "PAYMENT_BILLING",
+      "block_id": 86,
+      "is_block_start": false,
+      "reason": "continue PAYMENT_BILLING, précision ou effet du même sujet",
+      "legal_nature": "GOVERNANCE",
+      "legal_nature_marker": "arbitration"
+    },
+    {
+      "id": 321,
+      "theme": "PAYMENT_BILLING",
+      "block_id": 86,
+      "is_block_start": false,
+      "reason": "continue PAYMENT_BILLING, précision ou effet du même sujet",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 322,
+      "theme": "PAYMENT_BILLING",
+      "block_id": 86,
+      "is_block_start": false,
+      "reason": "continue PAYMENT_BILLING, précision ou effet du même sujet",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 323,
+      "theme": "PAYMENT_BILLING",
+      "block_id": 86,
+      "is_block_start": false,
+      "reason": "continue PAYMENT_BILLING, précision ou effet du même sujet",
+      "legal_nature": "OBLIGATION",
+      "legal_nature_marker": "must"
+    },
+    {
+      "id": 324,
+      "theme": "PAYMENT_BILLING",
+      "block_id": 86,
+      "is_block_start": false,
+      "reason": "continue PAYMENT_BILLING, précision ou effet du même sujet",
+      "legal_nature": "GOVERNANCE",
+      "legal_nature_marker": "arbitration"
+    },
+    {
+      "id": 325,
+      "theme": "PAYMENT_BILLING",
+      "block_id": 86,
+      "is_block_start": false,
+      "reason": "continue PAYMENT_BILLING, précision ou effet du même sujet",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 326,
+      "theme": "PAYMENT_BILLING",
+      "block_id": 86,
+      "is_block_start": false,
+      "reason": "continue PAYMENT_BILLING, précision ou effet du même sujet",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 327,
+      "theme": "USER_CONTENT",
+      "block_id": 87,
+      "is_block_start": true,
+      "rationale": "ouvre contenu utilisateur, publication, avis ou feedback ; indice « the consumer gets to elect the hearing location and can »",
+      "rationale_codes": {
+        "decision_trigger": "topic_keyword",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "the consumer gets to elect the hearing location and can",
+        "revised_from_plan": false,
+        "confidence": 0.82
+      },
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 328,
+      "theme": "DISPUTE_ARBITRATION",
+      "block_id": 88,
+      "is_block_start": true,
+      "rationale": "ouvre litige, arbitrage, action collective ou tribunal ; indice « the arbitrator can grant any remedy that the parties could »",
+      "rationale_codes": {
+        "decision_trigger": "topic_keyword",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "the arbitrator can grant any remedy that the parties could",
+        "revised_from_plan": false,
+        "confidence": 0.82
+      },
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 329,
+      "theme": "DISPUTE_ARBITRATION",
+      "block_id": 88,
+      "is_block_start": false,
+      "reason": "continue DISPUTE_ARBITRATION, précision ou effet du même sujet",
+      "legal_nature": "GOVERNANCE",
+      "legal_nature_marker": "arbitration"
+    },
+    {
+      "id": 330,
+      "theme": "DISPUTE_ARBITRATION",
+      "block_id": 88,
+      "is_block_start": false,
+      "reason": "continue DISPUTE_ARBITRATION, précision ou effet du même sujet",
+      "legal_nature": "GOVERNANCE",
+      "legal_nature_marker": "arbitration"
+    },
+    {
+      "id": 331,
+      "theme": "DISPUTE_ARBITRATION",
+      "block_id": 88,
+      "is_block_start": false,
+      "reason": "continue DISPUTE_ARBITRATION, précision ou effet du même sujet",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 332,
+      "theme": "DISPUTE_ARBITRATION",
+      "block_id": 88,
+      "is_block_start": false,
+      "reason": "continue DISPUTE_ARBITRATION, précision ou effet du même sujet",
+      "legal_nature": "GOVERNANCE",
+      "legal_nature_marker": "arbitration"
+    },
+    {
+      "id": 333,
+      "theme": "DISPUTE_ARBITRATION",
+      "block_id": 88,
+      "is_block_start": false,
+      "reason": "continue DISPUTE_ARBITRATION, précision ou effet du même sujet",
+      "legal_nature": "GOVERNANCE",
+      "legal_nature_marker": "arbitration"
+    },
+    {
+      "id": 334,
+      "theme": "DISPUTE_ARBITRATION",
+      "block_id": 88,
+      "is_block_start": false,
+      "reason": "continue DISPUTE_ARBITRATION, précision ou effet du même sujet",
+      "legal_nature": "GOVERNANCE",
+      "legal_nature_marker": "arbitration"
+    },
+    {
+      "id": 335,
+      "theme": "DISPUTE_ARBITRATION",
+      "block_id": 88,
+      "is_block_start": false,
+      "reason": "continue DISPUTE_ARBITRATION, précision ou effet du même sujet",
+      "legal_nature": "GOVERNANCE",
+      "legal_nature_marker": "arbitration"
+    },
+    {
+      "id": 336,
+      "theme": "DISPUTE_ARBITRATION",
+      "block_id": 88,
+      "is_block_start": false,
+      "reason": "continue DISPUTE_ARBITRATION, précision ou effet du même sujet",
+      "legal_nature": "GOVERNANCE",
+      "legal_nature_marker": "arbitration"
+    },
+    {
+      "id": 337,
+      "theme": "DISPUTE_ARBITRATION",
+      "block_id": 88,
+      "is_block_start": false,
+      "reason": "continue DISPUTE_ARBITRATION, précision ou effet du même sujet",
+      "legal_nature": "GOVERNANCE",
+      "legal_nature_marker": "jurisdiction"
+    },
+    {
+      "id": 338,
+      "theme": "DISPUTE_ARBITRATION",
+      "block_id": 88,
+      "is_block_start": false,
+      "reason": "continue DISPUTE_ARBITRATION, précision ou effet du même sujet",
+      "legal_nature": "GOVERNANCE",
+      "legal_nature_marker": "governing law"
+    },
+    {
+      "id": 339,
+      "theme": "DISPUTE_ARBITRATION",
+      "block_id": 88,
+      "is_block_start": false,
+      "reason": "continue DISPUTE_ARBITRATION, précision ou effet du même sujet",
+      "legal_nature": "GOVERNANCE",
+      "legal_nature_marker": "arbitration"
+    },
+    {
+      "id": 340,
+      "theme": "DISPUTE_ARBITRATION",
+      "block_id": 88,
+      "is_block_start": false,
+      "reason": "continue DISPUTE_ARBITRATION, précision ou effet du même sujet",
+      "legal_nature": "GOVERNANCE",
+      "legal_nature_marker": "arbitration"
+    },
+    {
+      "id": 341,
+      "theme": "DISPUTE_ARBITRATION",
+      "block_id": 88,
+      "is_block_start": false,
+      "reason": "continue DISPUTE_ARBITRATION, précision ou effet du même sujet",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 342,
+      "theme": "DISPUTE_ARBITRATION",
+      "block_id": 88,
+      "is_block_start": false,
+      "reason": "continue DISPUTE_ARBITRATION, précision ou effet du même sujet",
+      "legal_nature": "GOVERNANCE",
+      "legal_nature_marker": "arbitration"
+    },
+    {
+      "id": 343,
+      "theme": "DISPUTE_ARBITRATION",
+      "block_id": 88,
+      "is_block_start": false,
+      "reason": "continue DISPUTE_ARBITRATION, précision ou effet du même sujet",
+      "legal_nature": "GOVERNANCE",
+      "legal_nature_marker": "arbitration"
+    },
+    {
+      "id": 344,
+      "theme": "DISPUTE_ARBITRATION",
+      "block_id": 88,
+      "is_block_start": false,
+      "reason": "continue DISPUTE_ARBITRATION, précision ou effet du même sujet",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 345,
+      "theme": "DISPUTE_ARBITRATION",
+      "block_id": 88,
+      "is_block_start": false,
+      "reason": "continue DISPUTE_ARBITRATION, précision ou effet du même sujet",
+      "legal_nature": "GOVERNANCE",
+      "legal_nature_marker": "arbitration"
+    },
+    {
+      "id": 346,
+      "theme": "DISPUTE_ARBITRATION",
+      "block_id": 88,
+      "is_block_start": false,
+      "reason": "continue DISPUTE_ARBITRATION, précision ou effet du même sujet",
+      "legal_nature": "PROHIBITION",
+      "legal_nature_marker": "will not"
+    },
+    {
+      "id": 347,
+      "theme": "DISPUTE_ARBITRATION",
+      "block_id": 88,
+      "is_block_start": false,
+      "reason": "continue DISPUTE_ARBITRATION, précision ou effet du même sujet",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 348,
+      "theme": "DISPUTE_ARBITRATION",
+      "block_id": 88,
+      "is_block_start": false,
+      "reason": "continue DISPUTE_ARBITRATION, précision ou effet du même sujet",
+      "legal_nature": "GOVERNANCE",
+      "legal_nature_marker": "jurisdiction"
+    },
+    {
+      "id": 349,
+      "theme": "DISPUTE_ARBITRATION",
+      "block_id": 88,
+      "is_block_start": false,
+      "reason": "continue DISPUTE_ARBITRATION, précision ou effet du même sujet",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 350,
+      "theme": "DISPUTE_ARBITRATION",
+      "block_id": 88,
+      "is_block_start": false,
+      "reason": "continue DISPUTE_ARBITRATION, précision ou effet du même sujet",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 351,
+      "theme": "DISPUTE_ARBITRATION",
+      "block_id": 88,
+      "is_block_start": false,
+      "reason": "continue DISPUTE_ARBITRATION, précision ou effet du même sujet",
+      "legal_nature": "GOVERNANCE",
+      "legal_nature_marker": "class action"
+    },
+    {
+      "id": 352,
+      "theme": "DISPUTE_ARBITRATION",
+      "block_id": 88,
+      "is_block_start": false,
+      "reason": "continue DISPUTE_ARBITRATION, précision ou effet du même sujet",
+      "legal_nature": "GOVERNANCE",
+      "legal_nature_marker": "arbitration"
+    },
+    {
+      "id": 353,
+      "theme": "DISPUTE_ARBITRATION",
+      "block_id": 88,
+      "is_block_start": false,
+      "reason": "continue DISPUTE_ARBITRATION, précision ou effet du même sujet",
+      "legal_nature": "PROHIBITION",
+      "legal_nature_marker": "may not"
+    },
+    {
+      "id": 354,
+      "theme": "DISPUTE_ARBITRATION",
+      "block_id": 88,
+      "is_block_start": false,
+      "reason": "continue DISPUTE_ARBITRATION, précision ou effet du même sujet",
+      "legal_nature": "GOVERNANCE",
+      "legal_nature_marker": "arbitration"
+    },
+    {
+      "id": 355,
+      "theme": "DISPUTE_ARBITRATION",
+      "block_id": 88,
+      "is_block_start": false,
+      "reason": "continue DISPUTE_ARBITRATION, précision ou effet du même sujet",
+      "legal_nature": "GOVERNANCE",
+      "legal_nature_marker": "arbitration"
+    },
+    {
+      "id": 356,
+      "theme": "DISPUTE_ARBITRATION",
+      "block_id": 88,
+      "is_block_start": false,
+      "reason": "continue DISPUTE_ARBITRATION, précision ou effet du même sujet",
+      "legal_nature": "META",
+      "legal_nature_marker": "last updated"
+    },
+    {
+      "id": 357,
+      "theme": "DISPUTE_ARBITRATION",
+      "block_id": 88,
+      "is_block_start": false,
+      "reason": "continue DISPUTE_ARBITRATION, précision ou effet du même sujet",
+      "legal_nature": "GOVERNANCE",
+      "legal_nature_marker": "arbitration"
+    },
+    {
+      "id": 358,
+      "theme": "DISPUTE_ARBITRATION",
+      "block_id": 88,
+      "is_block_start": false,
+      "reason": "continue DISPUTE_ARBITRATION, précision ou effet du même sujet",
+      "legal_nature": "GOVERNANCE",
+      "legal_nature_marker": "terminate"
+    },
+    {
+      "id": 359,
+      "theme": "USER_CONTENT",
+      "block_id": 89,
+      "is_block_start": true,
+      "rationale": "ouvre contenu utilisateur, publication, avis ou feedback ; indice « we welcome and encourage you to provide feedback , comments »",
+      "rationale_codes": {
+        "decision_trigger": "topic_keyword",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "we welcome and encourage you to provide feedback , comments",
+        "revised_from_plan": false,
+        "confidence": 0.82
+      },
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 360,
+      "theme": "USER_CONTENT",
+      "block_id": 89,
+      "is_block_start": false,
+      "reason": "continue USER_CONTENT, précision ou effet du même sujet",
+      "legal_nature": "DEFINITION",
+      "legal_nature_marker": "means"
+    },
+    {
+      "id": 361,
+      "theme": "USER_CONTENT",
+      "block_id": 89,
+      "is_block_start": false,
+      "reason": "continue USER_CONTENT, précision ou effet du même sujet",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 362,
+      "theme": "USER_CONTENT",
+      "block_id": 89,
+      "is_block_start": false,
+      "reason": "continue USER_CONTENT, précision ou effet du même sujet",
+      "legal_nature": "RIGHT_GRANT",
+      "legal_nature_marker": "license to"
+    },
+    {
+      "id": 363,
+      "theme": "DISPUTE_ARBITRATION",
+      "block_id": 90,
+      "is_block_start": true,
+      "rationale": "ouvre litige, arbitrage, action collective ou tribunal ; indice « 21.1 if you reside in the united states , these »",
+      "rationale_codes": {
+        "decision_trigger": "numbering",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "21.1 if you reside in the united states , these",
+        "revised_from_plan": false,
+        "confidence": 0.82
+      },
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 364,
+      "theme": "DISPUTE_ARBITRATION",
+      "block_id": 90,
+      "is_block_start": false,
+      "reason": "continue DISPUTE_ARBITRATION, précision ou effet du même sujet",
+      "legal_nature": "GOVERNANCE",
+      "legal_nature_marker": "arbitration"
+    },
+    {
+      "id": 365,
+      "theme": "DISPUTE_ARBITRATION",
+      "block_id": 90,
+      "is_block_start": false,
+      "reason": "continue DISPUTE_ARBITRATION, précision ou effet du même sujet",
+      "legal_nature": "GOVERNANCE",
+      "legal_nature_marker": "jurisdiction"
+    },
+    {
+      "id": 366,
+      "theme": "DISPUTE_ARBITRATION",
+      "block_id": 90,
+      "is_block_start": false,
+      "reason": "continue DISPUTE_ARBITRATION, précision ou effet du même sujet",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 367,
+      "theme": "DISPUTE_ARBITRATION",
+      "block_id": 90,
+      "is_block_start": false,
+      "reason": "continue DISPUTE_ARBITRATION, précision ou effet du même sujet",
+      "legal_nature": "PROHIBITION",
+      "legal_nature_marker": "shall not"
+    },
+    {
+      "id": 368,
+      "theme": "DISPUTE_ARBITRATION",
+      "block_id": 90,
+      "is_block_start": false,
+      "reason": "continue DISPUTE_ARBITRATION, précision ou effet du même sujet",
+      "legal_nature": "GOVERNANCE",
+      "legal_nature_marker": "arbitration"
+    },
+    {
+      "id": 369,
+      "theme": "DISPUTE_ARBITRATION",
+      "block_id": 90,
+      "is_block_start": false,
+      "reason": "continue DISPUTE_ARBITRATION, précision ou effet du même sujet",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 370,
+      "theme": "GOVERNING_LAW",
+      "block_id": 91,
+      "is_block_start": true,
+      "rationale": "ouvre droit applicable, juridiction ou venue ; indice « 21.3 if you reside outside of the united states and »",
+      "rationale_codes": {
+        "decision_trigger": "numbering",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "21.3 if you reside outside of the united states and",
+        "revised_from_plan": false,
+        "confidence": 0.82
+      },
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 371,
+      "theme": "GOVERNING_LAW",
+      "block_id": 91,
+      "is_block_start": false,
+      "reason": "continue GOVERNING_LAW, précision ou effet du même sujet",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 372,
+      "theme": "GOVERNING_LAW",
+      "block_id": 91,
+      "is_block_start": false,
+      "reason": "continue GOVERNING_LAW, précision ou effet du même sujet",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 373,
+      "theme": "GOVERNING_LAW",
+      "block_id": 91,
+      "is_block_start": false,
+      "reason": "continue GOVERNING_LAW, précision ou effet du même sujet",
+      "legal_nature": "GOVERNANCE",
+      "legal_nature_marker": "jurisdiction"
+    },
+    {
+      "id": 374,
+      "theme": "GOVERNING_LAW",
+      "block_id": 91,
+      "is_block_start": false,
+      "reason": "continue GOVERNING_LAW, précision ou effet du même sujet",
+      "legal_nature": "GOVERNANCE",
+      "legal_nature_marker": "jurisdiction"
+    },
+    {
+      "id": 375,
+      "theme": "GOVERNING_LAW",
+      "block_id": 91,
+      "is_block_start": false,
+      "reason": "continue GOVERNING_LAW, précision ou effet du même sujet",
+      "legal_nature": "GOVERNANCE",
+      "legal_nature_marker": "jurisdiction"
+    },
+    {
+      "id": 376,
+      "theme": "GOVERNING_LAW",
+      "block_id": 91,
+      "is_block_start": false,
+      "reason": "continue GOVERNING_LAW, précision ou effet du même sujet",
+      "legal_nature": "GOVERNANCE",
+      "legal_nature_marker": "jurisdiction"
+    },
+    {
+      "id": 377,
+      "theme": "PREAMBLE_SCOPE",
+      "block_id": 92,
+      "is_block_start": true,
+      "rationale": "ouvre cadre, acceptation ou périmètre du service ; indice « 22.1 except as they may be supplemented by additional terms »",
+      "rationale_codes": {
+        "decision_trigger": "numbering",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "22.1 except as they may be supplemented by additional terms",
+        "revised_from_plan": false,
+        "confidence": 0.82
+      },
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 378,
+      "theme": "PREAMBLE_SCOPE",
+      "block_id": 92,
+      "is_block_start": false,
+      "reason": "continue PREAMBLE_SCOPE, précision ou effet du même sujet",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 379,
+      "theme": "PREAMBLE_SCOPE",
+      "block_id": 92,
+      "is_block_start": false,
+      "reason": "continue PREAMBLE_SCOPE, précision ou effet du même sujet",
+      "legal_nature": "PROHIBITION",
+      "legal_nature_marker": "do not"
+    },
+    {
+      "id": 380,
+      "theme": "PREAMBLE_SCOPE",
+      "block_id": 92,
+      "is_block_start": false,
+      "reason": "continue PREAMBLE_SCOPE, précision ou effet du même sujet",
+      "legal_nature": "PROHIBITION",
+      "legal_nature_marker": "will not"
+    },
+    {
+      "id": 381,
+      "theme": "PREAMBLE_SCOPE",
+      "block_id": 92,
+      "is_block_start": false,
+      "reason": "continue PREAMBLE_SCOPE, précision ou effet du même sujet",
+      "legal_nature": "PROHIBITION",
+      "legal_nature_marker": "will not"
+    },
+    {
+      "id": 382,
+      "theme": "PREAMBLE_SCOPE",
+      "block_id": 92,
+      "is_block_start": false,
+      "reason": "continue PREAMBLE_SCOPE, précision ou effet du même sujet",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 383,
+      "theme": "ACCEPTABLE_USE",
+      "block_id": 93,
+      "is_block_start": true,
+      "rationale": "ouvre règles d'usage, restrictions, conduite ou interdictions ; indice « 22.6 you may not assign , transfer or delegate this »",
+      "rationale_codes": {
+        "decision_trigger": "numbering",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "22.6 you may not assign , transfer or delegate this",
+        "revised_from_plan": false,
+        "confidence": 0.82
+      },
+      "legal_nature": "PROHIBITION",
+      "legal_nature_marker": "may not"
+    },
+    {
+      "id": 384,
+      "theme": "ACCEPTABLE_USE",
+      "block_id": 93,
+      "is_block_start": false,
+      "reason": "continue ACCEPTABLE_USE, précision ou effet du même sujet",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 385,
+      "theme": "TERMINATION",
+      "block_id": 94,
+      "is_block_start": true,
+      "rationale": "ouvre suspension, annulation, suppression ou résiliation ; indice « your right to terminate this agreement at any time remains »",
+      "rationale_codes": {
+        "decision_trigger": "modal_verb",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "your right to terminate this agreement at any time remains",
+        "revised_from_plan": false,
+        "confidence": 0.82
+      },
+      "legal_nature": "GOVERNANCE",
+      "legal_nature_marker": "terminate"
+    },
+    {
+      "id": 386,
+      "theme": "PREAMBLE_SCOPE",
+      "block_id": 95,
+      "is_block_start": true,
+      "rationale": "ouvre cadre, acceptation ou périmètre du service ; indice « 22.7 unless specified otherwise , any notices or other communications »",
+      "rationale_codes": {
+        "decision_trigger": "numbering",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "22.7 unless specified otherwise , any notices or other communications",
+        "revised_from_plan": false,
+        "confidence": 0.82
+      },
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 387,
+      "theme": "PREAMBLE_SCOPE",
+      "block_id": 95,
+      "is_block_start": false,
+      "reason": "continue PREAMBLE_SCOPE, précision ou effet du même sujet",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 388,
+      "theme": "META",
+      "block_id": 96,
+      "is_block_start": true,
+      "rationale": "ouvre date, adresse, URL ou identité d'entité ; indice « 22.8 if you reside in the eu you can access »",
+      "rationale_codes": {
+        "decision_trigger": "numbering",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "22.8 if you reside in the eu you can access",
+        "revised_from_plan": false,
+        "confidence": 0.82
+      },
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 389,
+      "theme": "META",
+      "block_id": 96,
+      "is_block_start": false,
+      "reason": "continue META, précision ou effet du même sujet",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 390,
+      "theme": "PREAMBLE_SCOPE",
+      "block_id": 97,
+      "is_block_start": true,
+      "rationale": "ouvre cadre, acceptation ou périmètre du service ; indice « 22.9 if you have any questions about these terms please »",
+      "rationale_codes": {
+        "decision_trigger": "numbering",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "22.9 if you have any questions about these terms please",
+        "revised_from_plan": false,
+        "confidence": 0.82
+      },
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    }
+  ]
+}

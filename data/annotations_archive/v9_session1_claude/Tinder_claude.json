@@ -1,0 +1,1765 @@
+{
+  "doc": "Tinder",
+  "judge": "claude",
+  "version": "v9.0",
+  "document_plan": {
+    "estimated_n_blocks": 24,
+    "rationale_global": "Document NARRATIVE sans numérotation, mais avec quelques libellés-titres nominaux (ids 31, 113) et plusieurs chapeaux de listes (you represent and warrant that :, you agree not to :, you will not :, copyright info :). Sur-segmentation V8.1 à corriger : les items de listes héritent de leur chapeau, les conséquences/procédures (refunds, notices, renewal mechanics) prolongent leur principe. Profil thématique : avis CA initial (META/SUBSCRIPTION), préambule, modification des termes, éligibilité/compte, Tinder Stacks, modification du service & résiliation, sécurité, licence d'accès + interdictions, contenu utilisateur, conduite, paiement/abonnement (IAP puis Tinder Online), virtual items, remboursements, DMCA, garanties, tiers, limitation de responsabilité, arbitrage, loi applicable, indemnisation, boilerplate. ~27 sujets juridiques autonomes anticipés.",
+    "segments": [
+      {"start_id": 0, "theme": "SUBSCRIPTION_RENEWAL", "rationale": "avis légal californien sur l'annulation d'abonnement en tête de document", "evidence_span": "notice to california subscribers"},
+      {"start_id": 4, "theme": "MODIFICATION_OF_TERMS", "rationale": "résumé des changements de version", "evidence_span": "key changes in this version"},
+      {"start_id": 6, "theme": "PREAMBLE_SCOPE", "rationale": "ouverture du contrat et acceptation des termes", "evidence_span": "welcome to tinder"},
+      {"start_id": 10, "theme": "MODIFICATION_OF_TERMS", "rationale": "droit de modifier l'accord", "evidence_span": "we may make changes to this agreement"},
+      {"start_id": 16, "theme": "ELIGIBILITY_ACCOUNT", "rationale": "âge minimum, représentations à la création de compte et sécurité des identifiants (Facebook inclus en continuation)", "evidence_span": "at least 18 years of age"},
+      {"start_id": 27, "theme": "OTHER_tinder_stacks", "rationale": "description de la fonctionnalité Tinder Stacks", "evidence_span": "tinder stacks is an imessage app"},
+      {"start_id": 31, "theme": "TERMINATION", "rationale": "titre de section modification des services et résiliation", "evidence_span": "modifying the services and termination"},
+      {"start_id": 38, "theme": "OTHER_safety", "rationale": "titre de section sécurité et interactions entre utilisateurs", "evidence_span": "your interactions with other users"},
+      {"start_id": 47, "theme": "LICENSE_IP", "rationale": "octroi de licence d'accès au service", "evidence_span": "tinder grants you a personal"},
+      {"start_id": 49, "theme": "ACCEPTABLE_USE", "rationale": "chapeau d'interdictions d'usage", "evidence_span": "you agree not to"},
+      {"start_id": 67, "theme": "USER_CONTENT", "rationale": "licence sur le contenu utilisateur", "evidence_span": "you grant to tinder a worldwide"},
+      {"start_id": 78, "theme": "ACCEPTABLE_USE", "rationale": "chapeau d'interdictions de conduite/contenu", "evidence_span": "you agree that you will not"},
+      {"start_id": 92, "theme": "PAYMENT_BILLING", "rationale": "achats intégrés via software stores", "evidence_span": "in app purchases"},
+      {"start_id": 99, "theme": "PAYMENT_BILLING", "rationale": "paiement via Tinder Online", "evidence_span": "purchase through tinder online"},
+      {"start_id": 113, "theme": "PAYMENT_BILLING", "rationale": "titre de section virtual items et super likes", "evidence_span": "super likes and other virtual items"},
+      {"start_id": 129, "theme": "PAYMENT_BILLING", "rationale": "politique générale de non-remboursement et exceptions", "evidence_span": "all charges for purchases are nonrefundable"},
+      {"start_id": 145, "theme": "OTHER_dmca_copyright", "rationale": "titre de section procédure DMCA", "evidence_span": "making claims of copyright infringement"},
+      {"start_id": 156, "theme": "WARRANTY_DISCLAIMER", "rationale": "exclusion de garanties as-is", "evidence_span": "as is"},
+      {"start_id": 160, "theme": "THIRD_PARTY", "rationale": "contenus et liens tiers", "evidence_span": "advertisements and promotions offered by third parties"},
+      {"start_id": 164, "theme": "LIABILITY_LIMITATION", "rationale": "limitation de responsabilité", "evidence_span": "in no event will tinder"},
+      {"start_id": 167, "theme": "DISPUTE_ARBITRATION", "rationale": "titre de section arbitrage et renonciation à l'action collective", "evidence_span": "arbitration , class-action waiver"},
+      {"start_id": 183, "theme": "GOVERNING_LAW", "rationale": "loi applicable de l'État du Texas", "evidence_span": "governed by the laws of the state of texas"},
+      {"start_id": 189, "theme": "INDEMNIFICATION", "rationale": "obligation d'indemnisation", "evidence_span": "indemnify , defend and hold harmless"},
+      {"start_id": 190, "theme": "MISC_BOILERPLATE", "rationale": "intégralité de l'accord, divisibilité, renonciation", "evidence_span": "entire agreement"}
+    ]
+  },
+  "annotations": [
+    {
+      "id": 0,
+      "theme": "SUBSCRIPTION_RENEWAL",
+      "function": "SCOPE_APPLICABILITY",
+      "block_id": 0,
+      "is_block_start": true,
+      "rationale": "ouverture du document par un avis légal californien sur l'annulation d'abonnement",
+      "rationale_codes": {
+        "decision_trigger": "document_start",
+        "relation_to_prev": "document_start",
+        "evidence_span": "notice to california subscribers",
+        "revised_from_plan": false,
+        "confidence": 0.9
+      }
+    },
+    {
+      "id": 1,
+      "theme": "SUBSCRIPTION_RENEWAL",
+      "function": "PROCEDURE_MECHANISM",
+      "block_id": 0,
+      "is_block_start": false,
+      "reason": "continue SUBSCRIPTION_RENEWAL, modalité de remboursement Apple liée à l'annulation"
+    },
+    {
+      "id": 2,
+      "theme": "SUBSCRIPTION_RENEWAL",
+      "function": "PROCEDURE_MECHANISM",
+      "block_id": 0,
+      "is_block_start": false,
+      "reason": "continue SUBSCRIPTION_RENEWAL, procédure de demande de remboursement"
+    },
+    {
+      "id": 3,
+      "theme": "SUBSCRIPTION_RENEWAL",
+      "function": "PROCEDURE_MECHANISM",
+      "block_id": 0,
+      "is_block_start": false,
+      "reason": "continue SUBSCRIPTION_RENEWAL, procédure de remboursement Google Play / Tinder Online"
+    },
+    {
+      "id": 4,
+      "theme": "MODIFICATION_OF_TERMS",
+      "function": "META",
+      "block_id": 1,
+      "is_block_start": true,
+      "rationale": "résumé des changements introduits dans cette version des termes (nouveau sujet : modification de version)",
+      "rationale_codes": {
+        "decision_trigger": "topic_keyword",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "key changes in this version",
+        "revised_from_plan": false,
+        "confidence": 0.75
+      }
+    },
+    {
+      "id": 5,
+      "theme": "MODIFICATION_OF_TERMS",
+      "function": "META",
+      "block_id": 1,
+      "is_block_start": false,
+      "reason": "continue le résumé de version, renvoi factuel vers le sommaire des termes"
+    },
+    {
+      "id": 6,
+      "theme": "PREAMBLE_SCOPE",
+      "function": "SCOPE_APPLICABILITY",
+      "block_id": 2,
+      "is_block_start": true,
+      "rationale": "véritable préambule du contrat : identité de l'entité et bienvenue",
+      "rationale_codes": {
+        "decision_trigger": "topic_keyword",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "welcome to tinder",
+        "revised_from_plan": false,
+        "confidence": 0.85
+      }
+    },
+    {
+      "id": 7,
+      "theme": "PREAMBLE_SCOPE",
+      "function": "SCOPE_APPLICABILITY",
+      "block_id": 2,
+      "is_block_start": false,
+      "reason": "continue PREAMBLE_SCOPE, libellé annonçant l'acceptation des termes"
+    },
+    {
+      "id": 8,
+      "theme": "PREAMBLE_SCOPE",
+      "function": "SCOPE_APPLICABILITY",
+      "block_id": 2,
+      "is_block_start": false,
+      "reason": "continue PREAMBLE_SCOPE, modalité d'acceptation par l'usage du service"
+    },
+    {
+      "id": 9,
+      "theme": "PREAMBLE_SCOPE",
+      "function": "SCOPE_APPLICABILITY",
+      "block_id": 2,
+      "is_block_start": false,
+      "reason": "continue PREAMBLE_SCOPE, conséquence du refus des termes"
+    },
+    {
+      "id": 10,
+      "theme": "MODIFICATION_OF_TERMS",
+      "function": "GOVERNANCE",
+      "block_id": 3,
+      "is_block_start": true,
+      "rationale": "nouveau sujet autonome : droit de modifier l'accord et les services",
+      "rationale_codes": {
+        "decision_trigger": "topic_keyword",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "we may make changes to this agreement",
+        "revised_from_plan": false,
+        "confidence": 0.9
+      }
+    },
+    {
+      "id": 11,
+      "theme": "MODIFICATION_OF_TERMS",
+      "function": "PROCEDURE_MECHANISM",
+      "block_id": 3,
+      "is_block_start": false,
+      "reason": "continue MODIFICATION_OF_TERMS, motifs des modifications"
+    },
+    {
+      "id": 12,
+      "theme": "MODIFICATION_OF_TERMS",
+      "function": "PROCEDURE_MECHANISM",
+      "block_id": 3,
+      "is_block_start": false,
+      "reason": "continue MODIFICATION_OF_TERMS, mécanisme de publication de la version la plus récente"
+    },
+    {
+      "id": 13,
+      "theme": "MODIFICATION_OF_TERMS",
+      "function": "PROCEDURE_MECHANISM",
+      "block_id": 3,
+      "is_block_start": false,
+      "reason": "continue MODIFICATION_OF_TERMS, précision sur la version applicable"
+    },
+    {
+      "id": 14,
+      "theme": "MODIFICATION_OF_TERMS",
+      "function": "PROCEDURE_MECHANISM",
+      "block_id": 3,
+      "is_block_start": false,
+      "reason": "continue MODIFICATION_OF_TERMS, notification des changements matériels"
+    },
+    {
+      "id": 15,
+      "theme": "MODIFICATION_OF_TERMS",
+      "function": "PROCEDURE_MECHANISM",
+      "block_id": 3,
+      "is_block_start": false,
+      "reason": "continue MODIFICATION_OF_TERMS, acceptation par poursuite de l'usage"
+    },
+    {
+      "id": 16,
+      "theme": "ELIGIBILITY_ACCOUNT",
+      "function": "OBLIGATION",
+      "block_id": 4,
+      "is_block_start": true,
+      "rationale": "nouveau sujet : condition d'âge minimum pour créer un compte",
+      "rationale_codes": {
+        "decision_trigger": "topic_keyword",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "at least 18 years of age",
+        "revised_from_plan": false,
+        "confidence": 0.9
+      }
+    },
+    {
+      "id": 17,
+      "theme": "ELIGIBILITY_ACCOUNT",
+      "function": "OBLIGATION",
+      "block_id": 4,
+      "is_block_start": false,
+      "reason": "chapeau de liste des représentations et garanties à la création de compte"
+    },
+    {
+      "id": 18,
+      "theme": "ELIGIBILITY_ACCOUNT",
+      "function": "OBLIGATION",
+      "block_id": 4,
+      "is_block_start": false,
+      "reason": "item de liste rattaché au chapeau (capacité de contracter)"
+    },
+    {
+      "id": 19,
+      "theme": "ELIGIBILITY_ACCOUNT",
+      "function": "OBLIGATION",
+      "block_id": 4,
+      "is_block_start": false,
+      "reason": "item de liste rattaché au chapeau (non-interdiction d'usage)"
+    },
+    {
+      "id": 20,
+      "theme": "ELIGIBILITY_ACCOUNT",
+      "function": "OBLIGATION",
+      "block_id": 4,
+      "is_block_start": false,
+      "reason": "item de liste rattaché au chapeau (conformité aux lois)"
+    },
+    {
+      "id": 21,
+      "theme": "ELIGIBILITY_ACCOUNT",
+      "function": "OBLIGATION",
+      "block_id": 4,
+      "is_block_start": false,
+      "reason": "item de liste rattaché au chapeau (absence de condamnation/inscription)"
+    },
+    {
+      "id": 22,
+      "theme": "ELIGIBILITY_ACCOUNT",
+      "function": "PROCEDURE_MECHANISM",
+      "block_id": 4,
+      "is_block_start": false,
+      "reason": "continue ELIGIBILITY_ACCOUNT, modalité de connexion via Facebook (même sujet compte)"
+    },
+    {
+      "id": 23,
+      "theme": "ELIGIBILITY_ACCOUNT",
+      "function": "PROCEDURE_MECHANISM",
+      "block_id": 4,
+      "is_block_start": false,
+      "reason": "continue ELIGIBILITY_ACCOUNT, autorisation d'accès aux infos Facebook"
+    },
+    {
+      "id": 24,
+      "theme": "ELIGIBILITY_ACCOUNT",
+      "function": "PROCEDURE_MECHANISM",
+      "block_id": 4,
+      "is_block_start": false,
+      "reason": "continue ELIGIBILITY_ACCOUNT, renvoi vers la privacy policy (prolongement)"
+    },
+    {
+      "id": 25,
+      "theme": "ELIGIBILITY_ACCOUNT",
+      "function": "OBLIGATION",
+      "block_id": 4,
+      "is_block_start": false,
+      "reason": "continue ELIGIBILITY_ACCOUNT, responsabilité de la confidentialité des identifiants"
+    },
+    {
+      "id": 26,
+      "theme": "ELIGIBILITY_ACCOUNT",
+      "function": "PROCEDURE_MECHANISM",
+      "block_id": 4,
+      "is_block_start": false,
+      "reason": "continue ELIGIBILITY_ACCOUNT, procédure en cas d'accès non autorisé au compte"
+    },
+    {
+      "id": 27,
+      "theme": "OTHER_tinder_stacks",
+      "function": "SCOPE_APPLICABILITY",
+      "block_id": 5,
+      "is_block_start": true,
+      "rationale": "nouveau sujet : description de la fonctionnalité distincte Tinder Stacks",
+      "rationale_codes": {
+        "decision_trigger": "topic_keyword",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "tinder stacks is an imessage app",
+        "revised_from_plan": false,
+        "confidence": 0.75
+      }
+    },
+    {
+      "id": 28,
+      "theme": "OTHER_tinder_stacks",
+      "function": "PROCEDURE_MECHANISM",
+      "block_id": 5,
+      "is_block_start": false,
+      "reason": "continue OTHER_tinder_stacks, description du fonctionnement (création de card stack)"
+    },
+    {
+      "id": 29,
+      "theme": "OTHER_tinder_stacks",
+      "function": "PROCEDURE_MECHANISM",
+      "block_id": 5,
+      "is_block_start": false,
+      "reason": "continue OTHER_tinder_stacks, description du vote sur les photos"
+    },
+    {
+      "id": 30,
+      "theme": "OTHER_tinder_stacks",
+      "function": "PROCEDURE_MECHANISM",
+      "block_id": 5,
+      "is_block_start": false,
+      "reason": "continue OTHER_tinder_stacks, précision sur le fonctionnement séparé du service principal"
+    },
+    {
+      "id": 31,
+      "theme": "TERMINATION",
+      "function": "GOVERNANCE",
+      "block_id": 6,
+      "is_block_start": true,
+      "rationale": "titre nominal de section annonçant modification des services et résiliation",
+      "rationale_codes": {
+        "decision_trigger": "title_marker",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "modifying the services and termination",
+        "revised_from_plan": false,
+        "confidence": 0.85
+      }
+    },
+    {
+      "id": 32,
+      "theme": "TERMINATION",
+      "function": "PROCEDURE_MECHANISM",
+      "block_id": 6,
+      "is_block_start": false,
+      "reason": "continue TERMINATION, intention d'améliorer les services (cadrage de la section)"
+    },
+    {
+      "id": 33,
+      "theme": "TERMINATION",
+      "function": "PROCEDURE_MECHANISM",
+      "block_id": 6,
+      "is_block_start": false,
+      "reason": "continue TERMINATION, mécanisme d'ajout/retrait de fonctionnalités et de suspension"
+    },
+    {
+      "id": 34,
+      "theme": "TERMINATION",
+      "function": "GOVERNANCE",
+      "block_id": 6,
+      "is_block_start": false,
+      "reason": "continue TERMINATION, droit de l'utilisateur de résilier son compte"
+    },
+    {
+      "id": 35,
+      "theme": "TERMINATION",
+      "function": "GOVERNANCE",
+      "block_id": 6,
+      "is_block_start": false,
+      "reason": "continue TERMINATION, droit de Tinder de résilier le compte"
+    },
+    {
+      "id": 36,
+      "theme": "TERMINATION",
+      "function": "PROCEDURE_MECHANISM",
+      "block_id": 6,
+      "is_block_start": false,
+      "reason": "continue TERMINATION, conséquence : absence de remboursement après résiliation"
+    },
+    {
+      "id": 37,
+      "theme": "TERMINATION",
+      "function": "PROCEDURE_MECHANISM",
+      "block_id": 6,
+      "is_block_start": false,
+      "reason": "continue TERMINATION, effet : survie de certaines clauses après résiliation"
+    },
+    {
+      "id": 38,
+      "theme": "OTHER_safety",
+      "function": "SCOPE_APPLICABILITY",
+      "block_id": 7,
+      "is_block_start": true,
+      "rationale": "titre nominal de section sécurité et interactions avec les autres utilisateurs",
+      "rationale_codes": {
+        "decision_trigger": "title_marker",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "your interactions with other users",
+        "revised_from_plan": false,
+        "confidence": 0.8
+      }
+    },
+    {
+      "id": 39,
+      "theme": "OTHER_safety",
+      "function": "LIMITATION_DISCLAIMER",
+      "block_id": 7,
+      "is_block_start": false,
+      "reason": "continue OTHER_safety, Tinder non responsable de la conduite des utilisateurs"
+    },
+    {
+      "id": 40,
+      "theme": "OTHER_safety",
+      "function": "OBLIGATION",
+      "block_id": 7,
+      "is_block_start": false,
+      "reason": "continue OTHER_safety, obligation de prudence dans les interactions"
+    },
+    {
+      "id": 41,
+      "theme": "OTHER_safety",
+      "function": "OBLIGATION",
+      "block_id": 7,
+      "is_block_start": false,
+      "reason": "continue OTHER_safety, obligation de suivre les conseils de sécurité"
+    },
+    {
+      "id": 42,
+      "theme": "OTHER_safety",
+      "function": "OBLIGATION",
+      "block_id": 7,
+      "is_block_start": false,
+      "reason": "continue OTHER_safety, recommandation de ne pas envoyer d'argent"
+    },
+    {
+      "id": 43,
+      "theme": "OTHER_safety",
+      "function": "PROCEDURE_MECHANISM",
+      "block_id": 7,
+      "is_block_start": false,
+      "reason": "continue OTHER_safety, responsabilité de l'utilisateur pour ses interactions"
+    },
+    {
+      "id": 44,
+      "theme": "OTHER_safety",
+      "function": "LIMITATION_DISCLAIMER",
+      "block_id": 7,
+      "is_block_start": false,
+      "reason": "continue OTHER_safety, Tinder ne fait pas de vérification d'antécédents"
+    },
+    {
+      "id": 45,
+      "theme": "OTHER_safety",
+      "function": "LIMITATION_DISCLAIMER",
+      "block_id": 7,
+      "is_block_start": false,
+      "reason": "continue OTHER_safety, aucune garantie sur la conduite des utilisateurs"
+    },
+    {
+      "id": 46,
+      "theme": "OTHER_safety",
+      "function": "PROCEDURE_MECHANISM",
+      "block_id": 7,
+      "is_block_start": false,
+      "reason": "continue OTHER_safety, droit de Tinder de mener des vérifications d'antécédents"
+    },
+    {
+      "id": 47,
+      "theme": "LICENSE_IP",
+      "function": "RIGHT_GRANT",
+      "block_id": 8,
+      "is_block_start": true,
+      "rationale": "nouveau sujet : octroi d'une licence personnelle d'accès au service",
+      "rationale_codes": {
+        "decision_trigger": "topic_keyword",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "tinder grants you a personal",
+        "revised_from_plan": false,
+        "confidence": 0.9
+      }
+    },
+    {
+      "id": 48,
+      "theme": "LICENSE_IP",
+      "function": "PROCEDURE_MECHANISM",
+      "block_id": 8,
+      "is_block_start": false,
+      "reason": "continue LICENSE_IP, but de la licence (prolongement de l'octroi)"
+    },
+    {
+      "id": 49,
+      "theme": "ACCEPTABLE_USE",
+      "function": "PROHIBITION",
+      "block_id": 9,
+      "is_block_start": true,
+      "rationale": "chapeau d'une liste d'interdictions d'usage du service",
+      "rationale_codes": {
+        "decision_trigger": "topic_keyword",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "you agree not to",
+        "revised_from_plan": false,
+        "confidence": 0.85
+      }
+    },
+    {
+      "id": 50,
+      "theme": "ACCEPTABLE_USE",
+      "function": "PROHIBITION",
+      "block_id": 9,
+      "is_block_start": false,
+      "reason": "item de liste rattaché au chapeau (usage commercial interdit)"
+    },
+    {
+      "id": 51,
+      "theme": "ACCEPTABLE_USE",
+      "function": "PROHIBITION",
+      "block_id": 9,
+      "is_block_start": false,
+      "reason": "item de liste rattaché au chapeau (reproduction de propriété intellectuelle)"
+    },
+    {
+      "id": 52,
+      "theme": "ACCEPTABLE_USE",
+      "function": "PROHIBITION",
+      "block_id": 9,
+      "is_block_start": false,
+      "reason": "item de liste rattaché au chapeau (faux endossement)"
+    },
+    {
+      "id": 53,
+      "theme": "ACCEPTABLE_USE",
+      "function": "PROHIBITION",
+      "block_id": 9,
+      "is_block_start": false,
+      "reason": "item de liste rattaché au chapeau (bots, scraping)"
+    },
+    {
+      "id": 54,
+      "theme": "ACCEPTABLE_USE",
+      "function": "PROHIBITION",
+      "block_id": 9,
+      "is_block_start": false,
+      "reason": "item de liste rattaché au chapeau (interférence avec le service)"
+    },
+    {
+      "id": 55,
+      "theme": "ACCEPTABLE_USE",
+      "function": "PROHIBITION",
+      "block_id": 9,
+      "is_block_start": false,
+      "reason": "item de liste rattaché au chapeau (virus, code malveillant)"
+    },
+    {
+      "id": 56,
+      "theme": "ACCEPTABLE_USE",
+      "function": "PROHIBITION",
+      "block_id": 9,
+      "is_block_start": false,
+      "reason": "item de liste rattaché au chapeau (falsification d'en-têtes)"
+    },
+    {
+      "id": 57,
+      "theme": "ACCEPTABLE_USE",
+      "function": "PROHIBITION",
+      "block_id": 9,
+      "is_block_start": false,
+      "reason": "item de liste rattaché au chapeau (frame/mirror)"
+    },
+    {
+      "id": 58,
+      "theme": "ACCEPTABLE_USE",
+      "function": "PROHIBITION",
+      "block_id": 9,
+      "is_block_start": false,
+      "reason": "item de liste rattaché au chapeau (meta tags trompeurs)"
+    },
+    {
+      "id": 59,
+      "theme": "ACCEPTABLE_USE",
+      "function": "PROHIBITION",
+      "block_id": 9,
+      "is_block_start": false,
+      "reason": "item de liste rattaché au chapeau (reverse engineering)"
+    },
+    {
+      "id": 60,
+      "theme": "ACCEPTABLE_USE",
+      "function": "PROHIBITION",
+      "block_id": 9,
+      "is_block_start": false,
+      "reason": "item de liste rattaché au chapeau (applications tierces)"
+    },
+    {
+      "id": 61,
+      "theme": "ACCEPTABLE_USE",
+      "function": "PROHIBITION",
+      "block_id": 9,
+      "is_block_start": false,
+      "reason": "item de liste rattaché au chapeau (usage de l'API)"
+    },
+    {
+      "id": 62,
+      "theme": "ACCEPTABLE_USE",
+      "function": "PROHIBITION",
+      "block_id": 9,
+      "is_block_start": false,
+      "reason": "item de liste rattaché au chapeau (probe/scan/test de vulnérabilité)"
+    },
+    {
+      "id": 63,
+      "theme": "ACCEPTABLE_USE",
+      "function": "PROHIBITION",
+      "block_id": 9,
+      "is_block_start": false,
+      "reason": "item de liste rattaché au chapeau (encourager des violations)"
+    },
+    {
+      "id": 64,
+      "theme": "ACCEPTABLE_USE",
+      "function": "PROCEDURE_MECHANISM",
+      "block_id": 9,
+      "is_block_start": false,
+      "reason": "continue ACCEPTABLE_USE, conséquence : enquête et action légale en cas d'usage illégal"
+    },
+    {
+      "id": 65,
+      "theme": "ACCEPTABLE_USE",
+      "function": "PROCEDURE_MECHANISM",
+      "block_id": 9,
+      "is_block_start": false,
+      "reason": "continue ACCEPTABLE_USE, mécanisme de téléchargement automatique de mises à jour logicielles"
+    },
+    {
+      "id": 66,
+      "theme": "ACCEPTABLE_USE",
+      "function": "PROCEDURE_MECHANISM",
+      "block_id": 9,
+      "is_block_start": false,
+      "reason": "continue ACCEPTABLE_USE, possibilité d'ajuster les téléchargements automatiques"
+    },
+    {
+      "id": 67,
+      "theme": "USER_CONTENT",
+      "function": "RIGHT_GRANT",
+      "block_id": 10,
+      "is_block_start": true,
+      "rationale": "nouveau sujet : licence accordée à Tinder sur le contenu de l'utilisateur",
+      "rationale_codes": {
+        "decision_trigger": "topic_keyword",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "you grant to tinder a worldwide",
+        "revised_from_plan": false,
+        "confidence": 0.85
+      }
+    },
+    {
+      "id": 68,
+      "theme": "USER_CONTENT",
+      "function": "PROCEDURE_MECHANISM",
+      "block_id": 10,
+      "is_block_start": false,
+      "reason": "continue USER_CONTENT, portée et limites de la licence sur le contenu"
+    },
+    {
+      "id": 69,
+      "theme": "USER_CONTENT",
+      "function": "PROCEDURE_MECHANISM",
+      "block_id": 10,
+      "is_block_start": false,
+      "reason": "continue USER_CONTENT, visibilité du contenu par les autres utilisateurs"
+    },
+    {
+      "id": 70,
+      "theme": "USER_CONTENT",
+      "function": "OBLIGATION",
+      "block_id": 10,
+      "is_block_start": false,
+      "reason": "continue USER_CONTENT, garantie d'exactitude et de droit de poster"
+    },
+    {
+      "id": 71,
+      "theme": "USER_CONTENT",
+      "function": "PROCEDURE_MECHANISM",
+      "block_id": 10,
+      "is_block_start": false,
+      "reason": "continue USER_CONTENT, droit de surveiller le contenu posté"
+    },
+    {
+      "id": 72,
+      "theme": "USER_CONTENT",
+      "function": "PROCEDURE_MECHANISM",
+      "block_id": 10,
+      "is_block_start": false,
+      "reason": "continue USER_CONTENT, droit de supprimer le contenu en violation"
+    },
+    {
+      "id": 73,
+      "theme": "USER_CONTENT",
+      "function": "OBLIGATION",
+      "block_id": 10,
+      "is_block_start": false,
+      "reason": "continue USER_CONTENT, obligation de respect envers le support client (conduite liée au contenu/communication)"
+    },
+    {
+      "id": 74,
+      "theme": "USER_CONTENT",
+      "function": "PROCEDURE_MECHANISM",
+      "block_id": 10,
+      "is_block_start": false,
+      "reason": "continue USER_CONTENT, conséquence : résiliation en cas de comportement menaçant"
+    },
+    {
+      "id": 75,
+      "theme": "USER_CONTENT",
+      "function": "RIGHT_GRANT",
+      "block_id": 10,
+      "is_block_start": false,
+      "reason": "continue USER_CONTENT, droit de placer de la publicité (prolongement sur le contenu du service)"
+    },
+    {
+      "id": 76,
+      "theme": "USER_CONTENT",
+      "function": "RIGHT_GRANT",
+      "block_id": 10,
+      "is_block_start": false,
+      "reason": "continue USER_CONTENT, licence sur les suggestions/feedback fournis"
+    },
+    {
+      "id": 77,
+      "theme": "USER_CONTENT",
+      "function": "RIGHT_GRANT",
+      "block_id": 10,
+      "is_block_start": false,
+      "reason": "continue USER_CONTENT, droit de divulguer le contenu/compte si requis par la loi"
+    },
+    {
+      "id": 78,
+      "theme": "ACCEPTABLE_USE",
+      "function": "PROHIBITION",
+      "block_id": 11,
+      "is_block_start": true,
+      "rationale": "chapeau d'une nouvelle liste d'interdictions de conduite et de contenu",
+      "rationale_codes": {
+        "decision_trigger": "topic_keyword",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "you agree that you will not",
+        "revised_from_plan": true,
+        "confidence": 0.8
+      }
+    },
+    {
+      "id": 79,
+      "theme": "ACCEPTABLE_USE",
+      "function": "PROHIBITION",
+      "block_id": 11,
+      "is_block_start": false,
+      "reason": "item de liste rattaché au chapeau (usage illégal)"
+    },
+    {
+      "id": 80,
+      "theme": "ACCEPTABLE_USE",
+      "function": "PROHIBITION",
+      "block_id": 11,
+      "is_block_start": false,
+      "reason": "item de liste rattaché au chapeau (spam, fraude)"
+    },
+    {
+      "id": 81,
+      "theme": "ACCEPTABLE_USE",
+      "function": "PROHIBITION",
+      "block_id": 11,
+      "is_block_start": false,
+      "reason": "item de liste rattaché au chapeau (usurpation d'identité)"
+    },
+    {
+      "id": 82,
+      "theme": "ACCEPTABLE_USE",
+      "function": "PROHIBITION",
+      "block_id": 11,
+      "is_block_start": false,
+      "reason": "item de liste rattaché au chapeau (harcèlement, stalking)"
+    },
+    {
+      "id": 83,
+      "theme": "ACCEPTABLE_USE",
+      "function": "PROHIBITION",
+      "block_id": 11,
+      "is_block_start": false,
+      "reason": "item de liste rattaché au chapeau (atteinte aux droits d'autrui)"
+    },
+    {
+      "id": 84,
+      "theme": "ACCEPTABLE_USE",
+      "function": "PROHIBITION",
+      "block_id": 11,
+      "is_block_start": false,
+      "reason": "item de liste rattaché au chapeau (contenu haineux, sexuellement explicite)"
+    },
+    {
+      "id": 85,
+      "theme": "ACCEPTABLE_USE",
+      "function": "PROHIBITION",
+      "block_id": 11,
+      "is_block_start": false,
+      "reason": "item de liste rattaché au chapeau (promotion du racisme, de la haine)"
+    },
+    {
+      "id": 86,
+      "theme": "ACCEPTABLE_USE",
+      "function": "PROHIBITION",
+      "block_id": 11,
+      "is_block_start": false,
+      "reason": "item de liste rattaché au chapeau (sollicitation de mots de passe/infos)"
+    },
+    {
+      "id": 87,
+      "theme": "ACCEPTABLE_USE",
+      "function": "PROHIBITION",
+      "block_id": 11,
+      "is_block_start": false,
+      "reason": "item de liste rattaché au chapeau (usage du compte d'autrui)"
+    },
+    {
+      "id": 88,
+      "theme": "ACCEPTABLE_USE",
+      "function": "PROHIBITION",
+      "block_id": 11,
+      "is_block_start": false,
+      "reason": "item de liste rattaché au chapeau (recréation de compte après résiliation)"
+    },
+    {
+      "id": 89,
+      "theme": "ACCEPTABLE_USE",
+      "function": "PROCEDURE_MECHANISM",
+      "block_id": 11,
+      "is_block_start": false,
+      "reason": "continue ACCEPTABLE_USE, conséquence : droit d'enquêter/résilier en cas de mésusage"
+    },
+    {
+      "id": 90,
+      "theme": "ACCEPTABLE_USE",
+      "function": "LIMITATION_DISCLAIMER",
+      "block_id": 11,
+      "is_block_start": false,
+      "reason": "continue ACCEPTABLE_USE, le contenu reste la responsabilité de l'utilisateur"
+    },
+    {
+      "id": 91,
+      "theme": "ACCEPTABLE_USE",
+      "function": "PROCEDURE_MECHANISM",
+      "block_id": 11,
+      "is_block_start": false,
+      "reason": "continue ACCEPTABLE_USE, procédure de signalement du contenu en violation"
+    },
+    {
+      "id": 92,
+      "theme": "PAYMENT_BILLING",
+      "function": "PROCEDURE_MECHANISM",
+      "block_id": 12,
+      "is_block_start": true,
+      "rationale": "nouveau sujet : achats intégrés (in app purchases) via software stores",
+      "rationale_codes": {
+        "decision_trigger": "topic_keyword",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "in app purchases",
+        "revised_from_plan": false,
+        "confidence": 0.85
+      }
+    },
+    {
+      "id": 93,
+      "theme": "PAYMENT_BILLING",
+      "function": "PROCEDURE_MECHANISM",
+      "block_id": 12,
+      "is_block_start": false,
+      "reason": "continue PAYMENT_BILLING, mécanisme de facturation de l'IAP account"
+    },
+    {
+      "id": 94,
+      "theme": "PAYMENT_BILLING",
+      "function": "PROCEDURE_MECHANISM",
+      "block_id": 12,
+      "is_block_start": false,
+      "reason": "continue PAYMENT_BILLING, taxe de vente éventuelle"
+    },
+    {
+      "id": 95,
+      "theme": "PAYMENT_BILLING",
+      "function": "PROCEDURE_MECHANISM",
+      "block_id": 12,
+      "is_block_start": false,
+      "reason": "continue PAYMENT_BILLING, facturation continue de l'abonnement auto-renouvelable via IAP (prolongement paiement)"
+    },
+    {
+      "id": 96,
+      "theme": "PAYMENT_BILLING",
+      "function": "PROCEDURE_MECHANISM",
+      "block_id": 12,
+      "is_block_start": false,
+      "reason": "continue PAYMENT_BILLING, mécanisme de reconduction automatique de l'abonnement"
+    },
+    {
+      "id": 97,
+      "theme": "PAYMENT_BILLING",
+      "function": "PROCEDURE_MECHANISM",
+      "block_id": 12,
+      "is_block_start": false,
+      "reason": "continue PAYMENT_BILLING, procédure d'annulation via l'IAP account"
+    },
+    {
+      "id": 98,
+      "theme": "PAYMENT_BILLING",
+      "function": "PROCEDURE_MECHANISM",
+      "block_id": 12,
+      "is_block_start": false,
+      "reason": "continue PAYMENT_BILLING, la suppression du compte n'annule pas l'abonnement"
+    },
+    {
+      "id": 99,
+      "theme": "PAYMENT_BILLING",
+      "function": "OBLIGATION",
+      "block_id": 13,
+      "is_block_start": true,
+      "rationale": "nouveau sujet : paiement via Tinder Online (canal de paiement distinct des IAP)",
+      "rationale_codes": {
+        "decision_trigger": "topic_keyword",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "purchase through tinder online",
+        "revised_from_plan": false,
+        "confidence": 0.7
+      }
+    },
+    {
+      "id": 100,
+      "theme": "PAYMENT_BILLING",
+      "function": "PROCEDURE_MECHANISM",
+      "block_id": 13,
+      "is_block_start": false,
+      "reason": "continue PAYMENT_BILLING, correction d'erreurs de facturation"
+    },
+    {
+      "id": 101,
+      "theme": "PAYMENT_BILLING",
+      "function": "PROCEDURE_MECHANISM",
+      "block_id": 13,
+      "is_block_start": false,
+      "reason": "continue PAYMENT_BILLING, conséquence d'un chargeback (résiliation)"
+    },
+    {
+      "id": 102,
+      "theme": "PAYMENT_BILLING",
+      "function": "PROCEDURE_MECHANISM",
+      "block_id": 13,
+      "is_block_start": false,
+      "reason": "continue PAYMENT_BILLING, abonnement Tinder Online continu jusqu'à annulation"
+    },
+    {
+      "id": 103,
+      "theme": "PAYMENT_BILLING",
+      "function": "PROCEDURE_MECHANISM",
+      "block_id": 13,
+      "is_block_start": false,
+      "reason": "continue PAYMENT_BILLING, mécanisme de reconduction automatique"
+    },
+    {
+      "id": 104,
+      "theme": "PAYMENT_BILLING",
+      "function": "OBLIGATION",
+      "block_id": 13,
+      "is_block_start": false,
+      "reason": "continue PAYMENT_BILLING, acceptation de la reconduction automatique"
+    },
+    {
+      "id": 105,
+      "theme": "PAYMENT_BILLING",
+      "function": "PROCEDURE_MECHANISM",
+      "block_id": 13,
+      "is_block_start": false,
+      "reason": "continue PAYMENT_BILLING, procédure pour ne pas reconduire / annuler"
+    },
+    {
+      "id": 106,
+      "theme": "PAYMENT_BILLING",
+      "function": "PROCEDURE_MECHANISM",
+      "block_id": 13,
+      "is_block_start": false,
+      "reason": "continue PAYMENT_BILLING, effet de l'annulation sur le terme en cours"
+    },
+    {
+      "id": 107,
+      "theme": "PAYMENT_BILLING",
+      "function": "PROCEDURE_MECHANISM",
+      "block_id": 13,
+      "is_block_start": false,
+      "reason": "continue PAYMENT_BILLING, édition du moyen de paiement"
+    },
+    {
+      "id": 108,
+      "theme": "PAYMENT_BILLING",
+      "function": "PROCEDURE_MECHANISM",
+      "block_id": 13,
+      "is_block_start": false,
+      "reason": "continue PAYMENT_BILLING, conséquence d'un paiement non réglé"
+    },
+    {
+      "id": 109,
+      "theme": "PAYMENT_BILLING",
+      "function": "PROCEDURE_MECHANISM",
+      "block_id": 13,
+      "is_block_start": false,
+      "reason": "continue PAYMENT_BILLING, effet sur les dates de facturation"
+    },
+    {
+      "id": 110,
+      "theme": "PAYMENT_BILLING",
+      "function": "PROCEDURE_MECHANISM",
+      "block_id": 13,
+      "is_block_start": false,
+      "reason": "continue PAYMENT_BILLING, autorisation d'obtenir des données de carte mises à jour"
+    },
+    {
+      "id": 111,
+      "theme": "PAYMENT_BILLING",
+      "function": "PROCEDURE_MECHANISM",
+      "block_id": 13,
+      "is_block_start": false,
+      "reason": "continue PAYMENT_BILLING, termes du paiement selon le moyen choisi"
+    },
+    {
+      "id": 112,
+      "theme": "PAYMENT_BILLING",
+      "function": "PROCEDURE_MECHANISM",
+      "block_id": 13,
+      "is_block_start": false,
+      "reason": "continue PAYMENT_BILLING, paiement hors Amériques via une entité spécifique"
+    },
+    {
+      "id": 113,
+      "theme": "PAYMENT_BILLING",
+      "function": "SCOPE_APPLICABILITY",
+      "block_id": 14,
+      "is_block_start": true,
+      "rationale": "titre nominal de section sur les super likes et virtual items",
+      "rationale_codes": {
+        "decision_trigger": "title_marker",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "super likes and other virtual items",
+        "revised_from_plan": false,
+        "confidence": 0.8
+      }
+    },
+    {
+      "id": 114,
+      "theme": "PAYMENT_BILLING",
+      "function": "RIGHT_GRANT",
+      "block_id": 14,
+      "is_block_start": false,
+      "reason": "continue virtual items, licence d'usage des virtual items achetés"
+    },
+    {
+      "id": 115,
+      "theme": "PAYMENT_BILLING",
+      "function": "PROHIBITION",
+      "block_id": 14,
+      "is_block_start": false,
+      "reason": "continue virtual items, achat uniquement via le service"
+    },
+    {
+      "id": 116,
+      "theme": "PAYMENT_BILLING",
+      "function": "PROCEDURE_MECHANISM",
+      "block_id": 14,
+      "is_block_start": false,
+      "reason": "continue virtual items, nature de licence des virtual items"
+    },
+    {
+      "id": 117,
+      "theme": "PAYMENT_BILLING",
+      "function": "PROCEDURE_MECHANISM",
+      "block_id": 14,
+      "is_block_start": false,
+      "reason": "continue virtual items, absence de transfert de propriété"
+    },
+    {
+      "id": 118,
+      "theme": "PAYMENT_BILLING",
+      "function": "PROCEDURE_MECHANISM",
+      "block_id": 14,
+      "is_block_start": false,
+      "reason": "continue virtual items, l'accord n'est pas une vente de droits"
+    },
+    {
+      "id": 119,
+      "theme": "PAYMENT_BILLING",
+      "function": "PROCEDURE_MECHANISM",
+      "block_id": 14,
+      "is_block_start": false,
+      "reason": "continue virtual items, le solde ne reflète aucune valeur réelle"
+    },
+    {
+      "id": 120,
+      "theme": "PAYMENT_BILLING",
+      "function": "PROCEDURE_MECHANISM",
+      "block_id": 14,
+      "is_block_start": false,
+      "reason": "continue virtual items, extinction de la licence à la résiliation"
+    },
+    {
+      "id": 121,
+      "theme": "PAYMENT_BILLING",
+      "function": "RIGHT_GRANT",
+      "block_id": 14,
+      "is_block_start": false,
+      "reason": "continue virtual items, droit de Tinder de facturer l'accès aux virtual items"
+    },
+    {
+      "id": 122,
+      "theme": "PAYMENT_BILLING",
+      "function": "RIGHT_GRANT",
+      "block_id": 14,
+      "is_block_start": false,
+      "reason": "continue virtual items, droit de modifier/éliminer les virtual items"
+    },
+    {
+      "id": 123,
+      "theme": "PAYMENT_BILLING",
+      "function": "LIMITATION_DISCLAIMER",
+      "block_id": 14,
+      "is_block_start": false,
+      "reason": "continue virtual items, absence de responsabilité liée à l'exercice de ces droits"
+    },
+    {
+      "id": 124,
+      "theme": "PAYMENT_BILLING",
+      "function": "PROHIBITION",
+      "block_id": 14,
+      "is_block_start": false,
+      "reason": "continue virtual items, interdiction de transfert des virtual items"
+    },
+    {
+      "id": 125,
+      "theme": "PAYMENT_BILLING",
+      "function": "PROCEDURE_MECHANISM",
+      "block_id": 14,
+      "is_block_start": false,
+      "reason": "continue virtual items, redemption uniquement via le service"
+    },
+    {
+      "id": 126,
+      "theme": "PAYMENT_BILLING",
+      "function": "PROCEDURE_MECHANISM",
+      "block_id": 14,
+      "is_block_start": false,
+      "reason": "continue virtual items, achats finaux et non remboursables"
+    },
+    {
+      "id": 127,
+      "theme": "PAYMENT_BILLING",
+      "function": "PROCEDURE_MECHANISM",
+      "block_id": 14,
+      "is_block_start": false,
+      "reason": "continue virtual items, la fourniture commence dès l'acceptation de l'achat"
+    },
+    {
+      "id": 128,
+      "theme": "PAYMENT_BILLING",
+      "function": "LIMITATION_DISCLAIMER",
+      "block_id": 14,
+      "is_block_start": false,
+      "reason": "continue virtual items, aucune obligation de remboursement des virtual items inutilisés"
+    },
+    {
+      "id": 129,
+      "theme": "PAYMENT_BILLING",
+      "function": "LIMITATION_DISCLAIMER",
+      "block_id": 15,
+      "is_block_start": true,
+      "rationale": "nouveau sujet : politique générale de non-remboursement de tous les achats",
+      "rationale_codes": {
+        "decision_trigger": "topic_keyword",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "all charges for purchases are nonrefundable",
+        "revised_from_plan": true,
+        "confidence": 0.7
+      }
+    },
+    {
+      "id": 130,
+      "theme": "PAYMENT_BILLING",
+      "function": "PROCEDURE_MECHANISM",
+      "block_id": 15,
+      "is_block_start": false,
+      "reason": "continue non-remboursement, exception en cas de demande dans les 14 jours"
+    },
+    {
+      "id": 131,
+      "theme": "PAYMENT_BILLING",
+      "function": "PROCEDURE_MECHANISM",
+      "block_id": 15,
+      "is_block_start": false,
+      "reason": "continue non-remboursement, droit au remboursement intégral pour l'UE/EEE"
+    },
+    {
+      "id": 132,
+      "theme": "PAYMENT_BILLING",
+      "function": "PROCEDURE_MECHANISM",
+      "block_id": 15,
+      "is_block_start": false,
+      "reason": "continue non-remboursement, précision sur le point de départ des 14 jours"
+    },
+    {
+      "id": 133,
+      "theme": "PAYMENT_BILLING",
+      "function": "PROCEDURE_MECHANISM",
+      "block_id": 15,
+      "is_block_start": false,
+      "reason": "continue non-remboursement, chapeau des conditions pour certains États US"
+    },
+    {
+      "id": 134,
+      "theme": "PAYMENT_BILLING",
+      "function": "PROCEDURE_MECHANISM",
+      "block_id": 15,
+      "is_block_start": false,
+      "reason": "continue non-remboursement, annulation sans pénalité (item d'État)"
+    },
+    {
+      "id": 135,
+      "theme": "PAYMENT_BILLING",
+      "function": "PROCEDURE_MECHANISM",
+      "block_id": 15,
+      "is_block_start": false,
+      "reason": "continue non-remboursement, remboursement au décès du souscripteur"
+    },
+    {
+      "id": 136,
+      "theme": "PAYMENT_BILLING",
+      "function": "PROCEDURE_MECHANISM",
+      "block_id": 15,
+      "is_block_start": false,
+      "reason": "continue non-remboursement, remboursement en cas d'invalidité"
+    },
+    {
+      "id": 137,
+      "theme": "PAYMENT_BILLING",
+      "function": "PROCEDURE_MECHANISM",
+      "block_id": 15,
+      "is_block_start": false,
+      "reason": "continue non-remboursement, virtual items finaux et non remboursables (rappel)"
+    },
+    {
+      "id": 138,
+      "theme": "PAYMENT_BILLING",
+      "function": "PROCEDURE_MECHANISM",
+      "block_id": 15,
+      "is_block_start": false,
+      "reason": "continue non-remboursement, remboursements Apple gérés par Apple"
+    },
+    {
+      "id": 139,
+      "theme": "PAYMENT_BILLING",
+      "function": "PROCEDURE_MECHANISM",
+      "block_id": 15,
+      "is_block_start": false,
+      "reason": "continue non-remboursement, procédure de demande de remboursement via iTunes"
+    },
+    {
+      "id": 140,
+      "theme": "PAYMENT_BILLING",
+      "function": "PROCEDURE_MECHANISM",
+      "block_id": 15,
+      "is_block_start": false,
+      "reason": "continue non-remboursement, soumission de demande via URL Apple"
+    },
+    {
+      "id": 141,
+      "theme": "PAYMENT_BILLING",
+      "function": "PROCEDURE_MECHANISM",
+      "block_id": 15,
+      "is_block_start": false,
+      "reason": "continue non-remboursement, procédure Google Play / Tinder Online"
+    },
+    {
+      "id": 142,
+      "theme": "PAYMENT_BILLING",
+      "function": "PROCEDURE_MECHANISM",
+      "block_id": 15,
+      "is_block_start": false,
+      "reason": "continue non-remboursement, possibilité d'envoyer un avis d'annulation signé"
+    },
+    {
+      "id": 143,
+      "theme": "PAYMENT_BILLING",
+      "function": "PROCEDURE_MECHANISM",
+      "block_id": 15,
+      "is_block_start": false,
+      "reason": "continue non-remboursement, informations à inclure dans l'avis"
+    },
+    {
+      "id": 144,
+      "theme": "PAYMENT_BILLING",
+      "function": "PROCEDURE_MECHANISM",
+      "block_id": 15,
+      "is_block_start": false,
+      "reason": "continue non-remboursement, adresse postale d'envoi de l'avis"
+    },
+    {
+      "id": 145,
+      "theme": "OTHER_dmca_copyright",
+      "function": "SCOPE_APPLICABILITY",
+      "block_id": 16,
+      "is_block_start": true,
+      "rationale": "titre nominal de section : avis et procédure de réclamation pour contrefaçon",
+      "rationale_codes": {
+        "decision_trigger": "title_marker",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "making claims of copyright infringement",
+        "revised_from_plan": false,
+        "confidence": 0.85
+      }
+    },
+    {
+      "id": 146,
+      "theme": "OTHER_dmca_copyright",
+      "function": "PROCEDURE_MECHANISM",
+      "block_id": 16,
+      "is_block_start": false,
+      "reason": "chapeau de la liste d'informations à fournir à l'agent copyright"
+    },
+    {
+      "id": 147,
+      "theme": "OTHER_dmca_copyright",
+      "function": "PROCEDURE_MECHANISM",
+      "block_id": 16,
+      "is_block_start": false,
+      "reason": "item de liste rattaché au chapeau (signature)"
+    },
+    {
+      "id": 148,
+      "theme": "OTHER_dmca_copyright",
+      "function": "PROCEDURE_MECHANISM",
+      "block_id": 16,
+      "is_block_start": false,
+      "reason": "item de liste rattaché au chapeau (description de l'œuvre)"
+    },
+    {
+      "id": 149,
+      "theme": "OTHER_dmca_copyright",
+      "function": "PROCEDURE_MECHANISM",
+      "block_id": 16,
+      "is_block_start": false,
+      "reason": "item de liste rattaché au chapeau (localisation du contenu infringeant)"
+    },
+    {
+      "id": 150,
+      "theme": "OTHER_dmca_copyright",
+      "function": "PROCEDURE_MECHANISM",
+      "block_id": 16,
+      "is_block_start": false,
+      "reason": "item de liste rattaché au chapeau (coordonnées de contact)"
+    },
+    {
+      "id": 151,
+      "theme": "OTHER_dmca_copyright",
+      "function": "PROCEDURE_MECHANISM",
+      "block_id": 16,
+      "is_block_start": false,
+      "reason": "item de liste rattaché au chapeau (déclaration de bonne foi)"
+    },
+    {
+      "id": 152,
+      "theme": "OTHER_dmca_copyright",
+      "function": "PROCEDURE_MECHANISM",
+      "block_id": 16,
+      "is_block_start": false,
+      "reason": "item de liste rattaché au chapeau (déclaration sous peine de parjure)"
+    },
+    {
+      "id": 153,
+      "theme": "OTHER_dmca_copyright",
+      "function": "PROCEDURE_MECHANISM",
+      "block_id": 16,
+      "is_block_start": false,
+      "reason": "continue OTHER_dmca_copyright, coordonnées de l'agent copyright"
+    },
+    {
+      "id": 154,
+      "theme": "OTHER_dmca_copyright",
+      "function": "META",
+      "block_id": 16,
+      "is_block_start": false,
+      "reason": "continue OTHER_dmca_copyright, adresse postale de l'agent (donnée factuelle)"
+    },
+    {
+      "id": 155,
+      "theme": "OTHER_dmca_copyright",
+      "function": "PROCEDURE_MECHANISM",
+      "block_id": 16,
+      "is_block_start": false,
+      "reason": "continue OTHER_dmca_copyright, résiliation des comptes de récidivistes"
+    },
+    {
+      "id": 156,
+      "theme": "WARRANTY_DISCLAIMER",
+      "function": "LIMITATION_DISCLAIMER",
+      "block_id": 17,
+      "is_block_start": true,
+      "rationale": "nouveau sujet : exclusion de garanties, service fourni as-is",
+      "rationale_codes": {
+        "decision_trigger": "topic_keyword",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "as is",
+        "revised_from_plan": false,
+        "confidence": 0.9
+      }
+    },
+    {
+      "id": 157,
+      "theme": "WARRANTY_DISCLAIMER",
+      "function": "LIMITATION_DISCLAIMER",
+      "block_id": 17,
+      "is_block_start": false,
+      "reason": "continue WARRANTY_DISCLAIMER, absence de garantie d'absence d'interruption/erreurs"
+    },
+    {
+      "id": 158,
+      "theme": "WARRANTY_DISCLAIMER",
+      "function": "LIMITATION_DISCLAIMER",
+      "block_id": 17,
+      "is_block_start": false,
+      "reason": "continue WARRANTY_DISCLAIMER, aucune responsabilité pour le contenu posté"
+    },
+    {
+      "id": 159,
+      "theme": "WARRANTY_DISCLAIMER",
+      "function": "LIMITATION_DISCLAIMER",
+      "block_id": 17,
+      "is_block_start": false,
+      "reason": "continue WARRANTY_DISCLAIMER, matériel téléchargé à vos propres risques"
+    },
+    {
+      "id": 160,
+      "theme": "THIRD_PARTY",
+      "function": "LIMITATION_DISCLAIMER",
+      "block_id": 18,
+      "is_block_start": true,
+      "rationale": "nouveau sujet : publicités, liens et ressources tiers",
+      "rationale_codes": {
+        "decision_trigger": "topic_keyword",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "advertisements and promotions offered by third parties",
+        "revised_from_plan": false,
+        "confidence": 0.8
+      }
+    },
+    {
+      "id": 161,
+      "theme": "THIRD_PARTY",
+      "function": "LIMITATION_DISCLAIMER",
+      "block_id": 18,
+      "is_block_start": false,
+      "reason": "continue THIRD_PARTY, Tinder non responsable de la disponibilité des sites externes"
+    },
+    {
+      "id": 162,
+      "theme": "THIRD_PARTY",
+      "function": "PROCEDURE_MECHANISM",
+      "block_id": 18,
+      "is_block_start": false,
+      "reason": "continue THIRD_PARTY, les termes des tiers régissent la relation"
+    },
+    {
+      "id": 163,
+      "theme": "THIRD_PARTY",
+      "function": "LIMITATION_DISCLAIMER",
+      "block_id": 18,
+      "is_block_start": false,
+      "reason": "continue THIRD_PARTY, Tinder non responsable des actions des tiers"
+    },
+    {
+      "id": 164,
+      "theme": "LIABILITY_LIMITATION",
+      "function": "LIMITATION_DISCLAIMER",
+      "block_id": 19,
+      "is_block_start": true,
+      "rationale": "nouveau sujet : limitation de responsabilité pour dommages",
+      "rationale_codes": {
+        "decision_trigger": "topic_keyword",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "in no event will tinder",
+        "revised_from_plan": false,
+        "confidence": 0.9
+      }
+    },
+    {
+      "id": 165,
+      "theme": "LIABILITY_LIMITATION",
+      "function": "LIMITATION_DISCLAIMER",
+      "block_id": 19,
+      "is_block_start": false,
+      "reason": "continue LIABILITY_LIMITATION, plafond de la responsabilité agrégée"
+    },
+    {
+      "id": 166,
+      "theme": "LIABILITY_LIMITATION",
+      "function": "PROCEDURE_MECHANISM",
+      "block_id": 19,
+      "is_block_start": false,
+      "reason": "continue LIABILITY_LIMITATION, certaines juridictions n'autorisent pas ces exclusions"
+    },
+    {
+      "id": 167,
+      "theme": "DISPUTE_ARBITRATION",
+      "function": "GOVERNANCE",
+      "block_id": 20,
+      "is_block_start": true,
+      "rationale": "titre nominal de section : arbitrage, renonciation à l'action collective et au jury",
+      "rationale_codes": {
+        "decision_trigger": "title_marker",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "arbitration , class-action waiver",
+        "revised_from_plan": false,
+        "confidence": 0.9
+      }
+    },
+    {
+      "id": 168,
+      "theme": "DISPUTE_ARBITRATION",
+      "function": "SCOPE_APPLICABILITY",
+      "block_id": 20,
+      "is_block_start": false,
+      "reason": "continue DISPUTE_ARBITRATION, exception pour l'UE/EEE (champ d'application)"
+    },
+    {
+      "id": 169,
+      "theme": "DISPUTE_ARBITRATION",
+      "function": "GOVERNANCE",
+      "block_id": 20,
+      "is_block_start": false,
+      "reason": "continue DISPUTE_ARBITRATION, arbitrage comme moyen exclusif de résolution"
+    },
+    {
+      "id": 170,
+      "theme": "DISPUTE_ARBITRATION",
+      "function": "PROCEDURE_MECHANISM",
+      "block_id": 20,
+      "is_block_start": false,
+      "reason": "continue DISPUTE_ARBITRATION, exception du small-claims court"
+    },
+    {
+      "id": 171,
+      "theme": "DISPUTE_ARBITRATION",
+      "function": "PROHIBITION",
+      "block_id": 20,
+      "is_block_start": false,
+      "reason": "continue DISPUTE_ARBITRATION, interdiction d'action collective"
+    },
+    {
+      "id": 172,
+      "theme": "DISPUTE_ARBITRATION",
+      "function": "OBLIGATION",
+      "block_id": 20,
+      "is_block_start": false,
+      "reason": "continue DISPUTE_ARBITRATION, acceptation de l'accord d'arbitrage par l'usage"
+    },
+    {
+      "id": 173,
+      "theme": "DISPUTE_ARBITRATION",
+      "function": "PROCEDURE_MECHANISM",
+      "block_id": 20,
+      "is_block_start": false,
+      "reason": "continue DISPUTE_ARBITRATION, renonciation au droit d'aller en justice"
+    },
+    {
+      "id": 174,
+      "theme": "DISPUTE_ARBITRATION",
+      "function": "PROCEDURE_MECHANISM",
+      "block_id": 20,
+      "is_block_start": false,
+      "reason": "continue DISPUTE_ARBITRATION, renonciation à participer à une action collective"
+    },
+    {
+      "id": 175,
+      "theme": "DISPUTE_ARBITRATION",
+      "function": "PROCEDURE_MECHANISM",
+      "block_id": 20,
+      "is_block_start": false,
+      "reason": "continue DISPUTE_ARBITRATION, droits déterminés par un arbitre neutre"
+    },
+    {
+      "id": 176,
+      "theme": "DISPUTE_ARBITRATION",
+      "function": "PROCEDURE_MECHANISM",
+      "block_id": 20,
+      "is_block_start": false,
+      "reason": "continue DISPUTE_ARBITRATION, droit à une audience équitable"
+    },
+    {
+      "id": 177,
+      "theme": "DISPUTE_ARBITRATION",
+      "function": "PROCEDURE_MECHANISM",
+      "block_id": 20,
+      "is_block_start": false,
+      "reason": "continue DISPUTE_ARBITRATION, pouvoirs et nature de l'arbitrage"
+    },
+    {
+      "id": 178,
+      "theme": "DISPUTE_ARBITRATION",
+      "function": "PROCEDURE_MECHANISM",
+      "block_id": 20,
+      "is_block_start": false,
+      "reason": "continue DISPUTE_ARBITRATION, exécution et révision des décisions arbitrales"
+    },
+    {
+      "id": 179,
+      "theme": "DISPUTE_ARBITRATION",
+      "function": "PROCEDURE_MECHANISM",
+      "block_id": 20,
+      "is_block_start": false,
+      "reason": "continue DISPUTE_ARBITRATION, renvoi vers les procédures d'arbitrage détaillées"
+    },
+    {
+      "id": 180,
+      "theme": "DISPUTE_ARBITRATION",
+      "function": "PROCEDURE_MECHANISM",
+      "block_id": 20,
+      "is_block_start": false,
+      "reason": "continue DISPUTE_ARBITRATION, juridiction compétente pour faire exécuter l'arbitrage"
+    },
+    {
+      "id": 181,
+      "theme": "DISPUTE_ARBITRATION",
+      "function": "PROCEDURE_MECHANISM",
+      "block_id": 20,
+      "is_block_start": false,
+      "reason": "continue DISPUTE_ARBITRATION, juridiction de repli si l'arbitrage est inapplicable"
+    },
+    {
+      "id": 182,
+      "theme": "DISPUTE_ARBITRATION",
+      "function": "PROCEDURE_MECHANISM",
+      "block_id": 20,
+      "is_block_start": false,
+      "reason": "continue DISPUTE_ARBITRATION, consentement à la juridiction de ces tribunaux"
+    },
+    {
+      "id": 183,
+      "theme": "GOVERNING_LAW",
+      "function": "GOVERNANCE",
+      "block_id": 21,
+      "is_block_start": true,
+      "rationale": "nouveau sujet : loi applicable de l'État du Texas",
+      "rationale_codes": {
+        "decision_trigger": "topic_keyword",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "governed by the laws of the state of texas",
+        "revised_from_plan": false,
+        "confidence": 0.85
+      }
+    },
+    {
+      "id": 184,
+      "theme": "GOVERNING_LAW",
+      "function": "PROCEDURE_MECHANISM",
+      "block_id": 21,
+      "is_block_start": false,
+      "reason": "continue GOVERNING_LAW, plateforme de règlement en ligne de l'UE (renvoi factuel)"
+    },
+    {
+      "id": 185,
+      "theme": "GOVERNING_LAW",
+      "function": "PROCEDURE_MECHANISM",
+      "block_id": 21,
+      "is_block_start": false,
+      "reason": "continue GOVERNING_LAW, Tinder ne participe pas à l'arbitrage consommateur pour l'UE"
+    },
+    {
+      "id": 186,
+      "theme": "GOVERNING_LAW",
+      "function": "GOVERNANCE",
+      "block_id": 21,
+      "is_block_start": false,
+      "reason": "continue GOVERNING_LAW, loi du Texas applicable pour l'UE/EEE"
+    },
+    {
+      "id": 187,
+      "theme": "GOVERNING_LAW",
+      "function": "PROCEDURE_MECHANISM",
+      "block_id": 21,
+      "is_block_start": false,
+      "reason": "continue GOVERNING_LAW, réserve des lois impératives de protection des consommateurs"
+    },
+    {
+      "id": 188,
+      "theme": "GOVERNING_LAW",
+      "function": "GOVERNANCE",
+      "block_id": 21,
+      "is_block_start": false,
+      "reason": "continue GOVERNING_LAW, juridiction exclusive des tribunaux du comté de Dallas"
+    },
+    {
+      "id": 189,
+      "theme": "INDEMNIFICATION",
+      "function": "RISK_ALLOCATION",
+      "block_id": 22,
+      "is_block_start": true,
+      "rationale": "nouveau sujet : obligation d'indemnisation et de garantie d'éviction",
+      "rationale_codes": {
+        "decision_trigger": "topic_keyword",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "indemnify , defend and hold harmless",
+        "revised_from_plan": false,
+        "confidence": 0.9
+      }
+    },
+    {
+      "id": 190,
+      "theme": "MISC_BOILERPLATE",
+      "function": "GOVERNANCE",
+      "block_id": 23,
+      "is_block_start": true,
+      "rationale": "nouveau sujet : intégralité de l'accord (entire agreement) et clauses balais",
+      "rationale_codes": {
+        "decision_trigger": "topic_keyword",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "entire agreement",
+        "revised_from_plan": false,
+        "confidence": 0.85
+      }
+    },
+    {
+      "id": 191,
+      "theme": "MISC_BOILERPLATE",
+      "function": "GOVERNANCE",
+      "block_id": 23,
+      "is_block_start": false,
+      "reason": "continue MISC_BOILERPLATE, clause de divisibilité"
+    },
+    {
+      "id": 192,
+      "theme": "MISC_BOILERPLATE",
+      "function": "GOVERNANCE",
+      "block_id": 23,
+      "is_block_start": false,
+      "reason": "continue MISC_BOILERPLATE, clause de non-renonciation"
+    },
+    {
+      "id": 193,
+      "theme": "MISC_BOILERPLATE",
+      "function": "GOVERNANCE",
+      "block_id": 23,
+      "is_block_start": false,
+      "reason": "continue MISC_BOILERPLATE, non-cessibilité du compte (clause balai)"
+    },
+    {
+      "id": 194,
+      "theme": "MISC_BOILERPLATE",
+      "function": "GOVERNANCE",
+      "block_id": 23,
+      "is_block_start": false,
+      "reason": "continue MISC_BOILERPLATE, absence de relation d'agence/partenariat (clause finale)"
+    }
+  ]
+}

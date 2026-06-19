@@ -1,0 +1,1398 @@
+{
+  "doc": "Vivino",
+  "judge": "claude",
+  "version": "v9.2-nature-derived",
+  "document_plan": {
+    "estimated_n_blocks": 20,
+    "rationale_global": "ToS Vivino, profil narratif sans numérotation (numbering=0). Le document ouvre sur un préambule/portée (lecture des termes, acceptation par usage, applicabilité aux utilisateurs, offre de services), puis enchaîne : enregistrement et compte (noms d'utilisateur, responsabilité, âge légal, éligibilité, conformité), notices/coordonnées, responsabilité et nature du contenu utilisateur (définition de « content »/« user submissions »), droits de PI (copyright, licence d'usage du contenu, licence accordée à vivino sur les soumissions), usage acceptable (longue liste d'interdictions), absence d'obligation de surveillance et droit de retrait, résiliation, exclusion de garanties (« as is »), indemnisation, limitation de responsabilité plafonnée à 100 USD, résolution des litiges & droit applicable (arbitrage NY / droit anglais EEA), restrictions des droits gouvernementaux US sur le logiciel, dispositions diverses (intégralité, divisibilité, renonciation), modification des termes, droit de rétractation EEA, et dispositions boilerplate finales (force majeure, cession, agence, notices, tiers, langue), puis l'adresse de contact (META). Indices structuraux title_like (2, 90, 113, 124) et lexical_shift confirment les charnières majeures ; 20 blocs (prior 20, plage 14-25).",
+    "segments": [
+      {
+        "start_id": 0,
+        "theme": "PREAMBLE_SCOPE",
+        "rationale": "ouverture, exhortation à lire les termes avant usage",
+        "evidence_span": "please read these terms of use carefully"
+      },
+      {
+        "start_id": 2,
+        "theme": "META",
+        "rationale": "date de mise à jour",
+        "evidence_span": "last updated : september 16 , 2015"
+      },
+      {
+        "start_id": 3,
+        "theme": "PREAMBLE_SCOPE",
+        "rationale": "acceptation par usage et portée des termes",
+        "evidence_span": "by registering for and/or using the service"
+      },
+      {
+        "start_id": 8,
+        "theme": "ELIGIBILITY_ACCOUNT",
+        "rationale": "obligation d'enregistrement et d'informations exactes",
+        "evidence_span": "you are required to register with vivino"
+      },
+      {
+        "start_id": 20,
+        "theme": "PRIVACY_DATA",
+        "rationale": "notices et coordonnées de contact",
+        "evidence_span": "we may provide notices to you"
+      },
+      {
+        "start_id": 24,
+        "theme": "USER_CONTENT",
+        "rationale": "responsabilité du contenu posté et définition de content",
+        "evidence_span": "all content , whether publicly posted or privately transmitted"
+      },
+      {
+        "start_id": 32,
+        "theme": "LICENSE_IP",
+        "rationale": "contenu protégé par copyrights/marques et licence d'usage",
+        "evidence_span": "protected by copyrights , trademarks"
+      },
+      {
+        "start_id": 44,
+        "theme": "ACCEPTABLE_USE",
+        "rationale": "engagement à ne pas utiliser le service à des fins prohibées",
+        "evidence_span": "you promise not to use the service for any purpose that is prohibited"
+      },
+      {
+        "start_id": 59,
+        "theme": "USER_CONTENT",
+        "rationale": "disponibilité du contenu et droit de retrait/surveillance",
+        "evidence_span": "does not guarantee that any content or user submissions"
+      },
+      {
+        "start_id": 63,
+        "theme": "TERMINATION",
+        "rationale": "vivino peut résilier l'accès au service",
+        "evidence_span": "may terminate your access to all or any part of the service"
+      },
+      {
+        "start_id": 67,
+        "theme": "WARRANTY_DISCLAIMER",
+        "rationale": "absence de relation spéciale puis service « as is » sans garanties",
+        "evidence_span": "no special relationship with or fiduciary duty"
+      },
+      {
+        "start_id": 78,
+        "theme": "INDEMNIFICATION",
+        "rationale": "obligation de défendre et garantir vivino",
+        "evidence_span": "you shall defend , indemnify , and hold harmless vivino"
+      },
+      {
+        "start_id": 80,
+        "theme": "LIABILITY_LIMITATION",
+        "rationale": "exclusion/limitation de responsabilité plafonnée à 100 USD",
+        "evidence_span": "all liability of vivino"
+      },
+      {
+        "start_id": 90,
+        "theme": "DISPUTE_ARBITRATION",
+        "rationale": "section résolution des litiges et droit applicable",
+        "evidence_span": "dispute resolution & governing law"
+      },
+      {
+        "start_id": 103,
+        "theme": "LICENSE_IP",
+        "rationale": "restrictions sur l'usage du logiciel selon les federal acquisition regulations",
+        "evidence_span": "restricted in accordance with the federal acquisition regulations"
+      },
+      {
+        "start_id": 106,
+        "theme": "MISC_BOILERPLATE",
+        "rationale": "intégralité de l'accord, divisibilité, renonciation",
+        "evidence_span": "the entire agreement between you and vivino"
+      },
+      {
+        "start_id": 109,
+        "theme": "MODIFICATION_OF_TERMS",
+        "rationale": "droit de modifier les termes et le service",
+        "evidence_span": "to modify or replace any of these terms of use"
+      },
+      {
+        "start_id": 113,
+        "theme": "TERMINATION",
+        "rationale": "section annulation/rétractation des termes",
+        "evidence_span": "cancellation of these terms of use"
+      },
+      {
+        "start_id": 115,
+        "theme": "MISC_BOILERPLATE",
+        "rationale": "force majeure, cession, absence d'agence, notices, tiers, langue",
+        "evidence_span": "shall not be liable for any failure to perform"
+      },
+      {
+        "start_id": 123,
+        "theme": "META",
+        "rationale": "adresse de contact de vivino",
+        "evidence_span": "you may contact vivino at the following address"
+      }
+    ]
+  },
+  "annotations": [
+    {
+      "id": 0,
+      "theme": "PREAMBLE_SCOPE",
+      "block_id": 0,
+      "is_block_start": true,
+      "rationale": "ouverture du document, exhortation à lire les termes avant d'utiliser les services",
+      "rationale_codes": {
+        "decision_trigger": "document_start",
+        "relation_to_prev": "document_start",
+        "evidence_span": "please read these terms of use carefully",
+        "revised_from_plan": false,
+        "confidence": 0.97
+      },
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 1,
+      "theme": "PREAMBLE_SCOPE",
+      "block_id": 0,
+      "is_block_start": false,
+      "reason": "définit la portée : ces termes posent les conditions liantes d'usage du site/service",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 2,
+      "theme": "META",
+      "block_id": 1,
+      "is_block_start": true,
+      "rationale": "date de mise à jour isolée, métadonnée du document",
+      "rationale_codes": {
+        "decision_trigger": "topic_keyword",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "last updated : september 16 , 2015",
+        "revised_from_plan": false,
+        "confidence": 0.95
+      },
+      "legal_nature": "META",
+      "legal_nature_marker": "last updated"
+    },
+    {
+      "id": 3,
+      "theme": "PREAMBLE_SCOPE",
+      "block_id": 2,
+      "is_block_start": true,
+      "rationale": "retour au préambule/portée : acceptation des termes par enregistrement ou usage",
+      "rationale_codes": {
+        "decision_trigger": "topic_keyword",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "by registering for and/or using the service in any manner",
+        "revised_from_plan": false,
+        "confidence": 0.9
+      },
+      "legal_nature": "OBLIGATION",
+      "legal_nature_marker": "you agree to"
+    },
+    {
+      "id": 4,
+      "theme": "PREAMBLE_SCOPE",
+      "block_id": 2,
+      "is_block_start": false,
+      "reason": "des services peuvent être soumis à des conditions additionnelles incorporées aux présents termes",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 5,
+      "theme": "PREAMBLE_SCOPE",
+      "block_id": 2,
+      "is_block_start": false,
+      "reason": "les termes s'appliquent à tous les utilisateurs du service",
+      "legal_nature": "SCOPE_APPLICABILITY",
+      "legal_nature_marker": "apply to all"
+    },
+    {
+      "id": 6,
+      "theme": "PREAMBLE_SCOPE",
+      "block_id": 2,
+      "is_block_start": false,
+      "reason": "vivino peut offrir de fournir les services sélectionnés par l'utilisateur",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 7,
+      "theme": "PREAMBLE_SCOPE",
+      "block_id": 2,
+      "is_block_start": false,
+      "reason": "définition de l'étendue des « services » couverts",
+      "legal_nature": "OBLIGATION",
+      "legal_nature_marker": "shall"
+    },
+    {
+      "id": 8,
+      "theme": "ELIGIBILITY_ACCOUNT",
+      "block_id": 3,
+      "is_block_start": true,
+      "rationale": "nouveau sujet : conditions d'enregistrement et fourniture d'informations exactes",
+      "rationale_codes": {
+        "decision_trigger": "topic_keyword",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "you are required to register with vivino",
+        "revised_from_plan": false,
+        "confidence": 0.85
+      },
+      "legal_nature": "OBLIGATION",
+      "legal_nature_marker": "you will"
+    },
+    {
+      "id": 9,
+      "theme": "ELIGIBILITY_ACCOUNT",
+      "block_id": 3,
+      "is_block_start": false,
+      "reason": "item : interdiction de fournir de fausses informations / créer un compte pour autrui",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 10,
+      "theme": "ELIGIBILITY_ACCOUNT",
+      "block_id": 3,
+      "is_block_start": false,
+      "reason": "item : interdiction d'usurper le nom d'une autre personne",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 11,
+      "theme": "ELIGIBILITY_ACCOUNT",
+      "block_id": 3,
+      "is_block_start": false,
+      "reason": "item : interdiction d'utiliser un nom soumis aux droits d'autrui",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 12,
+      "theme": "ELIGIBILITY_ACCOUNT",
+      "block_id": 3,
+      "is_block_start": false,
+      "reason": "item : interdiction d'un nom offensant/illicite",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 13,
+      "theme": "ELIGIBILITY_ACCOUNT",
+      "block_id": 3,
+      "is_block_start": false,
+      "reason": "vivino se réserve le droit de refuser/annuler un nom d'utilisateur",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 14,
+      "theme": "ELIGIBILITY_ACCOUNT",
+      "block_id": 3,
+      "is_block_start": false,
+      "reason": "responsabilité de l'activité sur le compte et confidentialité du mot de passe",
+      "legal_nature": "OBLIGATION",
+      "legal_nature_marker": "shall"
+    },
+    {
+      "id": 15,
+      "theme": "ELIGIBILITY_ACCOUNT",
+      "block_id": 3,
+      "is_block_start": false,
+      "reason": "interdiction d'utiliser le compte d'un autre utilisateur sans permission",
+      "legal_nature": "OBLIGATION",
+      "legal_nature_marker": "you shall"
+    },
+    {
+      "id": 16,
+      "theme": "ELIGIBILITY_ACCOUNT",
+      "block_id": 3,
+      "is_block_start": false,
+      "reason": "obligation de notifier tout usage non autorisé du compte",
+      "legal_nature": "OBLIGATION",
+      "legal_nature_marker": "you will"
+    },
+    {
+      "id": 17,
+      "theme": "ELIGIBILITY_ACCOUNT",
+      "block_id": 3,
+      "is_block_start": false,
+      "reason": "garantie d'âge légal / d'autorisation à engager une entité",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 18,
+      "theme": "ELIGIBILITY_ACCOUNT",
+      "block_id": 3,
+      "is_block_start": false,
+      "reason": "vivino peut refuser le service et changer les critères d'éligibilité",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 19,
+      "theme": "ELIGIBILITY_ACCOUNT",
+      "block_id": 3,
+      "is_block_start": false,
+      "reason": "responsabilité de conformité aux lois et révocation de l'accès",
+      "legal_nature": "PROHIBITION",
+      "legal_nature_marker": "agree not to"
+    },
+    {
+      "id": 20,
+      "theme": "PRIVACY_DATA",
+      "block_id": 4,
+      "is_block_start": true,
+      "rationale": "nouveau sujet : modalités de notification et coordonnées de contact",
+      "rationale_codes": {
+        "decision_trigger": "lexical_shift",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "we may provide notices to you",
+        "revised_from_plan": false,
+        "confidence": 0.75
+      },
+      "legal_nature": "DEFINITION",
+      "legal_nature_marker": "means"
+    },
+    {
+      "id": 21,
+      "theme": "PRIVACY_DATA",
+      "block_id": 4,
+      "is_block_start": false,
+      "reason": "obligation de tenir les coordonnées à jour",
+      "legal_nature": "OBLIGATION",
+      "legal_nature_marker": "you agree to"
+    },
+    {
+      "id": 22,
+      "theme": "PRIVACY_DATA",
+      "block_id": 4,
+      "is_block_start": false,
+      "reason": "conséquence : risque de manquer les notices si coordonnées non à jour",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 23,
+      "theme": "PRIVACY_DATA",
+      "block_id": 4,
+      "is_block_start": false,
+      "reason": "réglage des paramètres pour contrôler les messages reçus",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 24,
+      "theme": "USER_CONTENT",
+      "block_id": 5,
+      "is_block_start": true,
+      "rationale": "nouveau sujet : responsabilité et nature du contenu utilisateur",
+      "rationale_codes": {
+        "decision_trigger": "topic_keyword",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "all content , whether publicly posted or privately transmitted",
+        "revised_from_plan": false,
+        "confidence": 0.8
+      },
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 25,
+      "theme": "USER_CONTENT",
+      "block_id": 5,
+      "is_block_start": false,
+      "reason": "vivino ne peut garantir l'authenticité du contenu fourni par les utilisateurs",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 26,
+      "theme": "USER_CONTENT",
+      "block_id": 5,
+      "is_block_start": false,
+      "reason": "l'accès au contenu se fait aux risques de l'utilisateur",
+      "legal_nature": "OBLIGATION",
+      "legal_nature_marker": "you will"
+    },
+    {
+      "id": 27,
+      "theme": "USER_CONTENT",
+      "block_id": 5,
+      "is_block_start": false,
+      "reason": "définition du terme « content » (prix, avis, notes, etc.)",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 28,
+      "theme": "USER_CONTENT",
+      "block_id": 5,
+      "is_block_start": false,
+      "reason": "définition des « user submissions »",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 29,
+      "theme": "USER_CONTENT",
+      "block_id": 5,
+      "is_block_start": false,
+      "reason": "le prix moyen affiché repose sur les prix soumis par les utilisateurs",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 30,
+      "theme": "USER_CONTENT",
+      "block_id": 5,
+      "is_block_start": false,
+      "reason": "précision : le prix moyen est seulement indicatif",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 31,
+      "theme": "USER_CONTENT",
+      "block_id": 5,
+      "is_block_start": false,
+      "reason": "renvoi aux prix officiels des détaillants",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 32,
+      "theme": "LICENSE_IP",
+      "block_id": 6,
+      "is_block_start": true,
+      "rationale": "nouveau sujet de PI : contenu protégé par copyrights, marques, brevets",
+      "rationale_codes": {
+        "decision_trigger": "topic_keyword",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "protected by copyrights , trademarks , service marks , patents",
+        "revised_from_plan": false,
+        "confidence": 0.85
+      },
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 33,
+      "theme": "LICENSE_IP",
+      "block_id": 6,
+      "is_block_start": false,
+      "reason": "obligation de respecter les mentions de copyright",
+      "legal_nature": "OBLIGATION",
+      "legal_nature_marker": "you shall"
+    },
+    {
+      "id": 34,
+      "theme": "LICENSE_IP",
+      "block_id": 6,
+      "is_block_start": false,
+      "reason": "octroi d'une licence d'usage personnel et non commercial du contenu",
+      "legal_nature": "RIGHT_GRANT",
+      "legal_nature_marker": "license to"
+    },
+    {
+      "id": 35,
+      "theme": "LICENSE_IP",
+      "block_id": 6,
+      "is_block_start": false,
+      "reason": "interdiction d'usage hors usage personnel sans autorisation écrite",
+      "legal_nature": "PROHIBITION",
+      "legal_nature_marker": "prohibited"
+    },
+    {
+      "id": 36,
+      "theme": "LICENSE_IP",
+      "block_id": 6,
+      "is_block_start": false,
+      "reason": "interdiction de vendre/louer/exploiter le contenu à des fins commerciales",
+      "legal_nature": "PROHIBITION",
+      "legal_nature_marker": "shall not"
+    },
+    {
+      "id": 37,
+      "theme": "LICENSE_IP",
+      "block_id": 6,
+      "is_block_start": false,
+      "reason": "octroi à vivino d'une licence sur les user submissions (la PI prime, §3.1)",
+      "legal_nature": "RIGHT_GRANT",
+      "legal_nature_marker": "license to"
+    },
+    {
+      "id": 38,
+      "theme": "LICENSE_IP",
+      "block_id": 6,
+      "is_block_start": false,
+      "reason": "octroi aux autres utilisateurs d'une licence d'accès aux soumissions",
+      "legal_nature": "RIGHT_GRANT",
+      "legal_nature_marker": "license to"
+    },
+    {
+      "id": 39,
+      "theme": "LICENSE_IP",
+      "block_id": 6,
+      "is_block_start": false,
+      "reason": "clarification : la licence n'affecte pas les autres droits de propriété de l'utilisateur",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 40,
+      "theme": "LICENSE_IP",
+      "block_id": 6,
+      "is_block_start": false,
+      "reason": "garantie de détenir tous les droits pour accorder la licence sans violation de droits de tiers",
+      "legal_nature": "RIGHT_GRANT",
+      "legal_nature_marker": "license to"
+    },
+    {
+      "id": 41,
+      "theme": "LICENSE_IP",
+      "block_id": 6,
+      "is_block_start": false,
+      "reason": "responsabilité de l'auteur du contenu et non-responsabilité de vivino, prolonge le thème PI/contenu",
+      "legal_nature": "PROHIBITION",
+      "legal_nature_marker": "will not"
+    },
+    {
+      "id": 42,
+      "theme": "LICENSE_IP",
+      "block_id": 6,
+      "is_block_start": false,
+      "reason": "suppression des user submissions retirés du service",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 43,
+      "theme": "LICENSE_IP",
+      "block_id": 6,
+      "is_block_start": false,
+      "reason": "persistance possible des soumissions retirées dans les sauvegardes",
+      "legal_nature": "PROHIBITION",
+      "legal_nature_marker": "will not"
+    },
+    {
+      "id": 44,
+      "theme": "ACCEPTABLE_USE",
+      "block_id": 7,
+      "is_block_start": true,
+      "rationale": "nouveau sujet : engagement à ne pas utiliser le service à des fins prohibées",
+      "rationale_codes": {
+        "decision_trigger": "topic_keyword",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "you promise not to use the service for any purpose that is prohibited",
+        "revised_from_plan": false,
+        "confidence": 0.9
+      },
+      "legal_nature": "PROHIBITION",
+      "legal_nature_marker": "prohibited"
+    },
+    {
+      "id": 45,
+      "theme": "ACCEPTABLE_USE",
+      "block_id": 7,
+      "is_block_start": false,
+      "reason": "responsabilité de l'utilisateur pour toute son activité sur le service",
+      "legal_nature": "OBLIGATION",
+      "legal_nature_marker": "you are responsible"
+    },
+    {
+      "id": 46,
+      "theme": "ACCEPTABLE_USE",
+      "block_id": 7,
+      "is_block_start": false,
+      "reason": "chapeau introduisant la liste des actions/contenus interdits",
+      "legal_nature": "PROHIBITION",
+      "legal_nature_marker": "shall not"
+    },
+    {
+      "id": 47,
+      "theme": "ACCEPTABLE_USE",
+      "block_id": 7,
+      "is_block_start": false,
+      "reason": "item : contenu qui enfreint un droit de PI ou une loi",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 48,
+      "theme": "ACCEPTABLE_USE",
+      "block_id": 7,
+      "is_block_start": false,
+      "reason": "item : contenu faux ou trompeur",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 49,
+      "theme": "ACCEPTABLE_USE",
+      "block_id": 7,
+      "is_block_start": false,
+      "reason": "item : contenu illicite, abusif, diffamatoire, obscène, etc.",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 50,
+      "theme": "ACCEPTABLE_USE",
+      "block_id": 7,
+      "is_block_start": false,
+      "reason": "item : publicité non sollicitée / spam",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 51,
+      "theme": "ACCEPTABLE_USE",
+      "block_id": 7,
+      "is_block_start": false,
+      "reason": "item : activités commerciales sans consentement écrit",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 52,
+      "theme": "ACCEPTABLE_USE",
+      "block_id": 7,
+      "is_block_start": false,
+      "reason": "item : virus, codes malveillants, accès non autorisé",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 53,
+      "theme": "ACCEPTABLE_USE",
+      "block_id": 7,
+      "is_block_start": false,
+      "reason": "item : usurpation d'identité d'une personne ou entité",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 54,
+      "theme": "ACCEPTABLE_USE",
+      "block_id": 7,
+      "is_block_start": false,
+      "reason": "item : inclusion de documents d'identité ou informations financières sensibles",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 55,
+      "theme": "ACCEPTABLE_USE",
+      "block_id": 7,
+      "is_block_start": false,
+      "reason": "politique de tolérance zéro contre la pédopornographie, prolonge la liste des interdictions",
+      "legal_nature": "GOVERNANCE",
+      "legal_nature_marker": "terminate"
+    },
+    {
+      "id": 56,
+      "theme": "ACCEPTABLE_USE",
+      "block_id": 7,
+      "is_block_start": false,
+      "reason": "interdictions techniques : charge excessive, interférence, scraping, spam",
+      "legal_nature": "PROHIBITION",
+      "legal_nature_marker": "shall not"
+    },
+    {
+      "id": 57,
+      "theme": "ACCEPTABLE_USE",
+      "block_id": 7,
+      "is_block_start": false,
+      "reason": "interdiction de reverse engineering, modification, transfert des droits",
+      "legal_nature": "PROHIBITION",
+      "legal_nature_marker": "shall not"
+    },
+    {
+      "id": 58,
+      "theme": "ACCEPTABLE_USE",
+      "block_id": 7,
+      "is_block_start": false,
+      "reason": "obligation de respecter toutes les lois applicables",
+      "legal_nature": "OBLIGATION",
+      "legal_nature_marker": "you shall"
+    },
+    {
+      "id": 59,
+      "theme": "USER_CONTENT",
+      "block_id": 8,
+      "is_block_start": true,
+      "rationale": "changement de sujet : disponibilité, surveillance et retrait du contenu/user submissions",
+      "rationale_codes": {
+        "decision_trigger": "lexical_shift",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "does not guarantee that any content or user submissions",
+        "revised_from_plan": false,
+        "confidence": 0.7
+      },
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 60,
+      "theme": "USER_CONTENT",
+      "block_id": 8,
+      "is_block_start": false,
+      "reason": "vivino n'a aucune obligation de surveiller le site ou le contenu",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 61,
+      "theme": "USER_CONTENT",
+      "block_id": 8,
+      "is_block_start": false,
+      "reason": "droit de retirer/suspendre/modifier le contenu et les user submissions",
+      "legal_nature": "GOVERNANCE",
+      "legal_nature_marker": "suspend"
+    },
+    {
+      "id": 62,
+      "theme": "USER_CONTENT",
+      "block_id": 8,
+      "is_block_start": false,
+      "reason": "droit d'accéder/divulguer des informations pour raisons légales/sécurité",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 63,
+      "theme": "TERMINATION",
+      "block_id": 9,
+      "is_block_start": true,
+      "rationale": "nouveau sujet : résiliation de l'accès au service par vivino",
+      "rationale_codes": {
+        "decision_trigger": "topic_keyword",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "may terminate your access to all or any part of the service",
+        "revised_from_plan": false,
+        "confidence": 0.9
+      },
+      "legal_nature": "GOVERNANCE",
+      "legal_nature_marker": "terminate"
+    },
+    {
+      "id": 64,
+      "theme": "TERMINATION",
+      "block_id": 9,
+      "is_block_start": false,
+      "reason": "procédure de résiliation du compte par l'utilisateur",
+      "legal_nature": "GOVERNANCE",
+      "legal_nature_marker": "terminate"
+    },
+    {
+      "id": 65,
+      "theme": "TERMINATION",
+      "block_id": 9,
+      "is_block_start": false,
+      "reason": "conséquence : les frais payés ne sont pas remboursables",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 66,
+      "theme": "TERMINATION",
+      "block_id": 9,
+      "is_block_start": false,
+      "reason": "survie des dispositions après résiliation",
+      "legal_nature": "LIMITATION_DISCLAIMER",
+      "legal_nature_marker": "disclaim"
+    },
+    {
+      "id": 67,
+      "theme": "WARRANTY_DISCLAIMER",
+      "block_id": 10,
+      "is_block_start": true,
+      "rationale": "nouveau sujet : absence de relation spéciale/fiduciaire, amorce du déni de garanties",
+      "rationale_codes": {
+        "decision_trigger": "lexical_shift",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "no special relationship with or fiduciary duty to you",
+        "revised_from_plan": false,
+        "confidence": 0.7
+      },
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 68,
+      "theme": "WARRANTY_DISCLAIMER",
+      "block_id": 10,
+      "is_block_start": false,
+      "reason": "absence de contrôle/obligation de vivino sur l'usage du contenu",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 69,
+      "theme": "WARRANTY_DISCLAIMER",
+      "block_id": 10,
+      "is_block_start": false,
+      "reason": "décharge de responsabilité pour l'acquisition de contenu",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 70,
+      "theme": "WARRANTY_DISCLAIMER",
+      "block_id": 10,
+      "is_block_start": false,
+      "reason": "le service peut contenir du contenu jugé offensant par certains",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 71,
+      "theme": "WARRANTY_DISCLAIMER",
+      "block_id": 10,
+      "is_block_start": false,
+      "reason": "aucune représentation sur le contenu et sa légalité",
+      "legal_nature": "PROHIBITION",
+      "legal_nature_marker": "will not"
+    },
+    {
+      "id": 72,
+      "theme": "WARRANTY_DISCLAIMER",
+      "block_id": 10,
+      "is_block_start": false,
+      "reason": "service fourni « as is » sans garanties d'aucune sorte (§3.1 garantie)",
+      "legal_nature": "LIMITATION_DISCLAIMER",
+      "legal_nature_marker": "as is"
+    },
+    {
+      "id": 73,
+      "theme": "WARRANTY_DISCLAIMER",
+      "block_id": 10,
+      "is_block_start": false,
+      "reason": "absence de garantie de sécurité, correction des erreurs, absence de virus",
+      "legal_nature": "PROHIBITION",
+      "legal_nature_marker": "do not"
+    },
+    {
+      "id": 74,
+      "theme": "WARRANTY_DISCLAIMER",
+      "block_id": 10,
+      "is_block_start": false,
+      "reason": "usage du service aux risques de l'utilisateur",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 75,
+      "theme": "WARRANTY_DISCLAIMER",
+      "block_id": 10,
+      "is_block_start": false,
+      "reason": "certains États n'autorisent pas ces limitations de garanties implicites",
+      "legal_nature": "PROHIBITION",
+      "legal_nature_marker": "may not"
+    },
+    {
+      "id": 76,
+      "theme": "WARRANTY_DISCLAIMER",
+      "block_id": 10,
+      "is_block_start": false,
+      "reason": "notice ECPA : aucune garantie de confidentialité des communications",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 77,
+      "theme": "WARRANTY_DISCLAIMER",
+      "block_id": 10,
+      "is_block_start": false,
+      "reason": "non-responsabilité de vivino pour la confidentialité des informations stockées",
+      "legal_nature": "PROHIBITION",
+      "legal_nature_marker": "will not"
+    },
+    {
+      "id": 78,
+      "theme": "INDEMNIFICATION",
+      "block_id": 11,
+      "is_block_start": true,
+      "rationale": "nouveau sujet : obligation de défendre, indemniser et garantir vivino",
+      "rationale_codes": {
+        "decision_trigger": "topic_keyword",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "you shall defend , indemnify , and hold harmless vivino",
+        "revised_from_plan": false,
+        "confidence": 0.9
+      },
+      "legal_nature": "RISK_ALLOCATION",
+      "legal_nature_marker": "indemnify"
+    },
+    {
+      "id": 79,
+      "theme": "INDEMNIFICATION",
+      "block_id": 11,
+      "is_block_start": false,
+      "reason": "vivino peut assumer la défense exclusive des matières indemnisables",
+      "legal_nature": "RISK_ALLOCATION",
+      "legal_nature_marker": "indemnification"
+    },
+    {
+      "id": 80,
+      "theme": "LIABILITY_LIMITATION",
+      "block_id": 12,
+      "is_block_start": true,
+      "rationale": "nouveau sujet : exclusion/limitation de responsabilité plafonnée à 100 USD",
+      "rationale_codes": {
+        "decision_trigger": "topic_keyword",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "all liability of vivino",
+        "revised_from_plan": false,
+        "confidence": 0.85
+      },
+      "legal_nature": "GOVERNANCE",
+      "legal_nature_marker": "jurisdiction"
+    },
+    {
+      "id": 81,
+      "theme": "LIABILITY_LIMITATION",
+      "block_id": 12,
+      "is_block_start": false,
+      "reason": "chapeau : exclusion de responsabilité pour certaines catégories de pertes",
+      "legal_nature": "LIMITATION_DISCLAIMER",
+      "legal_nature_marker": "in no event"
+    },
+    {
+      "id": 82,
+      "theme": "LIABILITY_LIMITATION",
+      "block_id": 12,
+      "is_block_start": false,
+      "reason": "item : pertes indirectes ou consécutives",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 83,
+      "theme": "LIABILITY_LIMITATION",
+      "block_id": 12,
+      "is_block_start": false,
+      "reason": "item : perte de profits",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 84,
+      "theme": "LIABILITY_LIMITATION",
+      "block_id": 12,
+      "is_block_start": false,
+      "reason": "item : coût d'acquisition de biens/services de substitution",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 85,
+      "theme": "LIABILITY_LIMITATION",
+      "block_id": 12,
+      "is_block_start": false,
+      "reason": "aucune exclusion de responsabilité pour les indemnités données par l'utilisateur",
+      "legal_nature": "OBLIGATION",
+      "legal_nature_marker": "shall"
+    },
+    {
+      "id": 86,
+      "theme": "LIABILITY_LIMITATION",
+      "block_id": 12,
+      "is_block_start": false,
+      "reason": "réserve pour les utilisateurs EEA/Australie sur les limitations de responsabilité",
+      "legal_nature": "OBLIGATION",
+      "legal_nature_marker": "shall"
+    },
+    {
+      "id": 87,
+      "theme": "LIABILITY_LIMITATION",
+      "block_id": 12,
+      "is_block_start": false,
+      "reason": "item : décès/préjudice corporel par négligence non exclu",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 88,
+      "theme": "LIABILITY_LIMITATION",
+      "block_id": 12,
+      "is_block_start": false,
+      "reason": "item : fraude, vol, activité criminelle non exclus",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 89,
+      "theme": "LIABILITY_LIMITATION",
+      "block_id": 12,
+      "is_block_start": false,
+      "reason": "item : violation d'obligations implicites du Sale of Goods Act non exclue",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 90,
+      "theme": "DISPUTE_ARBITRATION",
+      "block_id": 13,
+      "is_block_start": true,
+      "rationale": "titre de section résolution des litiges et droit applicable",
+      "rationale_codes": {
+        "decision_trigger": "title_marker",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "dispute resolution & governing law",
+        "revised_from_plan": false,
+        "confidence": 0.92
+      },
+      "legal_nature": "GOVERNANCE",
+      "legal_nature_marker": "governing law"
+    },
+    {
+      "id": 91,
+      "theme": "DISPUTE_ARBITRATION",
+      "block_id": 13,
+      "is_block_start": false,
+      "reason": "admissibilité d'une version imprimée des termes dans les procédures judiciaires",
+      "legal_nature": "OBLIGATION",
+      "legal_nature_marker": "shall"
+    },
+    {
+      "id": 92,
+      "theme": "DISPUTE_ARBITRATION",
+      "block_id": 13,
+      "is_block_start": false,
+      "reason": "délai de prescription d'un an pour toute action en justice",
+      "legal_nature": "OBLIGATION",
+      "legal_nature_marker": "must"
+    },
+    {
+      "id": 93,
+      "theme": "DISPUTE_ARBITRATION",
+      "block_id": 13,
+      "is_block_start": false,
+      "reason": "chapeau : application des dispositions d'arbitrage et droit applicable hors EEA/Australie",
+      "legal_nature": "GOVERNANCE",
+      "legal_nature_marker": "governing law"
+    },
+    {
+      "id": 94,
+      "theme": "DISPUTE_ARBITRATION",
+      "block_id": 13,
+      "is_block_start": false,
+      "reason": "droit de l'État de New York applicable (prolonge la section litiges/droit)",
+      "legal_nature": "GOVERNANCE",
+      "legal_nature_marker": "governed by"
+    },
+    {
+      "id": 95,
+      "theme": "DISPUTE_ARBITRATION",
+      "block_id": 13,
+      "is_block_start": false,
+      "reason": "arbitrage à New York selon les règles JAMS",
+      "legal_nature": "GOVERNANCE",
+      "legal_nature_marker": "arbitration"
+    },
+    {
+      "id": 96,
+      "theme": "DISPUTE_ARBITRATION",
+      "block_id": 13,
+      "is_block_start": false,
+      "reason": "remboursement des frais à la partie gagnante en arbitrage",
+      "legal_nature": "GOVERNANCE",
+      "legal_nature_marker": "arbitration"
+    },
+    {
+      "id": 97,
+      "theme": "DISPUTE_ARBITRATION",
+      "block_id": 13,
+      "is_block_start": false,
+      "reason": "exécution de la sentence devant un tribunal compétent",
+      "legal_nature": "GOVERNANCE",
+      "legal_nature_marker": "jurisdiction"
+    },
+    {
+      "id": 98,
+      "theme": "DISPUTE_ARBITRATION",
+      "block_id": 13,
+      "is_block_start": false,
+      "reason": "droit d'agir en justice pour mesures injonctives malgré l'arbitrage",
+      "legal_nature": "GOVERNANCE",
+      "legal_nature_marker": "jurisdiction"
+    },
+    {
+      "id": 99,
+      "theme": "DISPUTE_ARBITRATION",
+      "block_id": 13,
+      "is_block_start": false,
+      "reason": "consentement à la juridiction exclusive des tribunaux du district sud de NY",
+      "legal_nature": "GOVERNANCE",
+      "legal_nature_marker": "jurisdiction"
+    },
+    {
+      "id": 100,
+      "theme": "DISPUTE_ARBITRATION",
+      "block_id": 13,
+      "is_block_start": false,
+      "reason": "usage non autorisé dans les juridictions ne donnant pas effet à ces dispositions",
+      "legal_nature": "GOVERNANCE",
+      "legal_nature_marker": "jurisdiction"
+    },
+    {
+      "id": 101,
+      "theme": "DISPUTE_ARBITRATION",
+      "block_id": 13,
+      "is_block_start": false,
+      "reason": "droit anglais applicable pour les utilisateurs EEA/Australie, prolonge le volet droit applicable",
+      "legal_nature": "GOVERNANCE",
+      "legal_nature_marker": "governed by"
+    },
+    {
+      "id": 102,
+      "theme": "DISPUTE_ARBITRATION",
+      "block_id": 13,
+      "is_block_start": false,
+      "reason": "juridiction exclusive des tribunaux anglais pour ces utilisateurs",
+      "legal_nature": "GOVERNANCE",
+      "legal_nature_marker": "jurisdiction"
+    },
+    {
+      "id": 103,
+      "theme": "LICENSE_IP",
+      "block_id": 14,
+      "is_block_start": true,
+      "rationale": "nouveau sujet : restrictions d'usage du logiciel selon les federal acquisition regulations (droits gouvernementaux US sur le logiciel = PI)",
+      "rationale_codes": {
+        "decision_trigger": "lexical_shift",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "restricted in accordance with the federal acquisition regulations",
+        "revised_from_plan": false,
+        "confidence": 0.6
+      },
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 104,
+      "theme": "LICENSE_IP",
+      "block_id": 14,
+      "is_block_start": false,
+      "reason": "le logiciel est un « commercial item » / « commercial computer software »",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 105,
+      "theme": "LICENSE_IP",
+      "block_id": 14,
+      "is_block_start": false,
+      "reason": "tout usage du logiciel est régi par les présents termes",
+      "legal_nature": "OBLIGATION",
+      "legal_nature_marker": "shall"
+    },
+    {
+      "id": 106,
+      "theme": "MISC_BOILERPLATE",
+      "block_id": 15,
+      "is_block_start": true,
+      "rationale": "nouveau sujet : intégralité de l'accord et clause de fusion",
+      "rationale_codes": {
+        "decision_trigger": "topic_keyword",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "the entire agreement between you and vivino",
+        "revised_from_plan": false,
+        "confidence": 0.78
+      },
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 107,
+      "theme": "MISC_BOILERPLATE",
+      "block_id": 15,
+      "is_block_start": false,
+      "reason": "clause de divisibilité (severability)",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 108,
+      "theme": "MISC_BOILERPLATE",
+      "block_id": 15,
+      "is_block_start": false,
+      "reason": "clause de non-renonciation (waiver)",
+      "legal_nature": "PROHIBITION",
+      "legal_nature_marker": "shall not"
+    },
+    {
+      "id": 109,
+      "theme": "MODIFICATION_OF_TERMS",
+      "block_id": 16,
+      "is_block_start": true,
+      "rationale": "nouveau sujet : droit de modifier ou remplacer les termes et le service",
+      "rationale_codes": {
+        "decision_trigger": "topic_keyword",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "to modify or replace any of these terms of use",
+        "revised_from_plan": false,
+        "confidence": 0.85
+      },
+      "legal_nature": "GOVERNANCE",
+      "legal_nature_marker": "suspend"
+    },
+    {
+      "id": 110,
+      "theme": "MODIFICATION_OF_TERMS",
+      "block_id": 16,
+      "is_block_start": false,
+      "reason": "vivino peut imposer des limites sur certaines fonctionnalités",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 111,
+      "theme": "MODIFICATION_OF_TERMS",
+      "block_id": 16,
+      "is_block_start": false,
+      "reason": "responsabilité de l'utilisateur de vérifier périodiquement les changements",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 112,
+      "theme": "MODIFICATION_OF_TERMS",
+      "block_id": 16,
+      "is_block_start": false,
+      "reason": "l'usage continu vaut acceptation des changements",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 113,
+      "theme": "TERMINATION",
+      "block_id": 17,
+      "is_block_start": true,
+      "rationale": "titre de section annulation/rétractation des termes",
+      "rationale_codes": {
+        "decision_trigger": "title_marker",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "cancellation of these terms of use",
+        "revised_from_plan": false,
+        "confidence": 0.8
+      },
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 114,
+      "theme": "TERMINATION",
+      "block_id": 17,
+      "is_block_start": false,
+      "reason": "droit de rétractation EEA sous la directive 97/7/EC dans les 7 jours",
+      "legal_nature": "OBLIGATION",
+      "legal_nature_marker": "shall"
+    },
+    {
+      "id": 115,
+      "theme": "MISC_BOILERPLATE",
+      "block_id": 18,
+      "is_block_start": true,
+      "rationale": "nouveau sujet : clause de force majeure",
+      "rationale_codes": {
+        "decision_trigger": "lexical_shift",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "shall not be liable for any failure to perform its obligations",
+        "revised_from_plan": false,
+        "confidence": 0.7
+      },
+      "legal_nature": "PROHIBITION",
+      "legal_nature_marker": "shall not"
+    },
+    {
+      "id": 116,
+      "theme": "MISC_BOILERPLATE",
+      "block_id": 18,
+      "is_block_start": false,
+      "reason": "non-cessibilité des termes par l'utilisateur (assignment)",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 117,
+      "theme": "MISC_BOILERPLATE",
+      "block_id": 18,
+      "is_block_start": false,
+      "reason": "vivino peut céder ses droits sans consentement (assignment)",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 118,
+      "theme": "MISC_BOILERPLATE",
+      "block_id": 18,
+      "is_block_start": false,
+      "reason": "absence de relation d'agence/partenariat (relationship of parties)",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 119,
+      "theme": "MISC_BOILERPLATE",
+      "block_id": 18,
+      "is_block_start": false,
+      "reason": "clause de notices : forme et réception des notifications",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 120,
+      "theme": "MISC_BOILERPLATE",
+      "block_id": 18,
+      "is_block_start": false,
+      "reason": "absence de droits pour les tiers (no third party beneficiaries)",
+      "legal_nature": "PROHIBITION",
+      "legal_nature_marker": "do not"
+    },
+    {
+      "id": 121,
+      "theme": "MISC_BOILERPLATE",
+      "block_id": 18,
+      "is_block_start": false,
+      "reason": "la version anglaise des termes prévaut sur toute traduction",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 122,
+      "theme": "MISC_BOILERPLATE",
+      "block_id": 18,
+      "is_block_start": false,
+      "reason": "préséance de la version anglaise en cas de contradiction",
+      "legal_nature": "OBLIGATION",
+      "legal_nature_marker": "shall"
+    },
+    {
+      "id": 123,
+      "theme": "META",
+      "block_id": 19,
+      "is_block_start": true,
+      "rationale": "adresse de contact de vivino, métadonnée",
+      "rationale_codes": {
+        "decision_trigger": "topic_keyword",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "you may contact vivino at the following address",
+        "revised_from_plan": false,
+        "confidence": 0.9
+      },
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 124,
+      "theme": "META",
+      "block_id": 19,
+      "is_block_start": false,
+      "reason": "suite de l'adresse postale de vivino (copenhagen, denmark)",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    }
+  ]
+}

@@ -1,0 +1,1142 @@
+{
+  "doc": "WhatsApp",
+  "judge": "claude",
+  "version": "v9.2-nature-derived",
+  "document_plan": {
+    "estimated_n_blocks": 19,
+    "rationale_global": "ToS narratif sans numérotation ni marqueurs de liste (docfeatures: numbering=0, list_markers=0, title_like=0, profile NARRATIVE). La segmentation suit les ruptures thématiques : préambule/identité, puis services d'urgence (disclaimer), avis d'arbitrage, compte/éligibilité, paiement/remboursements, vie privée, usage acceptable, services tiers, propriété intellectuelle/licences, garantie 'as is', limitation de responsabilité, indemnisation, résolution de litiges, droit applicable, disponibilité/résiliation, boilerplate divers, modification des conditions, et un dernier bloc boilerplate (cession, divisibilité, droits consommateur, feedback). Les frontières s'appuient sur les changements lexicaux signalés (E_candidate_boundaries) et sur deux titres nominaux internes (id 47, id 68). L'inventaire thématique observé (D) confirme LICENSE_IP, ELIGIBILITY_ACCOUNT, DISPUTE_ARBITRATION et LIABILITY_LIMITATION comme dominants.",
+    "segments": [
+      {
+        "start_id": 0,
+        "theme": "META",
+        "rationale": "métadonnée de date en tête",
+        "evidence_span": "last modified"
+      },
+      {
+        "start_id": 1,
+        "theme": "PREAMBLE_SCOPE",
+        "rationale": "identité de l'entité + portée des services",
+        "evidence_span": "provides messaging"
+      },
+      {
+        "start_id": 4,
+        "theme": "WARRANTY_DISCLAIMER",
+        "rationale": "avertissement sur l'absence d'accès aux services d'urgence",
+        "evidence_span": "no access to emergency services"
+      },
+      {
+        "start_id": 7,
+        "theme": "DISPUTE_ARBITRATION",
+        "rationale": "avis sur la clause d'arbitrage contraignante",
+        "evidence_span": "binding arbitration provision"
+      },
+      {
+        "start_id": 9,
+        "theme": "ELIGIBILITY_ACCOUNT",
+        "rationale": "inscription, numéro de téléphone, âge, appareils",
+        "evidence_span": "register for our services"
+      },
+      {
+        "start_id": 17,
+        "theme": "PAYMENT_BILLING",
+        "rationale": "frais, taxes, remboursements",
+        "evidence_span": "fees and taxes"
+      },
+      {
+        "start_id": 21,
+        "theme": "PRIVACY_DATA",
+        "rationale": "vie privée et pratiques de données",
+        "evidence_span": "cares about your privacy"
+      },
+      {
+        "start_id": 25,
+        "theme": "ACCEPTABLE_USE",
+        "rationale": "usage légal et autorisé des services",
+        "evidence_span": "use our services according to our terms"
+      },
+      {
+        "start_id": 32,
+        "theme": "THIRD_PARTY",
+        "rationale": "accès et interaction avec des services tiers",
+        "evidence_span": "third-party websites"
+      },
+      {
+        "start_id": 35,
+        "theme": "LICENSE_IP",
+        "rationale": "propriété, droits IP et licences",
+        "evidence_span": "does not claim ownership"
+      },
+      {
+        "start_id": 49,
+        "theme": "WARRANTY_DISCLAIMER",
+        "rationale": "usage à vos risques + 'as is'",
+        "evidence_span": "at your own risk"
+      },
+      {
+        "start_id": 54,
+        "theme": "LIABILITY_LIMITATION",
+        "rationale": "release et limitation de responsabilité",
+        "evidence_span": "release us"
+      },
+      {
+        "start_id": 61,
+        "theme": "INDEMNIFICATION",
+        "rationale": "obligation d'indemnisation",
+        "evidence_span": "defend , indemnify"
+      },
+      {
+        "start_id": 63,
+        "theme": "DISPUTE_ARBITRATION",
+        "rationale": "résolution des litiges / arbitrage",
+        "evidence_span": "special arbitration provision"
+      },
+      {
+        "start_id": 66,
+        "theme": "GOVERNING_LAW",
+        "rationale": "droit de Californie applicable",
+        "evidence_span": "laws of the state of california govern"
+      },
+      {
+        "start_id": 67,
+        "theme": "TERMINATION",
+        "rationale": "titre 'availability and termination of our services'",
+        "evidence_span": "availability and termination of our services"
+      },
+      {
+        "start_id": 72,
+        "theme": "MISC_BOILERPLATE",
+        "rationale": "survie, accord entier, restrictions pays, export",
+        "evidence_span": "survive any termination"
+      },
+      {
+        "start_id": 83,
+        "theme": "MODIFICATION_OF_TERMS",
+        "rationale": "amendement et mise à jour des conditions",
+        "evidence_span": "amendment to or waiver of our terms"
+      },
+      {
+        "start_id": 89,
+        "theme": "MISC_BOILERPLATE",
+        "rationale": "cession, tiers bénéficiaires, divisibilité, droits consommateur, feedback",
+        "evidence_span": "freely assignable"
+      }
+    ]
+  },
+  "annotations": [
+    {
+      "id": 0,
+      "theme": "META",
+      "block_id": 0,
+      "is_block_start": true,
+      "rationale": "métadonnée de date en tête de document, cite « last modified »",
+      "rationale_codes": {
+        "decision_trigger": "document_start",
+        "relation_to_prev": "document_start",
+        "evidence_span": "last modified",
+        "revised_from_plan": false,
+        "confidence": 0.97
+      },
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 1,
+      "theme": "PREAMBLE_SCOPE",
+      "block_id": 1,
+      "is_block_start": true,
+      "rationale": "ouverture du préambule : identité de l'entité et portée des services, cite « provides messaging »",
+      "rationale_codes": {
+        "decision_trigger": "topic_keyword",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "provides messaging",
+        "revised_from_plan": false,
+        "confidence": 0.93
+      },
+      "legal_nature": "META",
+      "legal_nature_marker": "inc."
+    },
+    {
+      "id": 2,
+      "theme": "PREAMBLE_SCOPE",
+      "block_id": 1,
+      "is_block_start": false,
+      "reason": "invitation à lire les conditions, prolonge le préambule",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 3,
+      "theme": "PREAMBLE_SCOPE",
+      "block_id": 1,
+      "is_block_start": false,
+      "reason": "acceptation des conditions par l'usage, même thème",
+      "legal_nature": "OBLIGATION",
+      "legal_nature_marker": "you agree to"
+    },
+    {
+      "id": 4,
+      "theme": "WARRANTY_DISCLAIMER",
+      "block_id": 2,
+      "is_block_start": true,
+      "rationale": "nouveau sujet : avertissement sur l'absence d'accès aux services d'urgence, cite « no access to emergency services »",
+      "rationale_codes": {
+        "decision_trigger": "topic_keyword",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "no access to emergency services",
+        "revised_from_plan": false,
+        "confidence": 0.85
+      },
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 5,
+      "theme": "WARRANTY_DISCLAIMER",
+      "block_id": 2,
+      "is_block_start": false,
+      "reason": "précise que les services ne donnent pas accès aux secours, prolonge le disclaimer",
+      "legal_nature": "PROHIBITION",
+      "legal_nature_marker": "do not"
+    },
+    {
+      "id": 6,
+      "theme": "WARRANTY_DISCLAIMER",
+      "block_id": 2,
+      "is_block_start": false,
+      "reason": "conséquence pratique (contacter les secours autrement), même thème",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 7,
+      "theme": "DISPUTE_ARBITRATION",
+      "block_id": 3,
+      "is_block_start": true,
+      "rationale": "nouveau sujet : clause d'arbitrage contraignante pour US/Canada, cite « binding arbitration provision »",
+      "rationale_codes": {
+        "decision_trigger": "topic_keyword",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "binding arbitration provision",
+        "revised_from_plan": false,
+        "confidence": 0.9
+      },
+      "legal_nature": "DEFINITION",
+      "legal_nature_marker": "means"
+    },
+    {
+      "id": 8,
+      "theme": "DISPUTE_ARBITRATION",
+      "block_id": 3,
+      "is_block_start": false,
+      "reason": "renvoi à la section d'arbitrage, prolonge l'avis",
+      "legal_nature": "GOVERNANCE",
+      "legal_nature_marker": "arbitration"
+    },
+    {
+      "id": 9,
+      "theme": "ELIGIBILITY_ACCOUNT",
+      "block_id": 4,
+      "is_block_start": true,
+      "rationale": "nouveau sujet : inscription et données du compte, cite « register for our services »",
+      "rationale_codes": {
+        "decision_trigger": "topic_keyword",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "register for our services",
+        "revised_from_plan": false,
+        "confidence": 0.9
+      },
+      "legal_nature": "OBLIGATION",
+      "legal_nature_marker": "you must"
+    },
+    {
+      "id": 10,
+      "theme": "ELIGIBILITY_ACCOUNT",
+      "block_id": 4,
+      "is_block_start": false,
+      "reason": "réception de SMS/appels avec codes d'inscription, même thème compte",
+      "legal_nature": "OBLIGATION",
+      "legal_nature_marker": "you agree to"
+    },
+    {
+      "id": 11,
+      "theme": "ELIGIBILITY_ACCOUNT",
+      "block_id": 4,
+      "is_block_start": false,
+      "reason": "fourniture des numéros du carnet d'adresses, lié au compte",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 12,
+      "theme": "ELIGIBILITY_ACCOUNT",
+      "block_id": 4,
+      "is_block_start": false,
+      "reason": "confirmation d'autorisation à fournir ces numéros, prolonge",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 13,
+      "theme": "ELIGIBILITY_ACCOUNT",
+      "block_id": 4,
+      "is_block_start": false,
+      "reason": "âge minimum requis, condition d'éligibilité",
+      "legal_nature": "OBLIGATION",
+      "legal_nature_marker": "you must"
+    },
+    {
+      "id": 14,
+      "theme": "ELIGIBILITY_ACCOUNT",
+      "block_id": 4,
+      "is_block_start": false,
+      "reason": "accord parental si pas l'âge requis, prolonge l'éligibilité",
+      "legal_nature": "OBLIGATION",
+      "legal_nature_marker": "must"
+    },
+    {
+      "id": 15,
+      "theme": "ELIGIBILITY_ACCOUNT",
+      "block_id": 4,
+      "is_block_start": false,
+      "reason": "appareils, logiciels et connexions à fournir, prolonge le compte",
+      "legal_nature": "PROHIBITION",
+      "legal_nature_marker": "do not"
+    },
+    {
+      "id": 16,
+      "theme": "ELIGIBILITY_ACCOUNT",
+      "block_id": 4,
+      "is_block_start": false,
+      "reason": "consentement aux mises à jour des services, prolonge",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 17,
+      "theme": "PAYMENT_BILLING",
+      "block_id": 5,
+      "is_block_start": true,
+      "rationale": "nouveau sujet : frais, taxes et plan de données, cite « fees and taxes »",
+      "rationale_codes": {
+        "decision_trigger": "topic_keyword",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "fees and taxes",
+        "revised_from_plan": false,
+        "confidence": 0.86
+      },
+      "legal_nature": "OBLIGATION",
+      "legal_nature_marker": "you are responsible"
+    },
+    {
+      "id": 18,
+      "theme": "PAYMENT_BILLING",
+      "block_id": 5,
+      "is_block_start": false,
+      "reason": "facturation possible des services et taxes, même thème",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 19,
+      "theme": "PAYMENT_BILLING",
+      "block_id": 5,
+      "is_block_start": false,
+      "reason": "refus ou annulation de commandes, prolonge la facturation",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 20,
+      "theme": "PAYMENT_BILLING",
+      "block_id": 5,
+      "is_block_start": false,
+      "reason": "absence de remboursements, prolonge la facturation",
+      "legal_nature": "PROHIBITION",
+      "legal_nature_marker": "do not"
+    },
+    {
+      "id": 21,
+      "theme": "PRIVACY_DATA",
+      "block_id": 6,
+      "is_block_start": true,
+      "rationale": "nouveau sujet : vie privée, cite « cares about your privacy »",
+      "rationale_codes": {
+        "decision_trigger": "topic_keyword",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "cares about your privacy",
+        "revised_from_plan": false,
+        "confidence": 0.93
+      },
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 22,
+      "theme": "PRIVACY_DATA",
+      "block_id": 6,
+      "is_block_start": false,
+      "reason": "renvoi à la politique de confidentialité, même thème",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 23,
+      "theme": "PRIVACY_DATA",
+      "block_id": 6,
+      "is_block_start": false,
+      "reason": "consentement aux pratiques de données et transfert, prolonge",
+      "legal_nature": "OBLIGATION",
+      "legal_nature_marker": "you agree to"
+    },
+    {
+      "id": 24,
+      "theme": "PRIVACY_DATA",
+      "block_id": 6,
+      "is_block_start": false,
+      "reason": "reconnaissance des lois étrangères sur le stockage des données, prolonge",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 25,
+      "theme": "ACCEPTABLE_USE",
+      "block_id": 7,
+      "is_block_start": true,
+      "rationale": "nouveau sujet : usage conforme aux conditions et politiques, cite « use our services according to our terms »",
+      "rationale_codes": {
+        "decision_trigger": "topic_keyword",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "use our services according to our terms",
+        "revised_from_plan": false,
+        "confidence": 0.82
+      },
+      "legal_nature": "OBLIGATION",
+      "legal_nature_marker": "you must"
+    },
+    {
+      "id": 26,
+      "theme": "ACCEPTABLE_USE",
+      "block_id": 7,
+      "is_block_start": false,
+      "reason": "interdiction de recréer un compte après désactivation, prolonge l'usage acceptable",
+      "legal_nature": "PROHIBITION",
+      "legal_nature_marker": "will not"
+    },
+    {
+      "id": 27,
+      "theme": "ACCEPTABLE_USE",
+      "block_id": 7,
+      "is_block_start": false,
+      "reason": "usage uniquement à des fins légales et autorisées, prolonge",
+      "legal_nature": "OBLIGATION",
+      "legal_nature_marker": "you must"
+    },
+    {
+      "id": 28,
+      "theme": "ACCEPTABLE_USE",
+      "block_id": 7,
+      "is_block_start": false,
+      "reason": "liste des usages interdits, prolonge l'usage acceptable",
+      "legal_nature": "PROHIBITION",
+      "legal_nature_marker": "will not"
+    },
+    {
+      "id": 29,
+      "theme": "ACCEPTABLE_USE",
+      "block_id": 7,
+      "is_block_start": false,
+      "reason": "chapeau 'harm to whatsapp or our users', prolonge l'usage acceptable",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 30,
+      "theme": "ACCEPTABLE_USE",
+      "block_id": 7,
+      "is_block_start": false,
+      "reason": "interdiction d'exploiter/altérer les services, prolonge",
+      "legal_nature": "DEFINITION",
+      "legal_nature_marker": "means"
+    },
+    {
+      "id": 31,
+      "theme": "ACCEPTABLE_USE",
+      "block_id": 7,
+      "is_block_start": false,
+      "reason": "responsabilité de sécuriser appareil et compte, prolonge l'usage acceptable",
+      "legal_nature": "PROHIBITION",
+      "legal_nature_marker": "must not"
+    },
+    {
+      "id": 32,
+      "theme": "THIRD_PARTY",
+      "block_id": 8,
+      "is_block_start": true,
+      "rationale": "nouveau sujet : interaction avec des services tiers, cite « third-party websites »",
+      "rationale_codes": {
+        "decision_trigger": "topic_keyword",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "third-party websites",
+        "revised_from_plan": false,
+        "confidence": 0.88
+      },
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 33,
+      "theme": "THIRD_PARTY",
+      "block_id": 8,
+      "is_block_start": false,
+      "reason": "exemple de services tiers (icloud, google drive), prolonge",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 34,
+      "theme": "THIRD_PARTY",
+      "block_id": 8,
+      "is_block_start": false,
+      "reason": "les conditions des tiers régissent leur usage, prolonge",
+      "legal_nature": "SCOPE_APPLICABILITY",
+      "legal_nature_marker": "govern your use"
+    },
+    {
+      "id": 35,
+      "theme": "LICENSE_IP",
+      "block_id": 9,
+      "is_block_start": true,
+      "rationale": "nouveau sujet : propriété et droits sur le contenu/IP, cite « does not claim ownership »",
+      "rationale_codes": {
+        "decision_trigger": "topic_keyword",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "does not claim ownership",
+        "revised_from_plan": false,
+        "confidence": 0.82
+      },
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 36,
+      "theme": "LICENSE_IP",
+      "block_id": 9,
+      "is_block_start": false,
+      "reason": "droits nécessaires sur l'information soumise, prolonge (PI prime)",
+      "legal_nature": "OBLIGATION",
+      "legal_nature_marker": "you must"
+    },
+    {
+      "id": 37,
+      "theme": "LICENSE_IP",
+      "block_id": 9,
+      "is_block_start": false,
+      "reason": "WhatsApp détient les droits IP des services, prolonge",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 38,
+      "theme": "LICENSE_IP",
+      "block_id": 9,
+      "is_block_start": false,
+      "reason": "interdiction d'usage des marques sans permission, prolonge",
+      "legal_nature": "PROHIBITION",
+      "legal_nature_marker": "may not"
+    },
+    {
+      "id": 39,
+      "theme": "LICENSE_IP",
+      "block_id": 9,
+      "is_block_start": false,
+      "reason": "usage des marques des sociétés affiliées, prolonge",
+      "legal_nature": "RIGHT_GRANT",
+      "legal_nature_marker": "you may use"
+    },
+    {
+      "id": 40,
+      "theme": "LICENSE_IP",
+      "block_id": 9,
+      "is_block_start": false,
+      "reason": "licence accordée à WhatsApp sur le contenu, prolonge la PI/licence",
+      "legal_nature": "RIGHT_GRANT",
+      "legal_nature_marker": "license to"
+    },
+    {
+      "id": 41,
+      "theme": "LICENSE_IP",
+      "block_id": 9,
+      "is_block_start": false,
+      "reason": "objet limité de la licence accordée, prolonge",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 42,
+      "theme": "LICENSE_IP",
+      "block_id": 9,
+      "is_block_start": false,
+      "reason": "chapeau 'whatsapp's license to you', prolonge la licence",
+      "legal_nature": "RIGHT_GRANT",
+      "legal_nature_marker": "license to"
+    },
+    {
+      "id": 43,
+      "theme": "LICENSE_IP",
+      "block_id": 9,
+      "is_block_start": false,
+      "reason": "licence limitée accordée à l'utilisateur, prolonge",
+      "legal_nature": "RIGHT_GRANT",
+      "legal_nature_marker": "grant you"
+    },
+    {
+      "id": 44,
+      "theme": "LICENSE_IP",
+      "block_id": 9,
+      "is_block_start": false,
+      "reason": "but unique de cette licence, prolonge",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 45,
+      "theme": "LICENSE_IP",
+      "block_id": 9,
+      "is_block_start": false,
+      "reason": "aucun droit implicite accordé, prolonge la licence",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 46,
+      "theme": "LICENSE_IP",
+      "block_id": 9,
+      "is_block_start": false,
+      "reason": "titre sur le signalement d'infraction IP, prolonge le bloc PI",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 47,
+      "theme": "LICENSE_IP",
+      "block_id": 9,
+      "is_block_start": false,
+      "reason": "procédure de signalement des infractions IP, prolonge",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 48,
+      "theme": "LICENSE_IP",
+      "block_id": 9,
+      "is_block_start": false,
+      "reason": "résiliation pour infraction répétée des droits IP, prolonge le bloc PI",
+      "legal_nature": "GOVERNANCE",
+      "legal_nature_marker": "terminate"
+    },
+    {
+      "id": 49,
+      "theme": "WARRANTY_DISCLAIMER",
+      "block_id": 10,
+      "is_block_start": true,
+      "rationale": "nouveau sujet : usage à vos risques et disclaimers, cite « at your own risk »",
+      "rationale_codes": {
+        "decision_trigger": "topic_keyword",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "at your own risk",
+        "revised_from_plan": false,
+        "confidence": 0.88
+      },
+      "legal_nature": "LIMITATION_DISCLAIMER",
+      "legal_nature_marker": "disclaim"
+    },
+    {
+      "id": 50,
+      "theme": "WARRANTY_DISCLAIMER",
+      "block_id": 10,
+      "is_block_start": false,
+      "reason": "services fournis 'as is' sans garantie, prolonge le disclaimer",
+      "legal_nature": "LIMITATION_DISCLAIMER",
+      "legal_nature_marker": "as is"
+    },
+    {
+      "id": 51,
+      "theme": "WARRANTY_DISCLAIMER",
+      "block_id": 10,
+      "is_block_start": false,
+      "reason": "absence de garantie d'exactitude/fonctionnement, prolonge",
+      "legal_nature": "PROHIBITION",
+      "legal_nature_marker": "do not"
+    },
+    {
+      "id": 52,
+      "theme": "WARRANTY_DISCLAIMER",
+      "block_id": 10,
+      "is_block_start": false,
+      "reason": "non-contrôle de l'usage par les utilisateurs, prolonge le disclaimer",
+      "legal_nature": "PROHIBITION",
+      "legal_nature_marker": "do not"
+    },
+    {
+      "id": 53,
+      "theme": "WARRANTY_DISCLAIMER",
+      "block_id": 10,
+      "is_block_start": false,
+      "reason": "non-responsabilité des actions des utilisateurs/tiers, prolonge le disclaimer",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 54,
+      "theme": "LIABILITY_LIMITATION",
+      "block_id": 11,
+      "is_block_start": true,
+      "rationale": "nouveau sujet : release et allocation/limitation de responsabilité, cite « release us »",
+      "rationale_codes": {
+        "decision_trigger": "topic_keyword",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "release us",
+        "revised_from_plan": true,
+        "confidence": 0.8
+      },
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 55,
+      "theme": "LIABILITY_LIMITATION",
+      "block_id": 11,
+      "is_block_start": false,
+      "reason": "exclusion des dommages indirects/punitifs, prolonge",
+      "legal_nature": "GOVERNANCE",
+      "legal_nature_marker": "jurisdiction"
+    },
+    {
+      "id": 56,
+      "theme": "LIABILITY_LIMITATION",
+      "block_id": 11,
+      "is_block_start": false,
+      "reason": "plafond de responsabilité agrégée, prolonge",
+      "legal_nature": "PROHIBITION",
+      "legal_nature_marker": "will not"
+    },
+    {
+      "id": 57,
+      "theme": "LIABILITY_LIMITATION",
+      "block_id": 11,
+      "is_block_start": false,
+      "reason": "application maximale du disclaimer, prolonge",
+      "legal_nature": "PROHIBITION",
+      "legal_nature_marker": "will not"
+    },
+    {
+      "id": 58,
+      "theme": "LIABILITY_LIMITATION",
+      "block_id": 11,
+      "is_block_start": false,
+      "reason": "certaines juridictions n'autorisent pas l'exclusion, prolonge",
+      "legal_nature": "LIMITATION_DISCLAIMER",
+      "legal_nature_marker": "disclaim"
+    },
+    {
+      "id": 59,
+      "theme": "LIABILITY_LIMITATION",
+      "block_id": 11,
+      "is_block_start": false,
+      "reason": "limitation au maximum permis dans ces cas, prolonge",
+      "legal_nature": "PROHIBITION",
+      "legal_nature_marker": "may not"
+    },
+    {
+      "id": 60,
+      "theme": "LIABILITY_LIMITATION",
+      "block_id": 11,
+      "is_block_start": false,
+      "reason": "clôture du bloc limitation de responsabilité, prolonge",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 61,
+      "theme": "INDEMNIFICATION",
+      "block_id": 12,
+      "is_block_start": true,
+      "rationale": "nouveau sujet : obligation d'indemnisation, cite « defend , indemnify »",
+      "rationale_codes": {
+        "decision_trigger": "topic_keyword",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "defend , indemnify",
+        "revised_from_plan": false,
+        "confidence": 0.9
+      },
+      "legal_nature": "RISK_ALLOCATION",
+      "legal_nature_marker": "indemnify"
+    },
+    {
+      "id": 62,
+      "theme": "INDEMNIFICATION",
+      "block_id": 12,
+      "is_block_start": false,
+      "reason": "coopération dans la défense des réclamations, prolonge l'indemnisation",
+      "legal_nature": "OBLIGATION",
+      "legal_nature_marker": "you will"
+    },
+    {
+      "id": 63,
+      "theme": "DISPUTE_ARBITRATION",
+      "block_id": 13,
+      "is_block_start": true,
+      "rationale": "nouveau sujet : résolution des litiges et arbitrage, cite « special arbitration provision »",
+      "rationale_codes": {
+        "decision_trigger": "topic_keyword",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "special arbitration provision",
+        "revised_from_plan": false,
+        "confidence": 0.8
+      },
+      "legal_nature": "GOVERNANCE",
+      "legal_nature_marker": "arbitration"
+    },
+    {
+      "id": 64,
+      "theme": "DISPUTE_ARBITRATION",
+      "block_id": 13,
+      "is_block_start": false,
+      "reason": "invitation à lire la section attentivement, prolonge",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 65,
+      "theme": "DISPUTE_ARBITRATION",
+      "block_id": 13,
+      "is_block_start": false,
+      "reason": "for exclusif si non soumis à l'arbitrage, prolonge la résolution des litiges",
+      "legal_nature": "GOVERNANCE",
+      "legal_nature_marker": "jurisdiction"
+    },
+    {
+      "id": 66,
+      "theme": "GOVERNING_LAW",
+      "block_id": 14,
+      "is_block_start": true,
+      "rationale": "nouveau sujet : droit applicable de Californie, cite « laws of the state of california govern »",
+      "rationale_codes": {
+        "decision_trigger": "topic_keyword",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "laws of the state of california govern",
+        "revised_from_plan": false,
+        "confidence": 0.9
+      },
+      "legal_nature": "GOVERNANCE",
+      "legal_nature_marker": "arbitration"
+    },
+    {
+      "id": 67,
+      "theme": "TERMINATION",
+      "block_id": 15,
+      "is_block_start": true,
+      "rationale": "titre nominal de section, cite « availability and termination of our services »",
+      "rationale_codes": {
+        "decision_trigger": "title_marker",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "availability and termination of our services",
+        "revised_from_plan": false,
+        "confidence": 0.9
+      },
+      "legal_nature": "GOVERNANCE",
+      "legal_nature_marker": "termination"
+    },
+    {
+      "id": 68,
+      "theme": "TERMINATION",
+      "block_id": 15,
+      "is_block_start": false,
+      "reason": "interruptions possibles des services, prolonge le bloc disponibilité/résiliation",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 69,
+      "theme": "TERMINATION",
+      "block_id": 15,
+      "is_block_start": false,
+      "reason": "abandon possible de certains services, prolonge",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 70,
+      "theme": "TERMINATION",
+      "block_id": 15,
+      "is_block_start": false,
+      "reason": "événements de force majeure affectant les services, prolonge",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 71,
+      "theme": "TERMINATION",
+      "block_id": 15,
+      "is_block_start": false,
+      "reason": "suspension/résiliation possible de l'accès, prolonge",
+      "legal_nature": "GOVERNANCE",
+      "legal_nature_marker": "terminate"
+    },
+    {
+      "id": 72,
+      "theme": "MISC_BOILERPLATE",
+      "block_id": 16,
+      "is_block_start": true,
+      "rationale": "nouveau sujet : clauses finales diverses débutant par la survie, cite « survive any termination »",
+      "rationale_codes": {
+        "decision_trigger": "topic_keyword",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "survive any termination",
+        "revised_from_plan": false,
+        "confidence": 0.75
+      },
+      "legal_nature": "LIMITATION_DISCLAIMER",
+      "legal_nature_marker": "disclaim"
+    },
+    {
+      "id": 73,
+      "theme": "MISC_BOILERPLATE",
+      "block_id": 16,
+      "is_block_start": false,
+      "reason": "accord entier (entire agreement), prolonge le boilerplate",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 74,
+      "theme": "MISC_BOILERPLATE",
+      "block_id": 16,
+      "is_block_start": false,
+      "reason": "conditions additionnelles possibles, prolonge",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 75,
+      "theme": "MISC_BOILERPLATE",
+      "block_id": 16,
+      "is_block_start": false,
+      "reason": "services non destinés aux pays où l'usage violerait la loi, prolonge",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 76,
+      "theme": "MISC_BOILERPLATE",
+      "block_id": 16,
+      "is_block_start": false,
+      "reason": "droit de limiter les services par pays, prolonge",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 77,
+      "theme": "MISC_BOILERPLATE",
+      "block_id": 16,
+      "is_block_start": false,
+      "reason": "conformité aux lois d'export, prolonge le boilerplate de conformité",
+      "legal_nature": "OBLIGATION",
+      "legal_nature_marker": "you will"
+    },
+    {
+      "id": 78,
+      "theme": "MISC_BOILERPLATE",
+      "block_id": 16,
+      "is_block_start": false,
+      "reason": "interdiction d'exporter vers parties/pays prohibés, prolonge",
+      "legal_nature": "PROHIBITION",
+      "legal_nature_marker": "will not"
+    },
+    {
+      "id": 79,
+      "theme": "MISC_BOILERPLATE",
+      "block_id": 16,
+      "is_block_start": false,
+      "reason": "interdiction d'usage depuis pays restreint, prolonge",
+      "legal_nature": "PROHIBITION",
+      "legal_nature_marker": "will not"
+    },
+    {
+      "id": 80,
+      "theme": "MISC_BOILERPLATE",
+      "block_id": 16,
+      "is_block_start": false,
+      "reason": "langue de référence (anglais US), prolonge le boilerplate",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 81,
+      "theme": "MISC_BOILERPLATE",
+      "block_id": 16,
+      "is_block_start": false,
+      "reason": "version traduite fournie par commodité, prolonge",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 82,
+      "theme": "MISC_BOILERPLATE",
+      "block_id": 16,
+      "is_block_start": false,
+      "reason": "primauté de la version anglaise en cas de conflit, prolonge",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 83,
+      "theme": "MODIFICATION_OF_TERMS",
+      "block_id": 17,
+      "is_block_start": true,
+      "rationale": "nouveau sujet : amendement et renonciation aux conditions, cite « amendment to or waiver of our terms »",
+      "rationale_codes": {
+        "decision_trigger": "topic_keyword",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "amendment to or waiver of our terms",
+        "revised_from_plan": false,
+        "confidence": 0.82
+      },
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 84,
+      "theme": "MODIFICATION_OF_TERMS",
+      "block_id": 17,
+      "is_block_start": false,
+      "reason": "droit d'amender ou mettre à jour les conditions, prolonge",
+      "legal_nature": "GOVERNANCE",
+      "legal_nature_marker": "we may amend"
+    },
+    {
+      "id": 85,
+      "theme": "MODIFICATION_OF_TERMS",
+      "block_id": 17,
+      "is_block_start": false,
+      "reason": "notification des amendements et mise à jour de la date, prolonge",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 86,
+      "theme": "MODIFICATION_OF_TERMS",
+      "block_id": 17,
+      "is_block_start": false,
+      "reason": "usage continu vaut acceptation des conditions amendées, prolonge",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 87,
+      "theme": "MODIFICATION_OF_TERMS",
+      "block_id": 17,
+      "is_block_start": false,
+      "reason": "arrêt de l'usage si désaccord avec les amendements, prolonge",
+      "legal_nature": "PROHIBITION",
+      "legal_nature_marker": "do not"
+    },
+    {
+      "id": 88,
+      "theme": "MODIFICATION_OF_TERMS",
+      "block_id": 17,
+      "is_block_start": false,
+      "reason": "invitation à relire les conditions régulièrement, prolonge",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 89,
+      "theme": "MISC_BOILERPLATE",
+      "block_id": 18,
+      "is_block_start": true,
+      "rationale": "nouveau sujet : cession et clauses finales diverses, cite « freely assignable »",
+      "rationale_codes": {
+        "decision_trigger": "topic_keyword",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "freely assignable",
+        "revised_from_plan": false,
+        "confidence": 0.78
+      },
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 90,
+      "theme": "MISC_BOILERPLATE",
+      "block_id": 18,
+      "is_block_start": false,
+      "reason": "interdiction de cession des droits par l'utilisateur, prolonge",
+      "legal_nature": "PROHIBITION",
+      "legal_nature_marker": "will not"
+    },
+    {
+      "id": 91,
+      "theme": "MISC_BOILERPLATE",
+      "block_id": 18,
+      "is_block_start": false,
+      "reason": "rien n'empêche WhatsApp de respecter la loi, prolonge",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 92,
+      "theme": "MISC_BOILERPLATE",
+      "block_id": 18,
+      "is_block_start": false,
+      "reason": "absence de droits de tiers bénéficiaires, prolonge",
+      "legal_nature": "PROHIBITION",
+      "legal_nature_marker": "do not"
+    },
+    {
+      "id": 93,
+      "theme": "MISC_BOILERPLATE",
+      "block_id": 18,
+      "is_block_start": false,
+      "reason": "non-renonciation en cas de non-application, prolonge",
+      "legal_nature": "PROHIBITION",
+      "legal_nature_marker": "will not"
+    },
+    {
+      "id": 94,
+      "theme": "MISC_BOILERPLATE",
+      "block_id": 18,
+      "is_block_start": false,
+      "reason": "clause de divisibilité (severability), prolonge",
+      "legal_nature": "PROHIBITION",
+      "legal_nature_marker": "shall not"
+    },
+    {
+      "id": 95,
+      "theme": "MISC_BOILERPLATE",
+      "block_id": 18,
+      "is_block_start": false,
+      "reason": "réserve de tous les droits non accordés, prolonge",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 96,
+      "theme": "MISC_BOILERPLATE",
+      "block_id": 18,
+      "is_block_start": false,
+      "reason": "droits consommateur non limités par les conditions, prolonge",
+      "legal_nature": "PROHIBITION",
+      "legal_nature_marker": "may not"
+    },
+    {
+      "id": 97,
+      "theme": "MISC_BOILERPLATE",
+      "block_id": 18,
+      "is_block_start": false,
+      "reason": "usage libre du feedback fourni, prolonge le boilerplate final",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    }
+  ]
+}

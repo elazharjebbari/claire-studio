@@ -1,0 +1,1258 @@
+{
+  "doc": "Booking",
+  "judge": "codex",
+  "version": "v9.0",
+  "document_plan": {
+    "estimated_n_blocks": 17,
+    "rationale_global": "lecture globale avec docfeatures couche 0 ; segmentation conservatrice par sujet juridique autonome.",
+    "segments": [
+      {
+        "start_id": 0,
+        "theme": "PREAMBLE_SCOPE",
+        "rationale": "ouverture prévue pour cadre et acceptation des conditions",
+        "evidence_span": "these terms and conditions , as may be"
+      },
+      {
+        "start_id": 3,
+        "theme": "DEFINITIONS",
+        "rationale": "ouverture prévue pour définition des termes",
+        "evidence_span": "`` booking.com '' , `` us '' ,"
+      },
+      {
+        "start_id": 7,
+        "theme": "THIRD_PARTY",
+        "rationale": "ouverture prévue pour tiers, fournisseurs ou liens externes",
+        "evidence_span": "through the platform , we -lrb- booking.com b.v."
+      },
+      {
+        "start_id": 15,
+        "theme": "ACCEPTABLE_USE",
+        "rationale": "ouverture prévue pour règles d'usage ou interdictions",
+        "evidence_span": "our service is made available for personal and"
+      },
+      {
+        "start_id": 17,
+        "theme": "PAYMENT_BILLING",
+        "rationale": "ouverture prévue pour paiement, frais ou remboursement",
+        "evidence_span": "prices , crossed-out rates and best price guarantee"
+      },
+      {
+        "start_id": 33,
+        "theme": "PRIVACY_DATA",
+        "rationale": "ouverture prévue pour données personnelles ou communications",
+        "evidence_span": "please have a look at our privacy and"
+      },
+      {
+        "start_id": 34,
+        "theme": "PAYMENT_BILLING",
+        "rationale": "ouverture prévue pour paiement, frais ou remboursement",
+        "evidence_span": "our service is free of charge because ,"
+      },
+      {
+        "start_id": 54,
+        "theme": "PAYMENT_BILLING",
+        "rationale": "ouverture prévue pour paiement, frais ou remboursement",
+        "evidence_span": "pre-payment , cancellation , no-show and fine print"
+      },
+      {
+        "start_id": 70,
+        "theme": "PRIVACY_DATA",
+        "rationale": "ouverture prévue pour données personnelles ou communications",
+        "evidence_span": "-lrb- further -rrb- correspondence and communication"
+      },
+      {
+        "start_id": 78,
+        "theme": "DISPUTE_ARBITRATION",
+        "rationale": "ouverture prévue pour réclamation, litige ou arbitrage",
+        "evidence_span": "any claim or complaint against booking.com or in"
+      },
+      {
+        "start_id": 81,
+        "theme": "USER_CONTENT",
+        "rationale": "ouverture prévue pour contenu utilisateur",
+        "evidence_span": "ranking , preferred programme , stars and guest"
+      },
+      {
+        "start_id": 93,
+        "theme": "LIABILITY_LIMITATION",
+        "rationale": "ouverture prévue pour limitation de responsabilité",
+        "evidence_span": "subject to the limitations set out in these"
+      },
+      {
+        "start_id": 98,
+        "theme": "USER_CONTENT",
+        "rationale": "ouverture prévue pour contenu utilisateur",
+        "evidence_span": "by uploading photos/images onto our system -lrb- for"
+      },
+      {
+        "start_id": 106,
+        "theme": "LICENSE_IP",
+        "rationale": "ouverture prévue pour licence et propriété intellectuelle",
+        "evidence_span": "unless stated otherwise , the software required for"
+      },
+      {
+        "start_id": 110,
+        "theme": "GOVERNING_LAW",
+        "rationale": "ouverture prévue pour loi applicable ou juridiction",
+        "evidence_span": "to the extent permitted by law , these"
+      },
+      {
+        "start_id": 115,
+        "theme": "MISC_BOILERPLATE",
+        "rationale": "ouverture prévue pour clause finale ou notification générale",
+        "evidence_span": "if any provision of these terms and conditions"
+      },
+      {
+        "start_id": 117,
+        "theme": "META",
+        "rationale": "ouverture prévue pour information factuelle non normative",
+        "evidence_span": "about booking.com and the support companies"
+      }
+    ]
+  },
+  "annotations": [
+    {
+      "id": 0,
+      "theme": "PREAMBLE_SCOPE",
+      "function": "SCOPE_APPLICABILITY",
+      "block_id": 0,
+      "is_block_start": true,
+      "rationale": "ouvre cadre et acceptation des conditions ; indice « these terms and conditions , as may be »",
+      "rationale_codes": {
+        "decision_trigger": "document_start",
+        "relation_to_prev": "document_start",
+        "evidence_span": "these terms and conditions , as may be",
+        "revised_from_plan": false,
+        "confidence": 0.95
+      }
+    },
+    {
+      "id": 1,
+      "theme": "PREAMBLE_SCOPE",
+      "function": "PROCEDURE_MECHANISM",
+      "block_id": 0,
+      "is_block_start": false,
+      "reason": "continue PREAMBLE_SCOPE, précision ou conséquence du même sujet"
+    },
+    {
+      "id": 2,
+      "theme": "PREAMBLE_SCOPE",
+      "function": "PROCEDURE_MECHANISM",
+      "block_id": 0,
+      "is_block_start": false,
+      "reason": "continue PREAMBLE_SCOPE, précision ou conséquence du même sujet"
+    },
+    {
+      "id": 3,
+      "theme": "DEFINITIONS",
+      "function": "DEFINITION",
+      "block_id": 1,
+      "is_block_start": true,
+      "rationale": "ouvre définition des termes ; indice « `` booking.com '' , `` us '' , »",
+      "rationale_codes": {
+        "decision_trigger": "definition_marker",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "`` booking.com '' , `` us '' ,",
+        "revised_from_plan": false,
+        "confidence": 0.86
+      }
+    },
+    {
+      "id": 4,
+      "theme": "DEFINITIONS",
+      "function": "PROCEDURE_MECHANISM",
+      "block_id": 1,
+      "is_block_start": false,
+      "reason": "continue DEFINITIONS, précision ou conséquence du même sujet"
+    },
+    {
+      "id": 5,
+      "theme": "DEFINITIONS",
+      "function": "PROCEDURE_MECHANISM",
+      "block_id": 1,
+      "is_block_start": false,
+      "reason": "continue DEFINITIONS, précision ou conséquence du même sujet"
+    },
+    {
+      "id": 6,
+      "theme": "DEFINITIONS",
+      "function": "PROCEDURE_MECHANISM",
+      "block_id": 1,
+      "is_block_start": false,
+      "reason": "continue DEFINITIONS, précision ou conséquence du même sujet"
+    },
+    {
+      "id": 7,
+      "theme": "THIRD_PARTY",
+      "function": "SCOPE_APPLICABILITY",
+      "block_id": 2,
+      "is_block_start": true,
+      "rationale": "ouvre tiers, fournisseurs ou liens externes ; indice « through the platform , we -lrb- booking.com b.v. »",
+      "rationale_codes": {
+        "decision_trigger": "topic_keyword",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "through the platform , we -lrb- booking.com b.v.",
+        "revised_from_plan": false,
+        "confidence": 0.86
+      }
+    },
+    {
+      "id": 8,
+      "theme": "THIRD_PARTY",
+      "function": "PROCEDURE_MECHANISM",
+      "block_id": 2,
+      "is_block_start": false,
+      "reason": "continue THIRD_PARTY, précision ou conséquence du même sujet"
+    },
+    {
+      "id": 9,
+      "theme": "THIRD_PARTY",
+      "function": "PROCEDURE_MECHANISM",
+      "block_id": 2,
+      "is_block_start": false,
+      "reason": "continue THIRD_PARTY, précision ou conséquence du même sujet"
+    },
+    {
+      "id": 10,
+      "theme": "THIRD_PARTY",
+      "function": "PROCEDURE_MECHANISM",
+      "block_id": 2,
+      "is_block_start": false,
+      "reason": "continue THIRD_PARTY, précision ou conséquence du même sujet"
+    },
+    {
+      "id": 11,
+      "theme": "THIRD_PARTY",
+      "function": "PROCEDURE_MECHANISM",
+      "block_id": 2,
+      "is_block_start": false,
+      "reason": "continue THIRD_PARTY, précision ou conséquence du même sujet"
+    },
+    {
+      "id": 12,
+      "theme": "THIRD_PARTY",
+      "function": "PROCEDURE_MECHANISM",
+      "block_id": 2,
+      "is_block_start": false,
+      "reason": "continue THIRD_PARTY, précision ou conséquence du même sujet"
+    },
+    {
+      "id": 13,
+      "theme": "THIRD_PARTY",
+      "function": "PROCEDURE_MECHANISM",
+      "block_id": 2,
+      "is_block_start": false,
+      "reason": "continue THIRD_PARTY, précision ou conséquence du même sujet"
+    },
+    {
+      "id": 14,
+      "theme": "THIRD_PARTY",
+      "function": "PROCEDURE_MECHANISM",
+      "block_id": 2,
+      "is_block_start": false,
+      "reason": "continue THIRD_PARTY, précision ou conséquence du même sujet"
+    },
+    {
+      "id": 15,
+      "theme": "ACCEPTABLE_USE",
+      "function": "PROHIBITION",
+      "block_id": 3,
+      "is_block_start": true,
+      "rationale": "ouvre règles d'usage ou interdictions ; indice « our service is made available for personal and »",
+      "rationale_codes": {
+        "decision_trigger": "topic_keyword",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "our service is made available for personal and",
+        "revised_from_plan": false,
+        "confidence": 0.86
+      }
+    },
+    {
+      "id": 16,
+      "theme": "ACCEPTABLE_USE",
+      "function": "PROCEDURE_MECHANISM",
+      "block_id": 3,
+      "is_block_start": false,
+      "reason": "continue ACCEPTABLE_USE, précision ou conséquence du même sujet"
+    },
+    {
+      "id": 17,
+      "theme": "PAYMENT_BILLING",
+      "function": "OBLIGATION",
+      "block_id": 4,
+      "is_block_start": true,
+      "rationale": "ouvre paiement, frais ou remboursement ; indice « prices , crossed-out rates and best price guarantee »",
+      "rationale_codes": {
+        "decision_trigger": "title_marker",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "prices , crossed-out rates and best price guarantee",
+        "revised_from_plan": false,
+        "confidence": 0.86
+      }
+    },
+    {
+      "id": 18,
+      "theme": "PAYMENT_BILLING",
+      "function": "PROCEDURE_MECHANISM",
+      "block_id": 4,
+      "is_block_start": false,
+      "reason": "continue PAYMENT_BILLING, précision ou conséquence du même sujet"
+    },
+    {
+      "id": 19,
+      "theme": "PAYMENT_BILLING",
+      "function": "PROCEDURE_MECHANISM",
+      "block_id": 4,
+      "is_block_start": false,
+      "reason": "continue PAYMENT_BILLING, précision ou conséquence du même sujet"
+    },
+    {
+      "id": 20,
+      "theme": "PAYMENT_BILLING",
+      "function": "PROCEDURE_MECHANISM",
+      "block_id": 4,
+      "is_block_start": false,
+      "reason": "continue PAYMENT_BILLING, précision ou conséquence du même sujet"
+    },
+    {
+      "id": 21,
+      "theme": "PAYMENT_BILLING",
+      "function": "PROCEDURE_MECHANISM",
+      "block_id": 4,
+      "is_block_start": false,
+      "reason": "continue PAYMENT_BILLING, précision ou conséquence du même sujet"
+    },
+    {
+      "id": 22,
+      "theme": "PAYMENT_BILLING",
+      "function": "PROCEDURE_MECHANISM",
+      "block_id": 4,
+      "is_block_start": false,
+      "reason": "continue PAYMENT_BILLING, précision ou conséquence du même sujet"
+    },
+    {
+      "id": 23,
+      "theme": "PAYMENT_BILLING",
+      "function": "PROCEDURE_MECHANISM",
+      "block_id": 4,
+      "is_block_start": false,
+      "reason": "continue PAYMENT_BILLING, précision ou conséquence du même sujet"
+    },
+    {
+      "id": 24,
+      "theme": "PAYMENT_BILLING",
+      "function": "PROCEDURE_MECHANISM",
+      "block_id": 4,
+      "is_block_start": false,
+      "reason": "continue PAYMENT_BILLING, précision ou conséquence du même sujet"
+    },
+    {
+      "id": 25,
+      "theme": "PAYMENT_BILLING",
+      "function": "PROCEDURE_MECHANISM",
+      "block_id": 4,
+      "is_block_start": false,
+      "reason": "continue PAYMENT_BILLING, précision ou conséquence du même sujet"
+    },
+    {
+      "id": 26,
+      "theme": "PAYMENT_BILLING",
+      "function": "PROCEDURE_MECHANISM",
+      "block_id": 4,
+      "is_block_start": false,
+      "reason": "continue PAYMENT_BILLING, précision ou conséquence du même sujet"
+    },
+    {
+      "id": 27,
+      "theme": "PAYMENT_BILLING",
+      "function": "PROCEDURE_MECHANISM",
+      "block_id": 4,
+      "is_block_start": false,
+      "reason": "continue PAYMENT_BILLING, précision ou conséquence du même sujet"
+    },
+    {
+      "id": 28,
+      "theme": "PAYMENT_BILLING",
+      "function": "PROCEDURE_MECHANISM",
+      "block_id": 4,
+      "is_block_start": false,
+      "reason": "continue PAYMENT_BILLING, précision ou conséquence du même sujet"
+    },
+    {
+      "id": 29,
+      "theme": "PAYMENT_BILLING",
+      "function": "PROCEDURE_MECHANISM",
+      "block_id": 4,
+      "is_block_start": false,
+      "reason": "continue PAYMENT_BILLING, précision ou conséquence du même sujet"
+    },
+    {
+      "id": 30,
+      "theme": "PAYMENT_BILLING",
+      "function": "PROCEDURE_MECHANISM",
+      "block_id": 4,
+      "is_block_start": false,
+      "reason": "continue PAYMENT_BILLING, précision ou conséquence du même sujet"
+    },
+    {
+      "id": 31,
+      "theme": "PAYMENT_BILLING",
+      "function": "PROCEDURE_MECHANISM",
+      "block_id": 4,
+      "is_block_start": false,
+      "reason": "continue PAYMENT_BILLING, précision ou conséquence du même sujet"
+    },
+    {
+      "id": 32,
+      "theme": "PAYMENT_BILLING",
+      "function": "PROCEDURE_MECHANISM",
+      "block_id": 4,
+      "is_block_start": false,
+      "reason": "continue PAYMENT_BILLING, précision ou conséquence du même sujet"
+    },
+    {
+      "id": 33,
+      "theme": "PRIVACY_DATA",
+      "function": "SCOPE_APPLICABILITY",
+      "block_id": 5,
+      "is_block_start": true,
+      "rationale": "ouvre données personnelles ou communications ; indice « please have a look at our privacy and »",
+      "rationale_codes": {
+        "decision_trigger": "topic_keyword",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "please have a look at our privacy and",
+        "revised_from_plan": false,
+        "confidence": 0.86
+      }
+    },
+    {
+      "id": 34,
+      "theme": "PAYMENT_BILLING",
+      "function": "OBLIGATION",
+      "block_id": 6,
+      "is_block_start": true,
+      "rationale": "ouvre paiement, frais ou remboursement ; indice « our service is free of charge because , »",
+      "rationale_codes": {
+        "decision_trigger": "topic_keyword",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "our service is free of charge because ,",
+        "revised_from_plan": false,
+        "confidence": 0.86
+      }
+    },
+    {
+      "id": 35,
+      "theme": "PAYMENT_BILLING",
+      "function": "PROCEDURE_MECHANISM",
+      "block_id": 6,
+      "is_block_start": false,
+      "reason": "continue PAYMENT_BILLING, précision ou conséquence du même sujet"
+    },
+    {
+      "id": 36,
+      "theme": "PAYMENT_BILLING",
+      "function": "PROCEDURE_MECHANISM",
+      "block_id": 6,
+      "is_block_start": false,
+      "reason": "continue PAYMENT_BILLING, précision ou conséquence du même sujet"
+    },
+    {
+      "id": 37,
+      "theme": "PAYMENT_BILLING",
+      "function": "PROCEDURE_MECHANISM",
+      "block_id": 6,
+      "is_block_start": false,
+      "reason": "continue PAYMENT_BILLING, précision ou conséquence du même sujet"
+    },
+    {
+      "id": 38,
+      "theme": "PAYMENT_BILLING",
+      "function": "PROCEDURE_MECHANISM",
+      "block_id": 6,
+      "is_block_start": false,
+      "reason": "continue PAYMENT_BILLING, précision ou conséquence du même sujet"
+    },
+    {
+      "id": 39,
+      "theme": "PAYMENT_BILLING",
+      "function": "PROCEDURE_MECHANISM",
+      "block_id": 6,
+      "is_block_start": false,
+      "reason": "continue PAYMENT_BILLING, précision ou conséquence du même sujet"
+    },
+    {
+      "id": 40,
+      "theme": "PAYMENT_BILLING",
+      "function": "PROCEDURE_MECHANISM",
+      "block_id": 6,
+      "is_block_start": false,
+      "reason": "continue PAYMENT_BILLING, précision ou conséquence du même sujet"
+    },
+    {
+      "id": 41,
+      "theme": "PAYMENT_BILLING",
+      "function": "PROCEDURE_MECHANISM",
+      "block_id": 6,
+      "is_block_start": false,
+      "reason": "continue PAYMENT_BILLING, précision ou conséquence du même sujet"
+    },
+    {
+      "id": 42,
+      "theme": "PAYMENT_BILLING",
+      "function": "PROCEDURE_MECHANISM",
+      "block_id": 6,
+      "is_block_start": false,
+      "reason": "continue PAYMENT_BILLING, précision ou conséquence du même sujet"
+    },
+    {
+      "id": 43,
+      "theme": "PAYMENT_BILLING",
+      "function": "PROCEDURE_MECHANISM",
+      "block_id": 6,
+      "is_block_start": false,
+      "reason": "continue PAYMENT_BILLING, précision ou conséquence du même sujet"
+    },
+    {
+      "id": 44,
+      "theme": "PAYMENT_BILLING",
+      "function": "PROCEDURE_MECHANISM",
+      "block_id": 6,
+      "is_block_start": false,
+      "reason": "continue PAYMENT_BILLING, précision ou conséquence du même sujet"
+    },
+    {
+      "id": 45,
+      "theme": "PAYMENT_BILLING",
+      "function": "PROCEDURE_MECHANISM",
+      "block_id": 6,
+      "is_block_start": false,
+      "reason": "continue PAYMENT_BILLING, précision ou conséquence du même sujet"
+    },
+    {
+      "id": 46,
+      "theme": "PAYMENT_BILLING",
+      "function": "PROCEDURE_MECHANISM",
+      "block_id": 6,
+      "is_block_start": false,
+      "reason": "continue PAYMENT_BILLING, précision ou conséquence du même sujet"
+    },
+    {
+      "id": 47,
+      "theme": "PAYMENT_BILLING",
+      "function": "PROCEDURE_MECHANISM",
+      "block_id": 6,
+      "is_block_start": false,
+      "reason": "continue PAYMENT_BILLING, précision ou conséquence du même sujet"
+    },
+    {
+      "id": 48,
+      "theme": "PAYMENT_BILLING",
+      "function": "PROCEDURE_MECHANISM",
+      "block_id": 6,
+      "is_block_start": false,
+      "reason": "continue PAYMENT_BILLING, précision ou conséquence du même sujet"
+    },
+    {
+      "id": 49,
+      "theme": "PAYMENT_BILLING",
+      "function": "PROCEDURE_MECHANISM",
+      "block_id": 6,
+      "is_block_start": false,
+      "reason": "continue PAYMENT_BILLING, précision ou conséquence du même sujet"
+    },
+    {
+      "id": 50,
+      "theme": "PAYMENT_BILLING",
+      "function": "PROCEDURE_MECHANISM",
+      "block_id": 6,
+      "is_block_start": false,
+      "reason": "continue PAYMENT_BILLING, précision ou conséquence du même sujet"
+    },
+    {
+      "id": 51,
+      "theme": "PAYMENT_BILLING",
+      "function": "PROCEDURE_MECHANISM",
+      "block_id": 6,
+      "is_block_start": false,
+      "reason": "continue PAYMENT_BILLING, précision ou conséquence du même sujet"
+    },
+    {
+      "id": 52,
+      "theme": "PAYMENT_BILLING",
+      "function": "PROCEDURE_MECHANISM",
+      "block_id": 6,
+      "is_block_start": false,
+      "reason": "continue PAYMENT_BILLING, précision ou conséquence du même sujet"
+    },
+    {
+      "id": 53,
+      "theme": "PAYMENT_BILLING",
+      "function": "PROCEDURE_MECHANISM",
+      "block_id": 6,
+      "is_block_start": false,
+      "reason": "continue PAYMENT_BILLING, précision ou conséquence du même sujet"
+    },
+    {
+      "id": 54,
+      "theme": "PAYMENT_BILLING",
+      "function": "GOVERNANCE",
+      "block_id": 7,
+      "is_block_start": true,
+      "rationale": "ouvre paiement, frais ou remboursement ; indice « pre-payment , cancellation , no-show and fine print »",
+      "rationale_codes": {
+        "decision_trigger": "title_marker",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "pre-payment , cancellation , no-show and fine print",
+        "revised_from_plan": false,
+        "confidence": 0.86
+      }
+    },
+    {
+      "id": 55,
+      "theme": "PAYMENT_BILLING",
+      "function": "PROCEDURE_MECHANISM",
+      "block_id": 7,
+      "is_block_start": false,
+      "reason": "continue PAYMENT_BILLING, précision ou conséquence du même sujet"
+    },
+    {
+      "id": 56,
+      "theme": "PAYMENT_BILLING",
+      "function": "PROCEDURE_MECHANISM",
+      "block_id": 7,
+      "is_block_start": false,
+      "reason": "continue PAYMENT_BILLING, précision ou conséquence du même sujet"
+    },
+    {
+      "id": 57,
+      "theme": "PAYMENT_BILLING",
+      "function": "PROCEDURE_MECHANISM",
+      "block_id": 7,
+      "is_block_start": false,
+      "reason": "continue PAYMENT_BILLING, précision ou conséquence du même sujet"
+    },
+    {
+      "id": 58,
+      "theme": "PAYMENT_BILLING",
+      "function": "PROCEDURE_MECHANISM",
+      "block_id": 7,
+      "is_block_start": false,
+      "reason": "continue PAYMENT_BILLING, précision ou conséquence du même sujet"
+    },
+    {
+      "id": 59,
+      "theme": "PAYMENT_BILLING",
+      "function": "PROCEDURE_MECHANISM",
+      "block_id": 7,
+      "is_block_start": false,
+      "reason": "continue PAYMENT_BILLING, précision ou conséquence du même sujet"
+    },
+    {
+      "id": 60,
+      "theme": "PAYMENT_BILLING",
+      "function": "PROCEDURE_MECHANISM",
+      "block_id": 7,
+      "is_block_start": false,
+      "reason": "continue PAYMENT_BILLING, précision ou conséquence du même sujet"
+    },
+    {
+      "id": 61,
+      "theme": "PAYMENT_BILLING",
+      "function": "PROCEDURE_MECHANISM",
+      "block_id": 7,
+      "is_block_start": false,
+      "reason": "continue PAYMENT_BILLING, précision ou conséquence du même sujet"
+    },
+    {
+      "id": 62,
+      "theme": "PAYMENT_BILLING",
+      "function": "PROCEDURE_MECHANISM",
+      "block_id": 7,
+      "is_block_start": false,
+      "reason": "continue PAYMENT_BILLING, précision ou conséquence du même sujet"
+    },
+    {
+      "id": 63,
+      "theme": "PAYMENT_BILLING",
+      "function": "PROCEDURE_MECHANISM",
+      "block_id": 7,
+      "is_block_start": false,
+      "reason": "continue PAYMENT_BILLING, précision ou conséquence du même sujet"
+    },
+    {
+      "id": 64,
+      "theme": "PAYMENT_BILLING",
+      "function": "PROCEDURE_MECHANISM",
+      "block_id": 7,
+      "is_block_start": false,
+      "reason": "continue PAYMENT_BILLING, précision ou conséquence du même sujet"
+    },
+    {
+      "id": 65,
+      "theme": "PAYMENT_BILLING",
+      "function": "PROCEDURE_MECHANISM",
+      "block_id": 7,
+      "is_block_start": false,
+      "reason": "continue PAYMENT_BILLING, précision ou conséquence du même sujet"
+    },
+    {
+      "id": 66,
+      "theme": "PAYMENT_BILLING",
+      "function": "PROCEDURE_MECHANISM",
+      "block_id": 7,
+      "is_block_start": false,
+      "reason": "continue PAYMENT_BILLING, précision ou conséquence du même sujet"
+    },
+    {
+      "id": 67,
+      "theme": "PAYMENT_BILLING",
+      "function": "PROCEDURE_MECHANISM",
+      "block_id": 7,
+      "is_block_start": false,
+      "reason": "continue PAYMENT_BILLING, précision ou conséquence du même sujet"
+    },
+    {
+      "id": 68,
+      "theme": "PAYMENT_BILLING",
+      "function": "PROCEDURE_MECHANISM",
+      "block_id": 7,
+      "is_block_start": false,
+      "reason": "continue PAYMENT_BILLING, précision ou conséquence du même sujet"
+    },
+    {
+      "id": 69,
+      "theme": "PAYMENT_BILLING",
+      "function": "PROCEDURE_MECHANISM",
+      "block_id": 7,
+      "is_block_start": false,
+      "reason": "continue PAYMENT_BILLING, précision ou conséquence du même sujet"
+    },
+    {
+      "id": 70,
+      "theme": "PRIVACY_DATA",
+      "function": "SCOPE_APPLICABILITY",
+      "block_id": 8,
+      "is_block_start": true,
+      "rationale": "ouvre données personnelles ou communications ; indice « -lrb- further -rrb- correspondence and communication »",
+      "rationale_codes": {
+        "decision_trigger": "title_marker",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "-lrb- further -rrb- correspondence and communication",
+        "revised_from_plan": false,
+        "confidence": 0.86
+      }
+    },
+    {
+      "id": 71,
+      "theme": "PRIVACY_DATA",
+      "function": "PROCEDURE_MECHANISM",
+      "block_id": 8,
+      "is_block_start": false,
+      "reason": "continue PRIVACY_DATA, précision ou conséquence du même sujet"
+    },
+    {
+      "id": 72,
+      "theme": "PRIVACY_DATA",
+      "function": "PROCEDURE_MECHANISM",
+      "block_id": 8,
+      "is_block_start": false,
+      "reason": "continue PRIVACY_DATA, précision ou conséquence du même sujet"
+    },
+    {
+      "id": 73,
+      "theme": "PRIVACY_DATA",
+      "function": "PROCEDURE_MECHANISM",
+      "block_id": 8,
+      "is_block_start": false,
+      "reason": "continue PRIVACY_DATA, précision ou conséquence du même sujet"
+    },
+    {
+      "id": 74,
+      "theme": "PRIVACY_DATA",
+      "function": "PROCEDURE_MECHANISM",
+      "block_id": 8,
+      "is_block_start": false,
+      "reason": "continue PRIVACY_DATA, précision ou conséquence du même sujet"
+    },
+    {
+      "id": 75,
+      "theme": "PRIVACY_DATA",
+      "function": "PROCEDURE_MECHANISM",
+      "block_id": 8,
+      "is_block_start": false,
+      "reason": "continue PRIVACY_DATA, précision ou conséquence du même sujet"
+    },
+    {
+      "id": 76,
+      "theme": "PRIVACY_DATA",
+      "function": "PROCEDURE_MECHANISM",
+      "block_id": 8,
+      "is_block_start": false,
+      "reason": "continue PRIVACY_DATA, précision ou conséquence du même sujet"
+    },
+    {
+      "id": 77,
+      "theme": "PRIVACY_DATA",
+      "function": "PROCEDURE_MECHANISM",
+      "block_id": 8,
+      "is_block_start": false,
+      "reason": "continue PRIVACY_DATA, précision ou conséquence du même sujet"
+    },
+    {
+      "id": 78,
+      "theme": "DISPUTE_ARBITRATION",
+      "function": "GOVERNANCE",
+      "block_id": 9,
+      "is_block_start": true,
+      "rationale": "ouvre réclamation, litige ou arbitrage ; indice « any claim or complaint against booking.com or in »",
+      "rationale_codes": {
+        "decision_trigger": "topic_keyword",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "any claim or complaint against booking.com or in",
+        "revised_from_plan": false,
+        "confidence": 0.86
+      }
+    },
+    {
+      "id": 79,
+      "theme": "DISPUTE_ARBITRATION",
+      "function": "PROCEDURE_MECHANISM",
+      "block_id": 9,
+      "is_block_start": false,
+      "reason": "continue DISPUTE_ARBITRATION, précision ou conséquence du même sujet"
+    },
+    {
+      "id": 80,
+      "theme": "DISPUTE_ARBITRATION",
+      "function": "PROCEDURE_MECHANISM",
+      "block_id": 9,
+      "is_block_start": false,
+      "reason": "continue DISPUTE_ARBITRATION, précision ou conséquence du même sujet"
+    },
+    {
+      "id": 81,
+      "theme": "USER_CONTENT",
+      "function": "SCOPE_APPLICABILITY",
+      "block_id": 10,
+      "is_block_start": true,
+      "rationale": "ouvre contenu utilisateur ; indice « ranking , preferred programme , stars and guest »",
+      "rationale_codes": {
+        "decision_trigger": "title_marker",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "ranking , preferred programme , stars and guest",
+        "revised_from_plan": false,
+        "confidence": 0.86
+      }
+    },
+    {
+      "id": 82,
+      "theme": "USER_CONTENT",
+      "function": "PROCEDURE_MECHANISM",
+      "block_id": 10,
+      "is_block_start": false,
+      "reason": "continue USER_CONTENT, précision ou conséquence du même sujet"
+    },
+    {
+      "id": 83,
+      "theme": "USER_CONTENT",
+      "function": "PROCEDURE_MECHANISM",
+      "block_id": 10,
+      "is_block_start": false,
+      "reason": "continue USER_CONTENT, précision ou conséquence du même sujet"
+    },
+    {
+      "id": 84,
+      "theme": "USER_CONTENT",
+      "function": "PROCEDURE_MECHANISM",
+      "block_id": 10,
+      "is_block_start": false,
+      "reason": "continue USER_CONTENT, précision ou conséquence du même sujet"
+    },
+    {
+      "id": 85,
+      "theme": "USER_CONTENT",
+      "function": "PROCEDURE_MECHANISM",
+      "block_id": 10,
+      "is_block_start": false,
+      "reason": "continue USER_CONTENT, précision ou conséquence du même sujet"
+    },
+    {
+      "id": 86,
+      "theme": "USER_CONTENT",
+      "function": "PROCEDURE_MECHANISM",
+      "block_id": 10,
+      "is_block_start": false,
+      "reason": "continue USER_CONTENT, précision ou conséquence du même sujet"
+    },
+    {
+      "id": 87,
+      "theme": "USER_CONTENT",
+      "function": "PROCEDURE_MECHANISM",
+      "block_id": 10,
+      "is_block_start": false,
+      "reason": "continue USER_CONTENT, précision ou conséquence du même sujet"
+    },
+    {
+      "id": 88,
+      "theme": "USER_CONTENT",
+      "function": "PROCEDURE_MECHANISM",
+      "block_id": 10,
+      "is_block_start": false,
+      "reason": "continue USER_CONTENT, précision ou conséquence du même sujet"
+    },
+    {
+      "id": 89,
+      "theme": "USER_CONTENT",
+      "function": "PROCEDURE_MECHANISM",
+      "block_id": 10,
+      "is_block_start": false,
+      "reason": "continue USER_CONTENT, précision ou conséquence du même sujet"
+    },
+    {
+      "id": 90,
+      "theme": "USER_CONTENT",
+      "function": "PROCEDURE_MECHANISM",
+      "block_id": 10,
+      "is_block_start": false,
+      "reason": "continue USER_CONTENT, précision ou conséquence du même sujet"
+    },
+    {
+      "id": 91,
+      "theme": "USER_CONTENT",
+      "function": "PROCEDURE_MECHANISM",
+      "block_id": 10,
+      "is_block_start": false,
+      "reason": "continue USER_CONTENT, précision ou conséquence du même sujet"
+    },
+    {
+      "id": 92,
+      "theme": "USER_CONTENT",
+      "function": "PROCEDURE_MECHANISM",
+      "block_id": 10,
+      "is_block_start": false,
+      "reason": "continue USER_CONTENT, précision ou conséquence du même sujet"
+    },
+    {
+      "id": 93,
+      "theme": "LIABILITY_LIMITATION",
+      "function": "LIMITATION_DISCLAIMER",
+      "block_id": 11,
+      "is_block_start": true,
+      "rationale": "ouvre limitation de responsabilité ; indice « subject to the limitations set out in these »",
+      "rationale_codes": {
+        "decision_trigger": "topic_keyword",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "subject to the limitations set out in these",
+        "revised_from_plan": false,
+        "confidence": 0.86
+      }
+    },
+    {
+      "id": 94,
+      "theme": "LIABILITY_LIMITATION",
+      "function": "PROCEDURE_MECHANISM",
+      "block_id": 11,
+      "is_block_start": false,
+      "reason": "continue LIABILITY_LIMITATION, précision ou conséquence du même sujet"
+    },
+    {
+      "id": 95,
+      "theme": "LIABILITY_LIMITATION",
+      "function": "PROCEDURE_MECHANISM",
+      "block_id": 11,
+      "is_block_start": false,
+      "reason": "continue LIABILITY_LIMITATION, précision ou conséquence du même sujet"
+    },
+    {
+      "id": 96,
+      "theme": "LIABILITY_LIMITATION",
+      "function": "PROCEDURE_MECHANISM",
+      "block_id": 11,
+      "is_block_start": false,
+      "reason": "continue LIABILITY_LIMITATION, précision ou conséquence du même sujet"
+    },
+    {
+      "id": 97,
+      "theme": "LIABILITY_LIMITATION",
+      "function": "PROCEDURE_MECHANISM",
+      "block_id": 11,
+      "is_block_start": false,
+      "reason": "continue LIABILITY_LIMITATION, précision ou conséquence du même sujet"
+    },
+    {
+      "id": 98,
+      "theme": "USER_CONTENT",
+      "function": "RIGHT_GRANT",
+      "block_id": 12,
+      "is_block_start": true,
+      "rationale": "ouvre contenu utilisateur ; indice « by uploading photos/images onto our system -lrb- for »",
+      "rationale_codes": {
+        "decision_trigger": "topic_keyword",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "by uploading photos/images onto our system -lrb- for",
+        "revised_from_plan": false,
+        "confidence": 0.86
+      }
+    },
+    {
+      "id": 99,
+      "theme": "USER_CONTENT",
+      "function": "PROCEDURE_MECHANISM",
+      "block_id": 12,
+      "is_block_start": false,
+      "reason": "continue USER_CONTENT, précision ou conséquence du même sujet"
+    },
+    {
+      "id": 100,
+      "theme": "USER_CONTENT",
+      "function": "PROCEDURE_MECHANISM",
+      "block_id": 12,
+      "is_block_start": false,
+      "reason": "continue USER_CONTENT, précision ou conséquence du même sujet"
+    },
+    {
+      "id": 101,
+      "theme": "USER_CONTENT",
+      "function": "PROCEDURE_MECHANISM",
+      "block_id": 12,
+      "is_block_start": false,
+      "reason": "continue USER_CONTENT, précision ou conséquence du même sujet"
+    },
+    {
+      "id": 102,
+      "theme": "USER_CONTENT",
+      "function": "PROCEDURE_MECHANISM",
+      "block_id": 12,
+      "is_block_start": false,
+      "reason": "continue USER_CONTENT, précision ou conséquence du même sujet"
+    },
+    {
+      "id": 103,
+      "theme": "USER_CONTENT",
+      "function": "PROCEDURE_MECHANISM",
+      "block_id": 12,
+      "is_block_start": false,
+      "reason": "continue USER_CONTENT, précision ou conséquence du même sujet"
+    },
+    {
+      "id": 104,
+      "theme": "USER_CONTENT",
+      "function": "PROCEDURE_MECHANISM",
+      "block_id": 12,
+      "is_block_start": false,
+      "reason": "continue USER_CONTENT, précision ou conséquence du même sujet"
+    },
+    {
+      "id": 105,
+      "theme": "USER_CONTENT",
+      "function": "PROCEDURE_MECHANISM",
+      "block_id": 12,
+      "is_block_start": false,
+      "reason": "continue USER_CONTENT, précision ou conséquence du même sujet"
+    },
+    {
+      "id": 106,
+      "theme": "LICENSE_IP",
+      "function": "RIGHT_GRANT",
+      "block_id": 13,
+      "is_block_start": true,
+      "rationale": "ouvre licence et propriété intellectuelle ; indice « unless stated otherwise , the software required for »",
+      "rationale_codes": {
+        "decision_trigger": "topic_keyword",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "unless stated otherwise , the software required for",
+        "revised_from_plan": false,
+        "confidence": 0.86
+      }
+    },
+    {
+      "id": 107,
+      "theme": "LICENSE_IP",
+      "function": "PROCEDURE_MECHANISM",
+      "block_id": 13,
+      "is_block_start": false,
+      "reason": "continue LICENSE_IP, précision ou conséquence du même sujet"
+    },
+    {
+      "id": 108,
+      "theme": "LICENSE_IP",
+      "function": "PROCEDURE_MECHANISM",
+      "block_id": 13,
+      "is_block_start": false,
+      "reason": "continue LICENSE_IP, précision ou conséquence du même sujet"
+    },
+    {
+      "id": 109,
+      "theme": "LICENSE_IP",
+      "function": "PROCEDURE_MECHANISM",
+      "block_id": 13,
+      "is_block_start": false,
+      "reason": "continue LICENSE_IP, précision ou conséquence du même sujet"
+    },
+    {
+      "id": 110,
+      "theme": "GOVERNING_LAW",
+      "function": "GOVERNANCE",
+      "block_id": 14,
+      "is_block_start": true,
+      "rationale": "ouvre loi applicable ou juridiction ; indice « to the extent permitted by law , these »",
+      "rationale_codes": {
+        "decision_trigger": "topic_keyword",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "to the extent permitted by law , these",
+        "revised_from_plan": false,
+        "confidence": 0.86
+      }
+    },
+    {
+      "id": 111,
+      "theme": "GOVERNING_LAW",
+      "function": "PROCEDURE_MECHANISM",
+      "block_id": 14,
+      "is_block_start": false,
+      "reason": "continue GOVERNING_LAW, précision ou conséquence du même sujet"
+    },
+    {
+      "id": 112,
+      "theme": "GOVERNING_LAW",
+      "function": "PROCEDURE_MECHANISM",
+      "block_id": 14,
+      "is_block_start": false,
+      "reason": "continue GOVERNING_LAW, précision ou conséquence du même sujet"
+    },
+    {
+      "id": 113,
+      "theme": "GOVERNING_LAW",
+      "function": "PROCEDURE_MECHANISM",
+      "block_id": 14,
+      "is_block_start": false,
+      "reason": "continue GOVERNING_LAW, précision ou conséquence du même sujet"
+    },
+    {
+      "id": 114,
+      "theme": "GOVERNING_LAW",
+      "function": "PROCEDURE_MECHANISM",
+      "block_id": 14,
+      "is_block_start": false,
+      "reason": "continue GOVERNING_LAW, précision ou conséquence du même sujet"
+    },
+    {
+      "id": 115,
+      "theme": "MISC_BOILERPLATE",
+      "function": "GOVERNANCE",
+      "block_id": 15,
+      "is_block_start": true,
+      "rationale": "ouvre clause finale ou notification générale ; indice « if any provision of these terms and conditions »",
+      "rationale_codes": {
+        "decision_trigger": "topic_keyword",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "if any provision of these terms and conditions",
+        "revised_from_plan": false,
+        "confidence": 0.86
+      }
+    },
+    {
+      "id": 116,
+      "theme": "MISC_BOILERPLATE",
+      "function": "PROCEDURE_MECHANISM",
+      "block_id": 15,
+      "is_block_start": false,
+      "reason": "continue MISC_BOILERPLATE, précision ou conséquence du même sujet"
+    },
+    {
+      "id": 117,
+      "theme": "META",
+      "function": "META",
+      "block_id": 16,
+      "is_block_start": true,
+      "rationale": "ouvre information factuelle non normative ; indice « about booking.com and the support companies »",
+      "rationale_codes": {
+        "decision_trigger": "title_marker",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "about booking.com and the support companies",
+        "revised_from_plan": false,
+        "confidence": 0.86
+      }
+    },
+    {
+      "id": 118,
+      "theme": "META",
+      "function": "PROCEDURE_MECHANISM",
+      "block_id": 16,
+      "is_block_start": false,
+      "reason": "continue META, précision ou conséquence du même sujet"
+    },
+    {
+      "id": 119,
+      "theme": "META",
+      "function": "PROCEDURE_MECHANISM",
+      "block_id": 16,
+      "is_block_start": false,
+      "reason": "continue META, précision ou conséquence du même sujet"
+    },
+    {
+      "id": 120,
+      "theme": "META",
+      "function": "PROCEDURE_MECHANISM",
+      "block_id": 16,
+      "is_block_start": false,
+      "reason": "continue META, précision ou conséquence du même sujet"
+    },
+    {
+      "id": 121,
+      "theme": "META",
+      "function": "PROCEDURE_MECHANISM",
+      "block_id": 16,
+      "is_block_start": false,
+      "reason": "continue META, précision ou conséquence du même sujet"
+    },
+    {
+      "id": 122,
+      "theme": "META",
+      "function": "PROCEDURE_MECHANISM",
+      "block_id": 16,
+      "is_block_start": false,
+      "reason": "continue META, précision ou conséquence du même sujet"
+    },
+    {
+      "id": 123,
+      "theme": "META",
+      "function": "PROCEDURE_MECHANISM",
+      "block_id": 16,
+      "is_block_start": false,
+      "reason": "continue META, précision ou conséquence du même sujet"
+    },
+    {
+      "id": 124,
+      "theme": "META",
+      "function": "PROCEDURE_MECHANISM",
+      "block_id": 16,
+      "is_block_start": false,
+      "reason": "continue META, précision ou conséquence du même sujet"
+    },
+    {
+      "id": 125,
+      "theme": "META",
+      "function": "PROCEDURE_MECHANISM",
+      "block_id": 16,
+      "is_block_start": false,
+      "reason": "continue META, précision ou conséquence du même sujet"
+    },
+    {
+      "id": 126,
+      "theme": "META",
+      "function": "PROCEDURE_MECHANISM",
+      "block_id": 16,
+      "is_block_start": false,
+      "reason": "continue META, précision ou conséquence du même sujet"
+    },
+    {
+      "id": 127,
+      "theme": "META",
+      "function": "PROCEDURE_MECHANISM",
+      "block_id": 16,
+      "is_block_start": false,
+      "reason": "continue META, précision ou conséquence du même sujet"
+    }
+  ]
+}

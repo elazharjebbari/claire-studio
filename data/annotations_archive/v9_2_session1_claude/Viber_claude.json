@@ -1,0 +1,2164 @@
+{
+  "doc": "Viber",
+  "judge": "claude",
+  "version": "v9.2-nature-derived",
+  "document_plan": {
+    "estimated_n_blocks": 28,
+    "rationale_global": "ToS Viber narratif et long (200 phrases). Ouverture PREAMBLE_SCOPE (definition des 'services', termes contraignants, notice 'no access to emergency services'), capacite legale et mineurs (ELIGIBILITY_ACCOUNT), revision des termes (MODIFICATION_OF_TERMS), exactitude des donnees d'inscription (ELIGIBILITY_ACCOUNT), confidentialite (PRIVACY_DATA), droits PI/copyright/marques et usage du materiel (LICENSE_IP), services d'appel/premium (PREAMBLE_SCOPE), longue section facturation/tarifs/credits/remboursements (PAYMENT_BILLING) avec un sous-bloc SUBSCRIPTION_RENEWAL pour la recharge automatique recurrente, forums et contenu utilisateur incl. chats publics (USER_CONTENT) puis DMCA (LICENSE_IP, la PI prime), usage acceptable et securite des comptes (ACCEPTABLE_USE), resiliation (TERMINATION), garanties 'as is' (WARRANTY_DISCLAIMER), limitation de responsabilite (LIABILITY_LIMITATION), indemnisation/release/enquetes (INDEMNIFICATION), modification/discontinuation du service (MODIFICATION_OF_TERMS) puis conformite aux lois locales (ACCEPTABLE_USE), sites tiers (THIRD_PARTY), droit applicable de New York (GOVERNING_LAW), arbitrage/resolution des litiges (DISPUTE_ARBITRATION), identite d'entite et contacts (META), clauses de cloture severabilite/integralite/langue (MISC_BOILERPLATE). Indices docfeatures (numbering 43-92, title_like 10/37/121/176 en 1-based ; ids reels 10/37/121/176) coherents apres recalage id=ligne-1.",
+    "segments": [
+      {
+        "start_id": 0,
+        "theme": "PREAMBLE_SCOPE",
+        "rationale": "ouverture, definition des services",
+        "evidence_span": "the various services available within viber"
+      },
+      {
+        "start_id": 10,
+        "theme": "ELIGIBILITY_ACCOUNT",
+        "rationale": "capacite legale, mineurs",
+        "evidence_span": "legal capacity ; children and minors"
+      },
+      {
+        "start_id": 14,
+        "theme": "MODIFICATION_OF_TERMS",
+        "rationale": "revision des termes",
+        "evidence_span": "we may revise and reissue these terms"
+      },
+      {
+        "start_id": 19,
+        "theme": "ELIGIBILITY_ACCOUNT",
+        "rationale": "exactitude des donnees d'inscription",
+        "evidence_span": "the information you give us to use the service must be correct"
+      },
+      {
+        "start_id": 22,
+        "theme": "PRIVACY_DATA",
+        "rationale": "confidentialite",
+        "evidence_span": "your privacy is important to us"
+      },
+      {
+        "start_id": 25,
+        "theme": "LICENSE_IP",
+        "rationale": "droits de propriete intellectuelle",
+        "evidence_span": "are protected by copyrights , patents , trade secrets"
+      },
+      {
+        "start_id": 29,
+        "theme": "LICENSE_IP",
+        "rationale": "usage du materiel sous licence",
+        "evidence_span": "your use of our material"
+      },
+      {
+        "start_id": 37,
+        "theme": "PREAMBLE_SCOPE",
+        "rationale": "description services d'appel/premium",
+        "evidence_span": "call services ; premium services"
+      },
+      {
+        "start_id": 42,
+        "theme": "PAYMENT_BILLING",
+        "rationale": "tarifs et facturation viber out",
+        "evidence_span": "charges for viber out service and other products or features"
+      },
+      {
+        "start_id": 64,
+        "theme": "PAYMENT_BILLING",
+        "rationale": "paiements, credits, remboursements",
+        "evidence_span": "information about payments , credits and refunds"
+      },
+      {
+        "start_id": 81,
+        "theme": "SUBSCRIPTION_RENEWAL",
+        "rationale": "recharge automatique recurrente",
+        "evidence_span": "the recurring charge feature will be automatically enabled"
+      },
+      {
+        "start_id": 84,
+        "theme": "PAYMENT_BILLING",
+        "rationale": "exemples de tarifs et erreurs de prix",
+        "evidence_span": "any charges mentioned in specific currencies"
+      },
+      {
+        "start_id": 87,
+        "theme": "PAYMENT_BILLING",
+        "rationale": "politique de remboursement",
+        "evidence_span": "all purchases are final and non-refundable"
+      },
+      {
+        "start_id": 94,
+        "theme": "USER_CONTENT",
+        "rationale": "forums et contenu poste",
+        "evidence_span": "other forums on this service"
+      },
+      {
+        "start_id": 116,
+        "theme": "LICENSE_IP",
+        "rationale": "procedure DMCA copyright",
+        "evidence_span": "infringe your copyrights"
+      },
+      {
+        "start_id": 118,
+        "theme": "ACCEPTABLE_USE",
+        "rationale": "usages prohibes et abus systeme",
+        "evidence_span": "use our service and its contents for lawful purposes"
+      },
+      {
+        "start_id": 133,
+        "theme": "TERMINATION",
+        "rationale": "resiliation de la relation",
+        "evidence_span": "you may terminate your relationship with viber at any time"
+      },
+      {
+        "start_id": 137,
+        "theme": "WARRANTY_DISCLAIMER",
+        "rationale": "absence de garantie 'as is'",
+        "evidence_span": "we can not promise that such efforts will result"
+      },
+      {
+        "start_id": 147,
+        "theme": "LIABILITY_LIMITATION",
+        "rationale": "limitation de responsabilite",
+        "evidence_span": "disclaims all liability"
+      },
+      {
+        "start_id": 152,
+        "theme": "INDEMNIFICATION",
+        "rationale": "indemnisation et release",
+        "evidence_span": "you agree to indemnify and hold harmless"
+      },
+      {
+        "start_id": 160,
+        "theme": "MODIFICATION_OF_TERMS",
+        "rationale": "modification/discontinuation du service",
+        "evidence_span": "reserves the right to modify or discontinue"
+      },
+      {
+        "start_id": 162,
+        "theme": "ACCEPTABLE_USE",
+        "rationale": "conformite aux lois locales",
+        "evidence_span": "are responsible for compliance with any applicable laws"
+      },
+      {
+        "start_id": 165,
+        "theme": "THIRD_PARTY",
+        "rationale": "sites et partenaires tiers",
+        "evidence_span": "link you to other sites on the internet and third party partners"
+      },
+      {
+        "start_id": 174,
+        "theme": "GOVERNING_LAW",
+        "rationale": "droit applicable de l'etat de new york",
+        "evidence_span": "available in the united states and elsewhere"
+      },
+      {
+        "start_id": 176,
+        "theme": "DISPUTE_ARBITRATION",
+        "rationale": "arbitrage obligatoire des litiges",
+        "evidence_span": "binding arbitration of all disputes ; no class relief"
+      },
+      {
+        "start_id": 194,
+        "theme": "META",
+        "rationale": "identite d'entite et bureau d'enregistrement",
+        "evidence_span": "incorporated under the laws of the grand duchy of luxembourg"
+      },
+      {
+        "start_id": 197,
+        "theme": "MISC_BOILERPLATE",
+        "rationale": "severabilite, integralite, langue",
+        "evidence_span": "deemed severable from this agreement"
+      }
+    ]
+  },
+  "annotations": [
+    {
+      "id": 0,
+      "theme": "PREAMBLE_SCOPE",
+      "block_id": 0,
+      "is_block_start": true,
+      "rationale": "ouverture du document, cadre l'usage des services, cite « the various services available within viber »",
+      "rationale_codes": {
+        "decision_trigger": "document_start",
+        "relation_to_prev": "document_start",
+        "evidence_span": "the various services available within viber",
+        "revised_from_plan": false,
+        "confidence": 0.97
+      },
+      "legal_nature": "SCOPE_APPLICABILITY",
+      "legal_nature_marker": "by using"
+    },
+    {
+      "id": 1,
+      "theme": "PREAMBLE_SCOPE",
+      "block_id": 0,
+      "is_block_start": false,
+      "reason": "definition du terme 'services'",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 2,
+      "theme": "PREAMBLE_SCOPE",
+      "block_id": 0,
+      "is_block_start": false,
+      "reason": "presentation des termes d'usage",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 3,
+      "theme": "PREAMBLE_SCOPE",
+      "block_id": 0,
+      "is_block_start": false,
+      "reason": "nature contraignante de l'accord",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 4,
+      "theme": "PREAMBLE_SCOPE",
+      "block_id": 0,
+      "is_block_start": false,
+      "reason": "acceptation par l'usage",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 5,
+      "theme": "PREAMBLE_SCOPE",
+      "block_id": 0,
+      "is_block_start": false,
+      "reason": "non-acceptation et politiques incorporees",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 6,
+      "theme": "PREAMBLE_SCOPE",
+      "block_id": 0,
+      "is_block_start": false,
+      "reason": "notice limitation de service, pas d'appels d'urgence, prolonge la portee",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 7,
+      "theme": "PREAMBLE_SCOPE",
+      "block_id": 0,
+      "is_block_start": false,
+      "reason": "obligation d'arrangements de communication alternatifs",
+      "legal_nature": "OBLIGATION",
+      "legal_nature_marker": "you must"
+    },
+    {
+      "id": 8,
+      "theme": "PREAMBLE_SCOPE",
+      "block_id": 0,
+      "is_block_start": false,
+      "reason": "termes additionnels pour certaines fonctionnalites",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 9,
+      "theme": "PREAMBLE_SCOPE",
+      "block_id": 0,
+      "is_block_start": false,
+      "reason": "nature publique des communications, prolonge la portee du service",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 10,
+      "theme": "ELIGIBILITY_ACCOUNT",
+      "block_id": 1,
+      "is_block_start": true,
+      "rationale": "titre nominal nouveau sujet capacite legale et mineurs, cite « legal capacity ; children and minors »",
+      "rationale_codes": {
+        "decision_trigger": "title_marker",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "legal capacity ; children and minors",
+        "revised_from_plan": false,
+        "confidence": 0.92
+      },
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 11,
+      "theme": "ELIGIBILITY_ACCOUNT",
+      "block_id": 1,
+      "is_block_start": false,
+      "reason": "consentement parental pour mineurs",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 12,
+      "theme": "ELIGIBILITY_ACCOUNT",
+      "block_id": 1,
+      "is_block_start": false,
+      "reason": "capacite a comprendre et accepter",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 13,
+      "theme": "ELIGIBILITY_ACCOUNT",
+      "block_id": 1,
+      "is_block_start": false,
+      "reason": "interdiction aux moins de 13 ans",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 14,
+      "theme": "MODIFICATION_OF_TERMS",
+      "block_id": 2,
+      "is_block_start": true,
+      "rationale": "nouveau sujet revision des termes, cite « we may revise and reissue these terms »",
+      "rationale_codes": {
+        "decision_trigger": "topic_keyword",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "we may revise and reissue these terms",
+        "revised_from_plan": false,
+        "confidence": 0.9
+      },
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 15,
+      "theme": "MODIFICATION_OF_TERMS",
+      "block_id": 2,
+      "is_block_start": false,
+      "reason": "consentement aux notices de mise a jour",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 16,
+      "theme": "MODIFICATION_OF_TERMS",
+      "block_id": 2,
+      "is_block_start": false,
+      "reason": "invitation a revoir la page regulierement",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 17,
+      "theme": "MODIFICATION_OF_TERMS",
+      "block_id": 2,
+      "is_block_start": false,
+      "reason": "consequence du desaccord avec les mises a jour",
+      "legal_nature": "PROHIBITION",
+      "legal_nature_marker": "do not"
+    },
+    {
+      "id": 18,
+      "theme": "MODIFICATION_OF_TERMS",
+      "block_id": 2,
+      "is_block_start": false,
+      "reason": "usage continu vaut acceptation des revisions",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 19,
+      "theme": "ELIGIBILITY_ACCOUNT",
+      "block_id": 3,
+      "is_block_start": true,
+      "rationale": "nouveau sujet exactitude des donnees d'inscription, cite « the information you give us to use the service must be correct »",
+      "rationale_codes": {
+        "decision_trigger": "topic_keyword",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "the information you give us to use the service must be correct",
+        "revised_from_plan": false,
+        "confidence": 0.86
+      },
+      "legal_nature": "OBLIGATION",
+      "legal_nature_marker": "must"
+    },
+    {
+      "id": 20,
+      "theme": "ELIGIBILITY_ACCOUNT",
+      "block_id": 3,
+      "is_block_start": false,
+      "reason": "exigence de details d'inscription veridiques",
+      "legal_nature": "OBLIGATION",
+      "legal_nature_marker": "you will"
+    },
+    {
+      "id": 21,
+      "theme": "ELIGIBILITY_ACCOUNT",
+      "block_id": 3,
+      "is_block_start": false,
+      "reason": "consequence si details incorrects, suspension du compte",
+      "legal_nature": "GOVERNANCE",
+      "legal_nature_marker": "terminate"
+    },
+    {
+      "id": 22,
+      "theme": "PRIVACY_DATA",
+      "block_id": 4,
+      "is_block_start": true,
+      "rationale": "nouveau sujet confidentialite, cite « your privacy is important to us »",
+      "rationale_codes": {
+        "decision_trigger": "topic_keyword",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "your privacy is important to us",
+        "revised_from_plan": false,
+        "confidence": 0.93
+      },
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 23,
+      "theme": "PRIVACY_DATA",
+      "block_id": 4,
+      "is_block_start": false,
+      "reason": "notices sur les pratiques d'information",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 24,
+      "theme": "PRIVACY_DATA",
+      "block_id": 4,
+      "is_block_start": false,
+      "reason": "renvoi a la politique de confidentialite",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 25,
+      "theme": "LICENSE_IP",
+      "block_id": 5,
+      "is_block_start": true,
+      "rationale": "nouveau sujet droits PI, cite « are protected by copyrights , patents , trade secrets »",
+      "rationale_codes": {
+        "decision_trigger": "topic_keyword",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "are protected by copyrights , patents , trade secrets",
+        "revised_from_plan": false,
+        "confidence": 0.94
+      },
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 26,
+      "theme": "LICENSE_IP",
+      "block_id": 5,
+      "is_block_start": false,
+      "reason": "marques et noms commerciaux proteges",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 27,
+      "theme": "LICENSE_IP",
+      "block_id": 5,
+      "is_block_start": false,
+      "reason": "propriete des droits PI par viber",
+      "legal_nature": "PROHIBITION",
+      "legal_nature_marker": "do not"
+    },
+    {
+      "id": 28,
+      "theme": "LICENSE_IP",
+      "block_id": 5,
+      "is_block_start": false,
+      "reason": "respect des droits PI d'autrui",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 29,
+      "theme": "LICENSE_IP",
+      "block_id": 6,
+      "is_block_start": true,
+      "rationale": "titre nominal sur l'usage du materiel sous licence, cite « your use of our material »",
+      "rationale_codes": {
+        "decision_trigger": "title_marker",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "your use of our material",
+        "revised_from_plan": false,
+        "confidence": 0.8
+      },
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 30,
+      "theme": "LICENSE_IP",
+      "block_id": 6,
+      "is_block_start": false,
+      "reason": "droit d'usage subordonne au respect des termes",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 31,
+      "theme": "LICENSE_IP",
+      "block_id": 6,
+      "is_block_start": false,
+      "reason": "interdiction de modifier le materiel",
+      "legal_nature": "PROHIBITION",
+      "legal_nature_marker": "may not"
+    },
+    {
+      "id": 32,
+      "theme": "LICENSE_IP",
+      "block_id": 6,
+      "is_block_start": false,
+      "reason": "usage prohibe viole les copyrights/marques",
+      "legal_nature": "PROHIBITION",
+      "legal_nature_marker": "prohibited"
+    },
+    {
+      "id": 33,
+      "theme": "LICENSE_IP",
+      "block_id": 6,
+      "is_block_start": false,
+      "reason": "usage personnel non commercial autorise",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 34,
+      "theme": "LICENSE_IP",
+      "block_id": 6,
+      "is_block_start": false,
+      "reason": "interdictions de copie/reproduction",
+      "legal_nature": "PROHIBITION",
+      "legal_nature_marker": "may not"
+    },
+    {
+      "id": 35,
+      "theme": "LICENSE_IP",
+      "block_id": 6,
+      "is_block_start": false,
+      "reason": "interdiction de reverse engineering",
+      "legal_nature": "PROHIBITION",
+      "legal_nature_marker": "prohibited"
+    },
+    {
+      "id": 36,
+      "theme": "LICENSE_IP",
+      "block_id": 6,
+      "is_block_start": false,
+      "reason": "interdiction de revente/sous-licence du materiel",
+      "legal_nature": "PROHIBITION",
+      "legal_nature_marker": "may not"
+    },
+    {
+      "id": 37,
+      "theme": "PREAMBLE_SCOPE",
+      "block_id": 7,
+      "is_block_start": true,
+      "rationale": "titre decrivant l'offre de services d'appel, cite « call services ; premium services »",
+      "rationale_codes": {
+        "decision_trigger": "title_marker",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "call services ; premium services",
+        "revised_from_plan": false,
+        "confidence": 0.82
+      },
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 38,
+      "theme": "PREAMBLE_SCOPE",
+      "block_id": 7,
+      "is_block_start": false,
+      "reason": "description des appels gratuits entre utilisateurs viber",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 39,
+      "theme": "PREAMBLE_SCOPE",
+      "block_id": 7,
+      "is_block_start": false,
+      "reason": "description du service premium viber out",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 40,
+      "theme": "PREAMBLE_SCOPE",
+      "block_id": 7,
+      "is_block_start": false,
+      "reason": "description du service viber in entrant",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 41,
+      "theme": "PREAMBLE_SCOPE",
+      "block_id": 7,
+      "is_block_start": false,
+      "reason": "viber in gratuit et desactivable",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 42,
+      "theme": "PAYMENT_BILLING",
+      "block_id": 8,
+      "is_block_start": true,
+      "rationale": "titre nouveau sujet facturation, cite « charges for viber out service and other products or features »",
+      "rationale_codes": {
+        "decision_trigger": "title_marker",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "charges for viber out service and other products or features",
+        "revised_from_plan": false,
+        "confidence": 0.9
+      },
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 43,
+      "theme": "PAYMENT_BILLING",
+      "block_id": 8,
+      "is_block_start": false,
+      "reason": "sous-titre numerote 8.1 appels payants",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 44,
+      "theme": "PAYMENT_BILLING",
+      "block_id": 8,
+      "is_block_start": false,
+      "reason": "tarifs par minute pour les appels",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 45,
+      "theme": "PAYMENT_BILLING",
+      "block_id": 8,
+      "is_block_start": false,
+      "reason": "deconnexion apres 4 heures, modalite d'appel",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 46,
+      "theme": "PAYMENT_BILLING",
+      "block_id": 8,
+      "is_block_start": false,
+      "reason": "viber peut changer les tarifs",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 47,
+      "theme": "PAYMENT_BILLING",
+      "block_id": 8,
+      "is_block_start": false,
+      "reason": "nouveau tarif applique au prochain appel",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 48,
+      "theme": "PAYMENT_BILLING",
+      "block_id": 8,
+      "is_block_start": false,
+      "reason": "verifier les tarifs avant d'appeler",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 49,
+      "theme": "PAYMENT_BILLING",
+      "block_id": 8,
+      "is_block_start": false,
+      "reason": "consequence du refus des nouveaux tarifs",
+      "legal_nature": "PROHIBITION",
+      "legal_nature_marker": "do not"
+    },
+    {
+      "id": 50,
+      "theme": "PAYMENT_BILLING",
+      "block_id": 8,
+      "is_block_start": false,
+      "reason": "8.1.3 duree de l'appel par increments d'une minute",
+      "legal_nature": "OBLIGATION",
+      "legal_nature_marker": "shall"
+    },
+    {
+      "id": 51,
+      "theme": "PAYMENT_BILLING",
+      "block_id": 8,
+      "is_block_start": false,
+      "reason": "arrondi des fractions de minute",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 52,
+      "theme": "PAYMENT_BILLING",
+      "block_id": 8,
+      "is_block_start": false,
+      "reason": "arrondi des fractions de centime",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 53,
+      "theme": "PAYMENT_BILLING",
+      "block_id": 8,
+      "is_block_start": false,
+      "reason": "exemple d'arrondi de prix",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 54,
+      "theme": "PAYMENT_BILLING",
+      "block_id": 8,
+      "is_block_start": false,
+      "reason": "deduction des charges du solde viber credit",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 55,
+      "theme": "PAYMENT_BILLING",
+      "block_id": 8,
+      "is_block_start": false,
+      "reason": "8.2 confirmation des charges avant achat",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 56,
+      "theme": "PAYMENT_BILLING",
+      "block_id": 8,
+      "is_block_start": false,
+      "reason": "viber peut changer les prix",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 57,
+      "theme": "PAYMENT_BILLING",
+      "block_id": 8,
+      "is_block_start": false,
+      "reason": "choix d'accepter les nouvelles charges",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 58,
+      "theme": "PAYMENT_BILLING",
+      "block_id": 8,
+      "is_block_start": false,
+      "reason": "nouveaux prix appliques au prochain achat",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 59,
+      "theme": "PAYMENT_BILLING",
+      "block_id": 8,
+      "is_block_start": false,
+      "reason": "8.3 offres en periode d'essai gratuite",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 60,
+      "theme": "PAYMENT_BILLING",
+      "block_id": 8,
+      "is_block_start": false,
+      "reason": "droit de facturer en cas d'abus de l'offre",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 61,
+      "theme": "PAYMENT_BILLING",
+      "block_id": 8,
+      "is_block_start": false,
+      "reason": "8.4 collecte de TVA et taxes indirectes",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 62,
+      "theme": "PAYMENT_BILLING",
+      "block_id": 8,
+      "is_block_start": false,
+      "reason": "8.5 usage de l'allocation de donnees mobile",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 63,
+      "theme": "PAYMENT_BILLING",
+      "block_id": 8,
+      "is_block_start": false,
+      "reason": "responsabilite des frais d'itinerance",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 64,
+      "theme": "PAYMENT_BILLING",
+      "block_id": 9,
+      "is_block_start": true,
+      "rationale": "nouveau sous-sujet paiements/credits/remboursements, cite « information about payments , credits and refunds »",
+      "rationale_codes": {
+        "decision_trigger": "topic_keyword",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "information about payments , credits and refunds",
+        "revised_from_plan": false,
+        "confidence": 0.7
+      },
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 65,
+      "theme": "PAYMENT_BILLING",
+      "block_id": 9,
+      "is_block_start": false,
+      "reason": "9.1 achat de viber credit",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 66,
+      "theme": "PAYMENT_BILLING",
+      "block_id": 9,
+      "is_block_start": false,
+      "reason": "credit applique au compte a l'achat",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 67,
+      "theme": "PAYMENT_BILLING",
+      "block_id": 9,
+      "is_block_start": false,
+      "reason": "accuse de reception de la commande",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 68,
+      "theme": "PAYMENT_BILLING",
+      "block_id": 9,
+      "is_block_start": false,
+      "reason": "tiers traitant les paiements",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 69,
+      "theme": "PAYMENT_BILLING",
+      "block_id": 9,
+      "is_block_start": false,
+      "reason": "revoir les politiques des tiers de paiement",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 70,
+      "theme": "PAYMENT_BILLING",
+      "block_id": 9,
+      "is_block_start": false,
+      "reason": "non-dependance a la disponibilite future des produits",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 71,
+      "theme": "PAYMENT_BILLING",
+      "block_id": 9,
+      "is_block_start": false,
+      "reason": "changement du mode de paiement et facturation",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 72,
+      "theme": "PAYMENT_BILLING",
+      "block_id": 9,
+      "is_block_start": false,
+      "reason": "usage des informations du mode de paiement",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 73,
+      "theme": "PAYMENT_BILLING",
+      "block_id": 9,
+      "is_block_start": false,
+      "reason": "conversion de devise etrangere",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 74,
+      "theme": "PAYMENT_BILLING",
+      "block_id": 9,
+      "is_block_start": false,
+      "reason": "9.2 gel des credits inutilises six mois",
+      "legal_nature": "PROHIBITION",
+      "legal_nature_marker": "do not"
+    },
+    {
+      "id": 75,
+      "theme": "PAYMENT_BILLING",
+      "block_id": 9,
+      "is_block_start": false,
+      "reason": "reactivation du viber credit",
+      "legal_nature": "SCOPE_APPLICABILITY",
+      "legal_nature_marker": "by accessing"
+    },
+    {
+      "id": 76,
+      "theme": "PAYMENT_BILLING",
+      "block_id": 9,
+      "is_block_start": false,
+      "reason": "perte du credit si compte desactive",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 77,
+      "theme": "PAYMENT_BILLING",
+      "block_id": 9,
+      "is_block_start": false,
+      "reason": "conditions de desactivation du compte",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 78,
+      "theme": "PAYMENT_BILLING",
+      "block_id": 9,
+      "is_block_start": false,
+      "reason": "suite des conditions de desactivation",
+      "legal_nature": "PROHIBITION",
+      "legal_nature_marker": "do not"
+    },
+    {
+      "id": 79,
+      "theme": "PAYMENT_BILLING",
+      "block_id": 9,
+      "is_block_start": false,
+      "reason": "expiration des credits pour numeros japonais",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 80,
+      "theme": "PAYMENT_BILLING",
+      "block_id": 9,
+      "is_block_start": false,
+      "reason": "9.3 usage du credit pour appels viber out",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 81,
+      "theme": "SUBSCRIPTION_RENEWAL",
+      "block_id": 10,
+      "is_block_start": true,
+      "rationale": "nouveau sujet recharge automatique recurrente (preseance reconduction), cite « the recurring charge feature will be automatically enabled »",
+      "rationale_codes": {
+        "decision_trigger": "topic_keyword",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "the recurring charge feature will be automatically enabled",
+        "revised_from_plan": false,
+        "confidence": 0.7
+      },
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 82,
+      "theme": "SUBSCRIPTION_RENEWAL",
+      "block_id": 10,
+      "is_block_start": false,
+      "reason": "recharge automatique sous le seuil",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 83,
+      "theme": "SUBSCRIPTION_RENEWAL",
+      "block_id": 10,
+      "is_block_start": false,
+      "reason": "desactivation de la recharge recurrente",
+      "legal_nature": "SCOPE_APPLICABILITY",
+      "legal_nature_marker": "by accessing"
+    },
+    {
+      "id": 84,
+      "theme": "PAYMENT_BILLING",
+      "block_id": 11,
+      "is_block_start": true,
+      "rationale": "retour facturation generale, exemples de devises et erreurs de prix, cite « any charges mentioned in specific currencies »",
+      "rationale_codes": {
+        "decision_trigger": "topic_keyword",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "any charges mentioned in specific currencies",
+        "revised_from_plan": false,
+        "confidence": 0.58
+      },
+      "legal_nature": "PROHIBITION",
+      "legal_nature_marker": "do not"
+    },
+    {
+      "id": 85,
+      "theme": "PAYMENT_BILLING",
+      "block_id": 11,
+      "is_block_start": false,
+      "reason": "9.5 droit de refuser/annuler en cas d'erreur de prix",
+      "legal_nature": "OBLIGATION",
+      "legal_nature_marker": "shall"
+    },
+    {
+      "id": 86,
+      "theme": "PAYMENT_BILLING",
+      "block_id": 11,
+      "is_block_start": false,
+      "reason": "credit en cas de facturation avant annulation",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 87,
+      "theme": "PAYMENT_BILLING",
+      "block_id": 12,
+      "is_block_start": true,
+      "rationale": "nouveau sujet remboursements, cite « all purchases are final and non-refundable »",
+      "rationale_codes": {
+        "decision_trigger": "topic_keyword",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "all purchases are final and non-refundable",
+        "revised_from_plan": false,
+        "confidence": 0.8
+      },
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 88,
+      "theme": "PAYMENT_BILLING",
+      "block_id": 12,
+      "is_block_start": false,
+      "reason": "delai de contestation de 90 jours",
+      "legal_nature": "OBLIGATION",
+      "legal_nature_marker": "you must"
+    },
+    {
+      "id": 89,
+      "theme": "PAYMENT_BILLING",
+      "block_id": 12,
+      "is_block_start": false,
+      "reason": "pas de remboursement au-dela de 90 jours",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 90,
+      "theme": "PAYMENT_BILLING",
+      "block_id": 12,
+      "is_block_start": false,
+      "reason": "remboursement du contenu numerique",
+      "legal_nature": "PROHIBITION",
+      "legal_nature_marker": "will not"
+    },
+    {
+      "id": 91,
+      "theme": "PAYMENT_BILLING",
+      "block_id": 12,
+      "is_block_start": false,
+      "reason": "achats via tiers soumis a leurs termes",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 92,
+      "theme": "PAYMENT_BILLING",
+      "block_id": 12,
+      "is_block_start": false,
+      "reason": "10.2 droit de refuser un remboursement abusif",
+      "legal_nature": "PROHIBITION",
+      "legal_nature_marker": "do not"
+    },
+    {
+      "id": 93,
+      "theme": "PAYMENT_BILLING",
+      "block_id": 12,
+      "is_block_start": false,
+      "reason": "preservation des droits statutaires",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 94,
+      "theme": "USER_CONTENT",
+      "block_id": 13,
+      "is_block_start": true,
+      "rationale": "nouveau sujet forums et contenu poste, cite « other forums on this service »",
+      "rationale_codes": {
+        "decision_trigger": "topic_keyword",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "other forums on this service",
+        "revised_from_plan": false,
+        "confidence": 0.8
+      },
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 95,
+      "theme": "USER_CONTENT",
+      "block_id": 13,
+      "is_block_start": false,
+      "reason": "viber ne surveille pas les forums",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 96,
+      "theme": "USER_CONTENT",
+      "block_id": 13,
+      "is_block_start": false,
+      "reason": "viber peut retirer le contenu",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 97,
+      "theme": "USER_CONTENT",
+      "block_id": 13,
+      "is_block_start": false,
+      "reason": "usage des forums a vos risques",
+      "legal_nature": "LIMITATION_DISCLAIMER",
+      "legal_nature_marker": "disclaim"
+    },
+    {
+      "id": 98,
+      "theme": "USER_CONTENT",
+      "block_id": 13,
+      "is_block_start": false,
+      "reason": "invitation a partager du contenu",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 99,
+      "theme": "USER_CONTENT",
+      "block_id": 13,
+      "is_block_start": false,
+      "reason": "fonctionnalites de partage de contenu",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 100,
+      "theme": "USER_CONTENT",
+      "block_id": 13,
+      "is_block_start": false,
+      "reason": "droit de retirer/refuser le contenu utilisateur",
+      "legal_nature": "PROHIBITION",
+      "legal_nature_marker": "will not"
+    },
+    {
+      "id": 101,
+      "theme": "USER_CONTENT",
+      "block_id": 13,
+      "is_block_start": false,
+      "reason": "reponse aux signalements",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 102,
+      "theme": "USER_CONTENT",
+      "block_id": 13,
+      "is_block_start": false,
+      "reason": "(a) chats publics, description",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 103,
+      "theme": "USER_CONTENT",
+      "block_id": 13,
+      "is_block_start": false,
+      "reason": "nature des chats publics",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 104,
+      "theme": "USER_CONTENT",
+      "block_id": 13,
+      "is_block_start": false,
+      "reason": "contenu non adapte aux enfants",
+      "legal_nature": "OBLIGATION",
+      "legal_nature_marker": "must"
+    },
+    {
+      "id": 105,
+      "theme": "USER_CONTENT",
+      "block_id": 13,
+      "is_block_start": false,
+      "reason": "renvoi aux guidelines des chats publics",
+      "legal_nature": "PROHIBITION",
+      "legal_nature_marker": "prohibited"
+    },
+    {
+      "id": 106,
+      "theme": "USER_CONTENT",
+      "block_id": 13,
+      "is_block_start": false,
+      "reason": "possibilite de ne plus suivre un chat public",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 107,
+      "theme": "USER_CONTENT",
+      "block_id": 13,
+      "is_block_start": false,
+      "reason": "viber ne surveille pas les chats publics",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 108,
+      "theme": "USER_CONTENT",
+      "block_id": 13,
+      "is_block_start": false,
+      "reason": "(b) commentaires, contenu public",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 109,
+      "theme": "USER_CONTENT",
+      "block_id": 13,
+      "is_block_start": false,
+      "reason": "usage du contenu pour ameliorer le service",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 110,
+      "theme": "USER_CONTENT",
+      "block_id": 13,
+      "is_block_start": false,
+      "reason": "octroi de licence sur le contenu poste",
+      "legal_nature": "RIGHT_GRANT",
+      "legal_nature_marker": "license to"
+    },
+    {
+      "id": 111,
+      "theme": "USER_CONTENT",
+      "block_id": 13,
+      "is_block_start": false,
+      "reason": "fin de licence a la suppression",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 112,
+      "theme": "USER_CONTENT",
+      "block_id": 13,
+      "is_block_start": false,
+      "reason": "persistance dans les copies de sauvegarde",
+      "legal_nature": "PROHIBITION",
+      "legal_nature_marker": "will not"
+    },
+    {
+      "id": 113,
+      "theme": "USER_CONTENT",
+      "block_id": 13,
+      "is_block_start": false,
+      "reason": "titre 'our use of your user content', prolonge le contenu utilisateur",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 114,
+      "theme": "USER_CONTENT",
+      "block_id": 13,
+      "is_block_start": false,
+      "reason": "usage libre des feedbacks et suggestions",
+      "legal_nature": "LIMITATION_DISCLAIMER",
+      "legal_nature_marker": "as available"
+    },
+    {
+      "id": 115,
+      "theme": "USER_CONTENT",
+      "block_id": 13,
+      "is_block_start": false,
+      "reason": "pas de paiement pour les idees",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 116,
+      "theme": "LICENSE_IP",
+      "block_id": 14,
+      "is_block_start": true,
+      "rationale": "procedure DMCA copyright, la PI prime, cite « infringe your copyrights »",
+      "rationale_codes": {
+        "decision_trigger": "topic_keyword",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "infringe your copyrights",
+        "revised_from_plan": false,
+        "confidence": 0.72
+      },
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 117,
+      "theme": "LICENSE_IP",
+      "block_id": 14,
+      "is_block_start": false,
+      "reason": "renvoi a la page de notification DMCA",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 118,
+      "theme": "ACCEPTABLE_USE",
+      "block_id": 15,
+      "is_block_start": true,
+      "rationale": "nouveau sujet usages licites et prohibes, cite « use our service and its contents for lawful purposes »",
+      "rationale_codes": {
+        "decision_trigger": "topic_keyword",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "use our service and its contents for lawful purposes",
+        "revised_from_plan": false,
+        "confidence": 0.85
+      },
+      "legal_nature": "PROHIBITION",
+      "legal_nature_marker": "prohibited"
+    },
+    {
+      "id": 119,
+      "theme": "ACCEPTABLE_USE",
+      "block_id": 15,
+      "is_block_start": false,
+      "reason": "charge de preuve de licite du contenu",
+      "legal_nature": "OBLIGATION",
+      "legal_nature_marker": "you will"
+    },
+    {
+      "id": 120,
+      "theme": "ACCEPTABLE_USE",
+      "block_id": 15,
+      "is_block_start": false,
+      "reason": "responsabilite du contenu transmis",
+      "legal_nature": "OBLIGATION",
+      "legal_nature_marker": "you are responsible"
+    },
+    {
+      "id": 121,
+      "theme": "ACCEPTABLE_USE",
+      "block_id": 15,
+      "is_block_start": false,
+      "reason": "titre 'system abuse ; bulk messaging', prolonge l'usage acceptable",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 122,
+      "theme": "ACCEPTABLE_USE",
+      "block_id": 15,
+      "is_block_start": false,
+      "reason": "interdiction des mailbombs/spam/bulk messaging",
+      "legal_nature": "PROHIBITION",
+      "legal_nature_marker": "agree not to"
+    },
+    {
+      "id": 123,
+      "theme": "ACCEPTABLE_USE",
+      "block_id": 15,
+      "is_block_start": false,
+      "reason": "interdiction d'exploiter les ressources",
+      "legal_nature": "PROHIBITION",
+      "legal_nature_marker": "may not"
+    },
+    {
+      "id": 124,
+      "theme": "ACCEPTABLE_USE",
+      "block_id": 15,
+      "is_block_start": false,
+      "reason": "responsabilite des activites du compte",
+      "legal_nature": "OBLIGATION",
+      "legal_nature_marker": "you are responsible"
+    },
+    {
+      "id": 125,
+      "theme": "ACCEPTABLE_USE",
+      "block_id": 15,
+      "is_block_start": false,
+      "reason": "obligation de notifier tout usage non autorise",
+      "legal_nature": "OBLIGATION",
+      "legal_nature_marker": "you agree to"
+    },
+    {
+      "id": 126,
+      "theme": "ACCEPTABLE_USE",
+      "block_id": 15,
+      "is_block_start": false,
+      "reason": "non-responsabilite de viber pour usage par autrui",
+      "legal_nature": "PROHIBITION",
+      "legal_nature_marker": "will not"
+    },
+    {
+      "id": 127,
+      "theme": "ACCEPTABLE_USE",
+      "block_id": 15,
+      "is_block_start": false,
+      "reason": "responsabilite des pertes liees a votre compte",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 128,
+      "theme": "ACCEPTABLE_USE",
+      "block_id": 15,
+      "is_block_start": false,
+      "reason": "droit de surveiller le compte et mot de passe",
+      "legal_nature": "OBLIGATION",
+      "legal_nature_marker": "shall"
+    },
+    {
+      "id": 129,
+      "theme": "ACCEPTABLE_USE",
+      "block_id": 15,
+      "is_block_start": false,
+      "reason": "mot de passe non securise, changement requis",
+      "legal_nature": "GOVERNANCE",
+      "legal_nature_marker": "terminate"
+    },
+    {
+      "id": 130,
+      "theme": "ACCEPTABLE_USE",
+      "block_id": 15,
+      "is_block_start": false,
+      "reason": "interdiction de compromettre la securite",
+      "legal_nature": "PROHIBITION",
+      "legal_nature_marker": "prohibited"
+    },
+    {
+      "id": 131,
+      "theme": "ACCEPTABLE_USE",
+      "block_id": 15,
+      "is_block_start": false,
+      "reason": "interdiction des outils de compromission",
+      "legal_nature": "PROHIBITION",
+      "legal_nature_marker": "prohibited"
+    },
+    {
+      "id": 132,
+      "theme": "ACCEPTABLE_USE",
+      "block_id": 15,
+      "is_block_start": false,
+      "reason": "divulgation aux autorites en cas de violation de securite",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 133,
+      "theme": "TERMINATION",
+      "block_id": 16,
+      "is_block_start": true,
+      "rationale": "nouveau sujet resiliation de la relation, cite « you may terminate your relationship with viber at any time »",
+      "rationale_codes": {
+        "decision_trigger": "topic_keyword",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "you may terminate your relationship with viber at any time",
+        "revised_from_plan": false,
+        "confidence": 0.85
+      },
+      "legal_nature": "GOVERNANCE",
+      "legal_nature_marker": "terminate"
+    },
+    {
+      "id": 134,
+      "theme": "TERMINATION",
+      "block_id": 16,
+      "is_block_start": false,
+      "reason": "cessation d'usage du service gratuit",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 135,
+      "theme": "TERMINATION",
+      "block_id": 16,
+      "is_block_start": false,
+      "reason": "demande de suppression du compte viber out",
+      "legal_nature": "OBLIGATION",
+      "legal_nature_marker": "shall"
+    },
+    {
+      "id": 136,
+      "theme": "TERMINATION",
+      "block_id": 16,
+      "is_block_start": false,
+      "reason": "droit de viber de resilier sans preavis",
+      "legal_nature": "GOVERNANCE",
+      "legal_nature_marker": "terminate"
+    },
+    {
+      "id": 137,
+      "theme": "WARRANTY_DISCLAIMER",
+      "block_id": 17,
+      "is_block_start": true,
+      "rationale": "nouveau sujet absence de garantie, cite « we can not promise that such efforts will result »",
+      "rationale_codes": {
+        "decision_trigger": "lexical_shift",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "we can not promise that such efforts will result",
+        "revised_from_plan": false,
+        "confidence": 0.78
+      },
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 138,
+      "theme": "WARRANTY_DISCLAIMER",
+      "block_id": 17,
+      "is_block_start": false,
+      "reason": "usage du service a vos risques",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 139,
+      "theme": "WARRANTY_DISCLAIMER",
+      "block_id": 17,
+      "is_block_start": false,
+      "reason": "aucune information ne cree de garantie",
+      "legal_nature": "OBLIGATION",
+      "legal_nature_marker": "shall"
+    },
+    {
+      "id": 140,
+      "theme": "WARRANTY_DISCLAIMER",
+      "block_id": 17,
+      "is_block_start": false,
+      "reason": "service fourni 'as is' sans garantie",
+      "legal_nature": "LIMITATION_DISCLAIMER",
+      "legal_nature_marker": "as is"
+    },
+    {
+      "id": 141,
+      "theme": "WARRANTY_DISCLAIMER",
+      "block_id": 17,
+      "is_block_start": false,
+      "reason": "exclusion des garanties implicites",
+      "legal_nature": "LIMITATION_DISCLAIMER",
+      "legal_nature_marker": "warranties"
+    },
+    {
+      "id": 142,
+      "theme": "WARRANTY_DISCLAIMER",
+      "block_id": 17,
+      "is_block_start": false,
+      "reason": "pas de garantie de disponibilite ou d'absence de virus",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 143,
+      "theme": "WARRANTY_DISCLAIMER",
+      "block_id": 17,
+      "is_block_start": false,
+      "reason": "pas de garantie sur les resultats d'usage",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 144,
+      "theme": "WARRANTY_DISCLAIMER",
+      "block_id": 17,
+      "is_block_start": false,
+      "reason": "pas de garantie de non-infraction",
+      "legal_nature": "PROHIBITION",
+      "legal_nature_marker": "will not"
+    },
+    {
+      "id": 145,
+      "theme": "WARRANTY_DISCLAIMER",
+      "block_id": 17,
+      "is_block_start": false,
+      "reason": "limitation des exclusions selon la loi applicable",
+      "legal_nature": "LIMITATION_DISCLAIMER",
+      "legal_nature_marker": "warranties"
+    },
+    {
+      "id": 146,
+      "theme": "WARRANTY_DISCLAIMER",
+      "block_id": 17,
+      "is_block_start": false,
+      "reason": "exception UK/Luxembourg pour deces/blessure",
+      "legal_nature": "OBLIGATION",
+      "legal_nature_marker": "shall"
+    },
+    {
+      "id": 147,
+      "theme": "LIABILITY_LIMITATION",
+      "block_id": 18,
+      "is_block_start": true,
+      "rationale": "nouveau sujet limitation de responsabilite (dommages), cite « disclaims all liability »",
+      "rationale_codes": {
+        "decision_trigger": "topic_keyword",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "disclaims all liability",
+        "revised_from_plan": false,
+        "confidence": 0.82
+      },
+      "legal_nature": "LIMITATION_DISCLAIMER",
+      "legal_nature_marker": "disclaim"
+    },
+    {
+      "id": 148,
+      "theme": "LIABILITY_LIMITATION",
+      "block_id": 18,
+      "is_block_start": false,
+      "reason": "prise en charge des couts par l'utilisateur",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 149,
+      "theme": "LIABILITY_LIMITATION",
+      "block_id": 18,
+      "is_block_start": false,
+      "reason": "limitation selon la loi applicable",
+      "legal_nature": "LIMITATION_DISCLAIMER",
+      "legal_nature_marker": "limitation of liability"
+    },
+    {
+      "id": 150,
+      "theme": "LIABILITY_LIMITATION",
+      "block_id": 18,
+      "is_block_start": false,
+      "reason": "plafond de responsabilite a fifty dollars",
+      "legal_nature": "LIMITATION_DISCLAIMER",
+      "legal_nature_marker": "in no event"
+    },
+    {
+      "id": 151,
+      "theme": "LIABILITY_LIMITATION",
+      "block_id": 18,
+      "is_block_start": false,
+      "reason": "limitations applicables meme si remede echoue",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 152,
+      "theme": "INDEMNIFICATION",
+      "block_id": 19,
+      "is_block_start": true,
+      "rationale": "nouveau sujet indemnisation, cite « you agree to indemnify and hold harmless »",
+      "rationale_codes": {
+        "decision_trigger": "topic_keyword",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "you agree to indemnify and hold harmless",
+        "revised_from_plan": false,
+        "confidence": 0.88
+      },
+      "legal_nature": "LIMITATION_DISCLAIMER",
+      "legal_nature_marker": "warranties"
+    },
+    {
+      "id": 153,
+      "theme": "INDEMNIFICATION",
+      "block_id": 19,
+      "is_block_start": false,
+      "reason": "release des reclamations en cas de litige avec des utilisateurs",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 154,
+      "theme": "INDEMNIFICATION",
+      "block_id": 19,
+      "is_block_start": false,
+      "reason": "renonciation aux protections statutaires du release",
+      "legal_nature": "LIMITATION_DISCLAIMER",
+      "legal_nature_marker": "to the extent permitted"
+    },
+    {
+      "id": 155,
+      "theme": "INDEMNIFICATION",
+      "block_id": 19,
+      "is_block_start": false,
+      "reason": "collecte d'informations sur les utilisateurs suspectes",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 156,
+      "theme": "INDEMNIFICATION",
+      "block_id": 19,
+      "is_block_start": false,
+      "reason": "suspension des utilisateurs sous enquete",
+      "legal_nature": "GOVERNANCE",
+      "legal_nature_marker": "suspend"
+    },
+    {
+      "id": 157,
+      "theme": "INDEMNIFICATION",
+      "block_id": 19,
+      "is_block_start": false,
+      "reason": "mesures correctives en cas de violation",
+      "legal_nature": "GOVERNANCE",
+      "legal_nature_marker": "terminate"
+    },
+    {
+      "id": 158,
+      "theme": "INDEMNIFICATION",
+      "block_id": 19,
+      "is_block_start": false,
+      "reason": "cooperation avec les autorites",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 159,
+      "theme": "INDEMNIFICATION",
+      "block_id": 19,
+      "is_block_start": false,
+      "reason": "release des reclamations issues des enquetes",
+      "legal_nature": "RISK_ALLOCATION",
+      "legal_nature_marker": "hold harmless"
+    },
+    {
+      "id": 160,
+      "theme": "MODIFICATION_OF_TERMS",
+      "block_id": 20,
+      "is_block_start": true,
+      "rationale": "nouveau sujet modification/discontinuation du service, cite « reserves the right to modify or discontinue »",
+      "rationale_codes": {
+        "decision_trigger": "topic_keyword",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "reserves the right to modify or discontinue",
+        "revised_from_plan": false,
+        "confidence": 0.6
+      },
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 161,
+      "theme": "MODIFICATION_OF_TERMS",
+      "block_id": 20,
+      "is_block_start": false,
+      "reason": "aucune representation sur la disponibilite du service, prolonge la modification/discontinuation",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 162,
+      "theme": "ACCEPTABLE_USE",
+      "block_id": 21,
+      "is_block_start": true,
+      "rationale": "nouveau sujet conformite de l'utilisateur aux lois locales, cite « are responsible for compliance with any applicable laws »",
+      "rationale_codes": {
+        "decision_trigger": "topic_keyword",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "are responsible for compliance with any applicable laws",
+        "revised_from_plan": true,
+        "confidence": 0.62
+      },
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 163,
+      "theme": "ACCEPTABLE_USE",
+      "block_id": 21,
+      "is_block_start": false,
+      "reason": "conformite aux lois sur l'exportation de donnees techniques",
+      "legal_nature": "OBLIGATION",
+      "legal_nature_marker": "you are responsible"
+    },
+    {
+      "id": 164,
+      "theme": "ACCEPTABLE_USE",
+      "block_id": 21,
+      "is_block_start": false,
+      "reason": "suite conformite aux lois sur l'exportation",
+      "legal_nature": "OBLIGATION",
+      "legal_nature_marker": "agree to comply"
+    },
+    {
+      "id": 165,
+      "theme": "THIRD_PARTY",
+      "block_id": 22,
+      "is_block_start": true,
+      "rationale": "nouveau sujet sites et partenaires tiers, cite « link you to other sites on the internet and third party partners »",
+      "rationale_codes": {
+        "decision_trigger": "topic_keyword",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "link you to other sites on the internet and third party partners",
+        "revised_from_plan": false,
+        "confidence": 0.85
+      },
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 166,
+      "theme": "THIRD_PARTY",
+      "block_id": 22,
+      "is_block_start": false,
+      "reason": "contenu potentiellement offensant des sites tiers",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 167,
+      "theme": "THIRD_PARTY",
+      "block_id": 22,
+      "is_block_start": false,
+      "reason": "viber non responsable du contenu des sites tiers",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 168,
+      "theme": "THIRD_PARTY",
+      "block_id": 22,
+      "is_block_start": false,
+      "reason": "le lien n'implique pas d'endossement",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 169,
+      "theme": "THIRD_PARTY",
+      "block_id": 22,
+      "is_block_start": false,
+      "reason": "pas de garantie sur les produits des tiers",
+      "legal_nature": "OBLIGATION",
+      "legal_nature_marker": "you will"
+    },
+    {
+      "id": 170,
+      "theme": "THIRD_PARTY",
+      "block_id": 22,
+      "is_block_start": false,
+      "reason": "viber n'endosse pas la marchandise des tiers",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 171,
+      "theme": "THIRD_PARTY",
+      "block_id": 22,
+      "is_block_start": false,
+      "reason": "pas de garantie sur la securite des informations aux tiers",
+      "legal_nature": "LIMITATION_DISCLAIMER",
+      "legal_nature_marker": "warranties"
+    },
+    {
+      "id": 172,
+      "theme": "THIRD_PARTY",
+      "block_id": 22,
+      "is_block_start": false,
+      "reason": "recommandation d'enquete avant transaction",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 173,
+      "theme": "THIRD_PARTY",
+      "block_id": 22,
+      "is_block_start": false,
+      "reason": "regles des services en ligne proprietaires tiers",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 174,
+      "theme": "GOVERNING_LAW",
+      "block_id": 23,
+      "is_block_start": true,
+      "rationale": "transition vers le droit applicable, materiel presente pour les services US, cite « available in the united states and elsewhere »",
+      "rationale_codes": {
+        "decision_trigger": "lexical_shift",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "available in the united states and elsewhere",
+        "revised_from_plan": true,
+        "confidence": 0.55
+      },
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 175,
+      "theme": "GOVERNING_LAW",
+      "block_id": 23,
+      "is_block_start": false,
+      "reason": "termes regis par les lois de l'etat de new york",
+      "legal_nature": "LIMITATION_DISCLAIMER",
+      "legal_nature_marker": "to the extent permitted"
+    },
+    {
+      "id": 176,
+      "theme": "DISPUTE_ARBITRATION",
+      "block_id": 24,
+      "is_block_start": true,
+      "rationale": "titre nouveau sujet arbitrage, cite « binding arbitration of all disputes ; no class relief »",
+      "rationale_codes": {
+        "decision_trigger": "title_marker",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "binding arbitration of all disputes ; no class relief",
+        "revised_from_plan": false,
+        "confidence": 0.92
+      },
+      "legal_nature": "GOVERNANCE",
+      "legal_nature_marker": "arbitration"
+    },
+    {
+      "id": 177,
+      "theme": "DISPUTE_ARBITRATION",
+      "block_id": 24,
+      "is_block_start": false,
+      "reason": "mode exclusif de resolution des litiges",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 178,
+      "theme": "DISPUTE_ARBITRATION",
+      "block_id": 24,
+      "is_block_start": false,
+      "reason": "renonciation a l'action collective",
+      "legal_nature": "GOVERNANCE",
+      "legal_nature_marker": "arbitration"
+    },
+    {
+      "id": 179,
+      "theme": "DISPUTE_ARBITRATION",
+      "block_id": 24,
+      "is_block_start": false,
+      "reason": "(a) residents US, arbitrage JAMS",
+      "legal_nature": "GOVERNANCE",
+      "legal_nature_marker": "arbitration"
+    },
+    {
+      "id": 180,
+      "theme": "DISPUTE_ARBITRATION",
+      "block_id": 24,
+      "is_block_start": false,
+      "reason": "qualifications de l'arbitre",
+      "legal_nature": "GOVERNANCE",
+      "legal_nature_marker": "arbitration"
+    },
+    {
+      "id": 181,
+      "theme": "DISPUTE_ARBITRATION",
+      "block_id": 24,
+      "is_block_start": false,
+      "reason": "satisfaction de l'exigence ecrite de la faa",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 182,
+      "theme": "DISPUTE_ARBITRATION",
+      "block_id": 24,
+      "is_block_start": false,
+      "reason": "lieu de l'audience selon l'adresse de facturation",
+      "legal_nature": "OBLIGATION",
+      "legal_nature_marker": "shall"
+    },
+    {
+      "id": 183,
+      "theme": "DISPUTE_ARBITRATION",
+      "block_id": 24,
+      "is_block_start": false,
+      "reason": "choix de modalite d'audience pour petits montants",
+      "legal_nature": "OBLIGATION",
+      "legal_nature_marker": "you shall"
+    },
+    {
+      "id": 184,
+      "theme": "DISPUTE_ARBITRATION",
+      "block_id": 24,
+      "is_block_start": false,
+      "reason": "viber paie les couts jams pour reclamations non frivoles",
+      "legal_nature": "OBLIGATION",
+      "legal_nature_marker": "shall"
+    },
+    {
+      "id": 185,
+      "theme": "DISPUTE_ARBITRATION",
+      "block_id": 24,
+      "is_block_start": false,
+      "reason": "pas de remboursement des couts demande a l'utilisateur",
+      "legal_nature": "PROHIBITION",
+      "legal_nature_marker": "will not"
+    },
+    {
+      "id": 186,
+      "theme": "DISPUTE_ARBITRATION",
+      "block_id": 24,
+      "is_block_start": false,
+      "reason": "engagement sur une base individuelle, renonciation collective",
+      "legal_nature": "GOVERNANCE",
+      "legal_nature_marker": "class action"
+    },
+    {
+      "id": 187,
+      "theme": "DISPUTE_ARBITRATION",
+      "block_id": 24,
+      "is_block_start": false,
+      "reason": "(b) residents non-US, notice ecrite du litige",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 188,
+      "theme": "DISPUTE_ARBITRATION",
+      "block_id": 24,
+      "is_block_start": false,
+      "reason": "envoi de la notice aux coordonnees recentes",
+      "legal_nature": "OBLIGATION",
+      "legal_nature_marker": "you will"
+    },
+    {
+      "id": 189,
+      "theme": "DISPUTE_ARBITRATION",
+      "block_id": 24,
+      "is_block_start": false,
+      "reason": "absence d'obligation si pas d'information a jour",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 190,
+      "theme": "DISPUTE_ARBITRATION",
+      "block_id": 24,
+      "is_block_start": false,
+      "reason": "adresse d'envoi de la notice a viber",
+      "legal_nature": "OBLIGATION",
+      "legal_nature_marker": "must"
+    },
+    {
+      "id": 191,
+      "theme": "DISPUTE_ARBITRATION",
+      "block_id": 24,
+      "is_block_start": false,
+      "reason": "periode de dialogue de 60 jours",
+      "legal_nature": "OBLIGATION",
+      "legal_nature_marker": "you will"
+    },
+    {
+      "id": 192,
+      "theme": "DISPUTE_ARBITRATION",
+      "block_id": 24,
+      "is_block_start": false,
+      "reason": "directive UE sur la resolution alternative des litiges",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 193,
+      "theme": "DISPUTE_ARBITRATION",
+      "block_id": 24,
+      "is_block_start": false,
+      "reason": "plateforme odr de la commission europeenne",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 194,
+      "theme": "META",
+      "block_id": 25,
+      "is_block_start": true,
+      "rationale": "identite d'entite et bureau d'enregistrement, cite « incorporated under the laws of the grand duchy of luxembourg »",
+      "rationale_codes": {
+        "decision_trigger": "topic_keyword",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "incorporated under the laws of the grand duchy of luxembourg",
+        "revised_from_plan": false,
+        "confidence": 0.85
+      },
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 195,
+      "theme": "META",
+      "block_id": 25,
+      "is_block_start": false,
+      "reason": "adresse de contact pour commentaires/plaintes",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 196,
+      "theme": "META",
+      "block_id": 25,
+      "is_block_start": false,
+      "reason": "adresses de contact confidentialite et legal",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 197,
+      "theme": "MISC_BOILERPLATE",
+      "block_id": 26,
+      "is_block_start": true,
+      "rationale": "nouveau sujet clauses de cloture severabilite, cite « deemed severable from this agreement »",
+      "rationale_codes": {
+        "decision_trigger": "topic_keyword",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "deemed severable from this agreement",
+        "revised_from_plan": false,
+        "confidence": 0.85
+      },
+      "legal_nature": "PROHIBITION",
+      "legal_nature_marker": "shall not"
+    },
+    {
+      "id": 198,
+      "theme": "MISC_BOILERPLATE",
+      "block_id": 26,
+      "is_block_start": false,
+      "reason": "integralite de l'accord entre l'utilisateur et viber",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 199,
+      "theme": "MISC_BOILERPLATE",
+      "block_id": 26,
+      "is_block_start": false,
+      "reason": "clause de langue, version anglaise prevaut",
+      "legal_nature": "OBLIGATION",
+      "legal_nature_marker": "shall"
+    }
+  ]
+}

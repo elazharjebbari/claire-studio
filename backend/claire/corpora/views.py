@@ -55,6 +55,29 @@ class DocumentViewSet(viewsets.ReadOnlyModelViewSet):
             return self.get_paginated_response(ser.data)
         return Response(ser.data)
 
+    @action(detail=True, methods=["get"], url_path="annotation-versions")
+    def annotation_versions(self, request, pk=None):
+        """GET /documents/{id}/annotation-versions — versions LLM disponibles pour
+        ce document : liste de {version, judge, nClauses}, triée. Permet à l'UI de
+        proposer le choix de version (multi-versions)."""
+        from django.db.models import Count
+
+        from claire.imports.models import PreAnnotation
+
+        document = self.get_object()
+        rows = (
+            PreAnnotation.objects.filter(document=document)
+            .annotate(n_clauses=Count("preclauses"))
+            .values("schema_version", "judge", "n_clauses")
+            .order_by("schema_version", "judge")
+        )
+        results = [
+            {"version": r["schema_version"], "judge": r["judge"], "nClauses": r["n_clauses"]}
+            for r in rows
+        ]
+        versions = sorted({r["version"] for r in results})
+        return Response({"versions": versions, "count": len(results), "results": results})
+
     @action(detail=True, methods=["get"])
     def translations(self, request, pk=None):
         """GET /documents/{id}/translations?lang=fr — textes traduits STOCKÉS,

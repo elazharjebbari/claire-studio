@@ -1,0 +1,1708 @@
+{
+  "doc": "Instagram",
+  "judge": "claude",
+  "version": "v9.2-nature-derived",
+  "document_plan": {
+    "estimated_n_blocks": 21,
+    "rationale_global": "ToS Instagram narratif, sans numérotation explicite. Ouverture méta (date d'effet, lien) puis préambule d'acceptation. Une « arbitration notice » isolée annonce l'arbitrage. Vient ensuite l'éligibilité (13 ans), un long bloc « basic terms » d'usage acceptable et de responsabilité du compte, puis la résiliation, la modification des conditions, des droits généraux de la plateforme, un bloc tiers, la concession de licence sur le contenu utilisateur, la publicité, la propriété intellectuelle d'Instagram, la disponibilité/stockage du service, le signalement de violations IP (seul titre, id 92), le disclaimer de garanties, la limitation de responsabilité, l'indemnisation, l'arbitrage détaillé, le droit applicable et un bloc boilerplate divers, clos par des mentions méta finales. Bornes lexicales nombreuses cohérentes avec ces transitions thématiques.",
+    "segments": [
+      {
+        "start_id": 0,
+        "theme": "META",
+        "rationale": "date d'effet",
+        "evidence_span": "these terms of use are effective on january 19 , 2013 ."
+      },
+      {
+        "start_id": 2,
+        "theme": "PREAMBLE_SCOPE",
+        "rationale": "acceptation par l'accès",
+        "evidence_span": "you agree to be bound by these terms of use"
+      },
+      {
+        "start_id": 8,
+        "theme": "DISPUTE_ARBITRATION",
+        "rationale": "avis d'arbitrage",
+        "evidence_span": "arbitration notice"
+      },
+      {
+        "start_id": 9,
+        "theme": "ELIGIBILITY_ACCOUNT",
+        "rationale": "âge minimum",
+        "evidence_span": "you must be at least 13 years old"
+      },
+      {
+        "start_id": 10,
+        "theme": "ACCEPTABLE_USE",
+        "rationale": "interdictions de contenu et d'usage",
+        "evidence_span": "you may not post"
+      },
+      {
+        "start_id": 30,
+        "theme": "TERMINATION",
+        "rationale": "résiliation de compte",
+        "evidence_span": "result in termination of your instagram account"
+      },
+      {
+        "start_id": 37,
+        "theme": "MODIFICATION_OF_TERMS",
+        "rationale": "changement des conditions",
+        "evidence_span": "to change these terms of use"
+      },
+      {
+        "start_id": 43,
+        "theme": "TERMINATION",
+        "rationale": "droit de refuser l'accès",
+        "evidence_span": "refuse access to the service to anyone for any reason"
+      },
+      {
+        "start_id": 46,
+        "theme": "THIRD_PARTY",
+        "rationale": "interactions avec autres utilisateurs et tiers",
+        "evidence_span": "your interaction with other users"
+      },
+      {
+        "start_id": 63,
+        "theme": "USER_CONTENT",
+        "rationale": "concession de licence sur le contenu posté",
+        "evidence_span": "instagram does not claim ownership of any content that you post"
+      },
+      {
+        "start_id": 66,
+        "theme": "USER_CONTENT",
+        "rationale": "publicité sur le contenu",
+        "evidence_span": "may display advertisements and promotions"
+      },
+      {
+        "start_id": 70,
+        "theme": "LICENSE_IP",
+        "rationale": "propriété de l'instagram content",
+        "evidence_span": "content owned or licensed by instagram"
+      },
+      {
+        "start_id": 75,
+        "theme": "WARRANTY_DISCLAIMER",
+        "rationale": "disponibilité et stockage du service",
+        "evidence_span": "the service may be interrupted"
+      },
+      {
+        "start_id": 92,
+        "theme": "LICENSE_IP",
+        "rationale": "titre : signalement des violations IP",
+        "evidence_span": "reporting copyright and other ip violations"
+      },
+      {
+        "start_id": 97,
+        "theme": "WARRANTY_DISCLAIMER",
+        "rationale": "fourniture « as is »",
+        "evidence_span": "as is"
+      },
+      {
+        "start_id": 106,
+        "theme": "LIABILITY_LIMITATION",
+        "rationale": "exclusion de responsabilité",
+        "evidence_span": "disclaim any responsibility or liability"
+      },
+      {
+        "start_id": 114,
+        "theme": "INDEMNIFICATION",
+        "rationale": "obligation d'indemniser",
+        "evidence_span": "indemnify and hold the instagram parties harmless"
+      },
+      {
+        "start_id": 117,
+        "theme": "DISPUTE_ARBITRATION",
+        "rationale": "arbitrage contraignant détaillé",
+        "evidence_span": "resolved by binding , individual arbitration"
+      },
+      {
+        "start_id": 135,
+        "theme": "GOVERNING_LAW",
+        "rationale": "droit de Californie",
+        "evidence_span": "governed by and construed in accordance with the laws of the state of california"
+      },
+      {
+        "start_id": 138,
+        "theme": "MISC_BOILERPLATE",
+        "rationale": "non-renonciation et dispositions diverses",
+        "evidence_span": "will not be construed as a waiver"
+      },
+      {
+        "start_id": 155,
+        "theme": "META",
+        "rationale": "date d'effet finale",
+        "evidence_span": "the effective date of these terms of use is january 19 , 2013 ."
+      }
+    ]
+  },
+  "annotations": [
+    {
+      "id": 0,
+      "theme": "META",
+      "block_id": 0,
+      "is_block_start": true,
+      "rationale": "ouverture du document, mention de la date d'effet « effective on january 19 , 2013 »",
+      "rationale_codes": {
+        "decision_trigger": "document_start",
+        "relation_to_prev": "document_start",
+        "evidence_span": "these terms of use are effective on january 19 , 2013 .",
+        "revised_from_plan": false,
+        "confidence": 0.97
+      },
+      "legal_nature": "META",
+      "legal_nature_marker": "effective on"
+    },
+    {
+      "id": 1,
+      "theme": "META",
+      "block_id": 0,
+      "is_block_start": false,
+      "reason": "lien vers anciennes conditions, mention administrative",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 2,
+      "theme": "PREAMBLE_SCOPE",
+      "block_id": 1,
+      "is_block_start": true,
+      "rationale": "ouverture du préambule d'acceptation : « you agree to be bound by these terms of use »",
+      "rationale_codes": {
+        "decision_trigger": "topic_keyword",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "you agree to be bound by these terms of use",
+        "revised_from_plan": false,
+        "confidence": 0.93
+      },
+      "legal_nature": "SCOPE_APPLICABILITY",
+      "legal_nature_marker": "by accessing"
+    },
+    {
+      "id": 3,
+      "theme": "PREAMBLE_SCOPE",
+      "block_id": 1,
+      "is_block_start": false,
+      "reason": "propriété/contrôle du service, prolonge le cadre",
+      "legal_nature": "META",
+      "legal_nature_marker": "llc"
+    },
+    {
+      "id": 4,
+      "theme": "PREAMBLE_SCOPE",
+      "block_id": 1,
+      "is_block_start": false,
+      "reason": "effet juridique des conditions",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 5,
+      "theme": "PREAMBLE_SCOPE",
+      "block_id": 1,
+      "is_block_start": false,
+      "reason": "conséquence du désaccord",
+      "legal_nature": "PROHIBITION",
+      "legal_nature_marker": "do not"
+    },
+    {
+      "id": 6,
+      "theme": "PREAMBLE_SCOPE",
+      "block_id": 1,
+      "is_block_start": false,
+      "reason": "fonctionnalités spéciales avec conditions additionnelles",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 7,
+      "theme": "PREAMBLE_SCOPE",
+      "block_id": 1,
+      "is_block_start": false,
+      "reason": "priorité des conditions spécifiques en cas de conflit",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 8,
+      "theme": "DISPUTE_ARBITRATION",
+      "block_id": 2,
+      "is_block_start": true,
+      "rationale": "avis d'arbitrage isolé en tête : « arbitration notice »",
+      "rationale_codes": {
+        "decision_trigger": "topic_keyword",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "arbitration notice",
+        "revised_from_plan": false,
+        "confidence": 0.9
+      },
+      "legal_nature": "GOVERNANCE",
+      "legal_nature_marker": "arbitration"
+    },
+    {
+      "id": 9,
+      "theme": "ELIGIBILITY_ACCOUNT",
+      "block_id": 3,
+      "is_block_start": true,
+      "rationale": "exigence d'âge minimum : « you must be at least 13 years old to use the service »",
+      "rationale_codes": {
+        "decision_trigger": "topic_keyword",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "you must be at least 13 years old to use the service .",
+        "revised_from_plan": false,
+        "confidence": 0.9
+      },
+      "legal_nature": "OBLIGATION",
+      "legal_nature_marker": "you must"
+    },
+    {
+      "id": 10,
+      "theme": "ACCEPTABLE_USE",
+      "block_id": 4,
+      "is_block_start": true,
+      "rationale": "ouverture des interdictions d'usage et de contenu : « you may not post violent , nude ... content »",
+      "rationale_codes": {
+        "decision_trigger": "modal_verb",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "you may not post",
+        "revised_from_plan": false,
+        "confidence": 0.85
+      },
+      "legal_nature": "PROHIBITION",
+      "legal_nature_marker": "may not"
+    },
+    {
+      "id": 11,
+      "theme": "ACCEPTABLE_USE",
+      "block_id": 4,
+      "is_block_start": false,
+      "reason": "responsabilité d'activité du compte, prolonge les règles d'usage",
+      "legal_nature": "PROHIBITION",
+      "legal_nature_marker": "will not"
+    },
+    {
+      "id": 12,
+      "theme": "ACCEPTABLE_USE",
+      "block_id": 4,
+      "is_block_start": false,
+      "reason": "interdiction de créer un compte pour autrui",
+      "legal_nature": "PROHIBITION",
+      "legal_nature_marker": "will not"
+    },
+    {
+      "id": 13,
+      "theme": "ACCEPTABLE_USE",
+      "block_id": 4,
+      "is_block_start": false,
+      "reason": "exactitude des informations fournies",
+      "legal_nature": "OBLIGATION",
+      "legal_nature_marker": "you agree to"
+    },
+    {
+      "id": 14,
+      "theme": "ACCEPTABLE_USE",
+      "block_id": 4,
+      "is_block_start": false,
+      "reason": "interdiction de collecter des identifiants",
+      "legal_nature": "PROHIBITION",
+      "legal_nature_marker": "will not"
+    },
+    {
+      "id": 15,
+      "theme": "ACCEPTABLE_USE",
+      "block_id": 4,
+      "is_block_start": false,
+      "reason": "responsabilité du mot de passe",
+      "legal_nature": "OBLIGATION",
+      "legal_nature_marker": "you are responsible"
+    },
+    {
+      "id": 16,
+      "theme": "ACCEPTABLE_USE",
+      "block_id": 4,
+      "is_block_start": false,
+      "reason": "interdiction de harceler/diffuser des données privées",
+      "legal_nature": "PROHIBITION",
+      "legal_nature_marker": "must not"
+    },
+    {
+      "id": 17,
+      "theme": "ACCEPTABLE_USE",
+      "block_id": 4,
+      "is_block_start": false,
+      "reason": "interdiction d'usage illégal",
+      "legal_nature": "PROHIBITION",
+      "legal_nature_marker": "may not"
+    },
+    {
+      "id": 18,
+      "theme": "ACCEPTABLE_USE",
+      "block_id": 4,
+      "is_block_start": false,
+      "reason": "conformité aux lois applicables",
+      "legal_nature": "OBLIGATION",
+      "legal_nature_marker": "you agree to"
+    },
+    {
+      "id": 19,
+      "theme": "ACCEPTABLE_USE",
+      "block_id": 4,
+      "is_block_start": false,
+      "reason": "responsabilité du contenu soumis",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 20,
+      "theme": "ACCEPTABLE_USE",
+      "block_id": 4,
+      "is_block_start": false,
+      "reason": "interdiction de modifier le service",
+      "legal_nature": "PROHIBITION",
+      "legal_nature_marker": "must not"
+    },
+    {
+      "id": 21,
+      "theme": "ACCEPTABLE_USE",
+      "block_id": 4,
+      "is_block_start": false,
+      "reason": "interdiction d'accès non autorisé à l'API",
+      "legal_nature": "DEFINITION",
+      "legal_nature_marker": "means"
+    },
+    {
+      "id": 22,
+      "theme": "ACCEPTABLE_USE",
+      "block_id": 4,
+      "is_block_start": false,
+      "reason": "conditions API séparées, prolonge l'usage",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 23,
+      "theme": "ACCEPTABLE_USE",
+      "block_id": 4,
+      "is_block_start": false,
+      "reason": "interdiction de spam",
+      "legal_nature": "PROHIBITION",
+      "legal_nature_marker": "must not"
+    },
+    {
+      "id": 24,
+      "theme": "ACCEPTABLE_USE",
+      "block_id": 4,
+      "is_block_start": false,
+      "reason": "interdiction d'URL dans le nom d'utilisateur",
+      "legal_nature": "PROHIBITION",
+      "legal_nature_marker": "must not"
+    },
+    {
+      "id": 25,
+      "theme": "ACCEPTABLE_USE",
+      "block_id": 4,
+      "is_block_start": false,
+      "reason": "interdiction d'interférence/virus",
+      "legal_nature": "PROHIBITION",
+      "legal_nature_marker": "must not"
+    },
+    {
+      "id": 26,
+      "theme": "ACCEPTABLE_USE",
+      "block_id": 4,
+      "is_block_start": false,
+      "reason": "interdiction d'injecter du code",
+      "legal_nature": "PROHIBITION",
+      "legal_nature_marker": "may not"
+    },
+    {
+      "id": 27,
+      "theme": "ACCEPTABLE_USE",
+      "block_id": 4,
+      "is_block_start": false,
+      "reason": "respect des community guidelines",
+      "legal_nature": "OBLIGATION",
+      "legal_nature_marker": "you must"
+    },
+    {
+      "id": 28,
+      "theme": "ACCEPTABLE_USE",
+      "block_id": 4,
+      "is_block_start": false,
+      "reason": "interdiction de création de comptes automatisée",
+      "legal_nature": "DEFINITION",
+      "legal_nature_marker": "means"
+    },
+    {
+      "id": 29,
+      "theme": "ACCEPTABLE_USE",
+      "block_id": 4,
+      "is_block_start": false,
+      "reason": "interdiction d'encourager les violations",
+      "legal_nature": "PROHIBITION",
+      "legal_nature_marker": "must not"
+    },
+    {
+      "id": 30,
+      "theme": "TERMINATION",
+      "block_id": 5,
+      "is_block_start": true,
+      "rationale": "conséquence de violation : « result in termination of your instagram account »",
+      "rationale_codes": {
+        "decision_trigger": "topic_keyword",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "result in termination of your instagram account",
+        "revised_from_plan": false,
+        "confidence": 0.82
+      },
+      "legal_nature": "GOVERNANCE",
+      "legal_nature_marker": "termination"
+    },
+    {
+      "id": 31,
+      "theme": "TERMINATION",
+      "block_id": 5,
+      "is_block_start": false,
+      "reason": "irresponsabilité du contenu / usage à vos risques",
+      "legal_nature": "PROHIBITION",
+      "legal_nature_marker": "will not"
+    },
+    {
+      "id": 32,
+      "theme": "TERMINATION",
+      "block_id": 5,
+      "is_block_start": false,
+      "reason": "arrêt du service en cas de violation",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 33,
+      "theme": "TERMINATION",
+      "block_id": 5,
+      "is_block_start": false,
+      "reason": "droit de modifier/résilier le service",
+      "legal_nature": "GOVERNANCE",
+      "legal_nature_marker": "terminate"
+    },
+    {
+      "id": 34,
+      "theme": "TERMINATION",
+      "block_id": 5,
+      "is_block_start": false,
+      "reason": "procédure de désactivation du compte",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 35,
+      "theme": "TERMINATION",
+      "block_id": 5,
+      "is_block_start": false,
+      "reason": "effet de la résiliation sur les données",
+      "legal_nature": "PROHIBITION",
+      "legal_nature_marker": "will not"
+    },
+    {
+      "id": 36,
+      "theme": "TERMINATION",
+      "block_id": 5,
+      "is_block_start": false,
+      "reason": "cessation des licences à la résiliation",
+      "legal_nature": "GOVERNANCE",
+      "legal_nature_marker": "termination"
+    },
+    {
+      "id": 37,
+      "theme": "MODIFICATION_OF_TERMS",
+      "block_id": 6,
+      "is_block_start": true,
+      "rationale": "droit de modifier les conditions : « to change these terms of use ... from time to time »",
+      "rationale_codes": {
+        "decision_trigger": "topic_keyword",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "to change these terms of use",
+        "revised_from_plan": false,
+        "confidence": 0.88
+      },
+      "legal_nature": "GOVERNANCE",
+      "legal_nature_marker": "change these terms"
+    },
+    {
+      "id": 38,
+      "theme": "MODIFICATION_OF_TERMS",
+      "block_id": 6,
+      "is_block_start": false,
+      "reason": "préavis raisonnable avant effet",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 39,
+      "theme": "MODIFICATION_OF_TERMS",
+      "block_id": 6,
+      "is_block_start": false,
+      "reason": "notification par publication, acceptation par l'usage",
+      "legal_nature": "META",
+      "legal_nature_marker": "effective date"
+    },
+    {
+      "id": 40,
+      "theme": "MODIFICATION_OF_TERMS",
+      "block_id": 6,
+      "is_block_start": false,
+      "reason": "invitation à relire les conditions mises à jour",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 41,
+      "theme": "MODIFICATION_OF_TERMS",
+      "block_id": 6,
+      "is_block_start": false,
+      "reason": "date d'effet des conditions mises à jour",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 42,
+      "theme": "MODIFICATION_OF_TERMS",
+      "block_id": 6,
+      "is_block_start": false,
+      "reason": "application aux litiges antérieurs",
+      "legal_nature": "META",
+      "legal_nature_marker": "effective date"
+    },
+    {
+      "id": 43,
+      "theme": "TERMINATION",
+      "block_id": 7,
+      "is_block_start": true,
+      "rationale": "droit de refuser l'accès : « refuse access to the service to anyone for any reason »",
+      "rationale_codes": {
+        "decision_trigger": "topic_keyword",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "refuse access to the service to anyone for any reason",
+        "revised_from_plan": false,
+        "confidence": 0.7
+      },
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 44,
+      "theme": "TERMINATION",
+      "block_id": 7,
+      "is_block_start": false,
+      "reason": "droit de forcer la perte d'un nom d'utilisateur",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 45,
+      "theme": "TERMINATION",
+      "block_id": 7,
+      "is_block_start": false,
+      "reason": "droit de retirer/bloquer le contenu en violation",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 46,
+      "theme": "THIRD_PARTY",
+      "block_id": 8,
+      "is_block_start": true,
+      "rationale": "interactions avec d'autres utilisateurs et tiers : « your interaction with other users of the service »",
+      "rationale_codes": {
+        "decision_trigger": "topic_keyword",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "your interaction with other users of the service",
+        "revised_from_plan": false,
+        "confidence": 0.7
+      },
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 47,
+      "theme": "THIRD_PARTY",
+      "block_id": 8,
+      "is_block_start": false,
+      "reason": "non-responsabilité de la conduite d'un utilisateur",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 48,
+      "theme": "THIRD_PARTY",
+      "block_id": 8,
+      "is_block_start": false,
+      "reason": "Instagram ne s'implique pas dans les litiges entre utilisateurs",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 49,
+      "theme": "THIRD_PARTY",
+      "block_id": 8,
+      "is_block_start": false,
+      "reason": "conseil de prudence dans les interactions",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 50,
+      "theme": "THIRD_PARTY",
+      "block_id": 8,
+      "is_block_start": false,
+      "reason": "liens vers sites tiers",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 51,
+      "theme": "THIRD_PARTY",
+      "block_id": 8,
+      "is_block_start": false,
+      "reason": "liens tiers dans images/commentaires",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 52,
+      "theme": "THIRD_PARTY",
+      "block_id": 8,
+      "is_block_start": false,
+      "reason": "contenu tiers non contrôlé",
+      "legal_nature": "PROHIBITION",
+      "legal_nature_marker": "do not"
+    },
+    {
+      "id": 53,
+      "theme": "THIRD_PARTY",
+      "block_id": 8,
+      "is_block_start": false,
+      "reason": "interactions avec sites tiers",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 54,
+      "theme": "THIRD_PARTY",
+      "block_id": 8,
+      "is_block_start": false,
+      "reason": "exemple de partage avec un tiers",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 55,
+      "theme": "THIRD_PARTY",
+      "block_id": 8,
+      "is_block_start": false,
+      "reason": "connexion au service tiers à vos risques",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 56,
+      "theme": "THIRD_PARTY",
+      "block_id": 8,
+      "is_block_start": false,
+      "reason": "Instagram ne contrôle pas les services tiers",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 57,
+      "theme": "THIRD_PARTY",
+      "block_id": 8,
+      "is_block_start": false,
+      "reason": "non-responsabilité pour les services tiers",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 58,
+      "theme": "THIRD_PARTY",
+      "block_id": 8,
+      "is_block_start": false,
+      "reason": "relations commerciales avec des tiers entre vous",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 59,
+      "theme": "THIRD_PARTY",
+      "block_id": 8,
+      "is_block_start": false,
+      "reason": "applications connectant le profil à un service tiers",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 60,
+      "theme": "THIRD_PARTY",
+      "block_id": 8,
+      "is_block_start": false,
+      "reason": "conséquences de l'usage d'applications tierces",
+      "legal_nature": "SCOPE_APPLICABILITY",
+      "legal_nature_marker": "by using"
+    },
+    {
+      "id": 61,
+      "theme": "THIRD_PARTY",
+      "block_id": 8,
+      "is_block_start": false,
+      "reason": "responsabilité des frais de données, prolonge l'usage tiers/service",
+      "legal_nature": "OBLIGATION",
+      "legal_nature_marker": "you are responsible"
+    },
+    {
+      "id": 62,
+      "theme": "THIRD_PARTY",
+      "block_id": 8,
+      "is_block_start": false,
+      "reason": "interdiction du crawling/scraping automatisé",
+      "legal_nature": "DEFINITION",
+      "legal_nature_marker": "means"
+    },
+    {
+      "id": 63,
+      "theme": "USER_CONTENT",
+      "block_id": 9,
+      "is_block_start": true,
+      "rationale": "concession de licence sur le contenu utilisateur : « instagram does not claim ownership of any content that you post »",
+      "rationale_codes": {
+        "decision_trigger": "topic_keyword",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "instagram does not claim ownership of any content that you post",
+        "revised_from_plan": false,
+        "confidence": 0.85
+      },
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 64,
+      "theme": "USER_CONTENT",
+      "block_id": 9,
+      "is_block_start": false,
+      "reason": "octroi de la licence sur le contenu posté",
+      "legal_nature": "RIGHT_GRANT",
+      "legal_nature_marker": "hereby grant"
+    },
+    {
+      "id": 65,
+      "theme": "USER_CONTENT",
+      "block_id": 9,
+      "is_block_start": false,
+      "reason": "choix de visibilité du contenu",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 66,
+      "theme": "USER_CONTENT",
+      "block_id": 10,
+      "is_block_start": true,
+      "rationale": "publicité associée au contenu utilisateur : « may display advertisements and promotions ... in conjunction with your content »",
+      "rationale_codes": {
+        "decision_trigger": "topic_keyword",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "may display advertisements and promotions",
+        "revised_from_plan": false,
+        "confidence": 0.62
+      },
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 67,
+      "theme": "USER_CONTENT",
+      "block_id": 10,
+      "is_block_start": false,
+      "reason": "modalités de la publicité, prolonge le sujet",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 68,
+      "theme": "USER_CONTENT",
+      "block_id": 10,
+      "is_block_start": false,
+      "reason": "identification non systématique des contenus sponsorisés",
+      "legal_nature": "PROHIBITION",
+      "legal_nature_marker": "may not"
+    },
+    {
+      "id": 69,
+      "theme": "USER_CONTENT",
+      "block_id": 10,
+      "is_block_start": false,
+      "reason": "répétition de la phrase précédente, même thème",
+      "legal_nature": "PROHIBITION",
+      "legal_nature_marker": "may not"
+    },
+    {
+      "id": 70,
+      "theme": "LICENSE_IP",
+      "block_id": 11,
+      "is_block_start": true,
+      "rationale": "propriété intellectuelle d'Instagram : « content owned or licensed by instagram ( instagram content ) »",
+      "rationale_codes": {
+        "decision_trigger": "topic_keyword",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "content owned or licensed by instagram",
+        "revised_from_plan": false,
+        "confidence": 0.88
+      },
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 71,
+      "theme": "LICENSE_IP",
+      "block_id": 11,
+      "is_block_start": false,
+      "reason": "protection par copyright/trademark",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 72,
+      "theme": "LICENSE_IP",
+      "block_id": 11,
+      "is_block_start": false,
+      "reason": "interdiction d'exploiter l'instagram content",
+      "legal_nature": "PROHIBITION",
+      "legal_nature_marker": "will not"
+    },
+    {
+      "id": 73,
+      "theme": "LICENSE_IP",
+      "block_id": 11,
+      "is_block_start": false,
+      "reason": "marques du nom et logo Instagram",
+      "legal_nature": "PROHIBITION",
+      "legal_nature_marker": "may not"
+    },
+    {
+      "id": 74,
+      "theme": "LICENSE_IP",
+      "block_id": 11,
+      "is_block_start": false,
+      "reason": "service marks et trade dress",
+      "legal_nature": "PROHIBITION",
+      "legal_nature_marker": "may not"
+    },
+    {
+      "id": 75,
+      "theme": "WARRANTY_DISCLAIMER",
+      "block_id": 12,
+      "is_block_start": true,
+      "rationale": "disponibilité du service et interruptions : « there will be occasions when the service may be interrupted »",
+      "rationale_codes": {
+        "decision_trigger": "topic_keyword",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "the service may be interrupted",
+        "revised_from_plan": false,
+        "confidence": 0.6
+      },
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 76,
+      "theme": "WARRANTY_DISCLAIMER",
+      "block_id": 12,
+      "is_block_start": false,
+      "reason": "droit de retirer du contenu, prolonge le sujet disponibilité",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 77,
+      "theme": "WARRANTY_DISCLAIMER",
+      "block_id": 12,
+      "is_block_start": false,
+      "reason": "stockage du contenu retiré",
+      "legal_nature": "PROHIBITION",
+      "legal_nature_marker": "may not"
+    },
+    {
+      "id": 78,
+      "theme": "WARRANTY_DISCLAIMER",
+      "block_id": 12,
+      "is_block_start": false,
+      "reason": "recommandation de sauvegarde",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 79,
+      "theme": "WARRANTY_DISCLAIMER",
+      "block_id": 12,
+      "is_block_start": false,
+      "reason": "Instagram n'est pas un service de sauvegarde",
+      "legal_nature": "PROHIBITION",
+      "legal_nature_marker": "will not"
+    },
+    {
+      "id": 80,
+      "theme": "WARRANTY_DISCLAIMER",
+      "block_id": 12,
+      "is_block_start": false,
+      "reason": "non-responsabilité pour perte de contenu",
+      "legal_nature": "PROHIBITION",
+      "legal_nature_marker": "will not"
+    },
+    {
+      "id": 81,
+      "theme": "WARRANTY_DISCLAIMER",
+      "block_id": 12,
+      "is_block_start": false,
+      "reason": "absence de sécurité garantie sur internet",
+      "legal_nature": "PROHIBITION",
+      "legal_nature_marker": "may not"
+    },
+    {
+      "id": 82,
+      "theme": "WARRANTY_DISCLAIMER",
+      "block_id": 12,
+      "is_block_start": false,
+      "reason": "non-responsabilité/non-endossement du contenu posté",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 83,
+      "theme": "WARRANTY_DISCLAIMER",
+      "block_id": 12,
+      "is_block_start": false,
+      "reason": "pas d'obligation de pré-modération",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 84,
+      "theme": "WARRANTY_DISCLAIMER",
+      "block_id": 12,
+      "is_block_start": false,
+      "reason": "responsabilité légale de l'utilisateur pour son contenu",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 85,
+      "theme": "WARRANTY_DISCLAIMER",
+      "block_id": 12,
+      "is_block_start": false,
+      "reason": "contenu non confidentiel, non-responsabilité",
+      "legal_nature": "PROHIBITION",
+      "legal_nature_marker": "will not"
+    },
+    {
+      "id": 86,
+      "theme": "WARRANTY_DISCLAIMER",
+      "block_id": 12,
+      "is_block_start": false,
+      "reason": "absence de relation confidentielle",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 87,
+      "theme": "WARRANTY_DISCLAIMER",
+      "block_id": 12,
+      "is_block_start": false,
+      "reason": "pas d'obligation de confidence sur le contenu",
+      "legal_nature": "PROHIBITION",
+      "legal_nature_marker": "will not"
+    },
+    {
+      "id": 88,
+      "theme": "WARRANTY_DISCLAIMER",
+      "block_id": 12,
+      "is_block_start": false,
+      "reason": "politique de non-acceptation des idées non sollicitées",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 89,
+      "theme": "WARRANTY_DISCLAIMER",
+      "block_id": 12,
+      "is_block_start": false,
+      "reason": "raison de la politique",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 90,
+      "theme": "WARRANTY_DISCLAIMER",
+      "block_id": 12,
+      "is_block_start": false,
+      "reason": "non-acceptation des matériaux non sollicités",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 91,
+      "theme": "WARRANTY_DISCLAIMER",
+      "block_id": 12,
+      "is_block_start": false,
+      "reason": "liberté d'usage des idées soumises malgré la politique",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 92,
+      "theme": "LICENSE_IP",
+      "block_id": 13,
+      "is_block_start": true,
+      "rationale": "titre nominal court de section : « reporting copyright and other ip violations »",
+      "rationale_codes": {
+        "decision_trigger": "title_marker",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "reporting copyright and other ip violations",
+        "revised_from_plan": false,
+        "confidence": 0.9
+      },
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 93,
+      "theme": "LICENSE_IP",
+      "block_id": 13,
+      "is_block_start": false,
+      "reason": "respect des droits d'autrui",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 94,
+      "theme": "LICENSE_IP",
+      "block_id": 13,
+      "is_block_start": false,
+      "reason": "outils de protection de la PI",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 95,
+      "theme": "LICENSE_IP",
+      "block_id": 13,
+      "is_block_start": false,
+      "reason": "lien pour signaler une infraction IP",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 96,
+      "theme": "LICENSE_IP",
+      "block_id": 13,
+      "is_block_start": false,
+      "reason": "désactivation du compte des contrevenants répétés",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 97,
+      "theme": "WARRANTY_DISCLAIMER",
+      "block_id": 14,
+      "is_block_start": true,
+      "rationale": "fourniture « as is » sans garantie : « provided on an `` as is '' ... basis »",
+      "rationale_codes": {
+        "decision_trigger": "topic_keyword",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "as is",
+        "revised_from_plan": false,
+        "confidence": 0.85
+      },
+      "legal_nature": "LIMITATION_DISCLAIMER",
+      "legal_nature_marker": "as is"
+    },
+    {
+      "id": 98,
+      "theme": "WARRANTY_DISCLAIMER",
+      "block_id": 14,
+      "is_block_start": false,
+      "reason": "absence de représentations ou garanties",
+      "legal_nature": "LIMITATION_DISCLAIMER",
+      "legal_nature_marker": "warranties"
+    },
+    {
+      "id": 99,
+      "theme": "WARRANTY_DISCLAIMER",
+      "block_id": 14,
+      "is_block_start": false,
+      "reason": "exclusion des garanties implicites",
+      "legal_nature": "LIMITATION_DISCLAIMER",
+      "legal_nature_marker": "warranties"
+    },
+    {
+      "id": 100,
+      "theme": "WARRANTY_DISCLAIMER",
+      "block_id": 14,
+      "is_block_start": false,
+      "reason": "pas de garantie d'absence d'erreurs",
+      "legal_nature": "PROHIBITION",
+      "legal_nature_marker": "do not"
+    },
+    {
+      "id": 101,
+      "theme": "WARRANTY_DISCLAIMER",
+      "block_id": 14,
+      "is_block_start": false,
+      "reason": "pas de garantie d'exactitude de l'information",
+      "legal_nature": "PROHIBITION",
+      "legal_nature_marker": "do not"
+    },
+    {
+      "id": 102,
+      "theme": "WARRANTY_DISCLAIMER",
+      "block_id": 14,
+      "is_block_start": false,
+      "reason": "usage à vos seuls risques",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 103,
+      "theme": "WARRANTY_DISCLAIMER",
+      "block_id": 14,
+      "is_block_start": false,
+      "reason": "pas de garantie de licéité par juridiction",
+      "legal_nature": "PROHIBITION",
+      "legal_nature_marker": "do not"
+    },
+    {
+      "id": 104,
+      "theme": "WARRANTY_DISCLAIMER",
+      "block_id": 14,
+      "is_block_start": false,
+      "reason": "limite de l'exclusion selon les juridictions",
+      "legal_nature": "PROHIBITION",
+      "legal_nature_marker": "may not"
+    },
+    {
+      "id": 105,
+      "theme": "WARRANTY_DISCLAIMER",
+      "block_id": 14,
+      "is_block_start": false,
+      "reason": "garantie de l'utilisateur sur la licéité de son activité",
+      "legal_nature": "GOVERNANCE",
+      "legal_nature_marker": "jurisdiction"
+    },
+    {
+      "id": 106,
+      "theme": "LIABILITY_LIMITATION",
+      "block_id": 15,
+      "is_block_start": true,
+      "rationale": "exclusion de responsabilité pour tout dommage : « disclaim any responsibility or liability ... based upon or resulting from any content »",
+      "rationale_codes": {
+        "decision_trigger": "topic_keyword",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "disclaim any responsibility or liability",
+        "revised_from_plan": false,
+        "confidence": 0.78
+      },
+      "legal_nature": "PROHIBITION",
+      "legal_nature_marker": "do not"
+    },
+    {
+      "id": 107,
+      "theme": "LIABILITY_LIMITATION",
+      "block_id": 15,
+      "is_block_start": false,
+      "reason": "absence de responsabilité pour toute perte ou dommage",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 108,
+      "theme": "LIABILITY_LIMITATION",
+      "block_id": 15,
+      "is_block_start": false,
+      "reason": "non-responsabilité incluant blessure/décès",
+      "legal_nature": "LIMITATION_DISCLAIMER",
+      "legal_nature_marker": "in no event"
+    },
+    {
+      "id": 109,
+      "theme": "LIABILITY_LIMITATION",
+      "block_id": 15,
+      "is_block_start": false,
+      "reason": "limite selon les États",
+      "legal_nature": "PROHIBITION",
+      "legal_nature_marker": "may not"
+    },
+    {
+      "id": 110,
+      "theme": "LIABILITY_LIMITATION",
+      "block_id": 15,
+      "is_block_start": false,
+      "reason": "plafond de responsabilité à 100 USD",
+      "legal_nature": "LIMITATION_DISCLAIMER",
+      "legal_nature_marker": "in no event"
+    },
+    {
+      "id": 111,
+      "theme": "LIABILITY_LIMITATION",
+      "block_id": 15,
+      "is_block_start": false,
+      "reason": "renonciation aux injonctions",
+      "legal_nature": "OBLIGATION",
+      "legal_nature_marker": "you will"
+    },
+    {
+      "id": 112,
+      "theme": "LIABILITY_LIMITATION",
+      "block_id": 15,
+      "is_block_start": false,
+      "reason": "renonciation à la section 1542 du code californien",
+      "legal_nature": "SCOPE_APPLICABILITY",
+      "legal_nature_marker": "by accessing"
+    },
+    {
+      "id": 113,
+      "theme": "LIABILITY_LIMITATION",
+      "block_id": 15,
+      "is_block_start": false,
+      "reason": "release des réclamations contre les tiers",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 114,
+      "theme": "INDEMNIFICATION",
+      "block_id": 16,
+      "is_block_start": true,
+      "rationale": "obligation d'indemniser : « indemnify and hold the instagram parties harmless »",
+      "rationale_codes": {
+        "decision_trigger": "topic_keyword",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "indemnify and hold the instagram parties harmless",
+        "revised_from_plan": false,
+        "confidence": 0.9
+      },
+      "legal_nature": "RISK_ALLOCATION",
+      "legal_nature_marker": "indemnify"
+    },
+    {
+      "id": 115,
+      "theme": "INDEMNIFICATION",
+      "block_id": 16,
+      "is_block_start": false,
+      "reason": "coopération à la défense des réclamations",
+      "legal_nature": "OBLIGATION",
+      "legal_nature_marker": "you will"
+    },
+    {
+      "id": 116,
+      "theme": "INDEMNIFICATION",
+      "block_id": 16,
+      "is_block_start": false,
+      "reason": "droit d'Instagram d'assumer la défense",
+      "legal_nature": "PROHIBITION",
+      "legal_nature_marker": "will not"
+    },
+    {
+      "id": 117,
+      "theme": "DISPUTE_ARBITRATION",
+      "block_id": 17,
+      "is_block_start": true,
+      "rationale": "arbitrage contraignant détaillé : « will be resolved by binding , individual arbitration »",
+      "rationale_codes": {
+        "decision_trigger": "topic_keyword",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "resolved by binding , individual arbitration",
+        "revised_from_plan": false,
+        "confidence": 0.88
+      },
+      "legal_nature": "GOVERNANCE",
+      "legal_nature_marker": "arbitration"
+    },
+    {
+      "id": 118,
+      "theme": "DISPUTE_ARBITRATION",
+      "block_id": 17,
+      "is_block_start": false,
+      "reason": "alternative small claims court",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 119,
+      "theme": "DISPUTE_ARBITRATION",
+      "block_id": 17,
+      "is_block_start": false,
+      "reason": "réclamations en son propre nom",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 120,
+      "theme": "DISPUTE_ARBITRATION",
+      "block_id": 17,
+      "is_block_start": false,
+      "reason": "renonciation à l'action collective",
+      "legal_nature": "GOVERNANCE",
+      "legal_nature_marker": "arbitration"
+    },
+    {
+      "id": 121,
+      "theme": "DISPUTE_ARBITRATION",
+      "block_id": 17,
+      "is_block_start": false,
+      "reason": "renonciation aux réclamations représentatives",
+      "legal_nature": "PROHIBITION",
+      "legal_nature_marker": "agree not to"
+    },
+    {
+      "id": 122,
+      "theme": "DISPUTE_ARBITRATION",
+      "block_id": 17,
+      "is_block_start": false,
+      "reason": "régi par le Federal Arbitration Act",
+      "legal_nature": "GOVERNANCE",
+      "legal_nature_marker": "governed by"
+    },
+    {
+      "id": 123,
+      "theme": "DISPUTE_ARBITRATION",
+      "block_id": 17,
+      "is_block_start": false,
+      "reason": "administrateur alternatif JAMS",
+      "legal_nature": "GOVERNANCE",
+      "legal_nature_marker": "arbitration"
+    },
+    {
+      "id": 124,
+      "theme": "DISPUTE_ARBITRATION",
+      "block_id": 17,
+      "is_block_start": false,
+      "reason": "jugement sur la sentence",
+      "legal_nature": "GOVERNANCE",
+      "legal_nature_marker": "jurisdiction"
+    },
+    {
+      "id": 125,
+      "theme": "DISPUTE_ARBITRATION",
+      "block_id": 17,
+      "is_block_start": false,
+      "reason": "limite des pouvoirs de l'arbitre",
+      "legal_nature": "PROHIBITION",
+      "legal_nature_marker": "will not"
+    },
+    {
+      "id": 126,
+      "theme": "DISPUTE_ARBITRATION",
+      "block_id": 17,
+      "is_block_start": false,
+      "reason": "possibilité d'opt-out",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 127,
+      "theme": "DISPUTE_ARBITRATION",
+      "block_id": 17,
+      "is_block_start": false,
+      "reason": "effet de l'opt-out",
+      "legal_nature": "GOVERNANCE",
+      "legal_nature_marker": "arbitration"
+    },
+    {
+      "id": 128,
+      "theme": "DISPUTE_ARBITRATION",
+      "block_id": 17,
+      "is_block_start": false,
+      "reason": "délai pour opt-out",
+      "legal_nature": "PROHIBITION",
+      "legal_nature_marker": "must not"
+    },
+    {
+      "id": 129,
+      "theme": "DISPUTE_ARBITRATION",
+      "block_id": 17,
+      "is_block_start": false,
+      "reason": "adresse pour opt-out",
+      "legal_nature": "OBLIGATION",
+      "legal_nature_marker": "you must"
+    },
+    {
+      "id": 130,
+      "theme": "DISPUTE_ARBITRATION",
+      "block_id": 17,
+      "is_block_start": false,
+      "reason": "adresse postale d'opt-out, prolonge la procédure",
+      "legal_nature": "META",
+      "legal_nature_marker": "llc"
+    },
+    {
+      "id": 131,
+      "theme": "DISPUTE_ARBITRATION",
+      "block_id": 17,
+      "is_block_start": false,
+      "reason": "contenu requis de la notification d'opt-out",
+      "legal_nature": "GOVERNANCE",
+      "legal_nature_marker": "arbitration"
+    },
+    {
+      "id": 132,
+      "theme": "DISPUTE_ARBITRATION",
+      "block_id": 17,
+      "is_block_start": false,
+      "reason": "nullité en cas d'inapplicabilité de l'interdiction de class action",
+      "legal_nature": "GOVERNANCE",
+      "legal_nature_marker": "arbitration"
+    },
+    {
+      "id": 133,
+      "theme": "DISPUTE_ARBITRATION",
+      "block_id": 17,
+      "is_block_start": false,
+      "reason": "survie de l'accord d'arbitrage",
+      "legal_nature": "GOVERNANCE",
+      "legal_nature_marker": "arbitration"
+    },
+    {
+      "id": 134,
+      "theme": "DISPUTE_ARBITRATION",
+      "block_id": 17,
+      "is_block_start": false,
+      "reason": "délai d'un an pour déposer une réclamation",
+      "legal_nature": "OBLIGATION",
+      "legal_nature_marker": "must"
+    },
+    {
+      "id": 135,
+      "theme": "GOVERNING_LAW",
+      "block_id": 18,
+      "is_block_start": true,
+      "rationale": "droit applicable : « governed by and construed in accordance with the laws of the state of california »",
+      "rationale_codes": {
+        "decision_trigger": "topic_keyword",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "governed by and construed in accordance with the laws of the state of california",
+        "revised_from_plan": false,
+        "confidence": 0.88
+      },
+      "legal_nature": "GOVERNANCE",
+      "legal_nature_marker": "governed by"
+    },
+    {
+      "id": 136,
+      "theme": "GOVERNING_LAW",
+      "block_id": 18,
+      "is_block_start": false,
+      "reason": "juridiction exclusive Santa Clara",
+      "legal_nature": "GOVERNANCE",
+      "legal_nature_marker": "jurisdiction"
+    },
+    {
+      "id": 137,
+      "theme": "GOVERNING_LAW",
+      "block_id": 18,
+      "is_block_start": false,
+      "reason": "clause de divisibilité, prolonge le cadre juridictionnel",
+      "legal_nature": "PROHIBITION",
+      "legal_nature_marker": "will not"
+    },
+    {
+      "id": 138,
+      "theme": "MISC_BOILERPLATE",
+      "block_id": 19,
+      "is_block_start": true,
+      "rationale": "non-renonciation : « failure to insist upon or enforce ... will not be construed as a waiver »",
+      "rationale_codes": {
+        "decision_trigger": "topic_keyword",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "will not be construed as a waiver",
+        "revised_from_plan": false,
+        "confidence": 0.7
+      },
+      "legal_nature": "PROHIBITION",
+      "legal_nature_marker": "will not"
+    },
+    {
+      "id": 139,
+      "theme": "MISC_BOILERPLATE",
+      "block_id": 19,
+      "is_block_start": false,
+      "reason": "non-renonciation continue",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 140,
+      "theme": "MISC_BOILERPLATE",
+      "block_id": 19,
+      "is_block_start": false,
+      "reason": "droit de changer la clause de résolution des litiges",
+      "legal_nature": "META",
+      "legal_nature_marker": "effective date"
+    },
+    {
+      "id": 141,
+      "theme": "MISC_BOILERPLATE",
+      "block_id": 19,
+      "is_block_start": false,
+      "reason": "survie de la clause de résolution des litiges",
+      "legal_nature": "GOVERNANCE",
+      "legal_nature_marker": "termination"
+    },
+    {
+      "id": 142,
+      "theme": "MISC_BOILERPLATE",
+      "block_id": 19,
+      "is_block_start": false,
+      "reason": "autorité à contracter pour une entité",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 143,
+      "theme": "MISC_BOILERPLATE",
+      "block_id": 19,
+      "is_block_start": false,
+      "reason": "intégralité de l'accord",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 144,
+      "theme": "MISC_BOILERPLATE",
+      "block_id": 19,
+      "is_block_start": false,
+      "reason": "interdiction de cession par l'utilisateur",
+      "legal_nature": "PROHIBITION",
+      "legal_nature_marker": "will not"
+    },
+    {
+      "id": 145,
+      "theme": "MISC_BOILERPLATE",
+      "block_id": 19,
+      "is_block_start": false,
+      "reason": "nullité d'une cession non autorisée",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 146,
+      "theme": "MISC_BOILERPLATE",
+      "block_id": 19,
+      "is_block_start": false,
+      "reason": "droit de cession d'Instagram",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 147,
+      "theme": "MISC_BOILERPLATE",
+      "block_id": 19,
+      "is_block_start": false,
+      "reason": "divisibilité des clauses",
+      "legal_nature": "PROHIBITION",
+      "legal_nature_marker": "will not"
+    },
+    {
+      "id": 148,
+      "theme": "MISC_BOILERPLATE",
+      "block_id": 19,
+      "is_block_start": false,
+      "reason": "pas de modification par la pratique",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 149,
+      "theme": "MISC_BOILERPLATE",
+      "block_id": 19,
+      "is_block_start": false,
+      "reason": "pas de droits pour les tiers bénéficiaires",
+      "legal_nature": "PROHIBITION",
+      "legal_nature_marker": "do not"
+    },
+    {
+      "id": 150,
+      "theme": "MISC_BOILERPLATE",
+      "block_id": 19,
+      "is_block_start": false,
+      "reason": "restriction de distribution selon juridiction",
+      "legal_nature": "GOVERNANCE",
+      "legal_nature_marker": "jurisdiction"
+    },
+    {
+      "id": 151,
+      "theme": "MISC_BOILERPLATE",
+      "block_id": 19,
+      "is_block_start": false,
+      "reason": "droit de limiter la disponibilité du service",
+      "legal_nature": "GOVERNANCE",
+      "legal_nature_marker": "jurisdiction"
+    },
+    {
+      "id": 152,
+      "theme": "MISC_BOILERPLATE",
+      "block_id": 19,
+      "is_block_start": false,
+      "reason": "contrôles d'exportation US",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 153,
+      "theme": "MISC_BOILERPLATE",
+      "block_id": 19,
+      "is_block_start": false,
+      "reason": "restrictions d'exportation du logiciel",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 154,
+      "theme": "MISC_BOILERPLATE",
+      "block_id": 19,
+      "is_block_start": false,
+      "reason": "garantie de l'utilisateur sur sa localisation export",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 155,
+      "theme": "META",
+      "block_id": 20,
+      "is_block_start": true,
+      "rationale": "mention méta finale de date d'effet : « the effective date of these terms of use is january 19 , 2013 »",
+      "rationale_codes": {
+        "decision_trigger": "topic_keyword",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "the effective date of these terms of use is january 19 , 2013 .",
+        "revised_from_plan": false,
+        "confidence": 0.85
+      },
+      "legal_nature": "META",
+      "legal_nature_marker": "effective date"
+    },
+    {
+      "id": 156,
+      "theme": "META",
+      "block_id": 20,
+      "is_block_start": false,
+      "reason": "mention de la langue de rédaction du document",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 157,
+      "theme": "META",
+      "block_id": 20,
+      "is_block_start": false,
+      "reason": "version anglaise prévalente en cas de conflit de traduction",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    }
+  ]
+}

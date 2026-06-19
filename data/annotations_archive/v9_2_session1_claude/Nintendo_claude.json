@@ -1,0 +1,2004 @@
+{
+  "doc": "Nintendo",
+  "judge": "claude",
+  "version": "v9.2-nature-derived",
+  "document_plan": {
+    "estimated_n_blocks": 27,
+    "rationale_global": "ToS Nintendo (188 phrases). Ouverture par une ligne de version (META) puis preambule identifiant les parties et la portee de l'accord. Suit un bloc de definitions ('the following terms shall have the following meanings'), puis l'eligibilite/compte (registration, responsabilite, securite, comptes enfants). Section 3 titree 'use of nintendo account service' (usage personnel/couts). Contenu utilisateur (UGC, licence accordee, stockage). Code de conduct = usage acceptable (longue liste de prohibitions). Communication d'arriere-plan (donnees/appareil) traitee en PRIVACY_DATA. Services tiers. Propriete intellectuelle (titre 8 implicite, IP ownership + licence). Titre 9 'nintendo's liability to you' = limitation de responsabilite, puis indemnisation. Modification des termes (changes au contrat). Titre 12 'termination and transfer' = resiliation. Severabilite (MISC_BOILERPLATE). Section 14 droit applicable (japon/allemagne). Contact (MISC). Section 16 Apple = beneficiaires tiers. Shopping services = paiement/facturation et licences d'achat. Third-party shopping services. Section 6 ODR = resolution des litiges. Droit de retractation (cancellation) rattache au paiement/remboursement. Enfin formulaire de retractation = META. Preseance §3.1 appliquee : IP prime (77-81 LICENSE_IP) ; abonnement vs paiement non present (pas de renouvellement, mais retractation/remboursement -> PAYMENT_BILLING) ; responsabilite (limitation) vs garantie distinguees. Continuite par defaut a l'interieur de chaque section.",
+    "segments": [
+      {
+        "start_id": 0,
+        "theme": "META",
+        "rationale": "ligne de version/date d'edition",
+        "evidence_span": "version : 06.2017"
+      },
+      {
+        "start_id": 1,
+        "theme": "PREAMBLE_SCOPE",
+        "rationale": "identification des parties et nature de l'accord",
+        "evidence_span": "this is a binding agreement between you"
+      },
+      {
+        "start_id": 7,
+        "theme": "DEFINITIONS",
+        "rationale": "ouverture du glossaire",
+        "evidence_span": "the following terms shall have the following meanings"
+      },
+      {
+        "start_id": 16,
+        "theme": "ELIGIBILITY_ACCOUNT",
+        "rationale": "obligation d'enregistrer un compte",
+        "evidence_span": "you must register a nintendo account"
+      },
+      {
+        "start_id": 30,
+        "theme": "ACCEPTABLE_USE",
+        "rationale": "titre section 3 + usage personnel",
+        "evidence_span": "3 use of nintendo account service"
+      },
+      {
+        "start_id": 39,
+        "theme": "USER_CONTENT",
+        "rationale": "responsabilite du contenu utilisateur",
+        "evidence_span": "ncl is not responsible for any user-generated content"
+      },
+      {
+        "start_id": 50,
+        "theme": "ACCEPTABLE_USE",
+        "rationale": "code of conduct et conduites prohibees",
+        "evidence_span": "you must comply with the nintendo code of conduct"
+      },
+      {
+        "start_id": 63,
+        "theme": "PRIVACY_DATA",
+        "rationale": "communication d'arriere-plan avec les serveurs et appareils",
+        "evidence_span": "automatic background communication with nintendo servers"
+      },
+      {
+        "start_id": 70,
+        "theme": "THIRD_PARTY",
+        "rationale": "acces aux services tiers",
+        "evidence_span": "access to third-party services"
+      },
+      {
+        "start_id": 77,
+        "theme": "LICENSE_IP",
+        "rationale": "propriete et licence de la PI Nintendo",
+        "evidence_span": "ncl owns all rights , titles and interest"
+      },
+      {
+        "start_id": 82,
+        "theme": "LIABILITY_LIMITATION",
+        "rationale": "titre section 9 responsabilite",
+        "evidence_span": "9 nintendo 's liability to you"
+      },
+      {
+        "start_id": 89,
+        "theme": "INDEMNIFICATION",
+        "rationale": "engagement d'indemniser Nintendo",
+        "evidence_span": "you agree to indemnify and hold nintendo"
+      },
+      {
+        "start_id": 91,
+        "theme": "MODIFICATION_OF_TERMS",
+        "rationale": "modification des termes de l'accord",
+        "evidence_span": "nintendo may change the terms and conditions of this agreement"
+      },
+      {
+        "start_id": 96,
+        "theme": "TERMINATION",
+        "rationale": "titre section 12 resiliation et transfert",
+        "evidence_span": "12 termination and transfer of the agreement"
+      },
+      {
+        "start_id": 110,
+        "theme": "MISC_BOILERPLATE",
+        "rationale": "clause de divisibilite",
+        "evidence_span": "found to be invalid or unenforceable"
+      },
+      {
+        "start_id": 113,
+        "theme": "GOVERNING_LAW",
+        "rationale": "section 14 droit applicable",
+        "evidence_span": "shall be governed by the laws of japan"
+      },
+      {
+        "start_id": 117,
+        "theme": "MISC_BOILERPLATE",
+        "rationale": "coordonnees de contact",
+        "evidence_span": "please contact us by email"
+      },
+      {
+        "start_id": 118,
+        "theme": "THIRD_PARTY",
+        "rationale": "section 16 dispositions Apple (beneficiaire tiers)",
+        "evidence_span": "16 use of digital products on apple 's devices"
+      },
+      {
+        "start_id": 124,
+        "theme": "PAYMENT_BILLING",
+        "rationale": "shopping services, achat et licences de produits",
+        "evidence_span": "may offer access to nintendo shopping services"
+      },
+      {
+        "start_id": 159,
+        "theme": "THIRD_PARTY",
+        "rationale": "services d'achat operes par des tiers",
+        "evidence_span": "shopping services operated by third parties"
+      },
+      {
+        "start_id": 165,
+        "theme": "DISPUTE_ARBITRATION",
+        "rationale": "section 6 resolution des litiges en ligne",
+        "evidence_span": "6 information about online dispute resolution"
+      },
+      {
+        "start_id": 169,
+        "theme": "PAYMENT_BILLING",
+        "rationale": "droit de retractation et remboursement",
+        "evidence_span": "instructions for right to cancel"
+      },
+      {
+        "start_id": 184,
+        "theme": "META",
+        "rationale": "formulaire de retractation (champs)",
+        "evidence_span": "i/we"
+      }
+    ]
+  },
+  "annotations": [
+    {
+      "id": 0,
+      "theme": "META",
+      "block_id": 0,
+      "is_block_start": true,
+      "rationale": "ouverture du document : ligne de version/date d'edition, sans effet juridique",
+      "rationale_codes": {
+        "decision_trigger": "document_start",
+        "relation_to_prev": "document_start",
+        "evidence_span": "version : 06.2017",
+        "revised_from_plan": false,
+        "confidence": 0.97
+      },
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 1,
+      "theme": "PREAMBLE_SCOPE",
+      "block_id": 1,
+      "is_block_start": true,
+      "rationale": "debut du preambule identifiant les parties contractantes",
+      "rationale_codes": {
+        "decision_trigger": "topic_keyword",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "this is a binding agreement between you",
+        "revised_from_plan": false,
+        "confidence": 0.95
+      },
+      "legal_nature": "META",
+      "legal_nature_marker": "ltd"
+    },
+    {
+      "id": 2,
+      "theme": "PREAMBLE_SCOPE",
+      "block_id": 1,
+      "is_block_start": false,
+      "reason": "definition des parties 'nintendo'/'we', prolonge le preambule",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 3,
+      "theme": "PREAMBLE_SCOPE",
+      "block_id": 1,
+      "is_block_start": false,
+      "reason": "objet de l'accord (couvre l'usage du compte)",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 4,
+      "theme": "PREAMBLE_SCOPE",
+      "block_id": 1,
+      "is_block_start": false,
+      "reason": "entree en vigueur lors de l'enregistrement, prolonge la portee",
+      "legal_nature": "DEFINITION",
+      "legal_nature_marker": "means"
+    },
+    {
+      "id": 5,
+      "theme": "PREAMBLE_SCOPE",
+      "block_id": 1,
+      "is_block_start": false,
+      "reason": "acceptation par parent pour les mineurs, prolonge l'acceptation",
+      "legal_nature": "OBLIGATION",
+      "legal_nature_marker": "must"
+    },
+    {
+      "id": 6,
+      "theme": "DEFINITIONS",
+      "block_id": 2,
+      "is_block_start": true,
+      "rationale": "chapeau introduisant le glossaire des termes definis",
+      "rationale_codes": {
+        "decision_trigger": "definition_marker",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "the following terms shall have the following meanings",
+        "revised_from_plan": true,
+        "confidence": 0.9
+      },
+      "legal_nature": "OBLIGATION",
+      "legal_nature_marker": "shall"
+    },
+    {
+      "id": 7,
+      "theme": "DEFINITIONS",
+      "block_id": 2,
+      "is_block_start": false,
+      "reason": "definition de 'digital products'",
+      "legal_nature": "DEFINITION",
+      "legal_nature_marker": "refers to"
+    },
+    {
+      "id": 8,
+      "theme": "DEFINITIONS",
+      "block_id": 2,
+      "is_block_start": false,
+      "reason": "definition de 'nintendo account'",
+      "legal_nature": "DEFINITION",
+      "legal_nature_marker": "means"
+    },
+    {
+      "id": 9,
+      "theme": "DEFINITIONS",
+      "block_id": 2,
+      "is_block_start": false,
+      "reason": "definition de 'nintendo account service'",
+      "legal_nature": "DEFINITION",
+      "legal_nature_marker": "refers to"
+    },
+    {
+      "id": 10,
+      "theme": "DEFINITIONS",
+      "block_id": 2,
+      "is_block_start": false,
+      "reason": "definition de 'nintendo intellectual property'",
+      "legal_nature": "DEFINITION",
+      "legal_nature_marker": "refers to"
+    },
+    {
+      "id": 11,
+      "theme": "DEFINITIONS",
+      "block_id": 2,
+      "is_block_start": false,
+      "reason": "definition de 'nintendo shopping services'",
+      "legal_nature": "DEFINITION",
+      "legal_nature_marker": "refers to"
+    },
+    {
+      "id": 12,
+      "theme": "DEFINITIONS",
+      "block_id": 2,
+      "is_block_start": false,
+      "reason": "definition de 'third-party services'",
+      "legal_nature": "DEFINITION",
+      "legal_nature_marker": "refers to"
+    },
+    {
+      "id": 13,
+      "theme": "DEFINITIONS",
+      "block_id": 2,
+      "is_block_start": false,
+      "reason": "definition de 'user device'",
+      "legal_nature": "DEFINITION",
+      "legal_nature_marker": "refers to"
+    },
+    {
+      "id": 14,
+      "theme": "DEFINITIONS",
+      "block_id": 2,
+      "is_block_start": false,
+      "reason": "definition de 'user-generated content'",
+      "legal_nature": "DEFINITION",
+      "legal_nature_marker": "refers to"
+    },
+    {
+      "id": 15,
+      "theme": "ELIGIBILITY_ACCOUNT",
+      "block_id": 3,
+      "is_block_start": true,
+      "rationale": "nouvelle obligation : enregistrer un compte pour utiliser le service",
+      "rationale_codes": {
+        "decision_trigger": "topic_keyword",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "you must register a nintendo account with ncl",
+        "revised_from_plan": true,
+        "confidence": 0.85
+      },
+      "legal_nature": "OBLIGATION",
+      "legal_nature_marker": "you must"
+    },
+    {
+      "id": 16,
+      "theme": "ELIGIBILITY_ACCOUNT",
+      "block_id": 3,
+      "is_block_start": false,
+      "reason": "obligation de fournir des donnees exactes lors de l'enregistrement",
+      "legal_nature": "OBLIGATION",
+      "legal_nature_marker": "you must"
+    },
+    {
+      "id": 17,
+      "theme": "ELIGIBILITY_ACCOUNT",
+      "block_id": 3,
+      "is_block_start": false,
+      "reason": "changement de pays = nouvel accord, prolonge l'enregistrement",
+      "legal_nature": "OBLIGATION",
+      "legal_nature_marker": "you must"
+    },
+    {
+      "id": 18,
+      "theme": "ELIGIBILITY_ACCOUNT",
+      "block_id": 3,
+      "is_block_start": false,
+      "reason": "compte personnel non transferable",
+      "legal_nature": "PROHIBITION",
+      "legal_nature_marker": "may not"
+    },
+    {
+      "id": 19,
+      "theme": "ELIGIBILITY_ACCOUNT",
+      "block_id": 3,
+      "is_block_start": false,
+      "reason": "responsabilite des transactions du compte",
+      "legal_nature": "OBLIGATION",
+      "legal_nature_marker": "you are responsible"
+    },
+    {
+      "id": 20,
+      "theme": "ELIGIBILITY_ACCOUNT",
+      "block_id": 3,
+      "is_block_start": false,
+      "reason": "obligation de securiser les identifiants",
+      "legal_nature": "OBLIGATION",
+      "legal_nature_marker": "you must"
+    },
+    {
+      "id": 21,
+      "theme": "ELIGIBILITY_ACCOUNT",
+      "block_id": 3,
+      "is_block_start": false,
+      "reason": "notification en cas de breche de securite, prolonge la securite du compte",
+      "legal_nature": "OBLIGATION",
+      "legal_nature_marker": "you must"
+    },
+    {
+      "id": 22,
+      "theme": "ELIGIBILITY_ACCOUNT",
+      "block_id": 3,
+      "is_block_start": false,
+      "reason": "liaison du compte a des appareils",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 23,
+      "theme": "ELIGIBILITY_ACCOUNT",
+      "block_id": 3,
+      "is_block_start": false,
+      "reason": "suppression du compte avant cession d'appareil",
+      "legal_nature": "OBLIGATION",
+      "legal_nature_marker": "you must"
+    },
+    {
+      "id": 24,
+      "theme": "ELIGIBILITY_ACCOUNT",
+      "block_id": 3,
+      "is_block_start": false,
+      "reason": "comptes additionnels pour enfants/protege",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 25,
+      "theme": "ELIGIBILITY_ACCOUNT",
+      "block_id": 3,
+      "is_block_start": false,
+      "reason": "engagement pour comptes associes, prolonge la responsabilite",
+      "legal_nature": "OBLIGATION",
+      "legal_nature_marker": "you agree to"
+    },
+    {
+      "id": 26,
+      "theme": "ELIGIBILITY_ACCOUNT",
+      "block_id": 3,
+      "is_block_start": false,
+      "reason": "comptes pour enfants des 13 ans",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 27,
+      "theme": "ELIGIBILITY_ACCOUNT",
+      "block_id": 3,
+      "is_block_start": false,
+      "reason": "obligation de supervision parentale",
+      "legal_nature": "OBLIGATION",
+      "legal_nature_marker": "must"
+    },
+    {
+      "id": 28,
+      "theme": "ELIGIBILITY_ACCOUNT",
+      "block_id": 3,
+      "is_block_start": false,
+      "reason": "responsabilite des controles parentaux, prolonge la supervision",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 29,
+      "theme": "ACCEPTABLE_USE",
+      "block_id": 4,
+      "is_block_start": true,
+      "rationale": "titre nominal de la section 3 sur l'usage du service",
+      "rationale_codes": {
+        "decision_trigger": "title_marker",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "3 use of nintendo account service",
+        "revised_from_plan": false,
+        "confidence": 0.88
+      },
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 30,
+      "theme": "ACCEPTABLE_USE",
+      "block_id": 4,
+      "is_block_start": false,
+      "reason": "usage personnel recreatif et non commercial",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 31,
+      "theme": "ACCEPTABLE_USE",
+      "block_id": 4,
+      "is_block_start": false,
+      "reason": "interdiction de tout autre usage, prolonge la restriction",
+      "legal_nature": "PROHIBITION",
+      "legal_nature_marker": "must not"
+    },
+    {
+      "id": 32,
+      "theme": "ACCEPTABLE_USE",
+      "block_id": 4,
+      "is_block_start": false,
+      "reason": "responsabilite des couts d'usage",
+      "legal_nature": "OBLIGATION",
+      "legal_nature_marker": "you are responsible"
+    },
+    {
+      "id": 33,
+      "theme": "ACCEPTABLE_USE",
+      "block_id": 4,
+      "is_block_start": false,
+      "reason": "precision sur le montant des couts, prolonge",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 34,
+      "theme": "ACCEPTABLE_USE",
+      "block_id": 4,
+      "is_block_start": false,
+      "reason": "disponibilite du service variable selon pays",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 35,
+      "theme": "ACCEPTABLE_USE",
+      "block_id": 4,
+      "is_block_start": false,
+      "reason": "contenu variable selon pays, prolonge la disponibilite",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 36,
+      "theme": "ACCEPTABLE_USE",
+      "block_id": 4,
+      "is_block_start": false,
+      "reason": "nintendo peut modifier le service, prolonge les conditions d'usage",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 37,
+      "theme": "ACCEPTABLE_USE",
+      "block_id": 4,
+      "is_block_start": false,
+      "reason": "restrictions d'age sur certains services, prolonge",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 38,
+      "theme": "USER_CONTENT",
+      "block_id": 5,
+      "is_block_start": true,
+      "rationale": "nouveau sujet : responsabilite du contenu genere par l'utilisateur",
+      "rationale_codes": {
+        "decision_trigger": "topic_keyword",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "ncl is not responsible for any user-generated content",
+        "revised_from_plan": false,
+        "confidence": 0.85
+      },
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 39,
+      "theme": "USER_CONTENT",
+      "block_id": 5,
+      "is_block_start": false,
+      "reason": "responsabilite de l'utilisateur sur l'UGC, prolonge",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 40,
+      "theme": "USER_CONTENT",
+      "block_id": 5,
+      "is_block_start": false,
+      "reason": "absence d'obligation de surveillance de l'UGC",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 41,
+      "theme": "USER_CONTENT",
+      "block_id": 5,
+      "is_block_start": false,
+      "reason": "droit de supprimer/bloquer l'UGC, prolonge",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 42,
+      "theme": "USER_CONTENT",
+      "block_id": 5,
+      "is_block_start": false,
+      "reason": "licence accordee sur l'UGC poste",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 43,
+      "theme": "USER_CONTENT",
+      "block_id": 5,
+      "is_block_start": false,
+      "reason": "exception messages prives, prolonge la licence",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 44,
+      "theme": "USER_CONTENT",
+      "block_id": 5,
+      "is_block_start": false,
+      "reason": "reconnaissance que l'UGC peut etre vu/modifie par des tiers",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 45,
+      "theme": "USER_CONTENT",
+      "block_id": 5,
+      "is_block_start": false,
+      "reason": "recommandation de ne pas inclure de donnees personnelles dans l'UGC",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 46,
+      "theme": "USER_CONTENT",
+      "block_id": 5,
+      "is_block_start": false,
+      "reason": "l'UGC peut etre supprime a tout moment",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 47,
+      "theme": "USER_CONTENT",
+      "block_id": 5,
+      "is_block_start": false,
+      "reason": "absence d'obligation de stockage de l'UGC, prolonge",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 48,
+      "theme": "USER_CONTENT",
+      "block_id": 5,
+      "is_block_start": false,
+      "reason": "l'UGC doit respecter le code de conduct, transition vers code de conduct",
+      "legal_nature": "OBLIGATION",
+      "legal_nature_marker": "must"
+    },
+    {
+      "id": 49,
+      "theme": "ACCEPTABLE_USE",
+      "block_id": 6,
+      "is_block_start": true,
+      "rationale": "obligation generale de respecter le code de conduct (regle de conduite)",
+      "rationale_codes": {
+        "decision_trigger": "topic_keyword",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "you must comply with the nintendo code of conduct",
+        "revised_from_plan": false,
+        "confidence": 0.78
+      },
+      "legal_nature": "OBLIGATION",
+      "legal_nature_marker": "you must"
+    },
+    {
+      "id": 50,
+      "theme": "ACCEPTABLE_USE",
+      "block_id": 6,
+      "is_block_start": false,
+      "reason": "chapeau de la liste des conduites prohibees",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 51,
+      "theme": "ACCEPTABLE_USE",
+      "block_id": 6,
+      "is_block_start": false,
+      "reason": "item de liste : actions illegales/offensantes",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 52,
+      "theme": "ACCEPTABLE_USE",
+      "block_id": 6,
+      "is_block_start": false,
+      "reason": "item de liste : fausses donnees a l'enregistrement",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 53,
+      "theme": "ACCEPTABLE_USE",
+      "block_id": 6,
+      "is_block_start": false,
+      "reason": "item de liste : copies non autorisees/derives",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 54,
+      "theme": "ACCEPTABLE_USE",
+      "block_id": 6,
+      "is_block_start": false,
+      "reason": "item de liste : cheats/bots/source code",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 55,
+      "theme": "ACCEPTABLE_USE",
+      "block_id": 6,
+      "is_block_start": false,
+      "reason": "item de liste : acces non autorise/reverse engineering",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 56,
+      "theme": "ACCEPTABLE_USE",
+      "block_id": 6,
+      "is_block_start": false,
+      "reason": "item de liste : activite commerciale/publicitaire",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 57,
+      "theme": "ACCEPTABLE_USE",
+      "block_id": 6,
+      "is_block_start": false,
+      "reason": "item de liste : transfert de compte",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 58,
+      "theme": "ACCEPTABLE_USE",
+      "block_id": 6,
+      "is_block_start": false,
+      "reason": "item de liste : contenu violant les droits d'autrui",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 59,
+      "theme": "ACCEPTABLE_USE",
+      "block_id": 6,
+      "is_block_start": false,
+      "reason": "item de liste : donnees personnelles de tiers sans consentement",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 60,
+      "theme": "ACCEPTABLE_USE",
+      "block_id": 6,
+      "is_block_start": false,
+      "reason": "item de liste : vente de propriete virtuelle contre argent",
+      "legal_nature": "DEFINITION",
+      "legal_nature_marker": "refers to"
+    },
+    {
+      "id": 61,
+      "theme": "ACCEPTABLE_USE",
+      "block_id": 6,
+      "is_block_start": false,
+      "reason": "item de liste : activites frauduleuses",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 62,
+      "theme": "PRIVACY_DATA",
+      "block_id": 7,
+      "is_block_start": true,
+      "rationale": "nouveau sujet : communication d'arriere-plan entre l'appareil et les serveurs (donnees/echanges)",
+      "rationale_codes": {
+        "decision_trigger": "topic_keyword",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "automatic background communication with nintendo servers",
+        "revised_from_plan": false,
+        "confidence": 0.7
+      },
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 63,
+      "theme": "PRIVACY_DATA",
+      "block_id": 7,
+      "is_block_start": false,
+      "reason": "objet de la communication d'arriere-plan (mises a jour), prolonge",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 64,
+      "theme": "PRIVACY_DATA",
+      "block_id": 7,
+      "is_block_start": false,
+      "reason": "mise a jour requise pour profiter des fonctions, prolonge",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 65,
+      "theme": "PRIVACY_DATA",
+      "block_id": 7,
+      "is_block_start": false,
+      "reason": "communication entre appareils selon l'application, prolonge",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 66,
+      "theme": "PRIVACY_DATA",
+      "block_id": 7,
+      "is_block_start": false,
+      "reason": "information de l'utilisateur sur ces fonctions, prolonge",
+      "legal_nature": "OBLIGATION",
+      "legal_nature_marker": "you will"
+    },
+    {
+      "id": 67,
+      "theme": "PRIVACY_DATA",
+      "block_id": 7,
+      "is_block_start": false,
+      "reason": "possibilite de desactiver dans les reglages, prolonge",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 68,
+      "theme": "PRIVACY_DATA",
+      "block_id": 7,
+      "is_block_start": false,
+      "reason": "desactivation complete possible, prolonge",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 69,
+      "theme": "THIRD_PARTY",
+      "block_id": 8,
+      "is_block_start": true,
+      "rationale": "nouveau sujet : acces et responsabilite des services tiers",
+      "rationale_codes": {
+        "decision_trigger": "topic_keyword",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "access to third-party services",
+        "revised_from_plan": false,
+        "confidence": 0.85
+      },
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 70,
+      "theme": "THIRD_PARTY",
+      "block_id": 8,
+      "is_block_start": false,
+      "reason": "services tiers offerts sous la responsabilite des tiers, prolonge",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 71,
+      "theme": "THIRD_PARTY",
+      "block_id": 8,
+      "is_block_start": false,
+      "reason": "nintendo n'est pas partie au contrat avec le tiers, prolonge",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 72,
+      "theme": "THIRD_PARTY",
+      "block_id": 8,
+      "is_block_start": false,
+      "reason": "produits tiers non enregistres au compte, prolonge",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 73,
+      "theme": "THIRD_PARTY",
+      "block_id": 8,
+      "is_block_start": false,
+      "reason": "aucune responsabilite pour les services tiers, prolonge",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 74,
+      "theme": "THIRD_PARTY",
+      "block_id": 8,
+      "is_block_start": false,
+      "reason": "services tiers soumis aux CGU des tiers, prolonge",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 75,
+      "theme": "THIRD_PARTY",
+      "block_id": 8,
+      "is_block_start": false,
+      "reason": "controles parentaux peuvent ne pas fonctionner avec les tiers, prolonge",
+      "legal_nature": "PROHIBITION",
+      "legal_nature_marker": "may not"
+    },
+    {
+      "id": 76,
+      "theme": "LICENSE_IP",
+      "block_id": 9,
+      "is_block_start": true,
+      "rationale": "nouveau sujet : propriete de la PI Nintendo (preseance §3.1 : la PI prime)",
+      "rationale_codes": {
+        "decision_trigger": "topic_keyword",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "ncl owns all rights , titles and interest",
+        "revised_from_plan": false,
+        "confidence": 0.9
+      },
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 77,
+      "theme": "LICENSE_IP",
+      "block_id": 9,
+      "is_block_start": false,
+      "reason": "octroi d'une licence personnelle d'utilisation de la PI, prolonge",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 78,
+      "theme": "LICENSE_IP",
+      "block_id": 9,
+      "is_block_start": false,
+      "reason": "interdiction de transferer la licence, prolonge",
+      "legal_nature": "PROHIBITION",
+      "legal_nature_marker": "may not"
+    },
+    {
+      "id": 79,
+      "theme": "LICENSE_IP",
+      "block_id": 9,
+      "is_block_start": false,
+      "reason": "aucun autre droit sur la PI accorde, prolonge",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 80,
+      "theme": "LICENSE_IP",
+      "block_id": 9,
+      "is_block_start": false,
+      "reason": "ncl reserve tous ses droits sur la PI, prolonge",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 81,
+      "theme": "LIABILITY_LIMITATION",
+      "block_id": 10,
+      "is_block_start": true,
+      "rationale": "titre nominal de la section 9 sur la responsabilite de Nintendo",
+      "rationale_codes": {
+        "decision_trigger": "title_marker",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "9 nintendo 's liability to you",
+        "revised_from_plan": false,
+        "confidence": 0.9
+      },
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 82,
+      "theme": "LIABILITY_LIMITATION",
+      "block_id": 10,
+      "is_block_start": false,
+      "reason": "ncl responsable des dommages previsibles, prolonge",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 83,
+      "theme": "LIABILITY_LIMITATION",
+      "block_id": 10,
+      "is_block_start": false,
+      "reason": "noe responsable des dommages previsibles, prolonge",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 84,
+      "theme": "LIABILITY_LIMITATION",
+      "block_id": 10,
+      "is_block_start": false,
+      "reason": "non-responsabilite des dommages imprevisibles, prolonge",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 85,
+      "theme": "LIABILITY_LIMITATION",
+      "block_id": 10,
+      "is_block_start": false,
+      "reason": "definition de la previsibilite, prolonge",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 86,
+      "theme": "LIABILITY_LIMITATION",
+      "block_id": 10,
+      "is_block_start": false,
+      "reason": "exclusion de la perte de profit/donnees, prolonge la limitation",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 87,
+      "theme": "LIABILITY_LIMITATION",
+      "block_id": 10,
+      "is_block_start": false,
+      "reason": "exceptions ou la responsabilite n'est pas exclue, prolonge",
+      "legal_nature": "PROHIBITION",
+      "legal_nature_marker": "do not"
+    },
+    {
+      "id": 88,
+      "theme": "INDEMNIFICATION",
+      "block_id": 11,
+      "is_block_start": true,
+      "rationale": "nouveau sujet : engagement d'indemniser et tenir Nintendo indemne",
+      "rationale_codes": {
+        "decision_trigger": "topic_keyword",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "you agree to indemnify and hold nintendo",
+        "revised_from_plan": false,
+        "confidence": 0.85
+      },
+      "legal_nature": "RISK_ALLOCATION",
+      "legal_nature_marker": "indemnify"
+    },
+    {
+      "id": 89,
+      "theme": "INDEMNIFICATION",
+      "block_id": 11,
+      "is_block_start": false,
+      "reason": "portee de l'indemnite (UGC), prolonge",
+      "legal_nature": "OBLIGATION",
+      "legal_nature_marker": "shall"
+    },
+    {
+      "id": 90,
+      "theme": "MODIFICATION_OF_TERMS",
+      "block_id": 12,
+      "is_block_start": true,
+      "rationale": "nouveau sujet : version courante disponible, introduit la modification des termes",
+      "rationale_codes": {
+        "decision_trigger": "topic_keyword",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "a current version of this agreement will always be available",
+        "revised_from_plan": true,
+        "confidence": 0.72
+      },
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 91,
+      "theme": "MODIFICATION_OF_TERMS",
+      "block_id": 12,
+      "is_block_start": false,
+      "reason": "nintendo peut modifier les termes a tout moment, prolonge",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 92,
+      "theme": "MODIFICATION_OF_TERMS",
+      "block_id": 12,
+      "is_block_start": false,
+      "reason": "notification et acceptation tacite des changements, prolonge",
+      "legal_nature": "DEFINITION",
+      "legal_nature_marker": "means"
+    },
+    {
+      "id": 93,
+      "theme": "MODIFICATION_OF_TERMS",
+      "block_id": 12,
+      "is_block_start": false,
+      "reason": "re-acceptation de l'accord revise, prolonge",
+      "legal_nature": "DEFINITION",
+      "legal_nature_marker": "means"
+    },
+    {
+      "id": 94,
+      "theme": "MODIFICATION_OF_TERMS",
+      "block_id": 12,
+      "is_block_start": false,
+      "reason": "objection = resiliation/re-enregistrement, prolonge la procedure de changement",
+      "legal_nature": "GOVERNANCE",
+      "legal_nature_marker": "terminate"
+    },
+    {
+      "id": 95,
+      "theme": "TERMINATION",
+      "block_id": 13,
+      "is_block_start": true,
+      "rationale": "titre nominal de la section 12 resiliation et transfert",
+      "rationale_codes": {
+        "decision_trigger": "title_marker",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "12 termination and transfer of the agreement",
+        "revised_from_plan": false,
+        "confidence": 0.92
+      },
+      "legal_nature": "GOVERNANCE",
+      "legal_nature_marker": "termination"
+    },
+    {
+      "id": 96,
+      "theme": "TERMINATION",
+      "block_id": 13,
+      "is_block_start": false,
+      "reason": "resiliation par l'utilisateur en supprimant le compte, prolonge",
+      "legal_nature": "GOVERNANCE",
+      "legal_nature_marker": "terminate"
+    },
+    {
+      "id": 97,
+      "theme": "TERMINATION",
+      "block_id": 13,
+      "is_block_start": false,
+      "reason": "resiliation par nintendo en cas de violation, prolonge",
+      "legal_nature": "GOVERNANCE",
+      "legal_nature_marker": "terminate"
+    },
+    {
+      "id": 98,
+      "theme": "TERMINATION",
+      "block_id": 13,
+      "is_block_start": false,
+      "reason": "avertissement prealable pour violations mineures, prolonge",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 99,
+      "theme": "TERMINATION",
+      "block_id": 13,
+      "is_block_start": false,
+      "reason": "pas d'avertissement si conduite inacceptable, prolonge",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 100,
+      "theme": "TERMINATION",
+      "block_id": 13,
+      "is_block_start": false,
+      "reason": "definition de conduite inacceptable, prolonge",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 101,
+      "theme": "TERMINATION",
+      "block_id": 13,
+      "is_block_start": false,
+      "reason": "resiliation pour raisons legales/techniques/commerciales, prolonge",
+      "legal_nature": "GOVERNANCE",
+      "legal_nature_marker": "terminate"
+    },
+    {
+      "id": 102,
+      "theme": "TERMINATION",
+      "block_id": 13,
+      "is_block_start": false,
+      "reason": "preavis raisonnable, prolonge",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 103,
+      "theme": "TERMINATION",
+      "block_id": 13,
+      "is_block_start": false,
+      "reason": "effet de la resiliation sur les licences, prolonge",
+      "legal_nature": "GOVERNANCE",
+      "legal_nature_marker": "termination"
+    },
+    {
+      "id": 104,
+      "theme": "TERMINATION",
+      "block_id": 13,
+      "is_block_start": false,
+      "reason": "resiliation partielle limite l'usage, prolonge",
+      "legal_nature": "GOVERNANCE",
+      "legal_nature_marker": "termination"
+    },
+    {
+      "id": 105,
+      "theme": "TERMINATION",
+      "block_id": 13,
+      "is_block_start": false,
+      "reason": "effet sur comptes associes, prolonge",
+      "legal_nature": "GOVERNANCE",
+      "legal_nature_marker": "termination"
+    },
+    {
+      "id": 106,
+      "theme": "TERMINATION",
+      "block_id": 13,
+      "is_block_start": false,
+      "reason": "survie de certains articles apres resiliation, prolonge",
+      "legal_nature": "GOVERNANCE",
+      "legal_nature_marker": "terminate"
+    },
+    {
+      "id": 107,
+      "theme": "TERMINATION",
+      "block_id": 13,
+      "is_block_start": false,
+      "reason": "transfert de la relation contractuelle (volet 'transfer' du titre), prolonge",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 108,
+      "theme": "TERMINATION",
+      "block_id": 13,
+      "is_block_start": false,
+      "reason": "information prealable du transfert, prolonge",
+      "legal_nature": "OBLIGATION",
+      "legal_nature_marker": "you will"
+    },
+    {
+      "id": 109,
+      "theme": "MISC_BOILERPLATE",
+      "block_id": 14,
+      "is_block_start": true,
+      "rationale": "nouveau sujet : clause de divisibilite (severabilite)",
+      "rationale_codes": {
+        "decision_trigger": "topic_keyword",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "found to be invalid or unenforceable",
+        "revised_from_plan": false,
+        "confidence": 0.8
+      },
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 110,
+      "theme": "MISC_BOILERPLATE",
+      "block_id": 14,
+      "is_block_start": false,
+      "reason": "la partie invalide est reputee supprimee, prolonge la divisibilite",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 111,
+      "theme": "MISC_BOILERPLATE",
+      "block_id": 14,
+      "is_block_start": false,
+      "reason": "remplacement de la partie invalide, prolonge",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 112,
+      "theme": "GOVERNING_LAW",
+      "block_id": 15,
+      "is_block_start": true,
+      "rationale": "section 14.1 : droit applicable (lois du Japon)",
+      "rationale_codes": {
+        "decision_trigger": "numbering",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "shall be governed by the laws of japan",
+        "revised_from_plan": false,
+        "confidence": 0.9
+      },
+      "legal_nature": "LIMITATION_DISCLAIMER",
+      "legal_nature_marker": "exclusion of"
+    },
+    {
+      "id": 113,
+      "theme": "GOVERNING_LAW",
+      "block_id": 15,
+      "is_block_start": false,
+      "reason": "reserve sur les lois imperatives, prolonge le droit applicable",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 114,
+      "theme": "GOVERNING_LAW",
+      "block_id": 15,
+      "is_block_start": false,
+      "reason": "14.2 droit applicable a la relation avec noe (lois allemandes), prolonge",
+      "legal_nature": "LIMITATION_DISCLAIMER",
+      "legal_nature_marker": "exclusion of"
+    },
+    {
+      "id": 115,
+      "theme": "GOVERNING_LAW",
+      "block_id": 15,
+      "is_block_start": false,
+      "reason": "reserve sur les lois imperatives, prolonge",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 116,
+      "theme": "MISC_BOILERPLATE",
+      "block_id": 16,
+      "is_block_start": true,
+      "rationale": "coordonnees de contact pour questions sur l'accord",
+      "rationale_codes": {
+        "decision_trigger": "topic_keyword",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "please contact us by email",
+        "revised_from_plan": false,
+        "confidence": 0.7
+      },
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 117,
+      "theme": "THIRD_PARTY",
+      "block_id": 17,
+      "is_block_start": true,
+      "rationale": "titre de la section 16 sur l'usage sur appareils Apple (beneficiaire tiers)",
+      "rationale_codes": {
+        "decision_trigger": "title_marker",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "16 use of digital products on apple 's devices",
+        "revised_from_plan": false,
+        "confidence": 0.78
+      },
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 118,
+      "theme": "THIRD_PARTY",
+      "block_id": 17,
+      "is_block_start": false,
+      "reason": "condition d'application si appareil Apple, prolonge",
+      "legal_nature": "META",
+      "legal_nature_marker": "inc."
+    },
+    {
+      "id": 119,
+      "theme": "THIRD_PARTY",
+      "block_id": 17,
+      "is_block_start": false,
+      "reason": "16.1 usage conforme aux CGU de l'App Store, prolonge",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 120,
+      "theme": "THIRD_PARTY",
+      "block_id": 17,
+      "is_block_start": false,
+      "reason": "16.2 apple sans obligation de maintenance, prolonge",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 121,
+      "theme": "THIRD_PARTY",
+      "block_id": 17,
+      "is_block_start": false,
+      "reason": "16.3 apple sans responsabilite pour contrefacon, prolonge",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 122,
+      "theme": "THIRD_PARTY",
+      "block_id": 17,
+      "is_block_start": false,
+      "reason": "16.4 declaration sur les pays embargues, prolonge la section apple",
+      "legal_nature": "PROHIBITION",
+      "legal_nature_marker": "do not"
+    },
+    {
+      "id": 123,
+      "theme": "THIRD_PARTY",
+      "block_id": 17,
+      "is_block_start": false,
+      "reason": "16.5 apple beneficiaire tiers de l'accord, prolonge",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 124,
+      "theme": "PAYMENT_BILLING",
+      "block_id": 18,
+      "is_block_start": true,
+      "rationale": "nouveau sujet : acces aux nintendo shopping services (achat de produits numeriques)",
+      "rationale_codes": {
+        "decision_trigger": "topic_keyword",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "may offer access to nintendo shopping services",
+        "revised_from_plan": false,
+        "confidence": 0.72
+      },
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 125,
+      "theme": "PAYMENT_BILLING",
+      "block_id": 18,
+      "is_block_start": false,
+      "reason": "usage des shopping services pour acquerir/telecharger, prolonge",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 126,
+      "theme": "PAYMENT_BILLING",
+      "block_id": 18,
+      "is_block_start": false,
+      "reason": "noe est le vendeur, prolonge",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 127,
+      "theme": "PAYMENT_BILLING",
+      "block_id": 18,
+      "is_block_start": false,
+      "reason": "enregistrement d'une licence pour telecharger, prolonge",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 128,
+      "theme": "PAYMENT_BILLING",
+      "block_id": 18,
+      "is_block_start": false,
+      "reason": "acquisition de la licence de diverses manieres, prolonge",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 129,
+      "theme": "PAYMENT_BILLING",
+      "block_id": 18,
+      "is_block_start": false,
+      "reason": "licence gratuite enregistree apres commande, prolonge",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 130,
+      "theme": "PAYMENT_BILLING",
+      "block_id": 18,
+      "is_block_start": false,
+      "reason": "licence payante enregistree apres paiement, prolonge",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 131,
+      "theme": "PAYMENT_BILLING",
+      "block_id": 18,
+      "is_block_start": false,
+      "reason": "licence pouvant etre acquise hors shopping services, prolonge",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 132,
+      "theme": "PAYMENT_BILLING",
+      "block_id": 18,
+      "is_block_start": false,
+      "reason": "information sur le processus d'enregistrement, prolonge",
+      "legal_nature": "OBLIGATION",
+      "legal_nature_marker": "you will"
+    },
+    {
+      "id": 133,
+      "theme": "PAYMENT_BILLING",
+      "block_id": 18,
+      "is_block_start": false,
+      "reason": "licence liee au compte, usage sur un seul appareil, prolonge",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 134,
+      "theme": "PAYMENT_BILLING",
+      "block_id": 18,
+      "is_block_start": false,
+      "reason": "tous les utilisateurs de l'appareil peuvent utiliser, prolonge",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 135,
+      "theme": "PAYMENT_BILLING",
+      "block_id": 18,
+      "is_block_start": false,
+      "reason": "licence liee au nintendo network id (3ds/wii u), prolonge",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 136,
+      "theme": "PAYMENT_BILLING",
+      "block_id": 18,
+      "is_block_start": false,
+      "reason": "application des accords nintendo network, prolonge",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 137,
+      "theme": "PAYMENT_BILLING",
+      "block_id": 18,
+      "is_block_start": false,
+      "reason": "ncl fournit l'infrastructure technique, prolonge",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 138,
+      "theme": "PAYMENT_BILLING",
+      "block_id": 18,
+      "is_block_start": false,
+      "reason": "ncl n'est pas le vendeur, prolonge",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 139,
+      "theme": "PAYMENT_BILLING",
+      "block_id": 18,
+      "is_block_start": false,
+      "reason": "produits licencies pour usage personnel non commercial, prolonge",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 140,
+      "theme": "PAYMENT_BILLING",
+      "block_id": 18,
+      "is_block_start": false,
+      "reason": "interdiction d'autres usages, prolonge",
+      "legal_nature": "PROHIBITION",
+      "legal_nature_marker": "must not"
+    },
+    {
+      "id": 141,
+      "theme": "PAYMENT_BILLING",
+      "block_id": 18,
+      "is_block_start": false,
+      "reason": "interdictions de location/sous-licence/reverse engineering, prolonge",
+      "legal_nature": "OBLIGATION",
+      "legal_nature_marker": "you must"
+    },
+    {
+      "id": 142,
+      "theme": "PAYMENT_BILLING",
+      "block_id": 18,
+      "is_block_start": false,
+      "reason": "definition des 'virtual items' vendus par noe, prolonge",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 143,
+      "theme": "PAYMENT_BILLING",
+      "block_id": 18,
+      "is_block_start": false,
+      "reason": "usage et non-transferabilite des virtual items, prolonge",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 144,
+      "theme": "PAYMENT_BILLING",
+      "block_id": 18,
+      "is_block_start": false,
+      "reason": "dispositions legales en cas de defaut, prolonge",
+      "legal_nature": "OBLIGATION",
+      "legal_nature_marker": "shall"
+    },
+    {
+      "id": 145,
+      "theme": "PAYMENT_BILLING",
+      "block_id": 18,
+      "is_block_start": false,
+      "reason": "garantie additionnelle du fabricant, prolonge",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 146,
+      "theme": "PAYMENT_BILLING",
+      "block_id": 18,
+      "is_block_start": false,
+      "reason": "noe peut offrir divers moyens de paiement, prolonge",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 147,
+      "theme": "PAYMENT_BILLING",
+      "block_id": 18,
+      "is_block_start": false,
+      "reason": "depot de fonds pour payer les produits, prolonge",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 148,
+      "theme": "PAYMENT_BILLING",
+      "block_id": 18,
+      "is_block_start": false,
+      "reason": "modalites d'alimentation du wallet, prolonge",
+      "legal_nature": "SCOPE_APPLICABILITY",
+      "legal_nature_marker": "by using"
+    },
+    {
+      "id": 149,
+      "theme": "PAYMENT_BILLING",
+      "block_id": 18,
+      "is_block_start": false,
+      "reason": "fonds lies au wallet, non transferables, prolonge",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 150,
+      "theme": "PAYMENT_BILLING",
+      "block_id": 18,
+      "is_block_start": false,
+      "reason": "fonds non remboursables, prolonge",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 151,
+      "theme": "PAYMENT_BILLING",
+      "block_id": 18,
+      "is_block_start": false,
+      "reason": "fonds utilisables uniquement pour acheter des produits, prolonge",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 152,
+      "theme": "PAYMENT_BILLING",
+      "block_id": 18,
+      "is_block_start": false,
+      "reason": "noe peut limiter le montant des fonds, prolonge",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 153,
+      "theme": "PAYMENT_BILLING",
+      "block_id": 18,
+      "is_block_start": false,
+      "reason": "responsabilite de l'usage des fonds, prolonge",
+      "legal_nature": "OBLIGATION",
+      "legal_nature_marker": "you are responsible"
+    },
+    {
+      "id": 154,
+      "theme": "PAYMENT_BILLING",
+      "block_id": 18,
+      "is_block_start": false,
+      "reason": "moyen de paiement communique par le tiers, prolonge",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 155,
+      "theme": "PAYMENT_BILLING",
+      "block_id": 18,
+      "is_block_start": false,
+      "reason": "recu electronique pour les transactions, prolonge",
+      "legal_nature": "OBLIGATION",
+      "legal_nature_marker": "you will"
+    },
+    {
+      "id": 156,
+      "theme": "PAYMENT_BILLING",
+      "block_id": 18,
+      "is_block_start": false,
+      "reason": "recu envoye par email, prolonge",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 157,
+      "theme": "PAYMENT_BILLING",
+      "block_id": 18,
+      "is_block_start": false,
+      "reason": "recu des transactions enfant envoye au parent, prolonge",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 158,
+      "theme": "THIRD_PARTY",
+      "block_id": 19,
+      "is_block_start": true,
+      "rationale": "nouveau sujet : services d'achat operes par des tiers",
+      "rationale_codes": {
+        "decision_trigger": "topic_keyword",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "shopping services operated by third parties",
+        "revised_from_plan": false,
+        "confidence": 0.8
+      },
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 159,
+      "theme": "THIRD_PARTY",
+      "block_id": 19,
+      "is_block_start": false,
+      "reason": "services d'achat tiers sous responsabilite des tiers, prolonge",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 160,
+      "theme": "THIRD_PARTY",
+      "block_id": 19,
+      "is_block_start": false,
+      "reason": "nintendo n'est pas partie au contrat tiers, prolonge",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 161,
+      "theme": "THIRD_PARTY",
+      "block_id": 19,
+      "is_block_start": false,
+      "reason": "produits tiers non enregistres au compte, prolonge",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 162,
+      "theme": "THIRD_PARTY",
+      "block_id": 19,
+      "is_block_start": false,
+      "reason": "aucune responsabilite pour les shopping services tiers, prolonge",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 163,
+      "theme": "THIRD_PARTY",
+      "block_id": 19,
+      "is_block_start": false,
+      "reason": "shopping services tiers soumis aux CGU des tiers, prolonge",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 164,
+      "theme": "DISPUTE_ARBITRATION",
+      "block_id": 20,
+      "is_block_start": true,
+      "rationale": "titre de la section 6 : resolution des litiges en ligne (ODR/ADR)",
+      "rationale_codes": {
+        "decision_trigger": "title_marker",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "6 information about online dispute resolution",
+        "revised_from_plan": false,
+        "confidence": 0.85
+      },
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 165,
+      "theme": "DISPUTE_ARBITRATION",
+      "block_id": 20,
+      "is_block_start": false,
+      "reason": "la commission UE a etabli une plateforme ODR, prolonge",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 166,
+      "theme": "DISPUTE_ARBITRATION",
+      "block_id": 20,
+      "is_block_start": false,
+      "reason": "URL d'acces a la plateforme ODR, prolonge",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 167,
+      "theme": "DISPUTE_ARBITRATION",
+      "block_id": 20,
+      "is_block_start": false,
+      "reason": "noe non oblige de participer a l'ADR, prolonge",
+      "legal_nature": "GOVERNANCE",
+      "legal_nature_marker": "arbitration"
+    },
+    {
+      "id": 168,
+      "theme": "PAYMENT_BILLING",
+      "block_id": 21,
+      "is_block_start": true,
+      "rationale": "nouveau sujet : instructions sur le droit de retractation (annulation/remboursement d'une transaction)",
+      "rationale_codes": {
+        "decision_trigger": "topic_keyword",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "instructions for right to cancel",
+        "revised_from_plan": false,
+        "confidence": 0.68
+      },
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 169,
+      "theme": "PAYMENT_BILLING",
+      "block_id": 21,
+      "is_block_start": false,
+      "reason": "droit de retractation sous 14 jours, prolonge",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 170,
+      "theme": "PAYMENT_BILLING",
+      "block_id": 21,
+      "is_block_start": false,
+      "reason": "delai de retractation de 14 jours, prolonge",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 171,
+      "theme": "PAYMENT_BILLING",
+      "block_id": 21,
+      "is_block_start": false,
+      "reason": "modalites d'exercice du droit de retractation, prolonge",
+      "legal_nature": "META",
+      "legal_nature_marker": "gmbh"
+    },
+    {
+      "id": 172,
+      "theme": "PAYMENT_BILLING",
+      "block_id": 21,
+      "is_block_start": false,
+      "reason": "formulaire modele de retractation, prolonge",
+      "legal_nature": "RIGHT_GRANT",
+      "legal_nature_marker": "you may use"
+    },
+    {
+      "id": 173,
+      "theme": "PAYMENT_BILLING",
+      "block_id": 21,
+      "is_block_start": false,
+      "reason": "respect du delai de retractation, prolonge",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 174,
+      "theme": "PAYMENT_BILLING",
+      "block_id": 21,
+      "is_block_start": false,
+      "reason": "remboursement des paiements en cas d'annulation, prolonge",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 175,
+      "theme": "PAYMENT_BILLING",
+      "block_id": 21,
+      "is_block_start": false,
+      "reason": "delai de remboursement de 14 jours, prolonge",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 176,
+      "theme": "PAYMENT_BILLING",
+      "block_id": 21,
+      "is_block_start": false,
+      "reason": "remboursement par le meme moyen de paiement, prolonge",
+      "legal_nature": "DEFINITION",
+      "legal_nature_marker": "means"
+    },
+    {
+      "id": 177,
+      "theme": "PAYMENT_BILLING",
+      "block_id": 21,
+      "is_block_start": false,
+      "reason": "paiement proportionnel si prestation commencee, prolonge",
+      "legal_nature": "OBLIGATION",
+      "legal_nature_marker": "you shall"
+    },
+    {
+      "id": 178,
+      "theme": "PAYMENT_BILLING",
+      "block_id": 21,
+      "is_block_start": false,
+      "reason": "chapeau des cas d'expiration anticipee du droit, prolonge",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 179,
+      "theme": "PAYMENT_BILLING",
+      "block_id": 21,
+      "is_block_start": false,
+      "reason": "item : contenu numerique livre, prolonge",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 180,
+      "theme": "PAYMENT_BILLING",
+      "block_id": 21,
+      "is_block_start": false,
+      "reason": "item : contrats de service pleinement executes, prolonge",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 181,
+      "theme": "PAYMENT_BILLING",
+      "block_id": 21,
+      "is_block_start": false,
+      "reason": "instruction de completer le formulaire de retractation, prolonge",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 182,
+      "theme": "PAYMENT_BILLING",
+      "block_id": 21,
+      "is_block_start": false,
+      "reason": "adresse de retour du formulaire, prolonge",
+      "legal_nature": "META",
+      "legal_nature_marker": "gmbh"
+    },
+    {
+      "id": 183,
+      "theme": "META",
+      "block_id": 22,
+      "is_block_start": true,
+      "rationale": "debut du formulaire-modele de retractation (champs a remplir), sans effet juridique propre",
+      "rationale_codes": {
+        "decision_trigger": "lexical_shift",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "i/we",
+        "revised_from_plan": true,
+        "confidence": 0.6
+      },
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 184,
+      "theme": "META",
+      "block_id": 22,
+      "is_block_start": false,
+      "reason": "champ formulaire : date de commande/reception",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 185,
+      "theme": "META",
+      "block_id": 22,
+      "is_block_start": false,
+      "reason": "champ formulaire : nom du consommateur",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 186,
+      "theme": "META",
+      "block_id": 22,
+      "is_block_start": false,
+      "reason": "champ formulaire : adresse du consommateur",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 187,
+      "theme": "META",
+      "block_id": 22,
+      "is_block_start": false,
+      "reason": "champ formulaire : signature du consommateur",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    }
+  ]
+}

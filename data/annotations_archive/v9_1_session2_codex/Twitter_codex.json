@@ -1,0 +1,874 @@
+{
+  "doc": "Twitter",
+  "judge": "codex",
+  "version": "v9.1",
+  "document_plan": {
+    "estimated_n_blocks": 17,
+    "rationale_global": "Plan établi a priori à partir des titres, changements lexicaux et indices thématiques du document.",
+    "segments": [
+      {
+        "start_id": 0,
+        "theme": "PREAMBLE_SCOPE",
+        "rationale": "Segment anticipé par l'indice « -lrb- if you live outside of the us ».",
+        "evidence_span": "-lrb- if you live outside of the us"
+      },
+      {
+        "start_id": 3,
+        "theme": "ELIGIBILITY_ACCOUNT",
+        "rationale": "Segment anticipé par l'indice « you may use the services only if you ».",
+        "evidence_span": "you may use the services only if you"
+      },
+      {
+        "start_id": 5,
+        "theme": "PRIVACY_DATA",
+        "rationale": "Segment anticipé par l'indice « our privacy policy -lrb- https://www.twitter.com/privacy -rrb- describes how ».",
+        "evidence_span": "our privacy policy -lrb- https://www.twitter.com/privacy -rrb- describes how"
+      },
+      {
+        "start_id": 7,
+        "theme": "USER_CONTENT",
+        "rationale": "Segment anticipé par l'indice « you are responsible for your use of the ».",
+        "evidence_span": "you are responsible for your use of the"
+      },
+      {
+        "start_id": 14,
+        "theme": "LICENSE_IP",
+        "rationale": "Segment anticipé par l'indice « twitter respects the intellectual property rights of others ».",
+        "evidence_span": "twitter respects the intellectual property rights of others"
+      },
+      {
+        "start_id": 18,
+        "theme": "LICENSE_IP",
+        "rationale": "Segment anticipé par l'indice « 1355 market street , suite 900 ».",
+        "evidence_span": "1355 market street , suite 900"
+      },
+      {
+        "start_id": 29,
+        "theme": "ACCEPTABLE_USE",
+        "rationale": "Segment anticipé par l'indice « please review the twitter rules , which are ».",
+        "evidence_span": "please review the twitter rules , which are"
+      },
+      {
+        "start_id": 31,
+        "theme": "TERMINATION",
+        "rationale": "Segment anticipé par l'indice « as such , the services may change from ».",
+        "evidence_span": "as such , the services may change from"
+      },
+      {
+        "start_id": 39,
+        "theme": "THIRD_PARTY",
+        "rationale": "Segment anticipé par l'indice « if you use developer features of the services ».",
+        "evidence_span": "if you use developer features of the services"
+      },
+      {
+        "start_id": 43,
+        "theme": "ELIGIBILITY_ACCOUNT",
+        "rationale": "Segment anticipé par l'indice « you may need to create an account to ».",
+        "evidence_span": "you may need to create an account to"
+      },
+      {
+        "start_id": 48,
+        "theme": "LICENSE_IP",
+        "rationale": "Segment anticipé par l'indice « these communications are considered part of the services ».",
+        "evidence_span": "these communications are considered part of the services"
+      },
+      {
+        "start_id": 54,
+        "theme": "TERMINATION",
+        "rationale": "Segment anticipé par l'indice « nothing in the terms gives you a right ».",
+        "evidence_span": "nothing in the terms gives you a right"
+      },
+      {
+        "start_id": 58,
+        "theme": "WARRANTY_DISCLAIMER",
+        "rationale": "Segment anticipé par l'indice « see http://support.twitter.com/articles/15358-how-to-deactivate-your-account for instructions on how to deactivate ».",
+        "evidence_span": "see http://support.twitter.com/articles/15358-how-to-deactivate-your-account for instructions on how to deactivate"
+      },
+      {
+        "start_id": 65,
+        "theme": "LIABILITY_LIMITATION",
+        "rationale": "Segment anticipé par l'indice « the `` twitter entities '' refers to twitter ».",
+        "evidence_span": "the `` twitter entities '' refers to twitter"
+      },
+      {
+        "start_id": 68,
+        "theme": "MODIFICATION_OF_TERMS",
+        "rationale": "Segment anticipé par l'indice « no advice or information , whether oral or ».",
+        "evidence_span": "no advice or information , whether oral or"
+      },
+      {
+        "start_id": 72,
+        "theme": "MISC_BOILERPLATE",
+        "rationale": "Segment anticipé par l'indice « we may revise these terms from time to ».",
+        "evidence_span": "we may revise these terms from time to"
+      },
+      {
+        "start_id": 75,
+        "theme": "META",
+        "rationale": "Segment anticipé par l'indice « by continuing to access or use the services ».",
+        "evidence_span": "by continuing to access or use the services"
+      }
+    ]
+  },
+  "annotations": [
+    {
+      "id": 0,
+      "theme": "PREAMBLE_SCOPE",
+      "legal_nature": "SCOPE_APPLICABILITY",
+      "block_id": 0,
+      "is_block_start": true,
+      "rationale": "Ouverture du bloc PREAMBLE_SCOPE avec l'indice « -lrb- if you live outside of the us ».",
+      "rationale_codes": {
+        "decision_trigger": "document_start",
+        "relation_to_prev": "document_start",
+        "evidence_span": "-lrb- if you live outside of the us",
+        "revised_from_plan": false,
+        "confidence": 0.95
+      }
+    },
+    {
+      "id": 1,
+      "theme": "PREAMBLE_SCOPE",
+      "legal_nature": "DEFINITION",
+      "block_id": 0,
+      "is_block_start": false,
+      "reason": "Continuation du bloc PREAMBLE_SCOPE, même sujet juridique."
+    },
+    {
+      "id": 2,
+      "theme": "PREAMBLE_SCOPE",
+      "legal_nature": "OBLIGATION",
+      "block_id": 0,
+      "is_block_start": false,
+      "reason": "Continuation du bloc PREAMBLE_SCOPE, même sujet juridique."
+    },
+    {
+      "id": 3,
+      "theme": "ELIGIBILITY_ACCOUNT",
+      "legal_nature": "OBLIGATION",
+      "block_id": 1,
+      "is_block_start": true,
+      "rationale": "Ouverture du bloc ELIGIBILITY_ACCOUNT avec l'indice « you may use the services only if you ».",
+      "rationale_codes": {
+        "decision_trigger": "modal_verb",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "you may use the services only if you",
+        "revised_from_plan": false,
+        "confidence": 0.86
+      }
+    },
+    {
+      "id": 4,
+      "theme": "ELIGIBILITY_ACCOUNT",
+      "legal_nature": "OBLIGATION",
+      "block_id": 1,
+      "is_block_start": false,
+      "reason": "Continuation du bloc ELIGIBILITY_ACCOUNT, même sujet juridique."
+    },
+    {
+      "id": 5,
+      "theme": "PRIVACY_DATA",
+      "legal_nature": "OBLIGATION",
+      "block_id": 2,
+      "is_block_start": true,
+      "rationale": "Ouverture du bloc PRIVACY_DATA avec l'indice « our privacy policy -lrb- https://www.twitter.com/privacy -rrb- describes how ».",
+      "rationale_codes": {
+        "decision_trigger": "topic_keyword",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "our privacy policy -lrb- https://www.twitter.com/privacy -rrb- describes how",
+        "revised_from_plan": false,
+        "confidence": 0.86
+      }
+    },
+    {
+      "id": 6,
+      "theme": "PRIVACY_DATA",
+      "legal_nature": "OBLIGATION",
+      "block_id": 2,
+      "is_block_start": false,
+      "reason": "Continuation du bloc PRIVACY_DATA, même sujet juridique."
+    },
+    {
+      "id": 7,
+      "theme": "USER_CONTENT",
+      "legal_nature": "OBLIGATION",
+      "block_id": 3,
+      "is_block_start": true,
+      "rationale": "Ouverture du bloc USER_CONTENT avec l'indice « you are responsible for your use of the ».",
+      "rationale_codes": {
+        "decision_trigger": "lexical_shift",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "you are responsible for your use of the",
+        "revised_from_plan": false,
+        "confidence": 0.86
+      }
+    },
+    {
+      "id": 8,
+      "theme": "USER_CONTENT",
+      "legal_nature": "OBLIGATION",
+      "block_id": 3,
+      "is_block_start": false,
+      "reason": "Continuation du bloc USER_CONTENT, même sujet juridique."
+    },
+    {
+      "id": 9,
+      "theme": "USER_CONTENT",
+      "legal_nature": "LIMITATION_DISCLAIMER",
+      "block_id": 3,
+      "is_block_start": false,
+      "reason": "Continuation du bloc USER_CONTENT, même sujet juridique."
+    },
+    {
+      "id": 10,
+      "theme": "USER_CONTENT",
+      "legal_nature": "OBLIGATION",
+      "block_id": 3,
+      "is_block_start": false,
+      "reason": "Continuation du bloc USER_CONTENT, même sujet juridique."
+    },
+    {
+      "id": 11,
+      "theme": "USER_CONTENT",
+      "legal_nature": "OBLIGATION",
+      "block_id": 3,
+      "is_block_start": false,
+      "reason": "Continuation du bloc USER_CONTENT, même sujet juridique."
+    },
+    {
+      "id": 12,
+      "theme": "USER_CONTENT",
+      "legal_nature": "OBLIGATION",
+      "block_id": 3,
+      "is_block_start": false,
+      "reason": "Continuation du bloc USER_CONTENT, même sujet juridique."
+    },
+    {
+      "id": 13,
+      "theme": "USER_CONTENT",
+      "legal_nature": "PROHIBITION",
+      "block_id": 3,
+      "is_block_start": false,
+      "reason": "Continuation du bloc USER_CONTENT, même sujet juridique."
+    },
+    {
+      "id": 14,
+      "theme": "LICENSE_IP",
+      "legal_nature": "GOVERNANCE",
+      "block_id": 4,
+      "is_block_start": true,
+      "rationale": "Ouverture du bloc LICENSE_IP avec l'indice « twitter respects the intellectual property rights of others ».",
+      "rationale_codes": {
+        "decision_trigger": "topic_keyword",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "twitter respects the intellectual property rights of others",
+        "revised_from_plan": false,
+        "confidence": 0.86
+      }
+    },
+    {
+      "id": 15,
+      "theme": "LICENSE_IP",
+      "legal_nature": "LIMITATION_DISCLAIMER",
+      "block_id": 4,
+      "is_block_start": false,
+      "reason": "Continuation du bloc LICENSE_IP, même sujet juridique."
+    },
+    {
+      "id": 16,
+      "theme": "LICENSE_IP",
+      "legal_nature": "GOVERNANCE",
+      "block_id": 4,
+      "is_block_start": false,
+      "reason": "Continuation du bloc LICENSE_IP, même sujet juridique."
+    },
+    {
+      "id": 17,
+      "theme": "LICENSE_IP",
+      "legal_nature": "OBLIGATION",
+      "block_id": 4,
+      "is_block_start": false,
+      "reason": "Continuation du bloc LICENSE_IP, même sujet juridique."
+    },
+    {
+      "id": 18,
+      "theme": "LICENSE_IP",
+      "legal_nature": "RIGHT_GRANT",
+      "block_id": 5,
+      "is_block_start": true,
+      "rationale": "Ouverture du bloc LICENSE_IP avec l'indice « 1355 market street , suite 900 ».",
+      "rationale_codes": {
+        "decision_trigger": "lexical_shift",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "1355 market street , suite 900",
+        "revised_from_plan": false,
+        "confidence": 0.86
+      }
+    },
+    {
+      "id": 19,
+      "theme": "LICENSE_IP",
+      "legal_nature": "RIGHT_GRANT",
+      "block_id": 5,
+      "is_block_start": false,
+      "reason": "Continuation du bloc LICENSE_IP, même sujet juridique."
+    },
+    {
+      "id": 20,
+      "theme": "LICENSE_IP",
+      "legal_nature": "RIGHT_GRANT",
+      "block_id": 5,
+      "is_block_start": false,
+      "reason": "Continuation du bloc LICENSE_IP, même sujet juridique."
+    },
+    {
+      "id": 21,
+      "theme": "LICENSE_IP",
+      "legal_nature": "RIGHT_GRANT",
+      "block_id": 5,
+      "is_block_start": false,
+      "reason": "Continuation du bloc LICENSE_IP, même sujet juridique."
+    },
+    {
+      "id": 22,
+      "theme": "LICENSE_IP",
+      "legal_nature": "RIGHT_GRANT",
+      "block_id": 5,
+      "is_block_start": false,
+      "reason": "Continuation du bloc LICENSE_IP, même sujet juridique."
+    },
+    {
+      "id": 23,
+      "theme": "LICENSE_IP",
+      "legal_nature": "OBLIGATION",
+      "block_id": 5,
+      "is_block_start": false,
+      "reason": "Continuation du bloc LICENSE_IP, même sujet juridique."
+    },
+    {
+      "id": 24,
+      "theme": "LICENSE_IP",
+      "legal_nature": "RIGHT_GRANT",
+      "block_id": 5,
+      "is_block_start": false,
+      "reason": "Continuation du bloc LICENSE_IP, même sujet juridique."
+    },
+    {
+      "id": 25,
+      "theme": "LICENSE_IP",
+      "legal_nature": "RIGHT_GRANT",
+      "block_id": 5,
+      "is_block_start": false,
+      "reason": "Continuation du bloc LICENSE_IP, même sujet juridique."
+    },
+    {
+      "id": 26,
+      "theme": "LICENSE_IP",
+      "legal_nature": "RIGHT_GRANT",
+      "block_id": 5,
+      "is_block_start": false,
+      "reason": "Continuation du bloc LICENSE_IP, même sujet juridique."
+    },
+    {
+      "id": 27,
+      "theme": "LICENSE_IP",
+      "legal_nature": "RIGHT_GRANT",
+      "block_id": 5,
+      "is_block_start": false,
+      "reason": "Continuation du bloc LICENSE_IP, même sujet juridique."
+    },
+    {
+      "id": 28,
+      "theme": "LICENSE_IP",
+      "legal_nature": "RIGHT_GRANT",
+      "block_id": 5,
+      "is_block_start": false,
+      "reason": "Continuation du bloc LICENSE_IP, même sujet juridique."
+    },
+    {
+      "id": 29,
+      "theme": "ACCEPTABLE_USE",
+      "legal_nature": "PROHIBITION",
+      "block_id": 6,
+      "is_block_start": true,
+      "rationale": "Ouverture du bloc ACCEPTABLE_USE avec l'indice « please review the twitter rules , which are ».",
+      "rationale_codes": {
+        "decision_trigger": "topic_keyword",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "please review the twitter rules , which are",
+        "revised_from_plan": false,
+        "confidence": 0.86
+      }
+    },
+    {
+      "id": 30,
+      "theme": "ACCEPTABLE_USE",
+      "legal_nature": "PROHIBITION",
+      "block_id": 6,
+      "is_block_start": false,
+      "reason": "Continuation du bloc ACCEPTABLE_USE, même sujet juridique."
+    },
+    {
+      "id": 31,
+      "theme": "TERMINATION",
+      "legal_nature": "GOVERNANCE",
+      "block_id": 7,
+      "is_block_start": true,
+      "rationale": "Ouverture du bloc TERMINATION avec l'indice « as such , the services may change from ».",
+      "rationale_codes": {
+        "decision_trigger": "lexical_shift",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "as such , the services may change from",
+        "revised_from_plan": false,
+        "confidence": 0.86
+      }
+    },
+    {
+      "id": 32,
+      "theme": "TERMINATION",
+      "legal_nature": "GOVERNANCE",
+      "block_id": 7,
+      "is_block_start": false,
+      "reason": "Continuation du bloc TERMINATION, même sujet juridique."
+    },
+    {
+      "id": 33,
+      "theme": "TERMINATION",
+      "legal_nature": "GOVERNANCE",
+      "block_id": 7,
+      "is_block_start": false,
+      "reason": "Continuation du bloc TERMINATION, même sujet juridique."
+    },
+    {
+      "id": 34,
+      "theme": "TERMINATION",
+      "legal_nature": "GOVERNANCE",
+      "block_id": 7,
+      "is_block_start": false,
+      "reason": "Continuation du bloc TERMINATION, même sujet juridique."
+    },
+    {
+      "id": 35,
+      "theme": "TERMINATION",
+      "legal_nature": "GOVERNANCE",
+      "block_id": 7,
+      "is_block_start": false,
+      "reason": "Continuation du bloc TERMINATION, même sujet juridique."
+    },
+    {
+      "id": 36,
+      "theme": "TERMINATION",
+      "legal_nature": "GOVERNANCE",
+      "block_id": 7,
+      "is_block_start": false,
+      "reason": "Continuation du bloc TERMINATION, même sujet juridique."
+    },
+    {
+      "id": 37,
+      "theme": "TERMINATION",
+      "legal_nature": "GOVERNANCE",
+      "block_id": 7,
+      "is_block_start": false,
+      "reason": "Continuation du bloc TERMINATION, même sujet juridique."
+    },
+    {
+      "id": 38,
+      "theme": "TERMINATION",
+      "legal_nature": "GOVERNANCE",
+      "block_id": 7,
+      "is_block_start": false,
+      "reason": "Continuation du bloc TERMINATION, même sujet juridique."
+    },
+    {
+      "id": 39,
+      "theme": "THIRD_PARTY",
+      "legal_nature": "OBLIGATION",
+      "block_id": 8,
+      "is_block_start": true,
+      "rationale": "Ouverture du bloc THIRD_PARTY avec l'indice « if you use developer features of the services ».",
+      "rationale_codes": {
+        "decision_trigger": "topic_keyword",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "if you use developer features of the services",
+        "revised_from_plan": false,
+        "confidence": 0.86
+      }
+    },
+    {
+      "id": 40,
+      "theme": "THIRD_PARTY",
+      "legal_nature": "OBLIGATION",
+      "block_id": 8,
+      "is_block_start": false,
+      "reason": "Continuation du bloc THIRD_PARTY, même sujet juridique."
+    },
+    {
+      "id": 41,
+      "theme": "THIRD_PARTY",
+      "legal_nature": "OBLIGATION",
+      "block_id": 8,
+      "is_block_start": false,
+      "reason": "Continuation du bloc THIRD_PARTY, même sujet juridique."
+    },
+    {
+      "id": 42,
+      "theme": "THIRD_PARTY",
+      "legal_nature": "OBLIGATION",
+      "block_id": 8,
+      "is_block_start": false,
+      "reason": "Continuation du bloc THIRD_PARTY, même sujet juridique."
+    },
+    {
+      "id": 43,
+      "theme": "ELIGIBILITY_ACCOUNT",
+      "legal_nature": "OBLIGATION",
+      "block_id": 9,
+      "is_block_start": true,
+      "rationale": "Ouverture du bloc ELIGIBILITY_ACCOUNT avec l'indice « you may need to create an account to ».",
+      "rationale_codes": {
+        "decision_trigger": "lexical_shift",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "you may need to create an account to",
+        "revised_from_plan": false,
+        "confidence": 0.86
+      }
+    },
+    {
+      "id": 44,
+      "theme": "ELIGIBILITY_ACCOUNT",
+      "legal_nature": "OBLIGATION",
+      "block_id": 9,
+      "is_block_start": false,
+      "reason": "Continuation du bloc ELIGIBILITY_ACCOUNT, même sujet juridique."
+    },
+    {
+      "id": 45,
+      "theme": "ELIGIBILITY_ACCOUNT",
+      "legal_nature": "OBLIGATION",
+      "block_id": 9,
+      "is_block_start": false,
+      "reason": "Continuation du bloc ELIGIBILITY_ACCOUNT, même sujet juridique."
+    },
+    {
+      "id": 46,
+      "theme": "ELIGIBILITY_ACCOUNT",
+      "legal_nature": "OBLIGATION",
+      "block_id": 9,
+      "is_block_start": false,
+      "reason": "Continuation du bloc ELIGIBILITY_ACCOUNT, même sujet juridique."
+    },
+    {
+      "id": 47,
+      "theme": "ELIGIBILITY_ACCOUNT",
+      "legal_nature": "OBLIGATION",
+      "block_id": 9,
+      "is_block_start": false,
+      "reason": "Continuation du bloc ELIGIBILITY_ACCOUNT, même sujet juridique."
+    },
+    {
+      "id": 48,
+      "theme": "LICENSE_IP",
+      "legal_nature": "PROHIBITION",
+      "block_id": 10,
+      "is_block_start": true,
+      "rationale": "Ouverture du bloc LICENSE_IP avec l'indice « these communications are considered part of the services ».",
+      "rationale_codes": {
+        "decision_trigger": "title_marker",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "these communications are considered part of the services",
+        "revised_from_plan": false,
+        "confidence": 0.86
+      }
+    },
+    {
+      "id": 49,
+      "theme": "LICENSE_IP",
+      "legal_nature": "OBLIGATION",
+      "block_id": 10,
+      "is_block_start": false,
+      "reason": "Continuation du bloc LICENSE_IP, même sujet juridique."
+    },
+    {
+      "id": 50,
+      "theme": "LICENSE_IP",
+      "legal_nature": "RIGHT_GRANT",
+      "block_id": 10,
+      "is_block_start": false,
+      "reason": "Continuation du bloc LICENSE_IP, même sujet juridique."
+    },
+    {
+      "id": 51,
+      "theme": "LICENSE_IP",
+      "legal_nature": "RIGHT_GRANT",
+      "block_id": 10,
+      "is_block_start": false,
+      "reason": "Continuation du bloc LICENSE_IP, même sujet juridique."
+    },
+    {
+      "id": 52,
+      "theme": "LICENSE_IP",
+      "legal_nature": "RIGHT_GRANT",
+      "block_id": 10,
+      "is_block_start": false,
+      "reason": "Continuation du bloc LICENSE_IP, même sujet juridique."
+    },
+    {
+      "id": 53,
+      "theme": "LICENSE_IP",
+      "legal_nature": "RIGHT_GRANT",
+      "block_id": 10,
+      "is_block_start": false,
+      "reason": "Continuation du bloc LICENSE_IP, même sujet juridique."
+    },
+    {
+      "id": 54,
+      "theme": "TERMINATION",
+      "legal_nature": "GOVERNANCE",
+      "block_id": 11,
+      "is_block_start": true,
+      "rationale": "Ouverture du bloc TERMINATION avec l'indice « nothing in the terms gives you a right ».",
+      "rationale_codes": {
+        "decision_trigger": "lexical_shift",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "nothing in the terms gives you a right",
+        "revised_from_plan": false,
+        "confidence": 0.86
+      }
+    },
+    {
+      "id": 55,
+      "theme": "TERMINATION",
+      "legal_nature": "GOVERNANCE",
+      "block_id": 11,
+      "is_block_start": false,
+      "reason": "Continuation du bloc TERMINATION, même sujet juridique."
+    },
+    {
+      "id": 56,
+      "theme": "TERMINATION",
+      "legal_nature": "GOVERNANCE",
+      "block_id": 11,
+      "is_block_start": false,
+      "reason": "Continuation du bloc TERMINATION, même sujet juridique."
+    },
+    {
+      "id": 57,
+      "theme": "TERMINATION",
+      "legal_nature": "GOVERNANCE",
+      "block_id": 11,
+      "is_block_start": false,
+      "reason": "Continuation du bloc TERMINATION, même sujet juridique."
+    },
+    {
+      "id": 58,
+      "theme": "WARRANTY_DISCLAIMER",
+      "legal_nature": "LIMITATION_DISCLAIMER",
+      "block_id": 12,
+      "is_block_start": true,
+      "rationale": "Ouverture du bloc WARRANTY_DISCLAIMER avec l'indice « see http://support.twitter.com/articles/15358-how-to-deactivate-your-account for instructions on how to deactivate ».",
+      "rationale_codes": {
+        "decision_trigger": "topic_keyword",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "see http://support.twitter.com/articles/15358-how-to-deactivate-your-account for instructions on how to deactivate",
+        "revised_from_plan": false,
+        "confidence": 0.86
+      }
+    },
+    {
+      "id": 59,
+      "theme": "WARRANTY_DISCLAIMER",
+      "legal_nature": "LIMITATION_DISCLAIMER",
+      "block_id": 12,
+      "is_block_start": false,
+      "reason": "Continuation du bloc WARRANTY_DISCLAIMER, même sujet juridique."
+    },
+    {
+      "id": 60,
+      "theme": "WARRANTY_DISCLAIMER",
+      "legal_nature": "LIMITATION_DISCLAIMER",
+      "block_id": 12,
+      "is_block_start": false,
+      "reason": "Continuation du bloc WARRANTY_DISCLAIMER, même sujet juridique."
+    },
+    {
+      "id": 61,
+      "theme": "WARRANTY_DISCLAIMER",
+      "legal_nature": "LIMITATION_DISCLAIMER",
+      "block_id": 12,
+      "is_block_start": false,
+      "reason": "Continuation du bloc WARRANTY_DISCLAIMER, même sujet juridique."
+    },
+    {
+      "id": 62,
+      "theme": "WARRANTY_DISCLAIMER",
+      "legal_nature": "LIMITATION_DISCLAIMER",
+      "block_id": 12,
+      "is_block_start": false,
+      "reason": "Continuation du bloc WARRANTY_DISCLAIMER, même sujet juridique."
+    },
+    {
+      "id": 63,
+      "theme": "WARRANTY_DISCLAIMER",
+      "legal_nature": "LIMITATION_DISCLAIMER",
+      "block_id": 12,
+      "is_block_start": false,
+      "reason": "Continuation du bloc WARRANTY_DISCLAIMER, même sujet juridique."
+    },
+    {
+      "id": 64,
+      "theme": "WARRANTY_DISCLAIMER",
+      "legal_nature": "LIMITATION_DISCLAIMER",
+      "block_id": 12,
+      "is_block_start": false,
+      "reason": "Continuation du bloc WARRANTY_DISCLAIMER, même sujet juridique."
+    },
+    {
+      "id": 65,
+      "theme": "LIABILITY_LIMITATION",
+      "legal_nature": "LIMITATION_DISCLAIMER",
+      "block_id": 13,
+      "is_block_start": true,
+      "rationale": "Ouverture du bloc LIABILITY_LIMITATION avec l'indice « the `` twitter entities '' refers to twitter ».",
+      "rationale_codes": {
+        "decision_trigger": "topic_keyword",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "the `` twitter entities '' refers to twitter",
+        "revised_from_plan": false,
+        "confidence": 0.86
+      }
+    },
+    {
+      "id": 66,
+      "theme": "LIABILITY_LIMITATION",
+      "legal_nature": "LIMITATION_DISCLAIMER",
+      "block_id": 13,
+      "is_block_start": false,
+      "reason": "Continuation du bloc LIABILITY_LIMITATION, même sujet juridique."
+    },
+    {
+      "id": 67,
+      "theme": "LIABILITY_LIMITATION",
+      "legal_nature": "LIMITATION_DISCLAIMER",
+      "block_id": 13,
+      "is_block_start": false,
+      "reason": "Continuation du bloc LIABILITY_LIMITATION, même sujet juridique."
+    },
+    {
+      "id": 68,
+      "theme": "MODIFICATION_OF_TERMS",
+      "legal_nature": "GOVERNANCE",
+      "block_id": 14,
+      "is_block_start": true,
+      "rationale": "Ouverture du bloc MODIFICATION_OF_TERMS avec l'indice « no advice or information , whether oral or ».",
+      "rationale_codes": {
+        "decision_trigger": "lexical_shift",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "no advice or information , whether oral or",
+        "revised_from_plan": false,
+        "confidence": 0.86
+      }
+    },
+    {
+      "id": 69,
+      "theme": "MODIFICATION_OF_TERMS",
+      "legal_nature": "GOVERNANCE",
+      "block_id": 14,
+      "is_block_start": false,
+      "reason": "Continuation du bloc MODIFICATION_OF_TERMS, même sujet juridique."
+    },
+    {
+      "id": 70,
+      "theme": "MODIFICATION_OF_TERMS",
+      "legal_nature": "GOVERNANCE",
+      "block_id": 14,
+      "is_block_start": false,
+      "reason": "Continuation du bloc MODIFICATION_OF_TERMS, même sujet juridique."
+    },
+    {
+      "id": 71,
+      "theme": "MODIFICATION_OF_TERMS",
+      "legal_nature": "GOVERNANCE",
+      "block_id": 14,
+      "is_block_start": false,
+      "reason": "Continuation du bloc MODIFICATION_OF_TERMS, même sujet juridique."
+    },
+    {
+      "id": 72,
+      "theme": "MISC_BOILERPLATE",
+      "legal_nature": "GOVERNANCE",
+      "block_id": 15,
+      "is_block_start": true,
+      "rationale": "Ouverture du bloc MISC_BOILERPLATE avec l'indice « we may revise these terms from time to ».",
+      "rationale_codes": {
+        "decision_trigger": "lexical_shift",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "we may revise these terms from time to",
+        "revised_from_plan": false,
+        "confidence": 0.86
+      }
+    },
+    {
+      "id": 73,
+      "theme": "MISC_BOILERPLATE",
+      "legal_nature": "GOVERNANCE",
+      "block_id": 15,
+      "is_block_start": false,
+      "reason": "Continuation du bloc MISC_BOILERPLATE, même sujet juridique."
+    },
+    {
+      "id": 74,
+      "theme": "MISC_BOILERPLATE",
+      "legal_nature": "GOVERNANCE",
+      "block_id": 15,
+      "is_block_start": false,
+      "reason": "Continuation du bloc MISC_BOILERPLATE, même sujet juridique."
+    },
+    {
+      "id": 75,
+      "theme": "META",
+      "legal_nature": "META",
+      "block_id": 16,
+      "is_block_start": true,
+      "rationale": "Ouverture du bloc META avec l'indice « by continuing to access or use the services ».",
+      "rationale_codes": {
+        "decision_trigger": "topic_keyword",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "by continuing to access or use the services",
+        "revised_from_plan": false,
+        "confidence": 0.86
+      }
+    },
+    {
+      "id": 76,
+      "theme": "META",
+      "legal_nature": "META",
+      "block_id": 16,
+      "is_block_start": false,
+      "reason": "Continuation du bloc META, même sujet juridique."
+    },
+    {
+      "id": 77,
+      "theme": "META",
+      "legal_nature": "META",
+      "block_id": 16,
+      "is_block_start": false,
+      "reason": "Continuation du bloc META, même sujet juridique."
+    },
+    {
+      "id": 78,
+      "theme": "META",
+      "legal_nature": "META",
+      "block_id": 16,
+      "is_block_start": false,
+      "reason": "Continuation du bloc META, même sujet juridique."
+    },
+    {
+      "id": 79,
+      "theme": "META",
+      "legal_nature": "META",
+      "block_id": 16,
+      "is_block_start": false,
+      "reason": "Continuation du bloc META, même sujet juridique."
+    }
+  ]
+}

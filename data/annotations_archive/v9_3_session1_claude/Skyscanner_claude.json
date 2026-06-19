@@ -1,0 +1,976 @@
+{
+  "doc": "Skyscanner",
+  "judge": "claude",
+  "version": "v9.3",
+  "plan": {
+    "macro_sections": [
+      {
+        "id": 0,
+        "theme": "PREAMBLE_SCOPE",
+        "anchor_id": 0,
+        "evidence_span": "last updated"
+      },
+      {
+        "id": 1,
+        "theme": "MODIFICATION_OF_TERMS",
+        "anchor_id": 10,
+        "evidence_span": "we may amend these terms at any time at our discretion"
+      },
+      {
+        "id": 2,
+        "theme": "LICENSE_IP",
+        "anchor_id": 14,
+        "evidence_span": "we grant you a non-transferable , non-exclusive licence"
+      },
+      {
+        "id": 3,
+        "theme": "ELIGIBILITY_ACCOUNT",
+        "anchor_id": 26,
+        "evidence_span": "requires the use of a log-in account or password"
+      },
+      {
+        "id": 4,
+        "theme": "PRIVACY_DATA",
+        "anchor_id": 31,
+        "evidence_span": "we take your privacy seriously"
+      },
+      {
+        "id": 5,
+        "theme": "USER_CONTENT",
+        "anchor_id": 35,
+        "evidence_span": "user content"
+      },
+      {
+        "id": 6,
+        "theme": "LICENSE_IP",
+        "anchor_id": 40,
+        "evidence_span": "all intellectual property rights"
+      },
+      {
+        "id": 7,
+        "theme": "WARRANTY_DISCLAIMER",
+        "anchor_id": 45,
+        "evidence_span": "at your own risk"
+      },
+      {
+        "id": 8,
+        "theme": "THIRD_PARTY",
+        "anchor_id": 49,
+        "evidence_span": "skyscanner is not a travel agentand is not responsible"
+      },
+      {
+        "id": 9,
+        "theme": "LIABILITY_LIMITATION",
+        "anchor_id": 63,
+        "evidence_span": "do not accept any liability"
+      },
+      {
+        "id": 10,
+        "theme": "TERMINATION",
+        "anchor_id": 67,
+        "evidence_span": "immediately terminate any agreement"
+      },
+      {
+        "id": 11,
+        "theme": "MISC_BOILERPLATE",
+        "anchor_id": 71,
+        "evidence_span": "the invalidity or unenforceability of any provision"
+      }
+    ],
+    "clauses": [
+      {
+        "clause_id": 0,
+        "macro": 0,
+        "theme": "PREAMBLE_SCOPE",
+        "anchor_id": 0,
+        "evidence_span": "last updated"
+      },
+      {
+        "clause_id": 1,
+        "macro": 0,
+        "theme": "THIRD_PARTY",
+        "anchor_id": 3,
+        "evidence_span": "all such third party travel products are provided by independent travel agents"
+      },
+      {
+        "clause_id": 2,
+        "macro": 0,
+        "theme": "META",
+        "anchor_id": 4,
+        "evidence_span": "skyscanner limited , a private limited company"
+      },
+      {
+        "clause_id": 3,
+        "macro": 0,
+        "theme": "PREAMBLE_SCOPE",
+        "anchor_id": 6,
+        "evidence_span": "these terms and conditions"
+      },
+      {
+        "clause_id": 4,
+        "macro": 1,
+        "theme": "MODIFICATION_OF_TERMS",
+        "anchor_id": 10,
+        "evidence_span": "we may amend these terms at any time at our discretion"
+      },
+      {
+        "clause_id": 5,
+        "macro": 2,
+        "theme": "ACCEPTABLE_USE",
+        "anchor_id": 13,
+        "evidence_span": "you may only use the skyscanner services and skyscanner platforms in compliance with applicable laws"
+      },
+      {
+        "clause_id": 6,
+        "macro": 2,
+        "theme": "LICENSE_IP",
+        "anchor_id": 14,
+        "evidence_span": "we grant you a non-transferable , non-exclusive licence"
+      },
+      {
+        "clause_id": 7,
+        "macro": 2,
+        "theme": "ACCEPTABLE_USE",
+        "anchor_id": 18,
+        "evidence_span": "in particular , we grant such licence to you subject to you agreeing that you shall not"
+      },
+      {
+        "clause_id": 8,
+        "macro": 3,
+        "theme": "ELIGIBILITY_ACCOUNT",
+        "anchor_id": 26,
+        "evidence_span": "requires the use of a log-in account or password"
+      },
+      {
+        "clause_id": 9,
+        "macro": 3,
+        "theme": "ELIGIBILITY_ACCOUNT",
+        "anchor_id": 28,
+        "evidence_span": "not intended for children under 13 years of age"
+      },
+      {
+        "clause_id": 10,
+        "macro": 3,
+        "theme": "THIRD_PARTY",
+        "anchor_id": 30,
+        "evidence_span": "hosted on a third party website"
+      },
+      {
+        "clause_id": 11,
+        "macro": 4,
+        "theme": "PRIVACY_DATA",
+        "anchor_id": 31,
+        "evidence_span": "we take your privacy seriously"
+      },
+      {
+        "clause_id": 12,
+        "macro": 5,
+        "theme": "USER_CONTENT",
+        "anchor_id": 35,
+        "evidence_span": "user content"
+      },
+      {
+        "clause_id": 13,
+        "macro": 5,
+        "theme": "LICENSE_IP",
+        "anchor_id": 38,
+        "evidence_span": "you hereby assign ownership of all intellectual property rights subsisting in that feedback"
+      },
+      {
+        "clause_id": 14,
+        "macro": 6,
+        "theme": "LICENSE_IP",
+        "anchor_id": 40,
+        "evidence_span": "all intellectual property rights"
+      },
+      {
+        "clause_id": 15,
+        "macro": 6,
+        "theme": "LICENSE_IP",
+        "anchor_id": 43,
+        "evidence_span": "we respect the intellectual property rights of others"
+      },
+      {
+        "clause_id": 16,
+        "macro": 7,
+        "theme": "WARRANTY_DISCLAIMER",
+        "anchor_id": 45,
+        "evidence_span": "at your own risk"
+      },
+      {
+        "clause_id": 17,
+        "macro": 8,
+        "theme": "THIRD_PARTY",
+        "anchor_id": 49,
+        "evidence_span": "skyscanner is not a travel agentand is not responsible"
+      },
+      {
+        "clause_id": 18,
+        "macro": 8,
+        "theme": "THIRD_PARTY",
+        "anchor_id": 59,
+        "evidence_span": "links to other sites and resources provided by third parties"
+      },
+      {
+        "clause_id": 19,
+        "macro": 8,
+        "theme": "THIRD_PARTY",
+        "anchor_id": 61,
+        "evidence_span": "advertising material submitted by third parties"
+      },
+      {
+        "clause_id": 20,
+        "macro": 9,
+        "theme": "LIABILITY_LIMITATION",
+        "anchor_id": 63,
+        "evidence_span": "do not accept any liability"
+      },
+      {
+        "clause_id": 21,
+        "macro": 9,
+        "theme": "INDEMNIFICATION",
+        "anchor_id": 66,
+        "evidence_span": "you will be responsible and liable to us for all actions , claims , proceedings"
+      },
+      {
+        "clause_id": 22,
+        "macro": 10,
+        "theme": "TERMINATION",
+        "anchor_id": 67,
+        "evidence_span": "immediately terminate any agreement"
+      },
+      {
+        "clause_id": 23,
+        "macro": 11,
+        "theme": "MISC_BOILERPLATE",
+        "anchor_id": 71,
+        "evidence_span": "the invalidity or unenforceability of any provision"
+      },
+      {
+        "clause_id": 24,
+        "macro": 11,
+        "theme": "MISC_BOILERPLATE",
+        "anchor_id": 73,
+        "evidence_span": "these terms are personal to you"
+      },
+      {
+        "clause_id": 25,
+        "macro": 11,
+        "theme": "MISC_BOILERPLATE",
+        "anchor_id": 75,
+        "evidence_span": "these terms represent the entire agreement"
+      },
+      {
+        "clause_id": 26,
+        "macro": 11,
+        "theme": "USER_CONTENT",
+        "anchor_id": 76,
+        "evidence_span": "user content that is in breach of these terms"
+      },
+      {
+        "clause_id": 27,
+        "macro": 11,
+        "theme": "MISC_BOILERPLATE",
+        "anchor_id": 78,
+        "evidence_span": "any failure by us to enforce any of these terms shall not be considered to be a waiver"
+      },
+      {
+        "clause_id": 28,
+        "macro": 11,
+        "theme": "THIRD_PARTY",
+        "anchor_id": 79,
+        "evidence_span": "a person who is not a party to these terms"
+      },
+      {
+        "clause_id": 29,
+        "macro": 11,
+        "theme": "GOVERNING_LAW",
+        "anchor_id": 80,
+        "evidence_span": "governed in accordance with the laws of england and wales"
+      },
+      {
+        "clause_id": 30,
+        "macro": 11,
+        "theme": "META",
+        "anchor_id": 81,
+        "evidence_span": "please contact us here"
+      }
+    ]
+  },
+  "assignment": [
+    {
+      "id": 0,
+      "decision": "ADVANCE",
+      "block_id": 0,
+      "is_block_start": true,
+      "theme": "PREAMBLE_SCOPE",
+      "plan_ref": 0,
+      "evidence_span": "last updated",
+      "unplanned": false
+    },
+    {
+      "id": 1,
+      "decision": "STAY",
+      "block_id": 0,
+      "is_block_start": false,
+      "theme": "PREAMBLE_SCOPE"
+    },
+    {
+      "id": 2,
+      "decision": "STAY",
+      "block_id": 0,
+      "is_block_start": false,
+      "theme": "PREAMBLE_SCOPE"
+    },
+    {
+      "id": 3,
+      "decision": "ADVANCE",
+      "block_id": 1,
+      "is_block_start": true,
+      "theme": "THIRD_PARTY",
+      "plan_ref": 1,
+      "evidence_span": "all such third party travel products are provided by independent travel agents",
+      "unplanned": false
+    },
+    {
+      "id": 4,
+      "decision": "ADVANCE",
+      "block_id": 2,
+      "is_block_start": true,
+      "theme": "META",
+      "plan_ref": 2,
+      "evidence_span": "skyscanner limited , a private limited company",
+      "unplanned": false
+    },
+    {
+      "id": 5,
+      "decision": "STAY",
+      "block_id": 2,
+      "is_block_start": false,
+      "theme": "META"
+    },
+    {
+      "id": 6,
+      "decision": "ADVANCE",
+      "block_id": 3,
+      "is_block_start": true,
+      "theme": "PREAMBLE_SCOPE",
+      "plan_ref": 3,
+      "evidence_span": "these terms and conditions",
+      "unplanned": false
+    },
+    {
+      "id": 7,
+      "decision": "STAY",
+      "block_id": 3,
+      "is_block_start": false,
+      "theme": "PREAMBLE_SCOPE"
+    },
+    {
+      "id": 8,
+      "decision": "STAY",
+      "block_id": 3,
+      "is_block_start": false,
+      "theme": "PREAMBLE_SCOPE"
+    },
+    {
+      "id": 9,
+      "decision": "STAY",
+      "block_id": 3,
+      "is_block_start": false,
+      "theme": "PREAMBLE_SCOPE"
+    },
+    {
+      "id": 10,
+      "decision": "ADVANCE",
+      "block_id": 4,
+      "is_block_start": true,
+      "theme": "MODIFICATION_OF_TERMS",
+      "plan_ref": 4,
+      "evidence_span": "we may amend these terms at any time at our discretion",
+      "unplanned": false
+    },
+    {
+      "id": 11,
+      "decision": "STAY",
+      "block_id": 4,
+      "is_block_start": false,
+      "theme": "MODIFICATION_OF_TERMS"
+    },
+    {
+      "id": 12,
+      "decision": "STAY",
+      "block_id": 4,
+      "is_block_start": false,
+      "theme": "MODIFICATION_OF_TERMS"
+    },
+    {
+      "id": 13,
+      "decision": "ADVANCE",
+      "block_id": 5,
+      "is_block_start": true,
+      "theme": "ACCEPTABLE_USE",
+      "plan_ref": 5,
+      "evidence_span": "you may only use the skyscanner services and skyscanner platforms in compliance with applicable laws",
+      "unplanned": false
+    },
+    {
+      "id": 14,
+      "decision": "ADVANCE",
+      "block_id": 6,
+      "is_block_start": true,
+      "theme": "LICENSE_IP",
+      "plan_ref": 6,
+      "evidence_span": "we grant you a non-transferable , non-exclusive licence",
+      "unplanned": false
+    },
+    {
+      "id": 15,
+      "decision": "STAY",
+      "block_id": 6,
+      "is_block_start": false,
+      "theme": "LICENSE_IP"
+    },
+    {
+      "id": 16,
+      "decision": "STAY",
+      "block_id": 6,
+      "is_block_start": false,
+      "theme": "LICENSE_IP"
+    },
+    {
+      "id": 17,
+      "decision": "STAY",
+      "block_id": 6,
+      "is_block_start": false,
+      "theme": "LICENSE_IP"
+    },
+    {
+      "id": 18,
+      "decision": "ADVANCE",
+      "block_id": 7,
+      "is_block_start": true,
+      "theme": "ACCEPTABLE_USE",
+      "plan_ref": 7,
+      "evidence_span": "in particular , we grant such licence to you subject to you agreeing that you shall not",
+      "unplanned": false
+    },
+    {
+      "id": 19,
+      "decision": "STAY",
+      "block_id": 7,
+      "is_block_start": false,
+      "theme": "ACCEPTABLE_USE"
+    },
+    {
+      "id": 20,
+      "decision": "STAY",
+      "block_id": 7,
+      "is_block_start": false,
+      "theme": "ACCEPTABLE_USE"
+    },
+    {
+      "id": 21,
+      "decision": "STAY",
+      "block_id": 7,
+      "is_block_start": false,
+      "theme": "ACCEPTABLE_USE"
+    },
+    {
+      "id": 22,
+      "decision": "STAY",
+      "block_id": 7,
+      "is_block_start": false,
+      "theme": "ACCEPTABLE_USE"
+    },
+    {
+      "id": 23,
+      "decision": "STAY",
+      "block_id": 7,
+      "is_block_start": false,
+      "theme": "ACCEPTABLE_USE"
+    },
+    {
+      "id": 24,
+      "decision": "STAY",
+      "block_id": 7,
+      "is_block_start": false,
+      "theme": "ACCEPTABLE_USE"
+    },
+    {
+      "id": 25,
+      "decision": "STAY",
+      "block_id": 7,
+      "is_block_start": false,
+      "theme": "ACCEPTABLE_USE"
+    },
+    {
+      "id": 26,
+      "decision": "ADVANCE",
+      "block_id": 8,
+      "is_block_start": true,
+      "theme": "ELIGIBILITY_ACCOUNT",
+      "plan_ref": 8,
+      "evidence_span": "requires the use of a log-in account or password",
+      "unplanned": false
+    },
+    {
+      "id": 27,
+      "decision": "STAY",
+      "block_id": 8,
+      "is_block_start": false,
+      "theme": "ELIGIBILITY_ACCOUNT"
+    },
+    {
+      "id": 28,
+      "decision": "ADVANCE",
+      "block_id": 9,
+      "is_block_start": true,
+      "theme": "ELIGIBILITY_ACCOUNT",
+      "plan_ref": 9,
+      "evidence_span": "not intended for children under 13 years of age",
+      "unplanned": false
+    },
+    {
+      "id": 29,
+      "decision": "STAY",
+      "block_id": 9,
+      "is_block_start": false,
+      "theme": "ELIGIBILITY_ACCOUNT"
+    },
+    {
+      "id": 30,
+      "decision": "ADVANCE",
+      "block_id": 10,
+      "is_block_start": true,
+      "theme": "THIRD_PARTY",
+      "plan_ref": 10,
+      "evidence_span": "hosted on a third party website",
+      "unplanned": false
+    },
+    {
+      "id": 31,
+      "decision": "ADVANCE",
+      "block_id": 11,
+      "is_block_start": true,
+      "theme": "PRIVACY_DATA",
+      "plan_ref": 11,
+      "evidence_span": "we take your privacy seriously",
+      "unplanned": false
+    },
+    {
+      "id": 32,
+      "decision": "STAY",
+      "block_id": 11,
+      "is_block_start": false,
+      "theme": "PRIVACY_DATA"
+    },
+    {
+      "id": 33,
+      "decision": "STAY",
+      "block_id": 11,
+      "is_block_start": false,
+      "theme": "PRIVACY_DATA"
+    },
+    {
+      "id": 34,
+      "decision": "STAY",
+      "block_id": 11,
+      "is_block_start": false,
+      "theme": "PRIVACY_DATA"
+    },
+    {
+      "id": 35,
+      "decision": "ADVANCE",
+      "block_id": 12,
+      "is_block_start": true,
+      "theme": "USER_CONTENT",
+      "plan_ref": 12,
+      "evidence_span": "user content",
+      "unplanned": false
+    },
+    {
+      "id": 36,
+      "decision": "STAY",
+      "block_id": 12,
+      "is_block_start": false,
+      "theme": "USER_CONTENT"
+    },
+    {
+      "id": 37,
+      "decision": "STAY",
+      "block_id": 12,
+      "is_block_start": false,
+      "theme": "USER_CONTENT"
+    },
+    {
+      "id": 38,
+      "decision": "ADVANCE",
+      "block_id": 13,
+      "is_block_start": true,
+      "theme": "LICENSE_IP",
+      "plan_ref": 13,
+      "evidence_span": "you hereby assign ownership of all intellectual property rights subsisting in that feedback",
+      "unplanned": false
+    },
+    {
+      "id": 39,
+      "decision": "STAY",
+      "block_id": 13,
+      "is_block_start": false,
+      "theme": "LICENSE_IP"
+    },
+    {
+      "id": 40,
+      "decision": "ADVANCE",
+      "block_id": 14,
+      "is_block_start": true,
+      "theme": "LICENSE_IP",
+      "plan_ref": 14,
+      "evidence_span": "all intellectual property rights",
+      "unplanned": false
+    },
+    {
+      "id": 41,
+      "decision": "STAY",
+      "block_id": 14,
+      "is_block_start": false,
+      "theme": "LICENSE_IP"
+    },
+    {
+      "id": 42,
+      "decision": "STAY",
+      "block_id": 14,
+      "is_block_start": false,
+      "theme": "LICENSE_IP"
+    },
+    {
+      "id": 43,
+      "decision": "ADVANCE",
+      "block_id": 15,
+      "is_block_start": true,
+      "theme": "LICENSE_IP",
+      "plan_ref": 15,
+      "evidence_span": "we respect the intellectual property rights of others",
+      "unplanned": false
+    },
+    {
+      "id": 44,
+      "decision": "STAY",
+      "block_id": 15,
+      "is_block_start": false,
+      "theme": "LICENSE_IP"
+    },
+    {
+      "id": 45,
+      "decision": "ADVANCE",
+      "block_id": 16,
+      "is_block_start": true,
+      "theme": "WARRANTY_DISCLAIMER",
+      "plan_ref": 16,
+      "evidence_span": "at your own risk",
+      "unplanned": false
+    },
+    {
+      "id": 46,
+      "decision": "STAY",
+      "block_id": 16,
+      "is_block_start": false,
+      "theme": "WARRANTY_DISCLAIMER"
+    },
+    {
+      "id": 47,
+      "decision": "STAY",
+      "block_id": 16,
+      "is_block_start": false,
+      "theme": "WARRANTY_DISCLAIMER"
+    },
+    {
+      "id": 48,
+      "decision": "STAY",
+      "block_id": 16,
+      "is_block_start": false,
+      "theme": "WARRANTY_DISCLAIMER"
+    },
+    {
+      "id": 49,
+      "decision": "ADVANCE",
+      "block_id": 17,
+      "is_block_start": true,
+      "theme": "THIRD_PARTY",
+      "plan_ref": 17,
+      "evidence_span": "skyscanner is not a travel agentand is not responsible",
+      "unplanned": false
+    },
+    {
+      "id": 50,
+      "decision": "STAY",
+      "block_id": 17,
+      "is_block_start": false,
+      "theme": "THIRD_PARTY"
+    },
+    {
+      "id": 51,
+      "decision": "STAY",
+      "block_id": 17,
+      "is_block_start": false,
+      "theme": "THIRD_PARTY"
+    },
+    {
+      "id": 52,
+      "decision": "STAY",
+      "block_id": 17,
+      "is_block_start": false,
+      "theme": "THIRD_PARTY"
+    },
+    {
+      "id": 53,
+      "decision": "STAY",
+      "block_id": 17,
+      "is_block_start": false,
+      "theme": "THIRD_PARTY"
+    },
+    {
+      "id": 54,
+      "decision": "STAY",
+      "block_id": 17,
+      "is_block_start": false,
+      "theme": "THIRD_PARTY"
+    },
+    {
+      "id": 55,
+      "decision": "STAY",
+      "block_id": 17,
+      "is_block_start": false,
+      "theme": "THIRD_PARTY"
+    },
+    {
+      "id": 56,
+      "decision": "STAY",
+      "block_id": 17,
+      "is_block_start": false,
+      "theme": "THIRD_PARTY"
+    },
+    {
+      "id": 57,
+      "decision": "STAY",
+      "block_id": 17,
+      "is_block_start": false,
+      "theme": "THIRD_PARTY"
+    },
+    {
+      "id": 58,
+      "decision": "STAY",
+      "block_id": 17,
+      "is_block_start": false,
+      "theme": "THIRD_PARTY"
+    },
+    {
+      "id": 59,
+      "decision": "ADVANCE",
+      "block_id": 18,
+      "is_block_start": true,
+      "theme": "THIRD_PARTY",
+      "plan_ref": 18,
+      "evidence_span": "links to other sites and resources provided by third parties",
+      "unplanned": false
+    },
+    {
+      "id": 60,
+      "decision": "STAY",
+      "block_id": 18,
+      "is_block_start": false,
+      "theme": "THIRD_PARTY"
+    },
+    {
+      "id": 61,
+      "decision": "ADVANCE",
+      "block_id": 19,
+      "is_block_start": true,
+      "theme": "THIRD_PARTY",
+      "plan_ref": 19,
+      "evidence_span": "advertising material submitted by third parties",
+      "unplanned": false
+    },
+    {
+      "id": 62,
+      "decision": "STAY",
+      "block_id": 19,
+      "is_block_start": false,
+      "theme": "THIRD_PARTY"
+    },
+    {
+      "id": 63,
+      "decision": "ADVANCE",
+      "block_id": 20,
+      "is_block_start": true,
+      "theme": "LIABILITY_LIMITATION",
+      "plan_ref": 20,
+      "evidence_span": "do not accept any liability",
+      "unplanned": false
+    },
+    {
+      "id": 64,
+      "decision": "STAY",
+      "block_id": 20,
+      "is_block_start": false,
+      "theme": "LIABILITY_LIMITATION"
+    },
+    {
+      "id": 65,
+      "decision": "STAY",
+      "block_id": 20,
+      "is_block_start": false,
+      "theme": "LIABILITY_LIMITATION"
+    },
+    {
+      "id": 66,
+      "decision": "ADVANCE",
+      "block_id": 21,
+      "is_block_start": true,
+      "theme": "INDEMNIFICATION",
+      "plan_ref": 21,
+      "evidence_span": "you will be responsible and liable to us for all actions , claims , proceedings",
+      "unplanned": false
+    },
+    {
+      "id": 67,
+      "decision": "ADVANCE",
+      "block_id": 22,
+      "is_block_start": true,
+      "theme": "TERMINATION",
+      "plan_ref": 22,
+      "evidence_span": "immediately terminate any agreement",
+      "unplanned": false
+    },
+    {
+      "id": 68,
+      "decision": "STAY",
+      "block_id": 22,
+      "is_block_start": false,
+      "theme": "TERMINATION"
+    },
+    {
+      "id": 69,
+      "decision": "STAY",
+      "block_id": 22,
+      "is_block_start": false,
+      "theme": "TERMINATION"
+    },
+    {
+      "id": 70,
+      "decision": "STAY",
+      "block_id": 22,
+      "is_block_start": false,
+      "theme": "TERMINATION"
+    },
+    {
+      "id": 71,
+      "decision": "ADVANCE",
+      "block_id": 23,
+      "is_block_start": true,
+      "theme": "MISC_BOILERPLATE",
+      "plan_ref": 23,
+      "evidence_span": "the invalidity or unenforceability of any provision",
+      "unplanned": false
+    },
+    {
+      "id": 72,
+      "decision": "STAY",
+      "block_id": 23,
+      "is_block_start": false,
+      "theme": "MISC_BOILERPLATE"
+    },
+    {
+      "id": 73,
+      "decision": "ADVANCE",
+      "block_id": 24,
+      "is_block_start": true,
+      "theme": "MISC_BOILERPLATE",
+      "plan_ref": 24,
+      "evidence_span": "these terms are personal to you",
+      "unplanned": false
+    },
+    {
+      "id": 74,
+      "decision": "STAY",
+      "block_id": 24,
+      "is_block_start": false,
+      "theme": "MISC_BOILERPLATE"
+    },
+    {
+      "id": 75,
+      "decision": "ADVANCE",
+      "block_id": 25,
+      "is_block_start": true,
+      "theme": "MISC_BOILERPLATE",
+      "plan_ref": 25,
+      "evidence_span": "these terms represent the entire agreement",
+      "unplanned": false
+    },
+    {
+      "id": 76,
+      "decision": "ADVANCE",
+      "block_id": 26,
+      "is_block_start": true,
+      "theme": "USER_CONTENT",
+      "plan_ref": 26,
+      "evidence_span": "user content that is in breach of these terms",
+      "unplanned": false
+    },
+    {
+      "id": 77,
+      "decision": "STAY",
+      "block_id": 26,
+      "is_block_start": false,
+      "theme": "USER_CONTENT"
+    },
+    {
+      "id": 78,
+      "decision": "ADVANCE",
+      "block_id": 27,
+      "is_block_start": true,
+      "theme": "MISC_BOILERPLATE",
+      "plan_ref": 27,
+      "evidence_span": "any failure by us to enforce any of these terms shall not be considered to be a waiver",
+      "unplanned": false
+    },
+    {
+      "id": 79,
+      "decision": "ADVANCE",
+      "block_id": 28,
+      "is_block_start": true,
+      "theme": "THIRD_PARTY",
+      "plan_ref": 28,
+      "evidence_span": "a person who is not a party to these terms",
+      "unplanned": false
+    },
+    {
+      "id": 80,
+      "decision": "ADVANCE",
+      "block_id": 29,
+      "is_block_start": true,
+      "theme": "GOVERNING_LAW",
+      "plan_ref": 29,
+      "evidence_span": "governed in accordance with the laws of england and wales",
+      "unplanned": false
+    },
+    {
+      "id": 81,
+      "decision": "ADVANCE",
+      "block_id": 30,
+      "is_block_start": true,
+      "theme": "META",
+      "plan_ref": 30,
+      "evidence_span": "please contact us here",
+      "unplanned": false
+    },
+    {
+      "id": 82,
+      "decision": "STAY",
+      "block_id": 30,
+      "is_block_start": false,
+      "theme": "META"
+    }
+  ]
+}

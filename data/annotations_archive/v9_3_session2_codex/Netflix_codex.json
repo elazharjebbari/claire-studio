@@ -1,0 +1,801 @@
+{
+  "doc": "Netflix",
+  "judge": "codex",
+  "version": "v9.3",
+  "plan": {
+    "macro_sections": [
+      {
+        "id": 0,
+        "theme": "PREAMBLE_SCOPE",
+        "anchor_id": 0,
+        "evidence_span": "subscription service"
+      },
+      {
+        "id": 1,
+        "theme": "PAYMENT_BILLING",
+        "anchor_id": 4,
+        "evidence_span": "membership will continue"
+      },
+      {
+        "id": 2,
+        "theme": "LICENSE_IP",
+        "anchor_id": 35,
+        "evidence_span": "must be 18"
+      },
+      {
+        "id": 3,
+        "theme": "ACCEPTABLE_USE",
+        "anchor_id": 50,
+        "evidence_span": "use the netflix service"
+      },
+      {
+        "id": 4,
+        "theme": "ELIGIBILITY_ACCOUNT",
+        "anchor_id": 69,
+        "evidence_span": "account owner"
+      },
+      {
+        "id": 5,
+        "theme": "MISC_BOILERPLATE",
+        "anchor_id": 73,
+        "evidence_span": "laws of the netherlands"
+      }
+    ],
+    "clauses": [
+      {
+        "clause_id": 0,
+        "macro": 0,
+        "theme": "PREAMBLE_SCOPE",
+        "anchor_id": 0,
+        "evidence_span": "subscription service"
+      },
+      {
+        "clause_id": 1,
+        "macro": 1,
+        "theme": "SUBSCRIPTION_RENEWAL",
+        "anchor_id": 4,
+        "evidence_span": "membership will continue"
+      },
+      {
+        "clause_id": 2,
+        "macro": 1,
+        "theme": "PAYMENT_BILLING",
+        "anchor_id": 15,
+        "evidence_span": "monthly membership fee"
+      },
+      {
+        "clause_id": 3,
+        "macro": 1,
+        "theme": "SUBSCRIPTION_RENEWAL",
+        "anchor_id": 26,
+        "evidence_span": "cancel your netflix membership"
+      },
+      {
+        "clause_id": 4,
+        "macro": 1,
+        "theme": "PAYMENT_BILLING",
+        "anchor_id": 33,
+        "evidence_span": "changes to the price"
+      },
+      {
+        "clause_id": 5,
+        "macro": 2,
+        "theme": "ELIGIBILITY_ACCOUNT",
+        "anchor_id": 35,
+        "evidence_span": "must be 18"
+      },
+      {
+        "clause_id": 6,
+        "macro": 2,
+        "theme": "LICENSE_IP",
+        "anchor_id": 37,
+        "evidence_span": "personal and non-commercial"
+      },
+      {
+        "clause_id": 7,
+        "macro": 3,
+        "theme": "ACCEPTABLE_USE",
+        "anchor_id": 50,
+        "evidence_span": "use the netflix service"
+      },
+      {
+        "clause_id": 8,
+        "macro": 3,
+        "theme": "WARRANTY_DISCLAIMER",
+        "anchor_id": 55,
+        "evidence_span": "quality of the display"
+      },
+      {
+        "clause_id": 9,
+        "macro": 4,
+        "theme": "ELIGIBILITY_ACCOUNT",
+        "anchor_id": 69,
+        "evidence_span": "account owner"
+      },
+      {
+        "clause_id": 10,
+        "macro": 5,
+        "theme": "GOVERNING_LAW",
+        "anchor_id": 73,
+        "evidence_span": "laws of the netherlands"
+      },
+      {
+        "clause_id": 11,
+        "macro": 5,
+        "theme": "LICENSE_IP",
+        "anchor_id": 75,
+        "evidence_span": "unsolicited materials or ideas"
+      },
+      {
+        "clause_id": 12,
+        "macro": 5,
+        "theme": "MISC_BOILERPLATE",
+        "anchor_id": 76,
+        "evidence_span": "more information about our service"
+      },
+      {
+        "clause_id": 13,
+        "macro": 5,
+        "theme": "MODIFICATION_OF_TERMS",
+        "anchor_id": 81,
+        "evidence_span": "changes to terms of use"
+      },
+      {
+        "clause_id": 14,
+        "macro": 5,
+        "theme": "META",
+        "anchor_id": 85,
+        "evidence_span": "last updated"
+      }
+    ]
+  },
+  "assignment": [
+    {
+      "id": 0,
+      "decision": "ADVANCE",
+      "block_id": 0,
+      "is_block_start": true,
+      "theme": "PREAMBLE_SCOPE",
+      "plan_ref": 0,
+      "evidence_span": "subscription service",
+      "unplanned": false
+    },
+    {
+      "id": 1,
+      "decision": "STAY",
+      "block_id": 0,
+      "is_block_start": false,
+      "theme": "PREAMBLE_SCOPE"
+    },
+    {
+      "id": 2,
+      "decision": "STAY",
+      "block_id": 0,
+      "is_block_start": false,
+      "theme": "PREAMBLE_SCOPE"
+    },
+    {
+      "id": 3,
+      "decision": "STAY",
+      "block_id": 0,
+      "is_block_start": false,
+      "theme": "PREAMBLE_SCOPE"
+    },
+    {
+      "id": 4,
+      "decision": "ADVANCE",
+      "block_id": 1,
+      "is_block_start": true,
+      "theme": "SUBSCRIPTION_RENEWAL",
+      "plan_ref": 1,
+      "evidence_span": "membership will continue",
+      "unplanned": false
+    },
+    {
+      "id": 5,
+      "decision": "STAY",
+      "block_id": 1,
+      "is_block_start": false,
+      "theme": "SUBSCRIPTION_RENEWAL"
+    },
+    {
+      "id": 6,
+      "decision": "STAY",
+      "block_id": 1,
+      "is_block_start": false,
+      "theme": "SUBSCRIPTION_RENEWAL"
+    },
+    {
+      "id": 7,
+      "decision": "STAY",
+      "block_id": 1,
+      "is_block_start": false,
+      "theme": "SUBSCRIPTION_RENEWAL"
+    },
+    {
+      "id": 8,
+      "decision": "STAY",
+      "block_id": 1,
+      "is_block_start": false,
+      "theme": "SUBSCRIPTION_RENEWAL"
+    },
+    {
+      "id": 9,
+      "decision": "STAY",
+      "block_id": 1,
+      "is_block_start": false,
+      "theme": "SUBSCRIPTION_RENEWAL"
+    },
+    {
+      "id": 10,
+      "decision": "STAY",
+      "block_id": 1,
+      "is_block_start": false,
+      "theme": "SUBSCRIPTION_RENEWAL"
+    },
+    {
+      "id": 11,
+      "decision": "STAY",
+      "block_id": 1,
+      "is_block_start": false,
+      "theme": "SUBSCRIPTION_RENEWAL"
+    },
+    {
+      "id": 12,
+      "decision": "STAY",
+      "block_id": 1,
+      "is_block_start": false,
+      "theme": "SUBSCRIPTION_RENEWAL"
+    },
+    {
+      "id": 13,
+      "decision": "STAY",
+      "block_id": 1,
+      "is_block_start": false,
+      "theme": "SUBSCRIPTION_RENEWAL"
+    },
+    {
+      "id": 14,
+      "decision": "STAY",
+      "block_id": 1,
+      "is_block_start": false,
+      "theme": "SUBSCRIPTION_RENEWAL"
+    },
+    {
+      "id": 15,
+      "decision": "ADVANCE",
+      "block_id": 2,
+      "is_block_start": true,
+      "theme": "PAYMENT_BILLING",
+      "plan_ref": 2,
+      "evidence_span": "monthly membership fee",
+      "unplanned": false
+    },
+    {
+      "id": 16,
+      "decision": "STAY",
+      "block_id": 2,
+      "is_block_start": false,
+      "theme": "PAYMENT_BILLING"
+    },
+    {
+      "id": 17,
+      "decision": "STAY",
+      "block_id": 2,
+      "is_block_start": false,
+      "theme": "PAYMENT_BILLING"
+    },
+    {
+      "id": 18,
+      "decision": "STAY",
+      "block_id": 2,
+      "is_block_start": false,
+      "theme": "PAYMENT_BILLING"
+    },
+    {
+      "id": 19,
+      "decision": "STAY",
+      "block_id": 2,
+      "is_block_start": false,
+      "theme": "PAYMENT_BILLING"
+    },
+    {
+      "id": 20,
+      "decision": "STAY",
+      "block_id": 2,
+      "is_block_start": false,
+      "theme": "PAYMENT_BILLING"
+    },
+    {
+      "id": 21,
+      "decision": "STAY",
+      "block_id": 2,
+      "is_block_start": false,
+      "theme": "PAYMENT_BILLING"
+    },
+    {
+      "id": 22,
+      "decision": "STAY",
+      "block_id": 2,
+      "is_block_start": false,
+      "theme": "PAYMENT_BILLING"
+    },
+    {
+      "id": 23,
+      "decision": "STAY",
+      "block_id": 2,
+      "is_block_start": false,
+      "theme": "PAYMENT_BILLING"
+    },
+    {
+      "id": 24,
+      "decision": "STAY",
+      "block_id": 2,
+      "is_block_start": false,
+      "theme": "PAYMENT_BILLING"
+    },
+    {
+      "id": 25,
+      "decision": "STAY",
+      "block_id": 2,
+      "is_block_start": false,
+      "theme": "PAYMENT_BILLING"
+    },
+    {
+      "id": 26,
+      "decision": "ADVANCE",
+      "block_id": 3,
+      "is_block_start": true,
+      "theme": "SUBSCRIPTION_RENEWAL",
+      "plan_ref": 3,
+      "evidence_span": "cancel your netflix membership",
+      "unplanned": false
+    },
+    {
+      "id": 27,
+      "decision": "STAY",
+      "block_id": 3,
+      "is_block_start": false,
+      "theme": "SUBSCRIPTION_RENEWAL"
+    },
+    {
+      "id": 28,
+      "decision": "STAY",
+      "block_id": 3,
+      "is_block_start": false,
+      "theme": "SUBSCRIPTION_RENEWAL"
+    },
+    {
+      "id": 29,
+      "decision": "STAY",
+      "block_id": 3,
+      "is_block_start": false,
+      "theme": "SUBSCRIPTION_RENEWAL"
+    },
+    {
+      "id": 30,
+      "decision": "STAY",
+      "block_id": 3,
+      "is_block_start": false,
+      "theme": "SUBSCRIPTION_RENEWAL"
+    },
+    {
+      "id": 31,
+      "decision": "STAY",
+      "block_id": 3,
+      "is_block_start": false,
+      "theme": "SUBSCRIPTION_RENEWAL"
+    },
+    {
+      "id": 32,
+      "decision": "STAY",
+      "block_id": 3,
+      "is_block_start": false,
+      "theme": "SUBSCRIPTION_RENEWAL"
+    },
+    {
+      "id": 33,
+      "decision": "ADVANCE",
+      "block_id": 4,
+      "is_block_start": true,
+      "theme": "PAYMENT_BILLING",
+      "plan_ref": 4,
+      "evidence_span": "changes to the price",
+      "unplanned": false
+    },
+    {
+      "id": 34,
+      "decision": "STAY",
+      "block_id": 4,
+      "is_block_start": false,
+      "theme": "PAYMENT_BILLING"
+    },
+    {
+      "id": 35,
+      "decision": "ADVANCE",
+      "block_id": 5,
+      "is_block_start": true,
+      "theme": "ELIGIBILITY_ACCOUNT",
+      "plan_ref": 5,
+      "evidence_span": "must be 18",
+      "unplanned": false
+    },
+    {
+      "id": 36,
+      "decision": "STAY",
+      "block_id": 5,
+      "is_block_start": false,
+      "theme": "ELIGIBILITY_ACCOUNT"
+    },
+    {
+      "id": 37,
+      "decision": "ADVANCE",
+      "block_id": 6,
+      "is_block_start": true,
+      "theme": "LICENSE_IP",
+      "plan_ref": 6,
+      "evidence_span": "personal and non-commercial",
+      "unplanned": false
+    },
+    {
+      "id": 38,
+      "decision": "STAY",
+      "block_id": 6,
+      "is_block_start": false,
+      "theme": "LICENSE_IP"
+    },
+    {
+      "id": 39,
+      "decision": "STAY",
+      "block_id": 6,
+      "is_block_start": false,
+      "theme": "LICENSE_IP"
+    },
+    {
+      "id": 40,
+      "decision": "STAY",
+      "block_id": 6,
+      "is_block_start": false,
+      "theme": "LICENSE_IP"
+    },
+    {
+      "id": 41,
+      "decision": "STAY",
+      "block_id": 6,
+      "is_block_start": false,
+      "theme": "LICENSE_IP"
+    },
+    {
+      "id": 42,
+      "decision": "STAY",
+      "block_id": 6,
+      "is_block_start": false,
+      "theme": "LICENSE_IP"
+    },
+    {
+      "id": 43,
+      "decision": "STAY",
+      "block_id": 6,
+      "is_block_start": false,
+      "theme": "LICENSE_IP"
+    },
+    {
+      "id": 44,
+      "decision": "STAY",
+      "block_id": 6,
+      "is_block_start": false,
+      "theme": "LICENSE_IP"
+    },
+    {
+      "id": 45,
+      "decision": "STAY",
+      "block_id": 6,
+      "is_block_start": false,
+      "theme": "LICENSE_IP"
+    },
+    {
+      "id": 46,
+      "decision": "STAY",
+      "block_id": 6,
+      "is_block_start": false,
+      "theme": "LICENSE_IP"
+    },
+    {
+      "id": 47,
+      "decision": "STAY",
+      "block_id": 6,
+      "is_block_start": false,
+      "theme": "LICENSE_IP"
+    },
+    {
+      "id": 48,
+      "decision": "STAY",
+      "block_id": 6,
+      "is_block_start": false,
+      "theme": "LICENSE_IP"
+    },
+    {
+      "id": 49,
+      "decision": "STAY",
+      "block_id": 6,
+      "is_block_start": false,
+      "theme": "LICENSE_IP"
+    },
+    {
+      "id": 50,
+      "decision": "ADVANCE",
+      "block_id": 7,
+      "is_block_start": true,
+      "theme": "ACCEPTABLE_USE",
+      "plan_ref": 7,
+      "evidence_span": "use the netflix service",
+      "unplanned": false
+    },
+    {
+      "id": 51,
+      "decision": "STAY",
+      "block_id": 7,
+      "is_block_start": false,
+      "theme": "ACCEPTABLE_USE"
+    },
+    {
+      "id": 52,
+      "decision": "STAY",
+      "block_id": 7,
+      "is_block_start": false,
+      "theme": "ACCEPTABLE_USE"
+    },
+    {
+      "id": 53,
+      "decision": "STAY",
+      "block_id": 7,
+      "is_block_start": false,
+      "theme": "ACCEPTABLE_USE"
+    },
+    {
+      "id": 54,
+      "decision": "STAY",
+      "block_id": 7,
+      "is_block_start": false,
+      "theme": "ACCEPTABLE_USE"
+    },
+    {
+      "id": 55,
+      "decision": "ADVANCE",
+      "block_id": 8,
+      "is_block_start": true,
+      "theme": "WARRANTY_DISCLAIMER",
+      "plan_ref": 8,
+      "evidence_span": "quality of the display",
+      "unplanned": false
+    },
+    {
+      "id": 56,
+      "decision": "STAY",
+      "block_id": 8,
+      "is_block_start": false,
+      "theme": "WARRANTY_DISCLAIMER"
+    },
+    {
+      "id": 57,
+      "decision": "STAY",
+      "block_id": 8,
+      "is_block_start": false,
+      "theme": "WARRANTY_DISCLAIMER"
+    },
+    {
+      "id": 58,
+      "decision": "STAY",
+      "block_id": 8,
+      "is_block_start": false,
+      "theme": "WARRANTY_DISCLAIMER"
+    },
+    {
+      "id": 59,
+      "decision": "STAY",
+      "block_id": 8,
+      "is_block_start": false,
+      "theme": "WARRANTY_DISCLAIMER"
+    },
+    {
+      "id": 60,
+      "decision": "STAY",
+      "block_id": 8,
+      "is_block_start": false,
+      "theme": "WARRANTY_DISCLAIMER"
+    },
+    {
+      "id": 61,
+      "decision": "STAY",
+      "block_id": 8,
+      "is_block_start": false,
+      "theme": "WARRANTY_DISCLAIMER"
+    },
+    {
+      "id": 62,
+      "decision": "STAY",
+      "block_id": 8,
+      "is_block_start": false,
+      "theme": "WARRANTY_DISCLAIMER"
+    },
+    {
+      "id": 63,
+      "decision": "STAY",
+      "block_id": 8,
+      "is_block_start": false,
+      "theme": "WARRANTY_DISCLAIMER"
+    },
+    {
+      "id": 64,
+      "decision": "STAY",
+      "block_id": 8,
+      "is_block_start": false,
+      "theme": "WARRANTY_DISCLAIMER"
+    },
+    {
+      "id": 65,
+      "decision": "STAY",
+      "block_id": 8,
+      "is_block_start": false,
+      "theme": "WARRANTY_DISCLAIMER"
+    },
+    {
+      "id": 66,
+      "decision": "STAY",
+      "block_id": 8,
+      "is_block_start": false,
+      "theme": "WARRANTY_DISCLAIMER"
+    },
+    {
+      "id": 67,
+      "decision": "STAY",
+      "block_id": 8,
+      "is_block_start": false,
+      "theme": "WARRANTY_DISCLAIMER"
+    },
+    {
+      "id": 68,
+      "decision": "STAY",
+      "block_id": 8,
+      "is_block_start": false,
+      "theme": "WARRANTY_DISCLAIMER"
+    },
+    {
+      "id": 69,
+      "decision": "ADVANCE",
+      "block_id": 9,
+      "is_block_start": true,
+      "theme": "ELIGIBILITY_ACCOUNT",
+      "plan_ref": 9,
+      "evidence_span": "account owner",
+      "unplanned": false
+    },
+    {
+      "id": 70,
+      "decision": "STAY",
+      "block_id": 9,
+      "is_block_start": false,
+      "theme": "ELIGIBILITY_ACCOUNT"
+    },
+    {
+      "id": 71,
+      "decision": "STAY",
+      "block_id": 9,
+      "is_block_start": false,
+      "theme": "ELIGIBILITY_ACCOUNT"
+    },
+    {
+      "id": 72,
+      "decision": "STAY",
+      "block_id": 9,
+      "is_block_start": false,
+      "theme": "ELIGIBILITY_ACCOUNT"
+    },
+    {
+      "id": 73,
+      "decision": "ADVANCE",
+      "block_id": 10,
+      "is_block_start": true,
+      "theme": "GOVERNING_LAW",
+      "plan_ref": 10,
+      "evidence_span": "laws of the netherlands",
+      "unplanned": false
+    },
+    {
+      "id": 74,
+      "decision": "STAY",
+      "block_id": 10,
+      "is_block_start": false,
+      "theme": "GOVERNING_LAW"
+    },
+    {
+      "id": 75,
+      "decision": "ADVANCE",
+      "block_id": 11,
+      "is_block_start": true,
+      "theme": "LICENSE_IP",
+      "plan_ref": 11,
+      "evidence_span": "unsolicited materials or ideas",
+      "unplanned": false
+    },
+    {
+      "id": 76,
+      "decision": "ADVANCE",
+      "block_id": 12,
+      "is_block_start": true,
+      "theme": "MISC_BOILERPLATE",
+      "plan_ref": 12,
+      "evidence_span": "more information about our service",
+      "unplanned": false
+    },
+    {
+      "id": 77,
+      "decision": "STAY",
+      "block_id": 12,
+      "is_block_start": false,
+      "theme": "MISC_BOILERPLATE"
+    },
+    {
+      "id": 78,
+      "decision": "STAY",
+      "block_id": 12,
+      "is_block_start": false,
+      "theme": "MISC_BOILERPLATE"
+    },
+    {
+      "id": 79,
+      "decision": "STAY",
+      "block_id": 12,
+      "is_block_start": false,
+      "theme": "MISC_BOILERPLATE"
+    },
+    {
+      "id": 80,
+      "decision": "STAY",
+      "block_id": 12,
+      "is_block_start": false,
+      "theme": "MISC_BOILERPLATE"
+    },
+    {
+      "id": 81,
+      "decision": "ADVANCE",
+      "block_id": 13,
+      "is_block_start": true,
+      "theme": "MODIFICATION_OF_TERMS",
+      "plan_ref": 13,
+      "evidence_span": "changes to terms of use",
+      "unplanned": false
+    },
+    {
+      "id": 82,
+      "decision": "STAY",
+      "block_id": 13,
+      "is_block_start": false,
+      "theme": "MODIFICATION_OF_TERMS"
+    },
+    {
+      "id": 83,
+      "decision": "STAY",
+      "block_id": 13,
+      "is_block_start": false,
+      "theme": "MODIFICATION_OF_TERMS"
+    },
+    {
+      "id": 84,
+      "decision": "STAY",
+      "block_id": 13,
+      "is_block_start": false,
+      "theme": "MODIFICATION_OF_TERMS"
+    },
+    {
+      "id": 85,
+      "decision": "ADVANCE",
+      "block_id": 14,
+      "is_block_start": true,
+      "theme": "META",
+      "plan_ref": 14,
+      "evidence_span": "last updated",
+      "unplanned": false
+    }
+  ]
+}

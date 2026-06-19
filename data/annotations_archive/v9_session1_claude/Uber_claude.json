@@ -1,0 +1,1164 @@
+{
+  "doc": "Uber",
+  "judge": "claude",
+  "version": "v9.0",
+  "document_plan": {
+    "estimated_n_blocks": 26,
+    "rationale_global": "ToS Uber narratif (numbering=0, list_markers=0 ; 3 titres nominaux aux id 0/23/84). Document long de 118 phrases organisé en thèmes successifs : date META, préambule/scope, droit de résiliation, termes supplémentaires, modification des termes, données personnelles, description des services, licence/IP, usage interdit, marques, services tiers (titre id 23), propriété IP, compte/éligibilité, SMS, promo codes, contenu utilisateur, responsabilités d'accès technique, paiement/charges (long), bloc disclaimers/responsabilité/indemnité (titre id 84), indemnisation, loi applicable, arbitrage, agent copyright, notices, boilerplate balai, définition finale. Procédures/effets/délais traités en continuation ; préambule non fragmenté.",
+    "segments": [
+      {"start_id": 0, "theme": "META", "rationale": "date de mise à jour, fait non normatif", "evidence_span": "last updated"},
+      {"start_id": 1, "theme": "PREAMBLE_SCOPE", "rationale": "cadre général : les termes gouvernent l'accès aux services", "evidence_span": "govern the access or use by you"},
+      {"start_id": 6, "theme": "TERMINATION", "rationale": "droit autonome de résiliation immédiate par uber", "evidence_span": "uber may immediately terminate these terms"},
+      {"start_id": 7, "theme": "PREAMBLE_SCOPE", "rationale": "champ d'application des termes supplémentaires", "evidence_span": "supplemental terms may apply to certain services"},
+      {"start_id": 10, "theme": "MODIFICATION_OF_TERMS", "rationale": "droit de modifier les termes", "evidence_span": "uber may amend the terms"},
+      {"start_id": 13, "theme": "PRIVACY_DATA", "rationale": "collecte et usage des données personnelles", "evidence_span": "collection and use of personal information"},
+      {"start_id": 15, "theme": "PREAMBLE_SCOPE", "rationale": "description du champ : nature des services (plateforme technologique)", "evidence_span": "the services constitute a technology platform"},
+      {"start_id": 18, "theme": "LICENSE_IP", "rationale": "octroi d'une licence limitée d'usage", "evidence_span": "uber grants you a limited"},
+      {"start_id": 20, "theme": "ACCEPTABLE_USE", "rationale": "interdictions d'usage", "evidence_span": "you may not"},
+      {"start_id": 21, "theme": "THIRD_PARTY", "rationale": "reconnaissance des marques et fournisseurs tiers", "evidence_span": "various brands or request options"},
+      {"start_id": 23, "theme": "THIRD_PARTY", "rationale": "titre nominal : services et contenus tiers", "evidence_span": "third party services and content"},
+      {"start_id": 30, "theme": "LICENSE_IP", "rationale": "propriété des services et des droits", "evidence_span": "all rights therein are and shall remain uber 's property"},
+      {"start_id": 32, "theme": "ELIGIBILITY_ACCOUNT", "rationale": "obligation d'enregistrer et maintenir un compte", "evidence_span": "register for and maintain an active personal user services account"},
+      {"start_id": 45, "theme": "PRIVACY_DATA", "rationale": "consentement aux messages texte SMS", "evidence_span": "informational text"},
+      {"start_id": 48, "theme": "PAYMENT_BILLING", "rationale": "codes promotionnels et crédits de compte", "evidence_span": "promotional codes that may be redeemed for account credit"},
+      {"start_id": 51, "theme": "USER_CONTENT", "rationale": "soumission de contenu utilisateur", "evidence_span": "user content"},
+      {"start_id": 57, "theme": "ELIGIBILITY_ACCOUNT", "rationale": "responsabilité d'accès réseau et matériel", "evidence_span": "responsible for obtaining the data network access"},
+      {"start_id": 62, "theme": "PAYMENT_BILLING", "rationale": "charges et paiement des services", "evidence_span": "may result in charges to you"},
+      {"start_id": 84, "theme": "WARRANTY_DISCLAIMER", "rationale": "titre nominal : disclaimers, limitation de responsabilité, indemnité", "evidence_span": "disclaimers ; limitation of liability ; indemnity"},
+      {"start_id": 97, "theme": "INDEMNIFICATION", "rationale": "obligation d'indemniser uber", "evidence_span": "you agree to indemnify and hold uber"},
+      {"start_id": 98, "theme": "GOVERNING_LAW", "rationale": "loi applicable des Pays-Bas", "evidence_span": "governed by and construed in accordance with the laws of the netherlands"},
+      {"start_id": 100, "theme": "DISPUTE_ARBITRATION", "rationale": "médiation et arbitrage des litiges", "evidence_span": "submitted to mediation proceedings"},
+      {"start_id": 107, "theme": "MISC_BOILERPLATE", "rationale": "réclamations copyright et notifications", "evidence_span": "claims of copyright infringement"},
+      {"start_id": 111, "theme": "MISC_BOILERPLATE", "rationale": "clauses balais : cession, divisibilité, intégralité", "evidence_span": "you may not assign or transfer these terms"},
+      {"start_id": 117, "theme": "DEFINITIONS", "rationale": "définition du terme including", "evidence_span": "the words `` including ''"}
+    ]
+  },
+  "annotations": [
+    {
+      "id": 0,
+      "theme": "META",
+      "function": "META",
+      "block_id": 0,
+      "is_block_start": true,
+      "rationale": "fait non normatif : date de mise à jour du document",
+      "rationale_codes": {
+        "decision_trigger": "document_start",
+        "relation_to_prev": "document_start",
+        "evidence_span": "last updated",
+        "revised_from_plan": false,
+        "confidence": 0.97
+      }
+    },
+    {
+      "id": 1,
+      "theme": "PREAMBLE_SCOPE",
+      "function": "SCOPE_APPLICABILITY",
+      "block_id": 1,
+      "is_block_start": true,
+      "rationale": "cadre général : les termes gouvernent l'accès et l'usage des services ; cite « govern the access or use by you »",
+      "rationale_codes": {
+        "decision_trigger": "topic_keyword",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "govern the access or use by you",
+        "revised_from_plan": false,
+        "confidence": 0.95
+      }
+    },
+    {
+      "id": 2,
+      "theme": "PREAMBLE_SCOPE",
+      "function": "PROCEDURE_MECHANISM",
+      "block_id": 1,
+      "is_block_start": false,
+      "reason": "continue PREAMBLE_SCOPE, invitation à lire les termes"
+    },
+    {
+      "id": 3,
+      "theme": "PREAMBLE_SCOPE",
+      "function": "SCOPE_APPLICABILITY",
+      "block_id": 1,
+      "is_block_start": false,
+      "reason": "continue PREAMBLE_SCOPE, l'usage vaut acceptation et crée la relation contractuelle"
+    },
+    {
+      "id": 4,
+      "theme": "PREAMBLE_SCOPE",
+      "function": "PROCEDURE_MECHANISM",
+      "block_id": 1,
+      "is_block_start": false,
+      "reason": "continue PREAMBLE_SCOPE, conséquence du non-accord aux termes"
+    },
+    {
+      "id": 5,
+      "theme": "PREAMBLE_SCOPE",
+      "function": "SCOPE_APPLICABILITY",
+      "block_id": 1,
+      "is_block_start": false,
+      "reason": "continue PREAMBLE_SCOPE, les termes supersèdent les accords antérieurs"
+    },
+    {
+      "id": 6,
+      "theme": "TERMINATION",
+      "function": "GOVERNANCE",
+      "block_id": 2,
+      "is_block_start": true,
+      "rationale": "effet juridique autonome : droit de résiliation/cessation immédiate par uber sur un sujet distinct du préambule",
+      "rationale_codes": {
+        "decision_trigger": "topic_keyword",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "uber may immediately terminate these terms",
+        "revised_from_plan": false,
+        "confidence": 0.78
+      }
+    },
+    {
+      "id": 7,
+      "theme": "PREAMBLE_SCOPE",
+      "function": "SCOPE_APPLICABILITY",
+      "block_id": 3,
+      "is_block_start": true,
+      "rationale": "nouveau sujet : champ d'application des termes supplémentaires ; cite « supplemental terms may apply »",
+      "rationale_codes": {
+        "decision_trigger": "topic_keyword",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "supplemental terms may apply to certain services",
+        "revised_from_plan": false,
+        "confidence": 0.82
+      }
+    },
+    {
+      "id": 8,
+      "theme": "PREAMBLE_SCOPE",
+      "function": "PROCEDURE_MECHANISM",
+      "block_id": 3,
+      "is_block_start": false,
+      "reason": "continue PREAMBLE_SCOPE, les termes supplémentaires font partie des termes"
+    },
+    {
+      "id": 9,
+      "theme": "PREAMBLE_SCOPE",
+      "function": "PROCEDURE_MECHANISM",
+      "block_id": 3,
+      "is_block_start": false,
+      "reason": "continue PREAMBLE_SCOPE, règle de prévalence des termes supplémentaires en cas de conflit"
+    },
+    {
+      "id": 10,
+      "theme": "MODIFICATION_OF_TERMS",
+      "function": "GOVERNANCE",
+      "block_id": 4,
+      "is_block_start": true,
+      "rationale": "nouveau sujet : droit de modifier les termes ; cite « uber may amend the terms »",
+      "rationale_codes": {
+        "decision_trigger": "topic_keyword",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "uber may amend the terms",
+        "revised_from_plan": false,
+        "confidence": 0.9
+      }
+    },
+    {
+      "id": 11,
+      "theme": "MODIFICATION_OF_TERMS",
+      "function": "PROCEDURE_MECHANISM",
+      "block_id": 4,
+      "is_block_start": false,
+      "reason": "continue MODIFICATION_OF_TERMS, effet des amendements dès leur publication"
+    },
+    {
+      "id": 12,
+      "theme": "MODIFICATION_OF_TERMS",
+      "function": "PROCEDURE_MECHANISM",
+      "block_id": 4,
+      "is_block_start": false,
+      "reason": "continue MODIFICATION_OF_TERMS, l'usage continué vaut consentement aux termes amendés"
+    },
+    {
+      "id": 13,
+      "theme": "PRIVACY_DATA",
+      "function": "PROCEDURE_MECHANISM",
+      "block_id": 5,
+      "is_block_start": true,
+      "rationale": "nouveau sujet : collecte et usage des données personnelles renvoyées à la privacy policy",
+      "rationale_codes": {
+        "decision_trigger": "topic_keyword",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "collection and use of personal information",
+        "revised_from_plan": false,
+        "confidence": 0.85
+      }
+    },
+    {
+      "id": 14,
+      "theme": "PRIVACY_DATA",
+      "function": "PROCEDURE_MECHANISM",
+      "block_id": 5,
+      "is_block_start": false,
+      "reason": "continue PRIVACY_DATA, transmission d'informations à un assureur/processeur en cas de litige"
+    },
+    {
+      "id": 15,
+      "theme": "PREAMBLE_SCOPE",
+      "function": "SCOPE_APPLICABILITY",
+      "block_id": 6,
+      "is_block_start": true,
+      "rationale": "nouveau sujet : description du champ, nature de la plateforme technologique mettant en relation avec des tiers",
+      "rationale_codes": {
+        "decision_trigger": "topic_keyword",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "the services constitute a technology platform",
+        "revised_from_plan": false,
+        "confidence": 0.72
+      }
+    },
+    {
+      "id": 16,
+      "theme": "PREAMBLE_SCOPE",
+      "function": "SCOPE_APPLICABILITY",
+      "block_id": 6,
+      "is_block_start": false,
+      "reason": "continue PREAMBLE_SCOPE, restriction à un usage personnel et non commercial"
+    },
+    {
+      "id": 17,
+      "theme": "PREAMBLE_SCOPE",
+      "function": "PROCEDURE_MECHANISM",
+      "block_id": 6,
+      "is_block_start": false,
+      "reason": "continue PREAMBLE_SCOPE, précision : uber n'est pas transporteur, services fournis par des tiers"
+    },
+    {
+      "id": 18,
+      "theme": "LICENSE_IP",
+      "function": "RIGHT_GRANT",
+      "block_id": 7,
+      "is_block_start": true,
+      "rationale": "effet autonome : octroi d'une licence limitée ; cite « uber grants you a limited »",
+      "rationale_codes": {
+        "decision_trigger": "topic_keyword",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "uber grants you a limited",
+        "revised_from_plan": false,
+        "confidence": 0.92
+      }
+    },
+    {
+      "id": 19,
+      "theme": "LICENSE_IP",
+      "function": "PROCEDURE_MECHANISM",
+      "block_id": 7,
+      "is_block_start": false,
+      "reason": "continue LICENSE_IP, réserve des droits non expressément concédés"
+    },
+    {
+      "id": 20,
+      "theme": "ACCEPTABLE_USE",
+      "function": "PROHIBITION",
+      "block_id": 8,
+      "is_block_start": true,
+      "rationale": "effet autonome : liste d'interdictions d'usage ; cite « you may not »",
+      "rationale_codes": {
+        "decision_trigger": "modal_verb",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "you may not",
+        "revised_from_plan": false,
+        "confidence": 0.88
+      }
+    },
+    {
+      "id": 21,
+      "theme": "THIRD_PARTY",
+      "function": "PROCEDURE_MECHANISM",
+      "block_id": 9,
+      "is_block_start": true,
+      "rationale": "nouveau sujet : reconnaissance des marques et options de service tierces ; cite « various brands or request options »",
+      "rationale_codes": {
+        "decision_trigger": "topic_keyword",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "various brands or request options",
+        "revised_from_plan": false,
+        "confidence": 0.6
+      }
+    },
+    {
+      "id": 22,
+      "theme": "THIRD_PARTY",
+      "function": "PROCEDURE_MECHANISM",
+      "block_id": 9,
+      "is_block_start": false,
+      "reason": "continue THIRD_PARTY, services disponibles via filiales ou fournisseurs tiers"
+    },
+    {
+      "id": 23,
+      "theme": "THIRD_PARTY",
+      "function": "SCOPE_APPLICABILITY",
+      "block_id": 10,
+      "is_block_start": true,
+      "rationale": "titre nominal court sans verbe conjugué annonçant la section sur les services et contenus tiers",
+      "rationale_codes": {
+        "decision_trigger": "title_marker",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "third party services and content",
+        "revised_from_plan": false,
+        "confidence": 0.83
+      }
+    },
+    {
+      "id": 24,
+      "theme": "THIRD_PARTY",
+      "function": "PROCEDURE_MECHANISM",
+      "block_id": 10,
+      "is_block_start": false,
+      "reason": "continue THIRD_PARTY, services tiers non contrôlés par uber"
+    },
+    {
+      "id": 25,
+      "theme": "THIRD_PARTY",
+      "function": "PROCEDURE_MECHANISM",
+      "block_id": 10,
+      "is_block_start": false,
+      "reason": "continue THIRD_PARTY, des termes et politiques tiers peuvent s'appliquer"
+    },
+    {
+      "id": 26,
+      "theme": "THIRD_PARTY",
+      "function": "LIMITATION_DISCLAIMER",
+      "block_id": 10,
+      "is_block_start": false,
+      "reason": "continue THIRD_PARTY, uber décline toute responsabilité pour les produits/services tiers"
+    },
+    {
+      "id": 27,
+      "theme": "THIRD_PARTY",
+      "function": "PROCEDURE_MECHANISM",
+      "block_id": 10,
+      "is_block_start": false,
+      "reason": "continue THIRD_PARTY, bénéficiaires tiers (apple, google, etc.)"
+    },
+    {
+      "id": 28,
+      "theme": "THIRD_PARTY",
+      "function": "LIMITATION_DISCLAIMER",
+      "block_id": 10,
+      "is_block_start": false,
+      "reason": "continue THIRD_PARTY, ces bénéficiaires tiers ne sont pas parties et non responsables"
+    },
+    {
+      "id": 29,
+      "theme": "THIRD_PARTY",
+      "function": "PROCEDURE_MECHANISM",
+      "block_id": 10,
+      "is_block_start": false,
+      "reason": "continue THIRD_PARTY, l'accès via ces dispositifs est soumis aux termes des bénéficiaires tiers"
+    },
+    {
+      "id": 30,
+      "theme": "LICENSE_IP",
+      "function": "RIGHT_GRANT",
+      "block_id": 11,
+      "is_block_start": true,
+      "rationale": "nouveau sujet : propriété des services et de tous les droits y afférents ; cite « all rights therein are and shall remain uber 's property »",
+      "rationale_codes": {
+        "decision_trigger": "topic_keyword",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "all rights therein are and shall remain uber 's property",
+        "revised_from_plan": false,
+        "confidence": 0.8
+      }
+    },
+    {
+      "id": 31,
+      "theme": "LICENSE_IP",
+      "function": "PROCEDURE_MECHANISM",
+      "block_id": 11,
+      "is_block_start": false,
+      "reason": "continue LICENSE_IP, aucun droit sur les marques/noms d'uber n'est concédé"
+    },
+    {
+      "id": 32,
+      "theme": "ELIGIBILITY_ACCOUNT",
+      "function": "OBLIGATION",
+      "block_id": 12,
+      "is_block_start": true,
+      "rationale": "nouveau sujet : obligation de s'enregistrer et maintenir un compte ; cite « register for and maintain an active personal user services account »",
+      "rationale_codes": {
+        "decision_trigger": "topic_keyword",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "register for and maintain an active personal user services account",
+        "revised_from_plan": false,
+        "confidence": 0.9
+      }
+    },
+    {
+      "id": 33,
+      "theme": "ELIGIBILITY_ACCOUNT",
+      "function": "OBLIGATION",
+      "block_id": 12,
+      "is_block_start": false,
+      "reason": "continue ELIGIBILITY_ACCOUNT, condition d'âge minimum (18 ans)"
+    },
+    {
+      "id": 34,
+      "theme": "ELIGIBILITY_ACCOUNT",
+      "function": "PROCEDURE_MECHANISM",
+      "block_id": 12,
+      "is_block_start": false,
+      "reason": "continue ELIGIBILITY_ACCOUNT, informations requises à l'enregistrement"
+    },
+    {
+      "id": 35,
+      "theme": "ELIGIBILITY_ACCOUNT",
+      "function": "OBLIGATION",
+      "block_id": 12,
+      "is_block_start": false,
+      "reason": "continue ELIGIBILITY_ACCOUNT, obligation de maintenir des informations exactes"
+    },
+    {
+      "id": 36,
+      "theme": "ELIGIBILITY_ACCOUNT",
+      "function": "PROCEDURE_MECHANISM",
+      "block_id": 12,
+      "is_block_start": false,
+      "reason": "continue ELIGIBILITY_ACCOUNT, conséquence d'informations inexactes"
+    },
+    {
+      "id": 37,
+      "theme": "ELIGIBILITY_ACCOUNT",
+      "function": "OBLIGATION",
+      "block_id": 12,
+      "is_block_start": false,
+      "reason": "continue ELIGIBILITY_ACCOUNT, responsabilité et sécurité du compte"
+    },
+    {
+      "id": 38,
+      "theme": "ELIGIBILITY_ACCOUNT",
+      "function": "OBLIGATION",
+      "block_id": 12,
+      "is_block_start": false,
+      "reason": "continue ELIGIBILITY_ACCOUNT, un seul compte autorisé"
+    },
+    {
+      "id": 39,
+      "theme": "ELIGIBILITY_ACCOUNT",
+      "function": "PROCEDURE_MECHANISM",
+      "block_id": 12,
+      "is_block_start": false,
+      "reason": "continue ELIGIBILITY_ACCOUNT, service indisponible pour les moins de 18 ans"
+    },
+    {
+      "id": 40,
+      "theme": "ELIGIBILITY_ACCOUNT",
+      "function": "PROHIBITION",
+      "block_id": 12,
+      "is_block_start": false,
+      "reason": "continue ELIGIBILITY_ACCOUNT, interdiction de partager le compte / mineurs non accompagnés"
+    },
+    {
+      "id": 41,
+      "theme": "ELIGIBILITY_ACCOUNT",
+      "function": "PROHIBITION",
+      "block_id": 12,
+      "is_block_start": false,
+      "reason": "continue ELIGIBILITY_ACCOUNT, interdiction de céder/transférer le compte"
+    },
+    {
+      "id": 42,
+      "theme": "ELIGIBILITY_ACCOUNT",
+      "function": "OBLIGATION",
+      "block_id": 12,
+      "is_block_start": false,
+      "reason": "continue ELIGIBILITY_ACCOUNT, obligation de respecter les lois et usage licite"
+    },
+    {
+      "id": 43,
+      "theme": "ELIGIBILITY_ACCOUNT",
+      "function": "PROHIBITION",
+      "block_id": 12,
+      "is_block_start": false,
+      "reason": "continue ELIGIBILITY_ACCOUNT, interdiction de causer nuisance ou dommage"
+    },
+    {
+      "id": 44,
+      "theme": "ELIGIBILITY_ACCOUNT",
+      "function": "PROCEDURE_MECHANISM",
+      "block_id": 12,
+      "is_block_start": false,
+      "reason": "continue ELIGIBILITY_ACCOUNT, preuve d'identité pouvant être demandée pour l'accès"
+    },
+    {
+      "id": 45,
+      "theme": "PRIVACY_DATA",
+      "function": "PROCEDURE_MECHANISM",
+      "block_id": 13,
+      "is_block_start": true,
+      "rationale": "nouveau sujet : envoi de messages texte SMS lié à la création de compte ; cite « informational text »",
+      "rationale_codes": {
+        "decision_trigger": "topic_keyword",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "informational text",
+        "revised_from_plan": false,
+        "confidence": 0.62
+      }
+    },
+    {
+      "id": 46,
+      "theme": "PRIVACY_DATA",
+      "function": "PROCEDURE_MECHANISM",
+      "block_id": 13,
+      "is_block_start": false,
+      "reason": "continue PRIVACY_DATA, mécanisme d'opt-out des SMS"
+    },
+    {
+      "id": 47,
+      "theme": "PRIVACY_DATA",
+      "function": "PROCEDURE_MECHANISM",
+      "block_id": 13,
+      "is_block_start": false,
+      "reason": "continue PRIVACY_DATA, conséquence de l'opt-out sur l'usage"
+    },
+    {
+      "id": 48,
+      "theme": "PAYMENT_BILLING",
+      "function": "RIGHT_GRANT",
+      "block_id": 14,
+      "is_block_start": true,
+      "rationale": "nouveau sujet : codes promotionnels échangeables contre crédit de compte ; cite « promotional codes that may be redeemed for account credit »",
+      "rationale_codes": {
+        "decision_trigger": "topic_keyword",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "promotional codes that may be redeemed for account credit",
+        "revised_from_plan": false,
+        "confidence": 0.78
+      }
+    },
+    {
+      "id": 49,
+      "theme": "PAYMENT_BILLING",
+      "function": "OBLIGATION",
+      "block_id": 14,
+      "is_block_start": false,
+      "reason": "continue PAYMENT_BILLING, conditions d'usage des promo codes"
+    },
+    {
+      "id": 50,
+      "theme": "PAYMENT_BILLING",
+      "function": "PROCEDURE_MECHANISM",
+      "block_id": 14,
+      "is_block_start": false,
+      "reason": "continue PAYMENT_BILLING, droit d'uber de retenir/déduire les crédits en cas d'usage frauduleux"
+    },
+    {
+      "id": 51,
+      "theme": "USER_CONTENT",
+      "function": "RIGHT_GRANT",
+      "block_id": 15,
+      "is_block_start": true,
+      "rationale": "nouveau sujet : possibilité de soumettre du contenu utilisateur ; cite « user content »",
+      "rationale_codes": {
+        "decision_trigger": "topic_keyword",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "user content",
+        "revised_from_plan": false,
+        "confidence": 0.85
+      }
+    },
+    {
+      "id": 52,
+      "theme": "USER_CONTENT",
+      "function": "PROCEDURE_MECHANISM",
+      "block_id": 15,
+      "is_block_start": false,
+      "reason": "continue USER_CONTENT, le contenu reste la propriété de l'utilisateur"
+    },
+    {
+      "id": 53,
+      "theme": "USER_CONTENT",
+      "function": "RIGHT_GRANT",
+      "block_id": 15,
+      "is_block_start": false,
+      "reason": "continue USER_CONTENT, licence mondiale concédée à uber sur le contenu"
+    },
+    {
+      "id": 54,
+      "theme": "USER_CONTENT",
+      "function": "OBLIGATION",
+      "block_id": 15,
+      "is_block_start": false,
+      "reason": "continue USER_CONTENT, déclarations et garanties sur le contenu"
+    },
+    {
+      "id": 55,
+      "theme": "USER_CONTENT",
+      "function": "PROHIBITION",
+      "block_id": 15,
+      "is_block_start": false,
+      "reason": "continue USER_CONTENT, interdiction de contenu diffamatoire/offensant"
+    },
+    {
+      "id": 56,
+      "theme": "USER_CONTENT",
+      "function": "PROCEDURE_MECHANISM",
+      "block_id": 15,
+      "is_block_start": false,
+      "reason": "continue USER_CONTENT, droit discrétionnaire d'uber de modérer/retirer le contenu"
+    },
+    {
+      "id": 57,
+      "theme": "ELIGIBILITY_ACCOUNT",
+      "function": "OBLIGATION",
+      "block_id": 16,
+      "is_block_start": true,
+      "rationale": "nouveau sujet : responsabilité de l'utilisateur pour l'accès réseau de données ; cite « responsible for obtaining the data network access »",
+      "rationale_codes": {
+        "decision_trigger": "topic_keyword",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "responsible for obtaining the data network access",
+        "revised_from_plan": false,
+        "confidence": 0.6
+      }
+    },
+    {
+      "id": 58,
+      "theme": "ELIGIBILITY_ACCOUNT",
+      "function": "OBLIGATION",
+      "block_id": 16,
+      "is_block_start": false,
+      "reason": "continue ELIGIBILITY_ACCOUNT, responsabilité des frais réseau/données"
+    },
+    {
+      "id": 59,
+      "theme": "ELIGIBILITY_ACCOUNT",
+      "function": "OBLIGATION",
+      "block_id": 16,
+      "is_block_start": false,
+      "reason": "continue ELIGIBILITY_ACCOUNT, responsabilité du matériel compatible"
+    },
+    {
+      "id": 60,
+      "theme": "ELIGIBILITY_ACCOUNT",
+      "function": "LIMITATION_DISCLAIMER",
+      "block_id": 16,
+      "is_block_start": false,
+      "reason": "continue ELIGIBILITY_ACCOUNT, uber ne garantit pas le fonctionnement sur tout matériel"
+    },
+    {
+      "id": 61,
+      "theme": "ELIGIBILITY_ACCOUNT",
+      "function": "LIMITATION_DISCLAIMER",
+      "block_id": 16,
+      "is_block_start": false,
+      "reason": "continue ELIGIBILITY_ACCOUNT, dysfonctionnements et délais inhérents à internet"
+    },
+    {
+      "id": 62,
+      "theme": "PAYMENT_BILLING",
+      "function": "PROCEDURE_MECHANISM",
+      "block_id": 17,
+      "is_block_start": true,
+      "rationale": "nouveau sujet : l'usage des services entraîne des charges ; cite « may result in charges to you »",
+      "rationale_codes": {
+        "decision_trigger": "topic_keyword",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "may result in charges to you",
+        "revised_from_plan": false,
+        "confidence": 0.85
+      }
+    },
+    {
+      "id": 63,
+      "theme": "PAYMENT_BILLING",
+      "function": "PROCEDURE_MECHANISM",
+      "block_id": 17,
+      "is_block_start": false,
+      "reason": "continue PAYMENT_BILLING, uber facilite le paiement comme agent de collecte du tiers"
+    },
+    {
+      "id": 64,
+      "theme": "PAYMENT_BILLING",
+      "function": "PROCEDURE_MECHANISM",
+      "block_id": 17,
+      "is_block_start": false,
+      "reason": "continue PAYMENT_BILLING, le paiement via uber vaut paiement direct au tiers"
+    },
+    {
+      "id": 65,
+      "theme": "PAYMENT_BILLING",
+      "function": "PROCEDURE_MECHANISM",
+      "block_id": 17,
+      "is_block_start": false,
+      "reason": "continue PAYMENT_BILLING, les charges incluent les taxes applicables"
+    },
+    {
+      "id": 66,
+      "theme": "PAYMENT_BILLING",
+      "function": "PROCEDURE_MECHANISM",
+      "block_id": 17,
+      "is_block_start": false,
+      "reason": "continue PAYMENT_BILLING, charges finales et non remboursables"
+    },
+    {
+      "id": 67,
+      "theme": "PAYMENT_BILLING",
+      "function": "PROCEDURE_MECHANISM",
+      "block_id": 17,
+      "is_block_start": false,
+      "reason": "continue PAYMENT_BILLING, droit de demander des charges réduites au tiers"
+    },
+    {
+      "id": 68,
+      "theme": "PAYMENT_BILLING",
+      "function": "PROCEDURE_MECHANISM",
+      "block_id": 17,
+      "is_block_start": false,
+      "reason": "continue PAYMENT_BILLING, réponse d'uber aux demandes de modification de charges"
+    },
+    {
+      "id": 69,
+      "theme": "PAYMENT_BILLING",
+      "function": "PROCEDURE_MECHANISM",
+      "block_id": 17,
+      "is_block_start": false,
+      "reason": "continue PAYMENT_BILLING, charges exigibles immédiatement, paiement via méthode préférée"
+    },
+    {
+      "id": 70,
+      "theme": "PAYMENT_BILLING",
+      "function": "PROCEDURE_MECHANISM",
+      "block_id": 17,
+      "is_block_start": false,
+      "reason": "continue PAYMENT_BILLING, usage d'une méthode de paiement secondaire si la première échoue"
+    },
+    {
+      "id": 71,
+      "theme": "PAYMENT_BILLING",
+      "function": "PROCEDURE_MECHANISM",
+      "block_id": 17,
+      "is_block_start": false,
+      "reason": "continue PAYMENT_BILLING, droit d'uber de fixer/réviser les charges"
+    },
+    {
+      "id": 72,
+      "theme": "PAYMENT_BILLING",
+      "function": "PROCEDURE_MECHANISM",
+      "block_id": 17,
+      "is_block_start": false,
+      "reason": "continue PAYMENT_BILLING, hausse des charges en période de forte demande"
+    },
+    {
+      "id": 73,
+      "theme": "PAYMENT_BILLING",
+      "function": "PROCEDURE_MECHANISM",
+      "block_id": 17,
+      "is_block_start": false,
+      "reason": "continue PAYMENT_BILLING, information sur les charges et responsabilité de l'utilisateur"
+    },
+    {
+      "id": 74,
+      "theme": "PAYMENT_BILLING",
+      "function": "PROCEDURE_MECHANISM",
+      "block_id": 17,
+      "is_block_start": false,
+      "reason": "continue PAYMENT_BILLING, offres promotionnelles et discounts variables"
+    },
+    {
+      "id": 75,
+      "theme": "PAYMENT_BILLING",
+      "function": "PROCEDURE_MECHANISM",
+      "block_id": 17,
+      "is_block_start": false,
+      "reason": "continue PAYMENT_BILLING, annulation possible avec frais d'annulation"
+    },
+    {
+      "id": 76,
+      "theme": "PAYMENT_BILLING",
+      "function": "PROCEDURE_MECHANISM",
+      "block_id": 17,
+      "is_block_start": false,
+      "reason": "continue PAYMENT_BILLING, la structure de paiement compense pleinement le tiers"
+    },
+    {
+      "id": 77,
+      "theme": "PAYMENT_BILLING",
+      "function": "PROCEDURE_MECHANISM",
+      "block_id": 17,
+      "is_block_start": false,
+      "reason": "continue PAYMENT_BILLING, aucun pourboire désigné dans le paiement"
+    },
+    {
+      "id": 78,
+      "theme": "PAYMENT_BILLING",
+      "function": "PROCEDURE_MECHANISM",
+      "block_id": 17,
+      "is_block_start": false,
+      "reason": "continue PAYMENT_BILLING, précision sur le caractère volontaire/inclus du pourboire"
+    },
+    {
+      "id": 79,
+      "theme": "PAYMENT_BILLING",
+      "function": "PROCEDURE_MECHANISM",
+      "block_id": 17,
+      "is_block_start": false,
+      "reason": "continue PAYMENT_BILLING, liberté de donner un pourboire sans obligation"
+    },
+    {
+      "id": 80,
+      "theme": "PAYMENT_BILLING",
+      "function": "PROCEDURE_MECHANISM",
+      "block_id": 17,
+      "is_block_start": false,
+      "reason": "continue PAYMENT_BILLING, possibilité d'évaluer et laisser un feedback après le service"
+    },
+    {
+      "id": 81,
+      "theme": "PAYMENT_BILLING",
+      "function": "OBLIGATION",
+      "block_id": 17,
+      "is_block_start": false,
+      "reason": "continue PAYMENT_BILLING, responsabilité des coûts de réparation/nettoyage du véhicule"
+    },
+    {
+      "id": 82,
+      "theme": "PAYMENT_BILLING",
+      "function": "PROCEDURE_MECHANISM",
+      "block_id": 17,
+      "is_block_start": false,
+      "reason": "continue PAYMENT_BILLING, facilitation du paiement de réparation/nettoyage par uber"
+    },
+    {
+      "id": 83,
+      "theme": "PAYMENT_BILLING",
+      "function": "PROCEDURE_MECHANISM",
+      "block_id": 17,
+      "is_block_start": false,
+      "reason": "continue PAYMENT_BILLING, montants transférés au tiers et non remboursables"
+    },
+    {
+      "id": 84,
+      "theme": "WARRANTY_DISCLAIMER",
+      "function": "SCOPE_APPLICABILITY",
+      "block_id": 18,
+      "is_block_start": true,
+      "rationale": "titre nominal court sans verbe conjugué annonçant la section disclaimers / limitation de responsabilité / indemnité",
+      "rationale_codes": {
+        "decision_trigger": "title_marker",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "disclaimers ; limitation of liability ; indemnity",
+        "revised_from_plan": false,
+        "confidence": 0.85
+      }
+    },
+    {
+      "id": 85,
+      "theme": "WARRANTY_DISCLAIMER",
+      "function": "LIMITATION_DISCLAIMER",
+      "block_id": 18,
+      "is_block_start": false,
+      "reason": "continue WARRANTY_DISCLAIMER, services fournis « as is » et « as available »"
+    },
+    {
+      "id": 86,
+      "theme": "WARRANTY_DISCLAIMER",
+      "function": "LIMITATION_DISCLAIMER",
+      "block_id": 18,
+      "is_block_start": false,
+      "reason": "continue WARRANTY_DISCLAIMER, exclusion des garanties implicites"
+    },
+    {
+      "id": 87,
+      "theme": "WARRANTY_DISCLAIMER",
+      "function": "LIMITATION_DISCLAIMER",
+      "block_id": 18,
+      "is_block_start": false,
+      "reason": "continue WARRANTY_DISCLAIMER, aucune garantie de fiabilité/qualité/disponibilité"
+    },
+    {
+      "id": 88,
+      "theme": "WARRANTY_DISCLAIMER",
+      "function": "LIMITATION_DISCLAIMER",
+      "block_id": 18,
+      "is_block_start": false,
+      "reason": "continue WARRANTY_DISCLAIMER, pas de garantie sur la qualité des fournisseurs tiers"
+    },
+    {
+      "id": 89,
+      "theme": "LIABILITY_LIMITATION",
+      "function": "LIMITATION_DISCLAIMER",
+      "block_id": 19,
+      "is_block_start": true,
+      "rationale": "transition disclaimers → limitation de responsabilité : le risque entier de l'usage repose sur l'utilisateur ; cite « the entire risk arising out of your use »",
+      "rationale_codes": {
+        "decision_trigger": "lexical_shift",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "the entire risk arising out of your use of the services",
+        "revised_from_plan": true,
+        "confidence": 0.55
+      }
+    },
+    {
+      "id": 90,
+      "theme": "LIABILITY_LIMITATION",
+      "function": "LIMITATION_DISCLAIMER",
+      "block_id": 19,
+      "is_block_start": false,
+      "reason": "continue LIABILITY_LIMITATION, exclusion des dommages indirects et consécutifs"
+    },
+    {
+      "id": 91,
+      "theme": "LIABILITY_LIMITATION",
+      "function": "LIMITATION_DISCLAIMER",
+      "block_id": 19,
+      "is_block_start": false,
+      "reason": "continue LIABILITY_LIMITATION, non-responsabilité pour l'usage/transactions avec des tiers"
+    },
+    {
+      "id": 92,
+      "theme": "LIABILITY_LIMITATION",
+      "function": "LIMITATION_DISCLAIMER",
+      "block_id": 19,
+      "is_block_start": false,
+      "reason": "continue LIABILITY_LIMITATION, non-responsabilité pour force majeure (causes hors contrôle)"
+    },
+    {
+      "id": 93,
+      "theme": "LIABILITY_LIMITATION",
+      "function": "PROCEDURE_MECHANISM",
+      "block_id": 19,
+      "is_block_start": false,
+      "reason": "continue LIABILITY_LIMITATION, reconnaissance que les transporteurs tiers peuvent ne pas être licenciés"
+    },
+    {
+      "id": 94,
+      "theme": "LIABILITY_LIMITATION",
+      "function": "LIMITATION_DISCLAIMER",
+      "block_id": 19,
+      "is_block_start": false,
+      "reason": "continue LIABILITY_LIMITATION, plafond de responsabilité fixé à 500 euros"
+    },
+    {
+      "id": 95,
+      "theme": "LIABILITY_LIMITATION",
+      "function": "LIMITATION_DISCLAIMER",
+      "block_id": 19,
+      "is_block_start": false,
+      "reason": "continue LIABILITY_LIMITATION, absence de responsabilité pour les services des tiers"
+    },
+    {
+      "id": 96,
+      "theme": "LIABILITY_LIMITATION",
+      "function": "LIMITATION_DISCLAIMER",
+      "block_id": 19,
+      "is_block_start": false,
+      "reason": "continue LIABILITY_LIMITATION, réserve des droits du consommateur non excluables"
+    },
+    {
+      "id": 97,
+      "theme": "INDEMNIFICATION",
+      "function": "RISK_ALLOCATION",
+      "block_id": 20,
+      "is_block_start": true,
+      "rationale": "effet autonome : obligation d'indemniser et garantir uber ; cite « you agree to indemnify and hold uber »",
+      "rationale_codes": {
+        "decision_trigger": "topic_keyword",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "you agree to indemnify and hold uber",
+        "revised_from_plan": false,
+        "confidence": 0.92
+      }
+    },
+    {
+      "id": 98,
+      "theme": "GOVERNING_LAW",
+      "function": "GOVERNANCE",
+      "block_id": 21,
+      "is_block_start": true,
+      "rationale": "nouveau sujet : loi applicable (Pays-Bas) ; cite « governed by and construed in accordance with the laws of the netherlands »",
+      "rationale_codes": {
+        "decision_trigger": "topic_keyword",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "governed by and construed in accordance with the laws of the netherlands",
+        "revised_from_plan": false,
+        "confidence": 0.92
+      }
+    },
+    {
+      "id": 99,
+      "theme": "GOVERNING_LAW",
+      "function": "GOVERNANCE",
+      "block_id": 21,
+      "is_block_start": false,
+      "reason": "continue GOVERNING_LAW, exclusion de la convention de Vienne (CISG)"
+    },
+    {
+      "id": 100,
+      "theme": "DISPUTE_ARBITRATION",
+      "function": "GOVERNANCE",
+      "block_id": 22,
+      "is_block_start": true,
+      "rationale": "nouveau sujet : règlement des litiges par médiation puis arbitrage ; cite « submitted to mediation proceedings »",
+      "rationale_codes": {
+        "decision_trigger": "topic_keyword",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "submitted to mediation proceedings",
+        "revised_from_plan": false,
+        "confidence": 0.9
+      }
+    },
+    {
+      "id": 101,
+      "theme": "DISPUTE_ARBITRATION",
+      "function": "PROCEDURE_MECHANISM",
+      "block_id": 22,
+      "is_block_start": false,
+      "reason": "continue DISPUTE_ARBITRATION, renvoi à l'arbitrage si médiation échoue sous 60 jours"
+    },
+    {
+      "id": 102,
+      "theme": "DISPUTE_ARBITRATION",
+      "function": "PROCEDURE_MECHANISM",
+      "block_id": 22,
+      "is_block_start": false,
+      "reason": "continue DISPUTE_ARBITRATION, exclusion des dispositions d'arbitre d'urgence"
+    },
+    {
+      "id": 103,
+      "theme": "DISPUTE_ARBITRATION",
+      "function": "PROCEDURE_MECHANISM",
+      "block_id": 22,
+      "is_block_start": false,
+      "reason": "continue DISPUTE_ARBITRATION, un seul arbitre nommé selon les règles ICC"
+    },
+    {
+      "id": 104,
+      "theme": "DISPUTE_ARBITRATION",
+      "function": "PROCEDURE_MECHANISM",
+      "block_id": 22,
+      "is_block_start": false,
+      "reason": "continue DISPUTE_ARBITRATION, lieu de médiation/arbitrage à Amsterdam"
+    },
+    {
+      "id": 105,
+      "theme": "DISPUTE_ARBITRATION",
+      "function": "PROCEDURE_MECHANISM",
+      "block_id": 22,
+      "is_block_start": false,
+      "reason": "continue DISPUTE_ARBITRATION, langue de la procédure"
+    },
+    {
+      "id": 106,
+      "theme": "DISPUTE_ARBITRATION",
+      "function": "PROCEDURE_MECHANISM",
+      "block_id": 22,
+      "is_block_start": false,
+      "reason": "continue DISPUTE_ARBITRATION, confidentialité de la procédure"
+    },
+    {
+      "id": 107,
+      "theme": "MISC_BOILERPLATE",
+      "function": "PROCEDURE_MECHANISM",
+      "block_id": 23,
+      "is_block_start": true,
+      "rationale": "nouveau sujet : notification des réclamations de copyright à l'agent désigné ; cite « claims of copyright infringement »",
+      "rationale_codes": {
+        "decision_trigger": "topic_keyword",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "claims of copyright infringement",
+        "revised_from_plan": false,
+        "confidence": 0.62
+      }
+    },
+    {
+      "id": 108,
+      "theme": "MISC_BOILERPLATE",
+      "function": "PROCEDURE_MECHANISM",
+      "block_id": 23,
+      "is_block_start": false,
+      "reason": "continue MISC_BOILERPLATE, adresse de l'agent désigné copyright"
+    },
+    {
+      "id": 109,
+      "theme": "MISC_BOILERPLATE",
+      "function": "PROCEDURE_MECHANISM",
+      "block_id": 23,
+      "is_block_start": false,
+      "reason": "continue MISC_BOILERPLATE, modalités de notification d'uber vers l'utilisateur"
+    },
+    {
+      "id": 110,
+      "theme": "MISC_BOILERPLATE",
+      "function": "PROCEDURE_MECHANISM",
+      "block_id": 23,
+      "is_block_start": false,
+      "reason": "continue MISC_BOILERPLATE, modalités de notification de l'utilisateur vers uber"
+    },
+    {
+      "id": 111,
+      "theme": "MISC_BOILERPLATE",
+      "function": "PROHIBITION",
+      "block_id": 24,
+      "is_block_start": true,
+      "rationale": "nouveau sujet : clause de cession (assignment) ; cite « you may not assign or transfer these terms »",
+      "rationale_codes": {
+        "decision_trigger": "topic_keyword",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "you may not assign or transfer these terms",
+        "revised_from_plan": false,
+        "confidence": 0.7
+      }
+    },
+    {
+      "id": 112,
+      "theme": "MISC_BOILERPLATE",
+      "function": "PROCEDURE_MECHANISM",
+      "block_id": 24,
+      "is_block_start": false,
+      "reason": "continue MISC_BOILERPLATE, l'utilisateur autorise uber à céder/transférer les termes"
+    },
+    {
+      "id": 113,
+      "theme": "MISC_BOILERPLATE",
+      "function": "PROCEDURE_MECHANISM",
+      "block_id": 24,
+      "is_block_start": false,
+      "reason": "continue MISC_BOILERPLATE, absence de relation de partenariat/emploi/agence"
+    },
+    {
+      "id": 114,
+      "theme": "MISC_BOILERPLATE",
+      "function": "PROCEDURE_MECHANISM",
+      "block_id": 24,
+      "is_block_start": false,
+      "reason": "continue MISC_BOILERPLATE, clause de divisibilité (severability)"
+    },
+    {
+      "id": 115,
+      "theme": "MISC_BOILERPLATE",
+      "function": "PROCEDURE_MECHANISM",
+      "block_id": 24,
+      "is_block_start": false,
+      "reason": "continue MISC_BOILERPLATE, remplacement d'une clause invalide par une clause équivalente"
+    },
+    {
+      "id": 116,
+      "theme": "MISC_BOILERPLATE",
+      "function": "PROCEDURE_MECHANISM",
+      "block_id": 24,
+      "is_block_start": false,
+      "reason": "continue MISC_BOILERPLATE, clause d'intégralité (entire agreement)"
+    },
+    {
+      "id": 117,
+      "theme": "DEFINITIONS",
+      "function": "DEFINITION",
+      "block_id": 25,
+      "is_block_start": true,
+      "rationale": "définition substantielle d'un terme : « including » signifie « including, but not limited to »",
+      "rationale_codes": {
+        "decision_trigger": "definition_marker",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "the words `` including '' and `` include '' mean",
+        "revised_from_plan": false,
+        "confidence": 0.8
+      }
+    }
+  ]
+}

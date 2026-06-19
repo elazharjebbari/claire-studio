@@ -1,0 +1,2687 @@
+{
+  "doc": "Zynga",
+  "judge": "claude",
+  "version": "v9.2-nature-derived",
+  "document_plan": {
+    "estimated_n_blocks": 33,
+    "rationale_global": "ToS Zynga long et narratif (248 phrases, profil NARRATIVE_LONG). En-tête META (dates d'effet, lien version antérieure, avis d'arbitrage, renvoi section 17), puis préambule d'acceptation, un bloc de définitions, une clause de modification des termes, la création/sécurité de compte, le renvoi à la politique de confidentialité, l'éligibilité (who can use), les règles additionnelles, les conditions techniques d'accès (comptes tiers/équipement), les mises à jour imposées, la suspension/résiliation du service et des comptes, la PI Zynga et la licence d'usage, la propriété du compte et des objets virtuels, l'interdiction de transfert d'objets, le contenu utilisateur (garanties, licence, suppression, persistance), le monitoring du contenu, la responsabilité entre joueurs (release + civ code 1542), le régime de paiement/objets virtuels (licence limitée, plateformes tierces, non-remboursable, taxes), les abonnements, le support facturation, les promotions/offres, la publicité et les sites tiers, le DMCA/copyright, le feedback, le warranty disclaimer 'as is', la limitation de responsabilité, l'indemnisation, l'arbitrage et la renonciation aux actions collectives (section 17 détaillée), les changements de la section 17, la loi applicable et le venue, le boilerplate final (severability, cession, intégralité, traduction, waiver, notices), le recours en équité, puis la force majeure. Frontières alignées sur les ruptures thématiques et titres nominaux (ids title_like 0,4,51,86,89,192 du docfeatures, recalés sur le source 0-based).",
+    "segments": [
+      {
+        "start_id": 0,
+        "theme": "META",
+        "rationale": "dates d'effet et lien version antérieure",
+        "evidence_span": "effective july 26 , 2016"
+      },
+      {
+        "start_id": 5,
+        "theme": "PREAMBLE_SCOPE",
+        "rationale": "lire les termes et être lié",
+        "evidence_span": "please read these terms of service"
+      },
+      {
+        "start_id": 8,
+        "theme": "DEFINITIONS",
+        "rationale": "définitions de zynga/us/we et termes",
+        "evidence_span": "references to `` zynga"
+      },
+      {
+        "start_id": 23,
+        "theme": "MODIFICATION_OF_TERMS",
+        "rationale": "droit de modifier les termes",
+        "evidence_span": "we reserve the right , at our discretion , to change , modify"
+      },
+      {
+        "start_id": 32,
+        "theme": "ELIGIBILITY_ACCOUNT",
+        "rationale": "création de compte et sécurité",
+        "evidence_span": "we may ask you to create an account"
+      },
+      {
+        "start_id": 39,
+        "theme": "PRIVACY_DATA",
+        "rationale": "politique de confidentialité, collecte d'informations",
+        "evidence_span": "zynga 's privacy policy tells you how we collect and use information"
+      },
+      {
+        "start_id": 43,
+        "theme": "ELIGIBILITY_ACCOUNT",
+        "rationale": "titre 'who can use our service' + limites d'usage",
+        "evidence_span": "who can use our service"
+      },
+      {
+        "start_id": 51,
+        "theme": "ACCEPTABLE_USE",
+        "rationale": "titre 'additional important rules and terms'",
+        "evidence_span": "additional important rules and terms"
+      },
+      {
+        "start_id": 55,
+        "theme": "ELIGIBILITY_ACCOUNT",
+        "rationale": "comptes tiers et équipement nécessaires au service",
+        "evidence_span": "you may need an account with a"
+      },
+      {
+        "start_id": 58,
+        "theme": "MODIFICATION_OF_TERMS",
+        "rationale": "mises à jour du service et des termes",
+        "evidence_span": "we may require that you accept updates to the service"
+      },
+      {
+        "start_id": 61,
+        "theme": "TERMINATION",
+        "rationale": "arrêt/suspension du service et résiliation de licence",
+        "evidence_span": "zynga reserves the right to stop offering"
+      },
+      {
+        "start_id": 67,
+        "theme": "LICENSE_IP",
+        "rationale": "PI Zynga et licence limitée d'usage",
+        "evidence_span": "protected by copyright , trade"
+      },
+      {
+        "start_id": 74,
+        "theme": "ELIGIBILITY_ACCOUNT",
+        "rationale": "titre 'your account and virtual items' — propriété du compte",
+        "evidence_span": "your account and virtual items"
+      },
+      {
+        "start_id": 81,
+        "theme": "ACCEPTABLE_USE",
+        "rationale": "interdiction de transférer des objets virtuels",
+        "evidence_span": "you are not allowed to transfer virtual items"
+      },
+      {
+        "start_id": 85,
+        "theme": "USER_CONTENT",
+        "rationale": "garanties sur le contenu utilisateur transmis",
+        "evidence_span": "if you transmit or upload user content"
+      },
+      {
+        "start_id": 103,
+        "theme": "USER_CONTENT",
+        "rationale": "titre 'monitoring use of service and user content'",
+        "evidence_span": "monitoring use of service and user content"
+      },
+      {
+        "start_id": 109,
+        "theme": "LIABILITY_LIMITATION",
+        "rationale": "responsabilité entre joueurs et release",
+        "evidence_span": "you are responsible for your interactions with other players"
+      },
+      {
+        "start_id": 114,
+        "theme": "PAYMENT_BILLING",
+        "rationale": "licence limitée aux objets virtuels via paiement",
+        "evidence_span": "we provide a service in the form of access to games and virtual items"
+      },
+      {
+        "start_id": 137,
+        "theme": "SUBSCRIPTION_RENEWAL",
+        "rationale": "abonnements soumis à des termes additionnels",
+        "evidence_span": "subscriptions are also subject to additional terms"
+      },
+      {
+        "start_id": 138,
+        "theme": "PAYMENT_BILLING",
+        "rationale": "support facturation",
+        "evidence_span": "for billing support , call our billing support team"
+      },
+      {
+        "start_id": 144,
+        "theme": "SUBSCRIPTION_RENEWAL",
+        "rationale": "promotions et offres",
+        "evidence_span": "we may offer limited time promotions"
+      },
+      {
+        "start_id": 153,
+        "theme": "THIRD_PARTY",
+        "rationale": "publicité et sites/sociétés tiers",
+        "evidence_span": "may feature advertisements"
+      },
+      {
+        "start_id": 163,
+        "theme": "LICENSE_IP",
+        "rationale": "DMCA et infractions au copyright",
+        "evidence_span": "we respect the intellectual property rights of others"
+      },
+      {
+        "start_id": 169,
+        "theme": "USER_CONTENT",
+        "rationale": "feedback et idées soumises",
+        "evidence_span": "we may request your feedback"
+      },
+      {
+        "start_id": 172,
+        "theme": "WARRANTY_DISCLAIMER",
+        "rationale": "titre warranty disclaimer 'as is'",
+        "evidence_span": "warranty disclaimer"
+      },
+      {
+        "start_id": 180,
+        "theme": "LIABILITY_LIMITATION",
+        "rationale": "limitation des dommages et de la responsabilité",
+        "evidence_span": "are not liable"
+      },
+      {
+        "start_id": 187,
+        "theme": "INDEMNIFICATION",
+        "rationale": "obligation d'indemniser Zynga",
+        "evidence_span": "you agree to indemnify , defend and hold harmless"
+      },
+      {
+        "start_id": 192,
+        "theme": "DISPUTE_ARBITRATION",
+        "rationale": "titre 'agreement to arbitrate and class action waiver'",
+        "evidence_span": "agreement to arbitrate and class action waiver"
+      },
+      {
+        "start_id": 222,
+        "theme": "DISPUTE_ARBITRATION",
+        "rationale": "titre 'changes to section 17'",
+        "evidence_span": "changes to section 17"
+      },
+      {
+        "start_id": 225,
+        "theme": "GOVERNING_LAW",
+        "rationale": "loi applicable (californie/irlande)",
+        "evidence_span": "governed by california law"
+      },
+      {
+        "start_id": 227,
+        "theme": "GOVERNING_LAW",
+        "rationale": "titre 'venue for legal disputes'",
+        "evidence_span": "venue for legal disputes not subject to arbitration"
+      },
+      {
+        "start_id": 230,
+        "theme": "MISC_BOILERPLATE",
+        "rationale": "severability et clauses finales boilerplate",
+        "evidence_span": "is not enforceable , the rest of these terms"
+      },
+      {
+        "start_id": 243,
+        "theme": "DISPUTE_ARBITRATION",
+        "rationale": "equitable/injunctive relief et limites de recours",
+        "evidence_span": "money damages alone will not be enough"
+      },
+      {
+        "start_id": 247,
+        "theme": "LIABILITY_LIMITATION",
+        "rationale": "force majeure — non responsable des événements hors contrôle",
+        "evidence_span": "we are not liable for any changes or problems out of our control"
+      }
+    ]
+  },
+  "annotations": [
+    {
+      "id": 0,
+      "theme": "META",
+      "block_id": 0,
+      "is_block_start": true,
+      "rationale": "ouverture du document, date d'effet « effective july 26 , 2016 »",
+      "rationale_codes": {
+        "decision_trigger": "document_start",
+        "relation_to_prev": "document_start",
+        "evidence_span": "effective july 26 , 2016",
+        "revised_from_plan": false,
+        "confidence": 0.97
+      },
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 1,
+      "theme": "META",
+      "block_id": 0,
+      "is_block_start": false,
+      "reason": "seconde date d'effet, suite des métadonnées",
+      "legal_nature": "PROHIBITION",
+      "legal_nature_marker": "do not"
+    },
+    {
+      "id": 2,
+      "theme": "META",
+      "block_id": 0,
+      "is_block_start": false,
+      "reason": "lien vers la version antérieure des termes, métadonnée",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 3,
+      "theme": "META",
+      "block_id": 0,
+      "is_block_start": false,
+      "reason": "avis liminaire renvoyant à l'arbitrage, encore en-tête",
+      "legal_nature": "GOVERNANCE",
+      "legal_nature_marker": "arbitration"
+    },
+    {
+      "id": 4,
+      "theme": "META",
+      "block_id": 0,
+      "is_block_start": false,
+      "reason": "renvoi 'go to section 17', métadonnée de navigation",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 5,
+      "theme": "PREAMBLE_SCOPE",
+      "block_id": 1,
+      "is_block_start": true,
+      "rationale": "passage à l'invitation d'accepter les termes : « please read these terms of service »",
+      "rationale_codes": {
+        "decision_trigger": "topic_keyword",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "please read these terms of service",
+        "revised_from_plan": false,
+        "confidence": 0.9
+      },
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 6,
+      "theme": "PREAMBLE_SCOPE",
+      "block_id": 1,
+      "is_block_start": false,
+      "reason": "acceptation par l'usage, prolonge le préambule",
+      "legal_nature": "OBLIGATION",
+      "legal_nature_marker": "you agree to"
+    },
+    {
+      "id": 7,
+      "theme": "PREAMBLE_SCOPE",
+      "block_id": 1,
+      "is_block_start": false,
+      "reason": "conséquence du refus d'accepter, prolonge l'acceptation",
+      "legal_nature": "PROHIBITION",
+      "legal_nature_marker": "must not"
+    },
+    {
+      "id": 8,
+      "theme": "DEFINITIONS",
+      "block_id": 2,
+      "is_block_start": true,
+      "rationale": "début des définitions : « references to `` zynga , '' `` us '' or `` we '' means »",
+      "rationale_codes": {
+        "decision_trigger": "definition_marker",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "references to `` zynga",
+        "revised_from_plan": false,
+        "confidence": 0.88
+      },
+      "legal_nature": "META",
+      "legal_nature_marker": "inc"
+    },
+    {
+      "id": 9,
+      "theme": "DEFINITIONS",
+      "block_id": 2,
+      "is_block_start": false,
+      "reason": "localisation de l'entité, précise la définition de zynga",
+      "legal_nature": "META",
+      "legal_nature_marker": "inc."
+    },
+    {
+      "id": 10,
+      "theme": "DEFINITIONS",
+      "block_id": 2,
+      "is_block_start": false,
+      "reason": "définition de zynga hors États-Unis",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 11,
+      "theme": "DEFINITIONS",
+      "block_id": 2,
+      "is_block_start": false,
+      "reason": "extension de la définition aux agents/employés",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 12,
+      "theme": "DEFINITIONS",
+      "block_id": 2,
+      "is_block_start": false,
+      "reason": "définition de 'account'",
+      "legal_nature": "DEFINITION",
+      "legal_nature_marker": "means"
+    },
+    {
+      "id": 13,
+      "theme": "DEFINITIONS",
+      "block_id": 2,
+      "is_block_start": false,
+      "reason": "définition de 'community rules'",
+      "legal_nature": "DEFINITION",
+      "legal_nature_marker": "means"
+    },
+    {
+      "id": 14,
+      "theme": "DEFINITIONS",
+      "block_id": 2,
+      "is_block_start": false,
+      "reason": "définition de 'feature terms'",
+      "legal_nature": "DEFINITION",
+      "legal_nature_marker": "means"
+    },
+    {
+      "id": 15,
+      "theme": "DEFINITIONS",
+      "block_id": 2,
+      "is_block_start": false,
+      "reason": "définition de 'offers'",
+      "legal_nature": "DEFINITION",
+      "legal_nature_marker": "means"
+    },
+    {
+      "id": 16,
+      "theme": "DEFINITIONS",
+      "block_id": 2,
+      "is_block_start": false,
+      "reason": "définition de 'services'",
+      "legal_nature": "DEFINITION",
+      "legal_nature_marker": "refers to"
+    },
+    {
+      "id": 17,
+      "theme": "DEFINITIONS",
+      "block_id": 2,
+      "is_block_start": false,
+      "reason": "définition de 'terms of service'",
+      "legal_nature": "DEFINITION",
+      "legal_nature_marker": "means"
+    },
+    {
+      "id": 18,
+      "theme": "DEFINITIONS",
+      "block_id": 2,
+      "is_block_start": false,
+      "reason": "définition de 'user content'",
+      "legal_nature": "DEFINITION",
+      "legal_nature_marker": "means"
+    },
+    {
+      "id": 19,
+      "theme": "DEFINITIONS",
+      "block_id": 2,
+      "is_block_start": false,
+      "reason": "exemple de user content, prolonge la définition",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 20,
+      "theme": "DEFINITIONS",
+      "block_id": 2,
+      "is_block_start": false,
+      "reason": "définition de 'virtual items'",
+      "legal_nature": "DEFINITION",
+      "legal_nature_marker": "means"
+    },
+    {
+      "id": 21,
+      "theme": "DEFINITIONS",
+      "block_id": 2,
+      "is_block_start": false,
+      "reason": "définition de 'zynga corporate family'",
+      "legal_nature": "DEFINITION",
+      "legal_nature_marker": "refers to"
+    },
+    {
+      "id": 22,
+      "theme": "DEFINITIONS",
+      "block_id": 2,
+      "is_block_start": false,
+      "reason": "définition de 'zynga affiliates'",
+      "legal_nature": "DEFINITION",
+      "legal_nature_marker": "refers to"
+    },
+    {
+      "id": 23,
+      "theme": "MODIFICATION_OF_TERMS",
+      "block_id": 3,
+      "is_block_start": true,
+      "rationale": "droit autonome de modifier les termes : « we reserve the right , at our discretion , to change , modify , add or remove portions of the terms »",
+      "rationale_codes": {
+        "decision_trigger": "topic_keyword",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "we reserve the right , at our discretion , to change , modify",
+        "revised_from_plan": false,
+        "confidence": 0.92
+      },
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 24,
+      "theme": "MODIFICATION_OF_TERMS",
+      "block_id": 3,
+      "is_block_start": false,
+      "reason": "notice additionnelle des changements, prolonge la modification",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 25,
+      "theme": "MODIFICATION_OF_TERMS",
+      "block_id": 3,
+      "is_block_start": false,
+      "reason": "effet des changements une fois postés",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 26,
+      "theme": "MODIFICATION_OF_TERMS",
+      "block_id": 3,
+      "is_block_start": false,
+      "reason": "acceptation par usage continu après changement",
+      "legal_nature": "OBLIGATION",
+      "legal_nature_marker": "you agree to"
+    },
+    {
+      "id": 27,
+      "theme": "MODIFICATION_OF_TERMS",
+      "block_id": 3,
+      "is_block_start": false,
+      "reason": "accessibilité des nouvelles versions",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 28,
+      "theme": "MODIFICATION_OF_TERMS",
+      "block_id": 3,
+      "is_block_start": false,
+      "reason": "version applicable en cas de dispute, procédure liée à la modification",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 29,
+      "theme": "MODIFICATION_OF_TERMS",
+      "block_id": 3,
+      "is_block_start": false,
+      "reason": "réaffirmation de l'acceptation des changements par usage",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 30,
+      "theme": "MODIFICATION_OF_TERMS",
+      "block_id": 3,
+      "is_block_start": false,
+      "reason": "modification par l'utilisateur seulement par amendement écrit",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 31,
+      "theme": "MODIFICATION_OF_TERMS",
+      "block_id": 3,
+      "is_block_start": false,
+      "reason": "priorité des termes en cas de conflit, prolonge le régime de modification",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 32,
+      "theme": "ELIGIBILITY_ACCOUNT",
+      "block_id": 4,
+      "is_block_start": true,
+      "rationale": "création de compte et fourniture d'informations : « we may ask you to create an account and select a password »",
+      "rationale_codes": {
+        "decision_trigger": "topic_keyword",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "we may ask you to create an account",
+        "revised_from_plan": false,
+        "confidence": 0.85
+      },
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 33,
+      "theme": "ELIGIBILITY_ACCOUNT",
+      "block_id": 4,
+      "is_block_start": false,
+      "reason": "usage des informations selon la privacy policy, prolonge la création de compte",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 34,
+      "theme": "ELIGIBILITY_ACCOUNT",
+      "block_id": 4,
+      "is_block_start": false,
+      "reason": "obligation de fournir des informations exactes",
+      "legal_nature": "OBLIGATION",
+      "legal_nature_marker": "you agree to"
+    },
+    {
+      "id": 35,
+      "theme": "ELIGIBILITY_ACCOUNT",
+      "block_id": 4,
+      "is_block_start": false,
+      "reason": "responsabilité de la sécurité du compte",
+      "legal_nature": "OBLIGATION",
+      "legal_nature_marker": "you are responsible"
+    },
+    {
+      "id": 36,
+      "theme": "ELIGIBILITY_ACCOUNT",
+      "block_id": 4,
+      "is_block_start": false,
+      "reason": "interdiction de partager les identifiants",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 37,
+      "theme": "ELIGIBILITY_ACCOUNT",
+      "block_id": 4,
+      "is_block_start": false,
+      "reason": "responsabilité de l'activité du compte",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 38,
+      "theme": "ELIGIBILITY_ACCOUNT",
+      "block_id": 4,
+      "is_block_start": false,
+      "reason": "obligation de signaler tout accès non autorisé",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 39,
+      "theme": "PRIVACY_DATA",
+      "block_id": 5,
+      "is_block_start": true,
+      "rationale": "passage à la politique de confidentialité : « zynga 's privacy policy tells you how we collect and use information »",
+      "rationale_codes": {
+        "decision_trigger": "topic_keyword",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "zynga 's privacy policy tells you how we collect and use information",
+        "revised_from_plan": false,
+        "confidence": 0.85
+      },
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 40,
+      "theme": "PRIVACY_DATA",
+      "block_id": 5,
+      "is_block_start": false,
+      "reason": "consentement à la collecte selon la privacy policy",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 41,
+      "theme": "PRIVACY_DATA",
+      "block_id": 5,
+      "is_block_start": false,
+      "reason": "conséquence du désaccord avec la privacy policy",
+      "legal_nature": "OBLIGATION",
+      "legal_nature_marker": "you must"
+    },
+    {
+      "id": 42,
+      "theme": "PRIVACY_DATA",
+      "block_id": 5,
+      "is_block_start": false,
+      "reason": "encouragement à lire la privacy policy, prolonge le thème",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 43,
+      "theme": "ELIGIBILITY_ACCOUNT",
+      "block_id": 6,
+      "is_block_start": true,
+      "rationale": "titre nominal 'who can use our service' introduisant les limites d'éligibilité",
+      "rationale_codes": {
+        "decision_trigger": "title_marker",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "who can use our service",
+        "revised_from_plan": false,
+        "confidence": 0.9
+      },
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 44,
+      "theme": "ELIGIBILITY_ACCOUNT",
+      "block_id": 6,
+      "is_block_start": false,
+      "reason": "chapeau de la liste 'you may not use our service if'",
+      "legal_nature": "PROHIBITION",
+      "legal_nature_marker": "may not"
+    },
+    {
+      "id": 45,
+      "theme": "ELIGIBILITY_ACCOUNT",
+      "block_id": 6,
+      "is_block_start": false,
+      "reason": "item de liste : incapacité contractuelle",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 46,
+      "theme": "ELIGIBILITY_ACCOUNT",
+      "block_id": 6,
+      "is_block_start": false,
+      "reason": "item de liste : moins de 13 ans",
+      "legal_nature": "PROHIBITION",
+      "legal_nature_marker": "must not"
+    },
+    {
+      "id": 47,
+      "theme": "ELIGIBILITY_ACCOUNT",
+      "block_id": 6,
+      "is_block_start": false,
+      "reason": "item de liste : restrictions d'exportation US",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 48,
+      "theme": "ELIGIBILITY_ACCOUNT",
+      "block_id": 6,
+      "is_block_start": false,
+      "reason": "item de liste : délinquant sexuel condamné",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 49,
+      "theme": "ELIGIBILITY_ACCOUNT",
+      "block_id": 6,
+      "is_block_start": false,
+      "reason": "item de liste : précédemment banni",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 50,
+      "theme": "ELIGIBILITY_ACCOUNT",
+      "block_id": 6,
+      "is_block_start": false,
+      "reason": "représentation du tuteur légal pour mineurs, prolonge l'éligibilité",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 51,
+      "theme": "ACCEPTABLE_USE",
+      "block_id": 7,
+      "is_block_start": true,
+      "rationale": "titre nominal 'additional important rules and terms' ouvrant les règles d'usage additionnelles",
+      "rationale_codes": {
+        "decision_trigger": "title_marker",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "additional important rules and terms",
+        "revised_from_plan": false,
+        "confidence": 0.82
+      },
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 52,
+      "theme": "ACCEPTABLE_USE",
+      "block_id": 7,
+      "is_block_start": false,
+      "reason": "obligation de suivre les community rules et feature terms",
+      "legal_nature": "OBLIGATION",
+      "legal_nature_marker": "you must"
+    },
+    {
+      "id": 53,
+      "theme": "ACCEPTABLE_USE",
+      "block_id": 7,
+      "is_block_start": false,
+      "reason": "ces règles additionnelles s'appliquent en sus",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 54,
+      "theme": "ACCEPTABLE_USE",
+      "block_id": 7,
+      "is_block_start": false,
+      "reason": "conformité aux conditions des plateformes tierces, prolonge les règles d'usage",
+      "legal_nature": "OBLIGATION",
+      "legal_nature_marker": "you must"
+    },
+    {
+      "id": 55,
+      "theme": "ELIGIBILITY_ACCOUNT",
+      "block_id": 8,
+      "is_block_start": true,
+      "rationale": "conditions techniques d'accès — comptes tiers requis : « you may need an account with a social network »",
+      "rationale_codes": {
+        "decision_trigger": "topic_keyword",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "you may need an account with a",
+        "revised_from_plan": false,
+        "confidence": 0.7
+      },
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 56,
+      "theme": "ELIGIBILITY_ACCOUNT",
+      "block_id": 8,
+      "is_block_start": false,
+      "reason": "mise à jour de logiciels tiers, prolonge les conditions d'accès",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 57,
+      "theme": "ELIGIBILITY_ACCOUNT",
+      "block_id": 8,
+      "is_block_start": false,
+      "reason": "fourniture de l'équipement et des frais de connexion",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 58,
+      "theme": "MODIFICATION_OF_TERMS",
+      "block_id": 9,
+      "is_block_start": true,
+      "rationale": "mises à jour imposées du service et des termes : « we may require that you accept updates to the service as well as to the terms »",
+      "rationale_codes": {
+        "decision_trigger": "topic_keyword",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "we may require that you accept updates to the service",
+        "revised_from_plan": false,
+        "confidence": 0.72
+      },
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 59,
+      "theme": "MODIFICATION_OF_TERMS",
+      "block_id": 9,
+      "is_block_start": false,
+      "reason": "mises à jour du jeu/logiciel, prolonge les updates",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 60,
+      "theme": "MODIFICATION_OF_TERMS",
+      "block_id": 9,
+      "is_block_start": false,
+      "reason": "updates effectuées à distance sans notification",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 61,
+      "theme": "TERMINATION",
+      "block_id": 10,
+      "is_block_start": true,
+      "rationale": "arrêt/suspension du service et résiliation de licence : « zynga reserves the right to stop offering and/or supporting the service »",
+      "rationale_codes": {
+        "decision_trigger": "topic_keyword",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "zynga reserves the right to stop offering",
+        "revised_from_plan": false,
+        "confidence": 0.82
+      },
+      "legal_nature": "GOVERNANCE",
+      "legal_nature_marker": "terminate"
+    },
+    {
+      "id": 62,
+      "theme": "TERMINATION",
+      "block_id": 10,
+      "is_block_start": false,
+      "reason": "absence de remboursement en cas de discontinuation, conséquence",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 63,
+      "theme": "TERMINATION",
+      "block_id": 10,
+      "is_block_start": false,
+      "reason": "suspension/résiliation discrétionnaire des comptes, prolonge le thème",
+      "legal_nature": "GOVERNANCE",
+      "legal_nature_marker": "terminate"
+    },
+    {
+      "id": 64,
+      "theme": "TERMINATION",
+      "block_id": 10,
+      "is_block_start": false,
+      "reason": "procédure de contestation d'une action sur le compte, conséquence",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 65,
+      "theme": "TERMINATION",
+      "block_id": 10,
+      "is_block_start": false,
+      "reason": "droit de l'utilisateur d'arrêter d'utiliser le service",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 66,
+      "theme": "TERMINATION",
+      "block_id": 10,
+      "is_block_start": false,
+      "reason": "absence de remboursement en cas de suppression du compte, prolonge la résiliation",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 67,
+      "theme": "LICENSE_IP",
+      "block_id": 11,
+      "is_block_start": true,
+      "rationale": "PI Zynga : « it is protected by copyright , trademark , trade dress , patent and other us and non-us intellectual property »",
+      "rationale_codes": {
+        "decision_trigger": "topic_keyword",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "protected by copyright , trade",
+        "revised_from_plan": false,
+        "confidence": 0.9
+      },
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 68,
+      "theme": "LICENSE_IP",
+      "block_id": 11,
+      "is_block_start": false,
+      "reason": "Zynga détient les droits sur le contenu, prolonge la PI",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 69,
+      "theme": "LICENSE_IP",
+      "block_id": 11,
+      "is_block_start": false,
+      "reason": "aucun droit transféré à l'utilisateur",
+      "legal_nature": "PROHIBITION",
+      "legal_nature_marker": "do not"
+    },
+    {
+      "id": 70,
+      "theme": "LICENSE_IP",
+      "block_id": 11,
+      "is_block_start": false,
+      "reason": "octroi d'une licence limitée d'accès au service",
+      "legal_nature": "RIGHT_GRANT",
+      "legal_nature_marker": "grants you"
+    },
+    {
+      "id": 71,
+      "theme": "LICENSE_IP",
+      "block_id": 11,
+      "is_block_start": false,
+      "reason": "restriction d'usage à des fins prévues, prolonge la licence",
+      "legal_nature": "PROHIBITION",
+      "legal_nature_marker": "agree not to"
+    },
+    {
+      "id": 72,
+      "theme": "LICENSE_IP",
+      "block_id": 11,
+      "is_block_start": false,
+      "reason": "conséquence d'une violation, incluant atteinte à la PI",
+      "legal_nature": "GOVERNANCE",
+      "legal_nature_marker": "suspend"
+    },
+    {
+      "id": 73,
+      "theme": "LICENSE_IP",
+      "block_id": 11,
+      "is_block_start": false,
+      "reason": "perturbation du service comme violation, prolonge le thème PI/licence",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 74,
+      "theme": "ELIGIBILITY_ACCOUNT",
+      "block_id": 12,
+      "is_block_start": true,
+      "rationale": "titre nominal 'your account and virtual items' ouvrant la propriété du compte",
+      "rationale_codes": {
+        "decision_trigger": "title_marker",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "your account and virtual items",
+        "revised_from_plan": false,
+        "confidence": 0.78
+      },
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 75,
+      "theme": "ELIGIBILITY_ACCOUNT",
+      "block_id": 12,
+      "is_block_start": false,
+      "reason": "vous ne possédez pas le compte que vous créez",
+      "legal_nature": "PROHIBITION",
+      "legal_nature_marker": "do not"
+    },
+    {
+      "id": 76,
+      "theme": "ELIGIBILITY_ACCOUNT",
+      "block_id": 12,
+      "is_block_start": false,
+      "reason": "s'applique aussi aux objets/monnaie en jeu, prolonge",
+      "legal_nature": "SCOPE_APPLICABILITY",
+      "legal_nature_marker": "applies to"
+    },
+    {
+      "id": 77,
+      "theme": "ELIGIBILITY_ACCOUNT",
+      "block_id": 12,
+      "is_block_start": false,
+      "reason": "compte et objets liés détenus par Zynga",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 78,
+      "theme": "ELIGIBILITY_ACCOUNT",
+      "block_id": 12,
+      "is_block_start": false,
+      "reason": "licence limitée d'usage du compte, prolonge la propriété",
+      "legal_nature": "RIGHT_GRANT",
+      "legal_nature_marker": "license to"
+    },
+    {
+      "id": 79,
+      "theme": "ELIGIBILITY_ACCOUNT",
+      "block_id": 12,
+      "is_block_start": false,
+      "reason": "suppression des comptes inactifs, prolonge le régime du compte",
+      "legal_nature": "GOVERNANCE",
+      "legal_nature_marker": "terminate"
+    },
+    {
+      "id": 80,
+      "theme": "ELIGIBILITY_ACCOUNT",
+      "block_id": 12,
+      "is_block_start": false,
+      "reason": "procédure de demande de suppression du compte",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 81,
+      "theme": "ACCEPTABLE_USE",
+      "block_id": 13,
+      "is_block_start": true,
+      "rationale": "interdiction de transférer des objets virtuels : « you are not allowed to transfer virtual items outside of the service »",
+      "rationale_codes": {
+        "decision_trigger": "topic_keyword",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "you are not allowed to transfer virtual items",
+        "revised_from_plan": false,
+        "confidence": 0.7
+      },
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 82,
+      "theme": "ACCEPTABLE_USE",
+      "block_id": 13,
+      "is_block_start": false,
+      "reason": "transferts non reconnus comme légitimes, conséquence",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 83,
+      "theme": "ACCEPTABLE_USE",
+      "block_id": 13,
+      "is_block_start": false,
+      "reason": "interdiction de revendre/échanger des objets virtuels",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 84,
+      "theme": "ACCEPTABLE_USE",
+      "block_id": 13,
+      "is_block_start": false,
+      "reason": "transfert prohibé et nul, résiliation possible, prolonge l'interdiction",
+      "legal_nature": "PROHIBITION",
+      "legal_nature_marker": "prohibited"
+    },
+    {
+      "id": 85,
+      "theme": "USER_CONTENT",
+      "block_id": 14,
+      "is_block_start": true,
+      "rationale": "garanties sur le contenu transmis : « if you transmit or upload user content on the service , you agree that it will be »",
+      "rationale_codes": {
+        "decision_trigger": "topic_keyword",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "if you transmit or upload user content on the service",
+        "revised_from_plan": false,
+        "confidence": 0.85
+      },
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 86,
+      "theme": "USER_CONTENT",
+      "block_id": 14,
+      "is_block_start": false,
+      "reason": "item de liste : pas en violation de la loi",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 87,
+      "theme": "USER_CONTENT",
+      "block_id": 14,
+      "is_block_start": false,
+      "reason": "item de liste : pas en violation de droits de tiers",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 88,
+      "theme": "USER_CONTENT",
+      "block_id": 14,
+      "is_block_start": false,
+      "reason": "item de liste : exempt de virus",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 89,
+      "theme": "USER_CONTENT",
+      "block_id": 14,
+      "is_block_start": false,
+      "reason": "item de liste : conforme aux community rules",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 90,
+      "theme": "USER_CONTENT",
+      "block_id": 14,
+      "is_block_start": false,
+      "reason": "traitement du contenu selon la privacy policy, prolonge",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 91,
+      "theme": "USER_CONTENT",
+      "block_id": 14,
+      "is_block_start": false,
+      "reason": "licence accordée à Zynga sur le user content",
+      "legal_nature": "RIGHT_GRANT",
+      "legal_nature_marker": "license to"
+    },
+    {
+      "id": 92,
+      "theme": "USER_CONTENT",
+      "block_id": 14,
+      "is_block_start": false,
+      "reason": "renonciation aux droits moraux, prolonge la licence sur le contenu",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 93,
+      "theme": "USER_CONTENT",
+      "block_id": 14,
+      "is_block_start": false,
+      "reason": "fin de la licence Zynga sur demande de suppression",
+      "legal_nature": "RIGHT_GRANT",
+      "legal_nature_marker": "license to"
+    },
+    {
+      "id": 94,
+      "theme": "USER_CONTENT",
+      "block_id": 14,
+      "is_block_start": false,
+      "reason": "item d'exception : contenu soumis lors de promotions",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 95,
+      "theme": "USER_CONTENT",
+      "block_id": 14,
+      "is_block_start": false,
+      "reason": "item d'exception : contenu déjà partagé/utilisé",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 96,
+      "theme": "USER_CONTENT",
+      "block_id": 14,
+      "is_block_start": false,
+      "reason": "item d'exception : contenu sous licence séparée",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 97,
+      "theme": "USER_CONTENT",
+      "block_id": 14,
+      "is_block_start": false,
+      "reason": "mesures de suppression du contenu, procédure",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 98,
+      "theme": "USER_CONTENT",
+      "block_id": 14,
+      "is_block_start": false,
+      "reason": "persistance possible du contenu, prolonge la suppression",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 99,
+      "theme": "USER_CONTENT",
+      "block_id": 14,
+      "is_block_start": false,
+      "reason": "conservation pour obligations légales, prolonge",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 100,
+      "theme": "USER_CONTENT",
+      "block_id": 14,
+      "is_block_start": false,
+      "reason": "contenu posté publiquement peut être réutilisé par autrui",
+      "legal_nature": "PROHIBITION",
+      "legal_nature_marker": "will not"
+    },
+    {
+      "id": 101,
+      "theme": "USER_CONTENT",
+      "block_id": 14,
+      "is_block_start": false,
+      "reason": "conseil de ne pas poster ce qui doit rester confidentiel",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 102,
+      "theme": "USER_CONTENT",
+      "block_id": 14,
+      "is_block_start": false,
+      "reason": "Zynga non responsable de l'usage par autrui du contenu posté, prolonge",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 103,
+      "theme": "USER_CONTENT",
+      "block_id": 15,
+      "is_block_start": true,
+      "rationale": "titre nominal 'monitoring use of service and user content' ouvrant le régime de surveillance",
+      "rationale_codes": {
+        "decision_trigger": "title_marker",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "monitoring use of service and user content",
+        "revised_from_plan": false,
+        "confidence": 0.78
+      },
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 104,
+      "theme": "USER_CONTENT",
+      "block_id": 15,
+      "is_block_start": false,
+      "reason": "aucune obligation de surveiller le contenu",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 105,
+      "theme": "USER_CONTENT",
+      "block_id": 15,
+      "is_block_start": false,
+      "reason": "droit d'éditer/refuser/retirer du contenu",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 106,
+      "theme": "USER_CONTENT",
+      "block_id": 15,
+      "is_block_start": false,
+      "reason": "droit de surveiller/enregistrer les interactions, prolonge",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 107,
+      "theme": "USER_CONTENT",
+      "block_id": 15,
+      "is_block_start": false,
+      "reason": "non responsable des informations fournies par d'autres joueurs",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 108,
+      "theme": "USER_CONTENT",
+      "block_id": 15,
+      "is_block_start": false,
+      "reason": "procédure de signalement d'abus, prolonge le monitoring",
+      "legal_nature": "SCOPE_APPLICABILITY",
+      "legal_nature_marker": "by using"
+    },
+    {
+      "id": 109,
+      "theme": "LIABILITY_LIMITATION",
+      "block_id": 16,
+      "is_block_start": true,
+      "rationale": "responsabilité entre joueurs et release : « you are responsible for your interactions with other players »",
+      "rationale_codes": {
+        "decision_trigger": "topic_keyword",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "you are responsible for your interactions with other players",
+        "revised_from_plan": false,
+        "confidence": 0.7
+      },
+      "legal_nature": "OBLIGATION",
+      "legal_nature_marker": "you are responsible"
+    },
+    {
+      "id": 110,
+      "theme": "LIABILITY_LIMITATION",
+      "block_id": 16,
+      "is_block_start": false,
+      "reason": "Zynga non tenu d'intervenir dans les litiges entre joueurs",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 111,
+      "theme": "LIABILITY_LIMITATION",
+      "block_id": 16,
+      "is_block_start": false,
+      "reason": "release de Zynga pour les litiges entre joueurs, prolonge",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 112,
+      "theme": "LIABILITY_LIMITATION",
+      "block_id": 16,
+      "is_block_start": false,
+      "reason": "portée des dommages exclus, prolonge le release",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 113,
+      "theme": "LIABILITY_LIMITATION",
+      "block_id": 16,
+      "is_block_start": false,
+      "reason": "renonciation au civil code §1542 en Californie, prolonge le release",
+      "legal_nature": "OBLIGATION",
+      "legal_nature_marker": "must"
+    },
+    {
+      "id": 114,
+      "theme": "PAYMENT_BILLING",
+      "block_id": 17,
+      "is_block_start": true,
+      "rationale": "régime de paiement/objets virtuels : « we provide a service in the form of access to games and virtual items »",
+      "rationale_codes": {
+        "decision_trigger": "topic_keyword",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "we provide a service in the form of access to games and virtual items",
+        "revised_from_plan": false,
+        "confidence": 0.78
+      },
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 115,
+      "theme": "PAYMENT_BILLING",
+      "block_id": 17,
+      "is_block_start": false,
+      "reason": "usage d'argent réel pour la licence d'objets virtuels",
+      "legal_nature": "RIGHT_GRANT",
+      "legal_nature_marker": "license to"
+    },
+    {
+      "id": 116,
+      "theme": "PAYMENT_BILLING",
+      "block_id": 17,
+      "is_block_start": false,
+      "reason": "obtention de la licence via autorisation de facturation",
+      "legal_nature": "RIGHT_GRANT",
+      "legal_nature_marker": "license to"
+    },
+    {
+      "id": 117,
+      "theme": "PAYMENT_BILLING",
+      "block_id": 17,
+      "is_block_start": false,
+      "reason": "moyens de paiement sur zynga.com",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 118,
+      "theme": "PAYMENT_BILLING",
+      "block_id": 17,
+      "is_block_start": false,
+      "reason": "modification des moyens de paiement, prolonge",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 119,
+      "theme": "PAYMENT_BILLING",
+      "block_id": 17,
+      "is_block_start": false,
+      "reason": "achats sur plateformes tierces soumis à leurs conditions",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 120,
+      "theme": "PAYMENT_BILLING",
+      "block_id": 17,
+      "is_block_start": false,
+      "reason": "Zynga ne contrôle pas paiement/remboursement des plateformes",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 121,
+      "theme": "PAYMENT_BILLING",
+      "block_id": 17,
+      "is_block_start": false,
+      "reason": "renvoi aux conditions des plateformes, prolonge",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 122,
+      "theme": "PAYMENT_BILLING",
+      "block_id": 17,
+      "is_block_start": false,
+      "reason": "email de confirmation sur zynga.com",
+      "legal_nature": "RIGHT_GRANT",
+      "legal_nature_marker": "license to"
+    },
+    {
+      "id": 123,
+      "theme": "PAYMENT_BILLING",
+      "block_id": 17,
+      "is_block_start": false,
+      "reason": "vérification de la confirmation, procédure",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 124,
+      "theme": "PAYMENT_BILLING",
+      "block_id": 17,
+      "is_block_start": false,
+      "reason": "conservation des enregistrements de transactions",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 125,
+      "theme": "PAYMENT_BILLING",
+      "block_id": 17,
+      "is_block_start": false,
+      "reason": "la commande comme offre acceptée par Zynga, prolonge",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 126,
+      "theme": "PAYMENT_BILLING",
+      "block_id": 17,
+      "is_block_start": false,
+      "reason": "début de la licence à l'acceptation du paiement",
+      "legal_nature": "RIGHT_GRANT",
+      "legal_nature_marker": "license to"
+    },
+    {
+      "id": 127,
+      "theme": "PAYMENT_BILLING",
+      "block_id": 17,
+      "is_block_start": false,
+      "reason": "chapeau de liste sur le clic du bouton d'achat",
+      "legal_nature": "RIGHT_GRANT",
+      "legal_nature_marker": "license to"
+    },
+    {
+      "id": 128,
+      "theme": "PAYMENT_BILLING",
+      "block_id": 17,
+      "is_block_start": false,
+      "reason": "item de liste : fourniture immédiate",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 129,
+      "theme": "PAYMENT_BILLING",
+      "block_id": 17,
+      "is_block_start": false,
+      "reason": "item de liste : perte du droit de rétractation UE",
+      "legal_nature": "OBLIGATION",
+      "legal_nature_marker": "you will"
+    },
+    {
+      "id": 130,
+      "theme": "PAYMENT_BILLING",
+      "block_id": 17,
+      "is_block_start": false,
+      "reason": "absence de propriété légale des objets virtuels",
+      "legal_nature": "PROHIBITION",
+      "legal_nature_marker": "do not"
+    },
+    {
+      "id": 131,
+      "theme": "PAYMENT_BILLING",
+      "block_id": 17,
+      "is_block_start": false,
+      "reason": "la monnaie virtuelle ne reflète aucune valeur réelle, prolonge",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 132,
+      "theme": "PAYMENT_BILLING",
+      "block_id": 17,
+      "is_block_start": false,
+      "reason": "absence de remboursement à la fermeture du compte",
+      "legal_nature": "PROHIBITION",
+      "legal_nature_marker": "will not"
+    },
+    {
+      "id": 133,
+      "theme": "PAYMENT_BILLING",
+      "block_id": 17,
+      "is_block_start": false,
+      "reason": "achats de monnaie tierce non remboursables, prolonge",
+      "legal_nature": "RIGHT_GRANT",
+      "legal_nature_marker": "license to"
+    },
+    {
+      "id": 134,
+      "theme": "PAYMENT_BILLING",
+      "block_id": 17,
+      "is_block_start": false,
+      "reason": "paiement via tiers, Zynga non partie à la transaction",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 135,
+      "theme": "PAYMENT_BILLING",
+      "block_id": 17,
+      "is_block_start": false,
+      "reason": "obligation de payer frais et taxes",
+      "legal_nature": "OBLIGATION",
+      "legal_nature_marker": "you agree to"
+    },
+    {
+      "id": 136,
+      "theme": "PAYMENT_BILLING",
+      "block_id": 17,
+      "is_block_start": false,
+      "reason": "révision des prix, prolonge le régime de paiement",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 137,
+      "theme": "SUBSCRIPTION_RENEWAL",
+      "block_id": 18,
+      "is_block_start": true,
+      "rationale": "abonnements soumis à des termes additionnels : « subscriptions are also subject to additional terms »",
+      "rationale_codes": {
+        "decision_trigger": "topic_keyword",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "subscriptions are also subject to additional terms",
+        "revised_from_plan": false,
+        "confidence": 0.6
+      },
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 138,
+      "theme": "PAYMENT_BILLING",
+      "block_id": 19,
+      "is_block_start": true,
+      "rationale": "support facturation : « for billing support , call our billing support team »",
+      "rationale_codes": {
+        "decision_trigger": "topic_keyword",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "for billing support , call our billing support team",
+        "revised_from_plan": false,
+        "confidence": 0.65
+      },
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 139,
+      "theme": "PAYMENT_BILLING",
+      "block_id": 19,
+      "is_block_start": false,
+      "reason": "support téléphonique en anglais seulement, précision",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 140,
+      "theme": "PAYMENT_BILLING",
+      "block_id": 19,
+      "is_block_start": false,
+      "reason": "numéros réservés aux questions de facturation",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 141,
+      "theme": "PAYMENT_BILLING",
+      "block_id": 19,
+      "is_block_start": false,
+      "reason": "limite du support facturation, prolonge",
+      "legal_nature": "PROHIBITION",
+      "legal_nature_marker": "will not"
+    },
+    {
+      "id": 142,
+      "theme": "PAYMENT_BILLING",
+      "block_id": 19,
+      "is_block_start": false,
+      "reason": "réaffirmation que le support est pour la facturation",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 143,
+      "theme": "PAYMENT_BILLING",
+      "block_id": 19,
+      "is_block_start": false,
+      "reason": "assistance non liée à la facturation, prolonge le support",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 144,
+      "theme": "SUBSCRIPTION_RENEWAL",
+      "block_id": 20,
+      "is_block_start": true,
+      "rationale": "promotions et offres limitées : « from time to time , we may offer limited time promotions »",
+      "rationale_codes": {
+        "decision_trigger": "topic_keyword",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "we may offer limited time promotions",
+        "revised_from_plan": false,
+        "confidence": 0.62
+      },
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 145,
+      "theme": "SUBSCRIPTION_RENEWAL",
+      "block_id": 20,
+      "is_block_start": false,
+      "reason": "règles officielles des promotions, prolonge",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 146,
+      "theme": "SUBSCRIPTION_RENEWAL",
+      "block_id": 20,
+      "is_block_start": false,
+      "reason": "application des règles en sus des termes",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 147,
+      "theme": "SUBSCRIPTION_RENEWAL",
+      "block_id": 20,
+      "is_block_start": false,
+      "reason": "promotion d'offres, prolonge le thème des offres",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 148,
+      "theme": "SUBSCRIPTION_RENEWAL",
+      "block_id": 20,
+      "is_block_start": false,
+      "reason": "ni l'un ni l'autre n'est tenu d'offrir/accepter",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 149,
+      "theme": "SUBSCRIPTION_RENEWAL",
+      "block_id": 20,
+      "is_block_start": false,
+      "reason": "offres non transférables/échangeables",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 150,
+      "theme": "SUBSCRIPTION_RENEWAL",
+      "block_id": 20,
+      "is_block_start": false,
+      "reason": "formalités pour bénéficier d'une offre, procédure",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 151,
+      "theme": "SUBSCRIPTION_RENEWAL",
+      "block_id": 20,
+      "is_block_start": false,
+      "reason": "offres soumises à taxes/charges",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 152,
+      "theme": "SUBSCRIPTION_RENEWAL",
+      "block_id": 20,
+      "is_block_start": false,
+      "reason": "assomption de la responsabilité liée à l'offre, prolonge",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 153,
+      "theme": "THIRD_PARTY",
+      "block_id": 21,
+      "is_block_start": true,
+      "rationale": "publicité et sociétés tierces : « our service and our games may feature advertisements from us or other companies »",
+      "rationale_codes": {
+        "decision_trigger": "topic_keyword",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "may feature advertisements",
+        "revised_from_plan": false,
+        "confidence": 0.75
+      },
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 154,
+      "theme": "THIRD_PARTY",
+      "block_id": 21,
+      "is_block_start": false,
+      "reason": "renvoi à la privacy policy pour le partage avec annonceurs",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 155,
+      "theme": "THIRD_PARTY",
+      "block_id": 21,
+      "is_block_start": false,
+      "reason": "liens vers d'autres sociétés, prolonge le thème tiers",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 156,
+      "theme": "THIRD_PARTY",
+      "block_id": 21,
+      "is_block_start": false,
+      "reason": "responsabilité de l'utilisateur dans les transactions tierces",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 157,
+      "theme": "THIRD_PARTY",
+      "block_id": 21,
+      "is_block_start": false,
+      "reason": "aucune garantie sur les biens/services tiers",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 158,
+      "theme": "THIRD_PARTY",
+      "block_id": 21,
+      "is_block_start": false,
+      "reason": "un lien n'implique pas d'endossement",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 159,
+      "theme": "THIRD_PARTY",
+      "block_id": 21,
+      "is_block_start": false,
+      "reason": "non responsable des réclamations liées aux tiers, prolonge",
+      "legal_nature": "LIMITATION_DISCLAIMER",
+      "legal_nature_marker": "not liable"
+    },
+    {
+      "id": 160,
+      "theme": "THIRD_PARTY",
+      "block_id": 21,
+      "is_block_start": false,
+      "reason": "sites liés hors contrôle, collecte de données",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 161,
+      "theme": "THIRD_PARTY",
+      "block_id": 21,
+      "is_block_start": false,
+      "reason": "demandes d'accès par les services tiers",
+      "legal_nature": "PROHIBITION",
+      "legal_nature_marker": "may not"
+    },
+    {
+      "id": 162,
+      "theme": "THIRD_PARTY",
+      "block_id": 21,
+      "is_block_start": false,
+      "reason": "non responsable des pratiques des tiers, prolonge",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 163,
+      "theme": "LICENSE_IP",
+      "block_id": 22,
+      "is_block_start": true,
+      "rationale": "DMCA et copyright : « we respect the intellectual property rights of others »",
+      "rationale_codes": {
+        "decision_trigger": "topic_keyword",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "we respect the intellectual property rights of others",
+        "revised_from_plan": false,
+        "confidence": 0.82
+      },
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 164,
+      "theme": "LICENSE_IP",
+      "block_id": 22,
+      "is_block_start": false,
+      "reason": "réponse aux notices d'infraction au copyright (DMCA)",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 165,
+      "theme": "LICENSE_IP",
+      "block_id": 22,
+      "is_block_start": false,
+      "reason": "renvoi à la page copyright/DMCA, prolonge",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 166,
+      "theme": "LICENSE_IP",
+      "block_id": 22,
+      "is_block_start": false,
+      "reason": "résiliation de l'accès des récidivistes (repeat infringer)",
+      "legal_nature": "GOVERNANCE",
+      "legal_nature_marker": "terminate"
+    },
+    {
+      "id": 167,
+      "theme": "LICENSE_IP",
+      "block_id": 22,
+      "is_block_start": false,
+      "reason": "pas de notification préalable, procédure",
+      "legal_nature": "PROHIBITION",
+      "legal_nature_marker": "do not"
+    },
+    {
+      "id": 168,
+      "theme": "LICENSE_IP",
+      "block_id": 22,
+      "is_block_start": false,
+      "reason": "respect des mesures techniques de protection, prolonge le DMCA",
+      "legal_nature": "PROHIBITION",
+      "legal_nature_marker": "do not"
+    },
+    {
+      "id": 169,
+      "theme": "USER_CONTENT",
+      "block_id": 23,
+      "is_block_start": true,
+      "rationale": "feedback soumis à Zynga : « sometimes , we may request your feedback on certain features »",
+      "rationale_codes": {
+        "decision_trigger": "topic_keyword",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "we may request your feedback",
+        "revised_from_plan": false,
+        "confidence": 0.62
+      },
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 170,
+      "theme": "USER_CONTENT",
+      "block_id": 23,
+      "is_block_start": false,
+      "reason": "feedback soumis aux règles de la promotion",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 171,
+      "theme": "USER_CONTENT",
+      "block_id": 23,
+      "is_block_start": false,
+      "reason": "idées non sollicitées soumises à la politique idoine, prolonge",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 172,
+      "theme": "WARRANTY_DISCLAIMER",
+      "block_id": 24,
+      "is_block_start": true,
+      "rationale": "titre nominal 'warranty disclaimer ; services available on an `` as is '' basis'",
+      "rationale_codes": {
+        "decision_trigger": "title_marker",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "warranty disclaimer",
+        "revised_from_plan": false,
+        "confidence": 0.9
+      },
+      "legal_nature": "LIMITATION_DISCLAIMER",
+      "legal_nature_marker": "as is"
+    },
+    {
+      "id": 173,
+      "theme": "WARRANTY_DISCLAIMER",
+      "block_id": 24,
+      "is_block_start": false,
+      "reason": "aucune garantie de service ininterrompu",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 174,
+      "theme": "WARRANTY_DISCLAIMER",
+      "block_id": 24,
+      "is_block_start": false,
+      "reason": "usage aux risques de l'utilisateur",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 175,
+      "theme": "WARRANTY_DISCLAIMER",
+      "block_id": 24,
+      "is_block_start": false,
+      "reason": "fourni 'as is'",
+      "legal_nature": "LIMITATION_DISCLAIMER",
+      "legal_nature_marker": "as is"
+    },
+    {
+      "id": 176,
+      "theme": "WARRANTY_DISCLAIMER",
+      "block_id": 24,
+      "is_block_start": false,
+      "reason": "absence de garanties exprimées ou implicites",
+      "legal_nature": "LIMITATION_DISCLAIMER",
+      "legal_nature_marker": "warranties"
+    },
+    {
+      "id": 177,
+      "theme": "WARRANTY_DISCLAIMER",
+      "block_id": 24,
+      "is_block_start": false,
+      "reason": "exclusion de garanties implicites, prolonge le disclaimer",
+      "legal_nature": "LIMITATION_DISCLAIMER",
+      "legal_nature_marker": "warranties"
+    },
+    {
+      "id": 178,
+      "theme": "WARRANTY_DISCLAIMER",
+      "block_id": 24,
+      "is_block_start": false,
+      "reason": "non-application si l'État interdit ces disclaimers",
+      "legal_nature": "PROHIBITION",
+      "legal_nature_marker": "do not"
+    },
+    {
+      "id": 179,
+      "theme": "WARRANTY_DISCLAIMER",
+      "block_id": 24,
+      "is_block_start": false,
+      "reason": "durée minimale de garantie si requise, prolonge",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 180,
+      "theme": "LIABILITY_LIMITATION",
+      "block_id": 25,
+      "is_block_start": true,
+      "rationale": "limitation de responsabilité : « you acknowledge that zynga and the zynga affiliates are not liable »",
+      "rationale_codes": {
+        "decision_trigger": "topic_keyword",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "are not liable",
+        "revised_from_plan": false,
+        "confidence": 0.85
+      },
+      "legal_nature": "LIMITATION_DISCLAIMER",
+      "legal_nature_marker": "not liable"
+    },
+    {
+      "id": 181,
+      "theme": "LIABILITY_LIMITATION",
+      "block_id": 25,
+      "is_block_start": false,
+      "reason": "le risque repose sur l'utilisateur",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 182,
+      "theme": "LIABILITY_LIMITATION",
+      "block_id": 25,
+      "is_block_start": false,
+      "reason": "portée des disclaimers de responsabilité",
+      "legal_nature": "LIMITATION_DISCLAIMER",
+      "legal_nature_marker": "disclaim"
+    },
+    {
+      "id": 183,
+      "theme": "LIABILITY_LIMITATION",
+      "block_id": 25,
+      "is_block_start": false,
+      "reason": "plafond de responsabilité, prolonge la limitation",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 184,
+      "theme": "LIABILITY_LIMITATION",
+      "block_id": 25,
+      "is_block_start": false,
+      "reason": "recours exclusif si aucun paiement effectué",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 185,
+      "theme": "LIABILITY_LIMITATION",
+      "block_id": 25,
+      "is_block_start": false,
+      "reason": "certains États n'autorisent pas ces exclusions",
+      "legal_nature": "PROHIBITION",
+      "legal_nature_marker": "do not"
+    },
+    {
+      "id": 186,
+      "theme": "LIABILITY_LIMITATION",
+      "block_id": 25,
+      "is_block_start": false,
+      "reason": "non-application possible selon le lieu, prolonge",
+      "legal_nature": "PROHIBITION",
+      "legal_nature_marker": "may not"
+    },
+    {
+      "id": 187,
+      "theme": "INDEMNIFICATION",
+      "block_id": 26,
+      "is_block_start": true,
+      "rationale": "obligation d'indemniser : « you agree to indemnify , defend and hold harmless zynga »",
+      "rationale_codes": {
+        "decision_trigger": "topic_keyword",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "you agree to indemnify , defend and hold harmless",
+        "revised_from_plan": false,
+        "confidence": 0.9
+      },
+      "legal_nature": "DEFINITION",
+      "legal_nature_marker": "means"
+    },
+    {
+      "id": 188,
+      "theme": "INDEMNIFICATION",
+      "block_id": 26,
+      "is_block_start": false,
+      "reason": "Zynga peut prendre en charge la défense, prolonge l'indemnisation",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 189,
+      "theme": "INDEMNIFICATION",
+      "block_id": 26,
+      "is_block_start": false,
+      "reason": "obligation de coopérer à la défense",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 190,
+      "theme": "INDEMNIFICATION",
+      "block_id": 26,
+      "is_block_start": false,
+      "reason": "Zynga informe des réclamations, procédure",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 191,
+      "theme": "INDEMNIFICATION",
+      "block_id": 26,
+      "is_block_start": false,
+      "reason": "survie de l'obligation après résiliation, prolonge l'indemnisation",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 192,
+      "theme": "DISPUTE_ARBITRATION",
+      "block_id": 27,
+      "is_block_start": true,
+      "rationale": "titre nominal 'agreement to arbitrate and class action waiver'",
+      "rationale_codes": {
+        "decision_trigger": "title_marker",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "agreement to arbitrate and class action waiver",
+        "revised_from_plan": false,
+        "confidence": 0.9
+      },
+      "legal_nature": "GOVERNANCE",
+      "legal_nature_marker": "class action"
+    },
+    {
+      "id": 193,
+      "theme": "DISPUTE_ARBITRATION",
+      "block_id": 27,
+      "is_block_start": false,
+      "reason": "champ d'application : joueurs US et Canada",
+      "legal_nature": "SCOPE_APPLICABILITY",
+      "legal_nature_marker": "applies to"
+    },
+    {
+      "id": 194,
+      "theme": "DISPUTE_ARBITRATION",
+      "block_id": 27,
+      "is_block_start": false,
+      "reason": "résolution préalable via les forums",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 195,
+      "theme": "DISPUTE_ARBITRATION",
+      "block_id": 27,
+      "is_block_start": false,
+      "reason": "résolution via support naturalmotion, prolonge",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 196,
+      "theme": "DISPUTE_ARBITRATION",
+      "block_id": 27,
+      "is_block_start": false,
+      "reason": "contacter le support avant action légale, procédure",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 197,
+      "theme": "DISPUTE_ARBITRATION",
+      "block_id": 27,
+      "is_block_start": false,
+      "reason": "accord de résoudre les litiges par arbitrage",
+      "legal_nature": "GOVERNANCE",
+      "legal_nature_marker": "arbitration"
+    },
+    {
+      "id": 198,
+      "theme": "DISPUTE_ARBITRATION",
+      "block_id": 27,
+      "is_block_start": false,
+      "reason": "s'applique à tous les types de réclamations, prolonge",
+      "legal_nature": "SCOPE_APPLICABILITY",
+      "legal_nature_marker": "applies to"
+    },
+    {
+      "id": 199,
+      "theme": "DISPUTE_ARBITRATION",
+      "block_id": 27,
+      "is_block_start": false,
+      "reason": "s'applique après cessation d'usage du compte",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 200,
+      "theme": "DISPUTE_ARBITRATION",
+      "block_id": 27,
+      "is_block_start": false,
+      "reason": "renonciation au procès devant juge et jury",
+      "legal_nature": "GOVERNANCE",
+      "legal_nature_marker": "arbitration"
+    },
+    {
+      "id": 201,
+      "theme": "DISPUTE_ARBITRATION",
+      "block_id": 27,
+      "is_block_start": false,
+      "reason": "règles différentes des procès, prolonge",
+      "legal_nature": "GOVERNANCE",
+      "legal_nature_marker": "arbitration"
+    },
+    {
+      "id": 202,
+      "theme": "DISPUTE_ARBITRATION",
+      "block_id": 27,
+      "is_block_start": false,
+      "reason": "arbitrage moins formel, discovery limitée",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 203,
+      "theme": "DISPUTE_ARBITRATION",
+      "block_id": 27,
+      "is_block_start": false,
+      "reason": "pouvoirs de l'arbitre sur une base individuelle",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 204,
+      "theme": "DISPUTE_ARBITRATION",
+      "block_id": 27,
+      "is_block_start": false,
+      "reason": "capacité limitée des cours à modifier la décision, prolonge",
+      "legal_nature": "GOVERNANCE",
+      "legal_nature_marker": "arbitration"
+    },
+    {
+      "id": 205,
+      "theme": "DISPUTE_ARBITRATION",
+      "block_id": 27,
+      "is_block_start": false,
+      "reason": "l'arbitre décide de l'applicabilité de l'accord d'arbitrage",
+      "legal_nature": "SCOPE_APPLICABILITY",
+      "legal_nature_marker": "applies to"
+    },
+    {
+      "id": 206,
+      "theme": "DISPUTE_ARBITRATION",
+      "block_id": 27,
+      "is_block_start": false,
+      "reason": "possibilité de contraindre à l'arbitrage, procédure",
+      "legal_nature": "GOVERNANCE",
+      "legal_nature_marker": "arbitration"
+    },
+    {
+      "id": 207,
+      "theme": "DISPUTE_ARBITRATION",
+      "block_id": 27,
+      "is_block_start": false,
+      "reason": "possibilité de suspendre une procédure judiciaire, prolonge",
+      "legal_nature": "GOVERNANCE",
+      "legal_nature_marker": "arbitration"
+    },
+    {
+      "id": 208,
+      "theme": "DISPUTE_ARBITRATION",
+      "block_id": 27,
+      "is_block_start": false,
+      "reason": "l'AAA administre l'arbitrage selon ses règles",
+      "legal_nature": "GOVERNANCE",
+      "legal_nature_marker": "arbitration"
+    },
+    {
+      "id": 209,
+      "theme": "DISPUTE_ARBITRATION",
+      "block_id": 27,
+      "is_block_start": false,
+      "reason": "primauté des présents termes sur les règles AAA, prolonge",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 210,
+      "theme": "DISPUTE_ARBITRATION",
+      "block_id": 27,
+      "is_block_start": false,
+      "reason": "où consulter les règles AAA, procédure",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 211,
+      "theme": "DISPUTE_ARBITRATION",
+      "block_id": 27,
+      "is_block_start": false,
+      "reason": "comment démarrer un arbitrage, procédure",
+      "legal_nature": "GOVERNANCE",
+      "legal_nature_marker": "arbitration"
+    },
+    {
+      "id": 212,
+      "theme": "DISPUTE_ARBITRATION",
+      "block_id": 27,
+      "is_block_start": false,
+      "reason": "exceptions allant en cour, chapeau de liste",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 213,
+      "theme": "DISPUTE_ARBITRATION",
+      "block_id": 27,
+      "is_block_start": false,
+      "reason": "item d'exception : litiges de PI",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 214,
+      "theme": "DISPUTE_ARBITRATION",
+      "block_id": 27,
+      "is_block_start": false,
+      "reason": "item d'exception : violation des community rules",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 215,
+      "theme": "DISPUTE_ARBITRATION",
+      "block_id": 27,
+      "is_block_start": false,
+      "reason": "renvoi à la section 19 sur le venue, prolonge",
+      "legal_nature": "GOVERNANCE",
+      "legal_nature_marker": "arbitration"
+    },
+    {
+      "id": 216,
+      "theme": "DISPUTE_ARBITRATION",
+      "block_id": 27,
+      "is_block_start": false,
+      "reason": "réclamations sur base individuelle uniquement",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 217,
+      "theme": "DISPUTE_ARBITRATION",
+      "block_id": 27,
+      "is_block_start": false,
+      "reason": "interdiction des actions collectives, prolonge",
+      "legal_nature": "GOVERNANCE",
+      "legal_nature_marker": "class action"
+    },
+    {
+      "id": 218,
+      "theme": "DISPUTE_ARBITRATION",
+      "block_id": 27,
+      "is_block_start": false,
+      "reason": "l'arbitre ne peut combiner les réclamations",
+      "legal_nature": "GOVERNANCE",
+      "legal_nature_marker": "arbitration"
+    },
+    {
+      "id": 219,
+      "theme": "DISPUTE_ARBITRATION",
+      "block_id": 27,
+      "is_block_start": false,
+      "reason": "portée individuelle de la décision arbitrale, prolonge",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 220,
+      "theme": "DISPUTE_ARBITRATION",
+      "block_id": 27,
+      "is_block_start": false,
+      "reason": "nullité de la section 17 si la clause class action est invalidée",
+      "legal_nature": "GOVERNANCE",
+      "legal_nature_marker": "class action"
+    },
+    {
+      "id": 221,
+      "theme": "DISPUTE_ARBITRATION",
+      "block_id": 27,
+      "is_block_start": false,
+      "reason": "le reste des termes survit, prolonge",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 222,
+      "theme": "DISPUTE_ARBITRATION",
+      "block_id": 28,
+      "is_block_start": true,
+      "rationale": "titre nominal 'changes to section 17 on agreement to arbitrate and class action waiver'",
+      "rationale_codes": {
+        "decision_trigger": "title_marker",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "changes to section 17",
+        "revised_from_plan": false,
+        "confidence": 0.72
+      },
+      "legal_nature": "GOVERNANCE",
+      "legal_nature_marker": "class action"
+    },
+    {
+      "id": 223,
+      "theme": "DISPUTE_ARBITRATION",
+      "block_id": 28,
+      "is_block_start": false,
+      "reason": "préavis de 60 jours en cas de changement de la section 17",
+      "legal_nature": "GOVERNANCE",
+      "legal_nature_marker": "class action"
+    },
+    {
+      "id": 224,
+      "theme": "DISPUTE_ARBITRATION",
+      "block_id": 28,
+      "is_block_start": false,
+      "reason": "Federal Arbitration Act régit l'applicabilité de la section 17, prolonge",
+      "legal_nature": "GOVERNANCE",
+      "legal_nature_marker": "arbitration"
+    },
+    {
+      "id": 225,
+      "theme": "GOVERNING_LAW",
+      "block_id": 29,
+      "is_block_start": true,
+      "rationale": "loi applicable : « these terms and our relationship will be governed by california law »",
+      "rationale_codes": {
+        "decision_trigger": "topic_keyword",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "governed by california law",
+        "revised_from_plan": false,
+        "confidence": 0.85
+      },
+      "legal_nature": "GOVERNANCE",
+      "legal_nature_marker": "governed by"
+    },
+    {
+      "id": 226,
+      "theme": "GOVERNING_LAW",
+      "block_id": 29,
+      "is_block_start": false,
+      "reason": "loi irlandaise hors États-Unis, prolonge la loi applicable",
+      "legal_nature": "GOVERNANCE",
+      "legal_nature_marker": "governed by"
+    },
+    {
+      "id": 227,
+      "theme": "GOVERNING_LAW",
+      "block_id": 30,
+      "is_block_start": true,
+      "rationale": "titre nominal 'venue for legal disputes not subject to arbitration'",
+      "rationale_codes": {
+        "decision_trigger": "title_marker",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "venue for legal disputes not subject to arbitration",
+        "revised_from_plan": false,
+        "confidence": 0.75
+      },
+      "legal_nature": "GOVERNANCE",
+      "legal_nature_marker": "arbitration"
+    },
+    {
+      "id": 228,
+      "theme": "GOVERNING_LAW",
+      "block_id": 30,
+      "is_block_start": false,
+      "reason": "venue à San Francisco pour résidents US",
+      "legal_nature": "GOVERNANCE",
+      "legal_nature_marker": "jurisdiction"
+    },
+    {
+      "id": 229,
+      "theme": "GOVERNING_LAW",
+      "block_id": 30,
+      "is_block_start": false,
+      "reason": "venue en Irlande hors États-Unis, prolonge le venue",
+      "legal_nature": "GOVERNANCE",
+      "legal_nature_marker": "jurisdiction"
+    },
+    {
+      "id": 230,
+      "theme": "MISC_BOILERPLATE",
+      "block_id": 31,
+      "is_block_start": true,
+      "rationale": "severability : « if any part of these terms ... is not enforceable , the rest of these terms ... still applies »",
+      "rationale_codes": {
+        "decision_trigger": "topic_keyword",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "is not enforceable , the rest of these terms",
+        "revised_from_plan": false,
+        "confidence": 0.8
+      },
+      "legal_nature": "GOVERNANCE",
+      "legal_nature_marker": "class action"
+    },
+    {
+      "id": 231,
+      "theme": "MISC_BOILERPLATE",
+      "block_id": 31,
+      "is_block_start": false,
+      "reason": "cession des droits par Zynga",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 232,
+      "theme": "MISC_BOILERPLATE",
+      "block_id": 31,
+      "is_block_start": false,
+      "reason": "interdiction de cession sans consentement, prolonge le boilerplate",
+      "legal_nature": "PROHIBITION",
+      "legal_nature_marker": "may not"
+    },
+    {
+      "id": 233,
+      "theme": "MISC_BOILERPLATE",
+      "block_id": 31,
+      "is_block_start": false,
+      "reason": "clause d'intégralité (entire agreement)",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 234,
+      "theme": "MISC_BOILERPLATE",
+      "block_id": 31,
+      "is_block_start": false,
+      "reason": "version traduite à titre informatif",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 235,
+      "theme": "MISC_BOILERPLATE",
+      "block_id": 31,
+      "is_block_start": false,
+      "reason": "primauté de la version anglaise, prolonge",
+      "legal_nature": "DEFINITION",
+      "legal_nature_marker": "means"
+    },
+    {
+      "id": 236,
+      "theme": "MISC_BOILERPLATE",
+      "block_id": 31,
+      "is_block_start": false,
+      "reason": "non-renonciation par défaut d'application (waiver)",
+      "legal_nature": "PROHIBITION",
+      "legal_nature_marker": "do not"
+    },
+    {
+      "id": 237,
+      "theme": "MISC_BOILERPLATE",
+      "block_id": 31,
+      "is_block_start": false,
+      "reason": "une renonciation ponctuelle ne vaut pas pour l'avenir",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 238,
+      "theme": "MISC_BOILERPLATE",
+      "block_id": 31,
+      "is_block_start": false,
+      "reason": "toute renonciation doit être écrite, prolonge le waiver",
+      "legal_nature": "OBLIGATION",
+      "legal_nature_marker": "must"
+    },
+    {
+      "id": 239,
+      "theme": "MISC_BOILERPLATE",
+      "block_id": 31,
+      "is_block_start": false,
+      "reason": "modalités de notification par Zynga",
+      "legal_nature": "PROHIBITION",
+      "legal_nature_marker": "may not"
+    },
+    {
+      "id": 240,
+      "theme": "MISC_BOILERPLATE",
+      "block_id": 31,
+      "is_block_start": false,
+      "reason": "adresse de notification pour joueurs US",
+      "legal_nature": "META",
+      "legal_nature_marker": "inc."
+    },
+    {
+      "id": 241,
+      "theme": "MISC_BOILERPLATE",
+      "block_id": 31,
+      "is_block_start": false,
+      "reason": "adresse de notification hors US, prolonge les notices",
+      "legal_nature": "OBLIGATION",
+      "legal_nature_marker": "must"
+    },
+    {
+      "id": 242,
+      "theme": "MISC_BOILERPLATE",
+      "block_id": 31,
+      "is_block_start": false,
+      "reason": "notice non conforme sans effet légal, prolonge",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 243,
+      "theme": "DISPUTE_ARBITRATION",
+      "block_id": 32,
+      "is_block_start": true,
+      "rationale": "recours en équité : « money damages alone will not be enough to repair the harm to zynga »",
+      "rationale_codes": {
+        "decision_trigger": "topic_keyword",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "money damages alone will not be enough",
+        "revised_from_plan": false,
+        "confidence": 0.65
+      },
+      "legal_nature": "PROHIBITION",
+      "legal_nature_marker": "will not"
+    },
+    {
+      "id": 244,
+      "theme": "DISPUTE_ARBITRATION",
+      "block_id": 32,
+      "is_block_start": false,
+      "reason": "Zynga peut demander une injonction, prolonge le recours en équité",
+      "legal_nature": "GOVERNANCE",
+      "legal_nature_marker": "arbitration"
+    },
+    {
+      "id": 245,
+      "theme": "DISPUTE_ARBITRATION",
+      "block_id": 32,
+      "is_block_start": false,
+      "reason": "l'utilisateur limite ses recours aux dommages monétaires",
+      "legal_nature": "OBLIGATION",
+      "legal_nature_marker": "you agree to"
+    },
+    {
+      "id": 246,
+      "theme": "DISPUTE_ARBITRATION",
+      "block_id": 32,
+      "is_block_start": false,
+      "reason": "renonciation à demander une injonction, prolonge",
+      "legal_nature": "PROHIBITION",
+      "legal_nature_marker": "agree not to"
+    },
+    {
+      "id": 247,
+      "theme": "LIABILITY_LIMITATION",
+      "block_id": 33,
+      "is_block_start": true,
+      "rationale": "force majeure : « we are not liable for any changes or problems out of our control »",
+      "rationale_codes": {
+        "decision_trigger": "topic_keyword",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "we are not liable for any changes or problems out of our control",
+        "revised_from_plan": false,
+        "confidence": 0.75
+      },
+      "legal_nature": "LIMITATION_DISCLAIMER",
+      "legal_nature_marker": "not liable"
+    }
+  ]
+}

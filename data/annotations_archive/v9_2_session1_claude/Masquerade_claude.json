@@ -1,0 +1,1469 @@
+{
+  "doc": "Masquerade",
+  "judge": "claude",
+  "version": "v9.2-nature-derived",
+  "document_plan": {
+    "estimated_n_blocks": 22,
+    "rationale_global": "ToS Masquerade au profil narratif sans numerotation (numbering=0). La carte thematique (D) confirme un document dense en DISPUTE_ARBITRATION (34 hits, concentre en fin) precede d'une longue progression classique : preambule/scope, eligibilite/compte, modifications de service, vie privee, usage acceptable, contenu utilisateur, tiers, licence/PI, garanties/responsabilite, indemnisation, modification des termes, resiliation, cession, export/loi applicable, divers boilerplate, puis le gros bloc arbitrage (titres a 95 et 127, plus titres intra a 99/108/124/128). Granularite prior F=20 (range 15-26). On estime ~22 blocs en suivant les ruptures thematiques majeures plutot que chaque effet juridique secondaire.",
+    "segments": [
+      {
+        "start_id": 0,
+        "theme": "META",
+        "rationale": "ligne de date d'effet",
+        "evidence_span": "effective date"
+      },
+      {
+        "start_id": 1,
+        "theme": "PREAMBLE_SCOPE",
+        "rationale": "presentation de l'entite et des services",
+        "evidence_span": "offer services"
+      },
+      {
+        "start_id": 8,
+        "theme": "ELIGIBILITY_ACCOUNT",
+        "rationale": "condition d'age minimum",
+        "evidence_span": "at least 13 years old"
+      },
+      {
+        "start_id": 13,
+        "theme": "TERMINATION",
+        "rationale": "droit de modifier/suspendre les services",
+        "evidence_span": "change , suspend , remove , discontinue"
+      },
+      {
+        "start_id": 16,
+        "theme": "PAYMENT_BILLING",
+        "rationale": "services gratuits mais frais de l'operateur",
+        "evidence_span": "responsible for your carrier 's rates and fees"
+      },
+      {
+        "start_id": 18,
+        "theme": "PRIVACY_DATA",
+        "rationale": "politique de confidentialite et pratiques d'information",
+        "evidence_span": "privacy policy describes our information practices"
+      },
+      {
+        "start_id": 21,
+        "theme": "ACCEPTABLE_USE",
+        "rationale": "usage licite et autorise des services",
+        "evidence_span": "lawful , authorized , and acceptable purposes"
+      },
+      {
+        "start_id": 25,
+        "theme": "USER_CONTENT",
+        "rationale": "definition et responsabilite du contenu",
+        "evidence_span": "content"
+      },
+      {
+        "start_id": 31,
+        "theme": "ACCEPTABLE_USE",
+        "rationale": "titre harm to masquerade, interdictions techniques",
+        "evidence_span": "harm to masquerade"
+      },
+      {
+        "start_id": 33,
+        "theme": "ELIGIBILITY_ACCOUNT",
+        "rationale": "responsabilite et securite du compte",
+        "evidence_span": "use of your account"
+      },
+      {
+        "start_id": 35,
+        "theme": "THIRD_PARTY",
+        "rationale": "services tiers et facebook",
+        "evidence_span": "third-party services"
+      },
+      {
+        "start_id": 39,
+        "theme": "LICENSE_IP",
+        "rationale": "propriete intellectuelle de masquerade",
+        "evidence_span": "owned or licensed by masquerade"
+      },
+      {
+        "start_id": 54,
+        "theme": "WARRANTY_DISCLAIMER",
+        "rationale": "services as is, absence de garantie",
+        "evidence_span": "at your own risk"
+      },
+      {
+        "start_id": 60,
+        "theme": "LIABILITY_LIMITATION",
+        "rationale": "release et limitation de responsabilite",
+        "evidence_span": "you release us"
+      },
+      {
+        "start_id": 67,
+        "theme": "INDEMNIFICATION",
+        "rationale": "obligation d'indemnisation",
+        "evidence_span": "indemnify and hold harmless"
+      },
+      {
+        "start_id": 68,
+        "theme": "MODIFICATION_OF_TERMS",
+        "rationale": "amendement des termes",
+        "evidence_span": "we may amend these terms"
+      },
+      {
+        "start_id": 73,
+        "theme": "TERMINATION",
+        "rationale": "suspension/resiliation et survie",
+        "evidence_span": "suspend , or terminate your access"
+      },
+      {
+        "start_id": 75,
+        "theme": "MISC_BOILERPLATE",
+        "rationale": "cession des droits et obligations",
+        "evidence_span": "transfer any of your rights"
+      },
+      {
+        "start_id": 77,
+        "theme": "GOVERNING_LAW",
+        "rationale": "restrictions pays/export",
+        "evidence_span": "violate local law"
+      },
+      {
+        "start_id": 82,
+        "theme": "MISC_BOILERPLATE",
+        "rationale": "clauses diverses (langue, interpretation, severabilite, feedback)",
+        "evidence_span": "written in english"
+      },
+      {
+        "start_id": 94,
+        "theme": "DISPUTE_ARBITRATION",
+        "rationale": "provision d'arbitrage US/Canada",
+        "evidence_span": "special arbitration provision"
+      },
+      {
+        "start_id": 129,
+        "theme": "META",
+        "rationale": "ligne de contact finale",
+        "evidence_span": "please contact us online"
+      }
+    ]
+  },
+  "annotations": [
+    {
+      "id": 0,
+      "theme": "META",
+      "block_id": 0,
+      "is_block_start": true,
+      "rationale": "ligne d'en-tete portant la date d'effet, cite « effective date : june 28 , 2016 »",
+      "rationale_codes": {
+        "decision_trigger": "document_start",
+        "relation_to_prev": "document_start",
+        "evidence_span": "effective date",
+        "revised_from_plan": false,
+        "confidence": 0.97
+      },
+      "legal_nature": "META",
+      "legal_nature_marker": "effective date"
+    },
+    {
+      "id": 1,
+      "theme": "PREAMBLE_SCOPE",
+      "block_id": 1,
+      "is_block_start": true,
+      "rationale": "ouverture materielle des conditions : identite de l'entite et nature des services, cite « offer services such as the masquerade app »",
+      "rationale_codes": {
+        "decision_trigger": "topic_keyword",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "offer services such as the masquerade app",
+        "revised_from_plan": false,
+        "confidence": 0.9
+      },
+      "legal_nature": "META",
+      "legal_nature_marker": "inc."
+    },
+    {
+      "id": 2,
+      "theme": "PREAMBLE_SCOPE",
+      "block_id": 1,
+      "is_block_start": false,
+      "reason": "definition du perimetre des « services » couverts par les termes",
+      "legal_nature": "SCOPE_APPLICABILITY",
+      "legal_nature_marker": "govern your use"
+    },
+    {
+      "id": 3,
+      "theme": "PREAMBLE_SCOPE",
+      "block_id": 1,
+      "is_block_start": false,
+      "reason": "acceptation des termes par l'usage des services",
+      "legal_nature": "SCOPE_APPLICABILITY",
+      "legal_nature_marker": "by using"
+    },
+    {
+      "id": 4,
+      "theme": "PREAMBLE_SCOPE",
+      "block_id": 1,
+      "is_block_start": false,
+      "reason": "termes supplementaires incorpores par reference",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 5,
+      "theme": "PREAMBLE_SCOPE",
+      "block_id": 1,
+      "is_block_start": false,
+      "reason": "regle de conflit entre termes supplementaires et termes principaux",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 6,
+      "theme": "PREAMBLE_SCOPE",
+      "block_id": 1,
+      "is_block_start": false,
+      "reason": "avis preliminaire de la provision d'arbitrage, encore dans le chapeau introductif",
+      "legal_nature": "DEFINITION",
+      "legal_nature_marker": "means"
+    },
+    {
+      "id": 7,
+      "theme": "PREAMBLE_SCOPE",
+      "block_id": 1,
+      "is_block_start": false,
+      "reason": "renvoi de lecture vers la section arbitrage, prolonge l'avis preliminaire",
+      "legal_nature": "GOVERNANCE",
+      "legal_nature_marker": "arbitration"
+    },
+    {
+      "id": 8,
+      "theme": "ELIGIBILITY_ACCOUNT",
+      "block_id": 2,
+      "is_block_start": true,
+      "rationale": "nouvelle clause d'eligibilite : age minimum requis, cite « you must be at least 13 years old »",
+      "rationale_codes": {
+        "decision_trigger": "topic_keyword",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "you must be at least 13 years old",
+        "revised_from_plan": true,
+        "confidence": 0.88
+      },
+      "legal_nature": "OBLIGATION",
+      "legal_nature_marker": "you must"
+    },
+    {
+      "id": 9,
+      "theme": "ELIGIBILITY_ACCOUNT",
+      "block_id": 2,
+      "is_block_start": false,
+      "reason": "accord parental requis si l'utilisateur n'a pas l'age d'autorite, prolonge la condition d'age",
+      "legal_nature": "OBLIGATION",
+      "legal_nature_marker": "must"
+    },
+    {
+      "id": 10,
+      "theme": "ELIGIBILITY_ACCOUNT",
+      "block_id": 2,
+      "is_block_start": false,
+      "reason": "option/obligation de creer un compte, meme thematique compte",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 11,
+      "theme": "ELIGIBILITY_ACCOUNT",
+      "block_id": 2,
+      "is_block_start": false,
+      "reason": "engagement de fournir des informations exactes a l'enregistrement",
+      "legal_nature": "OBLIGATION",
+      "legal_nature_marker": "you agree to"
+    },
+    {
+      "id": 12,
+      "theme": "ELIGIBILITY_ACCOUNT",
+      "block_id": 2,
+      "is_block_start": false,
+      "reason": "interdiction d'utiliser le compte d'un autre utilisateur",
+      "legal_nature": "PROHIBITION",
+      "legal_nature_marker": "will not"
+    },
+    {
+      "id": 13,
+      "theme": "TERMINATION",
+      "block_id": 3,
+      "is_block_start": true,
+      "rationale": "droit autonome de masquerade de modifier/suspendre/supprimer/desactiver les services, cite « reserves the right to change , suspend , remove , discontinue »",
+      "rationale_codes": {
+        "decision_trigger": "topic_keyword",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "change , suspend , remove , discontinue",
+        "revised_from_plan": false,
+        "confidence": 0.78
+      },
+      "legal_nature": "GOVERNANCE",
+      "legal_nature_marker": "suspend"
+    },
+    {
+      "id": 14,
+      "theme": "TERMINATION",
+      "block_id": 3,
+      "is_block_start": false,
+      "reason": "exemple de motif de modification du service, prolonge la clause",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 15,
+      "theme": "TERMINATION",
+      "block_id": 3,
+      "is_block_start": false,
+      "reason": "consentement aux mises a jour automatiques du service, prolonge la gestion du service",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 16,
+      "theme": "PAYMENT_BILLING",
+      "block_id": 4,
+      "is_block_start": true,
+      "rationale": "services fournis gratuitement mais frais d'operateur a la charge de l'utilisateur, cite « responsible for your carrier 's rates and fees »",
+      "rationale_codes": {
+        "decision_trigger": "topic_keyword",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "responsible for your carrier 's rates and fees",
+        "revised_from_plan": false,
+        "confidence": 0.72
+      },
+      "legal_nature": "OBLIGATION",
+      "legal_nature_marker": "you are responsible"
+    },
+    {
+      "id": 17,
+      "theme": "PAYMENT_BILLING",
+      "block_id": 4,
+      "is_block_start": false,
+      "reason": "absence de garantie de compatibilite appareil/plan, prolonge l'enonce sur les conditions d'acces gratuit",
+      "legal_nature": "PROHIBITION",
+      "legal_nature_marker": "do not"
+    },
+    {
+      "id": 18,
+      "theme": "PRIVACY_DATA",
+      "block_id": 5,
+      "is_block_start": true,
+      "rationale": "renvoi a la politique de confidentialite et pratiques d'information, cite « privacy policy describes our information practices »",
+      "rationale_codes": {
+        "decision_trigger": "topic_keyword",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "privacy policy describes our information practices",
+        "revised_from_plan": false,
+        "confidence": 0.92
+      },
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 19,
+      "theme": "PRIVACY_DATA",
+      "block_id": 5,
+      "is_block_start": false,
+      "reason": "accord sur les pratiques de donnees et transfert international, prolonge la clause vie privee",
+      "legal_nature": "OBLIGATION",
+      "legal_nature_marker": "you agree to"
+    },
+    {
+      "id": 20,
+      "theme": "PRIVACY_DATA",
+      "block_id": 5,
+      "is_block_start": false,
+      "reason": "reconnaissance des differences de lois sur le stockage des donnees, prolonge la clause vie privee",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 21,
+      "theme": "ACCEPTABLE_USE",
+      "block_id": 6,
+      "is_block_start": true,
+      "rationale": "usage des services limite aux termes et politiques, transition vers l'usage acceptable, cite « only use our services in accordance with our terms »",
+      "rationale_codes": {
+        "decision_trigger": "topic_keyword",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "only use our services in accordance with our terms",
+        "revised_from_plan": true,
+        "confidence": 0.7
+      },
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 22,
+      "theme": "ACCEPTABLE_USE",
+      "block_id": 6,
+      "is_block_start": false,
+      "reason": "engagement de ne pas recreer un compte apres desactivation, prolonge les regles d'usage",
+      "legal_nature": "PROHIBITION",
+      "legal_nature_marker": "will not"
+    },
+    {
+      "id": 23,
+      "theme": "ACCEPTABLE_USE",
+      "block_id": 6,
+      "is_block_start": false,
+      "reason": "usage limite aux finalites licites et autorisees, prolonge la clause d'usage acceptable",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 24,
+      "theme": "ACCEPTABLE_USE",
+      "block_id": 6,
+      "is_block_start": false,
+      "reason": "liste des usages interdits (a-g), prolonge la clause d'usage acceptable",
+      "legal_nature": "PROHIBITION",
+      "legal_nature_marker": "will not"
+    },
+    {
+      "id": 25,
+      "theme": "USER_CONTENT",
+      "block_id": 7,
+      "is_block_start": true,
+      "rationale": "definition du contenu et amorce de la section sur le contenu utilisateur, cite « content '' means any information , images , photos »",
+      "rationale_codes": {
+        "decision_trigger": "definition_marker",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "content '' means any information",
+        "revised_from_plan": false,
+        "confidence": 0.8
+      },
+      "legal_nature": "DEFINITION",
+      "legal_nature_marker": "means"
+    },
+    {
+      "id": 26,
+      "theme": "USER_CONTENT",
+      "block_id": 7,
+      "is_block_start": false,
+      "reason": "absence d'obligation de controle du contenu, prolonge la section contenu",
+      "legal_nature": "LIMITATION_DISCLAIMER",
+      "legal_nature_marker": "warranties"
+    },
+    {
+      "id": 27,
+      "theme": "USER_CONTENT",
+      "block_id": 7,
+      "is_block_start": false,
+      "reason": "droit de retirer du contenu, prolonge la section contenu",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 28,
+      "theme": "USER_CONTENT",
+      "block_id": 7,
+      "is_block_start": false,
+      "reason": "responsabilite de l'utilisateur pour « your content », prolonge la section contenu",
+      "legal_nature": "OBLIGATION",
+      "legal_nature_marker": "you are responsible"
+    },
+    {
+      "id": 29,
+      "theme": "USER_CONTENT",
+      "block_id": 7,
+      "is_block_start": false,
+      "reason": "exclusion du contenu detenu par masquerade ou des tiers, prolonge la definition de your content",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 30,
+      "theme": "USER_CONTENT",
+      "block_id": 7,
+      "is_block_start": false,
+      "reason": "restrictions de contenu interdit pour your content, prolonge la section contenu",
+      "legal_nature": "PROHIBITION",
+      "legal_nature_marker": "must not"
+    },
+    {
+      "id": 31,
+      "theme": "ACCEPTABLE_USE",
+      "block_id": 8,
+      "is_block_start": true,
+      "rationale": "titre nominal court ouvrant une clause d'interdictions techniques, cite « harm to masquerade or others »",
+      "rationale_codes": {
+        "decision_trigger": "title_marker",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "harm to masquerade or others",
+        "revised_from_plan": false,
+        "confidence": 0.82
+      },
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 32,
+      "theme": "ACCEPTABLE_USE",
+      "block_id": 8,
+      "is_block_start": false,
+      "reason": "liste des actes techniques interdits (a-f) sous le titre harm to masquerade, prolonge la clause",
+      "legal_nature": "DEFINITION",
+      "legal_nature_marker": "means"
+    },
+    {
+      "id": 33,
+      "theme": "ELIGIBILITY_ACCOUNT",
+      "block_id": 9,
+      "is_block_start": true,
+      "rationale": "nouvelle clause sur la responsabilite et la securite du compte, cite « responsible for the use of your account »",
+      "rationale_codes": {
+        "decision_trigger": "topic_keyword",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "responsible for the use of your account",
+        "revised_from_plan": false,
+        "confidence": 0.75
+      },
+      "legal_nature": "OBLIGATION",
+      "legal_nature_marker": "you are responsible"
+    },
+    {
+      "id": 34,
+      "theme": "ELIGIBILITY_ACCOUNT",
+      "block_id": 9,
+      "is_block_start": false,
+      "reason": "procedure de notification d'usage non autorise du compte, prolonge la securite du compte",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 35,
+      "theme": "THIRD_PARTY",
+      "block_id": 10,
+      "is_block_start": true,
+      "rationale": "ouverture de la clause sur les services tiers et facebook, cite « third parties -lrb- `` third-party services '' »",
+      "rationale_codes": {
+        "decision_trigger": "topic_keyword",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "third-party services",
+        "revised_from_plan": false,
+        "confidence": 0.85
+      },
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 36,
+      "theme": "THIRD_PARTY",
+      "block_id": 10,
+      "is_block_start": false,
+      "reason": "les termes des tiers regissent l'usage de leurs services, prolonge la clause tiers",
+      "legal_nature": "SCOPE_APPLICABILITY",
+      "legal_nature_marker": "govern your use"
+    },
+    {
+      "id": 37,
+      "theme": "THIRD_PARTY",
+      "block_id": 10,
+      "is_block_start": false,
+      "reason": "exemple du partage vers facebook, prolonge la clause tiers",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 38,
+      "theme": "THIRD_PARTY",
+      "block_id": 10,
+      "is_block_start": false,
+      "reason": "non-responsabilite pour les services tiers, prolonge la clause tiers",
+      "legal_nature": "LIMITATION_DISCLAIMER",
+      "legal_nature_marker": "warranties"
+    },
+    {
+      "id": 39,
+      "theme": "LICENSE_IP",
+      "block_id": 11,
+      "is_block_start": true,
+      "rationale": "ouverture de la clause de propriete intellectuelle : contenu detenu ou licencie par masquerade, cite « content owned or licensed by masquerade »",
+      "rationale_codes": {
+        "decision_trigger": "topic_keyword",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "content owned or licensed by masquerade",
+        "revised_from_plan": false,
+        "confidence": 0.85
+      },
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 40,
+      "theme": "LICENSE_IP",
+      "block_id": 11,
+      "is_block_start": false,
+      "reason": "masquerade detient les droits de PI sur les services, prolonge la clause PI",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 41,
+      "theme": "LICENSE_IP",
+      "block_id": 11,
+      "is_block_start": false,
+      "reason": "rappel de la definition de content au sein de la section PI, prolonge la clause",
+      "legal_nature": "DEFINITION",
+      "legal_nature_marker": "means"
+    },
+    {
+      "id": 42,
+      "theme": "LICENSE_IP",
+      "block_id": 11,
+      "is_block_start": false,
+      "reason": "rappel de la definition de your content, prolonge la clause PI",
+      "legal_nature": "DEFINITION",
+      "legal_nature_marker": "means"
+    },
+    {
+      "id": 43,
+      "theme": "LICENSE_IP",
+      "block_id": 11,
+      "is_block_start": false,
+      "reason": "l'utilisateur detient son contenu, prolonge la clause PI",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 44,
+      "theme": "LICENSE_IP",
+      "block_id": 11,
+      "is_block_start": false,
+      "reason": "your content exclut masquerade content, prolonge la clause PI",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 45,
+      "theme": "LICENSE_IP",
+      "block_id": 11,
+      "is_block_start": false,
+      "reason": "declarations et garanties sur la titularite de your content (licences), prolonge la clause PI",
+      "legal_nature": "OBLIGATION",
+      "legal_nature_marker": "you agree to"
+    },
+    {
+      "id": 46,
+      "theme": "LICENSE_IP",
+      "block_id": 11,
+      "is_block_start": false,
+      "reason": "titre intra « masquerade 's license to you », prolonge la section licence (PI prime)",
+      "legal_nature": "RIGHT_GRANT",
+      "legal_nature_marker": "license to"
+    },
+    {
+      "id": 47,
+      "theme": "LICENSE_IP",
+      "block_id": 11,
+      "is_block_start": false,
+      "reason": "octroi de licence d'usage des services a l'utilisateur, prolonge la clause licence",
+      "legal_nature": "RIGHT_GRANT",
+      "legal_nature_marker": "grant you"
+    },
+    {
+      "id": 48,
+      "theme": "LICENSE_IP",
+      "block_id": 11,
+      "is_block_start": false,
+      "reason": "licence relative aux masques de l'implementation, prolonge la clause licence",
+      "legal_nature": "RIGHT_GRANT",
+      "legal_nature_marker": "grant you"
+    },
+    {
+      "id": 49,
+      "theme": "LICENSE_IP",
+      "block_id": 11,
+      "is_block_start": false,
+      "reason": "aucune autre licence accordee par implication, prolonge la clause licence",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 50,
+      "theme": "LICENSE_IP",
+      "block_id": 11,
+      "is_block_start": false,
+      "reason": "octroi par l'utilisateur d'une licence sur your content a masquerade/facebook, prolonge la clause licence",
+      "legal_nature": "RIGHT_GRANT",
+      "legal_nature_marker": "hereby grant"
+    },
+    {
+      "id": 51,
+      "theme": "LICENSE_IP",
+      "block_id": 11,
+      "is_block_start": false,
+      "reason": "respect des droits de PI d'autrui, prolonge la clause PI",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 52,
+      "theme": "LICENSE_IP",
+      "block_id": 11,
+      "is_block_start": false,
+      "reason": "resiliation possible en cas d'atteinte repetee a la PI, prolonge la clause PI (politique DMCA)",
+      "legal_nature": "GOVERNANCE",
+      "legal_nature_marker": "terminate"
+    },
+    {
+      "id": 53,
+      "theme": "LICENSE_IP",
+      "block_id": 11,
+      "is_block_start": false,
+      "reason": "procedure de signalement d'atteinte a la PI (agent designe), prolonge la clause PI",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 54,
+      "theme": "WARRANTY_DISCLAIMER",
+      "block_id": 12,
+      "is_block_start": true,
+      "rationale": "ouverture de la clause de non-garantie : usage des services aux risques de l'utilisateur, cite « your use of the services is at your own risk »",
+      "rationale_codes": {
+        "decision_trigger": "topic_keyword",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "at your own risk",
+        "revised_from_plan": false,
+        "confidence": 0.86
+      },
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 55,
+      "theme": "WARRANTY_DISCLAIMER",
+      "block_id": 12,
+      "is_block_start": false,
+      "reason": "services fournis « as is » sans garanties, prolonge la non-garantie",
+      "legal_nature": "LIMITATION_DISCLAIMER",
+      "legal_nature_marker": "as is"
+    },
+    {
+      "id": 56,
+      "theme": "WARRANTY_DISCLAIMER",
+      "block_id": 12,
+      "is_block_start": false,
+      "reason": "absence de garantie d'exactitude/fonctionnement, prolonge la non-garantie",
+      "legal_nature": "PROHIBITION",
+      "legal_nature_marker": "do not"
+    },
+    {
+      "id": 57,
+      "theme": "WARRANTY_DISCLAIMER",
+      "block_id": 12,
+      "is_block_start": false,
+      "reason": "non-controle de l'usage par les utilisateurs, prolonge la non-garantie",
+      "legal_nature": "PROHIBITION",
+      "legal_nature_marker": "do not"
+    },
+    {
+      "id": 58,
+      "theme": "WARRANTY_DISCLAIMER",
+      "block_id": 12,
+      "is_block_start": false,
+      "reason": "non-responsabilite pour les actions des utilisateurs/tiers, prolonge la non-garantie",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 59,
+      "theme": "WARRANTY_DISCLAIMER",
+      "block_id": 12,
+      "is_block_start": false,
+      "reason": "reserve juridictionnelle sur l'exclusion de garanties implicites, prolonge la non-garantie",
+      "legal_nature": "PROHIBITION",
+      "legal_nature_marker": "may not"
+    },
+    {
+      "id": 60,
+      "theme": "LIABILITY_LIMITATION",
+      "block_id": 13,
+      "is_block_start": true,
+      "rationale": "ouverture de la clause de release/limitation : l'utilisateur libere masquerade de toute reclamation, cite « you release us , our affiliates »",
+      "rationale_codes": {
+        "decision_trigger": "topic_keyword",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "you release us",
+        "revised_from_plan": false,
+        "confidence": 0.8
+      },
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 61,
+      "theme": "LIABILITY_LIMITATION",
+      "block_id": 13,
+      "is_block_start": false,
+      "reason": "renonciation au code civil californien section 1542, prolonge le release",
+      "legal_nature": "GOVERNANCE",
+      "legal_nature_marker": "jurisdiction"
+    },
+    {
+      "id": 62,
+      "theme": "LIABILITY_LIMITATION",
+      "block_id": 13,
+      "is_block_start": false,
+      "reason": "exclusion des dommages indirects, prolonge la limitation de responsabilite",
+      "legal_nature": "PROHIBITION",
+      "legal_nature_marker": "will not"
+    },
+    {
+      "id": 63,
+      "theme": "LIABILITY_LIMITATION",
+      "block_id": 13,
+      "is_block_start": false,
+      "reason": "plafond de responsabilite agregee, prolonge la limitation",
+      "legal_nature": "PROHIBITION",
+      "legal_nature_marker": "will not"
+    },
+    {
+      "id": 64,
+      "theme": "LIABILITY_LIMITATION",
+      "block_id": 13,
+      "is_block_start": false,
+      "reason": "application au maximum permis par la loi, prolonge la limitation",
+      "legal_nature": "LIMITATION_DISCLAIMER",
+      "legal_nature_marker": "disclaim"
+    },
+    {
+      "id": 65,
+      "theme": "LIABILITY_LIMITATION",
+      "block_id": 13,
+      "is_block_start": false,
+      "reason": "reserve juridictionnelle sur les limitations, prolonge la limitation",
+      "legal_nature": "PROHIBITION",
+      "legal_nature_marker": "may not"
+    },
+    {
+      "id": 66,
+      "theme": "LIABILITY_LIMITATION",
+      "block_id": 13,
+      "is_block_start": false,
+      "reason": "limitation au maximum permis nonobstant ce qui precede, prolonge la limitation",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 67,
+      "theme": "INDEMNIFICATION",
+      "block_id": 14,
+      "is_block_start": true,
+      "rationale": "ouverture de la clause d'indemnisation : obligation de defendre et tenir indemne, cite « indemnify and hold harmless the masquerade parties »",
+      "rationale_codes": {
+        "decision_trigger": "topic_keyword",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "indemnify and hold harmless",
+        "revised_from_plan": false,
+        "confidence": 0.9
+      },
+      "legal_nature": "RISK_ALLOCATION",
+      "legal_nature_marker": "indemnify"
+    },
+    {
+      "id": 68,
+      "theme": "MODIFICATION_OF_TERMS",
+      "block_id": 15,
+      "is_block_start": true,
+      "rationale": "ouverture de la clause d'amendement des termes, cite « we may amend these terms »",
+      "rationale_codes": {
+        "decision_trigger": "topic_keyword",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "we may amend these terms",
+        "revised_from_plan": false,
+        "confidence": 0.92
+      },
+      "legal_nature": "GOVERNANCE",
+      "legal_nature_marker": "we may amend"
+    },
+    {
+      "id": 69,
+      "theme": "MODIFICATION_OF_TERMS",
+      "block_id": 15,
+      "is_block_start": false,
+      "reason": "avis d'amendement et mise a jour de la date d'effet, prolonge la clause d'amendement",
+      "legal_nature": "META",
+      "legal_nature_marker": "effective date"
+    },
+    {
+      "id": 70,
+      "theme": "MODIFICATION_OF_TERMS",
+      "block_id": 15,
+      "is_block_start": false,
+      "reason": "l'usage continu vaut acceptation des termes amendes, prolonge la clause",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 71,
+      "theme": "MODIFICATION_OF_TERMS",
+      "block_id": 15,
+      "is_block_start": false,
+      "reason": "obligation de cesser l'usage en cas de desaccord, prolonge la clause",
+      "legal_nature": "PROHIBITION",
+      "legal_nature_marker": "do not"
+    },
+    {
+      "id": 72,
+      "theme": "MODIFICATION_OF_TERMS",
+      "block_id": 15,
+      "is_block_start": false,
+      "reason": "invitation a relire les termes regulierement, prolonge la clause",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 73,
+      "theme": "TERMINATION",
+      "block_id": 16,
+      "is_block_start": true,
+      "rationale": "ouverture de la clause de resiliation : suspension/resiliation de l'acces, cite « suspend , or terminate your access »",
+      "rationale_codes": {
+        "decision_trigger": "topic_keyword",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "terminate your access",
+        "revised_from_plan": false,
+        "confidence": 0.85
+      },
+      "legal_nature": "GOVERNANCE",
+      "legal_nature_marker": "terminate"
+    },
+    {
+      "id": 74,
+      "theme": "TERMINATION",
+      "block_id": 16,
+      "is_block_start": false,
+      "reason": "clause de survie de certaines provisions apres resiliation, prolonge la clause de resiliation",
+      "legal_nature": "LIMITATION_DISCLAIMER",
+      "legal_nature_marker": "disclaim"
+    },
+    {
+      "id": 75,
+      "theme": "MISC_BOILERPLATE",
+      "block_id": 17,
+      "is_block_start": true,
+      "rationale": "ouverture des clauses diverses : cession des droits et obligations, cite « transfer any of your rights or obligations »",
+      "rationale_codes": {
+        "decision_trigger": "topic_keyword",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "transfer any of your rights or obligations",
+        "revised_from_plan": false,
+        "confidence": 0.78
+      },
+      "legal_nature": "PROHIBITION",
+      "legal_nature_marker": "will not"
+    },
+    {
+      "id": 76,
+      "theme": "MISC_BOILERPLATE",
+      "block_id": 17,
+      "is_block_start": false,
+      "reason": "cession libre par masquerade en cas de fusion/acquisition, prolonge la clause de cession",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 77,
+      "theme": "GOVERNING_LAW",
+      "block_id": 18,
+      "is_block_start": true,
+      "rationale": "ouverture de la clause export/restrictions pays : distribution interdite la ou elle violerait la loi locale, cite « would violate local law »",
+      "rationale_codes": {
+        "decision_trigger": "topic_keyword",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "violate local law",
+        "revised_from_plan": false,
+        "confidence": 0.7
+      },
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 78,
+      "theme": "GOVERNING_LAW",
+      "block_id": 18,
+      "is_block_start": false,
+      "reason": "droit de limiter les services par pays, prolonge la clause",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 79,
+      "theme": "GOVERNING_LAW",
+      "block_id": 18,
+      "is_block_start": false,
+      "reason": "conformite aux lois de controle des exportations, prolonge la clause export",
+      "legal_nature": "OBLIGATION",
+      "legal_nature_marker": "you will"
+    },
+    {
+      "id": 80,
+      "theme": "GOVERNING_LAW",
+      "block_id": 18,
+      "is_block_start": false,
+      "reason": "interdictions d'export specifiques (a-c), prolonge la clause export",
+      "legal_nature": "PROHIBITION",
+      "legal_nature_marker": "will not"
+    },
+    {
+      "id": 81,
+      "theme": "GOVERNING_LAW",
+      "block_id": 18,
+      "is_block_start": false,
+      "reason": "interdiction d'usage depuis un pays restreint, prolonge la clause export",
+      "legal_nature": "PROHIBITION",
+      "legal_nature_marker": "will not"
+    },
+    {
+      "id": 82,
+      "theme": "MISC_BOILERPLATE",
+      "block_id": 19,
+      "is_block_start": true,
+      "rationale": "ouverture des clauses diverses finales : langue des termes en anglais, cite « written in english »",
+      "rationale_codes": {
+        "decision_trigger": "topic_keyword",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "written in english",
+        "revised_from_plan": false,
+        "confidence": 0.72
+      },
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 83,
+      "theme": "MISC_BOILERPLATE",
+      "block_id": 19,
+      "is_block_start": false,
+      "reason": "version traduite a titre de commodite, prolonge la clause de langue",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 84,
+      "theme": "MISC_BOILERPLATE",
+      "block_id": 19,
+      "is_block_start": false,
+      "reason": "la version anglaise prime, prolonge la clause de langue",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 85,
+      "theme": "MISC_BOILERPLATE",
+      "block_id": 19,
+      "is_block_start": false,
+      "reason": "regle d'interpretation des termes « includes/including », prolonge le boilerplate",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 86,
+      "theme": "MISC_BOILERPLATE",
+      "block_id": 19,
+      "is_block_start": false,
+      "reason": "amendement/renonciation requiert consentement expres, prolonge le boilerplate",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 87,
+      "theme": "MISC_BOILERPLATE",
+      "block_id": 19,
+      "is_block_start": false,
+      "reason": "non-renonciation en cas de non-application, prolonge le boilerplate",
+      "legal_nature": "PROHIBITION",
+      "legal_nature_marker": "will not"
+    },
+    {
+      "id": 88,
+      "theme": "MISC_BOILERPLATE",
+      "block_id": 19,
+      "is_block_start": false,
+      "reason": "conformite a la loi prevaut, prolonge le boilerplate",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 89,
+      "theme": "MISC_BOILERPLATE",
+      "block_id": 19,
+      "is_block_start": false,
+      "reason": "absence de droits pour tiers beneficiaires, prolonge le boilerplate",
+      "legal_nature": "PROHIBITION",
+      "legal_nature_marker": "do not"
+    },
+    {
+      "id": 90,
+      "theme": "MISC_BOILERPLATE",
+      "block_id": 19,
+      "is_block_start": false,
+      "reason": "clause de severabilite, prolonge le boilerplate",
+      "legal_nature": "PROHIBITION",
+      "legal_nature_marker": "shall not"
+    },
+    {
+      "id": 91,
+      "theme": "MISC_BOILERPLATE",
+      "block_id": 19,
+      "is_block_start": false,
+      "reason": "reserve de tous les droits non accordes, prolonge le boilerplate",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 92,
+      "theme": "MISC_BOILERPLATE",
+      "block_id": 19,
+      "is_block_start": false,
+      "reason": "preservation des droits legaux du consommateur, prolonge le boilerplate",
+      "legal_nature": "PROHIBITION",
+      "legal_nature_marker": "may not"
+    },
+    {
+      "id": 93,
+      "theme": "MISC_BOILERPLATE",
+      "block_id": 19,
+      "is_block_start": false,
+      "reason": "clause de feedback/suggestions sans compensation, prolonge le boilerplate",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 94,
+      "theme": "DISPUTE_ARBITRATION",
+      "block_id": 20,
+      "is_block_start": true,
+      "rationale": "ouverture du grand bloc arbitrage : applicabilite de la provision speciale aux utilisateurs US/Canada, cite « special arbitration provision for the united states or canada users »",
+      "rationale_codes": {
+        "decision_trigger": "topic_keyword",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "special arbitration provision for the united states or canada users",
+        "revised_from_plan": false,
+        "confidence": 0.88
+      },
+      "legal_nature": "GOVERNANCE",
+      "legal_nature_marker": "arbitration"
+    },
+    {
+      "id": 95,
+      "theme": "DISPUTE_ARBITRATION",
+      "block_id": 20,
+      "is_block_start": false,
+      "reason": "injonction de lire la section attentivement, prolonge la clause arbitrage",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 96,
+      "theme": "DISPUTE_ARBITRATION",
+      "block_id": 20,
+      "is_block_start": false,
+      "reason": "for/venue par defaut pour ceux non soumis a l'arbitrage, prolonge la resolution des litiges",
+      "legal_nature": "GOVERNANCE",
+      "legal_nature_marker": "jurisdiction"
+    },
+    {
+      "id": 97,
+      "theme": "DISPUTE_ARBITRATION",
+      "block_id": 20,
+      "is_block_start": false,
+      "reason": "loi applicable de Californie aux litiges, prolonge la resolution des litiges",
+      "legal_nature": "GOVERNANCE",
+      "legal_nature_marker": "arbitration"
+    },
+    {
+      "id": 98,
+      "theme": "DISPUTE_ARBITRATION",
+      "block_id": 20,
+      "is_block_start": false,
+      "reason": "titre de la section speciale d'arbitrage, prolonge le bloc arbitrage",
+      "legal_nature": "GOVERNANCE",
+      "legal_nature_marker": "arbitration"
+    },
+    {
+      "id": 99,
+      "theme": "DISPUTE_ARBITRATION",
+      "block_id": 20,
+      "is_block_start": false,
+      "reason": "injonction de lire cette section, prolonge le bloc arbitrage",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 100,
+      "theme": "DISPUTE_ARBITRATION",
+      "block_id": 20,
+      "is_block_start": false,
+      "reason": "exigence d'arbitrage individuel contraignant, prolonge le bloc arbitrage",
+      "legal_nature": "GOVERNANCE",
+      "legal_nature_marker": "arbitration"
+    },
+    {
+      "id": 101,
+      "theme": "DISPUTE_ARBITRATION",
+      "block_id": 20,
+      "is_block_start": false,
+      "reason": "renonciation au juge/jury, prolonge le bloc arbitrage",
+      "legal_nature": "DEFINITION",
+      "legal_nature_marker": "means"
+    },
+    {
+      "id": 102,
+      "theme": "DISPUTE_ARBITRATION",
+      "block_id": 20,
+      "is_block_start": false,
+      "reason": "limitation du delai pour engager l'arbitrage, prolonge le bloc arbitrage",
+      "legal_nature": "GOVERNANCE",
+      "legal_nature_marker": "arbitration"
+    },
+    {
+      "id": 103,
+      "theme": "DISPUTE_ARBITRATION",
+      "block_id": 20,
+      "is_block_start": false,
+      "reason": "renonciation aux actions collectives, prolonge le bloc arbitrage",
+      "legal_nature": "GOVERNANCE",
+      "legal_nature_marker": "arbitration"
+    },
+    {
+      "id": 104,
+      "theme": "DISPUTE_ARBITRATION",
+      "block_id": 20,
+      "is_block_start": false,
+      "reason": "definition d'« excluded dispute » (PI), prolonge le bloc arbitrage",
+      "legal_nature": "DEFINITION",
+      "legal_nature_marker": "means"
+    },
+    {
+      "id": 105,
+      "theme": "DISPUTE_ARBITRATION",
+      "block_id": 20,
+      "is_block_start": false,
+      "reason": "precision sur les litiges privacy/publicity non exclus, prolonge le bloc arbitrage",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 106,
+      "theme": "DISPUTE_ARBITRATION",
+      "block_id": 20,
+      "is_block_start": false,
+      "reason": "le FAA regit l'interpretation de la provision, prolonge le bloc arbitrage",
+      "legal_nature": "GOVERNANCE",
+      "legal_nature_marker": "arbitration"
+    },
+    {
+      "id": 107,
+      "theme": "DISPUTE_ARBITRATION",
+      "block_id": 20,
+      "is_block_start": false,
+      "reason": "titre intra « agreement to arbitrate », prolonge le bloc arbitrage",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 108,
+      "theme": "DISPUTE_ARBITRATION",
+      "block_id": 20,
+      "is_block_start": false,
+      "reason": "renonciation au proces pour les utilisateurs US/Canada, prolonge le bloc arbitrage",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 109,
+      "theme": "DISPUTE_ARBITRATION",
+      "block_id": 20,
+      "is_block_start": false,
+      "reason": "resolution de tous les litiges par arbitrage, prolonge le bloc arbitrage",
+      "legal_nature": "GOVERNANCE",
+      "legal_nature_marker": "arbitration"
+    },
+    {
+      "id": 110,
+      "theme": "DISPUTE_ARBITRATION",
+      "block_id": 20,
+      "is_block_start": false,
+      "reason": "interdiction de combiner litiges arbitrables/non, administration AAA, prolonge le bloc arbitrage",
+      "legal_nature": "PROHIBITION",
+      "legal_nature_marker": "agree not to"
+    },
+    {
+      "id": 111,
+      "theme": "DISPUTE_ARBITRATION",
+      "block_id": 20,
+      "is_block_start": false,
+      "reason": "arbitre unique selon les regles AAA, prolonge le bloc arbitrage",
+      "legal_nature": "GOVERNANCE",
+      "legal_nature_marker": "arbitration"
+    },
+    {
+      "id": 112,
+      "theme": "DISPUTE_ARBITRATION",
+      "block_id": 20,
+      "is_block_start": false,
+      "reason": "informations AAA disponibles en ligne, prolonge le bloc arbitrage",
+      "legal_nature": "GOVERNANCE",
+      "legal_nature_marker": "arbitration"
+    },
+    {
+      "id": 113,
+      "theme": "DISPUTE_ARBITRATION",
+      "block_id": 20,
+      "is_block_start": false,
+      "reason": "l'arbitre decide de l'arbitrabilite, prolonge le bloc arbitrage",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 114,
+      "theme": "DISPUTE_ARBITRATION",
+      "block_id": 20,
+      "is_block_start": false,
+      "reason": "lieu et repartition des frais selon les regles AAA, prolonge le bloc arbitrage",
+      "legal_nature": "GOVERNANCE",
+      "legal_nature_marker": "arbitration"
+    },
+    {
+      "id": 115,
+      "theme": "DISPUTE_ARBITRATION",
+      "block_id": 20,
+      "is_block_start": false,
+      "reason": "remboursement des frais administratifs AAA, prolonge le bloc arbitrage",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 116,
+      "theme": "DISPUTE_ARBITRATION",
+      "block_id": 20,
+      "is_block_start": false,
+      "reason": "droit d'opt-out de l'arbitrage, prolonge le bloc arbitrage",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 117,
+      "theme": "DISPUTE_ARBITRATION",
+      "block_id": 20,
+      "is_block_start": false,
+      "reason": "effet de l'opt-out, prolonge le bloc arbitrage",
+      "legal_nature": "GOVERNANCE",
+      "legal_nature_marker": "arbitration"
+    },
+    {
+      "id": 118,
+      "theme": "DISPUTE_ARBITRATION",
+      "block_id": 20,
+      "is_block_start": false,
+      "reason": "procedure d'opt-out (30 jours), prolonge le bloc arbitrage",
+      "legal_nature": "PROHIBITION",
+      "legal_nature_marker": "must not"
+    },
+    {
+      "id": 119,
+      "theme": "DISPUTE_ARBITRATION",
+      "block_id": 20,
+      "is_block_start": false,
+      "reason": "adresse pour l'opt-out, prolonge le bloc arbitrage",
+      "legal_nature": "OBLIGATION",
+      "legal_nature_marker": "you must"
+    },
+    {
+      "id": 120,
+      "theme": "DISPUTE_ARBITRATION",
+      "block_id": 20,
+      "is_block_start": false,
+      "reason": "alternative small claims court, prolonge le bloc arbitrage",
+      "legal_nature": "GOVERNANCE",
+      "legal_nature_marker": "arbitration"
+    },
+    {
+      "id": 121,
+      "theme": "DISPUTE_ARBITRATION",
+      "block_id": 20,
+      "is_block_start": false,
+      "reason": "delai d'un an pour engager l'arbitrage, prolonge le bloc arbitrage",
+      "legal_nature": "GOVERNANCE",
+      "legal_nature_marker": "arbitration"
+    },
+    {
+      "id": 122,
+      "theme": "DISPUTE_ARBITRATION",
+      "block_id": 20,
+      "is_block_start": false,
+      "reason": "consequence du non-respect du delai d'un an, prolonge le bloc arbitrage",
+      "legal_nature": "DEFINITION",
+      "legal_nature_marker": "means"
+    },
+    {
+      "id": 123,
+      "theme": "DISPUTE_ARBITRATION",
+      "block_id": 20,
+      "is_block_start": false,
+      "reason": "titre intra « no class actions », prolonge le bloc arbitrage",
+      "legal_nature": "GOVERNANCE",
+      "legal_nature_marker": "arbitration"
+    },
+    {
+      "id": 124,
+      "theme": "DISPUTE_ARBITRATION",
+      "block_id": 20,
+      "is_block_start": false,
+      "reason": "litiges uniquement a titre individuel, prolonge le bloc arbitrage",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 125,
+      "theme": "DISPUTE_ARBITRATION",
+      "block_id": 20,
+      "is_block_start": false,
+      "reason": "renonciation a la participation aux actions collectives, prolonge le bloc arbitrage",
+      "legal_nature": "PROHIBITION",
+      "legal_nature_marker": "agree not to"
+    },
+    {
+      "id": 126,
+      "theme": "DISPUTE_ARBITRATION",
+      "block_id": 20,
+      "is_block_start": false,
+      "reason": "nullite de la provision en cas d'inapplicabilite de l'interdiction collective, prolonge le bloc arbitrage",
+      "legal_nature": "GOVERNANCE",
+      "legal_nature_marker": "arbitration"
+    },
+    {
+      "id": 127,
+      "theme": "DISPUTE_ARBITRATION",
+      "block_id": 20,
+      "is_block_start": false,
+      "reason": "titre intra « place to file permitted court actions », prolonge le bloc arbitrage",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 128,
+      "theme": "DISPUTE_ARBITRATION",
+      "block_id": 20,
+      "is_block_start": false,
+      "reason": "renvoi a la clause forum/venue en cas d'opt-out, prolonge le bloc arbitrage",
+      "legal_nature": "GOVERNANCE",
+      "legal_nature_marker": "arbitration"
+    },
+    {
+      "id": 129,
+      "theme": "META",
+      "block_id": 21,
+      "is_block_start": true,
+      "rationale": "ligne de contact final hors clause de fond, cite « please contact us online at privacy@msqrd.me »",
+      "rationale_codes": {
+        "decision_trigger": "topic_keyword",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "please contact us online",
+        "revised_from_plan": true,
+        "confidence": 0.8
+      },
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    }
+  ]
+}

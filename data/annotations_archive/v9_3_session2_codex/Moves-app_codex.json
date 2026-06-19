@@ -1,0 +1,724 @@
+{
+  "doc": "Moves-app",
+  "judge": "codex",
+  "version": "v9.3",
+  "plan": {
+    "macro_sections": [
+      {
+        "id": 0,
+        "theme": "PREAMBLE_SCOPE",
+        "anchor_id": 0,
+        "evidence_span": "effective date"
+      },
+      {
+        "id": 1,
+        "theme": "LICENSE_IP",
+        "anchor_id": 9,
+        "evidence_span": "grants to the licensee"
+      },
+      {
+        "id": 2,
+        "theme": "WARRANTY_DISCLAIMER",
+        "anchor_id": 32,
+        "evidence_span": "sole risk"
+      },
+      {
+        "id": 3,
+        "theme": "LIABILITY_LIMITATION",
+        "anchor_id": 37,
+        "evidence_span": "not been developed"
+      },
+      {
+        "id": 4,
+        "theme": "TERMINATION",
+        "anchor_id": 56,
+        "evidence_span": "effective until terminated"
+      },
+      {
+        "id": 5,
+        "theme": "MISC_BOILERPLATE",
+        "anchor_id": 62,
+        "evidence_span": "transfer its rights"
+      }
+    ],
+    "clauses": [
+      {
+        "clause_id": 0,
+        "macro": 0,
+        "theme": "META",
+        "anchor_id": 0,
+        "evidence_span": "effective date"
+      },
+      {
+        "clause_id": 1,
+        "macro": 0,
+        "theme": "PREAMBLE_SCOPE",
+        "anchor_id": 1,
+        "evidence_span": "legal agreement concluded"
+      },
+      {
+        "clause_id": 2,
+        "macro": 1,
+        "theme": "LICENSE_IP",
+        "anchor_id": 9,
+        "evidence_span": "grants to the licensee"
+      },
+      {
+        "clause_id": 3,
+        "macro": 1,
+        "theme": "MODIFICATION_OF_TERMS",
+        "anchor_id": 14,
+        "evidence_span": "reserves the right to change"
+      },
+      {
+        "clause_id": 4,
+        "macro": 1,
+        "theme": "PRIVACY_DATA",
+        "anchor_id": 17,
+        "evidence_span": "process personal data"
+      },
+      {
+        "clause_id": 5,
+        "macro": 1,
+        "theme": "ACCEPTABLE_USE",
+        "anchor_id": 18,
+        "evidence_span": "undertakes not to"
+      },
+      {
+        "clause_id": 6,
+        "macro": 1,
+        "theme": "LICENSE_IP",
+        "anchor_id": 26,
+        "evidence_span": "the licensee acknowledges"
+      },
+      {
+        "clause_id": 7,
+        "macro": 2,
+        "theme": "WARRANTY_DISCLAIMER",
+        "anchor_id": 32,
+        "evidence_span": "sole risk"
+      },
+      {
+        "clause_id": 8,
+        "macro": 3,
+        "theme": "LIABILITY_LIMITATION",
+        "anchor_id": 37,
+        "evidence_span": "not been developed"
+      },
+      {
+        "clause_id": 9,
+        "macro": 3,
+        "theme": "ELIGIBILITY_ACCOUNT",
+        "anchor_id": 51,
+        "evidence_span": "represents and warrants"
+      },
+      {
+        "clause_id": 10,
+        "macro": 4,
+        "theme": "TERMINATION",
+        "anchor_id": 56,
+        "evidence_span": "effective until terminated"
+      },
+      {
+        "clause_id": 11,
+        "macro": 5,
+        "theme": "MISC_BOILERPLATE",
+        "anchor_id": 62,
+        "evidence_span": "transfer its rights"
+      },
+      {
+        "clause_id": 12,
+        "macro": 5,
+        "theme": "GOVERNING_LAW",
+        "anchor_id": 66,
+        "evidence_span": "laws of finland"
+      },
+      {
+        "clause_id": 13,
+        "macro": 5,
+        "theme": "MODIFICATION_OF_TERMS",
+        "anchor_id": 69,
+        "evidence_span": "revise these terms"
+      },
+      {
+        "clause_id": 14,
+        "macro": 5,
+        "theme": "META",
+        "anchor_id": 73,
+        "evidence_span": "responsible for the service"
+      }
+    ]
+  },
+  "assignment": [
+    {
+      "id": 0,
+      "decision": "ADVANCE",
+      "block_id": 0,
+      "is_block_start": true,
+      "theme": "META",
+      "plan_ref": 0,
+      "evidence_span": "effective date",
+      "unplanned": false
+    },
+    {
+      "id": 1,
+      "decision": "ADVANCE",
+      "block_id": 1,
+      "is_block_start": true,
+      "theme": "PREAMBLE_SCOPE",
+      "plan_ref": 1,
+      "evidence_span": "legal agreement concluded",
+      "unplanned": false
+    },
+    {
+      "id": 2,
+      "decision": "STAY",
+      "block_id": 1,
+      "is_block_start": false,
+      "theme": "PREAMBLE_SCOPE"
+    },
+    {
+      "id": 3,
+      "decision": "STAY",
+      "block_id": 1,
+      "is_block_start": false,
+      "theme": "PREAMBLE_SCOPE"
+    },
+    {
+      "id": 4,
+      "decision": "STAY",
+      "block_id": 1,
+      "is_block_start": false,
+      "theme": "PREAMBLE_SCOPE"
+    },
+    {
+      "id": 5,
+      "decision": "STAY",
+      "block_id": 1,
+      "is_block_start": false,
+      "theme": "PREAMBLE_SCOPE"
+    },
+    {
+      "id": 6,
+      "decision": "STAY",
+      "block_id": 1,
+      "is_block_start": false,
+      "theme": "PREAMBLE_SCOPE"
+    },
+    {
+      "id": 7,
+      "decision": "STAY",
+      "block_id": 1,
+      "is_block_start": false,
+      "theme": "PREAMBLE_SCOPE"
+    },
+    {
+      "id": 8,
+      "decision": "STAY",
+      "block_id": 1,
+      "is_block_start": false,
+      "theme": "PREAMBLE_SCOPE"
+    },
+    {
+      "id": 9,
+      "decision": "ADVANCE",
+      "block_id": 2,
+      "is_block_start": true,
+      "theme": "LICENSE_IP",
+      "plan_ref": 2,
+      "evidence_span": "grants to the licensee",
+      "unplanned": false
+    },
+    {
+      "id": 10,
+      "decision": "STAY",
+      "block_id": 2,
+      "is_block_start": false,
+      "theme": "LICENSE_IP"
+    },
+    {
+      "id": 11,
+      "decision": "STAY",
+      "block_id": 2,
+      "is_block_start": false,
+      "theme": "LICENSE_IP"
+    },
+    {
+      "id": 12,
+      "decision": "STAY",
+      "block_id": 2,
+      "is_block_start": false,
+      "theme": "LICENSE_IP"
+    },
+    {
+      "id": 13,
+      "decision": "STAY",
+      "block_id": 2,
+      "is_block_start": false,
+      "theme": "LICENSE_IP"
+    },
+    {
+      "id": 14,
+      "decision": "ADVANCE",
+      "block_id": 3,
+      "is_block_start": true,
+      "theme": "MODIFICATION_OF_TERMS",
+      "plan_ref": 3,
+      "evidence_span": "reserves the right to change",
+      "unplanned": false
+    },
+    {
+      "id": 15,
+      "decision": "STAY",
+      "block_id": 3,
+      "is_block_start": false,
+      "theme": "MODIFICATION_OF_TERMS"
+    },
+    {
+      "id": 16,
+      "decision": "STAY",
+      "block_id": 3,
+      "is_block_start": false,
+      "theme": "MODIFICATION_OF_TERMS"
+    },
+    {
+      "id": 17,
+      "decision": "ADVANCE",
+      "block_id": 4,
+      "is_block_start": true,
+      "theme": "PRIVACY_DATA",
+      "plan_ref": 4,
+      "evidence_span": "process personal data",
+      "unplanned": false
+    },
+    {
+      "id": 18,
+      "decision": "ADVANCE",
+      "block_id": 5,
+      "is_block_start": true,
+      "theme": "ACCEPTABLE_USE",
+      "plan_ref": 5,
+      "evidence_span": "undertakes not to",
+      "unplanned": false
+    },
+    {
+      "id": 19,
+      "decision": "STAY",
+      "block_id": 5,
+      "is_block_start": false,
+      "theme": "ACCEPTABLE_USE"
+    },
+    {
+      "id": 20,
+      "decision": "STAY",
+      "block_id": 5,
+      "is_block_start": false,
+      "theme": "ACCEPTABLE_USE"
+    },
+    {
+      "id": 21,
+      "decision": "STAY",
+      "block_id": 5,
+      "is_block_start": false,
+      "theme": "ACCEPTABLE_USE"
+    },
+    {
+      "id": 22,
+      "decision": "STAY",
+      "block_id": 5,
+      "is_block_start": false,
+      "theme": "ACCEPTABLE_USE"
+    },
+    {
+      "id": 23,
+      "decision": "STAY",
+      "block_id": 5,
+      "is_block_start": false,
+      "theme": "ACCEPTABLE_USE"
+    },
+    {
+      "id": 24,
+      "decision": "STAY",
+      "block_id": 5,
+      "is_block_start": false,
+      "theme": "ACCEPTABLE_USE"
+    },
+    {
+      "id": 25,
+      "decision": "STAY",
+      "block_id": 5,
+      "is_block_start": false,
+      "theme": "ACCEPTABLE_USE"
+    },
+    {
+      "id": 26,
+      "decision": "ADVANCE",
+      "block_id": 6,
+      "is_block_start": true,
+      "theme": "LICENSE_IP",
+      "plan_ref": 6,
+      "evidence_span": "the licensee acknowledges",
+      "unplanned": false
+    },
+    {
+      "id": 27,
+      "decision": "STAY",
+      "block_id": 6,
+      "is_block_start": false,
+      "theme": "LICENSE_IP"
+    },
+    {
+      "id": 28,
+      "decision": "STAY",
+      "block_id": 6,
+      "is_block_start": false,
+      "theme": "LICENSE_IP"
+    },
+    {
+      "id": 29,
+      "decision": "STAY",
+      "block_id": 6,
+      "is_block_start": false,
+      "theme": "LICENSE_IP"
+    },
+    {
+      "id": 30,
+      "decision": "STAY",
+      "block_id": 6,
+      "is_block_start": false,
+      "theme": "LICENSE_IP"
+    },
+    {
+      "id": 31,
+      "decision": "STAY",
+      "block_id": 6,
+      "is_block_start": false,
+      "theme": "LICENSE_IP"
+    },
+    {
+      "id": 32,
+      "decision": "ADVANCE",
+      "block_id": 7,
+      "is_block_start": true,
+      "theme": "WARRANTY_DISCLAIMER",
+      "plan_ref": 7,
+      "evidence_span": "sole risk",
+      "unplanned": false
+    },
+    {
+      "id": 33,
+      "decision": "STAY",
+      "block_id": 7,
+      "is_block_start": false,
+      "theme": "WARRANTY_DISCLAIMER"
+    },
+    {
+      "id": 34,
+      "decision": "STAY",
+      "block_id": 7,
+      "is_block_start": false,
+      "theme": "WARRANTY_DISCLAIMER"
+    },
+    {
+      "id": 35,
+      "decision": "STAY",
+      "block_id": 7,
+      "is_block_start": false,
+      "theme": "WARRANTY_DISCLAIMER"
+    },
+    {
+      "id": 36,
+      "decision": "STAY",
+      "block_id": 7,
+      "is_block_start": false,
+      "theme": "WARRANTY_DISCLAIMER"
+    },
+    {
+      "id": 37,
+      "decision": "ADVANCE",
+      "block_id": 8,
+      "is_block_start": true,
+      "theme": "LIABILITY_LIMITATION",
+      "plan_ref": 8,
+      "evidence_span": "not been developed",
+      "unplanned": false
+    },
+    {
+      "id": 38,
+      "decision": "STAY",
+      "block_id": 8,
+      "is_block_start": false,
+      "theme": "LIABILITY_LIMITATION"
+    },
+    {
+      "id": 39,
+      "decision": "STAY",
+      "block_id": 8,
+      "is_block_start": false,
+      "theme": "LIABILITY_LIMITATION"
+    },
+    {
+      "id": 40,
+      "decision": "STAY",
+      "block_id": 8,
+      "is_block_start": false,
+      "theme": "LIABILITY_LIMITATION"
+    },
+    {
+      "id": 41,
+      "decision": "STAY",
+      "block_id": 8,
+      "is_block_start": false,
+      "theme": "LIABILITY_LIMITATION"
+    },
+    {
+      "id": 42,
+      "decision": "STAY",
+      "block_id": 8,
+      "is_block_start": false,
+      "theme": "LIABILITY_LIMITATION"
+    },
+    {
+      "id": 43,
+      "decision": "STAY",
+      "block_id": 8,
+      "is_block_start": false,
+      "theme": "LIABILITY_LIMITATION"
+    },
+    {
+      "id": 44,
+      "decision": "STAY",
+      "block_id": 8,
+      "is_block_start": false,
+      "theme": "LIABILITY_LIMITATION"
+    },
+    {
+      "id": 45,
+      "decision": "STAY",
+      "block_id": 8,
+      "is_block_start": false,
+      "theme": "LIABILITY_LIMITATION"
+    },
+    {
+      "id": 46,
+      "decision": "STAY",
+      "block_id": 8,
+      "is_block_start": false,
+      "theme": "LIABILITY_LIMITATION"
+    },
+    {
+      "id": 47,
+      "decision": "STAY",
+      "block_id": 8,
+      "is_block_start": false,
+      "theme": "LIABILITY_LIMITATION"
+    },
+    {
+      "id": 48,
+      "decision": "STAY",
+      "block_id": 8,
+      "is_block_start": false,
+      "theme": "LIABILITY_LIMITATION"
+    },
+    {
+      "id": 49,
+      "decision": "STAY",
+      "block_id": 8,
+      "is_block_start": false,
+      "theme": "LIABILITY_LIMITATION"
+    },
+    {
+      "id": 50,
+      "decision": "STAY",
+      "block_id": 8,
+      "is_block_start": false,
+      "theme": "LIABILITY_LIMITATION"
+    },
+    {
+      "id": 51,
+      "decision": "ADVANCE",
+      "block_id": 9,
+      "is_block_start": true,
+      "theme": "ELIGIBILITY_ACCOUNT",
+      "plan_ref": 9,
+      "evidence_span": "represents and warrants",
+      "unplanned": false
+    },
+    {
+      "id": 52,
+      "decision": "STAY",
+      "block_id": 9,
+      "is_block_start": false,
+      "theme": "ELIGIBILITY_ACCOUNT"
+    },
+    {
+      "id": 53,
+      "decision": "STAY",
+      "block_id": 9,
+      "is_block_start": false,
+      "theme": "ELIGIBILITY_ACCOUNT"
+    },
+    {
+      "id": 54,
+      "decision": "STAY",
+      "block_id": 9,
+      "is_block_start": false,
+      "theme": "ELIGIBILITY_ACCOUNT"
+    },
+    {
+      "id": 55,
+      "decision": "STAY",
+      "block_id": 9,
+      "is_block_start": false,
+      "theme": "ELIGIBILITY_ACCOUNT"
+    },
+    {
+      "id": 56,
+      "decision": "ADVANCE",
+      "block_id": 10,
+      "is_block_start": true,
+      "theme": "TERMINATION",
+      "plan_ref": 10,
+      "evidence_span": "effective until terminated",
+      "unplanned": false
+    },
+    {
+      "id": 57,
+      "decision": "STAY",
+      "block_id": 10,
+      "is_block_start": false,
+      "theme": "TERMINATION"
+    },
+    {
+      "id": 58,
+      "decision": "STAY",
+      "block_id": 10,
+      "is_block_start": false,
+      "theme": "TERMINATION"
+    },
+    {
+      "id": 59,
+      "decision": "STAY",
+      "block_id": 10,
+      "is_block_start": false,
+      "theme": "TERMINATION"
+    },
+    {
+      "id": 60,
+      "decision": "STAY",
+      "block_id": 10,
+      "is_block_start": false,
+      "theme": "TERMINATION"
+    },
+    {
+      "id": 61,
+      "decision": "STAY",
+      "block_id": 10,
+      "is_block_start": false,
+      "theme": "TERMINATION"
+    },
+    {
+      "id": 62,
+      "decision": "ADVANCE",
+      "block_id": 11,
+      "is_block_start": true,
+      "theme": "MISC_BOILERPLATE",
+      "plan_ref": 11,
+      "evidence_span": "transfer its rights",
+      "unplanned": false
+    },
+    {
+      "id": 63,
+      "decision": "STAY",
+      "block_id": 11,
+      "is_block_start": false,
+      "theme": "MISC_BOILERPLATE"
+    },
+    {
+      "id": 64,
+      "decision": "STAY",
+      "block_id": 11,
+      "is_block_start": false,
+      "theme": "MISC_BOILERPLATE"
+    },
+    {
+      "id": 65,
+      "decision": "STAY",
+      "block_id": 11,
+      "is_block_start": false,
+      "theme": "MISC_BOILERPLATE"
+    },
+    {
+      "id": 66,
+      "decision": "ADVANCE",
+      "block_id": 12,
+      "is_block_start": true,
+      "theme": "GOVERNING_LAW",
+      "plan_ref": 12,
+      "evidence_span": "laws of finland",
+      "unplanned": false
+    },
+    {
+      "id": 67,
+      "decision": "STAY",
+      "block_id": 12,
+      "is_block_start": false,
+      "theme": "GOVERNING_LAW"
+    },
+    {
+      "id": 68,
+      "decision": "STAY",
+      "block_id": 12,
+      "is_block_start": false,
+      "theme": "GOVERNING_LAW"
+    },
+    {
+      "id": 69,
+      "decision": "ADVANCE",
+      "block_id": 13,
+      "is_block_start": true,
+      "theme": "MODIFICATION_OF_TERMS",
+      "plan_ref": 13,
+      "evidence_span": "revise these terms",
+      "unplanned": false
+    },
+    {
+      "id": 70,
+      "decision": "STAY",
+      "block_id": 13,
+      "is_block_start": false,
+      "theme": "MODIFICATION_OF_TERMS"
+    },
+    {
+      "id": 71,
+      "decision": "STAY",
+      "block_id": 13,
+      "is_block_start": false,
+      "theme": "MODIFICATION_OF_TERMS"
+    },
+    {
+      "id": 72,
+      "decision": "STAY",
+      "block_id": 13,
+      "is_block_start": false,
+      "theme": "MODIFICATION_OF_TERMS"
+    },
+    {
+      "id": 73,
+      "decision": "ADVANCE",
+      "block_id": 14,
+      "is_block_start": true,
+      "theme": "META",
+      "plan_ref": 14,
+      "evidence_span": "responsible for the service",
+      "unplanned": false
+    },
+    {
+      "id": 74,
+      "decision": "STAY",
+      "block_id": 14,
+      "is_block_start": false,
+      "theme": "META"
+    }
+  ]
+}

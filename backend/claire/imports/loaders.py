@@ -69,7 +69,9 @@ def normalize_v94(raw: dict) -> list[dict]:
                     c.get("anchor_id"), where="v9.4 plan.clauses", position=i
                 ),
                 "theme": c.get("theme", ""),
-                "evidence_span": c.get("open_span", ""),
+                # Tolérant : v9.4 = open_span ; v9.3 = evidence_span. Champs en plus
+                # (ex. v9.3 `macro`) ignorés ici mais conservés dans `raw`.
+                "evidence_span": c.get("open_span") or c.get("evidence_span", ""),
                 "rationale": c.get("rationale", ""),
                 "order": i,
             }

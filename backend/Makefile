@@ -43,3 +43,4 @@ resync-translations:
 feed-all:
 	$(MANAGE) migrate
 	$(MANAGE) feed_db --all
+	-$(MANAGE) import_annotations_archive

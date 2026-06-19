@@ -1,0 +1,1568 @@
+{
+  "doc": "Supercell",
+  "judge": "claude",
+  "version": "v9.2-nature-derived",
+  "document_plan": {
+    "estimated_n_blocks": 21,
+    "rationale_global": "ToS Supercell, profil NARRATIVE sans numérotation ni marqueurs de liste explicites, mais structuré par deux titres nominaux (id 14 « grant of a limited license to use the service », id 49 « suspension and termination of account and service », id 78 « information use by other members of the service », id 114 « limitation of liability ; sole and exclusive remedy ; indemnification ») et plusieurs glissements thématiques. Le document s'ouvre par une date (META, id 0) puis un préambule/portée (id 1-3). Suivent : éligibilité/compte (âge, SNS, id 4-10), modification des termes (id 11-13), octroi de licence (id 14-16), usage acceptable — restrictions (id 17-22), sécurité du compte/login (id 23-29), violations et liste détaillée des prohibitions (id 30-48), suspension/résiliation (id 49-58), propriété intellectuelle (id 59-63), contenu utilisateur — définition, responsabilité, monitoring (id 64-77), usage par les autres membres (id 78-84), octroi de licence sur le user content (id 85-90), interactions/différends entre utilisateurs (id 91-94), paiement/virtual items (id 95-105), service évolutif et mises à jour (id 106-109), disclaimer de garantie (id 110-113), limitation de responsabilité (id 114-118), indemnisation (id 119), résolution des différends (id 120), droit applicable/juridiction (id 121-124), puis un long bloc boilerplate (séparabilité, cession, intégralité, non-renonciation, notices, recours équitable, force majeure ; id 125-140). Continuité par défaut : les conséquences/procédures prolongeant un thème déjà ouvert n'ouvrent pas de bloc.",
+    "segments": [
+      {
+        "start_id": 0,
+        "theme": "META",
+        "rationale": "ligne de date d'entrée en vigueur",
+        "evidence_span": "effective date"
+      },
+      {
+        "start_id": 1,
+        "theme": "PREAMBLE_SCOPE",
+        "rationale": "objet de l'accord régissant la relation",
+        "evidence_span": "govern the relationship between you and supercell"
+      },
+      {
+        "start_id": 4,
+        "theme": "ELIGIBILITY_ACCOUNT",
+        "rationale": "enregistrement de compte, âge, SNS",
+        "evidence_span": "register an account on the service"
+      },
+      {
+        "start_id": 11,
+        "theme": "MODIFICATION_OF_TERMS",
+        "rationale": "droit de modifier les termes",
+        "evidence_span": "change , modify , add or remove portions of these terms of service"
+      },
+      {
+        "start_id": 14,
+        "theme": "LICENSE_IP",
+        "rationale": "titre d'octroi de licence limitée",
+        "evidence_span": "grant of a limited license to use the service"
+      },
+      {
+        "start_id": 17,
+        "theme": "ACCEPTABLE_USE",
+        "rationale": "chapeau des restrictions d'usage",
+        "evidence_span": "the following restrictions apply to the use of the service"
+      },
+      {
+        "start_id": 23,
+        "theme": "ELIGIBILITY_ACCOUNT",
+        "rationale": "mot de passe et sécurité du compte",
+        "evidence_span": "select a password for your account"
+      },
+      {
+        "start_id": 30,
+        "theme": "ACCEPTABLE_USE",
+        "rationale": "violations des limitations de licence et liste des actes prohibés",
+        "evidence_span": "any use of the service in violation of these license limitations is strictly prohibited"
+      },
+      {
+        "start_id": 49,
+        "theme": "TERMINATION",
+        "rationale": "titre suspension et résiliation",
+        "evidence_span": "suspension and termination of account and service"
+      },
+      {
+        "start_id": 59,
+        "theme": "LICENSE_IP",
+        "rationale": "tous droits sur le service appartiennent à supercell",
+        "evidence_span": "all rights , title and interest in and to the service"
+      },
+      {
+        "start_id": 64,
+        "theme": "USER_CONTENT",
+        "rationale": "définition du contenu utilisateur",
+        "evidence_span": "user content"
+      },
+      {
+        "start_id": 78,
+        "theme": "USER_CONTENT",
+        "rationale": "usage de l'information par les autres membres",
+        "evidence_span": "information use by other members of the service"
+      },
+      {
+        "start_id": 85,
+        "theme": "USER_CONTENT",
+        "rationale": "octroi de licence sur le user content (rattaché au contenu utilisateur)",
+        "evidence_span": "grant to supercell an irrevocable , perpetual"
+      },
+      {
+        "start_id": 91,
+        "theme": "THIRD_PARTY",
+        "rationale": "interactions et différends avec autres utilisateurs/tiers",
+        "evidence_span": "your interactions with other users"
+      },
+      {
+        "start_id": 95,
+        "theme": "PAYMENT_BILLING",
+        "rationale": "achat de virtual items avec argent réel, fees, taxes",
+        "evidence_span": "purchase , with `` real world '' money"
+      },
+      {
+        "start_id": 106,
+        "theme": "MISC_BOILERPLATE",
+        "rationale": "service évolutif, mises à jour",
+        "evidence_span": "the service is an evolving one"
+      },
+      {
+        "start_id": 110,
+        "theme": "WARRANTY_DISCLAIMER",
+        "rationale": "service fourni as is sans garantie",
+        "evidence_span": "as is"
+      },
+      {
+        "start_id": 114,
+        "theme": "LIABILITY_LIMITATION",
+        "rationale": "titre limitation de responsabilité",
+        "evidence_span": "limitation of liability"
+      },
+      {
+        "start_id": 119,
+        "theme": "INDEMNIFICATION",
+        "rationale": "obligation d'indemniser supercell",
+        "evidence_span": "you agree to indemnify"
+      },
+      {
+        "start_id": 120,
+        "theme": "DISPUTE_ARBITRATION",
+        "rationale": "résolution des différends, contact préalable",
+        "evidence_span": "if a dispute arises between you and supercell"
+      },
+      {
+        "start_id": 121,
+        "theme": "GOVERNING_LAW",
+        "rationale": "droit applicable et juridiction",
+        "evidence_span": "governed in all respects by california law"
+      },
+      {
+        "start_id": 125,
+        "theme": "MISC_BOILERPLATE",
+        "rationale": "séparabilité, cession, intégralité, notices, force majeure",
+        "evidence_span": "found illegal or unenforceable"
+      }
+    ]
+  },
+  "annotations": [
+    {
+      "id": 0,
+      "theme": "META",
+      "block_id": 0,
+      "is_block_start": true,
+      "rationale": "ouverture du document par la date d'entrée en vigueur, cite « effective date »",
+      "rationale_codes": {
+        "decision_trigger": "document_start",
+        "relation_to_prev": "document_start",
+        "evidence_span": "effective date",
+        "revised_from_plan": false,
+        "confidence": 0.97
+      },
+      "legal_nature": "META",
+      "legal_nature_marker": "effective date"
+    },
+    {
+      "id": 1,
+      "theme": "PREAMBLE_SCOPE",
+      "block_id": 1,
+      "is_block_start": true,
+      "rationale": "le préambule identifie l'objet de l'accord régissant la relation, cite « govern the relationship between you and supercell »",
+      "rationale_codes": {
+        "decision_trigger": "topic_keyword",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "govern the relationship between you and supercell",
+        "revised_from_plan": false,
+        "confidence": 0.92
+      },
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 2,
+      "theme": "PREAMBLE_SCOPE",
+      "block_id": 1,
+      "is_block_start": false,
+      "reason": "portée : usage régi aussi par la privacy policy incorporée par référence",
+      "legal_nature": "GOVERNANCE",
+      "legal_nature_marker": "governed by"
+    },
+    {
+      "id": 3,
+      "theme": "PREAMBLE_SCOPE",
+      "block_id": 1,
+      "is_block_start": false,
+      "reason": "prolongement : il faut accepter les termes avant d'accéder au service",
+      "legal_nature": "OBLIGATION",
+      "legal_nature_marker": "you must"
+    },
+    {
+      "id": 4,
+      "theme": "ELIGIBILITY_ACCOUNT",
+      "block_id": 2,
+      "is_block_start": true,
+      "rationale": "passage à l'enregistrement d'un compte, cite « register an account on the service »",
+      "rationale_codes": {
+        "decision_trigger": "topic_keyword",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "register an account on the service",
+        "revised_from_plan": false,
+        "confidence": 0.82
+      },
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 5,
+      "theme": "ELIGIBILITY_ACCOUNT",
+      "block_id": 2,
+      "is_block_start": false,
+      "reason": "représentation d'âge 13 ans ou plus par l'enregistrement, prolonge l'éligibilité",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 6,
+      "theme": "ELIGIBILITY_ACCOUNT",
+      "block_id": 2,
+      "is_block_start": false,
+      "reason": "cas des mineurs 13-17 ans et accord du tuteur, prolonge l'éligibilité",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 7,
+      "theme": "ELIGIBILITY_ACCOUNT",
+      "block_id": 2,
+      "is_block_start": false,
+      "reason": "accès via SNS et conformité aux termes du SNS, prolonge",
+      "legal_nature": "OBLIGATION",
+      "legal_nature_marker": "you shall"
+    },
+    {
+      "id": 8,
+      "theme": "ELIGIBILITY_ACCOUNT",
+      "block_id": 2,
+      "is_block_start": false,
+      "reason": "acceptation par installation/usage, prolonge le consentement",
+      "legal_nature": "OBLIGATION",
+      "legal_nature_marker": "you agree to"
+    },
+    {
+      "id": 9,
+      "theme": "ELIGIBILITY_ACCOUNT",
+      "block_id": 2,
+      "is_block_start": false,
+      "reason": "si désaccord, ne pas installer/utiliser : effet du refus",
+      "legal_nature": "PROHIBITION",
+      "legal_nature_marker": "do not"
+    },
+    {
+      "id": 10,
+      "theme": "ELIGIBILITY_ACCOUNT",
+      "block_id": 2,
+      "is_block_start": false,
+      "reason": "usage nul là où prohibé, restriction d'accès",
+      "legal_nature": "PROHIBITION",
+      "legal_nature_marker": "prohibited"
+    },
+    {
+      "id": 11,
+      "theme": "MODIFICATION_OF_TERMS",
+      "block_id": 3,
+      "is_block_start": true,
+      "rationale": "ouverture sur le droit de modifier les termes à tout moment, cite « change , modify , add or remove portions of these terms of service »",
+      "rationale_codes": {
+        "decision_trigger": "topic_keyword",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "change , modify , add or remove portions of these terms of service",
+        "revised_from_plan": false,
+        "confidence": 0.8
+      },
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 12,
+      "theme": "MODIFICATION_OF_TERMS",
+      "block_id": 3,
+      "is_block_start": false,
+      "reason": "acceptation réputée des changements par usage continu, conséquence",
+      "legal_nature": "OBLIGATION",
+      "legal_nature_marker": "you will"
+    },
+    {
+      "id": 13,
+      "theme": "MODIFICATION_OF_TERMS",
+      "block_id": 3,
+      "is_block_start": false,
+      "reason": "effet du désaccord avec la version courante : fin de licence",
+      "legal_nature": "PROHIBITION",
+      "legal_nature_marker": "do not"
+    },
+    {
+      "id": 14,
+      "theme": "LICENSE_IP",
+      "block_id": 4,
+      "is_block_start": true,
+      "rationale": "titre nominal de section d'octroi de licence, cite « grant of a limited license to use the service »",
+      "rationale_codes": {
+        "decision_trigger": "title_marker",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "grant of a limited license to use the service",
+        "revised_from_plan": false,
+        "confidence": 0.93
+      },
+      "legal_nature": "RIGHT_GRANT",
+      "legal_nature_marker": "license to"
+    },
+    {
+      "id": 15,
+      "theme": "LICENSE_IP",
+      "block_id": 4,
+      "is_block_start": false,
+      "reason": "octroi concret de la licence non-exclusive et limitée",
+      "legal_nature": "RIGHT_GRANT",
+      "legal_nature_marker": "grants you"
+    },
+    {
+      "id": 16,
+      "theme": "LICENSE_IP",
+      "block_id": 4,
+      "is_block_start": false,
+      "reason": "restriction de la finalité d'usage, prolonge la licence",
+      "legal_nature": "PROHIBITION",
+      "legal_nature_marker": "agree not to"
+    },
+    {
+      "id": 17,
+      "theme": "ACCEPTABLE_USE",
+      "block_id": 5,
+      "is_block_start": true,
+      "rationale": "chapeau introduisant les restrictions d'usage, cite « the following restrictions apply to the use of the service »",
+      "rationale_codes": {
+        "decision_trigger": "topic_keyword",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "the following restrictions apply to the use of the service",
+        "revised_from_plan": false,
+        "confidence": 0.8
+      },
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 18,
+      "theme": "ACCEPTABLE_USE",
+      "block_id": 5,
+      "is_block_start": false,
+      "reason": "restriction d'âge et déni d'accès aux mineurs, item de la liste",
+      "legal_nature": "PROHIBITION",
+      "legal_nature_marker": "shall not"
+    },
+    {
+      "id": 19,
+      "theme": "ACCEPTABLE_USE",
+      "block_id": 5,
+      "is_block_start": false,
+      "reason": "responsabilité pour usage non autorisé par mineurs, item",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 20,
+      "theme": "ACCEPTABLE_USE",
+      "block_id": 5,
+      "is_block_start": false,
+      "reason": "responsabilité pour usage de carte/paiement par mineurs, item",
+      "legal_nature": "OBLIGATION",
+      "legal_nature_marker": "you are responsible"
+    },
+    {
+      "id": 21,
+      "theme": "ACCEPTABLE_USE",
+      "block_id": 5,
+      "is_block_start": false,
+      "reason": "interdiction de vendre/transférer le compte, fausse identité, item",
+      "legal_nature": "PROHIBITION",
+      "legal_nature_marker": "shall not"
+    },
+    {
+      "id": 22,
+      "theme": "ACCEPTABLE_USE",
+      "block_id": 5,
+      "is_block_start": false,
+      "reason": "usage non-commercial, interdiction de publicité/spam, item",
+      "legal_nature": "PROHIBITION",
+      "legal_nature_marker": "shall not"
+    },
+    {
+      "id": 23,
+      "theme": "ELIGIBILITY_ACCOUNT",
+      "block_id": 6,
+      "is_block_start": true,
+      "rationale": "passage aux identifiants de connexion et à la sécurité du compte, cite « select a password for your account »",
+      "rationale_codes": {
+        "decision_trigger": "topic_keyword",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "select a password for your account",
+        "revised_from_plan": false,
+        "confidence": 0.72
+      },
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 24,
+      "theme": "ELIGIBILITY_ACCOUNT",
+      "block_id": 6,
+      "is_block_start": false,
+      "reason": "ne pas partager le login, prolonge la sécurité du compte",
+      "legal_nature": "PROHIBITION",
+      "legal_nature_marker": "shall not"
+    },
+    {
+      "id": 25,
+      "theme": "ELIGIBILITY_ACCOUNT",
+      "block_id": 6,
+      "is_block_start": false,
+      "reason": "obligation de notifier toute brèche de sécurité",
+      "legal_nature": "OBLIGATION",
+      "legal_nature_marker": "you must"
+    },
+    {
+      "id": 26,
+      "theme": "ELIGIBILITY_ACCOUNT",
+      "block_id": 6,
+      "is_block_start": false,
+      "reason": "responsabilité de la confidentialité du login, prolonge",
+      "legal_nature": "OBLIGATION",
+      "legal_nature_marker": "you will"
+    },
+    {
+      "id": 27,
+      "theme": "ELIGIBILITY_ACCOUNT",
+      "block_id": 6,
+      "is_block_start": false,
+      "reason": "responsabilité de tout ce qui passe par le compte, prolonge",
+      "legal_nature": "OBLIGATION",
+      "legal_nature_marker": "you are responsible"
+    },
+    {
+      "id": 28,
+      "theme": "ELIGIBILITY_ACCOUNT",
+      "block_id": 6,
+      "is_block_start": false,
+      "reason": "droit de récupérer des usernames, prolonge la gestion du compte",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 29,
+      "theme": "ELIGIBILITY_ACCOUNT",
+      "block_id": 6,
+      "is_block_start": false,
+      "reason": "un seul compte par jeu par appareil, règle de compte",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 30,
+      "theme": "ACCEPTABLE_USE",
+      "block_id": 7,
+      "is_block_start": true,
+      "rationale": "retour aux violations des limitations de licence et à leurs conséquences, cite « any use of the service in violation of these license limitations is strictly prohibited »",
+      "rationale_codes": {
+        "decision_trigger": "topic_keyword",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "any use of the service in violation of these license limitations is strictly prohibited",
+        "revised_from_plan": false,
+        "confidence": 0.62
+      },
+      "legal_nature": "PROHIBITION",
+      "legal_nature_marker": "prohibited"
+    },
+    {
+      "id": 31,
+      "theme": "ACCEPTABLE_USE",
+      "block_id": 7,
+      "is_block_start": false,
+      "reason": "chapeau de la liste détaillée des actes prohibés",
+      "legal_nature": "PROHIBITION",
+      "legal_nature_marker": "will not"
+    },
+    {
+      "id": 32,
+      "theme": "ACCEPTABLE_USE",
+      "block_id": 7,
+      "is_block_start": false,
+      "reason": "prohibition : actes en conflit avec l'esprit du service, item",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 33,
+      "theme": "ACCEPTABLE_USE",
+      "block_id": 7,
+      "is_block_start": false,
+      "reason": "prohibition : cheats, bots, hacks, item",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 34,
+      "theme": "ACCEPTABLE_USE",
+      "block_id": 7,
+      "is_block_start": false,
+      "reason": "prohibition : modifier des fichiers du service, item",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 35,
+      "theme": "ACCEPTABLE_USE",
+      "block_id": 7,
+      "is_block_start": false,
+      "reason": "prohibition : perturber le flux normal du service, item",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 36,
+      "theme": "ACCEPTABLE_USE",
+      "block_id": 7,
+      "is_block_start": false,
+      "reason": "exemples : win trading et manipulation de classements, prolonge l'item précédent",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 37,
+      "theme": "ACCEPTABLE_USE",
+      "block_id": 7,
+      "is_block_start": false,
+      "reason": "prohibition : surcharger les serveurs, item",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 38,
+      "theme": "ACCEPTABLE_USE",
+      "block_id": 7,
+      "is_block_start": false,
+      "reason": "prohibition : attaques, virus, DoS, item",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 39,
+      "theme": "ACCEPTABLE_USE",
+      "block_id": 7,
+      "is_block_start": false,
+      "reason": "prohibition : accès non autorisé, contournement de sécurité, item",
+      "legal_nature": "DEFINITION",
+      "legal_nature_marker": "means"
+    },
+    {
+      "id": 40,
+      "theme": "ACCEPTABLE_USE",
+      "block_id": 7,
+      "is_block_start": false,
+      "reason": "prohibition : poster contenu abusif/offensant, item",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 41,
+      "theme": "ACCEPTABLE_USE",
+      "block_id": 7,
+      "is_block_start": false,
+      "reason": "prohibition : poster nudité/violence, item",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 42,
+      "theme": "ACCEPTABLE_USE",
+      "block_id": 7,
+      "is_block_start": false,
+      "reason": "prohibition : harcèlement/abus d'autrui, item",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 43,
+      "theme": "ACCEPTABLE_USE",
+      "block_id": 7,
+      "is_block_start": false,
+      "reason": "prohibition : rendre disponible du matériel violant des droits de tiers, item",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 44,
+      "theme": "ACCEPTABLE_USE",
+      "block_id": 7,
+      "is_block_start": false,
+      "reason": "prohibition : reverse engineering du code source, item",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 45,
+      "theme": "ACCEPTABLE_USE",
+      "block_id": 7,
+      "is_block_start": false,
+      "reason": "prohibition : solliciter login/credentials d'autres users, item",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 46,
+      "theme": "ACCEPTABLE_USE",
+      "block_id": 7,
+      "is_block_start": false,
+      "reason": "prohibition : collecter/poster infos privées d'autrui, item",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 47,
+      "theme": "ACCEPTABLE_USE",
+      "block_id": 7,
+      "is_block_start": false,
+      "reason": "droit de déterminer ce qui viole les règles, prolonge la liste",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 48,
+      "theme": "ACCEPTABLE_USE",
+      "block_id": 7,
+      "is_block_start": false,
+      "reason": "conséquence : action pouvant inclure la résiliation, prolonge l'usage acceptable",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 49,
+      "theme": "TERMINATION",
+      "block_id": 8,
+      "is_block_start": true,
+      "rationale": "titre nominal de section, cite « suspension and termination of account and service »",
+      "rationale_codes": {
+        "decision_trigger": "title_marker",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "suspension and termination of account and service",
+        "revised_from_plan": false,
+        "confidence": 0.94
+      },
+      "legal_nature": "GOVERNANCE",
+      "legal_nature_marker": "termination"
+    },
+    {
+      "id": 50,
+      "theme": "TERMINATION",
+      "block_id": 8,
+      "is_block_start": false,
+      "reason": "supercell peut limiter/suspendre/résilier les comptes, contenu de la section",
+      "legal_nature": "GOVERNANCE",
+      "legal_nature_marker": "terminate"
+    },
+    {
+      "id": 51,
+      "theme": "TERMINATION",
+      "block_id": 8,
+      "is_block_start": false,
+      "reason": "perte des items/bénéfices en cas de résiliation, conséquence",
+      "legal_nature": "GOVERNANCE",
+      "legal_nature_marker": "termination"
+    },
+    {
+      "id": 52,
+      "theme": "TERMINATION",
+      "block_id": 8,
+      "is_block_start": false,
+      "reason": "remèdes : limiter/suspendre/résilier le service, prolonge",
+      "legal_nature": "GOVERNANCE",
+      "legal_nature_marker": "terminate"
+    },
+    {
+      "id": 53,
+      "theme": "TERMINATION",
+      "block_id": 8,
+      "is_block_start": false,
+      "reason": "suspension des comptes de récidivistes en infraction PI, prolonge",
+      "legal_nature": "GOVERNANCE",
+      "legal_nature_marker": "terminate"
+    },
+    {
+      "id": 54,
+      "theme": "TERMINATION",
+      "block_id": 8,
+      "is_block_start": false,
+      "reason": "résiliation des comptes inactifs 180 jours, prolonge",
+      "legal_nature": "GOVERNANCE",
+      "legal_nature_marker": "terminate"
+    },
+    {
+      "id": 55,
+      "theme": "TERMINATION",
+      "block_id": 8,
+      "is_block_start": false,
+      "reason": "arrêt du service entraînant fin automatique de la licence, prolonge",
+      "legal_nature": "GOVERNANCE",
+      "legal_nature_marker": "terminate"
+    },
+    {
+      "id": 56,
+      "theme": "TERMINATION",
+      "block_id": 8,
+      "is_block_start": false,
+      "reason": "absence de remboursement à la discontinuation, conséquence",
+      "legal_nature": "PROHIBITION",
+      "legal_nature_marker": "shall not"
+    },
+    {
+      "id": 57,
+      "theme": "TERMINATION",
+      "block_id": 8,
+      "is_block_start": false,
+      "reason": "la résiliation peut désactiver l'accès au contenu soumis, prolonge",
+      "legal_nature": "GOVERNANCE",
+      "legal_nature_marker": "termination"
+    },
+    {
+      "id": 58,
+      "theme": "TERMINATION",
+      "block_id": 8,
+      "is_block_start": false,
+      "reason": "résiliation par l'utilisateur via la page de support, procédure",
+      "legal_nature": "GOVERNANCE",
+      "legal_nature_marker": "terminate"
+    },
+    {
+      "id": 59,
+      "theme": "LICENSE_IP",
+      "block_id": 9,
+      "is_block_start": true,
+      "rationale": "passage à la propriété de tous les droits sur le service, cite « all rights , title and interest in and to the service »",
+      "rationale_codes": {
+        "decision_trigger": "topic_keyword",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "all rights , title and interest in and to the service",
+        "revised_from_plan": false,
+        "confidence": 0.85
+      },
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 60,
+      "theme": "LICENSE_IP",
+      "block_id": 9,
+      "is_block_start": false,
+      "reason": "supercell se réserve tous les droits de propriété intellectuelle",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 61,
+      "theme": "LICENSE_IP",
+      "block_id": 9,
+      "is_block_start": false,
+      "reason": "absence de droit de propriété sur le compte, prolonge la PI",
+      "legal_nature": "OBLIGATION",
+      "legal_nature_marker": "you shall"
+    },
+    {
+      "id": 62,
+      "theme": "LICENSE_IP",
+      "block_id": 9,
+      "is_block_start": false,
+      "reason": "supercell possède/licencie tout le contenu apparaissant dans le service",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 63,
+      "theme": "LICENSE_IP",
+      "block_id": 9,
+      "is_block_start": false,
+      "reason": "absence de titre sur le contenu, virtual goods/currency, prolonge la PI",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 64,
+      "theme": "USER_CONTENT",
+      "block_id": 10,
+      "is_block_start": true,
+      "rationale": "définition du contenu utilisateur, cite « `` user content '' means any communications »",
+      "rationale_codes": {
+        "decision_trigger": "definition_marker",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "`` user content '' means any communications",
+        "revised_from_plan": false,
+        "confidence": 0.9
+      },
+      "legal_nature": "DEFINITION",
+      "legal_nature_marker": "means"
+    },
+    {
+      "id": 65,
+      "theme": "USER_CONTENT",
+      "block_id": 10,
+      "is_block_start": false,
+      "reason": "déclarations/garanties sur le user content soumis",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 66,
+      "theme": "USER_CONTENT",
+      "block_id": 10,
+      "is_block_start": false,
+      "reason": "supercell n'assume aucune responsabilité pour le user content",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 67,
+      "theme": "USER_CONTENT",
+      "block_id": 10,
+      "is_block_start": false,
+      "reason": "pas de pré-screening du user content, prolonge",
+      "legal_nature": "PROHIBITION",
+      "legal_nature_marker": "do not"
+    },
+    {
+      "id": 68,
+      "theme": "USER_CONTENT",
+      "block_id": 10,
+      "is_block_start": false,
+      "reason": "usage du service à vos risques, lié à l'exposition au contenu",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 69,
+      "theme": "USER_CONTENT",
+      "block_id": 10,
+      "is_block_start": false,
+      "reason": "exposition possible à du user content offensant, prolonge",
+      "legal_nature": "SCOPE_APPLICABILITY",
+      "legal_nature_marker": "by using"
+    },
+    {
+      "id": 70,
+      "theme": "USER_CONTENT",
+      "block_id": 10,
+      "is_block_start": false,
+      "reason": "vous supportez tous les risques liés au user content, prolonge",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 71,
+      "theme": "USER_CONTENT",
+      "block_id": 10,
+      "is_block_start": false,
+      "reason": "à notre discrétion, nos représentants ou (segment de phrase scindée), prolonge",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 72,
+      "theme": "USER_CONTENT",
+      "block_id": 10,
+      "is_block_start": false,
+      "reason": "la technologie peut monitorer/enregistrer vos interactions, prolonge",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 73,
+      "theme": "USER_CONTENT",
+      "block_id": 10,
+      "is_block_start": false,
+      "reason": "consentement irrévocable au monitoring, conséquence",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 74,
+      "theme": "USER_CONTENT",
+      "block_id": 10,
+      "is_block_start": false,
+      "reason": "absence d'attente de vie privée sur la transmission du contenu, prolonge",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 75,
+      "theme": "USER_CONTENT",
+      "block_id": 10,
+      "is_block_start": false,
+      "reason": "droit de réviser/supprimer tout user content, prolonge",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 76,
+      "theme": "USER_CONTENT",
+      "block_id": 10,
+      "is_block_start": false,
+      "reason": "aucune obligation de modifier/retirer le contenu inapproprié, prolonge",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 77,
+      "theme": "USER_CONTENT",
+      "block_id": 10,
+      "is_block_start": false,
+      "reason": "droit mais non obligation d'éditer/retirer le user content, prolonge",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 78,
+      "theme": "USER_CONTENT",
+      "block_id": 11,
+      "is_block_start": true,
+      "rationale": "titre/chapeau introduisant l'usage de l'information par les autres membres, cite « information use by other members of the service »",
+      "rationale_codes": {
+        "decision_trigger": "title_marker",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "information use by other members of the service",
+        "revised_from_plan": false,
+        "confidence": 0.66
+      },
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 79,
+      "theme": "USER_CONTENT",
+      "block_id": 11,
+      "is_block_start": false,
+      "reason": "forums/blogs où poster du user content, prolonge",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 80,
+      "theme": "USER_CONTENT",
+      "block_id": 11,
+      "is_block_start": false,
+      "reason": "pas de garantie que d'autres n'utiliseront pas vos idées, prolonge",
+      "legal_nature": "PROHIBITION",
+      "legal_nature_marker": "will not"
+    },
+    {
+      "id": 81,
+      "theme": "USER_CONTENT",
+      "block_id": 11,
+      "is_block_start": false,
+      "reason": "conseil de ne pas poster d'infos à garder confidentielles, conséquence",
+      "legal_nature": "PROHIBITION",
+      "legal_nature_marker": "do not"
+    },
+    {
+      "id": 82,
+      "theme": "USER_CONTENT",
+      "block_id": 11,
+      "is_block_start": false,
+      "reason": "aucune obligation d'évaluer/compenser vos idées, prolonge",
+      "legal_nature": "OBLIGATION",
+      "legal_nature_marker": "shall"
+    },
+    {
+      "id": 83,
+      "theme": "USER_CONTENT",
+      "block_id": 11,
+      "is_block_start": false,
+      "reason": "vous êtes seul responsable des infos postées, prolonge",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 84,
+      "theme": "USER_CONTENT",
+      "block_id": 11,
+      "is_block_start": false,
+      "reason": "supercell peut rejeter/supprimer tout user content, prolonge",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 85,
+      "theme": "USER_CONTENT",
+      "block_id": 12,
+      "is_block_start": true,
+      "rationale": "octroi par l'utilisateur d'une licence large sur son user content, cite « grant to supercell an irrevocable , perpetual »",
+      "rationale_codes": {
+        "decision_trigger": "topic_keyword",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "grant to supercell an irrevocable , perpetual",
+        "revised_from_plan": true,
+        "confidence": 0.7
+      },
+      "legal_nature": "RIGHT_GRANT",
+      "legal_nature_marker": "hereby grant"
+    },
+    {
+      "id": 86,
+      "theme": "USER_CONTENT",
+      "block_id": 12,
+      "is_block_start": false,
+      "reason": "droit d'autoriser des tiers à exercer ces droits, prolonge la licence sur le contenu",
+      "legal_nature": "RIGHT_GRANT",
+      "legal_nature_marker": "hereby grant"
+    },
+    {
+      "id": 87,
+      "theme": "USER_CONTENT",
+      "block_id": 12,
+      "is_block_start": false,
+      "reason": "droit d'utiliser nom/likeness inclus dans le user content, prolonge",
+      "legal_nature": "RIGHT_GRANT",
+      "legal_nature_marker": "hereby grant"
+    },
+    {
+      "id": 88,
+      "theme": "USER_CONTENT",
+      "block_id": 12,
+      "is_block_start": false,
+      "reason": "renonciation aux droits moraux sur le user content, prolonge",
+      "legal_nature": "PROHIBITION",
+      "legal_nature_marker": "prohibited"
+    },
+    {
+      "id": 89,
+      "theme": "USER_CONTENT",
+      "block_id": 12,
+      "is_block_start": false,
+      "reason": "supercell ne revendique pas la propriété du user content, prolonge",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 90,
+      "theme": "USER_CONTENT",
+      "block_id": 12,
+      "is_block_start": false,
+      "reason": "aucune obligation de faire respecter vos droits PI sur le contenu, prolonge",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 91,
+      "theme": "THIRD_PARTY",
+      "block_id": 13,
+      "is_block_start": true,
+      "rationale": "passage aux interactions et différends avec d'autres utilisateurs/tiers, cite « your interactions with other users of the service »",
+      "rationale_codes": {
+        "decision_trigger": "topic_keyword",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "your interactions with other users of the service",
+        "revised_from_plan": false,
+        "confidence": 0.75
+      },
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 92,
+      "theme": "THIRD_PARTY",
+      "block_id": 13,
+      "is_block_start": false,
+      "reason": "droit mais non obligation de s'impliquer dans ces différends, prolonge",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 93,
+      "theme": "THIRD_PARTY",
+      "block_id": 13,
+      "is_block_start": false,
+      "reason": "coopération pour enquêter sur activité illicite, prolonge",
+      "legal_nature": "OBLIGATION",
+      "legal_nature_marker": "you will"
+    },
+    {
+      "id": 94,
+      "theme": "THIRD_PARTY",
+      "block_id": 13,
+      "is_block_start": false,
+      "reason": "release de supercell des réclamations liées aux différends entre users, prolonge",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 95,
+      "theme": "PAYMENT_BILLING",
+      "block_id": 14,
+      "is_block_start": true,
+      "rationale": "passage à l'achat de virtual items avec de l'argent réel, cite « purchase , with `` real world '' money »",
+      "rationale_codes": {
+        "decision_trigger": "topic_keyword",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "purchase , with `` real world '' money",
+        "revised_from_plan": false,
+        "confidence": 0.82
+      },
+      "legal_nature": "RIGHT_GRANT",
+      "legal_nature_marker": "license to"
+    },
+    {
+      "id": 96,
+      "theme": "PAYMENT_BILLING",
+      "block_id": 14,
+      "is_block_start": false,
+      "reason": "achat des virtual items uniquement via supercell, prolonge le paiement",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 97,
+      "theme": "PAYMENT_BILLING",
+      "block_id": 14,
+      "is_block_start": false,
+      "reason": "supercell peut gérer/éliminer les virtual items, prolonge",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 98,
+      "theme": "PAYMENT_BILLING",
+      "block_id": 14,
+      "is_block_start": false,
+      "reason": "aucune responsabilité en cas d'exercice de ces droits, conséquence",
+      "legal_nature": "OBLIGATION",
+      "legal_nature_marker": "shall"
+    },
+    {
+      "id": 99,
+      "theme": "PAYMENT_BILLING",
+      "block_id": 14,
+      "is_block_start": false,
+      "reason": "transfert des virtual items prohibé, prolonge",
+      "legal_nature": "PROHIBITION",
+      "legal_nature_marker": "prohibited"
+    },
+    {
+      "id": 100,
+      "theme": "PAYMENT_BILLING",
+      "block_id": 14,
+      "is_block_start": false,
+      "reason": "interdiction de vendre/transférer les virtual items, prolonge",
+      "legal_nature": "PROHIBITION",
+      "legal_nature_marker": "shall not"
+    },
+    {
+      "id": 101,
+      "theme": "PAYMENT_BILLING",
+      "block_id": 14,
+      "is_block_start": false,
+      "reason": "achats finaux et non remboursables, prolonge le paiement",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 102,
+      "theme": "PAYMENT_BILLING",
+      "block_id": 14,
+      "is_block_start": false,
+      "reason": "fourniture des virtual items comme service dès acceptation, prolonge",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 103,
+      "theme": "PAYMENT_BILLING",
+      "block_id": 14,
+      "is_block_start": false,
+      "reason": "obligation de payer fees et taxes applicables, prolonge",
+      "legal_nature": "OBLIGATION",
+      "legal_nature_marker": "you agree to"
+    },
+    {
+      "id": 104,
+      "theme": "PAYMENT_BILLING",
+      "block_id": 14,
+      "is_block_start": false,
+      "reason": "supercell peut réviser les prix, prolonge",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 105,
+      "theme": "PAYMENT_BILLING",
+      "block_id": 14,
+      "is_block_start": false,
+      "reason": "pas de remboursement pour virtual items inutilisés à la clôture, prolonge",
+      "legal_nature": "PROHIBITION",
+      "legal_nature_marker": "will not"
+    },
+    {
+      "id": 106,
+      "theme": "MISC_BOILERPLATE",
+      "block_id": 15,
+      "is_block_start": true,
+      "rationale": "passage au caractère évolutif du service et aux mises à jour, cite « the service is an evolving one »",
+      "rationale_codes": {
+        "decision_trigger": "topic_keyword",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "the service is an evolving one",
+        "revised_from_plan": false,
+        "confidence": 0.58
+      },
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 107,
+      "theme": "MISC_BOILERPLATE",
+      "block_id": 15,
+      "is_block_start": false,
+      "reason": "supercell peut exiger l'acceptation de mises à jour, prolonge",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 108,
+      "theme": "MISC_BOILERPLATE",
+      "block_id": 15,
+      "is_block_start": false,
+      "reason": "mise à jour du service avec ou sans notification, prolonge",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 109,
+      "theme": "MISC_BOILERPLATE",
+      "block_id": 15,
+      "is_block_start": false,
+      "reason": "nécessité de mettre à jour des logiciels tiers, prolonge",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 110,
+      "theme": "WARRANTY_DISCLAIMER",
+      "block_id": 16,
+      "is_block_start": true,
+      "rationale": "disclaimer de garantie, service fourni « as is » et « as available », cite « as is »",
+      "rationale_codes": {
+        "decision_trigger": "topic_keyword",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "as is",
+        "revised_from_plan": false,
+        "confidence": 0.88
+      },
+      "legal_nature": "LIMITATION_DISCLAIMER",
+      "legal_nature_marker": "as is"
+    },
+    {
+      "id": 111,
+      "theme": "WARRANTY_DISCLAIMER",
+      "block_id": 16,
+      "is_block_start": false,
+      "reason": "absence de garantie d'accès/absence d'erreurs/virus, prolonge le disclaimer",
+      "legal_nature": "OBLIGATION",
+      "legal_nature_marker": "you will"
+    },
+    {
+      "id": 112,
+      "theme": "WARRANTY_DISCLAIMER",
+      "block_id": 16,
+      "is_block_start": false,
+      "reason": "certaines juridictions n'autorisent pas l'exclusion de garanties, prolonge",
+      "legal_nature": "PROHIBITION",
+      "legal_nature_marker": "do not"
+    },
+    {
+      "id": 113,
+      "theme": "WARRANTY_DISCLAIMER",
+      "block_id": 16,
+      "is_block_start": false,
+      "reason": "certains disclaimers ci-dessus peuvent ne pas s'appliquer à vous, conséquence",
+      "legal_nature": "PROHIBITION",
+      "legal_nature_marker": "may not"
+    },
+    {
+      "id": 114,
+      "theme": "LIABILITY_LIMITATION",
+      "block_id": 17,
+      "is_block_start": true,
+      "rationale": "titre nominal de section, cite « limitation of liability »",
+      "rationale_codes": {
+        "decision_trigger": "title_marker",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "limitation of liability",
+        "revised_from_plan": false,
+        "confidence": 0.9
+      },
+      "legal_nature": "LIMITATION_DISCLAIMER",
+      "legal_nature_marker": "limitation of liability"
+    },
+    {
+      "id": 115,
+      "theme": "LIABILITY_LIMITATION",
+      "block_id": 17,
+      "is_block_start": false,
+      "reason": "non-responsabilité pour dommages indirects, contenu de la section",
+      "legal_nature": "PROHIBITION",
+      "legal_nature_marker": "shall not"
+    },
+    {
+      "id": 116,
+      "theme": "LIABILITY_LIMITATION",
+      "block_id": 17,
+      "is_block_start": false,
+      "reason": "plafond de responsabilité au montant payé sur 6 mois, prolonge",
+      "legal_nature": "PROHIBITION",
+      "legal_nature_marker": "shall not"
+    },
+    {
+      "id": 117,
+      "theme": "LIABILITY_LIMITATION",
+      "block_id": 17,
+      "is_block_start": false,
+      "reason": "remède exclusif si rien n'a été payé, prolonge",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 118,
+      "theme": "LIABILITY_LIMITATION",
+      "block_id": 17,
+      "is_block_start": false,
+      "reason": "sauvegarde des droits statutaires des consommateurs, prolonge la limitation",
+      "legal_nature": "OBLIGATION",
+      "legal_nature_marker": "shall"
+    },
+    {
+      "id": 119,
+      "theme": "INDEMNIFICATION",
+      "block_id": 18,
+      "is_block_start": true,
+      "rationale": "obligation d'indemniser supercell, cite « you agree to indemnify »",
+      "rationale_codes": {
+        "decision_trigger": "topic_keyword",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "you agree to indemnify",
+        "revised_from_plan": false,
+        "confidence": 0.85
+      },
+      "legal_nature": "RISK_ALLOCATION",
+      "legal_nature_marker": "indemnify"
+    },
+    {
+      "id": 120,
+      "theme": "DISPUTE_ARBITRATION",
+      "block_id": 19,
+      "is_block_start": true,
+      "rationale": "passage à la résolution des différends et au contact préalable, cite « if a dispute arises between you and supercell »",
+      "rationale_codes": {
+        "decision_trigger": "topic_keyword",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "if a dispute arises between you and supercell",
+        "revised_from_plan": false,
+        "confidence": 0.75
+      },
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 121,
+      "theme": "GOVERNING_LAW",
+      "block_id": 20,
+      "is_block_start": true,
+      "rationale": "passage au droit applicable et à la juridiction (Californie), cite « governed in all respects by california law »",
+      "rationale_codes": {
+        "decision_trigger": "topic_keyword",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "governed in all respects by california law",
+        "revised_from_plan": false,
+        "confidence": 0.85
+      },
+      "legal_nature": "OBLIGATION",
+      "legal_nature_marker": "shall"
+    },
+    {
+      "id": 122,
+      "theme": "GOVERNING_LAW",
+      "block_id": 20,
+      "is_block_start": false,
+      "reason": "juridiction exclusive à San Francisco pour résidents US, prolonge",
+      "legal_nature": "OBLIGATION",
+      "legal_nature_marker": "must"
+    },
+    {
+      "id": 123,
+      "theme": "GOVERNING_LAW",
+      "block_id": 20,
+      "is_block_start": false,
+      "reason": "droit finlandais pour résidents hors US, prolonge",
+      "legal_nature": "GOVERNANCE",
+      "legal_nature_marker": "governed by"
+    },
+    {
+      "id": 124,
+      "theme": "GOVERNING_LAW",
+      "block_id": 20,
+      "is_block_start": false,
+      "reason": "juridiction exclusive à Helsinki, prolonge",
+      "legal_nature": "OBLIGATION",
+      "legal_nature_marker": "must"
+    },
+    {
+      "id": 125,
+      "theme": "MISC_BOILERPLATE",
+      "block_id": 21,
+      "is_block_start": true,
+      "rationale": "clause de séparabilité ouvrant le bloc boilerplate, cite « found illegal or unenforceable »",
+      "rationale_codes": {
+        "decision_trigger": "topic_keyword",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "found illegal or unenforceable",
+        "revised_from_plan": false,
+        "confidence": 0.78
+      },
+      "legal_nature": "GOVERNANCE",
+      "legal_nature_marker": "jurisdiction"
+    },
+    {
+      "id": 126,
+      "theme": "MISC_BOILERPLATE",
+      "block_id": 21,
+      "is_block_start": false,
+      "reason": "cession par supercell, clause boilerplate",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 127,
+      "theme": "MISC_BOILERPLATE",
+      "block_id": 21,
+      "is_block_start": false,
+      "reason": "interdiction de cession par l'utilisateur, prolonge",
+      "legal_nature": "PROHIBITION",
+      "legal_nature_marker": "may not"
+    },
+    {
+      "id": 128,
+      "theme": "MISC_BOILERPLATE",
+      "block_id": 21,
+      "is_block_start": false,
+      "reason": "politiques additionnelles possibles, prolonge",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 129,
+      "theme": "MISC_BOILERPLATE",
+      "block_id": 21,
+      "is_block_start": false,
+      "reason": "droit d'utiliser ces services soumis aux politiques, prolonge",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 130,
+      "theme": "MISC_BOILERPLATE",
+      "block_id": 21,
+      "is_block_start": false,
+      "reason": "clause d'intégralité de l'accord, prolonge le boilerplate",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 131,
+      "theme": "MISC_BOILERPLATE",
+      "block_id": 21,
+      "is_block_start": false,
+      "reason": "non-renonciation par défaut d'exécution stricte, prolonge",
+      "legal_nature": "PROHIBITION",
+      "legal_nature_marker": "shall not"
+    },
+    {
+      "id": 132,
+      "theme": "MISC_BOILERPLATE",
+      "block_id": 21,
+      "is_block_start": false,
+      "reason": "renonciation expresse ne vaut pas renonciation future, prolonge",
+      "legal_nature": "PROHIBITION",
+      "legal_nature_marker": "shall not"
+    },
+    {
+      "id": 133,
+      "theme": "MISC_BOILERPLATE",
+      "block_id": 21,
+      "is_block_start": false,
+      "reason": "aucune modification sans écrit signé, prolonge",
+      "legal_nature": "OBLIGATION",
+      "legal_nature_marker": "shall"
+    },
+    {
+      "id": 134,
+      "theme": "MISC_BOILERPLATE",
+      "block_id": 21,
+      "is_block_start": false,
+      "reason": "modalités de notification par supercell, prolonge",
+      "legal_nature": "DEFINITION",
+      "legal_nature_marker": "means"
+    },
+    {
+      "id": 135,
+      "theme": "MISC_BOILERPLATE",
+      "block_id": 21,
+      "is_block_start": false,
+      "reason": "notices de l'utilisateur par écrit à l'adresse indiquée, prolonge",
+      "legal_nature": "OBLIGATION",
+      "legal_nature_marker": "shall"
+    },
+    {
+      "id": 136,
+      "theme": "MISC_BOILERPLATE",
+      "block_id": 21,
+      "is_block_start": false,
+      "reason": "adresse postale de notification, prolonge",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 137,
+      "theme": "MISC_BOILERPLATE",
+      "block_id": 21,
+      "is_block_start": false,
+      "reason": "notices non conformes sans effet légal, prolonge",
+      "legal_nature": "OBLIGATION",
+      "legal_nature_marker": "shall"
+    },
+    {
+      "id": 138,
+      "theme": "MISC_BOILERPLATE",
+      "block_id": 21,
+      "is_block_start": false,
+      "reason": "nature unique des droits, recours équitable pour supercell, prolonge",
+      "legal_nature": "OBLIGATION",
+      "legal_nature_marker": "shall"
+    },
+    {
+      "id": 139,
+      "theme": "MISC_BOILERPLATE",
+      "block_id": 21,
+      "is_block_start": false,
+      "reason": "renonciation par l'utilisateur au recours équitable, prolonge",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 140,
+      "theme": "MISC_BOILERPLATE",
+      "block_id": 21,
+      "is_block_start": false,
+      "reason": "clause de force majeure, prolonge le boilerplate",
+      "legal_nature": "PROHIBITION",
+      "legal_nature_marker": "shall not"
+    }
+  ]
+}

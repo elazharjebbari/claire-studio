@@ -1,0 +1,1393 @@
+{
+  "doc": "Booking",
+  "judge": "claude",
+  "version": "v9.2-nature-derived",
+  "document_plan": {
+    "estimated_n_blocks": 18,
+    "rationale_global": "ToS Booking.com de profil narratif, sans numerotation, avec 4 titres nominaux (ids 17, 54, 70, 81, 117) et un bloc final 'about' (117). Ouverture preambule/scope (0-2), definitions (3-7), role d'intermediaire (8-10), disclaimer sur l'exactitude des informations (11-15), usage non commercial (16-17), gros bloc paiement/facturation introduit par le titre 'prices...' (17-53) avec une sous-section indemnisation fraude carte (49-54) que je rattache au paiement (continuite), section annulation/no-show titree (54-69), communication titree (70-80), classement/avis titre (81-92), limitation de responsabilite (93-98), contenu utilisateur photos (99-106), PI/licence (107-110), droit applicable et tribunaux (111), boilerplate divers traductions/severabilite (112-117), about/support companies titre (117-127). Indices docfeatures: title_like=[70], meta_markers autour 40-44/51. La granularite F (~19) est respectee a 18 blocs.",
+    "segments": [
+      {
+        "start_id": 0,
+        "theme": "PREAMBLE_SCOPE",
+        "rationale": "ouverture: les conditions s'appliquent aux services",
+        "evidence_span": "these terms and conditions"
+      },
+      {
+        "start_id": 3,
+        "theme": "DEFINITIONS",
+        "rationale": "definitions des termes booking.com/us/we",
+        "evidence_span": "means booking.com b.v."
+      },
+      {
+        "start_id": 8,
+        "theme": "PREAMBLE_SCOPE",
+        "rationale": "role d'intermediaire / plateforme",
+        "evidence_span": "through the platform"
+      },
+      {
+        "start_id": 11,
+        "theme": "WARRANTY_DISCLAIMER",
+        "rationale": "infos basees sur les fournisseurs, pas de garantie",
+        "evidence_span": "the information that we disclose is based on the information provided to us by suppliers"
+      },
+      {
+        "start_id": 16,
+        "theme": "ACCEPTABLE_USE",
+        "rationale": "usage personnel non commercial seulement",
+        "evidence_span": "our service is made available for personal and non-commercial use only"
+      },
+      {
+        "start_id": 17,
+        "theme": "PAYMENT_BILLING",
+        "rationale": "titre prix/tarifs/garantie meilleur prix",
+        "evidence_span": "prices , crossed-out rates and best price guarantee"
+      },
+      {
+        "start_id": 55,
+        "theme": "PAYMENT_BILLING",
+        "rationale": "titre prepaiement/annulation/no-show",
+        "evidence_span": "pre-payment , cancellation , no-show and fine print"
+      },
+      {
+        "start_id": 71,
+        "theme": "PRIVACY_DATA",
+        "rationale": "titre correspondance et communication",
+        "evidence_span": "correspondence and communication"
+      },
+      {
+        "start_id": 79,
+        "theme": "LIABILITY_LIMITATION",
+        "rationale": "delai de reclamation contre booking.com",
+        "evidence_span": "any claim or complaint against booking.com"
+      },
+      {
+        "start_id": 82,
+        "theme": "USER_CONTENT",
+        "rationale": "titre classement/programme/etoiles/avis",
+        "evidence_span": "ranking , preferred programme , stars and guest reviews"
+      },
+      {
+        "start_id": 94,
+        "theme": "LIABILITY_LIMITATION",
+        "rationale": "limitation de responsabilite aux dommages directs",
+        "evidence_span": "we shall only be liable for direct damages"
+      },
+      {
+        "start_id": 99,
+        "theme": "USER_CONTENT",
+        "rationale": "upload de photos/images par l'utilisateur",
+        "evidence_span": "by uploading photos/images onto our system"
+      },
+      {
+        "start_id": 107,
+        "theme": "LICENSE_IP",
+        "rationale": "droits de propriete intellectuelle du logiciel/contenu",
+        "evidence_span": "the intellectual property rights"
+      },
+      {
+        "start_id": 111,
+        "theme": "GOVERNING_LAW",
+        "rationale": "droit neerlandais et tribunaux d'amsterdam",
+        "evidence_span": "governed by and construed in accordance with dutch law"
+      },
+      {
+        "start_id": 112,
+        "theme": "MISC_BOILERPLATE",
+        "rationale": "version traduite / langue prevalente",
+        "evidence_span": "the original english version of these terms and conditions"
+      },
+      {
+        "start_id": 116,
+        "theme": "MISC_BOILERPLATE",
+        "rationale": "severabilite des clauses",
+        "evidence_span": "if any provision of these terms and conditions"
+      },
+      {
+        "start_id": 118,
+        "theme": "META",
+        "rationale": "titre about booking.com / support companies",
+        "evidence_span": "about booking.com and the support companies"
+      }
+    ]
+  },
+  "annotations": [
+    {
+      "id": 0,
+      "theme": "PREAMBLE_SCOPE",
+      "block_id": 0,
+      "is_block_start": true,
+      "rationale": "ouverture du document, cite « these terms and conditions ... apply to all our services »",
+      "rationale_codes": {
+        "decision_trigger": "document_start",
+        "relation_to_prev": "document_start",
+        "evidence_span": "these terms and conditions",
+        "revised_from_plan": false,
+        "confidence": 0.97
+      },
+      "legal_nature": "SCOPE_APPLICABILITY",
+      "legal_nature_marker": "apply to all"
+    },
+    {
+      "id": 1,
+      "theme": "PREAMBLE_SCOPE",
+      "block_id": 0,
+      "is_block_start": false,
+      "reason": "acceptation des conditions en utilisant le site",
+      "legal_nature": "SCOPE_APPLICABILITY",
+      "legal_nature_marker": "by accessing"
+    },
+    {
+      "id": 2,
+      "theme": "PREAMBLE_SCOPE",
+      "block_id": 0,
+      "is_block_start": false,
+      "reason": "pages exploitees par booking.com, usage personnel - prolonge le perimetre",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 3,
+      "theme": "DEFINITIONS",
+      "block_id": 1,
+      "is_block_start": true,
+      "rationale": "debut des definitions, cite « `` booking.com '' ... means booking.com b.v. »",
+      "rationale_codes": {
+        "decision_trigger": "definition_marker",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "means booking.com b.v.",
+        "revised_from_plan": false,
+        "confidence": 0.95
+      },
+      "legal_nature": "DEFINITION",
+      "legal_nature_marker": "means"
+    },
+    {
+      "id": 4,
+      "theme": "DEFINITIONS",
+      "block_id": 1,
+      "is_block_start": false,
+      "reason": "definition de « platform »",
+      "legal_nature": "DEFINITION",
+      "legal_nature_marker": "means"
+    },
+    {
+      "id": 5,
+      "theme": "DEFINITIONS",
+      "block_id": 1,
+      "is_block_start": false,
+      "reason": "definition de « service »",
+      "legal_nature": "DEFINITION",
+      "legal_nature_marker": "means"
+    },
+    {
+      "id": 6,
+      "theme": "DEFINITIONS",
+      "block_id": 1,
+      "is_block_start": false,
+      "reason": "definition de « supplier »",
+      "legal_nature": "DEFINITION",
+      "legal_nature_marker": "means"
+    },
+    {
+      "id": 7,
+      "theme": "PREAMBLE_SCOPE",
+      "block_id": 2,
+      "is_block_start": true,
+      "rationale": "fin des definitions, passe au role de plateforme/intermediaire, cite « through the platform »",
+      "rationale_codes": {
+        "decision_trigger": "topic_keyword",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "through the platform",
+        "revised_from_plan": true,
+        "confidence": 0.7
+      },
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 8,
+      "theme": "PREAMBLE_SCOPE",
+      "block_id": 2,
+      "is_block_start": false,
+      "reason": "relation contractuelle directe avec le fournisseur - prolonge le perimetre",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 9,
+      "theme": "PREAMBLE_SCOPE",
+      "block_id": 2,
+      "is_block_start": false,
+      "reason": "booking.com agit comme simple intermediaire",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 10,
+      "theme": "WARRANTY_DISCLAIMER",
+      "block_id": 3,
+      "is_block_start": true,
+      "rationale": "ouvre le disclaimer sur l'exactitude des infos, cite « the information that we disclose is based on the information provided to us by suppliers »",
+      "rationale_codes": {
+        "decision_trigger": "topic_keyword",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "the information that we disclose is based on the information provided to us by suppliers",
+        "revised_from_plan": false,
+        "confidence": 0.72
+      },
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 11,
+      "theme": "WARRANTY_DISCLAIMER",
+      "block_id": 3,
+      "is_block_start": false,
+      "reason": "fournisseurs responsables des taux/disponibilites",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 12,
+      "theme": "WARRANTY_DISCLAIMER",
+      "block_id": 3,
+      "is_block_start": false,
+      "reason": "pas de garantie d'exactitude, non responsable des erreurs",
+      "legal_nature": "PROHIBITION",
+      "legal_nature_marker": "will not"
+    },
+    {
+      "id": 13,
+      "theme": "WARRANTY_DISCLAIMER",
+      "block_id": 3,
+      "is_block_start": false,
+      "reason": "fournisseur responsable de l'exactitude des infos",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 14,
+      "theme": "WARRANTY_DISCLAIMER",
+      "block_id": 3,
+      "is_block_start": false,
+      "reason": "pas de recommandation/endossement - prolonge le disclaimer",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 15,
+      "theme": "ACCEPTABLE_USE",
+      "block_id": 4,
+      "is_block_start": true,
+      "rationale": "usage personnel et non commercial, cite « our service is made available for personal and non-commercial use only »",
+      "rationale_codes": {
+        "decision_trigger": "topic_keyword",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "our service is made available for personal and non-commercial use only",
+        "revised_from_plan": false,
+        "confidence": 0.78
+      },
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 16,
+      "theme": "ACCEPTABLE_USE",
+      "block_id": 4,
+      "is_block_start": false,
+      "reason": "interdiction de revente/copie/scrape - consequence de l'usage non commercial",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 17,
+      "theme": "PAYMENT_BILLING",
+      "block_id": 5,
+      "is_block_start": true,
+      "rationale": "titre nominal court de section paiement, cite « prices , crossed-out rates and best price guarantee »",
+      "rationale_codes": {
+        "decision_trigger": "title_marker",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "prices , crossed-out rates and best price guarantee",
+        "revised_from_plan": false,
+        "confidence": 0.9
+      },
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 18,
+      "theme": "PAYMENT_BILLING",
+      "block_id": 5,
+      "is_block_start": false,
+      "reason": "prix tres competitifs",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 19,
+      "theme": "PAYMENT_BILLING",
+      "block_id": 5,
+      "is_block_start": false,
+      "reason": "prix par chambre, vat/taxes incluses",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 20,
+      "theme": "PAYMENT_BILLING",
+      "block_id": 5,
+      "is_block_start": false,
+      "reason": "prix des billets par personne/groupe",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 21,
+      "theme": "PAYMENT_BILLING",
+      "block_id": 5,
+      "is_block_start": false,
+      "reason": "frais et taxes applicables en cas de no-show",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 22,
+      "theme": "PAYMENT_BILLING",
+      "block_id": 5,
+      "is_block_start": false,
+      "reason": "taxes applicables par l'hebergement",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 23,
+      "theme": "PAYMENT_BILLING",
+      "block_id": 5,
+      "is_block_start": false,
+      "reason": "tarifs moins chers avec restrictions (non remboursable)",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 24,
+      "theme": "PAYMENT_BILLING",
+      "block_id": 5,
+      "is_block_start": false,
+      "reason": "verifier les conditions du tarif avant reservation",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 25,
+      "theme": "PAYMENT_BILLING",
+      "block_id": 5,
+      "is_block_start": false,
+      "reason": "explication du tarif barre (crossed-out rate)",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 26,
+      "theme": "PAYMENT_BILLING",
+      "block_id": 5,
+      "is_block_start": false,
+      "reason": "memes conditions de reservation pour comparaison equitable",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 27,
+      "theme": "PAYMENT_BILLING",
+      "block_id": 5,
+      "is_block_start": false,
+      "reason": "consequence: meme chambre a prix inferieur",
+      "legal_nature": "DEFINITION",
+      "legal_nature_marker": "means"
+    },
+    {
+      "id": 28,
+      "theme": "PAYMENT_BILLING",
+      "block_id": 5,
+      "is_block_start": false,
+      "reason": "objectif: prix le plus bas possible",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 29,
+      "theme": "PAYMENT_BILLING",
+      "block_id": 5,
+      "is_block_start": false,
+      "reason": "garantie meilleur prix: matching de la difference",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 30,
+      "theme": "PAYMENT_BILLING",
+      "block_id": 5,
+      "is_block_start": false,
+      "reason": "convertisseur de devises a titre indicatif",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 31,
+      "theme": "PAYMENT_BILLING",
+      "block_id": 5,
+      "is_block_start": false,
+      "reason": "erreurs manifestes non contraignantes",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 32,
+      "theme": "PAYMENT_BILLING",
+      "block_id": 5,
+      "is_block_start": false,
+      "reason": "offres speciales marquees comme telles",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 33,
+      "theme": "PAYMENT_BILLING",
+      "block_id": 5,
+      "is_block_start": false,
+      "reason": "renvoi a la politique de confidentialite - prolonge la section",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 34,
+      "theme": "PAYMENT_BILLING",
+      "block_id": 5,
+      "is_block_start": false,
+      "reason": "service gratuit pour l'utilisateur",
+      "legal_nature": "PROHIBITION",
+      "legal_nature_marker": "will not"
+    },
+    {
+      "id": 35,
+      "theme": "PAYMENT_BILLING",
+      "block_id": 5,
+      "is_block_start": false,
+      "reason": "fournisseurs paient une commission a booking.com",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 36,
+      "theme": "PAYMENT_BILLING",
+      "block_id": 5,
+      "is_block_start": false,
+      "reason": "paiement en ligne securise au fournisseur",
+      "legal_nature": "DEFINITION",
+      "legal_nature_marker": "means"
+    },
+    {
+      "id": 37,
+      "theme": "PAYMENT_BILLING",
+      "block_id": 5,
+      "is_block_start": false,
+      "reason": "facilitation du paiement via processeurs tiers",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 38,
+      "theme": "PAYMENT_BILLING",
+      "block_id": 5,
+      "is_block_start": false,
+      "reason": "paiement traite depuis la carte vers le fournisseur",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 39,
+      "theme": "PAYMENT_BILLING",
+      "block_id": 5,
+      "is_block_start": false,
+      "reason": "paiement facilite = reglement liberatoire, non reclamable",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 40,
+      "theme": "PAYMENT_BILLING",
+      "block_id": 5,
+      "is_block_start": false,
+      "reason": "traitement carte par enett international (processeur)",
+      "legal_nature": "META",
+      "legal_nature_marker": "llc"
+    },
+    {
+      "id": 41,
+      "theme": "PAYMENT_BILLING",
+      "block_id": 5,
+      "is_block_start": false,
+      "reason": "enett designe par le fournisseur comme agent",
+      "legal_nature": "META",
+      "legal_nature_marker": "llc"
+    },
+    {
+      "id": 42,
+      "theme": "PAYMENT_BILLING",
+      "block_id": 5,
+      "is_block_start": false,
+      "reason": "enett identifie comme merchant of record",
+      "legal_nature": "META",
+      "legal_nature_marker": "llc"
+    },
+    {
+      "id": 43,
+      "theme": "PAYMENT_BILLING",
+      "block_id": 5,
+      "is_block_start": false,
+      "reason": "obligation eteinte des reception du paiement",
+      "legal_nature": "META",
+      "legal_nature_marker": "llc"
+    },
+    {
+      "id": 44,
+      "theme": "PAYMENT_BILLING",
+      "block_id": 5,
+      "is_block_start": false,
+      "reason": "support client booking.com malgre responsabilite enett",
+      "legal_nature": "META",
+      "legal_nature_marker": "llc"
+    },
+    {
+      "id": 45,
+      "theme": "PAYMENT_BILLING",
+      "block_id": 5,
+      "is_block_start": false,
+      "reason": "loi anglaise pour paiements via enett uk - prolonge le paiement",
+      "legal_nature": "LIMITATION_DISCLAIMER",
+      "legal_nature_marker": "to the extent permitted"
+    },
+    {
+      "id": 46,
+      "theme": "PAYMENT_BILLING",
+      "block_id": 5,
+      "is_block_start": false,
+      "reason": "paiement anticipe possible pour tarifs non remboursables",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 47,
+      "theme": "PAYMENT_BILLING",
+      "block_id": 5,
+      "is_block_start": false,
+      "reason": "verifier les conditions avant reservation",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 48,
+      "theme": "PAYMENT_BILLING",
+      "block_id": 5,
+      "is_block_start": false,
+      "reason": "non responsabilite des charges du fournisseur",
+      "legal_nature": "PROHIBITION",
+      "legal_nature_marker": "will not"
+    },
+    {
+      "id": 49,
+      "theme": "INDEMNIFICATION",
+      "block_id": 6,
+      "is_block_start": true,
+      "rationale": "ouvre l'indemnisation fraude carte, cite « in the event of fraud or unauthorised use of your credit card »",
+      "rationale_codes": {
+        "decision_trigger": "topic_keyword",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "in the event of fraud or unauthorised use of your credit card",
+        "revised_from_plan": true,
+        "confidence": 0.68
+      },
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 50,
+      "theme": "INDEMNIFICATION",
+      "block_id": 6,
+      "is_block_start": false,
+      "reason": "booking.com rembourse la franchise jusqu'a 50 eur",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 51,
+      "theme": "INDEMNIFICATION",
+      "block_id": 6,
+      "is_block_start": false,
+      "reason": "procedure: signaler la fraude pour indemnisation",
+      "legal_nature": "RISK_ALLOCATION",
+      "legal_nature_marker": "indemnify"
+    },
+    {
+      "id": 52,
+      "theme": "INDEMNIFICATION",
+      "block_id": 6,
+      "is_block_start": false,
+      "reason": "procedure: mention 'credit card fraud' + preuve",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 53,
+      "theme": "INDEMNIFICATION",
+      "block_id": 6,
+      "is_block_start": false,
+      "reason": "limites de l'indemnisation (serveur securise)",
+      "legal_nature": "RISK_ALLOCATION",
+      "legal_nature_marker": "indemnification"
+    },
+    {
+      "id": 54,
+      "theme": "PAYMENT_BILLING",
+      "block_id": 7,
+      "is_block_start": true,
+      "rationale": "titre nominal court de section, cite « pre-payment , cancellation , no-show and fine print »",
+      "rationale_codes": {
+        "decision_trigger": "title_marker",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "pre-payment , cancellation , no-show and fine print",
+        "revised_from_plan": false,
+        "confidence": 0.88
+      },
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 55,
+      "theme": "PAYMENT_BILLING",
+      "block_id": 7,
+      "is_block_start": false,
+      "reason": "acceptation de la politique d'annulation/no-show du fournisseur",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 56,
+      "theme": "PAYMENT_BILLING",
+      "block_id": 7,
+      "is_block_start": false,
+      "reason": "politique d'annulation disponible sur la plateforme",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 57,
+      "theme": "PAYMENT_BILLING",
+      "block_id": 7,
+      "is_block_start": false,
+      "reason": "certains tarifs non eligibles a l'annulation",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 58,
+      "theme": "PAYMENT_BILLING",
+      "block_id": 7,
+      "is_block_start": false,
+      "reason": "taxe ville/touristique en cas de no-show",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 59,
+      "theme": "PAYMENT_BILLING",
+      "block_id": 7,
+      "is_block_start": false,
+      "reason": "verifier les conditions avant reservation",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 60,
+      "theme": "PAYMENT_BILLING",
+      "block_id": 7,
+      "is_block_start": false,
+      "reason": "reservation avec prepaiement annulable si non collecte",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 61,
+      "theme": "PAYMENT_BILLING",
+      "block_id": 7,
+      "is_block_start": false,
+      "reason": "politiques d'annulation/prepaiement variables",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 62,
+      "theme": "PAYMENT_BILLING",
+      "block_id": 7,
+      "is_block_start": false,
+      "reason": "lire le fine print pour politiques additionnelles",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 63,
+      "theme": "PAYMENT_BILLING",
+      "block_id": 7,
+      "is_block_start": false,
+      "reason": "retard de paiement aux risques de l'utilisateur",
+      "legal_nature": "PROHIBITION",
+      "legal_nature_marker": "shall not"
+    },
+    {
+      "id": 64,
+      "theme": "PAYMENT_BILLING",
+      "block_id": 7,
+      "is_block_start": false,
+      "reason": "procedure de modification/annulation via email",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 65,
+      "theme": "PAYMENT_BILLING",
+      "block_id": 7,
+      "is_block_start": false,
+      "reason": "frais d'annulation possibles selon politique",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 66,
+      "theme": "PAYMENT_BILLING",
+      "block_id": 7,
+      "is_block_start": false,
+      "reason": "recommandation de lire la politique d'annulation",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 67,
+      "theme": "PAYMENT_BILLING",
+      "block_id": 7,
+      "is_block_start": false,
+      "reason": "communiquer un retard d'arrivee pour eviter le no-show",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 68,
+      "theme": "PAYMENT_BILLING",
+      "block_id": 7,
+      "is_block_start": false,
+      "reason": "le service client peut aider a informer le fournisseur",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 69,
+      "theme": "LIABILITY_LIMITATION",
+      "block_id": 8,
+      "is_block_start": true,
+      "rationale": "ouvre un disclaimer de responsabilite, cite « booking.com does not accept any liability or responsibility for the consequences of your delayed arrival »",
+      "rationale_codes": {
+        "decision_trigger": "topic_keyword",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "booking.com does not accept any liability or responsibility for the consequences of your delayed arrival",
+        "revised_from_plan": true,
+        "confidence": 0.6
+      },
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 70,
+      "theme": "PRIVACY_DATA",
+      "block_id": 9,
+      "is_block_start": true,
+      "rationale": "titre nominal court de section communication, cite « correspondence and communication »",
+      "rationale_codes": {
+        "decision_trigger": "title_marker",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "correspondence and communication",
+        "revised_from_plan": true,
+        "confidence": 0.72
+      },
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 71,
+      "theme": "PRIVACY_DATA",
+      "block_id": 9,
+      "is_block_start": false,
+      "reason": "consentement a recevoir des emails (avant/apres sejour)",
+      "legal_nature": "OBLIGATION",
+      "legal_nature_marker": "you agree to"
+    },
+    {
+      "id": 72,
+      "theme": "PRIVACY_DATA",
+      "block_id": 9,
+      "is_block_start": false,
+      "reason": "renvoi a la politique de confidentialite pour le contact",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 73,
+      "theme": "PRIVACY_DATA",
+      "block_id": 9,
+      "is_block_start": false,
+      "reason": "disclaimer sur les communications avec le fournisseur",
+      "legal_nature": "LIMITATION_DISCLAIMER",
+      "legal_nature_marker": "disclaim"
+    },
+    {
+      "id": 74,
+      "theme": "PRIVACY_DATA",
+      "block_id": 9,
+      "is_block_start": false,
+      "reason": "aucun droit derive des communications",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 75,
+      "theme": "PRIVACY_DATA",
+      "block_id": 9,
+      "is_block_start": false,
+      "reason": "pas de garantie de reception des communications",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 76,
+      "theme": "PRIVACY_DATA",
+      "block_id": 9,
+      "is_block_start": false,
+      "reason": "necessite d'utiliser une adresse email correcte",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 77,
+      "theme": "PRIVACY_DATA",
+      "block_id": 9,
+      "is_block_start": false,
+      "reason": "non responsable des adresses/numeros errones",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 78,
+      "theme": "LIABILITY_LIMITATION",
+      "block_id": 10,
+      "is_block_start": true,
+      "rationale": "delai de prescription des reclamations, cite « any claim or complaint against booking.com »",
+      "rationale_codes": {
+        "decision_trigger": "topic_keyword",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "any claim or complaint against booking.com",
+        "revised_from_plan": false,
+        "confidence": 0.7
+      },
+      "legal_nature": "OBLIGATION",
+      "legal_nature_marker": "must"
+    },
+    {
+      "id": 79,
+      "theme": "LIABILITY_LIMITATION",
+      "block_id": 10,
+      "is_block_start": false,
+      "reason": "consequence: reclamation tardive rejetee, forfait du droit",
+      "legal_nature": "OBLIGATION",
+      "legal_nature_marker": "shall"
+    },
+    {
+      "id": 80,
+      "theme": "LIABILITY_LIMITATION",
+      "block_id": 10,
+      "is_block_start": false,
+      "reason": "recommandation de captures d'ecran pour preuve",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 81,
+      "theme": "USER_CONTENT",
+      "block_id": 11,
+      "is_block_start": true,
+      "rationale": "titre nominal court de section, cite « ranking , preferred programme , stars and guest reviews »",
+      "rationale_codes": {
+        "decision_trigger": "title_marker",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "ranking , preferred programme , stars and guest reviews",
+        "revised_from_plan": false,
+        "confidence": 0.85
+      },
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 82,
+      "theme": "USER_CONTENT",
+      "block_id": 11,
+      "is_block_start": false,
+      "reason": "reglage par defaut du classement 'recommended'",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 83,
+      "theme": "USER_CONTENT",
+      "block_id": 11,
+      "is_block_start": false,
+      "reason": "autres modes de classement proposes",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 84,
+      "theme": "USER_CONTENT",
+      "block_id": 11,
+      "is_block_start": false,
+      "reason": "classement par algorithme et criteres multiples",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 85,
+      "theme": "USER_CONTENT",
+      "block_id": 11,
+      "is_block_start": false,
+      "reason": "commission incluse comme facteur du classement",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 86,
+      "theme": "USER_CONTENT",
+      "block_id": 11,
+      "is_block_start": false,
+      "reason": "programme partenaire prefere (classement avance)",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 87,
+      "theme": "USER_CONTENT",
+      "block_id": 11,
+      "is_block_start": false,
+      "reason": "fournisseurs preferes marques d'un pouce, commission plus elevee",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 88,
+      "theme": "USER_CONTENT",
+      "block_id": 11,
+      "is_block_start": false,
+      "reason": "criteres de qualification pour etre prefere",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 89,
+      "theme": "USER_CONTENT",
+      "block_id": 11,
+      "is_block_start": false,
+      "reason": "etoiles des hebergements non-hotel non equivalentes",
+      "legal_nature": "PROHIBITION",
+      "legal_nature_marker": "do not"
+    },
+    {
+      "id": 90,
+      "theme": "USER_CONTENT",
+      "block_id": 11,
+      "is_block_start": false,
+      "reason": "utilisation des avis clients (guest reviews)",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 91,
+      "theme": "USER_CONTENT",
+      "block_id": 11,
+      "is_block_start": false,
+      "reason": "droit d'ajuster/refuser/supprimer les avis",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 92,
+      "theme": "USER_CONTENT",
+      "block_id": 11,
+      "is_block_start": false,
+      "reason": "formulaire d'avis = sondage sans offres commerciales",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 93,
+      "theme": "LIABILITY_LIMITATION",
+      "block_id": 12,
+      "is_block_start": true,
+      "rationale": "ouvre la limitation de responsabilite, cite « we shall only be liable for direct damages actually suffered »",
+      "rationale_codes": {
+        "decision_trigger": "topic_keyword",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "we shall only be liable for direct damages",
+        "revised_from_plan": false,
+        "confidence": 0.85
+      },
+      "legal_nature": "LIMITATION_DISCLAIMER",
+      "legal_nature_marker": "to the extent permitted"
+    },
+    {
+      "id": 94,
+      "theme": "LIABILITY_LIMITATION",
+      "block_id": 12,
+      "is_block_start": false,
+      "reason": "exclusion des dommages indirects/consequents",
+      "legal_nature": "LIMITATION_DISCLAIMER",
+      "legal_nature_marker": "to the extent permitted"
+    },
+    {
+      "id": 95,
+      "theme": "LIABILITY_LIMITATION",
+      "block_id": 12,
+      "is_block_start": false,
+      "reason": "fournisseur responsable des taxes - allocation du risque",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 96,
+      "theme": "LIABILITY_LIMITATION",
+      "block_id": 12,
+      "is_block_start": false,
+      "reason": "booking.com non responsable du versement des taxes",
+      "legal_nature": "LIMITATION_DISCLAIMER",
+      "legal_nature_marker": "not liable"
+    },
+    {
+      "id": 97,
+      "theme": "LIABILITY_LIMITATION",
+      "block_id": 12,
+      "is_block_start": false,
+      "reason": "booking.com pas merchant of record - prolonge le disclaimer",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 98,
+      "theme": "USER_CONTENT",
+      "block_id": 13,
+      "is_block_start": true,
+      "rationale": "ouvre le contenu utilisateur (photos), cite « by uploading photos/images onto our system »",
+      "rationale_codes": {
+        "decision_trigger": "topic_keyword",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "by uploading photos/images onto our system",
+        "revised_from_plan": false,
+        "confidence": 0.82
+      },
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 99,
+      "theme": "USER_CONTENT",
+      "block_id": 13,
+      "is_block_start": false,
+      "reason": "octroi a booking.com d'une licence d'usage des photos",
+      "legal_nature": "RIGHT_GRANT",
+      "legal_nature_marker": "license to"
+    },
+    {
+      "id": 100,
+      "theme": "USER_CONTENT",
+      "block_id": 13,
+      "is_block_start": false,
+      "reason": "responsabilite legale/morale de l'uploader",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 101,
+      "theme": "USER_CONTENT",
+      "block_id": 13,
+      "is_block_start": false,
+      "reason": "booking.com ne possede ni n'endosse les photos",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 102,
+      "theme": "USER_CONTENT",
+      "block_id": 13,
+      "is_block_start": false,
+      "reason": "veracite des photos assumee par l'uploader",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 103,
+      "theme": "USER_CONTENT",
+      "block_id": 13,
+      "is_block_start": false,
+      "reason": "disclaimer de responsabilite sur les photos",
+      "legal_nature": "LIMITATION_DISCLAIMER",
+      "legal_nature_marker": "disclaim"
+    },
+    {
+      "id": 104,
+      "theme": "USER_CONTENT",
+      "block_id": 13,
+      "is_block_start": false,
+      "reason": "garantie d'absence de virus/contenu illicite",
+      "legal_nature": "PROHIBITION",
+      "legal_nature_marker": "shall not"
+    },
+    {
+      "id": 105,
+      "theme": "USER_CONTENT",
+      "block_id": 13,
+      "is_block_start": false,
+      "reason": "photos non conformes retirees - consequence",
+      "legal_nature": "PROHIBITION",
+      "legal_nature_marker": "will not"
+    },
+    {
+      "id": 106,
+      "theme": "LICENSE_IP",
+      "block_id": 14,
+      "is_block_start": true,
+      "rationale": "ouvre la PI: logiciel et droits de propriete, cite « the intellectual property rights »",
+      "rationale_codes": {
+        "decision_trigger": "topic_keyword",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "the intellectual property rights",
+        "revised_from_plan": false,
+        "confidence": 0.83
+      },
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 107,
+      "theme": "LICENSE_IP",
+      "block_id": 14,
+      "is_block_start": false,
+      "reason": "booking.com conserve tous les droits de PI sur la plateforme",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 108,
+      "theme": "LICENSE_IP",
+      "block_id": 14,
+      "is_block_start": false,
+      "reason": "cession des droits de PI eventuels a booking.com",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 109,
+      "theme": "LICENSE_IP",
+      "block_id": 14,
+      "is_block_start": false,
+      "reason": "usage illicite = infraction materielle aux droits de PI",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 110,
+      "theme": "GOVERNING_LAW",
+      "block_id": 15,
+      "is_block_start": true,
+      "rationale": "droit applicable et tribunaux competents, cite « governed by and construed in accordance with dutch law »",
+      "rationale_codes": {
+        "decision_trigger": "topic_keyword",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "governed by and construed in accordance with dutch law",
+        "revised_from_plan": false,
+        "confidence": 0.9
+      },
+      "legal_nature": "LIMITATION_DISCLAIMER",
+      "legal_nature_marker": "to the extent permitted"
+    },
+    {
+      "id": 111,
+      "theme": "MISC_BOILERPLATE",
+      "block_id": 16,
+      "is_block_start": true,
+      "rationale": "version traduite vs originale anglaise, cite « the original english version of these terms and conditions »",
+      "rationale_codes": {
+        "decision_trigger": "topic_keyword",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "the original english version of these terms and conditions",
+        "revised_from_plan": false,
+        "confidence": 0.72
+      },
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 112,
+      "theme": "MISC_BOILERPLATE",
+      "block_id": 16,
+      "is_block_start": false,
+      "reason": "la version traduite est une courtoisie, sans droits",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 113,
+      "theme": "MISC_BOILERPLATE",
+      "block_id": 16,
+      "is_block_start": false,
+      "reason": "version anglaise prevaut en cas de divergence",
+      "legal_nature": "LIMITATION_DISCLAIMER",
+      "legal_nature_marker": "to the extent permitted"
+    },
+    {
+      "id": 114,
+      "theme": "MISC_BOILERPLATE",
+      "block_id": 16,
+      "is_block_start": false,
+      "reason": "version anglaise disponible sur la plateforme",
+      "legal_nature": "OBLIGATION",
+      "legal_nature_marker": "shall"
+    },
+    {
+      "id": 115,
+      "theme": "MISC_BOILERPLATE",
+      "block_id": 16,
+      "is_block_start": false,
+      "reason": "severabilite: les autres clauses restent valides",
+      "legal_nature": "OBLIGATION",
+      "legal_nature_marker": "you shall"
+    },
+    {
+      "id": 116,
+      "theme": "MISC_BOILERPLATE",
+      "block_id": 16,
+      "is_block_start": false,
+      "reason": "clause invalide remplacee par un effet similaire - prolonge la severabilite",
+      "legal_nature": "OBLIGATION",
+      "legal_nature_marker": "you will"
+    },
+    {
+      "id": 117,
+      "theme": "META",
+      "block_id": 17,
+      "is_block_start": true,
+      "rationale": "titre nominal court de section finale, cite « about booking.com and the support companies »",
+      "rationale_codes": {
+        "decision_trigger": "title_marker",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "about booking.com and the support companies",
+        "revised_from_plan": false,
+        "confidence": 0.8
+      },
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 118,
+      "theme": "META",
+      "block_id": 17,
+      "is_block_start": false,
+      "reason": "identite et adresse de booking.com b.v.",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 119,
+      "theme": "META",
+      "block_id": 17,
+      "is_block_start": false,
+      "reason": "numero d'enregistrement tva",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 120,
+      "theme": "META",
+      "block_id": 17,
+      "is_block_start": false,
+      "reason": "siege a amsterdam, support companies",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 121,
+      "theme": "META",
+      "block_id": 17,
+      "is_block_start": false,
+      "reason": "role interne des support companies",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 122,
+      "theme": "META",
+      "block_id": 17,
+      "is_block_start": false,
+      "reason": "support companies: support client limite",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 123,
+      "theme": "META",
+      "block_id": 17,
+      "is_block_start": false,
+      "reason": "support companies sans plateforme",
+      "legal_nature": "PROHIBITION",
+      "legal_nature_marker": "do not"
+    },
+    {
+      "id": 124,
+      "theme": "META",
+      "block_id": 17,
+      "is_block_start": false,
+      "reason": "support companies sans pouvoir de representation",
+      "legal_nature": "PROHIBITION",
+      "legal_nature_marker": "do not"
+    },
+    {
+      "id": 125,
+      "theme": "META",
+      "block_id": 17,
+      "is_block_start": false,
+      "reason": "aucune relation avec les support companies",
+      "legal_nature": "PROHIBITION",
+      "legal_nature_marker": "do not"
+    },
+    {
+      "id": 126,
+      "theme": "META",
+      "block_id": 17,
+      "is_block_start": false,
+      "reason": "support companies non agent de service",
+      "legal_nature": "PROHIBITION",
+      "legal_nature_marker": "do not"
+    },
+    {
+      "id": 127,
+      "theme": "META",
+      "block_id": 17,
+      "is_block_start": false,
+      "reason": "booking.com sans domicile hors amsterdam",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    }
+  ]
+}

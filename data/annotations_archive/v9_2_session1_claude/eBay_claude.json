@@ -1,0 +1,2737 @@
+{
+  "doc": "eBay",
+  "judge": "claude",
+  "version": "v9.2-nature-derived",
+  "document_plan": {
+    "estimated_n_blocks": 34,
+    "rationale_global": "Long ToS narratif eBay sans numerotation (numbering=0). La segmentation suit les ruptures thematiques : preambule/incorporation, identite des entites contractantes (META/DEFINITIONS), avertissement arbitrage, role de marketplace, longue liste d'usages interdits (ACCEPTABLE_USE), standards/suspension (TERMINATION), frais et facturation (PAYMENT_BILLING), regles de mise en vente et d'achat (ELIGIBILITY_ACCOUNT), international/traduction (THIRD_PARTY), licence de contenu et PI (LICENSE_IP), catalogue (USER_CONTENT), marques et DMCA (LICENSE_IP), restriction de fonds paypal (THIRD_PARTY), contacts/enregistrement/analyse de messages (PRIVACY_DATA), retours/remboursements (PAYMENT_BILLING), global shipping program (THIRD_PARTY), money back guarantee (PAYMENT_BILLING), disclaimer de garanties (WARRANTY_DISCLAIMER), limitation de responsabilite + release (LIABILITY_LIMITATION), indemnisation (INDEMNIFICATION), longue section legal disputes/arbitrage (DISPUTE_ARBITRATION), forum judiciaire et general/boilerplate (GOVERNING_LAW / MISC_BOILERPLATE), dispositions specifiques aux etats (GOVERNING_LAW). Continuite par defaut au sein de chaque section.",
+    "segments": [
+      {
+        "start_id": 0,
+        "theme": "PREAMBLE_SCOPE",
+        "rationale": "ouverture, definit le perimetre des services",
+        "evidence_span": "set out the terms on which ebay offers you access"
+      },
+      {
+        "start_id": 5,
+        "theme": "DEFINITIONS",
+        "rationale": "identite des entites contractantes et definition de ebay/we/us",
+        "evidence_span": "the entity you are contracting with is ebay inc."
+      },
+      {
+        "start_id": 11,
+        "theme": "DISPUTE_ARBITRATION",
+        "rationale": "avertissement sur les provisions de resolution des litiges et l'arbitrage",
+        "evidence_span": "provisions that govern how claims you and we have against each other are resolved"
+      },
+      {
+        "start_id": 14,
+        "theme": "PREAMBLE_SCOPE",
+        "rationale": "description du role de marketplace de ebay",
+        "evidence_span": "ebay is a marketplace that allows users to offer , sell and buy"
+      },
+      {
+        "start_id": 19,
+        "theme": "ACCEPTABLE_USE",
+        "rationale": "chapeau de la liste des comportements interdits",
+        "evidence_span": "in connection with using or accessing the services you will not"
+      },
+      {
+        "start_id": 40,
+        "theme": "TERMINATION",
+        "rationale": "standards de performance et sanctions/suspension de compte",
+        "evidence_span": "failure to meet these standards may result in ebay"
+      },
+      {
+        "start_id": 49,
+        "theme": "PAYMENT_BILLING",
+        "rationale": "frais de service et modalites de paiement",
+        "evidence_span": "the fees we charge for using our services are listed"
+      },
+      {
+        "start_id": 57,
+        "theme": "ELIGIBILITY_ACCOUNT",
+        "rationale": "regles de mise en vente d'un objet",
+        "evidence_span": "when listing an item , you agree to comply"
+      },
+      {
+        "start_id": 77,
+        "theme": "ELIGIBILITY_ACCOUNT",
+        "rationale": "regles pour les acheteurs",
+        "evidence_span": "when buying an item , you agree to the rules for buyers"
+      },
+      {
+        "start_id": 83,
+        "theme": "THIRD_PARTY",
+        "rationale": "vente/achat international et traduction",
+        "evidence_span": "international buying and selling ; translation"
+      },
+      {
+        "start_id": 95,
+        "theme": "LICENSE_IP",
+        "rationale": "octroi de licence sur le contenu fourni",
+        "evidence_span": "you grant us a non-exclusive , worldwide , perpetual"
+      },
+      {
+        "start_id": 101,
+        "theme": "USER_CONTENT",
+        "rationale": "catalogues fournis par des tiers et utilisation du contenu de catalogue",
+        "evidence_span": "we may offer catalogs"
+      },
+      {
+        "start_id": 109,
+        "theme": "LICENSE_IP",
+        "rationale": "marques et signes distinctifs de ebay",
+        "evidence_span": "ebay marks , logos , designs"
+      },
+      {
+        "start_id": 112,
+        "theme": "LICENSE_IP",
+        "rationale": "notice DMCA / copyright infringement",
+        "evidence_span": "notice for claims of intellectual property violations and copyright infringement"
+      },
+      {
+        "start_id": 117,
+        "theme": "THIRD_PARTY",
+        "rationale": "restriction des fonds paypal recommandee par ebay",
+        "evidence_span": "ebay has at times recommended ... that paypal restrict access to funds"
+      },
+      {
+        "start_id": 119,
+        "theme": "PRIVACY_DATA",
+        "rationale": "autorisation de contact, enregistrement des appels, analyse des messages",
+        "evidence_span": "authorization to contact you ; recording calls ; analyzing message content"
+      },
+      {
+        "start_id": 134,
+        "theme": "PAYMENT_BILLING",
+        "rationale": "retours, remplacements et remboursements",
+        "evidence_span": "sellers can create rules to automate replacements , returns , and refunds"
+      },
+      {
+        "start_id": 147,
+        "theme": "THIRD_PARTY",
+        "rationale": "global shipping program opere par pitney bowes",
+        "evidence_span": "through the global shipping program"
+      },
+      {
+        "start_id": 158,
+        "theme": "PAYMENT_BILLING",
+        "rationale": "ebay money back guarantee et remboursements associes",
+        "evidence_span": "the ebay money back guarantee helps buyers and sellers"
+      },
+      {
+        "start_id": 163,
+        "theme": "WARRANTY_DISCLAIMER",
+        "rationale": "disclaimer de garanties (as is / as available)",
+        "evidence_span": "disclaimer of warranties ; limitation of liability"
+      },
+      {
+        "start_id": 169,
+        "theme": "LIABILITY_LIMITATION",
+        "rationale": "exclusion et limitation de responsabilite",
+        "evidence_span": "are not liable , and you agree not to hold us responsible , for any damages"
+      },
+      {
+        "start_id": 172,
+        "theme": "LIABILITY_LIMITATION",
+        "rationale": "release des reclamations entre utilisateurs",
+        "evidence_span": "you release us"
+      },
+      {
+        "start_id": 174,
+        "theme": "INDEMNIFICATION",
+        "rationale": "obligation d'indemnisation et de garantie",
+        "evidence_span": "you will indemnify and hold us"
+      },
+      {
+        "start_id": 175,
+        "theme": "DISPUTE_ARBITRATION",
+        "rationale": "section legal disputes : arbitrage obligatoire",
+        "evidence_span": "please read this section carefully"
+      },
+      {
+        "start_id": 233,
+        "theme": "GOVERNING_LAW",
+        "rationale": "forum judiciaire pour les litiges (salt lake county, utah)",
+        "evidence_span": "c. judicial forum for legal disputes"
+      },
+      {
+        "start_id": 236,
+        "theme": "MISC_BOILERPLATE",
+        "rationale": "general : severabilite, cession, titres, renonciation",
+        "evidence_span": "if any provision of this user agreement is held to be invalid"
+      },
+      {
+        "start_id": 241,
+        "theme": "MODIFICATION_OF_TERMS",
+        "rationale": "modification du user agreement",
+        "evidence_span": "we may amend this user agreement at any time"
+      },
+      {
+        "start_id": 250,
+        "theme": "MISC_BOILERPLATE",
+        "rationale": "comptes professionnels, absence de relation d'agence, entente integrale, survie",
+        "evidence_span": "no agency , partnership , joint venture"
+      },
+      {
+        "start_id": 255,
+        "theme": "GOVERNING_LAW",
+        "rationale": "dispositions specifiques aux residents de californie et de l'illinois",
+        "evidence_span": "if you are a california resident"
+      }
+    ]
+  },
+  "annotations": [
+    {
+      "id": 0,
+      "theme": "PREAMBLE_SCOPE",
+      "block_id": 0,
+      "is_block_start": true,
+      "rationale": "ouverture du document ; pose le perimetre des termes regissant l'acces aux services",
+      "rationale_codes": {
+        "decision_trigger": "document_start",
+        "relation_to_prev": "document_start",
+        "evidence_span": "set out the terms on which ebay offers you access",
+        "revised_from_plan": false,
+        "confidence": 0.97
+      },
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 1,
+      "theme": "PREAMBLE_SCOPE",
+      "block_id": 0,
+      "is_block_start": false,
+      "reason": "renvoi a l'apercu des politiques, prolonge le perimetre",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 2,
+      "theme": "PREAMBLE_SCOPE",
+      "block_id": 0,
+      "is_block_start": false,
+      "reason": "incorporation des politiques dans l'accord",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 3,
+      "theme": "PREAMBLE_SCOPE",
+      "block_id": 0,
+      "is_block_start": false,
+      "reason": "acceptation de se conformer, prolonge le perimetre",
+      "legal_nature": "OBLIGATION",
+      "legal_nature_marker": "you agree to"
+    },
+    {
+      "id": 4,
+      "theme": "DEFINITIONS",
+      "block_id": 1,
+      "is_block_start": true,
+      "rationale": "changement de sujet : identite de l'entite contractante selon la residence",
+      "rationale_codes": {
+        "decision_trigger": "topic_keyword",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "the entity you are contracting with is ebay inc.",
+        "revised_from_plan": true,
+        "confidence": 0.85
+      },
+      "legal_nature": "META",
+      "legal_nature_marker": "inc."
+    },
+    {
+      "id": 5,
+      "theme": "DEFINITIONS",
+      "block_id": 1,
+      "is_block_start": false,
+      "reason": "autres entites contractantes (ue, suisse)",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 6,
+      "theme": "DEFINITIONS",
+      "block_id": 1,
+      "is_block_start": false,
+      "reason": "entite pour le canada",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 7,
+      "theme": "DEFINITIONS",
+      "block_id": 1,
+      "is_block_start": false,
+      "reason": "entite pour le royaume-uni",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 8,
+      "theme": "DEFINITIONS",
+      "block_id": 1,
+      "is_block_start": false,
+      "reason": "entite pour l'inde",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 9,
+      "theme": "DEFINITIONS",
+      "block_id": 1,
+      "is_block_start": false,
+      "reason": "definition collective de ebay/we/us",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 10,
+      "theme": "DISPUTE_ARBITRATION",
+      "block_id": 2,
+      "is_block_start": true,
+      "rationale": "avertissement introduisant les provisions de resolution des litiges",
+      "rationale_codes": {
+        "decision_trigger": "topic_keyword",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "provisions that govern how claims you and we have against each other are resolved",
+        "revised_from_plan": false,
+        "confidence": 0.86
+      },
+      "legal_nature": "LIMITATION_DISCLAIMER",
+      "legal_nature_marker": "warranties"
+    },
+    {
+      "id": 11,
+      "theme": "DISPUTE_ARBITRATION",
+      "block_id": 2,
+      "is_block_start": false,
+      "reason": "accord d'arbitrage et option opt-out",
+      "legal_nature": "GOVERNANCE",
+      "legal_nature_marker": "arbitration"
+    },
+    {
+      "id": 12,
+      "theme": "DISPUTE_ARBITRATION",
+      "block_id": 2,
+      "is_block_start": false,
+      "reason": "renonciation aux actions collectives, prolonge l'avertissement",
+      "legal_nature": "OBLIGATION",
+      "legal_nature_marker": "you will"
+    },
+    {
+      "id": 13,
+      "theme": "PREAMBLE_SCOPE",
+      "block_id": 3,
+      "is_block_start": true,
+      "rationale": "retour au perimetre : description du role de marketplace de ebay",
+      "rationale_codes": {
+        "decision_trigger": "lexical_shift",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "ebay is a marketplace that allows users to offer , sell and buy",
+        "revised_from_plan": false,
+        "confidence": 0.8
+      },
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 14,
+      "theme": "PREAMBLE_SCOPE",
+      "block_id": 3,
+      "is_block_start": false,
+      "reason": "le contrat de vente est entre vendeur et acheteur",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 15,
+      "theme": "PREAMBLE_SCOPE",
+      "block_id": 3,
+      "is_block_start": false,
+      "reason": "ebay n'est pas un commissaire-priseur traditionnel",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 16,
+      "theme": "PREAMBLE_SCOPE",
+      "block_id": 3,
+      "is_block_start": false,
+      "reason": "guidance informationnelle, prolonge le role",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 17,
+      "theme": "PREAMBLE_SCOPE",
+      "block_id": 3,
+      "is_block_start": false,
+      "reason": "ebay n'a aucun controle ni garantie sur les transactions",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 18,
+      "theme": "ACCEPTABLE_USE",
+      "block_id": 4,
+      "is_block_start": true,
+      "rationale": "chapeau introduisant la liste des comportements interdits",
+      "rationale_codes": {
+        "decision_trigger": "topic_keyword",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "in connection with using or accessing the services you will not",
+        "revised_from_plan": false,
+        "confidence": 0.92
+      },
+      "legal_nature": "PROHIBITION",
+      "legal_nature_marker": "will not"
+    },
+    {
+      "id": 19,
+      "theme": "ACCEPTABLE_USE",
+      "block_id": 4,
+      "is_block_start": false,
+      "reason": "item de liste : poster dans des categories inappropriees",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 20,
+      "theme": "ACCEPTABLE_USE",
+      "block_id": 4,
+      "is_block_start": false,
+      "reason": "item de liste : contourner les lois/systemes",
+      "legal_nature": "GOVERNANCE",
+      "legal_nature_marker": "termination"
+    },
+    {
+      "id": 21,
+      "theme": "ACCEPTABLE_USE",
+      "block_id": 4,
+      "is_block_start": false,
+      "reason": "item de liste : utiliser les services sans capacite legale",
+      "legal_nature": "GOVERNANCE",
+      "legal_nature_marker": "suspend"
+    },
+    {
+      "id": 22,
+      "theme": "ACCEPTABLE_USE",
+      "block_id": 4,
+      "is_block_start": false,
+      "reason": "item de liste : ne pas payer les objets achetes",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 23,
+      "theme": "ACCEPTABLE_USE",
+      "block_id": 4,
+      "is_block_start": false,
+      "reason": "item de liste : ne pas livrer les objets vendus",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 24,
+      "theme": "ACCEPTABLE_USE",
+      "block_id": 4,
+      "is_block_start": false,
+      "reason": "item de liste : manipuler les prix",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 25,
+      "theme": "ACCEPTABLE_USE",
+      "block_id": 4,
+      "is_block_start": false,
+      "reason": "item de liste : poster du contenu mensonger",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 26,
+      "theme": "ACCEPTABLE_USE",
+      "block_id": 4,
+      "is_block_start": false,
+      "reason": "item de liste : miner le systeme de notation",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 27,
+      "theme": "ACCEPTABLE_USE",
+      "block_id": 4,
+      "is_block_start": false,
+      "reason": "item de liste : transferer son compte",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 28,
+      "theme": "ACCEPTABLE_USE",
+      "block_id": 4,
+      "is_block_start": false,
+      "reason": "item de liste : distribuer du spam",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 29,
+      "theme": "ACCEPTABLE_USE",
+      "block_id": 4,
+      "is_block_start": false,
+      "reason": "item de liste : distribuer des virus",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 30,
+      "theme": "ACCEPTABLE_USE",
+      "block_id": 4,
+      "is_block_start": false,
+      "reason": "item de liste : utiliser des robots/scrapers",
+      "legal_nature": "DEFINITION",
+      "legal_nature_marker": "means"
+    },
+    {
+      "id": 31,
+      "theme": "ACCEPTABLE_USE",
+      "block_id": 4,
+      "is_block_start": false,
+      "reason": "item de liste : interferer avec le fonctionnement des services",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 32,
+      "theme": "ACCEPTABLE_USE",
+      "block_id": 4,
+      "is_block_start": false,
+      "reason": "item de liste : exporter sans conformite",
+      "legal_nature": "GOVERNANCE",
+      "legal_nature_marker": "jurisdiction"
+    },
+    {
+      "id": 33,
+      "theme": "ACCEPTABLE_USE",
+      "block_id": 4,
+      "is_block_start": false,
+      "reason": "item de liste : enfreindre les droits de PI de ebay",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 34,
+      "theme": "ACCEPTABLE_USE",
+      "block_id": 4,
+      "is_block_start": false,
+      "reason": "precision sur les actes d'infraction, prolonge l'item precedent",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 35,
+      "theme": "ACCEPTABLE_USE",
+      "block_id": 4,
+      "is_block_start": false,
+      "reason": "item de liste : enfreindre les droits de PI de tiers",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 36,
+      "theme": "ACCEPTABLE_USE",
+      "block_id": 4,
+      "is_block_start": false,
+      "reason": "item de liste : commercialiser une application ebay",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 37,
+      "theme": "ACCEPTABLE_USE",
+      "block_id": 4,
+      "is_block_start": false,
+      "reason": "item de liste : collecter des infos sur les utilisateurs",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 38,
+      "theme": "ACCEPTABLE_USE",
+      "block_id": 4,
+      "is_block_start": false,
+      "reason": "item de liste : contourner les mesures techniques",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 39,
+      "theme": "TERMINATION",
+      "block_id": 5,
+      "is_block_start": true,
+      "rationale": "nouveau sujet : standards de performance et consequences (sanctions, suspension)",
+      "rationale_codes": {
+        "decision_trigger": "topic_keyword",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "sellers must meet ebay 's minimum performance standards",
+        "revised_from_plan": false,
+        "confidence": 0.8
+      },
+      "legal_nature": "OBLIGATION",
+      "legal_nature_marker": "must"
+    },
+    {
+      "id": 40,
+      "theme": "TERMINATION",
+      "block_id": 5,
+      "is_block_start": false,
+      "reason": "consequences de l'echec a respecter les standards",
+      "legal_nature": "GOVERNANCE",
+      "legal_nature_marker": "suspend"
+    },
+    {
+      "id": 41,
+      "theme": "TERMINATION",
+      "block_id": 5,
+      "is_block_start": false,
+      "reason": "suspension/terminaison en cas d'abus",
+      "legal_nature": "GOVERNANCE",
+      "legal_nature_marker": "terminate"
+    },
+    {
+      "id": 42,
+      "theme": "TERMINATION",
+      "block_id": 5,
+      "is_block_start": false,
+      "reason": "sanctions pour violation de la politique d'offres hors ebay",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 43,
+      "theme": "TERMINATION",
+      "block_id": 5,
+      "is_block_start": false,
+      "reason": "responsabilite du vendeur pour les frais, prolonge les consequences",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 44,
+      "theme": "TERMINATION",
+      "block_id": 5,
+      "is_block_start": false,
+      "reason": "annulation de comptes inactifs ou modification des services",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 45,
+      "theme": "TERMINATION",
+      "block_id": 5,
+      "is_block_start": false,
+      "reason": "droit de refuser ou terminer les services",
+      "legal_nature": "GOVERNANCE",
+      "legal_nature_marker": "terminate"
+    },
+    {
+      "id": 46,
+      "theme": "TERMINATION",
+      "block_id": 5,
+      "is_block_start": false,
+      "reason": "prise en compte de l'historique dans l'application des politiques",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 47,
+      "theme": "TERMINATION",
+      "block_id": 5,
+      "is_block_start": false,
+      "reason": "clemence dans l'application des politiques, prolonge",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 48,
+      "theme": "PAYMENT_BILLING",
+      "block_id": 6,
+      "is_block_start": true,
+      "rationale": "nouveau sujet : frais factures pour l'usage des services",
+      "rationale_codes": {
+        "decision_trigger": "topic_keyword",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "the fees we charge for using our services are listed",
+        "revised_from_plan": false,
+        "confidence": 0.9
+      },
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 49,
+      "theme": "PAYMENT_BILLING",
+      "block_id": 6,
+      "is_block_start": false,
+      "reason": "modification des frais avec preavis",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 50,
+      "theme": "PAYMENT_BILLING",
+      "block_id": 6,
+      "is_block_start": false,
+      "reason": "obligation d'avoir un moyen de paiement et de payer les frais",
+      "legal_nature": "OBLIGATION",
+      "legal_nature_marker": "you must"
+    },
+    {
+      "id": 51,
+      "theme": "PAYMENT_BILLING",
+      "block_id": 6,
+      "is_block_start": false,
+      "reason": "recouvrement en cas d'echec de paiement",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 52,
+      "theme": "PAYMENT_BILLING",
+      "block_id": 6,
+      "is_block_start": false,
+      "reason": "frais de retard, prolonge le recouvrement",
+      "legal_nature": "OBLIGATION",
+      "legal_nature_marker": "you will"
+    },
+    {
+      "id": 53,
+      "theme": "PAYMENT_BILLING",
+      "block_id": 6,
+      "is_block_start": false,
+      "reason": "signalement aux bureaux de credit",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 54,
+      "theme": "PAYMENT_BILLING",
+      "block_id": 6,
+      "is_block_start": false,
+      "reason": "contestation des infos signalees a un bureau de credit",
+      "legal_nature": "META",
+      "legal_nature_marker": "inc."
+    },
+    {
+      "id": 55,
+      "theme": "PAYMENT_BILLING",
+      "block_id": 6,
+      "is_block_start": false,
+      "reason": "contestation aupres de l'agence de recouvrement, prolonge",
+      "legal_nature": "OBLIGATION",
+      "legal_nature_marker": "you must"
+    },
+    {
+      "id": 56,
+      "theme": "ELIGIBILITY_ACCOUNT",
+      "block_id": 7,
+      "is_block_start": true,
+      "rationale": "nouveau sujet : regles de mise en vente d'un objet (chapeau de liste)",
+      "rationale_codes": {
+        "decision_trigger": "topic_keyword",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "when listing an item , you agree to comply",
+        "revised_from_plan": false,
+        "confidence": 0.82
+      },
+      "legal_nature": "OBLIGATION",
+      "legal_nature_marker": "you agree to"
+    },
+    {
+      "id": 57,
+      "theme": "ELIGIBILITY_ACCOUNT",
+      "block_id": 7,
+      "is_block_start": false,
+      "reason": "item : responsabilite de l'exactitude de l'annonce",
+      "legal_nature": "OBLIGATION",
+      "legal_nature_marker": "you are responsible"
+    },
+    {
+      "id": 58,
+      "theme": "ELIGIBILITY_ACCOUNT",
+      "block_id": 7,
+      "is_block_start": false,
+      "reason": "item : delai d'indexation de l'annonce",
+      "legal_nature": "PROHIBITION",
+      "legal_nature_marker": "may not"
+    },
+    {
+      "id": 59,
+      "theme": "ELIGIBILITY_ACCOUNT",
+      "block_id": 7,
+      "is_block_start": false,
+      "reason": "ebay ne garantit pas les durees exactes, prolonge",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 60,
+      "theme": "SUBSCRIPTION_RENEWAL",
+      "block_id": 8,
+      "is_block_start": true,
+      "rationale": "renouvellement automatique des annonces a prix fixe tous les 30 jours",
+      "rationale_codes": {
+        "decision_trigger": "topic_keyword",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "your fixed-price listings may renew automatically every 30 days",
+        "revised_from_plan": true,
+        "confidence": 0.62
+      },
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 61,
+      "theme": "ELIGIBILITY_ACCOUNT",
+      "block_id": 9,
+      "is_block_start": true,
+      "rationale": "retour aux regles d'annonces : suppression du contenu violant les politiques",
+      "rationale_codes": {
+        "decision_trigger": "topic_keyword",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "content that violates any of ebay 's policies may be deleted",
+        "revised_from_plan": true,
+        "confidence": 0.6
+      },
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 62,
+      "theme": "ELIGIBILITY_ACCOUNT",
+      "block_id": 9,
+      "is_block_start": false,
+      "reason": "item : revision des donnees du catalogue affectant l'annonce",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 63,
+      "theme": "ELIGIBILITY_ACCOUNT",
+      "block_id": 9,
+      "is_block_start": false,
+      "reason": "objectif de marche, introduit le placement des annonces",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 64,
+      "theme": "ELIGIBILITY_ACCOUNT",
+      "block_id": 9,
+      "is_block_start": false,
+      "reason": "facteurs influencant l'apparition dans les resultats, prolonge",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 65,
+      "theme": "ELIGIBILITY_ACCOUNT",
+      "block_id": 9,
+      "is_block_start": false,
+      "reason": "item : localisation/recherche de l'acheteur",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 66,
+      "theme": "ELIGIBILITY_ACCOUNT",
+      "block_id": 9,
+      "is_block_start": false,
+      "reason": "item : caracteristiques de l'objet",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 67,
+      "theme": "ELIGIBILITY_ACCOUNT",
+      "block_id": 9,
+      "is_block_start": false,
+      "reason": "item : historique du vendeur",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 68,
+      "theme": "ELIGIBILITY_ACCOUNT",
+      "block_id": 9,
+      "is_block_start": false,
+      "reason": "item : nombre d'annonces correspondantes",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 69,
+      "theme": "ELIGIBILITY_ACCOUNT",
+      "block_id": 9,
+      "is_block_start": false,
+      "reason": "item : annonce pouvant ne pas apparaitre",
+      "legal_nature": "PROHIBITION",
+      "legal_nature_marker": "may not"
+    },
+    {
+      "id": 70,
+      "theme": "ELIGIBILITY_ACCOUNT",
+      "block_id": 9,
+      "is_block_start": false,
+      "reason": "item : ameliorations d'annonce visibles sur certains services",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 71,
+      "theme": "ELIGIBILITY_ACCOUNT",
+      "block_id": 9,
+      "is_block_start": false,
+      "reason": "item : politique des annonces dupliquees",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 72,
+      "theme": "ELIGIBILITY_ACCOUNT",
+      "block_id": 9,
+      "is_block_start": false,
+      "reason": "item : metatags et liens url modifiables",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 73,
+      "theme": "ELIGIBILITY_ACCOUNT",
+      "block_id": 9,
+      "is_block_start": false,
+      "reason": "item : recommandations optionnelles",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 74,
+      "theme": "ELIGIBILITY_ACCOUNT",
+      "block_id": 9,
+      "is_block_start": false,
+      "reason": "base des recommandations, prolonge",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 75,
+      "theme": "ELIGIBILITY_ACCOUNT",
+      "block_id": 9,
+      "is_block_start": false,
+      "reason": "affichage de l'historique des annonces aux autres vendeurs, prolonge",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 76,
+      "theme": "ELIGIBILITY_ACCOUNT",
+      "block_id": 10,
+      "is_block_start": true,
+      "rationale": "nouveau sujet : regles pour les acheteurs (chapeau de liste)",
+      "rationale_codes": {
+        "decision_trigger": "topic_keyword",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "when buying an item , you agree to the rules for buyers",
+        "revised_from_plan": false,
+        "confidence": 0.82
+      },
+      "legal_nature": "OBLIGATION",
+      "legal_nature_marker": "you agree to"
+    },
+    {
+      "id": 77,
+      "theme": "ELIGIBILITY_ACCOUNT",
+      "block_id": 10,
+      "is_block_start": false,
+      "reason": "item : responsabilite de lire l'annonce complete",
+      "legal_nature": "OBLIGATION",
+      "legal_nature_marker": "you are responsible"
+    },
+    {
+      "id": 78,
+      "theme": "ELIGIBILITY_ACCOUNT",
+      "block_id": 10,
+      "is_block_start": false,
+      "reason": "item : contrat contraignant lors de l'engagement d'achat",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 79,
+      "theme": "ELIGIBILITY_ACCOUNT",
+      "block_id": 10,
+      "is_block_start": false,
+      "reason": "item : vehicules et immobilier, transaction non contraignante",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 80,
+      "theme": "ELIGIBILITY_ACCOUNT",
+      "block_id": 10,
+      "is_block_start": false,
+      "reason": "item : pas de transfert de propriete par ebay",
+      "legal_nature": "PROHIBITION",
+      "legal_nature_marker": "do not"
+    },
+    {
+      "id": 81,
+      "theme": "ELIGIBILITY_ACCOUNT",
+      "block_id": 10,
+      "is_block_start": false,
+      "reason": "item : application du utah code au transfert de propriete",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 82,
+      "theme": "THIRD_PARTY",
+      "block_id": 11,
+      "is_block_start": true,
+      "rationale": "titre de section : vente/achat international et traduction",
+      "rationale_codes": {
+        "decision_trigger": "title_marker",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "international buying and selling ; translation",
+        "revised_from_plan": false,
+        "confidence": 0.78
+      },
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 83,
+      "theme": "THIRD_PARTY",
+      "block_id": 11,
+      "is_block_start": false,
+      "reason": "services accessibles aux vendeurs et acheteurs internationaux",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 84,
+      "theme": "THIRD_PARTY",
+      "block_id": 11,
+      "is_block_start": false,
+      "reason": "programmes et outils internationaux proposes",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 85,
+      "theme": "THIRD_PARTY",
+      "block_id": 11,
+      "is_block_start": false,
+      "reason": "responsabilite de conformite aux lois internationales",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 86,
+      "theme": "THIRD_PARTY",
+      "block_id": 11,
+      "is_block_start": false,
+      "reason": "achat sur un autre site ebay soumis a son agreement",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 87,
+      "theme": "THIRD_PARTY",
+      "block_id": 11,
+      "is_block_start": false,
+      "reason": "mise en vente sur les sites internationaux ebay",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 88,
+      "theme": "THIRD_PARTY",
+      "block_id": 11,
+      "is_block_start": false,
+      "reason": "affichage des annonces sur d'autres sites ebay",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 89,
+      "theme": "THIRD_PARTY",
+      "block_id": 11,
+      "is_block_start": false,
+      "reason": "soumission a l'agreement de l'autre site lors de vente internationale",
+      "legal_nature": "OBLIGATION",
+      "legal_nature_marker": "you agree to"
+    },
+    {
+      "id": 90,
+      "theme": "THIRD_PARTY",
+      "block_id": 11,
+      "is_block_start": false,
+      "reason": "possibilite de restreindre les acheteurs internationaux",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 91,
+      "theme": "THIRD_PARTY",
+      "block_id": 11,
+      "is_block_start": false,
+      "reason": "autorisation des outils de traduction automatique",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 92,
+      "theme": "THIRD_PARTY",
+      "block_id": 11,
+      "is_block_start": false,
+      "reason": "outils de traduction a la demande",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 93,
+      "theme": "THIRD_PARTY",
+      "block_id": 11,
+      "is_block_start": false,
+      "reason": "exactitude des traductions non garantie, prolonge",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 94,
+      "theme": "LICENSE_IP",
+      "block_id": 12,
+      "is_block_start": true,
+      "rationale": "nouveau sujet : octroi d'une licence de PI sur le contenu fourni",
+      "rationale_codes": {
+        "decision_trigger": "topic_keyword",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "you grant us a non-exclusive , worldwide , perpetual",
+        "revised_from_plan": false,
+        "confidence": 0.85
+      },
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 95,
+      "theme": "LICENSE_IP",
+      "block_id": 12,
+      "is_block_start": false,
+      "reason": "renonciation a faire valoir ses droits de PI contre ebay",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 96,
+      "theme": "LICENSE_IP",
+      "block_id": 12,
+      "is_block_start": false,
+      "reason": "garantie de detention des droits sur le contenu",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 97,
+      "theme": "LICENSE_IP",
+      "block_id": 12,
+      "is_block_start": false,
+      "reason": "garantie d'exactitude du contenu, prolonge les representations",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 98,
+      "theme": "LICENSE_IP",
+      "block_id": 12,
+      "is_block_start": false,
+      "reason": "garantie de non-infraction des droits de tiers",
+      "legal_nature": "PROHIBITION",
+      "legal_nature_marker": "will not"
+    },
+    {
+      "id": 99,
+      "theme": "LICENSE_IP",
+      "block_id": 12,
+      "is_block_start": false,
+      "reason": "ebay decline toute responsabilite sur le contenu, prolonge",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 100,
+      "theme": "USER_CONTENT",
+      "block_id": 13,
+      "is_block_start": true,
+      "rationale": "nouveau sujet : catalogues de contenu fournis par des tiers",
+      "rationale_codes": {
+        "decision_trigger": "topic_keyword",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "we may offer catalogs",
+        "revised_from_plan": false,
+        "confidence": 0.66
+      },
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 101,
+      "theme": "USER_CONTENT",
+      "block_id": 13,
+      "is_block_start": false,
+      "reason": "usage du contenu de catalogue limite aux annonces",
+      "legal_nature": "RIGHT_GRANT",
+      "legal_nature_marker": "you may use"
+    },
+    {
+      "id": 102,
+      "theme": "USER_CONTENT",
+      "block_id": 13,
+      "is_block_start": false,
+      "reason": "permission revocable a tout moment",
+      "legal_nature": "RIGHT_GRANT",
+      "legal_nature_marker": "permission to"
+    },
+    {
+      "id": 103,
+      "theme": "USER_CONTENT",
+      "block_id": 13,
+      "is_block_start": false,
+      "reason": "disponibilite/exactitude du catalogue non garantie",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 104,
+      "theme": "USER_CONTENT",
+      "block_id": 13,
+      "is_block_start": false,
+      "reason": "acheteur : ebay non responsable du contenu des tiers",
+      "legal_nature": "PROHIBITION",
+      "legal_nature_marker": "will not"
+    },
+    {
+      "id": 105,
+      "theme": "USER_CONTENT",
+      "block_id": 13,
+      "is_block_start": false,
+      "reason": "vendeur : responsabilite de verifier ses annonces",
+      "legal_nature": "PROHIBITION",
+      "legal_nature_marker": "will not"
+    },
+    {
+      "id": 106,
+      "theme": "USER_CONTENT",
+      "block_id": 13,
+      "is_block_start": false,
+      "reason": "le catalogue peut contenir des materiaux proprietaires",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 107,
+      "theme": "USER_CONTENT",
+      "block_id": 13,
+      "is_block_start": false,
+      "reason": "interdiction de retirer les marquages ou creer des oeuvres derivees, prolonge",
+      "legal_nature": "PROHIBITION",
+      "legal_nature_marker": "agree not to"
+    },
+    {
+      "id": 108,
+      "theme": "LICENSE_IP",
+      "block_id": 14,
+      "is_block_start": true,
+      "rationale": "nouveau sujet : marques, logos et signes distinctifs de ebay (PI prime)",
+      "rationale_codes": {
+        "decision_trigger": "topic_keyword",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "ebay marks , logos , designs",
+        "revised_from_plan": false,
+        "confidence": 0.8
+      },
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 109,
+      "theme": "LICENSE_IP",
+      "block_id": 14,
+      "is_block_start": false,
+      "reason": "interdiction d'usage des marques sans permission",
+      "legal_nature": "PROHIBITION",
+      "legal_nature_marker": "may not"
+    },
+    {
+      "id": 110,
+      "theme": "LICENSE_IP",
+      "block_id": 14,
+      "is_block_start": false,
+      "reason": "liste des marques disponible, prolonge",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 111,
+      "theme": "LICENSE_IP",
+      "block_id": 15,
+      "is_block_start": true,
+      "rationale": "titre de section : notice de violations de PI et copyright (DMCA), la PI prime",
+      "rationale_codes": {
+        "decision_trigger": "title_marker",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "notice for claims of intellectual property violations and copyright infringement",
+        "revised_from_plan": false,
+        "confidence": 0.82
+      },
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 112,
+      "theme": "LICENSE_IP",
+      "block_id": 15,
+      "is_block_start": false,
+      "reason": "reponse aux notices d'infraction sous le dmca",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 113,
+      "theme": "LICENSE_IP",
+      "block_id": 15,
+      "is_block_start": false,
+      "reason": "programme vero de protection des droits",
+      "legal_nature": "PROHIBITION",
+      "legal_nature_marker": "do not"
+    },
+    {
+      "id": 114,
+      "theme": "LICENSE_IP",
+      "block_id": 15,
+      "is_block_start": false,
+      "reason": "procedure de notification de l'equipe vero",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 115,
+      "theme": "LICENSE_IP",
+      "block_id": 15,
+      "is_block_start": false,
+      "reason": "comment soumettre une notice, prolonge",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 116,
+      "theme": "THIRD_PARTY",
+      "block_id": 16,
+      "is_block_start": true,
+      "rationale": "nouveau sujet : recommandation a paypal de restreindre les fonds du vendeur",
+      "rationale_codes": {
+        "decision_trigger": "topic_keyword",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "that paypal restrict access to funds in a seller 's paypal account",
+        "revised_from_plan": true,
+        "confidence": 0.6
+      },
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 117,
+      "theme": "THIRD_PARTY",
+      "block_id": 16,
+      "is_block_start": false,
+      "reason": "consequence : paypal peut restreindre les fonds, prolonge",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 118,
+      "theme": "PRIVACY_DATA",
+      "block_id": 17,
+      "is_block_start": true,
+      "rationale": "titre de section : autorisation de contact, enregistrement des appels, analyse des messages",
+      "rationale_codes": {
+        "decision_trigger": "title_marker",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "authorization to contact you ; recording calls ; analyzing message content",
+        "revised_from_plan": false,
+        "confidence": 0.85
+      },
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 119,
+      "theme": "PRIVACY_DATA",
+      "block_id": 17,
+      "is_block_start": false,
+      "reason": "ebay peut contacter par appels automatises pour le compte",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 120,
+      "theme": "PRIVACY_DATA",
+      "block_id": 17,
+      "is_block_start": false,
+      "reason": "contact a des fins marketing avec consentement",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 121,
+      "theme": "PRIVACY_DATA",
+      "block_id": 17,
+      "is_block_start": false,
+      "reason": "collecte d'autres numeros et appels non-marketing",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 122,
+      "theme": "PRIVACY_DATA",
+      "block_id": 17,
+      "is_block_start": false,
+      "reason": "frais telephoniques standards applicables",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 123,
+      "theme": "PRIVACY_DATA",
+      "block_id": 17,
+      "is_block_start": false,
+      "reason": "changement des preferences de communication",
+      "legal_nature": "PROHIBITION",
+      "legal_nature_marker": "do not"
+    },
+    {
+      "id": 124,
+      "theme": "PRIVACY_DATA",
+      "block_id": 17,
+      "is_block_start": false,
+      "reason": "partage du numero avec les prestataires autorises",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 125,
+      "theme": "PRIVACY_DATA",
+      "block_id": 17,
+      "is_block_start": false,
+      "reason": "ces prestataires peuvent contacter, prolonge",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 126,
+      "theme": "PRIVACY_DATA",
+      "block_id": 17,
+      "is_block_start": false,
+      "reason": "enregistrement des conversations telephoniques",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 127,
+      "theme": "PRIVACY_DATA",
+      "block_id": 17,
+      "is_block_start": false,
+      "reason": "analyse du contenu des messages de la plateforme",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 128,
+      "theme": "PRIVACY_DATA",
+      "block_id": 17,
+      "is_block_start": false,
+      "reason": "moment du scan et delai possible du message",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 129,
+      "theme": "PRIVACY_DATA",
+      "block_id": 17,
+      "is_block_start": false,
+      "reason": "stockage du contenu des messages",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 130,
+      "theme": "PRIVACY_DATA",
+      "block_id": 17,
+      "is_block_start": false,
+      "reason": "usage limite des infos sur un autre utilisateur",
+      "legal_nature": "OBLIGATION",
+      "legal_nature_marker": "you will"
+    },
+    {
+      "id": 131,
+      "theme": "PRIVACY_DATA",
+      "block_id": 17,
+      "is_block_start": false,
+      "reason": "interdiction de divulguer les infos d'un utilisateur",
+      "legal_nature": "PROHIBITION",
+      "legal_nature_marker": "may not"
+    },
+    {
+      "id": 132,
+      "theme": "PRIVACY_DATA",
+      "block_id": 17,
+      "is_block_start": false,
+      "reason": "interdiction d'usage marketing sans consentement, prolonge",
+      "legal_nature": "DEFINITION",
+      "legal_nature_marker": "means"
+    },
+    {
+      "id": 133,
+      "theme": "PAYMENT_BILLING",
+      "block_id": 18,
+      "is_block_start": true,
+      "rationale": "nouveau sujet : retours, remplacements et remboursements",
+      "rationale_codes": {
+        "decision_trigger": "topic_keyword",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "sellers can create rules to automate replacements , returns , and refunds",
+        "revised_from_plan": false,
+        "confidence": 0.72
+      },
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 134,
+      "theme": "PAYMENT_BILLING",
+      "block_id": 18,
+      "is_block_start": false,
+      "reason": "regle par defaut automatisant le processus de retour",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 135,
+      "theme": "PAYMENT_BILLING",
+      "block_id": 18,
+      "is_block_start": false,
+      "reason": "personnalisation des preferences de retour",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 136,
+      "theme": "PAYMENT_BILLING",
+      "block_id": 18,
+      "is_block_start": false,
+      "reason": "etiquette de retour generee automatiquement",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 137,
+      "theme": "PAYMENT_BILLING",
+      "block_id": 18,
+      "is_block_start": false,
+      "reason": "conformite a la politique de retours",
+      "legal_nature": "OBLIGATION",
+      "legal_nature_marker": "you agree to"
+    },
+    {
+      "id": 138,
+      "theme": "PAYMENT_BILLING",
+      "block_id": 18,
+      "is_block_start": false,
+      "reason": "autorisation a paypal de retirer le montant du remboursement",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 139,
+      "theme": "PAYMENT_BILLING",
+      "block_id": 18,
+      "is_block_start": false,
+      "reason": "cout du retour a la charge du vendeur si non conforme",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 140,
+      "theme": "PAYMENT_BILLING",
+      "block_id": 18,
+      "is_block_start": false,
+      "reason": "chapeau : autorisation de facturer le cout de l'etiquette",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 141,
+      "theme": "PAYMENT_BILLING",
+      "block_id": 18,
+      "is_block_start": false,
+      "reason": "item : etiquette generee par ebay utilisee",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 142,
+      "theme": "PAYMENT_BILLING",
+      "block_id": 18,
+      "is_block_start": false,
+      "reason": "item : retours automatises",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 143,
+      "theme": "PAYMENT_BILLING",
+      "block_id": 18,
+      "is_block_start": false,
+      "reason": "item : echec d'envoi d'etiquette par le vendeur",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 144,
+      "theme": "PAYMENT_BILLING",
+      "block_id": 18,
+      "is_block_start": false,
+      "reason": "item : transaction annulee, remboursement via paypal",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 145,
+      "theme": "PAYMENT_BILLING",
+      "block_id": 18,
+      "is_block_start": false,
+      "reason": "renvoi a la politique d'annulation, prolonge",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 146,
+      "theme": "THIRD_PARTY",
+      "block_id": 19,
+      "is_block_start": true,
+      "rationale": "nouveau sujet : global shipping program (acheminement international via pitney bowes)",
+      "rationale_codes": {
+        "decision_trigger": "topic_keyword",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "through the global shipping program",
+        "revised_from_plan": false,
+        "confidence": 0.75
+      },
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 147,
+      "theme": "THIRD_PARTY",
+      "block_id": 19,
+      "is_block_start": false,
+      "reason": "expedition vers une installation de traitement",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 148,
+      "theme": "THIRD_PARTY",
+      "block_id": 19,
+      "is_block_start": false,
+      "reason": "pitney bowes gere le traitement et l'expedition",
+      "legal_nature": "META",
+      "legal_nature_marker": "inc."
+    },
+    {
+      "id": 149,
+      "theme": "THIRD_PARTY",
+      "block_id": 19,
+      "is_block_start": false,
+      "reason": "ebay peut repondre directement a l'acheteur",
+      "legal_nature": "META",
+      "legal_nature_marker": "inc."
+    },
+    {
+      "id": 150,
+      "theme": "THIRD_PARTY",
+      "block_id": 19,
+      "is_block_start": false,
+      "reason": "aucun frais supplementaire pour le programme",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 151,
+      "theme": "THIRD_PARTY",
+      "block_id": 19,
+      "is_block_start": false,
+      "reason": "transaction d'export routee selon les regulations us",
+      "legal_nature": "META",
+      "legal_nature_marker": "inc."
+    },
+    {
+      "id": 152,
+      "theme": "THIRD_PARTY",
+      "block_id": 19,
+      "is_block_start": false,
+      "reason": "responsabilite du vendeur pour l'exactitude des infos",
+      "legal_nature": "OBLIGATION",
+      "legal_nature_marker": "you agree to"
+    },
+    {
+      "id": 153,
+      "theme": "THIRD_PARTY",
+      "block_id": 19,
+      "is_block_start": false,
+      "reason": "consentement a la divulgation d'infos a pitney bowes",
+      "legal_nature": "META",
+      "legal_nature_marker": "inc."
+    },
+    {
+      "id": 154,
+      "theme": "THIRD_PARTY",
+      "block_id": 19,
+      "is_block_start": false,
+      "reason": "ebay ne controle pas les politiques de confidentialite de pitney bowes",
+      "legal_nature": "META",
+      "legal_nature_marker": "inc."
+    },
+    {
+      "id": 155,
+      "theme": "THIRD_PARTY",
+      "block_id": 19,
+      "is_block_start": false,
+      "reason": "possibilite d'exclure les annonces du programme",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 156,
+      "theme": "THIRD_PARTY",
+      "block_id": 19,
+      "is_block_start": false,
+      "reason": "renvoi a la page de politiques du programme, prolonge",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 157,
+      "theme": "PAYMENT_BILLING",
+      "block_id": 20,
+      "is_block_start": true,
+      "rationale": "nouveau sujet : ebay money back guarantee et remboursements associes",
+      "rationale_codes": {
+        "decision_trigger": "topic_keyword",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "the ebay money back guarantee helps buyers and sellers",
+        "revised_from_plan": false,
+        "confidence": 0.68
+      },
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 158,
+      "theme": "PAYMENT_BILLING",
+      "block_id": 20,
+      "is_block_start": false,
+      "reason": "conformite a la politique et decision finale d'ebay",
+      "legal_nature": "OBLIGATION",
+      "legal_nature_marker": "you agree to"
+    },
+    {
+      "id": 159,
+      "theme": "PAYMENT_BILLING",
+      "block_id": 20,
+      "is_block_start": false,
+      "reason": "autorisation a paypal de retirer le montant de remboursement",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 160,
+      "theme": "PAYMENT_BILLING",
+      "block_id": 20,
+      "is_block_start": false,
+      "reason": "recouvrement par d'autres mecanismes si echec",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 161,
+      "theme": "PAYMENT_BILLING",
+      "block_id": 20,
+      "is_block_start": false,
+      "reason": "suspension de la garantie en cas d'abus, prolonge",
+      "legal_nature": "GOVERNANCE",
+      "legal_nature_marker": "suspend"
+    },
+    {
+      "id": 162,
+      "theme": "WARRANTY_DISCLAIMER",
+      "block_id": 21,
+      "is_block_start": true,
+      "rationale": "titre de section : disclaimer de garanties (as is / as available)",
+      "rationale_codes": {
+        "decision_trigger": "title_marker",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "disclaimer of warranties ; limitation of liability",
+        "revised_from_plan": false,
+        "confidence": 0.85
+      },
+      "legal_nature": "LIMITATION_DISCLAIMER",
+      "legal_nature_marker": "warranties"
+    },
+    {
+      "id": 163,
+      "theme": "WARRANTY_DISCLAIMER",
+      "block_id": 21,
+      "is_block_start": false,
+      "reason": "pas de garantie de fonctionnement continu des services",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 164,
+      "theme": "WARRANTY_DISCLAIMER",
+      "block_id": 21,
+      "is_block_start": false,
+      "reason": "fonctionnalites de notification pouvant ne pas etre en temps reel",
+      "legal_nature": "PROHIBITION",
+      "legal_nature_marker": "may not"
+    },
+    {
+      "id": 165,
+      "theme": "WARRANTY_DISCLAIMER",
+      "block_id": 21,
+      "is_block_start": false,
+      "reason": "delais hors du controle d'ebay",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 166,
+      "theme": "WARRANTY_DISCLAIMER",
+      "block_id": 21,
+      "is_block_start": false,
+      "reason": "usage a vos propres risques, base as is/as available",
+      "legal_nature": "LIMITATION_DISCLAIMER",
+      "legal_nature_marker": "as is"
+    },
+    {
+      "id": 167,
+      "theme": "WARRANTY_DISCLAIMER",
+      "block_id": 21,
+      "is_block_start": false,
+      "reason": "exclusion de toutes garanties implicites, prolonge le disclaimer",
+      "legal_nature": "LIMITATION_DISCLAIMER",
+      "legal_nature_marker": "warranties"
+    },
+    {
+      "id": 168,
+      "theme": "LIABILITY_LIMITATION",
+      "block_id": 22,
+      "is_block_start": true,
+      "rationale": "nouveau sujet : exclusion et limitation de responsabilite pour dommages",
+      "rationale_codes": {
+        "decision_trigger": "topic_keyword",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "are not liable , and you agree not to hold us responsible , for any damages",
+        "revised_from_plan": false,
+        "confidence": 0.82
+      },
+      "legal_nature": "PROHIBITION",
+      "legal_nature_marker": "agree not to"
+    },
+    {
+      "id": 169,
+      "theme": "LIABILITY_LIMITATION",
+      "block_id": 22,
+      "is_block_start": false,
+      "reason": "certaines juridictions n'autorisent pas l'exclusion, prolonge",
+      "legal_nature": "PROHIBITION",
+      "legal_nature_marker": "may not"
+    },
+    {
+      "id": 170,
+      "theme": "LIABILITY_LIMITATION",
+      "block_id": 22,
+      "is_block_start": false,
+      "reason": "plafond de responsabilite chiffree",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 171,
+      "theme": "LIABILITY_LIMITATION",
+      "block_id": 22,
+      "is_block_start": false,
+      "reason": "release des reclamations entre utilisateurs, prolonge la limitation",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 172,
+      "theme": "LIABILITY_LIMITATION",
+      "block_id": 22,
+      "is_block_start": false,
+      "reason": "renonciation aux protections limitant la portee du release, prolonge",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 173,
+      "theme": "INDEMNIFICATION",
+      "block_id": 23,
+      "is_block_start": true,
+      "rationale": "nouveau sujet : obligation d'indemnisation et de garantie envers ebay",
+      "rationale_codes": {
+        "decision_trigger": "topic_keyword",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "you will indemnify and hold us",
+        "revised_from_plan": false,
+        "confidence": 0.9
+      },
+      "legal_nature": "RISK_ALLOCATION",
+      "legal_nature_marker": "indemnify"
+    },
+    {
+      "id": 174,
+      "theme": "DISPUTE_ARBITRATION",
+      "block_id": 24,
+      "is_block_start": true,
+      "rationale": "ouverture de la section legal disputes ; introduit la resolution des litiges",
+      "rationale_codes": {
+        "decision_trigger": "topic_keyword",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "please read this section carefully",
+        "revised_from_plan": false,
+        "confidence": 0.78
+      },
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 175,
+      "theme": "DISPUTE_ARBITRATION",
+      "block_id": 24,
+      "is_block_start": false,
+      "reason": "impact sur la resolution des reclamations",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 176,
+      "theme": "DISPUTE_ARBITRATION",
+      "block_id": 24,
+      "is_block_start": false,
+      "reason": "portee des litiges couverts par la section",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 177,
+      "theme": "DISPUTE_ARBITRATION",
+      "block_id": 24,
+      "is_block_start": false,
+      "reason": "loi applicable de l'utah pour les litiges, prolonge la section",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 178,
+      "theme": "DISPUTE_ARBITRATION",
+      "block_id": 24,
+      "is_block_start": false,
+      "reason": "resolution exclusive par arbitrage final et contraignant",
+      "legal_nature": "GOVERNANCE",
+      "legal_nature_marker": "arbitration"
+    },
+    {
+      "id": 179,
+      "theme": "DISPUTE_ARBITRATION",
+      "block_id": 24,
+      "is_block_start": false,
+      "reason": "alternative : small claims court",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 180,
+      "theme": "DISPUTE_ARBITRATION",
+      "block_id": 24,
+      "is_block_start": false,
+      "reason": "le federal arbitration act gouverne l'accord",
+      "legal_nature": "GOVERNANCE",
+      "legal_nature_marker": "arbitration"
+    },
+    {
+      "id": 181,
+      "theme": "DISPUTE_ARBITRATION",
+      "block_id": 24,
+      "is_block_start": false,
+      "reason": "titre interne : interdiction des actions collectives, prolonge l'arbitrage",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 182,
+      "theme": "DISPUTE_ARBITRATION",
+      "block_id": 24,
+      "is_block_start": false,
+      "reason": "reclamations sur base individuelle uniquement",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 183,
+      "theme": "DISPUTE_ARBITRATION",
+      "block_id": 24,
+      "is_block_start": false,
+      "reason": "l'arbitre ne peut consolider les reclamations",
+      "legal_nature": "PROHIBITION",
+      "legal_nature_marker": "may not"
+    },
+    {
+      "id": 184,
+      "theme": "DISPUTE_ARBITRATION",
+      "block_id": 24,
+      "is_block_start": false,
+      "reason": "relief uniquement en faveur de la partie individuelle",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 185,
+      "theme": "DISPUTE_ARBITRATION",
+      "block_id": 24,
+      "is_block_start": false,
+      "reason": "le relief ne peut affecter d'autres utilisateurs",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 186,
+      "theme": "DISPUTE_ARBITRATION",
+      "block_id": 24,
+      "is_block_start": false,
+      "reason": "severabilite des limitations en cas de decision judiciaire",
+      "legal_nature": "GOVERNANCE",
+      "legal_nature_marker": "arbitration"
+    },
+    {
+      "id": 187,
+      "theme": "DISPUTE_ARBITRATION",
+      "block_id": 24,
+      "is_block_start": false,
+      "reason": "les autres reclamations seront arbitrees",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 188,
+      "theme": "DISPUTE_ARBITRATION",
+      "block_id": 24,
+      "is_block_start": false,
+      "reason": "l'arbitrage est plus informel qu'un proces",
+      "legal_nature": "GOVERNANCE",
+      "legal_nature_marker": "arbitration"
+    },
+    {
+      "id": 189,
+      "theme": "DISPUTE_ARBITRATION",
+      "block_id": 24,
+      "is_block_start": false,
+      "reason": "arbitre neutre au lieu d'un juge",
+      "legal_nature": "GOVERNANCE",
+      "legal_nature_marker": "arbitration"
+    },
+    {
+      "id": 190,
+      "theme": "DISPUTE_ARBITRATION",
+      "block_id": 24,
+      "is_block_start": false,
+      "reason": "l'arbitre peut accorder les memes dommages",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 191,
+      "theme": "DISPUTE_ARBITRATION",
+      "block_id": 24,
+      "is_block_start": false,
+      "reason": "l'arbitre applique les termes comme un tribunal",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 192,
+      "theme": "DISPUTE_ARBITRATION",
+      "block_id": 24,
+      "is_block_start": false,
+      "reason": "questions tranchees par l'arbitre sauf arbitrabilite",
+      "legal_nature": "GOVERNANCE",
+      "legal_nature_marker": "jurisdiction"
+    },
+    {
+      "id": 193,
+      "theme": "DISPUTE_ARBITRATION",
+      "block_id": 24,
+      "is_block_start": false,
+      "reason": "arbitrage conduit par l'aaa selon ses regles",
+      "legal_nature": "GOVERNANCE",
+      "legal_nature_marker": "arbitration"
+    },
+    {
+      "id": 194,
+      "theme": "DISPUTE_ARBITRATION",
+      "block_id": 24,
+      "is_block_start": false,
+      "reason": "regles de l'aaa disponibles, prolonge",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 195,
+      "theme": "DISPUTE_ARBITRATION",
+      "block_id": 24,
+      "is_block_start": false,
+      "reason": "usage du mot arbitrator et nombre d'arbitres",
+      "legal_nature": "PROHIBITION",
+      "legal_nature_marker": "shall not"
+    },
+    {
+      "id": 196,
+      "theme": "DISPUTE_ARBITRATION",
+      "block_id": 24,
+      "is_block_start": false,
+      "reason": "procedure : envoi prealable d'un notice of dispute",
+      "legal_nature": "GOVERNANCE",
+      "legal_nature_marker": "arbitration"
+    },
+    {
+      "id": 197,
+      "theme": "DISPUTE_ARBITRATION",
+      "block_id": 24,
+      "is_block_start": false,
+      "reason": "telechargement du formulaire de notice",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 198,
+      "theme": "DISPUTE_ARBITRATION",
+      "block_id": 24,
+      "is_block_start": false,
+      "reason": "adresse d'envoi du notice a ebay",
+      "legal_nature": "META",
+      "legal_nature_marker": "inc."
+    },
+    {
+      "id": 199,
+      "theme": "DISPUTE_ARBITRATION",
+      "block_id": 24,
+      "is_block_start": false,
+      "reason": "ebay envoie son notice a l'adresse physique",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 200,
+      "theme": "DISPUTE_ARBITRATION",
+      "block_id": 24,
+      "is_block_start": false,
+      "reason": "informations requises dans le notice",
+      "legal_nature": "OBLIGATION",
+      "legal_nature_marker": "must"
+    },
+    {
+      "id": 201,
+      "theme": "DISPUTE_ARBITRATION",
+      "block_id": 24,
+      "is_block_start": false,
+      "reason": "initiation de l'arbitrage apres 30 jours",
+      "legal_nature": "GOVERNANCE",
+      "legal_nature_marker": "arbitration"
+    },
+    {
+      "id": 202,
+      "theme": "DISPUTE_ARBITRATION",
+      "block_id": 24,
+      "is_block_start": false,
+      "reason": "formulaire d'initiation disponible sur le site aaa",
+      "legal_nature": "GOVERNANCE",
+      "legal_nature_marker": "arbitration"
+    },
+    {
+      "id": 203,
+      "theme": "DISPUTE_ARBITRATION",
+      "block_id": 24,
+      "is_block_start": false,
+      "reason": "envoi d'une copie a la partie adverse",
+      "legal_nature": "GOVERNANCE",
+      "legal_nature_marker": "arbitration"
+    },
+    {
+      "id": 204,
+      "theme": "DISPUTE_ARBITRATION",
+      "block_id": 24,
+      "is_block_start": false,
+      "reason": "adresse pour envoyer copie a ebay",
+      "legal_nature": "META",
+      "legal_nature_marker": "inc."
+    },
+    {
+      "id": 205,
+      "theme": "DISPUTE_ARBITRATION",
+      "block_id": 24,
+      "is_block_start": false,
+      "reason": "ebay envoie copie a l'adresse physique si elle initie",
+      "legal_nature": "GOVERNANCE",
+      "legal_nature_marker": "arbitration"
+    },
+    {
+      "id": 206,
+      "theme": "DISPUTE_ARBITRATION",
+      "block_id": 24,
+      "is_block_start": false,
+      "reason": "offre de reglement non divulguee a l'arbitre",
+      "legal_nature": "PROHIBITION",
+      "legal_nature_marker": "shall not"
+    },
+    {
+      "id": 207,
+      "theme": "DISPUTE_ARBITRATION",
+      "block_id": 24,
+      "is_block_start": false,
+      "reason": "lieu de l'audience d'arbitrage",
+      "legal_nature": "GOVERNANCE",
+      "legal_nature_marker": "arbitration"
+    },
+    {
+      "id": 208,
+      "theme": "DISPUTE_ARBITRATION",
+      "block_id": 24,
+      "is_block_start": false,
+      "reason": "arbitrage par telephone si relief <= 10000$",
+      "legal_nature": "GOVERNANCE",
+      "legal_nature_marker": "arbitration"
+    },
+    {
+      "id": 209,
+      "theme": "DISPUTE_ARBITRATION",
+      "block_id": 24,
+      "is_block_start": false,
+      "reason": "participation par telephone en cas d'audience en personne",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 210,
+      "theme": "DISPUTE_ARBITRATION",
+      "block_id": 24,
+      "is_block_start": false,
+      "reason": "l'arbitre decide selon la loi applicable",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 211,
+      "theme": "DISPUTE_ARBITRATION",
+      "block_id": 24,
+      "is_block_start": false,
+      "reason": "l'arbitre n'est pas lie par les arbitrages anterieurs differents",
+      "legal_nature": "PROHIBITION",
+      "legal_nature_marker": "shall not"
+    },
+    {
+      "id": 212,
+      "theme": "DISPUTE_ARBITRATION",
+      "block_id": 24,
+      "is_block_start": false,
+      "reason": "sentence finale et contraignante",
+      "legal_nature": "GOVERNANCE",
+      "legal_nature_marker": "jurisdiction"
+    },
+    {
+      "id": 213,
+      "theme": "DISPUTE_ARBITRATION",
+      "block_id": 24,
+      "is_block_start": false,
+      "reason": "paiement des frais selon les regles de l'aaa",
+      "legal_nature": "GOVERNANCE",
+      "legal_nature_marker": "governed by"
+    },
+    {
+      "id": 214,
+      "theme": "DISPUTE_ARBITRATION",
+      "block_id": 24,
+      "is_block_start": false,
+      "reason": "ebay paie les frais si relief <= 10000$",
+      "legal_nature": "GOVERNANCE",
+      "legal_nature_marker": "arbitration"
+    },
+    {
+      "id": 215,
+      "theme": "DISPUTE_ARBITRATION",
+      "block_id": 24,
+      "is_block_start": false,
+      "reason": "demande de paiement des frais a l'aaa",
+      "legal_nature": "GOVERNANCE",
+      "legal_nature_marker": "arbitration"
+    },
+    {
+      "id": 216,
+      "theme": "DISPUTE_ARBITRATION",
+      "block_id": 24,
+      "is_block_start": false,
+      "reason": "remboursement a ebay si non-conformite ou reclamation frivole",
+      "legal_nature": "GOVERNANCE",
+      "legal_nature_marker": "arbitration"
+    },
+    {
+      "id": 217,
+      "theme": "DISPUTE_ARBITRATION",
+      "block_id": 24,
+      "is_block_start": false,
+      "reason": "severabilite de l'accord d'arbitrage",
+      "legal_nature": "OBLIGATION",
+      "legal_nature_marker": "shall"
+    },
+    {
+      "id": 218,
+      "theme": "DISPUTE_ARBITRATION",
+      "block_id": 24,
+      "is_block_start": false,
+      "reason": "option opt-out pour les nouveaux utilisateurs",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 219,
+      "theme": "DISPUTE_ARBITRATION",
+      "block_id": 24,
+      "is_block_start": false,
+      "reason": "delai de postage du notice opt-out",
+      "legal_nature": "OBLIGATION",
+      "legal_nature_marker": "must"
+    },
+    {
+      "id": 220,
+      "theme": "DISPUTE_ARBITRATION",
+      "block_id": 24,
+      "is_block_start": false,
+      "reason": "adresse d'envoi du notice opt-out",
+      "legal_nature": "META",
+      "legal_nature_marker": "inc."
+    },
+    {
+      "id": 221,
+      "theme": "DISPUTE_ARBITRATION",
+      "block_id": 24,
+      "is_block_start": false,
+      "reason": "formulaire opt-out fourni",
+      "legal_nature": "OBLIGATION",
+      "legal_nature_marker": "you must"
+    },
+    {
+      "id": 222,
+      "theme": "DISPUTE_ARBITRATION",
+      "block_id": 24,
+      "is_block_start": false,
+      "reason": "informations a fournir dans le formulaire opt-out",
+      "legal_nature": "OBLIGATION",
+      "legal_nature_marker": "you must"
+    },
+    {
+      "id": 223,
+      "theme": "DISPUTE_ARBITRATION",
+      "block_id": 24,
+      "is_block_start": false,
+      "reason": "signature requise pour la validite du opt-out",
+      "legal_nature": "OBLIGATION",
+      "legal_nature_marker": "you must"
+    },
+    {
+      "id": 224,
+      "theme": "DISPUTE_ARBITRATION",
+      "block_id": 24,
+      "is_block_start": false,
+      "reason": "cette procedure est la seule maniere d'opt-out",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 225,
+      "theme": "DISPUTE_ARBITRATION",
+      "block_id": 24,
+      "is_block_start": false,
+      "reason": "effet de l'opt-out sur le reste de l'accord",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 226,
+      "theme": "DISPUTE_ARBITRATION",
+      "block_id": 24,
+      "is_block_start": false,
+      "reason": "l'opt-out n'affecte pas les accords d'arbitrage anterieurs",
+      "legal_nature": "GOVERNANCE",
+      "legal_nature_marker": "arbitration"
+    },
+    {
+      "id": 227,
+      "theme": "DISPUTE_ARBITRATION",
+      "block_id": 24,
+      "is_block_start": false,
+      "reason": "titre interne : amendements futurs de l'accord d'arbitrage, prolonge la section",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 228,
+      "theme": "DISPUTE_ARBITRATION",
+      "block_id": 24,
+      "is_block_start": false,
+      "reason": "un amendement ne s'applique pas aux procedures anterieures",
+      "legal_nature": "META",
+      "legal_nature_marker": "effective date"
+    },
+    {
+      "id": 229,
+      "theme": "DISPUTE_ARBITRATION",
+      "block_id": 24,
+      "is_block_start": false,
+      "reason": "l'amendement s'applique aux autres litiges",
+      "legal_nature": "GOVERNANCE",
+      "legal_nature_marker": "governed by"
+    },
+    {
+      "id": 230,
+      "theme": "DISPUTE_ARBITRATION",
+      "block_id": 24,
+      "is_block_start": false,
+      "reason": "notification des amendements 30 jours a l'avance",
+      "legal_nature": "META",
+      "legal_nature_marker": "effective date"
+    },
+    {
+      "id": 231,
+      "theme": "DISPUTE_ARBITRATION",
+      "block_id": 24,
+      "is_block_start": false,
+      "reason": "fermeture de compte si desaccord avec l'amendement, prolonge",
+      "legal_nature": "PROHIBITION",
+      "legal_nature_marker": "will not"
+    },
+    {
+      "id": 232,
+      "theme": "GOVERNING_LAW",
+      "block_id": 25,
+      "is_block_start": true,
+      "rationale": "titre de section : forum judiciaire des litiges (salt lake county, utah)",
+      "rationale_codes": {
+        "decision_trigger": "title_marker",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "c. judicial forum for legal disputes",
+        "revised_from_plan": false,
+        "confidence": 0.78
+      },
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 233,
+      "theme": "GOVERNING_LAW",
+      "block_id": 25,
+      "is_block_start": false,
+      "reason": "resolution exclusive par les tribunaux de l'utah si arbitrage inapplicable",
+      "legal_nature": "OBLIGATION",
+      "legal_nature_marker": "must"
+    },
+    {
+      "id": 234,
+      "theme": "GOVERNING_LAW",
+      "block_id": 25,
+      "is_block_start": false,
+      "reason": "soumission a la juridiction personnelle des tribunaux de l'utah, prolonge",
+      "legal_nature": "GOVERNANCE",
+      "legal_nature_marker": "jurisdiction"
+    },
+    {
+      "id": 235,
+      "theme": "MISC_BOILERPLATE",
+      "block_id": 26,
+      "is_block_start": true,
+      "rationale": "nouveau sujet : dispositions generales, severabilite des clauses",
+      "rationale_codes": {
+        "decision_trigger": "topic_keyword",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "if any provision of this user agreement is held to be invalid",
+        "revised_from_plan": false,
+        "confidence": 0.7
+      },
+      "legal_nature": "PROHIBITION",
+      "legal_nature_marker": "shall not"
+    },
+    {
+      "id": 236,
+      "theme": "MISC_BOILERPLATE",
+      "block_id": 26,
+      "is_block_start": false,
+      "reason": "cession du user agreement par ebay",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 237,
+      "theme": "MISC_BOILERPLATE",
+      "block_id": 26,
+      "is_block_start": false,
+      "reason": "les titres sont a titre de reference uniquement",
+      "legal_nature": "PROHIBITION",
+      "legal_nature_marker": "do not"
+    },
+    {
+      "id": 238,
+      "theme": "MISC_BOILERPLATE",
+      "block_id": 26,
+      "is_block_start": false,
+      "reason": "non-renonciation en cas d'inaction",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 239,
+      "theme": "MISC_BOILERPLATE",
+      "block_id": 26,
+      "is_block_start": false,
+      "reason": "absence de garantie d'action contre toutes les violations, prolonge",
+      "legal_nature": "PROHIBITION",
+      "legal_nature_marker": "do not"
+    },
+    {
+      "id": 240,
+      "theme": "MODIFICATION_OF_TERMS",
+      "block_id": 27,
+      "is_block_start": true,
+      "rationale": "nouveau sujet : droit d'amender le user agreement a tout moment",
+      "rationale_codes": {
+        "decision_trigger": "topic_keyword",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "we may amend this user agreement at any time",
+        "revised_from_plan": false,
+        "confidence": 0.85
+      },
+      "legal_nature": "GOVERNANCE",
+      "legal_nature_marker": "we may amend"
+    },
+    {
+      "id": 241,
+      "theme": "MODIFICATION_OF_TERMS",
+      "block_id": 27,
+      "is_block_start": false,
+      "reason": "etendue du droit d'amender",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 242,
+      "theme": "MODIFICATION_OF_TERMS",
+      "block_id": 27,
+      "is_block_start": false,
+      "reason": "preavis de 30 jours par publication",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 243,
+      "theme": "MODIFICATION_OF_TERMS",
+      "block_id": 27,
+      "is_block_start": false,
+      "reason": "notification additionnelle par message center/email",
+      "legal_nature": "PROHIBITION",
+      "legal_nature_marker": "will not"
+    },
+    {
+      "id": 244,
+      "theme": "MODIFICATION_OF_TERMS",
+      "block_id": 27,
+      "is_block_start": false,
+      "reason": "usage continu vaut acceptation des termes amendes",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 245,
+      "theme": "MODIFICATION_OF_TERMS",
+      "block_id": 27,
+      "is_block_start": false,
+      "reason": "demande possible d'acceptation par click-through",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 246,
+      "theme": "MODIFICATION_OF_TERMS",
+      "block_id": 27,
+      "is_block_start": false,
+      "reason": "pas d'autre amendement sauf accord mutuel",
+      "legal_nature": "PROHIBITION",
+      "legal_nature_marker": "may not"
+    },
+    {
+      "id": 247,
+      "theme": "MODIFICATION_OF_TERMS",
+      "block_id": 27,
+      "is_block_start": false,
+      "reason": "les politiques peuvent etre modifiees periodiquement",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 248,
+      "theme": "MODIFICATION_OF_TERMS",
+      "block_id": 27,
+      "is_block_start": false,
+      "reason": "prise d'effet des changements lors de leur publication, prolonge",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 249,
+      "theme": "MISC_BOILERPLATE",
+      "block_id": 28,
+      "is_block_start": true,
+      "rationale": "nouveau sujet : comptes pour entites professionnelles et dispositions generales finales",
+      "rationale_codes": {
+        "decision_trigger": "topic_keyword",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "if you create or use an account on behalf of a business entity",
+        "revised_from_plan": true,
+        "confidence": 0.6
+      },
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 250,
+      "theme": "MISC_BOILERPLATE",
+      "block_id": 28,
+      "is_block_start": false,
+      "reason": "le compte est detenu par l'entite professionnelle",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 251,
+      "theme": "MISC_BOILERPLATE",
+      "block_id": 28,
+      "is_block_start": false,
+      "reason": "absence de relation d'agence ou de partenariat",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 252,
+      "theme": "MISC_BOILERPLATE",
+      "block_id": 28,
+      "is_block_start": false,
+      "reason": "entente integrale supplantant les accords anterieurs",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 253,
+      "theme": "MISC_BOILERPLATE",
+      "block_id": 28,
+      "is_block_start": false,
+      "reason": "clauses survivant a la terminaison, prolonge le general",
+      "legal_nature": "LIMITATION_DISCLAIMER",
+      "legal_nature_marker": "warranties"
+    },
+    {
+      "id": 254,
+      "theme": "GOVERNING_LAW",
+      "block_id": 29,
+      "is_block_start": true,
+      "rationale": "nouveau sujet : dispositions specifiques aux residents de certains etats (californie, illinois)",
+      "rationale_codes": {
+        "decision_trigger": "topic_keyword",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "if you are a california resident",
+        "revised_from_plan": false,
+        "confidence": 0.7
+      },
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 255,
+      "theme": "GOVERNING_LAW",
+      "block_id": 29,
+      "is_block_start": false,
+      "reason": "plainte aupres de l'unite d'assistance de la californie",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 256,
+      "theme": "GOVERNING_LAW",
+      "block_id": 29,
+      "is_block_start": false,
+      "reason": "arbitrage aaa pour les transactions de billets en illinois",
+      "legal_nature": "GOVERNANCE",
+      "legal_nature_marker": "arbitration"
+    },
+    {
+      "id": 257,
+      "theme": "GOVERNING_LAW",
+      "block_id": 29,
+      "is_block_start": false,
+      "reason": "regles de l'aaa disponibles",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 258,
+      "theme": "GOVERNING_LAW",
+      "block_id": 29,
+      "is_block_start": false,
+      "reason": "plaintes decidees par un arbitre independant",
+      "legal_nature": "OBLIGATION",
+      "legal_nature_marker": "shall"
+    },
+    {
+      "id": 259,
+      "theme": "GOVERNING_LAW",
+      "block_id": 29,
+      "is_block_start": false,
+      "reason": "soumission a la juridiction de l'illinois, prolonge",
+      "legal_nature": "GOVERNANCE",
+      "legal_nature_marker": "jurisdiction"
+    }
+  ]
+}

@@ -1,0 +1,1825 @@
+{
+  "doc": "Fitbit",
+  "judge": "claude",
+  "version": "v9.2-nature-derived",
+  "document_plan": {
+    "estimated_n_blocks": 30,
+    "rationale_global": "ToS Fitbit narratif (profile NARRATIVE, 158 phrases). Ouvre sur une notice de revision des conditions (MODIFICATION_OF_TERMS) suivie de dates META, puis preambule/portee, donnees, eligibilite/compte, usage autorise des connexions, contenu utilisateur, propriete intellectuelle, licence d'usage, surveillance/usage acceptable, deux blocs de disclaimer (risque general puis sante), DMCA, vente, feedback, promotions, communications, services tiers, modification du service, resiliation, garantie 'as is', limitation de responsabilite, arbitrage/litiges avec loi applicable inseree, puis un long bloc boilerplate final (integralite, modification, divisibilite, cession, notices, renonciation) cloture par l'adresse META. Les titres nominaux courts (ids 28, 44, 57, 65, 81) et les chapeaux lexicaux (governing law :, informal dispute resolution :) ancrent les frontieres. La PI prime sur le contenu (ids 38-43, 78-80).",
+    "segments": [
+      {
+        "start_id": 0,
+        "theme": "MODIFICATION_OF_TERMS",
+        "rationale": "notice d'ouverture de revision des conditions",
+        "evidence_span": "we recently revised these terms"
+      },
+      {
+        "start_id": 3,
+        "theme": "META",
+        "rationale": "marqueurs de date updated/effective",
+        "evidence_span": "updated"
+      },
+      {
+        "start_id": 6,
+        "theme": "PREAMBLE_SCOPE",
+        "rationale": "objet du service et application des conditions",
+        "evidence_span": "fitbit designs products and tools"
+      },
+      {
+        "start_id": 14,
+        "theme": "PRIVACY_DATA",
+        "rationale": "pratiques de donnees et politique de confidentialite",
+        "evidence_span": "our data practices"
+      },
+      {
+        "start_id": 16,
+        "theme": "ELIGIBILITY_ACCOUNT",
+        "rationale": "conditions d'age et d'eligibilite",
+        "evidence_span": "persons under the age of 13"
+      },
+      {
+        "start_id": 18,
+        "theme": "ACCEPTABLE_USE",
+        "rationale": "connexions autorisees au service",
+        "evidence_span": "authorized connections"
+      },
+      {
+        "start_id": 22,
+        "theme": "ELIGIBILITY_ACCOUNT",
+        "rationale": "creation et responsabilite du compte",
+        "evidence_span": "create an account"
+      },
+      {
+        "start_id": 28,
+        "theme": "USER_CONTENT",
+        "rationale": "titre: posting your content",
+        "evidence_span": "posting your content on the fitbit service"
+      },
+      {
+        "start_id": 38,
+        "theme": "LICENSE_IP",
+        "rationale": "contenu fitbit protege par PI (PI prime)",
+        "evidence_span": "fitbit content"
+      },
+      {
+        "start_id": 44,
+        "theme": "LICENSE_IP",
+        "rationale": "titre: what you can do + octroi de licence d'usage",
+        "evidence_span": "what you can do on the fitbit service"
+      },
+      {
+        "start_id": 53,
+        "theme": "ACCEPTABLE_USE",
+        "rationale": "surveillance et application des regles d'usage",
+        "evidence_span": "monitor access or use"
+      },
+      {
+        "start_id": 57,
+        "theme": "WARRANTY_DISCLAIMER",
+        "rationale": "titre: use at your own risk",
+        "evidence_span": "use the fitbit service at your own risk"
+      },
+      {
+        "start_id": 65,
+        "theme": "WARRANTY_DISCLAIMER",
+        "rationale": "titre: consult your doctor (disclaimer sante)",
+        "evidence_span": "consult your doctor before using the fitbit service"
+      },
+      {
+        "start_id": 78,
+        "theme": "LICENSE_IP",
+        "rationale": "PI des tiers et DMCA (PI prime)",
+        "evidence_span": "intellectual property of others"
+      },
+      {
+        "start_id": 81,
+        "theme": "PAYMENT_BILLING",
+        "rationale": "titre: terms of sale and returns",
+        "evidence_span": "terms of sale and returns and warranty"
+      },
+      {
+        "start_id": 86,
+        "theme": "LICENSE_IP",
+        "rationale": "octroi de droits sur feedback/idees",
+        "evidence_span": "comments , ideas , or feedback"
+      },
+      {
+        "start_id": 89,
+        "theme": "MISC_BOILERPLATE",
+        "rationale": "conditions additionnelles promotions",
+        "evidence_span": "additional terms and conditions"
+      },
+      {
+        "start_id": 91,
+        "theme": "MISC_BOILERPLATE",
+        "rationale": "communications electroniques",
+        "evidence_span": "electronic communications"
+      },
+      {
+        "start_id": 97,
+        "theme": "THIRD_PARTY",
+        "rationale": "services tiers hors controle de fitbit",
+        "evidence_span": "third-party"
+      },
+      {
+        "start_id": 103,
+        "theme": "MISC_BOILERPLATE",
+        "rationale": "modification/discontinuation du service",
+        "evidence_span": "change or discontinue"
+      },
+      {
+        "start_id": 106,
+        "theme": "TERMINATION",
+        "rationale": "suspension/resiliation du compte et survie",
+        "evidence_span": "suspend or deactivate your account"
+      },
+      {
+        "start_id": 110,
+        "theme": "WARRANTY_DISCLAIMER",
+        "rationale": "service fourni 'as is' sans garantie",
+        "evidence_span": "as is"
+      },
+      {
+        "start_id": 114,
+        "theme": "LIABILITY_LIMITATION",
+        "rationale": "limitation/exclusion des dommages",
+        "evidence_span": "consequential damages"
+      },
+      {
+        "start_id": 118,
+        "theme": "DISPUTE_ARBITRATION",
+        "rationale": "intro arbitrage des litiges",
+        "evidence_span": "arbitrate certain disputes"
+      },
+      {
+        "start_id": 120,
+        "theme": "GOVERNING_LAW",
+        "rationale": "chapeau governing law (Californie)",
+        "evidence_span": "governing law"
+      },
+      {
+        "start_id": 121,
+        "theme": "DISPUTE_ARBITRATION",
+        "rationale": "resolution informelle puis arbitrage",
+        "evidence_span": "informal dispute resolution"
+      },
+      {
+        "start_id": 140,
+        "theme": "MISC_BOILERPLATE",
+        "rationale": "integralite de l'accord",
+        "evidence_span": "entire and exclusive understanding"
+      },
+      {
+        "start_id": 141,
+        "theme": "MODIFICATION_OF_TERMS",
+        "rationale": "modifications des conditions et notification",
+        "evidence_span": "material changes to these terms"
+      },
+      {
+        "start_id": 144,
+        "theme": "MISC_BOILERPLATE",
+        "rationale": "divisibilite, cession, notices, renonciation",
+        "evidence_span": "invalid or unenforceable"
+      },
+      {
+        "start_id": 157,
+        "theme": "META",
+        "rationale": "adresse de l'entite",
+        "evidence_span": "199 fremont street"
+      }
+    ]
+  },
+  "annotations": [
+    {
+      "id": 0,
+      "theme": "MODIFICATION_OF_TERMS",
+      "block_id": 0,
+      "is_block_start": true,
+      "rationale": "ouverture du document, notice de revision des conditions, cite « we recently revised these terms »",
+      "rationale_codes": {
+        "decision_trigger": "document_start",
+        "relation_to_prev": "document_start",
+        "evidence_span": "we recently revised these terms",
+        "revised_from_plan": false,
+        "confidence": 0.95
+      },
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 1,
+      "theme": "MODIFICATION_OF_TERMS",
+      "block_id": 0,
+      "is_block_start": false,
+      "reason": "invitation a relire le resume des changements, prolonge la notice de revision",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 2,
+      "theme": "MODIFICATION_OF_TERMS",
+      "block_id": 0,
+      "is_block_start": false,
+      "reason": "renvoi aux anciennes conditions dans l'archive, meme sujet de revision",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 3,
+      "theme": "META",
+      "block_id": 1,
+      "is_block_start": true,
+      "rationale": "marqueur de date d'edition, cite « updated »",
+      "rationale_codes": {
+        "decision_trigger": "title_marker",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "updated",
+        "revised_from_plan": false,
+        "confidence": 0.85
+      },
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 4,
+      "theme": "META",
+      "block_id": 1,
+      "is_block_start": false,
+      "reason": "date d'entree en vigueur, meme bloc de metadonnees de date",
+      "legal_nature": "OBLIGATION",
+      "legal_nature_marker": "you agree to"
+    },
+    {
+      "id": 5,
+      "theme": "META",
+      "block_id": 1,
+      "is_block_start": false,
+      "reason": "effet a la date de l'agrement, continuation de l'effectivite",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 6,
+      "theme": "PREAMBLE_SCOPE",
+      "block_id": 2,
+      "is_block_start": true,
+      "rationale": "objet/portee du service, ouvre le preambule, cite « fitbit designs products and tools »",
+      "rationale_codes": {
+        "decision_trigger": "topic_keyword",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "fitbit designs products and tools",
+        "revised_from_plan": false,
+        "confidence": 0.88
+      },
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 7,
+      "theme": "PREAMBLE_SCOPE",
+      "block_id": 2,
+      "is_block_start": false,
+      "reason": "champ d'application des conditions au service, meme preambule",
+      "legal_nature": "META",
+      "legal_nature_marker": "inc."
+    },
+    {
+      "id": 8,
+      "theme": "PREAMBLE_SCOPE",
+      "block_id": 2,
+      "is_block_start": false,
+      "reason": "definition de la portee du fitbit service, continuation",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 9,
+      "theme": "PREAMBLE_SCOPE",
+      "block_id": 2,
+      "is_block_start": false,
+      "reason": "identification des parties (we/us/our), prolonge la portee",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 10,
+      "theme": "PREAMBLE_SCOPE",
+      "block_id": 2,
+      "is_block_start": false,
+      "reason": "acceptation requise des conditions, prolonge l'applicabilite",
+      "legal_nature": "OBLIGATION",
+      "legal_nature_marker": "you must"
+    },
+    {
+      "id": 11,
+      "theme": "PREAMBLE_SCOPE",
+      "block_id": 2,
+      "is_block_start": false,
+      "reason": "acceptation par usage, meme sujet de portee/acceptation",
+      "legal_nature": "PROHIBITION",
+      "legal_nature_marker": "do not"
+    },
+    {
+      "id": 12,
+      "theme": "PREAMBLE_SCOPE",
+      "block_id": 2,
+      "is_block_start": false,
+      "reason": "consequence du refus des conditions, continuation",
+      "legal_nature": "PROHIBITION",
+      "legal_nature_marker": "do not"
+    },
+    {
+      "id": 13,
+      "theme": "PREAMBLE_SCOPE",
+      "block_id": 2,
+      "is_block_start": false,
+      "reason": "incorporation des fitbit pay terms, prolonge le champ des conditions",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 14,
+      "theme": "PRIVACY_DATA",
+      "block_id": 3,
+      "is_block_start": true,
+      "rationale": "renvoi aux pratiques de donnees et a la politique de confidentialite, cite « our data practices »",
+      "rationale_codes": {
+        "decision_trigger": "topic_keyword",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "our data practices",
+        "revised_from_plan": false,
+        "confidence": 0.85
+      },
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 15,
+      "theme": "PRIVACY_DATA",
+      "block_id": 3,
+      "is_block_start": false,
+      "reason": "consentement a la collecte/usage des informations, meme sujet donnees",
+      "legal_nature": "SCOPE_APPLICABILITY",
+      "legal_nature_marker": "by accessing"
+    },
+    {
+      "id": 16,
+      "theme": "ELIGIBILITY_ACCOUNT",
+      "block_id": 4,
+      "is_block_start": true,
+      "rationale": "condition d'age minimal pour acceder au service, cite « persons under the age of 13 »",
+      "rationale_codes": {
+        "decision_trigger": "topic_keyword",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "persons under the age of 13",
+        "revised_from_plan": false,
+        "confidence": 0.86
+      },
+      "legal_nature": "GOVERNANCE",
+      "legal_nature_marker": "jurisdiction"
+    },
+    {
+      "id": 17,
+      "theme": "ELIGIBILITY_ACCOUNT",
+      "block_id": 4,
+      "is_block_start": false,
+      "reason": "autres restrictions d'eligibilite (bannis/suspendus), continuation",
+      "legal_nature": "GOVERNANCE",
+      "legal_nature_marker": "suspend"
+    },
+    {
+      "id": 18,
+      "theme": "ACCEPTABLE_USE",
+      "block_id": 5,
+      "is_block_start": true,
+      "rationale": "regle sur les connexions autorisees au service, cite « authorized connections »",
+      "rationale_codes": {
+        "decision_trigger": "topic_keyword",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "authorized connections",
+        "revised_from_plan": false,
+        "confidence": 0.78
+      },
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 19,
+      "theme": "ACCEPTABLE_USE",
+      "block_id": 5,
+      "is_block_start": false,
+      "reason": "interdiction de connexion avec appareils non autorises, meme regle d'usage",
+      "legal_nature": "PROHIBITION",
+      "legal_nature_marker": "may not"
+    },
+    {
+      "id": 20,
+      "theme": "ACCEPTABLE_USE",
+      "block_id": 5,
+      "is_block_start": false,
+      "reason": "consequence (resiliation) d'une violation, prolonge la regle",
+      "legal_nature": "GOVERNANCE",
+      "legal_nature_marker": "termination"
+    },
+    {
+      "id": 21,
+      "theme": "ACCEPTABLE_USE",
+      "block_id": 5,
+      "is_block_start": false,
+      "reason": "contact pour questions sur les connexions autorisees, continuation",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 22,
+      "theme": "ELIGIBILITY_ACCOUNT",
+      "block_id": 6,
+      "is_block_start": true,
+      "rationale": "exigence de creation de compte avec informations d'identification, cite « create an account »",
+      "rationale_codes": {
+        "decision_trigger": "topic_keyword",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "create an account",
+        "revised_from_plan": false,
+        "confidence": 0.82
+      },
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 23,
+      "theme": "ELIGIBILITY_ACCOUNT",
+      "block_id": 6,
+      "is_block_start": false,
+      "reason": "responsabilite des activites du compte, meme bloc compte",
+      "legal_nature": "OBLIGATION",
+      "legal_nature_marker": "you are responsible"
+    },
+    {
+      "id": 24,
+      "theme": "ELIGIBILITY_ACCOUNT",
+      "block_id": 6,
+      "is_block_start": false,
+      "reason": "non-responsabilite fitbit pour perte des identifiants, continuation",
+      "legal_nature": "LIMITATION_DISCLAIMER",
+      "legal_nature_marker": "not liable"
+    },
+    {
+      "id": 25,
+      "theme": "ELIGIBILITY_ACCOUNT",
+      "block_id": 6,
+      "is_block_start": false,
+      "reason": "procedure en cas de faille de securite du compte, prolonge",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 26,
+      "theme": "ELIGIBILITY_ACCOUNT",
+      "block_id": 6,
+      "is_block_start": false,
+      "reason": "exigence d'equipement pour l'usage du service, prolonge les conditions d'acces",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 27,
+      "theme": "ELIGIBILITY_ACCOUNT",
+      "block_id": 6,
+      "is_block_start": false,
+      "reason": "responsabilite sur la maintenance de l'equipement, continuation",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 28,
+      "theme": "USER_CONTENT",
+      "block_id": 7,
+      "is_block_start": true,
+      "rationale": "titre nominal court de section, cite « posting your content on the fitbit service »",
+      "rationale_codes": {
+        "decision_trigger": "title_marker",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "posting your content on the fitbit service",
+        "revised_from_plan": false,
+        "confidence": 0.9
+      },
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 29,
+      "theme": "USER_CONTENT",
+      "block_id": 7,
+      "is_block_start": false,
+      "reason": "definition de 'your content' que l'utilisateur peut poster, sous le chapeau",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 30,
+      "theme": "USER_CONTENT",
+      "block_id": 7,
+      "is_block_start": false,
+      "reason": "conservation des droits sur son contenu, continuation",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 31,
+      "theme": "USER_CONTENT",
+      "block_id": 7,
+      "is_block_start": false,
+      "reason": "licence accordee a fitbit sur le contenu utilisateur, meme sujet contenu",
+      "legal_nature": "RIGHT_GRANT",
+      "legal_nature_marker": "hereby grant"
+    },
+    {
+      "id": 32,
+      "theme": "USER_CONTENT",
+      "block_id": 7,
+      "is_block_start": false,
+      "reason": "limitation de la finalite de la licence, prolonge",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 33,
+      "theme": "USER_CONTENT",
+      "block_id": 7,
+      "is_block_start": false,
+      "reason": "responsabilite de l'utilisateur sur son contenu, continuation",
+      "legal_nature": "OBLIGATION",
+      "legal_nature_marker": "you are responsible"
+    },
+    {
+      "id": 34,
+      "theme": "USER_CONTENT",
+      "block_id": 7,
+      "is_block_start": false,
+      "reason": "garantie de detention des droits sur le contenu, meme bloc",
+      "legal_nature": "RIGHT_GRANT",
+      "legal_nature_marker": "license to"
+    },
+    {
+      "id": 35,
+      "theme": "USER_CONTENT",
+      "block_id": 7,
+      "is_block_start": false,
+      "reason": "garanties de non-violation par le contenu, continuation",
+      "legal_nature": "PROHIBITION",
+      "legal_nature_marker": "will not"
+    },
+    {
+      "id": 36,
+      "theme": "USER_CONTENT",
+      "block_id": 7,
+      "is_block_start": false,
+      "reason": "engagements supplementaires d'usage du contenu, prolonge",
+      "legal_nature": "PROHIBITION",
+      "legal_nature_marker": "agree not to"
+    },
+    {
+      "id": 37,
+      "theme": "USER_CONTENT",
+      "block_id": 7,
+      "is_block_start": false,
+      "reason": "droit de fitbit de retirer le contenu utilisateur, continuation",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 38,
+      "theme": "LICENSE_IP",
+      "block_id": 8,
+      "is_block_start": true,
+      "rationale": "definition de 'fitbit content' et droits PI de fitbit, la PI prime, cite « fitbit content »",
+      "rationale_codes": {
+        "decision_trigger": "definition_marker",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "fitbit content",
+        "revised_from_plan": false,
+        "confidence": 0.83
+      },
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 39,
+      "theme": "LICENSE_IP",
+      "block_id": 8,
+      "is_block_start": false,
+      "reason": "protection par copyright/trademark/patent, meme sujet PI",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 40,
+      "theme": "LICENSE_IP",
+      "block_id": 8,
+      "is_block_start": false,
+      "reason": "reserve de tous droits non accordes, continuation",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 41,
+      "theme": "LICENSE_IP",
+      "block_id": 8,
+      "is_block_start": false,
+      "reason": "interdiction de retirer les mentions de droits, prolonge la PI",
+      "legal_nature": "PROHIBITION",
+      "legal_nature_marker": "agree not to"
+    },
+    {
+      "id": 42,
+      "theme": "LICENSE_IP",
+      "block_id": 8,
+      "is_block_start": false,
+      "reason": "interdiction de copier logos/marques fitbit, continuation",
+      "legal_nature": "PROHIBITION",
+      "legal_nature_marker": "may not"
+    },
+    {
+      "id": 43,
+      "theme": "LICENSE_IP",
+      "block_id": 8,
+      "is_block_start": false,
+      "reason": "marques de tiers protegees, prolonge le sujet PI",
+      "legal_nature": "PROHIBITION",
+      "legal_nature_marker": "may not"
+    },
+    {
+      "id": 44,
+      "theme": "LICENSE_IP",
+      "block_id": 9,
+      "is_block_start": true,
+      "rationale": "titre de section introduisant l'octroi de licence d'usage, cite « what you can do on the fitbit service »",
+      "rationale_codes": {
+        "decision_trigger": "title_marker",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "what you can do on the fitbit service",
+        "revised_from_plan": false,
+        "confidence": 0.82
+      },
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 45,
+      "theme": "LICENSE_IP",
+      "block_id": 9,
+      "is_block_start": false,
+      "reason": "usage personnel non commercial du service, sous le chapeau de licence",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 46,
+      "theme": "LICENSE_IP",
+      "block_id": 9,
+      "is_block_start": false,
+      "reason": "octroi de licence limitee a l'utilisateur, meme bloc licence",
+      "legal_nature": "RIGHT_GRANT",
+      "legal_nature_marker": "grants you"
+    },
+    {
+      "id": 47,
+      "theme": "LICENSE_IP",
+      "block_id": 9,
+      "is_block_start": false,
+      "reason": "finalite de la licence, continuation",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 48,
+      "theme": "LICENSE_IP",
+      "block_id": 9,
+      "is_block_start": false,
+      "reason": "restrictions d'exploitation du contenu/service, prolonge la licence",
+      "legal_nature": "PROHIBITION",
+      "legal_nature_marker": "will not"
+    },
+    {
+      "id": 49,
+      "theme": "LICENSE_IP",
+      "block_id": 9,
+      "is_block_start": false,
+      "reason": "aucun autre droit PI implicite accorde, continuation",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 50,
+      "theme": "LICENSE_IP",
+      "block_id": 9,
+      "is_block_start": false,
+      "reason": "interdictions techniques (reverse engineering, etc.) liees a la licence, prolonge",
+      "legal_nature": "PROHIBITION",
+      "legal_nature_marker": "may not"
+    },
+    {
+      "id": 51,
+      "theme": "LICENSE_IP",
+      "block_id": 9,
+      "is_block_start": false,
+      "reason": "droit limite de creer un hyperlien, meme bloc de droits d'usage",
+      "legal_nature": "RIGHT_GRANT",
+      "legal_nature_marker": "you are granted"
+    },
+    {
+      "id": 52,
+      "theme": "LICENSE_IP",
+      "block_id": 9,
+      "is_block_start": false,
+      "reason": "revocabilite de ce droit limite, continuation",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 53,
+      "theme": "ACCEPTABLE_USE",
+      "block_id": 10,
+      "is_block_start": true,
+      "rationale": "droit de surveillance et d'application des regles d'usage, cite « monitor access or use »",
+      "rationale_codes": {
+        "decision_trigger": "topic_keyword",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "monitor access or use",
+        "revised_from_plan": false,
+        "confidence": 0.72
+      },
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 54,
+      "theme": "ACCEPTABLE_USE",
+      "block_id": 10,
+      "is_block_start": false,
+      "reason": "cooperation avec les autorites contre les abus, prolonge la surveillance",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 55,
+      "theme": "ACCEPTABLE_USE",
+      "block_id": 10,
+      "is_block_start": false,
+      "reason": "droit de retirer le contenu en violation, continuation",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 56,
+      "theme": "ACCEPTABLE_USE",
+      "block_id": 10,
+      "is_block_start": false,
+      "reason": "droit d'enqueter sur les violations, prolonge",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 57,
+      "theme": "WARRANTY_DISCLAIMER",
+      "block_id": 11,
+      "is_block_start": true,
+      "rationale": "titre de section sur l'usage a ses propres risques, cite « use the fitbit service at your own risk »",
+      "rationale_codes": {
+        "decision_trigger": "title_marker",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "use the fitbit service at your own risk",
+        "revised_from_plan": false,
+        "confidence": 0.85
+      },
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 58,
+      "theme": "WARRANTY_DISCLAIMER",
+      "block_id": 11,
+      "is_block_start": false,
+      "reason": "usage a ses risques, sous le chapeau",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 59,
+      "theme": "WARRANTY_DISCLAIMER",
+      "block_id": 11,
+      "is_block_start": false,
+      "reason": "absence d'endossement/garantie sur le contenu, continuation",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 60,
+      "theme": "WARRANTY_DISCLAIMER",
+      "block_id": 11,
+      "is_block_start": false,
+      "reason": "precision sur l'exactitude des donnees (non medicale), prolonge",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 61,
+      "theme": "WARRANTY_DISCLAIMER",
+      "block_id": 11,
+      "is_block_start": false,
+      "reason": "non-responsabilite sur l'exactitude des informations, continuation",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 62,
+      "theme": "WARRANTY_DISCLAIMER",
+      "block_id": 11,
+      "is_block_start": false,
+      "reason": "donnees gps/cartographiques possiblement inexactes, prolonge le disclaimer",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 63,
+      "theme": "WARRANTY_DISCLAIMER",
+      "block_id": 11,
+      "is_block_start": false,
+      "reason": "le service ne remplace pas le bon sens, continuation",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 64,
+      "theme": "WARRANTY_DISCLAIMER",
+      "block_id": 11,
+      "is_block_start": false,
+      "reason": "respect des consignes de securite, prolonge le disclaimer d'usage",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 65,
+      "theme": "WARRANTY_DISCLAIMER",
+      "block_id": 12,
+      "is_block_start": true,
+      "rationale": "titre de section disclaimer sante, cite « consult your doctor before using the fitbit service »",
+      "rationale_codes": {
+        "decision_trigger": "title_marker",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "consult your doctor before using the fitbit service",
+        "revised_from_plan": false,
+        "confidence": 0.83
+      },
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 66,
+      "theme": "WARRANTY_DISCLAIMER",
+      "block_id": 12,
+      "is_block_start": false,
+      "reason": "le service ne diagnostique pas de maladie, sous le chapeau sante",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 67,
+      "theme": "WARRANTY_DISCLAIMER",
+      "block_id": 12,
+      "is_block_start": false,
+      "reason": "consulter un medecin si condition cardiaque, continuation",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 68,
+      "theme": "WARRANTY_DISCLAIMER",
+      "block_id": 12,
+      "is_block_start": false,
+      "reason": "arret en cas d'urgence medicale, prolonge",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 69,
+      "theme": "WARRANTY_DISCLAIMER",
+      "block_id": 12,
+      "is_block_start": false,
+      "reason": "non-responsabilite pour problemes de sante, continuation",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 70,
+      "theme": "WARRANTY_DISCLAIMER",
+      "block_id": 12,
+      "is_block_start": false,
+      "reason": "participation aux exercices a ses risques, prolonge",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 71,
+      "theme": "WARRANTY_DISCLAIMER",
+      "block_id": 12,
+      "is_block_start": false,
+      "reason": "risque d'irritation cutanee, continuation du disclaimer sante",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 72,
+      "theme": "WARRANTY_DISCLAIMER",
+      "block_id": 12,
+      "is_block_start": false,
+      "reason": "conseils d'entretien pour reduire l'irritation, prolonge",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 73,
+      "theme": "WARRANTY_DISCLAIMER",
+      "block_id": 12,
+      "is_block_start": false,
+      "reason": "renvoi web pour plus d'informations, continuation",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 74,
+      "theme": "WARRANTY_DISCLAIMER",
+      "block_id": 12,
+      "is_block_start": false,
+      "reason": "conduite en cas d'irritation, prolonge le disclaimer sante",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 75,
+      "theme": "WARRANTY_DISCLAIMER",
+      "block_id": 12,
+      "is_block_start": false,
+      "reason": "consulter le medecin si symptomes persistent, continuation",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 76,
+      "theme": "WARRANTY_DISCLAIMER",
+      "block_id": 12,
+      "is_block_start": false,
+      "reason": "risques de la technologie purepulse, prolonge",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 77,
+      "theme": "WARRANTY_DISCLAIMER",
+      "block_id": 12,
+      "is_block_start": false,
+      "reason": "consulter le medecin selon conditions de sante, continuation",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 78,
+      "theme": "LICENSE_IP",
+      "block_id": 13,
+      "is_block_start": true,
+      "rationale": "respect de la PI des tiers et politique copyright, la PI prime, cite « intellectual property of others »",
+      "rationale_codes": {
+        "decision_trigger": "topic_keyword",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "intellectual property of others",
+        "revised_from_plan": false,
+        "confidence": 0.8
+      },
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 79,
+      "theme": "LICENSE_IP",
+      "block_id": 13,
+      "is_block_start": false,
+      "reason": "resiliation des comptes recidivistes en violation de copyright, meme sujet PI",
+      "legal_nature": "GOVERNANCE",
+      "legal_nature_marker": "terminate"
+    },
+    {
+      "id": 80,
+      "theme": "LICENSE_IP",
+      "block_id": 13,
+      "is_block_start": false,
+      "reason": "renvoi a la politique dmca/copyright, continuation",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 81,
+      "theme": "PAYMENT_BILLING",
+      "block_id": 14,
+      "is_block_start": true,
+      "rationale": "titre de section sur les conditions de vente, cite « terms of sale and returns and warranty »",
+      "rationale_codes": {
+        "decision_trigger": "title_marker",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "terms of sale and returns and warranty",
+        "revised_from_plan": false,
+        "confidence": 0.8
+      },
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 82,
+      "theme": "PAYMENT_BILLING",
+      "block_id": 14,
+      "is_block_start": false,
+      "reason": "application des conditions de vente aux achats, sous le chapeau",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 83,
+      "theme": "PAYMENT_BILLING",
+      "block_id": 14,
+      "is_block_start": false,
+      "reason": "incorporation des conditions de vente, continuation",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 84,
+      "theme": "PAYMENT_BILLING",
+      "block_id": 14,
+      "is_block_start": false,
+      "reason": "commandes soumises a l'acceptation de fitbit, prolonge",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 85,
+      "theme": "PAYMENT_BILLING",
+      "block_id": 14,
+      "is_block_start": false,
+      "reason": "droit d'accepter/refuser/limiter une commande, continuation",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 86,
+      "theme": "LICENSE_IP",
+      "block_id": 15,
+      "is_block_start": true,
+      "rationale": "octroi de droits sur le feedback/idees soumis, cite « comments , ideas , or feedback »",
+      "rationale_codes": {
+        "decision_trigger": "topic_keyword",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "comments , ideas , or feedback",
+        "revised_from_plan": false,
+        "confidence": 0.74
+      },
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 87,
+      "theme": "LICENSE_IP",
+      "block_id": 15,
+      "is_block_start": false,
+      "reason": "non-renonciation aux droits sur idees similaires, meme sujet feedback",
+      "legal_nature": "PROHIBITION",
+      "legal_nature_marker": "do not"
+    },
+    {
+      "id": 88,
+      "theme": "LICENSE_IP",
+      "block_id": 15,
+      "is_block_start": false,
+      "reason": "renvoi a la politique de feedback, continuation",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 89,
+      "theme": "MISC_BOILERPLATE",
+      "block_id": 16,
+      "is_block_start": true,
+      "rationale": "conditions additionnelles pour promotions/concours, cite « additional terms and conditions »",
+      "rationale_codes": {
+        "decision_trigger": "topic_keyword",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "additional terms and conditions",
+        "revised_from_plan": false,
+        "confidence": 0.7
+      },
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 90,
+      "theme": "MISC_BOILERPLATE",
+      "block_id": 16,
+      "is_block_start": false,
+      "reason": "responsabilite de relire ces conditions additionnelles, continuation",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 91,
+      "theme": "MISC_BOILERPLATE",
+      "block_id": 17,
+      "is_block_start": true,
+      "rationale": "regime des communications electroniques recues, cite « electronic communications »",
+      "rationale_codes": {
+        "decision_trigger": "topic_keyword",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "electronic communications",
+        "revised_from_plan": false,
+        "confidence": 0.72
+      },
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 92,
+      "theme": "MISC_BOILERPLATE",
+      "block_id": 17,
+      "is_block_start": false,
+      "reason": "consentement a la reception des communications, continuation",
+      "legal_nature": "OBLIGATION",
+      "legal_nature_marker": "you agree to"
+    },
+    {
+      "id": 93,
+      "theme": "MISC_BOILERPLATE",
+      "block_id": 17,
+      "is_block_start": false,
+      "reason": "controle des communications via les parametres, prolonge",
+      "legal_nature": "SCOPE_APPLICABILITY",
+      "legal_nature_marker": "by using"
+    },
+    {
+      "id": 94,
+      "theme": "MISC_BOILERPLATE",
+      "block_id": 17,
+      "is_block_start": false,
+      "reason": "communications obligatoires (annonces administratives), continuation",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 95,
+      "theme": "MISC_BOILERPLATE",
+      "block_id": 17,
+      "is_block_start": false,
+      "reason": "responsabilite des frais de messagerie/data, prolonge",
+      "legal_nature": "OBLIGATION",
+      "legal_nature_marker": "you are responsible"
+    },
+    {
+      "id": 96,
+      "theme": "MISC_BOILERPLATE",
+      "block_id": 17,
+      "is_block_start": false,
+      "reason": "valeur legale des communications electroniques, continuation",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 97,
+      "theme": "THIRD_PARTY",
+      "block_id": 18,
+      "is_block_start": true,
+      "rationale": "introduction des services tiers hors controle de fitbit, cite « third-party »",
+      "rationale_codes": {
+        "decision_trigger": "topic_keyword",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "third-party",
+        "revised_from_plan": false,
+        "confidence": 0.85
+      },
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 98,
+      "theme": "THIRD_PARTY",
+      "block_id": 18,
+      "is_block_start": false,
+      "reason": "possibilite de lier le compte a des services tiers, continuation",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 99,
+      "theme": "THIRD_PARTY",
+      "block_id": 18,
+      "is_block_start": false,
+      "reason": "non-responsabilite pour le contenu des services tiers, prolonge",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 100,
+      "theme": "THIRD_PARTY",
+      "block_id": 18,
+      "is_block_start": false,
+      "reason": "responsabilite et risques de l'utilisateur sur les services tiers, continuation",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 101,
+      "theme": "THIRD_PARTY",
+      "block_id": 18,
+      "is_block_start": false,
+      "reason": "inapplicabilite des conditions/politique aux services tiers, prolonge",
+      "legal_nature": "PROHIBITION",
+      "legal_nature_marker": "do not"
+    },
+    {
+      "id": 102,
+      "theme": "THIRD_PARTY",
+      "block_id": 18,
+      "is_block_start": false,
+      "reason": "responsabilite de lire les conditions des tiers, continuation",
+      "legal_nature": "SCOPE_APPLICABILITY",
+      "legal_nature_marker": "applies to"
+    },
+    {
+      "id": 103,
+      "theme": "MISC_BOILERPLATE",
+      "block_id": 19,
+      "is_block_start": true,
+      "rationale": "droit de fitbit de modifier/cesser le service, cite « change or discontinue »",
+      "rationale_codes": {
+        "decision_trigger": "topic_keyword",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "change or discontinue",
+        "revised_from_plan": false,
+        "confidence": 0.68
+      },
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 104,
+      "theme": "MISC_BOILERPLATE",
+      "block_id": 19,
+      "is_block_start": false,
+      "reason": "non-responsabilite pour la modification/discontinuation, continuation",
+      "legal_nature": "LIMITATION_DISCLAIMER",
+      "legal_nature_marker": "not liable"
+    },
+    {
+      "id": 105,
+      "theme": "MISC_BOILERPLATE",
+      "block_id": 19,
+      "is_block_start": false,
+      "reason": "droit de determiner les mises a jour logicielles, prolonge le sujet modification du service",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 106,
+      "theme": "TERMINATION",
+      "block_id": 20,
+      "is_block_start": true,
+      "rationale": "droit de suspendre/desactiver le compte ou resilier, cite « suspend or deactivate your account »",
+      "rationale_codes": {
+        "decision_trigger": "topic_keyword",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "suspend or deactivate your account",
+        "revised_from_plan": false,
+        "confidence": 0.85
+      },
+      "legal_nature": "GOVERNANCE",
+      "legal_nature_marker": "terminate"
+    },
+    {
+      "id": 107,
+      "theme": "TERMINATION",
+      "block_id": 20,
+      "is_block_start": false,
+      "reason": "effet de la resiliation sur le contenu, continuation",
+      "legal_nature": "GOVERNANCE",
+      "legal_nature_marker": "termination"
+    },
+    {
+      "id": 108,
+      "theme": "TERMINATION",
+      "block_id": 20,
+      "is_block_start": false,
+      "reason": "droit de l'utilisateur de fermer son compte, prolonge la resiliation",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 109,
+      "theme": "TERMINATION",
+      "block_id": 20,
+      "is_block_start": false,
+      "reason": "survie de certaines clauses apres resiliation, continuation",
+      "legal_nature": "GOVERNANCE",
+      "legal_nature_marker": "termination"
+    },
+    {
+      "id": 110,
+      "theme": "WARRANTY_DISCLAIMER",
+      "block_id": 21,
+      "is_block_start": true,
+      "rationale": "service fourni 'as is' sans garantie, cite « as is »",
+      "rationale_codes": {
+        "decision_trigger": "topic_keyword",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "as is",
+        "revised_from_plan": false,
+        "confidence": 0.9
+      },
+      "legal_nature": "LIMITATION_DISCLAIMER",
+      "legal_nature_marker": "as is"
+    },
+    {
+      "id": 111,
+      "theme": "WARRANTY_DISCLAIMER",
+      "block_id": 21,
+      "is_block_start": false,
+      "reason": "rejet des garanties implicites, continuation",
+      "legal_nature": "LIMITATION_DISCLAIMER",
+      "legal_nature_marker": "warranties"
+    },
+    {
+      "id": 112,
+      "theme": "WARRANTY_DISCLAIMER",
+      "block_id": 21,
+      "is_block_start": false,
+      "reason": "aucune garantie de disponibilite/securite, prolonge",
+      "legal_nature": "LIMITATION_DISCLAIMER",
+      "legal_nature_marker": "no warranty"
+    },
+    {
+      "id": 113,
+      "theme": "WARRANTY_DISCLAIMER",
+      "block_id": 21,
+      "is_block_start": false,
+      "reason": "aucune garantie de qualite/exactitude, continuation",
+      "legal_nature": "LIMITATION_DISCLAIMER",
+      "legal_nature_marker": "no warranty"
+    },
+    {
+      "id": 114,
+      "theme": "LIABILITY_LIMITATION",
+      "block_id": 22,
+      "is_block_start": true,
+      "rationale": "exclusion des dommages indirects/consequentiels, cite « consequential damages »",
+      "rationale_codes": {
+        "decision_trigger": "topic_keyword",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "consequential damages",
+        "revised_from_plan": false,
+        "confidence": 0.88
+      },
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 115,
+      "theme": "LIABILITY_LIMITATION",
+      "block_id": 22,
+      "is_block_start": false,
+      "reason": "plafond de la responsabilite totale, continuation",
+      "legal_nature": "LIMITATION_DISCLAIMER",
+      "legal_nature_marker": "in no event"
+    },
+    {
+      "id": 116,
+      "theme": "LIABILITY_LIMITATION",
+      "block_id": 22,
+      "is_block_start": false,
+      "reason": "les exclusions sont fondamentales au contrat, prolonge",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 117,
+      "theme": "LIABILITY_LIMITATION",
+      "block_id": 22,
+      "is_block_start": false,
+      "reason": "reserve selon juridictions, continuation de la limitation",
+      "legal_nature": "PROHIBITION",
+      "legal_nature_marker": "may not"
+    },
+    {
+      "id": 118,
+      "theme": "DISPUTE_ARBITRATION",
+      "block_id": 23,
+      "is_block_start": true,
+      "rationale": "avertissement sur l'obligation d'arbitrer les litiges, cite « arbitrate certain disputes »",
+      "rationale_codes": {
+        "decision_trigger": "topic_keyword",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "arbitrate certain disputes",
+        "revised_from_plan": false,
+        "confidence": 0.85
+      },
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 119,
+      "theme": "DISPUTE_ARBITRATION",
+      "block_id": 23,
+      "is_block_start": false,
+      "reason": "litiges soumis a la procedure d'arbitrage, continuation",
+      "legal_nature": "GOVERNANCE",
+      "legal_nature_marker": "governed by"
+    },
+    {
+      "id": 120,
+      "theme": "GOVERNING_LAW",
+      "block_id": 24,
+      "is_block_start": true,
+      "rationale": "chapeau de clause sur la loi applicable (Californie), cite « governing law »",
+      "rationale_codes": {
+        "decision_trigger": "title_marker",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "governing law",
+        "revised_from_plan": false,
+        "confidence": 0.88
+      },
+      "legal_nature": "GOVERNANCE",
+      "legal_nature_marker": "governed by"
+    },
+    {
+      "id": 121,
+      "theme": "DISPUTE_ARBITRATION",
+      "block_id": 25,
+      "is_block_start": true,
+      "rationale": "chapeau sur la resolution informelle des litiges, cite « informal dispute resolution »",
+      "rationale_codes": {
+        "decision_trigger": "title_marker",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "informal dispute resolution",
+        "revised_from_plan": false,
+        "confidence": 0.82
+      },
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 122,
+      "theme": "DISPUTE_ARBITRATION",
+      "block_id": 25,
+      "is_block_start": false,
+      "reason": "obligation de tenter une resolution informelle, sous le chapeau",
+      "legal_nature": "OBLIGATION",
+      "legal_nature_marker": "you agree to"
+    },
+    {
+      "id": 123,
+      "theme": "DISPUTE_ARBITRATION",
+      "block_id": 25,
+      "is_block_start": false,
+      "reason": "fitbit tente une resolution par email, continuation",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 124,
+      "theme": "DISPUTE_ARBITRATION",
+      "block_id": 25,
+      "is_block_start": false,
+      "reason": "procedure formelle apres 15 jours, prolonge la resolution des litiges",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 125,
+      "theme": "DISPUTE_ARBITRATION",
+      "block_id": 25,
+      "is_block_start": false,
+      "reason": "accord d'arbitrage liant, continuation du sujet arbitrage",
+      "legal_nature": "GOVERNANCE",
+      "legal_nature_marker": "arbitration"
+    },
+    {
+      "id": 126,
+      "theme": "DISPUTE_ARBITRATION",
+      "block_id": 25,
+      "is_block_start": false,
+      "reason": "option de retrait de l'accord d'arbitrage, prolonge",
+      "legal_nature": "GOVERNANCE",
+      "legal_nature_marker": "arbitration"
+    },
+    {
+      "id": 127,
+      "theme": "DISPUTE_ARBITRATION",
+      "block_id": 25,
+      "is_block_start": false,
+      "reason": "procedures d'arbitrage (aaa), continuation",
+      "legal_nature": "GOVERNANCE",
+      "legal_nature_marker": "arbitration"
+    },
+    {
+      "id": 128,
+      "theme": "DISPUTE_ARBITRATION",
+      "block_id": 25,
+      "is_block_start": false,
+      "reason": "lieu de l'arbitrage, prolonge",
+      "legal_nature": "GOVERNANCE",
+      "legal_nature_marker": "arbitration"
+    },
+    {
+      "id": 129,
+      "theme": "DISPUTE_ARBITRATION",
+      "block_id": 25,
+      "is_block_start": false,
+      "reason": "frais d'arbitrage regis par les regles aaa, continuation",
+      "legal_nature": "GOVERNANCE",
+      "legal_nature_marker": "arbitration"
+    },
+    {
+      "id": 130,
+      "theme": "DISPUTE_ARBITRATION",
+      "block_id": 25,
+      "is_block_start": false,
+      "reason": "prise en charge des frais par fitbit, prolonge",
+      "legal_nature": "GOVERNANCE",
+      "legal_nature_marker": "arbitration"
+    },
+    {
+      "id": 131,
+      "theme": "DISPUTE_ARBITRATION",
+      "block_id": 25,
+      "is_block_start": false,
+      "reason": "honoraires d'avocat en cas de reclamation frivole, continuation",
+      "legal_nature": "PROHIBITION",
+      "legal_nature_marker": "will not"
+    },
+    {
+      "id": 132,
+      "theme": "DISPUTE_ARBITRATION",
+      "block_id": 25,
+      "is_block_start": false,
+      "reason": "exceptions a l'accord d'arbitrage (small claims), prolonge",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 133,
+      "theme": "DISPUTE_ARBITRATION",
+      "block_id": 25,
+      "is_block_start": false,
+      "reason": "action en injonction hors arbitrage, continuation des exceptions",
+      "legal_nature": "GOVERNANCE",
+      "legal_nature_marker": "arbitration"
+    },
+    {
+      "id": 134,
+      "theme": "DISPUTE_ARBITRATION",
+      "block_id": 25,
+      "is_block_start": false,
+      "reason": "renonciation aux actions collectives, prolonge l'arbitrage",
+      "legal_nature": "PROHIBITION",
+      "legal_nature_marker": "may not"
+    },
+    {
+      "id": 135,
+      "theme": "DISPUTE_ARBITRATION",
+      "block_id": 25,
+      "is_block_start": false,
+      "reason": "interdiction des arbitrages collectifs, continuation",
+      "legal_nature": "GOVERNANCE",
+      "legal_nature_marker": "arbitration"
+    },
+    {
+      "id": 136,
+      "theme": "DISPUTE_ARBITRATION",
+      "block_id": 25,
+      "is_block_start": false,
+      "reason": "forum judiciaire si l'arbitrage ne s'applique pas, prolonge",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 137,
+      "theme": "DISPUTE_ARBITRATION",
+      "block_id": 25,
+      "is_block_start": false,
+      "reason": "consentement a la competence et au lieu, continuation",
+      "legal_nature": "GOVERNANCE",
+      "legal_nature_marker": "jurisdiction"
+    },
+    {
+      "id": 138,
+      "theme": "DISPUTE_ARBITRATION",
+      "block_id": 25,
+      "is_block_start": false,
+      "reason": "renonciation au proces avec jury, prolonge",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 139,
+      "theme": "DISPUTE_ARBITRATION",
+      "block_id": 25,
+      "is_block_start": false,
+      "reason": "delai d'un an pour introduire une reclamation, continuation des litiges",
+      "legal_nature": "OBLIGATION",
+      "legal_nature_marker": "must"
+    },
+    {
+      "id": 140,
+      "theme": "MISC_BOILERPLATE",
+      "block_id": 26,
+      "is_block_start": true,
+      "rationale": "clause d'integralite de l'accord, cite « entire and exclusive understanding »",
+      "rationale_codes": {
+        "decision_trigger": "topic_keyword",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "entire and exclusive understanding",
+        "revised_from_plan": false,
+        "confidence": 0.8
+      },
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 141,
+      "theme": "MODIFICATION_OF_TERMS",
+      "block_id": 27,
+      "is_block_start": true,
+      "rationale": "notification avant modifications materielles des conditions, cite « material changes to these terms »",
+      "rationale_codes": {
+        "decision_trigger": "topic_keyword",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "material changes to these terms",
+        "revised_from_plan": false,
+        "confidence": 0.82
+      },
+      "legal_nature": "PROHIBITION",
+      "legal_nature_marker": "will not"
+    },
+    {
+      "id": 142,
+      "theme": "MODIFICATION_OF_TERMS",
+      "block_id": 27,
+      "is_block_start": false,
+      "reason": "acceptation des conditions modifiees par l'usage, continuation",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 143,
+      "theme": "MODIFICATION_OF_TERMS",
+      "block_id": 27,
+      "is_block_start": false,
+      "reason": "consultation des versions anterieures dans l'archive, prolonge la modification",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 144,
+      "theme": "MISC_BOILERPLATE",
+      "block_id": 28,
+      "is_block_start": true,
+      "rationale": "clause de divisibilite des dispositions, cite « invalid or unenforceable »",
+      "rationale_codes": {
+        "decision_trigger": "topic_keyword",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "invalid or unenforceable",
+        "revised_from_plan": false,
+        "confidence": 0.8
+      },
+      "legal_nature": "GOVERNANCE",
+      "legal_nature_marker": "jurisdiction"
+    },
+    {
+      "id": 145,
+      "theme": "MISC_BOILERPLATE",
+      "block_id": 28,
+      "is_block_start": false,
+      "reason": "interdiction de cession par l'utilisateur, continuation boilerplate",
+      "legal_nature": "PROHIBITION",
+      "legal_nature_marker": "may not"
+    },
+    {
+      "id": 146,
+      "theme": "MISC_BOILERPLATE",
+      "block_id": 28,
+      "is_block_start": false,
+      "reason": "nullite d'une cession non autorisee, prolonge",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 147,
+      "theme": "MISC_BOILERPLATE",
+      "block_id": 28,
+      "is_block_start": false,
+      "reason": "fitbit peut librement ceder, continuation",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 148,
+      "theme": "MISC_BOILERPLATE",
+      "block_id": 28,
+      "is_block_start": false,
+      "reason": "effet liant sur les ayants droit, prolonge la cession",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 149,
+      "theme": "MISC_BOILERPLATE",
+      "block_id": 28,
+      "is_block_start": false,
+      "reason": "modalites de notification (email/affichage), continuation boilerplate",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 150,
+      "theme": "MISC_BOILERPLATE",
+      "block_id": 28,
+      "is_block_start": false,
+      "reason": "date de reception des notices par email, prolonge",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 151,
+      "theme": "MISC_BOILERPLATE",
+      "block_id": 28,
+      "is_block_start": false,
+      "reason": "non-renonciation par defaut d'application, continuation",
+      "legal_nature": "PROHIBITION",
+      "legal_nature_marker": "will not"
+    },
+    {
+      "id": 152,
+      "theme": "MISC_BOILERPLATE",
+      "block_id": 28,
+      "is_block_start": false,
+      "reason": "forme ecrite requise pour la renonciation, prolonge",
+      "legal_nature": "META",
+      "legal_nature_marker": "effective on"
+    },
+    {
+      "id": 153,
+      "theme": "MISC_BOILERPLATE",
+      "block_id": 28,
+      "is_block_start": false,
+      "reason": "exercice des recours sans prejudice, continuation",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 154,
+      "theme": "MISC_BOILERPLATE",
+      "block_id": 28,
+      "is_block_start": false,
+      "reason": "conditions additionnelles pour certains produits, prolonge",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 155,
+      "theme": "MISC_BOILERPLATE",
+      "block_id": 28,
+      "is_block_start": false,
+      "reason": "primaute des conditions additionnelles en cas de conflit, continuation",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 156,
+      "theme": "MISC_BOILERPLATE",
+      "block_id": 28,
+      "is_block_start": false,
+      "reason": "invitation a contacter pour questions, prolonge le boilerplate final",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 157,
+      "theme": "META",
+      "block_id": 29,
+      "is_block_start": true,
+      "rationale": "adresse postale de l'entite, metadonnee, cite « 199 fremont street »",
+      "rationale_codes": {
+        "decision_trigger": "title_marker",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "199 fremont street",
+        "revised_from_plan": false,
+        "confidence": 0.8
+      },
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    }
+  ]
+}

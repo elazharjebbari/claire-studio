@@ -1,0 +1,2229 @@
+{
+  "doc": "TripAdvisor",
+  "judge": "claude",
+  "version": "v9.2-nature-derived",
+  "document_plan": {
+    "estimated_n_blocks": 30,
+    "rationale_global": "ToS TripAdvisor de profil NARRATIVE_LONG (200 phrases, peu de numérotation, 5 titres structurels aux ids 16/17/108/163/199). Le document suit l'ordre classique : ouverture/portée et définitions des parties (we/you), acceptation, puis modification des termes et notice de changements, restriction d'accès aux mineurs, droit de refuser l'accès, restrictions de PI/copying, frais et liens tiers, propriété du contenu et acceptable use, privacy, section avis/contenu utilisateur (titre id 38) avec licence sur les submissions et longue liste de contenus prohibés, booking via tiers (titre id 67) couvrant éligibilité/compte/paiement/responsabilité tiers, vacation rentals, voyage international, section limitation de responsabilité (id 109) précédée d'un disclaimer de garantie, indemnisation (id 130), liens vers sites tiers (id 134), usage international/export controls, licence logicielle et copyright/trademarks, notice and takedown (titre id 163), modification/suspension du service, governing law et juridiction (id 173), taux de change, mobile software, puis boilerplate final (relation, severability, entire agreement, langue, délai de prescription) et coordonnées de contact (id 198-199). Les indices docfeatures (theme_hits, candidate_boundaries) servent d'ancrage non contraignant ; je privilégie la continuité par défaut et n'ouvre un bloc qu'au changement de thème qualifié par un effet juridique autonome.",
+    "segments": [
+      {
+        "start_id": 0,
+        "theme": "PREAMBLE_SCOPE",
+        "rationale": "ouverture du document",
+        "evidence_span": "welcome to the tripadvisor website"
+      },
+      {
+        "start_id": 3,
+        "theme": "DEFINITIONS",
+        "rationale": "définition des termes we/us/you",
+        "evidence_span": "the terms `` we '' , `` us '' , `` our ''"
+      },
+      {
+        "start_id": 5,
+        "theme": "PREAMBLE_SCOPE",
+        "rationale": "conditions d'acceptation de l'agreement",
+        "evidence_span": "conditioned upon your acceptance"
+      },
+      {
+        "start_id": 9,
+        "theme": "MODIFICATION_OF_TERMS",
+        "rationale": "droit de modifier l'agreement et notice",
+        "evidence_span": "we may change or otherwise modify the agreement"
+      },
+      {
+        "start_id": 13,
+        "theme": "ELIGIBILITY_ACCOUNT",
+        "rationale": "restriction d'âge des mineurs",
+        "evidence_span": "anyone under the age of 13"
+      },
+      {
+        "start_id": 14,
+        "theme": "TERMINATION",
+        "rationale": "droit de refuser/dénier l'accès",
+        "evidence_span": "deny access to anyone to this website"
+      },
+      {
+        "start_id": 15,
+        "theme": "LICENSE_IP",
+        "rationale": "interdiction de copie/reproduction sans permission",
+        "evidence_span": "copying , transmission , reproduction"
+      },
+      {
+        "start_id": 19,
+        "theme": "PAYMENT_BILLING",
+        "rationale": "frais et charges des tiers",
+        "evidence_span": "will not incur any charges"
+      },
+      {
+        "start_id": 25,
+        "theme": "LICENSE_IP",
+        "rationale": "contenu propriétaire et restrictions d'usage",
+        "evidence_span": "is proprietary to us"
+      },
+      {
+        "start_id": 35,
+        "theme": "PRIVACY_DATA",
+        "rationale": "protection de la vie privée et privacy policy",
+        "evidence_span": "protecting your privacy"
+      },
+      {
+        "start_id": 38,
+        "theme": "USER_CONTENT",
+        "rationale": "titre section avis/contenu utilisateur",
+        "evidence_span": "reviews , comments and use of other interactive areas"
+      },
+      {
+        "start_id": 48,
+        "theme": "ACCEPTABLE_USE",
+        "rationale": "liste des contenus prohibés dans les interactive areas",
+        "evidence_span": "expressly agree not to post"
+      },
+      {
+        "start_id": 63,
+        "theme": "LIABILITY_LIMITATION",
+        "rationale": "absence de responsabilité pour le contenu posté",
+        "evidence_span": "takes no responsibility and assumes no liability"
+      },
+      {
+        "start_id": 67,
+        "theme": "ELIGIBILITY_ACCOUNT",
+        "rationale": "titre booking via tiers + adhésion membre",
+        "evidence_span": "booking with third-party suppliers through tripadvisor"
+      },
+      {
+        "start_id": 77,
+        "theme": "PAYMENT_BILLING",
+        "rationale": "collecte et traitement du paiement de réservation",
+        "evidence_span": "collect your payment information"
+      },
+      {
+        "start_id": 82,
+        "theme": "THIRD_PARTY",
+        "rationale": "rôle non-agence et fournisseurs tiers",
+        "evidence_span": "is not a travel agency"
+      },
+      {
+        "start_id": 91,
+        "theme": "THIRD_PARTY",
+        "rationale": "vacation rentals via affiliate sites",
+        "evidence_span": "booking vacation rentals with third-party suppliers"
+      },
+      {
+        "start_id": 101,
+        "theme": "THIRD_PARTY",
+        "rationale": "exigences de voyage international",
+        "evidence_span": "international travel reservations"
+      },
+      {
+        "start_id": 109,
+        "theme": "LIABILITY_LIMITATION",
+        "rationale": "section limitation de responsabilité",
+        "evidence_span": "this section limits tripadvisor 's liability"
+      },
+      {
+        "start_id": 112,
+        "theme": "WARRANTY_DISCLAIMER",
+        "rationale": "inexactitudes et disclaimer de garantie as is",
+        "evidence_span": "may include inaccuracies or errors"
+      },
+      {
+        "start_id": 124,
+        "theme": "LIABILITY_LIMITATION",
+        "rationale": "exclusion et plafonnement de responsabilité",
+        "evidence_span": "in no event shall the tripadvisor media group companies"
+      },
+      {
+        "start_id": 130,
+        "theme": "INDEMNIFICATION",
+        "rationale": "obligation de défense et indemnisation",
+        "evidence_span": "defend and indemnify tripadvisor"
+      },
+      {
+        "start_id": 134,
+        "theme": "THIRD_PARTY",
+        "rationale": "liens vers sites tiers",
+        "evidence_span": "hyperlinks to websites operated by parties other than tripadvisor"
+      },
+      {
+        "start_id": 141,
+        "theme": "GOVERNING_LAW",
+        "rationale": "usage international et export controls",
+        "evidence_span": "available for use in the united states"
+      },
+      {
+        "start_id": 148,
+        "theme": "LICENSE_IP",
+        "rationale": "licence logicielle et copyright du software",
+        "evidence_span": "is the copyrighted work of tripadvisor"
+      },
+      {
+        "start_id": 163,
+        "theme": "ACCEPTABLE_USE",
+        "rationale": "titre notice and take-down policy",
+        "evidence_span": "notice and take-down policy for illegal content"
+      },
+      {
+        "start_id": 168,
+        "theme": "MODIFICATION_OF_TERMS",
+        "rationale": "modification des termes et du service",
+        "evidence_span": "may change , add or delete these terms"
+      },
+      {
+        "start_id": 173,
+        "theme": "GOVERNING_LAW",
+        "rationale": "loi applicable et juridiction",
+        "evidence_span": "governed by the laws of the commonwealth of massachusetts"
+      },
+      {
+        "start_id": 178,
+        "theme": "WARRANTY_DISCLAIMER",
+        "rationale": "taux de change non garantis",
+        "evidence_span": "currency rates are based on various publicly available sources"
+      },
+      {
+        "start_id": 184,
+        "theme": "LICENSE_IP",
+        "rationale": "mobile software et termes spécifiques",
+        "evidence_span": "mobile software may use copyrighted material"
+      },
+      {
+        "start_id": 187,
+        "theme": "MISC_BOILERPLATE",
+        "rationale": "boilerplate final (relation, severability, entire agreement)",
+        "evidence_span": "no joint venture , agency , partnership"
+      },
+      {
+        "start_id": 198,
+        "theme": "META",
+        "rationale": "coordonnées de contact",
+        "evidence_span": "visit our help center"
+      }
+    ]
+  },
+  "annotations": [
+    {
+      "id": 0,
+      "theme": "PREAMBLE_SCOPE",
+      "block_id": 0,
+      "is_block_start": true,
+      "rationale": "ouverture du document, cite « welcome to the tripadvisor website »",
+      "rationale_codes": {
+        "decision_trigger": "document_start",
+        "relation_to_prev": "document_start",
+        "evidence_span": "welcome to the tripadvisor website",
+        "revised_from_plan": false,
+        "confidence": 0.97
+      },
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 1,
+      "theme": "PREAMBLE_SCOPE",
+      "block_id": 0,
+      "is_block_start": false,
+      "reason": "objet/finalité du site, prolonge la portée",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 2,
+      "theme": "DEFINITIONS",
+      "block_id": 1,
+      "is_block_start": true,
+      "rationale": "définition des termes we/us/our, cite « the terms `` we '' »",
+      "rationale_codes": {
+        "decision_trigger": "definition_marker",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "the terms `` we ''",
+        "revised_from_plan": true,
+        "confidence": 0.85
+      },
+      "legal_nature": "META",
+      "legal_nature_marker": "llc"
+    },
+    {
+      "id": 3,
+      "theme": "DEFINITIONS",
+      "block_id": 1,
+      "is_block_start": false,
+      "reason": "définition du terme you, même chaîne définitionnelle",
+      "legal_nature": "DEFINITION",
+      "legal_nature_marker": "refers to"
+    },
+    {
+      "id": 4,
+      "theme": "PREAMBLE_SCOPE",
+      "block_id": 2,
+      "is_block_start": true,
+      "rationale": "conditions d'acceptation de l'agreement, cite « conditioned upon your acceptance »",
+      "rationale_codes": {
+        "decision_trigger": "topic_keyword",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "conditioned upon your acceptance",
+        "revised_from_plan": true,
+        "confidence": 0.8
+      },
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 5,
+      "theme": "PREAMBLE_SCOPE",
+      "block_id": 2,
+      "is_block_start": false,
+      "reason": "acceptation par l'usage, prolonge la portée",
+      "legal_nature": "SCOPE_APPLICABILITY",
+      "legal_nature_marker": "by accessing"
+    },
+    {
+      "id": 6,
+      "theme": "PREAMBLE_SCOPE",
+      "block_id": 2,
+      "is_block_start": false,
+      "reason": "invitation à lire l'agreement, prolonge",
+      "legal_nature": "GOVERNANCE",
+      "legal_nature_marker": "jurisdiction"
+    },
+    {
+      "id": 7,
+      "theme": "PREAMBLE_SCOPE",
+      "block_id": 2,
+      "is_block_start": false,
+      "reason": "conséquence du non-accord, prolonge l'acceptation",
+      "legal_nature": "PROHIBITION",
+      "legal_nature_marker": "do not"
+    },
+    {
+      "id": 8,
+      "theme": "MODIFICATION_OF_TERMS",
+      "block_id": 3,
+      "is_block_start": true,
+      "rationale": "droit de modifier l'agreement, cite « we may change or otherwise modify the agreement »",
+      "rationale_codes": {
+        "decision_trigger": "topic_keyword",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "we may change or otherwise modify the agreement",
+        "revised_from_plan": true,
+        "confidence": 0.85
+      },
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 9,
+      "theme": "MODIFICATION_OF_TERMS",
+      "block_id": 3,
+      "is_block_start": false,
+      "reason": "date des révisions, procédure de modification",
+      "legal_nature": "PROHIBITION",
+      "legal_nature_marker": "will not"
+    },
+    {
+      "id": 10,
+      "theme": "MODIFICATION_OF_TERMS",
+      "block_id": 3,
+      "is_block_start": false,
+      "reason": "notification des changements aux membres, procédure",
+      "legal_nature": "PROHIBITION",
+      "legal_nature_marker": "will not"
+    },
+    {
+      "id": 11,
+      "theme": "MODIFICATION_OF_TERMS",
+      "block_id": 3,
+      "is_block_start": false,
+      "reason": "rappel de consulter la page, prolonge",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 12,
+      "theme": "ELIGIBILITY_ACCOUNT",
+      "block_id": 4,
+      "is_block_start": true,
+      "rationale": "restriction d'âge des mineurs, cite « anyone under the age of 13 »",
+      "rationale_codes": {
+        "decision_trigger": "topic_keyword",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "anyone under the age of 13",
+        "revised_from_plan": true,
+        "confidence": 0.75
+      },
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 13,
+      "theme": "TERMINATION",
+      "block_id": 5,
+      "is_block_start": true,
+      "rationale": "droit de dénier l'accès, cite « deny access to anyone to this website »",
+      "rationale_codes": {
+        "decision_trigger": "topic_keyword",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "deny access to anyone to this website",
+        "revised_from_plan": true,
+        "confidence": 0.78
+      },
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 14,
+      "theme": "LICENSE_IP",
+      "block_id": 6,
+      "is_block_start": true,
+      "rationale": "interdiction de copie sans permission, cite « copying , transmission , reproduction »",
+      "rationale_codes": {
+        "decision_trigger": "topic_keyword",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "copying , transmission , reproduction",
+        "revised_from_plan": false,
+        "confidence": 0.85
+      },
+      "legal_nature": "PROHIBITION",
+      "legal_nature_marker": "prohibited"
+    },
+    {
+      "id": 15,
+      "theme": "LICENSE_IP",
+      "block_id": 6,
+      "is_block_start": false,
+      "reason": "procédure pour demander permission, prolonge",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 16,
+      "theme": "LICENSE_IP",
+      "block_id": 6,
+      "is_block_start": false,
+      "reason": "adresse de contact pour la permission, prolonge la procédure",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 17,
+      "theme": "LICENSE_IP",
+      "block_id": 6,
+      "is_block_start": false,
+      "reason": "suite de l'adresse de contact, prolonge",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 18,
+      "theme": "PAYMENT_BILLING",
+      "block_id": 7,
+      "is_block_start": true,
+      "rationale": "absence de frais pour l'usage du site, cite « will not incur any charges »",
+      "rationale_codes": {
+        "decision_trigger": "topic_keyword",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "will not incur any charges",
+        "revised_from_plan": false,
+        "confidence": 0.8
+      },
+      "legal_nature": "PROHIBITION",
+      "legal_nature_marker": "will not"
+    },
+    {
+      "id": 19,
+      "theme": "PAYMENT_BILLING",
+      "block_id": 7,
+      "is_block_start": false,
+      "reason": "liens vers sites tiers, contraste avec frais",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 20,
+      "theme": "PAYMENT_BILLING",
+      "block_id": 7,
+      "is_block_start": false,
+      "reason": "les tiers peuvent facturer des frais, prolonge",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 21,
+      "theme": "PAYMENT_BILLING",
+      "block_id": 7,
+      "is_block_start": false,
+      "reason": "responsabilité de vérifier les charges, prolonge",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 22,
+      "theme": "PAYMENT_BILLING",
+      "block_id": 7,
+      "is_block_start": false,
+      "reason": "détails de charges fournis pour information, prolonge",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 23,
+      "theme": "PAYMENT_BILLING",
+      "block_id": 7,
+      "is_block_start": false,
+      "reason": "aucune garantie sur l'exactitude des charges, prolonge",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 24,
+      "theme": "LICENSE_IP",
+      "block_id": 8,
+      "is_block_start": true,
+      "rationale": "contenu propriétaire, cite « is proprietary to us »",
+      "rationale_codes": {
+        "decision_trigger": "topic_keyword",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "is proprietary to us",
+        "revised_from_plan": false,
+        "confidence": 0.82
+      },
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 25,
+      "theme": "LICENSE_IP",
+      "block_id": 8,
+      "is_block_start": false,
+      "reason": "interdiction de modifier/copier/distribuer, prolonge",
+      "legal_nature": "PROHIBITION",
+      "legal_nature_marker": "agree not to"
+    },
+    {
+      "id": 26,
+      "theme": "LICENSE_IP",
+      "block_id": 8,
+      "is_block_start": false,
+      "reason": "chapeau de la liste d'interdictions additionnelles",
+      "legal_nature": "PROHIBITION",
+      "legal_nature_marker": "agree not to"
+    },
+    {
+      "id": 27,
+      "theme": "LICENSE_IP",
+      "block_id": 8,
+      "is_block_start": false,
+      "reason": "item (i) usage commercial, hérite du chapeau",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 28,
+      "theme": "LICENSE_IP",
+      "block_id": 8,
+      "is_block_start": false,
+      "reason": "item (ii) robot/scraper, hérite du chapeau",
+      "legal_nature": "DEFINITION",
+      "legal_nature_marker": "means"
+    },
+    {
+      "id": 29,
+      "theme": "LICENSE_IP",
+      "block_id": 8,
+      "is_block_start": false,
+      "reason": "item (iii) robot exclusion headers, hérite",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 30,
+      "theme": "LICENSE_IP",
+      "block_id": 8,
+      "is_block_start": false,
+      "reason": "item (iv) charge sur l'infrastructure, hérite",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 31,
+      "theme": "LICENSE_IP",
+      "block_id": 8,
+      "is_block_start": false,
+      "reason": "item (v) deep-link, hérite",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 32,
+      "theme": "LICENSE_IP",
+      "block_id": 8,
+      "is_block_start": false,
+      "reason": "item (vi) frame/mirror, hérite",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 33,
+      "theme": "LICENSE_IP",
+      "block_id": 8,
+      "is_block_start": false,
+      "reason": "item (vii) reverse engineer software, hérite",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 34,
+      "theme": "PRIVACY_DATA",
+      "block_id": 9,
+      "is_block_start": true,
+      "rationale": "protection de la vie privée, cite « protecting your privacy »",
+      "rationale_codes": {
+        "decision_trigger": "topic_keyword",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "protecting your privacy",
+        "revised_from_plan": false,
+        "confidence": 0.88
+      },
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 35,
+      "theme": "PRIVACY_DATA",
+      "block_id": 9,
+      "is_block_start": false,
+      "reason": "usage des infos selon la privacy policy, prolonge",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 36,
+      "theme": "PRIVACY_DATA",
+      "block_id": 9,
+      "is_block_start": false,
+      "reason": "lien vers la privacy policy, prolonge",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 37,
+      "theme": "USER_CONTENT",
+      "block_id": 10,
+      "is_block_start": true,
+      "rationale": "titre de section avis/contenu, cite « reviews , comments and use of other interactive areas »",
+      "rationale_codes": {
+        "decision_trigger": "title_marker",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "reviews , comments and use of other interactive areas",
+        "revised_from_plan": false,
+        "confidence": 0.9
+      },
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 38,
+      "theme": "USER_CONTENT",
+      "block_id": 10,
+      "is_block_start": false,
+      "reason": "remerciement, prolonge le chapeau de section",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 39,
+      "theme": "USER_CONTENT",
+      "block_id": 10,
+      "is_block_start": false,
+      "reason": "octroi de licence sur les submissions, prolonge",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 40,
+      "theme": "USER_CONTENT",
+      "block_id": 10,
+      "is_block_start": false,
+      "reason": "attribution discrétionnaire des commentaires, prolonge",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 41,
+      "theme": "USER_CONTENT",
+      "block_id": 10,
+      "is_block_start": false,
+      "reason": "droit de poursuivre les violations, prolonge",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 42,
+      "theme": "USER_CONTENT",
+      "block_id": 10,
+      "is_block_start": false,
+      "reason": "submissions non confidentielles, prolonge",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 43,
+      "theme": "USER_CONTENT",
+      "block_id": 10,
+      "is_block_start": false,
+      "reason": "pas de contrôle des user messages, prolonge",
+      "legal_nature": "PROHIBITION",
+      "legal_nature_marker": "will not"
+    },
+    {
+      "id": 44,
+      "theme": "USER_CONTENT",
+      "block_id": 10,
+      "is_block_start": false,
+      "reason": "droit de retirer les messages, prolonge",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 45,
+      "theme": "USER_CONTENT",
+      "block_id": 10,
+      "is_block_start": false,
+      "reason": "définition des interactive areas, prolonge",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 46,
+      "theme": "USER_CONTENT",
+      "block_id": 10,
+      "is_block_start": false,
+      "reason": "responsabilité de l'usage des interactive areas, prolonge",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 47,
+      "theme": "ACCEPTABLE_USE",
+      "block_id": 11,
+      "is_block_start": true,
+      "rationale": "chapeau de la liste des contenus prohibés, cite « expressly agree not to post »",
+      "rationale_codes": {
+        "decision_trigger": "topic_keyword",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "expressly agree not to post",
+        "revised_from_plan": false,
+        "confidence": 0.82
+      },
+      "legal_nature": "PROHIBITION",
+      "legal_nature_marker": "agree not to"
+    },
+    {
+      "id": 48,
+      "theme": "ACCEPTABLE_USE",
+      "block_id": 11,
+      "is_block_start": false,
+      "reason": "item contenu illégal/diffamatoire, hérite du chapeau",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 49,
+      "theme": "ACCEPTABLE_USE",
+      "block_id": 11,
+      "is_block_start": false,
+      "reason": "item contenu offensant/raciste, hérite",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 50,
+      "theme": "ACCEPTABLE_USE",
+      "block_id": 11,
+      "is_block_start": false,
+      "reason": "item activité illégale, hérite",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 51,
+      "theme": "ACCEPTABLE_USE",
+      "block_id": 11,
+      "is_block_start": false,
+      "reason": "item instructions d'activités illégales, hérite",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 52,
+      "theme": "ACCEPTABLE_USE",
+      "block_id": 11,
+      "is_block_start": false,
+      "reason": "item infraction de PI (dans liste prohibée), hérite du chapeau",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 53,
+      "theme": "ACCEPTABLE_USE",
+      "block_id": 11,
+      "is_block_start": false,
+      "reason": "item copie illégale d'œuvre, hérite",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 54,
+      "theme": "ACCEPTABLE_USE",
+      "block_id": 11,
+      "is_block_start": false,
+      "reason": "item usurpation d'identité, hérite",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 55,
+      "theme": "ACCEPTABLE_USE",
+      "block_id": 11,
+      "is_block_start": false,
+      "reason": "item spam/mass mailing, hérite",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 56,
+      "theme": "ACCEPTABLE_USE",
+      "block_id": 11,
+      "is_block_start": false,
+      "reason": "item activités commerciales, hérite",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 57,
+      "theme": "ACCEPTABLE_USE",
+      "block_id": 11,
+      "is_block_start": false,
+      "reason": "item infos privées de tiers, hérite",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 58,
+      "theme": "ACCEPTABLE_USE",
+      "block_id": 11,
+      "is_block_start": false,
+      "reason": "item pages restreintes, hérite",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 59,
+      "theme": "ACCEPTABLE_USE",
+      "block_id": 11,
+      "is_block_start": false,
+      "reason": "item virus/fichiers corrompus, hérite",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 60,
+      "theme": "ACCEPTABLE_USE",
+      "block_id": 11,
+      "is_block_start": false,
+      "reason": "item contenu hors-sujet, hérite",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 61,
+      "theme": "ACCEPTABLE_USE",
+      "block_id": 11,
+      "is_block_start": false,
+      "reason": "item contenu jugé répréhensible, hérite",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 62,
+      "theme": "LIABILITY_LIMITATION",
+      "block_id": 12,
+      "is_block_start": true,
+      "rationale": "aucune responsabilité pour le contenu posté, cite « takes no responsibility and assumes no liability »",
+      "rationale_codes": {
+        "decision_trigger": "topic_keyword",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "takes no responsibility and assumes no liability",
+        "revised_from_plan": false,
+        "confidence": 0.78
+      },
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 63,
+      "theme": "LIABILITY_LIMITATION",
+      "block_id": 12,
+      "is_block_start": false,
+      "reason": "droit de retirer le contenu sans responsabilité, prolonge",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 64,
+      "theme": "LIABILITY_LIMITATION",
+      "block_id": 12,
+      "is_block_start": false,
+      "reason": "renonciation aux droits moraux, prolonge",
+      "legal_nature": "PROHIBITION",
+      "legal_nature_marker": "agree not to"
+    },
+    {
+      "id": 65,
+      "theme": "LIABILITY_LIMITATION",
+      "block_id": 12,
+      "is_block_start": false,
+      "reason": "conséquence de la violation : terminaison, prolonge",
+      "legal_nature": "GOVERNANCE",
+      "legal_nature_marker": "termination"
+    },
+    {
+      "id": 66,
+      "theme": "ELIGIBILITY_ACCOUNT",
+      "block_id": 13,
+      "is_block_start": true,
+      "rationale": "titre booking via tiers, cite « booking with third-party suppliers through tripadvisor »",
+      "rationale_codes": {
+        "decision_trigger": "title_marker",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "booking with third-party suppliers through tripadvisor",
+        "revised_from_plan": true,
+        "confidence": 0.82
+      },
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 67,
+      "theme": "ELIGIBILITY_ACCOUNT",
+      "block_id": 13,
+      "is_block_start": false,
+      "reason": "capacité de réserver via fournisseurs tiers, prolonge le chapeau",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 68,
+      "theme": "ELIGIBILITY_ACCOUNT",
+      "block_id": 13,
+      "is_block_start": false,
+      "reason": "devenir membre par instant booking, prolonge",
+      "legal_nature": "OBLIGATION",
+      "legal_nature_marker": "you will"
+    },
+    {
+      "id": 69,
+      "theme": "ELIGIBILITY_ACCOUNT",
+      "block_id": 13,
+      "is_block_start": false,
+      "reason": "avantages du statut de membre, prolonge",
+      "legal_nature": "OBLIGATION",
+      "legal_nature_marker": "you will"
+    },
+    {
+      "id": 70,
+      "theme": "ELIGIBILITY_ACCOUNT",
+      "block_id": 13,
+      "is_block_start": false,
+      "reason": "acceptation des pratiques et termes, prolonge",
+      "legal_nature": "SCOPE_APPLICABILITY",
+      "legal_nature_marker": "by using"
+    },
+    {
+      "id": 71,
+      "theme": "ELIGIBILITY_ACCOUNT",
+      "block_id": 13,
+      "is_block_start": false,
+      "reason": "garantie d'âge/autorité légale, condition d'éligibilité",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 72,
+      "theme": "ELIGIBILITY_ACCOUNT",
+      "block_id": 13,
+      "is_block_start": false,
+      "reason": "usage de booking pour réservations légitimes, prolonge",
+      "legal_nature": "OBLIGATION",
+      "legal_nature_marker": "you will"
+    },
+    {
+      "id": 73,
+      "theme": "ELIGIBILITY_ACCOUNT",
+      "block_id": 13,
+      "is_block_start": false,
+      "reason": "réservation frauduleuse interdite + terminaison membre, prolonge",
+      "legal_nature": "PROHIBITION",
+      "legal_nature_marker": "prohibited"
+    },
+    {
+      "id": 74,
+      "theme": "ELIGIBILITY_ACCOUNT",
+      "block_id": 13,
+      "is_block_start": false,
+      "reason": "responsabilité de sauvegarder les infos de compte, prolonge",
+      "legal_nature": "OBLIGATION",
+      "legal_nature_marker": "you will"
+    },
+    {
+      "id": 75,
+      "theme": "ELIGIBILITY_ACCOUNT",
+      "block_id": 13,
+      "is_block_start": false,
+      "reason": "responsabilité pour usage non autorisé du compte, prolonge",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 76,
+      "theme": "PAYMENT_BILLING",
+      "block_id": 14,
+      "is_block_start": true,
+      "rationale": "collecte du paiement de réservation, cite « collect your payment information »",
+      "rationale_codes": {
+        "decision_trigger": "topic_keyword",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "collect your payment information",
+        "revised_from_plan": false,
+        "confidence": 0.8
+      },
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 77,
+      "theme": "PAYMENT_BILLING",
+      "block_id": 14,
+      "is_block_start": false,
+      "reason": "le fournisseur traite le paiement, prolonge",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 78,
+      "theme": "PAYMENT_BILLING",
+      "block_id": 14,
+      "is_block_start": false,
+      "reason": "droit d'annuler une réservation, prolonge",
+      "legal_nature": "PROHIBITION",
+      "legal_nature_marker": "will not"
+    },
+    {
+      "id": 79,
+      "theme": "PAYMENT_BILLING",
+      "block_id": 14,
+      "is_block_start": false,
+      "reason": "vérification d'identité pour traiter la réservation, prolonge",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 80,
+      "theme": "PAYMENT_BILLING",
+      "block_id": 14,
+      "is_block_start": false,
+      "reason": "remède en cas d'indisponibilité de réservation, prolonge",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 81,
+      "theme": "THIRD_PARTY",
+      "block_id": 15,
+      "is_block_start": true,
+      "rationale": "rôle non-agence et fournisseurs tiers, cite « is not a travel agency »",
+      "rationale_codes": {
+        "decision_trigger": "topic_keyword",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "is not a travel agency",
+        "revised_from_plan": false,
+        "confidence": 0.8
+      },
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 82,
+      "theme": "THIRD_PARTY",
+      "block_id": 15,
+      "is_block_start": false,
+      "reason": "pas d'approbation des fournisseurs tiers, prolonge",
+      "legal_nature": "PROHIBITION",
+      "legal_nature_marker": "do not"
+    },
+    {
+      "id": 83,
+      "theme": "THIRD_PARTY",
+      "block_id": 15,
+      "is_block_start": false,
+      "reason": "pas d'endossement des produits tiers, prolonge",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 84,
+      "theme": "THIRD_PARTY",
+      "block_id": 15,
+      "is_block_start": false,
+      "reason": "non-responsabilité sur l'info des tiers, prolonge",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 85,
+      "theme": "THIRD_PARTY",
+      "block_id": 15,
+      "is_block_start": false,
+      "reason": "obligation de respecter les termes du fournisseur, prolonge",
+      "legal_nature": "OBLIGATION",
+      "legal_nature_marker": "you agree to"
+    },
+    {
+      "id": 86,
+      "theme": "THIRD_PARTY",
+      "block_id": 15,
+      "is_block_start": false,
+      "reason": "interactions avec tiers à vos risques, prolonge",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 87,
+      "theme": "THIRD_PARTY",
+      "block_id": 15,
+      "is_block_start": false,
+      "reason": "aucune responsabilité pour actes des fournisseurs tiers, prolonge",
+      "legal_nature": "LIMITATION_DISCLAIMER",
+      "legal_nature_marker": "warranties"
+    },
+    {
+      "id": 88,
+      "theme": "THIRD_PARTY",
+      "block_id": 15,
+      "is_block_start": false,
+      "reason": "liens vers sites de fournisseurs, prolonge",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 89,
+      "theme": "THIRD_PARTY",
+      "block_id": 15,
+      "is_block_start": false,
+      "reason": "renvoi à la section links to third-party sites, prolonge",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 90,
+      "theme": "THIRD_PARTY",
+      "block_id": 16,
+      "is_block_start": true,
+      "rationale": "vacation rentals via affiliate sites, cite « booking vacation rentals with third-party suppliers »",
+      "rationale_codes": {
+        "decision_trigger": "title_marker",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "booking vacation rentals with third-party suppliers",
+        "revised_from_plan": false,
+        "confidence": 0.72
+      },
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 91,
+      "theme": "THIRD_PARTY",
+      "block_id": 16,
+      "is_block_start": false,
+      "reason": "rôle de marketplace pour vacation rentals, prolonge",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 92,
+      "theme": "THIRD_PARTY",
+      "block_id": 16,
+      "is_block_start": false,
+      "reason": "responsabilité de l'usage du site, prolonge",
+      "legal_nature": "OBLIGATION",
+      "legal_nature_marker": "you must"
+    },
+    {
+      "id": 93,
+      "theme": "THIRD_PARTY",
+      "block_id": 16,
+      "is_block_start": false,
+      "reason": "pas de propriété des biens loués, prolonge",
+      "legal_nature": "PROHIBITION",
+      "legal_nature_marker": "do not"
+    },
+    {
+      "id": 94,
+      "theme": "THIRD_PARTY",
+      "block_id": 16,
+      "is_block_start": false,
+      "reason": "litiges relevant des utilisateurs, prolonge",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 95,
+      "theme": "THIRD_PARTY",
+      "block_id": 16,
+      "is_block_start": false,
+      "reason": "accord de location séparé possible, prolonge",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 96,
+      "theme": "THIRD_PARTY",
+      "block_id": 16,
+      "is_block_start": false,
+      "reason": "paiement du service fee à l'advertiser, prolonge",
+      "legal_nature": "OBLIGATION",
+      "legal_nature_marker": "you agree to"
+    },
+    {
+      "id": 97,
+      "theme": "THIRD_PARTY",
+      "block_id": 16,
+      "is_block_start": false,
+      "reason": "affilié agissant comme agent limité, prolonge",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 98,
+      "theme": "THIRD_PARTY",
+      "block_id": 16,
+      "is_block_start": false,
+      "reason": "renvoi aux termes des affiliate sites pour les frais, prolonge",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 99,
+      "theme": "THIRD_PARTY",
+      "block_id": 16,
+      "is_block_start": false,
+      "reason": "acceptation des termes du site affilié, prolonge",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 100,
+      "theme": "THIRD_PARTY",
+      "block_id": 17,
+      "is_block_start": true,
+      "rationale": "exigences de voyage international, cite « international travel reservations »",
+      "rationale_codes": {
+        "decision_trigger": "topic_keyword",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "international travel reservations",
+        "revised_from_plan": false,
+        "confidence": 0.7
+      },
+      "legal_nature": "OBLIGATION",
+      "legal_nature_marker": "you are responsible"
+    },
+    {
+      "id": 101,
+      "theme": "THIRD_PARTY",
+      "block_id": 17,
+      "is_block_start": false,
+      "reason": "consulter ambassade pour passeport/visa, prolonge",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 102,
+      "theme": "THIRD_PARTY",
+      "block_id": 17,
+      "is_block_start": false,
+      "reason": "vérifier les exigences avant départ, prolonge",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 103,
+      "theme": "THIRD_PARTY",
+      "block_id": 17,
+      "is_block_start": false,
+      "reason": "aucune responsabilité pour refus d'entrée, prolonge",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 104,
+      "theme": "THIRD_PARTY",
+      "block_id": 17,
+      "is_block_start": false,
+      "reason": "responsabilité des exigences de santé/vaccins, prolonge",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 105,
+      "theme": "THIRD_PARTY",
+      "block_id": 17,
+      "is_block_start": false,
+      "reason": "risques de certaines destinations, prolonge",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 106,
+      "theme": "THIRD_PARTY",
+      "block_id": 17,
+      "is_block_start": false,
+      "reason": "incitation à vérifier les avertissements de voyage, prolonge",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 107,
+      "theme": "THIRD_PARTY",
+      "block_id": 17,
+      "is_block_start": false,
+      "reason": "aucune garantie/responsabilité sur conseils de voyage, prolonge",
+      "legal_nature": "LIMITATION_DISCLAIMER",
+      "legal_nature_marker": "not liable"
+    },
+    {
+      "id": 108,
+      "theme": "LIABILITY_LIMITATION",
+      "block_id": 18,
+      "is_block_start": true,
+      "rationale": "chapeau de la section limitation de responsabilité, cite « please read this section carefully »",
+      "rationale_codes": {
+        "decision_trigger": "title_marker",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "please read this section carefully",
+        "revised_from_plan": true,
+        "confidence": 0.8
+      },
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 109,
+      "theme": "LIABILITY_LIMITATION",
+      "block_id": 18,
+      "is_block_start": false,
+      "reason": "la section limite la responsabilité, prolonge le chapeau",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 110,
+      "theme": "LIABILITY_LIMITATION",
+      "block_id": 18,
+      "is_block_start": false,
+      "reason": "conseil de consulter un avocat, prolonge",
+      "legal_nature": "PROHIBITION",
+      "legal_nature_marker": "do not"
+    },
+    {
+      "id": 111,
+      "theme": "WARRANTY_DISCLAIMER",
+      "block_id": 19,
+      "is_block_start": true,
+      "rationale": "inexactitudes du contenu, cite « may include inaccuracies or errors »",
+      "rationale_codes": {
+        "decision_trigger": "topic_keyword",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "may include inaccuracies or errors",
+        "revised_from_plan": true,
+        "confidence": 0.72
+      },
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 112,
+      "theme": "WARRANTY_DISCLAIMER",
+      "block_id": 19,
+      "is_block_start": false,
+      "reason": "pas de garantie d'exactitude, prolonge",
+      "legal_nature": "PROHIBITION",
+      "legal_nature_marker": "do not"
+    },
+    {
+      "id": 113,
+      "theme": "WARRANTY_DISCLAIMER",
+      "block_id": 19,
+      "is_block_start": false,
+      "reason": "droit de corriger les erreurs de prix, prolonge",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 114,
+      "theme": "WARRANTY_DISCLAIMER",
+      "block_id": 19,
+      "is_block_start": false,
+      "reason": "aucune représentation sur la pertinence, prolonge",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 115,
+      "theme": "WARRANTY_DISCLAIMER",
+      "block_id": 19,
+      "is_block_start": false,
+      "reason": "fourniture « as is » sans garantie, prolonge",
+      "legal_nature": "LIMITATION_DISCLAIMER",
+      "legal_nature_marker": "as is"
+    },
+    {
+      "id": 116,
+      "theme": "WARRANTY_DISCLAIMER",
+      "block_id": 19,
+      "is_block_start": false,
+      "reason": "disclaimer sur l'absence de virus, prolonge",
+      "legal_nature": "LIMITATION_DISCLAIMER",
+      "legal_nature_marker": "warranties"
+    },
+    {
+      "id": 117,
+      "theme": "WARRANTY_DISCLAIMER",
+      "block_id": 19,
+      "is_block_start": false,
+      "reason": "disclaimer de toutes garanties implicites, prolonge",
+      "legal_nature": "LIMITATION_DISCLAIMER",
+      "legal_nature_marker": "warranties"
+    },
+    {
+      "id": 118,
+      "theme": "WARRANTY_DISCLAIMER",
+      "block_id": 19,
+      "is_block_start": false,
+      "reason": "disclaimer sur l'exactitude du site content, prolonge",
+      "legal_nature": "LIMITATION_DISCLAIMER",
+      "legal_nature_marker": "disclaim"
+    },
+    {
+      "id": 119,
+      "theme": "LIABILITY_LIMITATION",
+      "block_id": 20,
+      "is_block_start": true,
+      "rationale": "exclusions de responsabilité non excluables, cite « shall exclue or limit tripadvisor 's liability »",
+      "rationale_codes": {
+        "decision_trigger": "topic_keyword",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "shall exclue or limit tripadvisor 's liability",
+        "revised_from_plan": true,
+        "confidence": 0.7
+      },
+      "legal_nature": "OBLIGATION",
+      "legal_nature_marker": "shall"
+    },
+    {
+      "id": 120,
+      "theme": "LIABILITY_LIMITATION",
+      "block_id": 20,
+      "is_block_start": false,
+      "reason": "fournisseurs tiers indépendants, prolonge le cadre de responsabilité",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 121,
+      "theme": "LIABILITY_LIMITATION",
+      "block_id": 20,
+      "is_block_start": false,
+      "reason": "non-responsabilité pour actes des fournisseurs, prolonge",
+      "legal_nature": "LIMITATION_DISCLAIMER",
+      "legal_nature_marker": "warranties"
+    },
+    {
+      "id": 122,
+      "theme": "LIABILITY_LIMITATION",
+      "block_id": 20,
+      "is_block_start": false,
+      "reason": "pas de remboursement pour force majeure, prolonge",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 123,
+      "theme": "LIABILITY_LIMITATION",
+      "block_id": 20,
+      "is_block_start": false,
+      "reason": "exclusion des dommages indirects, prolonge",
+      "legal_nature": "LIMITATION_DISCLAIMER",
+      "legal_nature_marker": "in no event"
+    },
+    {
+      "id": 124,
+      "theme": "LIABILITY_LIMITATION",
+      "block_id": 20,
+      "is_block_start": false,
+      "reason": "préservation des droits légaux impératifs, prolonge",
+      "legal_nature": "PROHIBITION",
+      "legal_nature_marker": "do not"
+    },
+    {
+      "id": 125,
+      "theme": "LIABILITY_LIMITATION",
+      "block_id": 20,
+      "is_block_start": false,
+      "reason": "plafonnement de la responsabilité à US$100, prolonge",
+      "legal_nature": "LIMITATION_DISCLAIMER",
+      "legal_nature_marker": "in no event"
+    },
+    {
+      "id": 126,
+      "theme": "LIABILITY_LIMITATION",
+      "block_id": 20,
+      "is_block_start": false,
+      "reason": "allocation du risque entre parties, prolonge",
+      "legal_nature": "LIMITATION_DISCLAIMER",
+      "legal_nature_marker": "limitation of liability"
+    },
+    {
+      "id": 127,
+      "theme": "LIABILITY_LIMITATION",
+      "block_id": 20,
+      "is_block_start": false,
+      "reason": "survie des limitations, prolonge",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 128,
+      "theme": "LIABILITY_LIMITATION",
+      "block_id": 20,
+      "is_block_start": false,
+      "reason": "bénéfice des limitations aux entités du groupe, prolonge",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 129,
+      "theme": "INDEMNIFICATION",
+      "block_id": 21,
+      "is_block_start": true,
+      "rationale": "obligation de défense et indemnisation, cite « defend and indemnify tripadvisor »",
+      "rationale_codes": {
+        "decision_trigger": "topic_keyword",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "defend and indemnify tripadvisor",
+        "revised_from_plan": false,
+        "confidence": 0.9
+      },
+      "legal_nature": "RISK_ALLOCATION",
+      "legal_nature_marker": "indemnify"
+    },
+    {
+      "id": 130,
+      "theme": "INDEMNIFICATION",
+      "block_id": 21,
+      "is_block_start": false,
+      "reason": "item (i) violation de l'agreement, hérite du chapeau",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 131,
+      "theme": "INDEMNIFICATION",
+      "block_id": 21,
+      "is_block_start": false,
+      "reason": "item (ii) violation de la loi/droits tiers, hérite",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 132,
+      "theme": "INDEMNIFICATION",
+      "block_id": 21,
+      "is_block_start": false,
+      "reason": "item (iii) usage du site, hérite",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 133,
+      "theme": "THIRD_PARTY",
+      "block_id": 22,
+      "is_block_start": true,
+      "rationale": "liens vers sites tiers, cite « hyperlinks to websites operated by parties other than tripadvisor »",
+      "rationale_codes": {
+        "decision_trigger": "topic_keyword",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "hyperlinks to websites operated by parties other than tripadvisor",
+        "revised_from_plan": false,
+        "confidence": 0.85
+      },
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 134,
+      "theme": "THIRD_PARTY",
+      "block_id": 22,
+      "is_block_start": false,
+      "reason": "liens fournis pour référence, prolonge",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 135,
+      "theme": "THIRD_PARTY",
+      "block_id": 22,
+      "is_block_start": false,
+      "reason": "pas de contrôle des sites tiers, prolonge",
+      "legal_nature": "PROHIBITION",
+      "legal_nature_marker": "do not"
+    },
+    {
+      "id": 136,
+      "theme": "THIRD_PARTY",
+      "block_id": 22,
+      "is_block_start": false,
+      "reason": "précautions à prendre sur les liens, prolonge",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 137,
+      "theme": "THIRD_PARTY",
+      "block_id": 22,
+      "is_block_start": false,
+      "reason": "pas d'endossement des sites liés, prolonge",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 138,
+      "theme": "THIRD_PARTY",
+      "block_id": 22,
+      "is_block_start": false,
+      "reason": "liaison de profil à un site tiers, prolonge",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 139,
+      "theme": "THIRD_PARTY",
+      "block_id": 22,
+      "is_block_start": false,
+      "reason": "liaison de profil optionnelle/désactivable, prolonge",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 140,
+      "theme": "GOVERNING_LAW",
+      "block_id": 23,
+      "is_block_start": true,
+      "rationale": "usage international et disponibilité aux US, cite « available in the united states »",
+      "rationale_codes": {
+        "decision_trigger": "topic_keyword",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "available in the united states",
+        "revised_from_plan": false,
+        "confidence": 0.68
+      },
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 141,
+      "theme": "GOVERNING_LAW",
+      "block_id": 23,
+      "is_block_start": false,
+      "reason": "sites contrôlés depuis le Massachusetts, prolonge",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 142,
+      "theme": "GOVERNING_LAW",
+      "block_id": 23,
+      "is_block_start": false,
+      "reason": "pas de représentation d'usage hors US, prolonge",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 143,
+      "theme": "GOVERNING_LAW",
+      "block_id": 23,
+      "is_block_start": false,
+      "reason": "accès hors US à l'initiative de l'utilisateur, prolonge",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 144,
+      "theme": "GOVERNING_LAW",
+      "block_id": 23,
+      "is_block_start": false,
+      "reason": "soumission aux contrôles d'export US, prolonge",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 145,
+      "theme": "GOVERNING_LAW",
+      "block_id": 23,
+      "is_block_start": false,
+      "reason": "interdiction d'export vers pays embargés, prolonge",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 146,
+      "theme": "GOVERNING_LAW",
+      "block_id": 23,
+      "is_block_start": false,
+      "reason": "garantie de non-résidence dans pays embargés, prolonge",
+      "legal_nature": "SCOPE_APPLICABILITY",
+      "legal_nature_marker": "by using"
+    },
+    {
+      "id": 147,
+      "theme": "LICENSE_IP",
+      "block_id": 24,
+      "is_block_start": true,
+      "rationale": "software copyrighté et licence, cite « is the copyrighted work of tripadvisor »",
+      "rationale_codes": {
+        "decision_trigger": "topic_keyword",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "is the copyrighted work of tripadvisor",
+        "revised_from_plan": false,
+        "confidence": 0.85
+      },
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 148,
+      "theme": "LICENSE_IP",
+      "block_id": 24,
+      "is_block_start": false,
+      "reason": "usage régi par l'EULA, prolonge",
+      "legal_nature": "GOVERNANCE",
+      "legal_nature_marker": "governed by"
+    },
+    {
+      "id": 149,
+      "theme": "LICENSE_IP",
+      "block_id": 24,
+      "is_block_start": false,
+      "reason": "obligation d'accepter la license agreement, prolonge",
+      "legal_nature": "PROHIBITION",
+      "legal_nature_marker": "may not"
+    },
+    {
+      "id": 150,
+      "theme": "LICENSE_IP",
+      "block_id": 24,
+      "is_block_start": false,
+      "reason": "octroi d'une licence limitée d'usage, prolonge",
+      "legal_nature": "RIGHT_GRANT",
+      "legal_nature_marker": "hereby grant"
+    },
+    {
+      "id": 151,
+      "theme": "LICENSE_IP",
+      "block_id": 24,
+      "is_block_start": false,
+      "reason": "software protégé par copyright, prolonge",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 152,
+      "theme": "LICENSE_IP",
+      "block_id": 24,
+      "is_block_start": false,
+      "reason": "interdiction de reproduction du software, prolonge",
+      "legal_nature": "PROHIBITION",
+      "legal_nature_marker": "prohibited"
+    },
+    {
+      "id": 153,
+      "theme": "LICENSE_IP",
+      "block_id": 24,
+      "is_block_start": false,
+      "reason": "poursuite des violateurs, prolonge",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 154,
+      "theme": "LICENSE_IP",
+      "block_id": 24,
+      "is_block_start": false,
+      "reason": "interdiction de copie vers d'autres serveurs, prolonge",
+      "legal_nature": "PROHIBITION",
+      "legal_nature_marker": "prohibited"
+    },
+    {
+      "id": 155,
+      "theme": "LICENSE_IP",
+      "block_id": 24,
+      "is_block_start": false,
+      "reason": "garantie du software selon la license agreement, prolonge",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 156,
+      "theme": "LICENSE_IP",
+      "block_id": 24,
+      "is_block_start": false,
+      "reason": "copyright 2017 du contenu, prolonge la PI",
+      "legal_nature": "META",
+      "legal_nature_marker": "©"
+    },
+    {
+      "id": 157,
+      "theme": "LICENSE_IP",
+      "block_id": 24,
+      "is_block_start": false,
+      "reason": "non-responsabilité du contenu des sites tiers, prolonge",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 158,
+      "theme": "LICENSE_IP",
+      "block_id": 24,
+      "is_block_start": false,
+      "reason": "marques déposées de tripadvisor, prolonge la PI",
+      "legal_nature": "PROHIBITION",
+      "legal_nature_marker": "may not"
+    },
+    {
+      "id": 159,
+      "theme": "LICENSE_IP",
+      "block_id": 24,
+      "is_block_start": false,
+      "reason": "look and feel comme marque/trade dress, prolonge",
+      "legal_nature": "PROHIBITION",
+      "legal_nature_marker": "may not"
+    },
+    {
+      "id": 160,
+      "theme": "LICENSE_IP",
+      "block_id": 24,
+      "is_block_start": false,
+      "reason": "autres marques propriété de leurs détenteurs, prolonge",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 161,
+      "theme": "LICENSE_IP",
+      "block_id": 24,
+      "is_block_start": false,
+      "reason": "référence à des produits sans endossement, prolonge",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 162,
+      "theme": "ACCEPTABLE_USE",
+      "block_id": 25,
+      "is_block_start": true,
+      "rationale": "titre notice and take-down, cite « notice and take-down policy for illegal content »",
+      "rationale_codes": {
+        "decision_trigger": "title_marker",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "notice and take-down policy for illegal content",
+        "revised_from_plan": false,
+        "confidence": 0.78
+      },
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 163,
+      "theme": "ACCEPTABLE_USE",
+      "block_id": 25,
+      "is_block_start": false,
+      "reason": "fonctionnement notice and takedown, prolonge le chapeau",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 164,
+      "theme": "ACCEPTABLE_USE",
+      "block_id": 25,
+      "is_block_start": false,
+      "reason": "procédure de plainte/contact, prolonge",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 165,
+      "theme": "ACCEPTABLE_USE",
+      "block_id": 25,
+      "is_block_start": false,
+      "reason": "lien vers la procédure takedown, prolonge",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 166,
+      "theme": "ACCEPTABLE_USE",
+      "block_id": 25,
+      "is_block_start": false,
+      "reason": "retrait du contenu illégal après procédure, prolonge",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 167,
+      "theme": "MODIFICATION_OF_TERMS",
+      "block_id": 26,
+      "is_block_start": true,
+      "rationale": "modification des termes et du service, cite « may change , add or delete these terms »",
+      "rationale_codes": {
+        "decision_trigger": "topic_keyword",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "may change , add or delete these terms",
+        "revised_from_plan": true,
+        "confidence": 0.8
+      },
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 168,
+      "theme": "MODIFICATION_OF_TERMS",
+      "block_id": 26,
+      "is_block_start": false,
+      "reason": "acceptation des termes amendés, prolonge",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 169,
+      "theme": "MODIFICATION_OF_TERMS",
+      "block_id": 26,
+      "is_block_start": false,
+      "reason": "droit de modifier/suspendre le service, prolonge",
+      "legal_nature": "GOVERNANCE",
+      "legal_nature_marker": "suspend"
+    },
+    {
+      "id": 170,
+      "theme": "MODIFICATION_OF_TERMS",
+      "block_id": 26,
+      "is_block_start": false,
+      "reason": "limites/restrictions d'accès, prolonge",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 171,
+      "theme": "MODIFICATION_OF_TERMS",
+      "block_id": 26,
+      "is_block_start": false,
+      "reason": "usage continu valant acceptation, prolonge",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 172,
+      "theme": "GOVERNING_LAW",
+      "block_id": 27,
+      "is_block_start": true,
+      "rationale": "loi applicable du Massachusetts, cite « governed by the laws of the commonwealth of massachusetts »",
+      "rationale_codes": {
+        "decision_trigger": "topic_keyword",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "governed by the laws of the commonwealth of massachusetts",
+        "revised_from_plan": false,
+        "confidence": 0.88
+      },
+      "legal_nature": "GOVERNANCE",
+      "legal_nature_marker": "governed by"
+    },
+    {
+      "id": 173,
+      "theme": "GOVERNING_LAW",
+      "block_id": 27,
+      "is_block_start": false,
+      "reason": "consentement à la juridiction exclusive, prolonge",
+      "legal_nature": "GOVERNANCE",
+      "legal_nature_marker": "jurisdiction"
+    },
+    {
+      "id": 174,
+      "theme": "GOVERNING_LAW",
+      "block_id": 27,
+      "is_block_start": false,
+      "reason": "résolution des litiges au Massachusetts, prolonge",
+      "legal_nature": "GOVERNANCE",
+      "legal_nature_marker": "jurisdiction"
+    },
+    {
+      "id": 175,
+      "theme": "GOVERNING_LAW",
+      "block_id": 27,
+      "is_block_start": false,
+      "reason": "usage non autorisé dans juridictions non conformes, prolonge",
+      "legal_nature": "GOVERNANCE",
+      "legal_nature_marker": "jurisdiction"
+    },
+    {
+      "id": 176,
+      "theme": "GOVERNING_LAW",
+      "block_id": 27,
+      "is_block_start": false,
+      "reason": "exception pour loi impérative du pays de résidence, prolonge",
+      "legal_nature": "PROHIBITION",
+      "legal_nature_marker": "shall not"
+    },
+    {
+      "id": 177,
+      "theme": "WARRANTY_DISCLAIMER",
+      "block_id": 28,
+      "is_block_start": true,
+      "rationale": "taux de change non vérifiés, cite « currency rates are based on various publicly available sources »",
+      "rationale_codes": {
+        "decision_trigger": "topic_keyword",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "currency rates are based on various publicly available sources",
+        "revised_from_plan": false,
+        "confidence": 0.72
+      },
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 178,
+      "theme": "WARRANTY_DISCLAIMER",
+      "block_id": 28,
+      "is_block_start": false,
+      "reason": "taux non vérifiés, prolonge",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 179,
+      "theme": "WARRANTY_DISCLAIMER",
+      "block_id": 28,
+      "is_block_start": false,
+      "reason": "taux non mis à jour quotidiennement, prolonge",
+      "legal_nature": "PROHIBITION",
+      "legal_nature_marker": "may not"
+    },
+    {
+      "id": 180,
+      "theme": "WARRANTY_DISCLAIMER",
+      "block_id": 28,
+      "is_block_start": false,
+      "reason": "pas de garantie d'exactitude de l'info, prolonge",
+      "legal_nature": "PROHIBITION",
+      "legal_nature_marker": "do not"
+    },
+    {
+      "id": 181,
+      "theme": "WARRANTY_DISCLAIMER",
+      "block_id": 28,
+      "is_block_start": false,
+      "reason": "conseil de consulter un professionnel, prolonge",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 182,
+      "theme": "WARRANTY_DISCLAIMER",
+      "block_id": 28,
+      "is_block_start": false,
+      "reason": "interdiction de revente de l'info, prolonge",
+      "legal_nature": "PROHIBITION",
+      "legal_nature_marker": "prohibited"
+    },
+    {
+      "id": 183,
+      "theme": "LICENSE_IP",
+      "block_id": 29,
+      "is_block_start": true,
+      "rationale": "matériel copyrighté du mobile software, cite « mobile software may use copyrighted material »",
+      "rationale_codes": {
+        "decision_trigger": "topic_keyword",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "mobile software may use copyrighted material",
+        "revised_from_plan": false,
+        "confidence": 0.7
+      },
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 184,
+      "theme": "LICENSE_IP",
+      "block_id": 29,
+      "is_block_start": false,
+      "reason": "termes spécifiques aux apps mobiles, prolonge",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 185,
+      "theme": "LICENSE_IP",
+      "block_id": 29,
+      "is_block_start": false,
+      "reason": "renvoi à la page des licences mobiles, prolonge",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 186,
+      "theme": "MISC_BOILERPLATE",
+      "block_id": 30,
+      "is_block_start": true,
+      "rationale": "clause de relation entre parties, cite « no joint venture , agency , partnership »",
+      "rationale_codes": {
+        "decision_trigger": "topic_keyword",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "no joint venture , agency , partnership",
+        "revised_from_plan": false,
+        "confidence": 0.78
+      },
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 187,
+      "theme": "MISC_BOILERPLATE",
+      "block_id": 30,
+      "is_block_start": false,
+      "reason": "conformité aux lois et requêtes gouvernementales, prolonge le boilerplate",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 188,
+      "theme": "MISC_BOILERPLATE",
+      "block_id": 30,
+      "is_block_start": false,
+      "reason": "délai de prescription des réclamations, prolonge",
+      "legal_nature": "OBLIGATION",
+      "legal_nature_marker": "you will"
+    },
+    {
+      "id": 189,
+      "theme": "MISC_BOILERPLATE",
+      "block_id": 30,
+      "is_block_start": false,
+      "reason": "clause de divisibilité (severability), prolonge",
+      "legal_nature": "LIMITATION_DISCLAIMER",
+      "legal_nature_marker": "disclaim"
+    },
+    {
+      "id": 190,
+      "theme": "MISC_BOILERPLATE",
+      "block_id": 30,
+      "is_block_start": false,
+      "reason": "clause d'intégralité (entire agreement), prolonge",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 191,
+      "theme": "MISC_BOILERPLATE",
+      "block_id": 30,
+      "is_block_start": false,
+      "reason": "admissibilité de la version imprimée, prolonge",
+      "legal_nature": "OBLIGATION",
+      "legal_nature_marker": "shall"
+    },
+    {
+      "id": 192,
+      "theme": "MISC_BOILERPLATE",
+      "block_id": 30,
+      "is_block_start": false,
+      "reason": "disponibilité des termes dans la langue du site, prolonge",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 193,
+      "theme": "MISC_BOILERPLATE",
+      "block_id": 30,
+      "is_block_start": false,
+      "reason": "termes spécifiques non stockés individuellement, prolonge",
+      "legal_nature": "PROHIBITION",
+      "legal_nature_marker": "will not"
+    },
+    {
+      "id": 194,
+      "theme": "MISC_BOILERPLATE",
+      "block_id": 30,
+      "is_block_start": false,
+      "reason": "site pas mis à jour régulièrement, prolonge",
+      "legal_nature": "PROHIBITION",
+      "legal_nature_marker": "may not"
+    },
+    {
+      "id": 195,
+      "theme": "MISC_BOILERPLATE",
+      "block_id": 30,
+      "is_block_start": false,
+      "reason": "noms fictifs sans représentation réelle, prolonge",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 196,
+      "theme": "MISC_BOILERPLATE",
+      "block_id": 30,
+      "is_block_start": false,
+      "reason": "réserve de tous droits non accordés, prolonge",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 197,
+      "theme": "META",
+      "block_id": 31,
+      "is_block_start": true,
+      "rationale": "coordonnées de contact, cite « visit our help center »",
+      "rationale_codes": {
+        "decision_trigger": "topic_keyword",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "visit our help center",
+        "revised_from_plan": true,
+        "confidence": 0.78
+      },
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 198,
+      "theme": "META",
+      "block_id": 31,
+      "is_block_start": false,
+      "reason": "invitation à écrire, prolonge le contact",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 199,
+      "theme": "META",
+      "block_id": 31,
+      "is_block_start": false,
+      "reason": "adresse postale, prolonge le contact",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    }
+  ]
+}

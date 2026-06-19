@@ -1,0 +1,1500 @@
+{
+  "doc": "Amazon",
+  "judge": "claude",
+  "version": "v9.2-nature-derived",
+  "document_plan": {
+    "estimated_n_blocks": 21,
+    "rationale_global": "Conditions d'utilisation Amazon, profil NARRATIVE sans numerotation (sauf id 116). Progression classique d'un ToS : metadonnee de date (id 0), preambule/portee et primaute des service terms (1-6), communications electroniques/privacy (7-10), propriete intellectuelle copyright/marques/brevets (11-19), octroi de licence et restrictions d'usage (20-28), compte et eligibilite/age (29-34), droit de resiliation discretionnaire (35), bloc titre USER_CONTENT avis et contenus (36-44), respect de la PI d'autrui et plainte droit d'auteur (45-46, PI prime), contrat d'expedition/titre/retours-remboursements PAYMENT_BILLING (47-52), disclaimer d'exactitude WARRANTY_DISCLAIMER (53-55), tarification/prix/facturation (56-63), permissions des apps PRIVACY_DATA (64-66), sanctions/export ACCEPTABLE_USE (67-68), tiers THIRD_PARTY (69-73), section titree disclaimer de garanties WARRANTY_DISCLAIMER (74-79), limitation de responsabilite (80), arbitrage DISPUTE_ARBITRATION (81-94), droit applicable GOVERNING_LAW (95), section titree politiques/modification/severabilite MISC_BOILERPLATE (96-100), conditions logicielles LICENSE_IP (101-112), traitement des subpoenas MISC_BOILERPLATE (113-119), section titree notice DMCA LICENSE_IP (120-131). Frontieres portees par les titres nominaux (36, 74, 96, 120) et par les bascules thematiques nettes. Continuite par defaut a l'interieur de chaque sujet.",
+    "segments": [
+      {
+        "start_id": 0,
+        "theme": "META",
+        "rationale": "metadonnee de date de mise a jour",
+        "evidence_span": "last updated"
+      },
+      {
+        "start_id": 1,
+        "theme": "PREAMBLE_SCOPE",
+        "rationale": "ouverture : Amazon fournit les services et conditions de portee",
+        "evidence_span": "provide website features and other products and services"
+      },
+      {
+        "start_id": 7,
+        "theme": "PRIVACY_DATA",
+        "rationale": "renvoi a la privacy notice puis communications electroniques",
+        "evidence_span": "privacy notice"
+      },
+      {
+        "start_id": 11,
+        "theme": "LICENSE_IP",
+        "rationale": "propriete du contenu, copyright, marques",
+        "evidence_span": "the property of amazon"
+      },
+      {
+        "start_id": 20,
+        "theme": "LICENSE_IP",
+        "rationale": "octroi de licence limitee et restrictions",
+        "evidence_span": "grant you a limited"
+      },
+      {
+        "start_id": 29,
+        "theme": "ELIGIBILITY_ACCOUNT",
+        "rationale": "compte amazon, confidentialite, age",
+        "evidence_span": "your own amazon account"
+      },
+      {
+        "start_id": 35,
+        "theme": "TERMINATION",
+        "rationale": "droit de refuser le service et resilier les comptes",
+        "evidence_span": "terminate accounts"
+      },
+      {
+        "start_id": 36,
+        "theme": "USER_CONTENT",
+        "rationale": "titre de section sur avis, commentaires, contenus",
+        "evidence_span": "reviews , comments , communications , and other content"
+      },
+      {
+        "start_id": 45,
+        "theme": "LICENSE_IP",
+        "rationale": "respect de la PI d'autrui et plainte pour infraction (PI prime)",
+        "evidence_span": "the intellectual property of others"
+      },
+      {
+        "start_id": 47,
+        "theme": "PAYMENT_BILLING",
+        "rationale": "contrat d'expedition, titre, retours et remboursements",
+        "evidence_span": "all purchases of physical items"
+      },
+      {
+        "start_id": 53,
+        "theme": "WARRANTY_DISCLAIMER",
+        "rationale": "absence de garantie sur l'exactitude des descriptions",
+        "evidence_span": "as accurate as possible"
+      },
+      {
+        "start_id": 56,
+        "theme": "PAYMENT_BILLING",
+        "rationale": "list price, was price, facturation",
+        "evidence_span": "list price"
+      },
+      {
+        "start_id": 64,
+        "theme": "PRIVACY_DATA",
+        "rationale": "permissions accordees aux apps sur l'appareil",
+        "evidence_span": "grant certain permissions"
+      },
+      {
+        "start_id": 67,
+        "theme": "ACCEPTABLE_USE",
+        "rationale": "interdiction d'usage sous sanctions et restrictions export",
+        "evidence_span": "you may not use any amazon service"
+      },
+      {
+        "start_id": 69,
+        "theme": "THIRD_PARTY",
+        "rationale": "stores et services exploites par des tiers",
+        "evidence_span": "parties other than amazon"
+      },
+      {
+        "start_id": 74,
+        "theme": "WARRANTY_DISCLAIMER",
+        "rationale": "titre de section disclaimer de garanties",
+        "evidence_span": "disclaimer of warranties and limitation of liability"
+      },
+      {
+        "start_id": 80,
+        "theme": "LIABILITY_LIMITATION",
+        "rationale": "Amazon non responsable des dommages",
+        "evidence_span": "will not be liable for any damages"
+      },
+      {
+        "start_id": 81,
+        "theme": "DISPUTE_ARBITRATION",
+        "rationale": "resolution des litiges par arbitrage contraignant",
+        "evidence_span": "binding arbitration"
+      },
+      {
+        "start_id": 95,
+        "theme": "GOVERNING_LAW",
+        "rationale": "lois de l'etat de washington regissent les conditions",
+        "evidence_span": "laws of the state of washington"
+      },
+      {
+        "start_id": 96,
+        "theme": "MISC_BOILERPLATE",
+        "rationale": "titre politiques, modification et severabilite",
+        "evidence_span": "site policies , modification , and severability"
+      },
+      {
+        "start_id": 101,
+        "theme": "LICENSE_IP",
+        "rationale": "conditions logicielles : licence et restrictions sur l'amazon software",
+        "evidence_span": "software terms"
+      },
+      {
+        "start_id": 113,
+        "theme": "MISC_BOILERPLATE",
+        "rationale": "traitement des subpoenas et agent enregistre",
+        "evidence_span": "subpoena"
+      },
+      {
+        "start_id": 120,
+        "theme": "LICENSE_IP",
+        "rationale": "titre notice et procedure de plainte droit d'auteur",
+        "evidence_span": "claims of copyright infringement"
+      }
+    ]
+  },
+  "annotations": [
+    {
+      "id": 0,
+      "theme": "META",
+      "block_id": 0,
+      "is_block_start": true,
+      "rationale": "metadonnee de date, cite « last updated »",
+      "rationale_codes": {
+        "decision_trigger": "document_start",
+        "relation_to_prev": "document_start",
+        "evidence_span": "last updated",
+        "revised_from_plan": false,
+        "confidence": 0.97
+      },
+      "legal_nature": "META",
+      "legal_nature_marker": "last updated"
+    },
+    {
+      "id": 1,
+      "theme": "PREAMBLE_SCOPE",
+      "block_id": 1,
+      "is_block_start": true,
+      "rationale": "ouverture du corps : portee des services Amazon, cite « provide website features and other products and services »",
+      "rationale_codes": {
+        "decision_trigger": "topic_keyword",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "provide website features and other products and services",
+        "revised_from_plan": false,
+        "confidence": 0.92
+      },
+      "legal_nature": "META",
+      "legal_nature_marker": "llc"
+    },
+    {
+      "id": 2,
+      "theme": "PREAMBLE_SCOPE",
+      "block_id": 1,
+      "is_block_start": false,
+      "reason": "conditions auxquelles Amazon fournit les services",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 3,
+      "theme": "PREAMBLE_SCOPE",
+      "block_id": 1,
+      "is_block_start": false,
+      "reason": "acceptation par l'usage",
+      "legal_nature": "SCOPE_APPLICABILITY",
+      "legal_nature_marker": "by using"
+    },
+    {
+      "id": 4,
+      "theme": "PREAMBLE_SCOPE",
+      "block_id": 1,
+      "is_block_start": false,
+      "reason": "termes additionnels possibles",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 5,
+      "theme": "PREAMBLE_SCOPE",
+      "block_id": 1,
+      "is_block_start": false,
+      "reason": "service terms applicables a chaque service",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 6,
+      "theme": "PREAMBLE_SCOPE",
+      "block_id": 1,
+      "is_block_start": false,
+      "reason": "primaute des service terms en cas d'incoherence",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 7,
+      "theme": "PRIVACY_DATA",
+      "block_id": 2,
+      "is_block_start": true,
+      "rationale": "bascule vers la privacy notice et les communications electroniques, cite « privacy notice »",
+      "rationale_codes": {
+        "decision_trigger": "topic_keyword",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "privacy notice",
+        "revised_from_plan": false,
+        "confidence": 0.78
+      },
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 8,
+      "theme": "PRIVACY_DATA",
+      "block_id": 2,
+      "is_block_start": false,
+      "reason": "communication electronique avec Amazon",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 9,
+      "theme": "PRIVACY_DATA",
+      "block_id": 2,
+      "is_block_start": false,
+      "reason": "consentement a recevoir des communications electroniques",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 10,
+      "theme": "PRIVACY_DATA",
+      "block_id": 2,
+      "is_block_start": false,
+      "reason": "valeur juridique des communications electroniques",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 11,
+      "theme": "LICENSE_IP",
+      "block_id": 3,
+      "is_block_start": true,
+      "rationale": "bascule vers la propriete intellectuelle du contenu, cite « the property of amazon »",
+      "rationale_codes": {
+        "decision_trigger": "topic_keyword",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "the property of amazon",
+        "revised_from_plan": false,
+        "confidence": 0.9
+      },
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 12,
+      "theme": "LICENSE_IP",
+      "block_id": 3,
+      "is_block_start": false,
+      "reason": "compilation du contenu propriete exclusive d'Amazon",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 13,
+      "theme": "LICENSE_IP",
+      "block_id": 3,
+      "is_block_start": false,
+      "reason": "liste des marques Amazon",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 14,
+      "theme": "LICENSE_IP",
+      "block_id": 3,
+      "is_block_start": false,
+      "reason": "marques et trade dress d'Amazon",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 15,
+      "theme": "LICENSE_IP",
+      "block_id": 3,
+      "is_block_start": false,
+      "reason": "restriction d'usage des marques d'Amazon",
+      "legal_nature": "PROHIBITION",
+      "legal_nature_marker": "may not"
+    },
+    {
+      "id": 16,
+      "theme": "LICENSE_IP",
+      "block_id": 3,
+      "is_block_start": false,
+      "reason": "marques de tiers",
+      "legal_nature": "PROHIBITION",
+      "legal_nature_marker": "may not"
+    },
+    {
+      "id": 17,
+      "theme": "LICENSE_IP",
+      "block_id": 3,
+      "is_block_start": false,
+      "reason": "brevets d'Amazon",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 18,
+      "theme": "LICENSE_IP",
+      "block_id": 3,
+      "is_block_start": false,
+      "reason": "portions sous licence de brevets",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 19,
+      "theme": "LICENSE_IP",
+      "block_id": 3,
+      "is_block_start": false,
+      "reason": "liste des brevets applicables",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 20,
+      "theme": "LICENSE_IP",
+      "block_id": 4,
+      "is_block_start": true,
+      "rationale": "octroi d'une licence limitee, effet juridique autonome distinct de la simple propriete, cite « grant you a limited »",
+      "rationale_codes": {
+        "decision_trigger": "topic_keyword",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "grant you a limited",
+        "revised_from_plan": false,
+        "confidence": 0.7
+      },
+      "legal_nature": "RIGHT_GRANT",
+      "legal_nature_marker": "grant you"
+    },
+    {
+      "id": 21,
+      "theme": "LICENSE_IP",
+      "block_id": 4,
+      "is_block_start": false,
+      "reason": "exclusions de la licence",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 22,
+      "theme": "LICENSE_IP",
+      "block_id": 4,
+      "is_block_start": false,
+      "reason": "reserve de tous droits non accordes",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 23,
+      "theme": "LICENSE_IP",
+      "block_id": 4,
+      "is_block_start": false,
+      "reason": "interdiction d'exploitation commerciale",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 24,
+      "theme": "LICENSE_IP",
+      "block_id": 4,
+      "is_block_start": false,
+      "reason": "interdiction de framing des elements proprietaires",
+      "legal_nature": "PROHIBITION",
+      "legal_nature_marker": "may not"
+    },
+    {
+      "id": 25,
+      "theme": "LICENSE_IP",
+      "block_id": 4,
+      "is_block_start": false,
+      "reason": "interdiction des meta tags/hidden text",
+      "legal_nature": "PROHIBITION",
+      "legal_nature_marker": "may not"
+    },
+    {
+      "id": 26,
+      "theme": "LICENSE_IP",
+      "block_id": 4,
+      "is_block_start": false,
+      "reason": "interdiction de mauvais usage des services (liee a la licence)",
+      "legal_nature": "PROHIBITION",
+      "legal_nature_marker": "may not"
+    },
+    {
+      "id": 27,
+      "theme": "LICENSE_IP",
+      "block_id": 4,
+      "is_block_start": false,
+      "reason": "usage seulement permis par la loi",
+      "legal_nature": "RIGHT_GRANT",
+      "legal_nature_marker": "you may use"
+    },
+    {
+      "id": 28,
+      "theme": "LICENSE_IP",
+      "block_id": 4,
+      "is_block_start": false,
+      "reason": "resiliation de la licence en cas de non-respect (effet de la licence)",
+      "legal_nature": "PROHIBITION",
+      "legal_nature_marker": "do not"
+    },
+    {
+      "id": 29,
+      "theme": "ELIGIBILITY_ACCOUNT",
+      "block_id": 5,
+      "is_block_start": true,
+      "rationale": "bascule vers le compte Amazon et son acces, cite « your own amazon account »",
+      "rationale_codes": {
+        "decision_trigger": "topic_keyword",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "your own amazon account",
+        "revised_from_plan": false,
+        "confidence": 0.82
+      },
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 30,
+      "theme": "ELIGIBILITY_ACCOUNT",
+      "block_id": 5,
+      "is_block_start": false,
+      "reason": "confidentialite du compte et responsabilite des activites",
+      "legal_nature": "OBLIGATION",
+      "legal_nature_marker": "you agree to"
+    },
+    {
+      "id": 31,
+      "theme": "ELIGIBILITY_ACCOUNT",
+      "block_id": 5,
+      "is_block_start": false,
+      "reason": "vente aux adultes, eligibilite",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 32,
+      "theme": "ELIGIBILITY_ACCOUNT",
+      "block_id": 5,
+      "is_block_start": false,
+      "reason": "usage des moins de 18 ans avec parent",
+      "legal_nature": "RIGHT_GRANT",
+      "legal_nature_marker": "you may use"
+    },
+    {
+      "id": 33,
+      "theme": "ELIGIBILITY_ACCOUNT",
+      "block_id": 5,
+      "is_block_start": false,
+      "reason": "alcool destine aux adultes",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 34,
+      "theme": "ELIGIBILITY_ACCOUNT",
+      "block_id": 5,
+      "is_block_start": false,
+      "reason": "age minimum 21 ans pour l'alcool",
+      "legal_nature": "OBLIGATION",
+      "legal_nature_marker": "you must"
+    },
+    {
+      "id": 35,
+      "theme": "TERMINATION",
+      "block_id": 6,
+      "is_block_start": true,
+      "rationale": "droit discretionnaire de refuser le service et resilier les comptes, cite « terminate accounts »",
+      "rationale_codes": {
+        "decision_trigger": "topic_keyword",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "terminate accounts",
+        "revised_from_plan": false,
+        "confidence": 0.72
+      },
+      "legal_nature": "GOVERNANCE",
+      "legal_nature_marker": "terminate"
+    },
+    {
+      "id": 36,
+      "theme": "USER_CONTENT",
+      "block_id": 7,
+      "is_block_start": true,
+      "rationale": "titre nominal de section, cite « reviews , comments , communications , and other content »",
+      "rationale_codes": {
+        "decision_trigger": "title_marker",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "reviews , comments , communications , and other content",
+        "revised_from_plan": false,
+        "confidence": 0.93
+      },
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 37,
+      "theme": "USER_CONTENT",
+      "block_id": 7,
+      "is_block_start": false,
+      "reason": "conditions du contenu poste par l'utilisateur",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 38,
+      "theme": "USER_CONTENT",
+      "block_id": 7,
+      "is_block_start": false,
+      "reason": "interdiction de fausse identite dans le contenu",
+      "legal_nature": "PROHIBITION",
+      "legal_nature_marker": "may not"
+    },
+    {
+      "id": 39,
+      "theme": "USER_CONTENT",
+      "block_id": 7,
+      "is_block_start": false,
+      "reason": "droit d'Amazon de retirer/editer le contenu",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 40,
+      "theme": "USER_CONTENT",
+      "block_id": 7,
+      "is_block_start": false,
+      "reason": "licence accordee a Amazon sur le contenu poste",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 41,
+      "theme": "USER_CONTENT",
+      "block_id": 7,
+      "is_block_start": false,
+      "reason": "droit d'utiliser le nom soumis",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 42,
+      "theme": "USER_CONTENT",
+      "block_id": 7,
+      "is_block_start": false,
+      "reason": "garanties de l'utilisateur sur le contenu et indemnisation",
+      "legal_nature": "PROHIBITION",
+      "legal_nature_marker": "will not"
+    },
+    {
+      "id": 43,
+      "theme": "USER_CONTENT",
+      "block_id": 7,
+      "is_block_start": false,
+      "reason": "droit de surveiller/editer le contenu",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 44,
+      "theme": "USER_CONTENT",
+      "block_id": 7,
+      "is_block_start": false,
+      "reason": "non-responsabilite pour le contenu poste (effet du regime du contenu)",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 45,
+      "theme": "LICENSE_IP",
+      "block_id": 8,
+      "is_block_start": true,
+      "rationale": "bascule vers le respect de la PI d'autrui, PI prime (§3.1), cite « the intellectual property of others »",
+      "rationale_codes": {
+        "decision_trigger": "topic_keyword",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "the intellectual property of others",
+        "revised_from_plan": false,
+        "confidence": 0.72
+      },
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 46,
+      "theme": "LICENSE_IP",
+      "block_id": 8,
+      "is_block_start": false,
+      "reason": "renvoi a la procedure de plainte pour infraction au copyright",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 47,
+      "theme": "PAYMENT_BILLING",
+      "block_id": 9,
+      "is_block_start": true,
+      "rationale": "bascule vers les achats : contrat d'expedition, cite « all purchases of physical items »",
+      "rationale_codes": {
+        "decision_trigger": "topic_keyword",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "all purchases of physical items",
+        "revised_from_plan": false,
+        "confidence": 0.8
+      },
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 48,
+      "theme": "PAYMENT_BILLING",
+      "block_id": 9,
+      "is_block_start": false,
+      "reason": "transfert du risque et du titre a la livraison",
+      "legal_nature": "DEFINITION",
+      "legal_nature_marker": "means"
+    },
+    {
+      "id": 49,
+      "theme": "PAYMENT_BILLING",
+      "block_id": 9,
+      "is_block_start": false,
+      "reason": "titre des articles retournes",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 50,
+      "theme": "PAYMENT_BILLING",
+      "block_id": 9,
+      "is_block_start": false,
+      "reason": "remboursement sans retour",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 51,
+      "theme": "PAYMENT_BILLING",
+      "block_id": 9,
+      "is_block_start": false,
+      "reason": "titre des articles rembourses",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 52,
+      "theme": "PAYMENT_BILLING",
+      "block_id": 9,
+      "is_block_start": false,
+      "reason": "renvoi au centre des retours/remboursements",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 53,
+      "theme": "WARRANTY_DISCLAIMER",
+      "block_id": 10,
+      "is_block_start": true,
+      "rationale": "bascule vers l'absence de garantie d'exactitude des descriptions, cite « as accurate as possible »",
+      "rationale_codes": {
+        "decision_trigger": "topic_keyword",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "as accurate as possible",
+        "revised_from_plan": false,
+        "confidence": 0.6
+      },
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 54,
+      "theme": "WARRANTY_DISCLAIMER",
+      "block_id": 10,
+      "is_block_start": false,
+      "reason": "Amazon ne garantit pas l'exactitude des descriptions",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 55,
+      "theme": "WARRANTY_DISCLAIMER",
+      "block_id": 10,
+      "is_block_start": false,
+      "reason": "seul remede si produit non conforme : retour",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 56,
+      "theme": "PAYMENT_BILLING",
+      "block_id": 11,
+      "is_block_start": true,
+      "rationale": "definition liee a la tarification (list price), bascule vers prix/facturation, cite « list price »",
+      "rationale_codes": {
+        "decision_trigger": "definition_marker",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "list price",
+        "revised_from_plan": false,
+        "confidence": 0.7
+      },
+      "legal_nature": "DEFINITION",
+      "legal_nature_marker": "means"
+    },
+    {
+      "id": 57,
+      "theme": "PAYMENT_BILLING",
+      "block_id": 11,
+      "is_block_start": false,
+      "reason": "verification des list prices",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 58,
+      "theme": "PAYMENT_BILLING",
+      "block_id": 11,
+      "is_block_start": false,
+      "reason": "was price",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 59,
+      "theme": "PAYMENT_BILLING",
+      "block_id": 11,
+      "is_block_start": false,
+      "reason": "prix non confirme avant commande",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 60,
+      "theme": "PAYMENT_BILLING",
+      "block_id": 11,
+      "is_block_start": false,
+      "reason": "articles mal tarifes",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 61,
+      "theme": "PAYMENT_BILLING",
+      "block_id": 11,
+      "is_block_start": false,
+      "reason": "procedure en cas de prix errone",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 62,
+      "theme": "PAYMENT_BILLING",
+      "block_id": 11,
+      "is_block_start": false,
+      "reason": "politiques d'autres marchands",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 63,
+      "theme": "PAYMENT_BILLING",
+      "block_id": 11,
+      "is_block_start": false,
+      "reason": "moment de la facturation de la carte",
+      "legal_nature": "PROHIBITION",
+      "legal_nature_marker": "do not"
+    },
+    {
+      "id": 64,
+      "theme": "PRIVACY_DATA",
+      "block_id": 12,
+      "is_block_start": true,
+      "rationale": "bascule vers les permissions accordees aux apps sur l'appareil, cite « grant certain permissions »",
+      "rationale_codes": {
+        "decision_trigger": "topic_keyword",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "grant certain permissions",
+        "revised_from_plan": false,
+        "confidence": 0.68
+      },
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 65,
+      "theme": "PRIVACY_DATA",
+      "block_id": 12,
+      "is_block_start": false,
+      "reason": "info sur les permissions par l'appareil",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 66,
+      "theme": "PRIVACY_DATA",
+      "block_id": 12,
+      "is_block_start": false,
+      "reason": "renvoi pour en savoir plus sur les permissions",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 67,
+      "theme": "ACCEPTABLE_USE",
+      "block_id": 13,
+      "is_block_start": true,
+      "rationale": "bascule vers l'interdiction d'usage sous sanctions, effet juridique autonome, cite « you may not use any amazon service »",
+      "rationale_codes": {
+        "decision_trigger": "modal_verb",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "you may not use any amazon service",
+        "revised_from_plan": false,
+        "confidence": 0.72
+      },
+      "legal_nature": "PROHIBITION",
+      "legal_nature_marker": "may not"
+    },
+    {
+      "id": 68,
+      "theme": "ACCEPTABLE_USE",
+      "block_id": 13,
+      "is_block_start": false,
+      "reason": "respect des restrictions d'export/re-export",
+      "legal_nature": "OBLIGATION",
+      "legal_nature_marker": "you must"
+    },
+    {
+      "id": 69,
+      "theme": "THIRD_PARTY",
+      "block_id": 14,
+      "is_block_start": true,
+      "rationale": "bascule vers les tiers exploitant des stores/services, cite « parties other than amazon »",
+      "rationale_codes": {
+        "decision_trigger": "topic_keyword",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "parties other than amazon",
+        "revised_from_plan": false,
+        "confidence": 0.85
+      },
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 70,
+      "theme": "THIRD_PARTY",
+      "block_id": 14,
+      "is_block_start": false,
+      "reason": "liens vers des sites affilies/tiers",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 71,
+      "theme": "THIRD_PARTY",
+      "block_id": 14,
+      "is_block_start": false,
+      "reason": "non-responsabilite des offres de tiers",
+      "legal_nature": "PROHIBITION",
+      "legal_nature_marker": "do not"
+    },
+    {
+      "id": 72,
+      "theme": "THIRD_PARTY",
+      "block_id": 14,
+      "is_block_start": false,
+      "reason": "non-responsabilite des actions des tiers",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 73,
+      "theme": "THIRD_PARTY",
+      "block_id": 14,
+      "is_block_start": false,
+      "reason": "invitation a revoir les conditions des tiers",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 74,
+      "theme": "WARRANTY_DISCLAIMER",
+      "block_id": 15,
+      "is_block_start": true,
+      "rationale": "titre nominal de section, cite « disclaimer of warranties and limitation of liability »",
+      "rationale_codes": {
+        "decision_trigger": "title_marker",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "disclaimer of warranties and limitation of liability",
+        "revised_from_plan": false,
+        "confidence": 0.9
+      },
+      "legal_nature": "LIMITATION_DISCLAIMER",
+      "legal_nature_marker": "warranties"
+    },
+    {
+      "id": 75,
+      "theme": "WARRANTY_DISCLAIMER",
+      "block_id": 15,
+      "is_block_start": false,
+      "reason": "services fournis « as is » / « as available »",
+      "legal_nature": "LIMITATION_DISCLAIMER",
+      "legal_nature_marker": "as is"
+    },
+    {
+      "id": 76,
+      "theme": "WARRANTY_DISCLAIMER",
+      "block_id": 15,
+      "is_block_start": false,
+      "reason": "aucune representation ou garantie",
+      "legal_nature": "LIMITATION_DISCLAIMER",
+      "legal_nature_marker": "warranties"
+    },
+    {
+      "id": 77,
+      "theme": "WARRANTY_DISCLAIMER",
+      "block_id": 15,
+      "is_block_start": false,
+      "reason": "usage aux risques de l'utilisateur",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 78,
+      "theme": "WARRANTY_DISCLAIMER",
+      "block_id": 15,
+      "is_block_start": false,
+      "reason": "exclusion des garanties implicites",
+      "legal_nature": "LIMITATION_DISCLAIMER",
+      "legal_nature_marker": "warranties"
+    },
+    {
+      "id": 79,
+      "theme": "WARRANTY_DISCLAIMER",
+      "block_id": 15,
+      "is_block_start": false,
+      "reason": "pas de garantie d'absence de virus",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 80,
+      "theme": "LIABILITY_LIMITATION",
+      "block_id": 16,
+      "is_block_start": true,
+      "rationale": "bascule vers la limitation de responsabilite pour dommages (§3.1 responsabilite vs garantie), cite « will not be liable for any damages »",
+      "rationale_codes": {
+        "decision_trigger": "topic_keyword",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "will not be liable for any damages",
+        "revised_from_plan": false,
+        "confidence": 0.78
+      },
+      "legal_nature": "PROHIBITION",
+      "legal_nature_marker": "will not"
+    },
+    {
+      "id": 81,
+      "theme": "DISPUTE_ARBITRATION",
+      "block_id": 17,
+      "is_block_start": true,
+      "rationale": "bascule vers la resolution des litiges par arbitrage contraignant, cite « binding arbitration »",
+      "rationale_codes": {
+        "decision_trigger": "topic_keyword",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "binding arbitration",
+        "revised_from_plan": false,
+        "confidence": 0.9
+      },
+      "legal_nature": "GOVERNANCE",
+      "legal_nature_marker": "arbitration"
+    },
+    {
+      "id": 82,
+      "theme": "DISPUTE_ARBITRATION",
+      "block_id": 17,
+      "is_block_start": false,
+      "reason": "federal arbitration act applicable",
+      "legal_nature": "GOVERNANCE",
+      "legal_nature_marker": "arbitration"
+    },
+    {
+      "id": 83,
+      "theme": "DISPUTE_ARBITRATION",
+      "block_id": 17,
+      "is_block_start": false,
+      "reason": "pas de juge ni jury en arbitrage",
+      "legal_nature": "GOVERNANCE",
+      "legal_nature_marker": "arbitration"
+    },
+    {
+      "id": 84,
+      "theme": "DISPUTE_ARBITRATION",
+      "block_id": 17,
+      "is_block_start": false,
+      "reason": "pouvoirs de l'arbitre",
+      "legal_nature": "OBLIGATION",
+      "legal_nature_marker": "must"
+    },
+    {
+      "id": 85,
+      "theme": "DISPUTE_ARBITRATION",
+      "block_id": 17,
+      "is_block_start": false,
+      "reason": "procedure pour engager l'arbitrage",
+      "legal_nature": "GOVERNANCE",
+      "legal_nature_marker": "arbitration"
+    },
+    {
+      "id": 86,
+      "theme": "DISPUTE_ARBITRATION",
+      "block_id": 17,
+      "is_block_start": false,
+      "reason": "conduite par l'AAA",
+      "legal_nature": "GOVERNANCE",
+      "legal_nature_marker": "arbitration"
+    },
+    {
+      "id": 87,
+      "theme": "DISPUTE_ARBITRATION",
+      "block_id": 17,
+      "is_block_start": false,
+      "reason": "regles de l'AAA disponibles",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 88,
+      "theme": "DISPUTE_ARBITRATION",
+      "block_id": 17,
+      "is_block_start": false,
+      "reason": "frais regis par les regles de l'AAA",
+      "legal_nature": "GOVERNANCE",
+      "legal_nature_marker": "governed by"
+    },
+    {
+      "id": 89,
+      "theme": "DISPUTE_ARBITRATION",
+      "block_id": 17,
+      "is_block_start": false,
+      "reason": "remboursement des frais sous conditions",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 90,
+      "theme": "DISPUTE_ARBITRATION",
+      "block_id": 17,
+      "is_block_start": false,
+      "reason": "frais d'avocat en arbitrage",
+      "legal_nature": "PROHIBITION",
+      "legal_nature_marker": "will not"
+    },
+    {
+      "id": 91,
+      "theme": "DISPUTE_ARBITRATION",
+      "block_id": 17,
+      "is_block_start": false,
+      "reason": "modalites de conduite de l'arbitrage",
+      "legal_nature": "GOVERNANCE",
+      "legal_nature_marker": "arbitration"
+    },
+    {
+      "id": 92,
+      "theme": "DISPUTE_ARBITRATION",
+      "block_id": 17,
+      "is_block_start": false,
+      "reason": "renonciation aux actions collectives",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 93,
+      "theme": "DISPUTE_ARBITRATION",
+      "block_id": 17,
+      "is_block_start": false,
+      "reason": "renonciation au jury si proces",
+      "legal_nature": "GOVERNANCE",
+      "legal_nature_marker": "arbitration"
+    },
+    {
+      "id": 94,
+      "theme": "DISPUTE_ARBITRATION",
+      "block_id": 17,
+      "is_block_start": false,
+      "reason": "exception : recours en justice pour PI",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 95,
+      "theme": "GOVERNING_LAW",
+      "block_id": 18,
+      "is_block_start": true,
+      "rationale": "bascule vers le droit applicable (Washington), cite « laws of the state of washington »",
+      "rationale_codes": {
+        "decision_trigger": "topic_keyword",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "laws of the state of washington",
+        "revised_from_plan": false,
+        "confidence": 0.85
+      },
+      "legal_nature": "GOVERNANCE",
+      "legal_nature_marker": "arbitration"
+    },
+    {
+      "id": 96,
+      "theme": "MISC_BOILERPLATE",
+      "block_id": 19,
+      "is_block_start": true,
+      "rationale": "titre nominal de section, cite « site policies , modification , and severability »",
+      "rationale_codes": {
+        "decision_trigger": "title_marker",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "site policies , modification , and severability",
+        "revised_from_plan": false,
+        "confidence": 0.78
+      },
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 97,
+      "theme": "MISC_BOILERPLATE",
+      "block_id": 19,
+      "is_block_start": false,
+      "reason": "renvoi aux autres politiques",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 98,
+      "theme": "MISC_BOILERPLATE",
+      "block_id": 19,
+      "is_block_start": false,
+      "reason": "ces politiques regissent aussi l'usage",
+      "legal_nature": "SCOPE_APPLICABILITY",
+      "legal_nature_marker": "govern your use"
+    },
+    {
+      "id": 99,
+      "theme": "MISC_BOILERPLATE",
+      "block_id": 19,
+      "is_block_start": false,
+      "reason": "droit de modifier les conditions",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 100,
+      "theme": "MISC_BOILERPLATE",
+      "block_id": 19,
+      "is_block_start": false,
+      "reason": "clause de severabilite",
+      "legal_nature": "PROHIBITION",
+      "legal_nature_marker": "shall not"
+    },
+    {
+      "id": 101,
+      "theme": "LICENSE_IP",
+      "block_id": 20,
+      "is_block_start": true,
+      "rationale": "bascule vers les conditions logicielles (software terms) regissant l'amazon software, cite « software terms »",
+      "rationale_codes": {
+        "decision_trigger": "definition_marker",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "software terms",
+        "revised_from_plan": false,
+        "confidence": 0.7
+      },
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 102,
+      "theme": "LICENSE_IP",
+      "block_id": 20,
+      "is_block_start": false,
+      "reason": "sous-titre : use of the amazon software",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 103,
+      "theme": "LICENSE_IP",
+      "block_id": 20,
+      "is_block_start": false,
+      "reason": "usage du logiciel limite a l'usage des services",
+      "legal_nature": "RIGHT_GRANT",
+      "legal_nature_marker": "you may use"
+    },
+    {
+      "id": 104,
+      "theme": "LICENSE_IP",
+      "block_id": 20,
+      "is_block_start": false,
+      "reason": "restrictions sur le logiciel",
+      "legal_nature": "PROHIBITION",
+      "legal_nature_marker": "may not"
+    },
+    {
+      "id": 105,
+      "theme": "LICENSE_IP",
+      "block_id": 20,
+      "is_block_start": false,
+      "reason": "logiciel propriete d'Amazon protege par copyright",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 106,
+      "theme": "LICENSE_IP",
+      "block_id": 20,
+      "is_block_start": false,
+      "reason": "sous-titre : use of third party services (sous le bloc software)",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 107,
+      "theme": "LICENSE_IP",
+      "block_id": 20,
+      "is_block_start": false,
+      "reason": "usage de services tiers via le logiciel",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 108,
+      "theme": "LICENSE_IP",
+      "block_id": 20,
+      "is_block_start": false,
+      "reason": "politiques des tiers applicables",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 109,
+      "theme": "LICENSE_IP",
+      "block_id": 20,
+      "is_block_start": false,
+      "reason": "interdiction de reverse engineering du logiciel",
+      "legal_nature": "PROHIBITION",
+      "legal_nature_marker": "may not"
+    },
+    {
+      "id": 110,
+      "theme": "LICENSE_IP",
+      "block_id": 20,
+      "is_block_start": false,
+      "reason": "mises a jour du logiciel",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 111,
+      "theme": "LICENSE_IP",
+      "block_id": 20,
+      "is_block_start": false,
+      "reason": "usage gouvernemental US du logiciel",
+      "legal_nature": "RIGHT_GRANT",
+      "legal_nature_marker": "grant you"
+    },
+    {
+      "id": 112,
+      "theme": "LICENSE_IP",
+      "block_id": 20,
+      "is_block_start": false,
+      "reason": "primaute d'autres termes (open-source) sur des portions",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 113,
+      "theme": "MISC_BOILERPLATE",
+      "block_id": 21,
+      "is_block_start": true,
+      "rationale": "bascule vers le traitement des subpoenas, sujet procedural autonome, cite « subpoena »",
+      "rationale_codes": {
+        "decision_trigger": "topic_keyword",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "subpoena",
+        "revised_from_plan": false,
+        "confidence": 0.72
+      },
+      "legal_nature": "PROHIBITION",
+      "legal_nature_marker": "will not"
+    },
+    {
+      "id": 114,
+      "theme": "MISC_BOILERPLATE",
+      "block_id": 21,
+      "is_block_start": false,
+      "reason": "signification des subpoenas a l'agent enregistre",
+      "legal_nature": "OBLIGATION",
+      "legal_nature_marker": "must"
+    },
+    {
+      "id": 115,
+      "theme": "MISC_BOILERPLATE",
+      "block_id": 21,
+      "is_block_start": false,
+      "reason": "adresse de CSC dans le washington",
+      "legal_nature": "GOVERNANCE",
+      "legal_nature_marker": "jurisdiction"
+    },
+    {
+      "id": 116,
+      "theme": "MISC_BOILERPLATE",
+      "block_id": 21,
+      "is_block_start": false,
+      "reason": "adresse (suite) deschutes way",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 117,
+      "theme": "MISC_BOILERPLATE",
+      "block_id": 21,
+      "is_block_start": false,
+      "reason": "attn : legal department -- subpoena (suite de l'adresse)",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 118,
+      "theme": "MISC_BOILERPLATE",
+      "block_id": 21,
+      "is_block_start": false,
+      "reason": "info exacte facilite le traitement",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 119,
+      "theme": "MISC_BOILERPLATE",
+      "block_id": 21,
+      "is_block_start": false,
+      "reason": "details des informations a fournir",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 120,
+      "theme": "LICENSE_IP",
+      "block_id": 22,
+      "is_block_start": true,
+      "rationale": "titre nominal de section sur la procedure de plainte droit d'auteur (PI prime §3.1), cite « claims of copyright infringement »",
+      "rationale_codes": {
+        "decision_trigger": "title_marker",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "claims of copyright infringement",
+        "revised_from_plan": false,
+        "confidence": 0.85
+      },
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 121,
+      "theme": "LICENSE_IP",
+      "block_id": 22,
+      "is_block_start": false,
+      "reason": "soumission de la plainte via formulaire",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 122,
+      "theme": "LICENSE_IP",
+      "block_id": 22,
+      "is_block_start": false,
+      "reason": "reponse rapide aux titulaires de droits",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 123,
+      "theme": "LICENSE_IP",
+      "block_id": 22,
+      "is_block_start": false,
+      "reason": "chapeau des informations a fournir par ecrit",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 124,
+      "theme": "LICENSE_IP",
+      "block_id": 22,
+      "is_block_start": false,
+      "reason": "item : signature physique de la personne autorisee",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 125,
+      "theme": "LICENSE_IP",
+      "block_id": 22,
+      "is_block_start": false,
+      "reason": "item : description de l'oeuvre",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 126,
+      "theme": "LICENSE_IP",
+      "block_id": 22,
+      "is_block_start": false,
+      "reason": "item : localisation du materiel infractionnel",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 127,
+      "theme": "LICENSE_IP",
+      "block_id": 22,
+      "is_block_start": false,
+      "reason": "item : coordonnees du plaignant",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 128,
+      "theme": "LICENSE_IP",
+      "block_id": 22,
+      "is_block_start": false,
+      "reason": "item : declaration de bonne foi",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 129,
+      "theme": "LICENSE_IP",
+      "block_id": 22,
+      "is_block_start": false,
+      "reason": "item : declaration sous peine de parjure",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 130,
+      "theme": "LICENSE_IP",
+      "block_id": 22,
+      "is_block_start": false,
+      "reason": "agent copyright d'Amazon pour les notifications",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 131,
+      "theme": "LICENSE_IP",
+      "block_id": 22,
+      "is_block_start": false,
+      "reason": "note : procedure exclusive de notification d'infraction",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    }
+  ]
+}

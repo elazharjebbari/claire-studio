@@ -1,0 +1,4898 @@
+{
+  "doc": "Skype",
+  "judge": "claude",
+  "version": "v9.2-nature-derived",
+  "document_plan": {
+    "estimated_n_blocks": 58,
+    "rationale_global": "ToS Skype long et fortement numéroté (86 phrases avec numérotation, 22 titres). La structure suit des paragraphes numérotés 1.x à 20.x. Le document s'ouvre par un préambule (lire attentivement) suivi d'une série de points-clés mis en avant (emergency, restrictions, numbers, credit, arbitration) qui sont des résumés introductifs (PREAMBLE_SCOPE). Puis les sections numérotées : §1 définitions, §2 acceptation, §3 modification, §4 licence + restrictions, §5 usage logiciel (équipement, updates, emergency, contenu, qualité), §6 compte/usage prohibé/user submissions/export, §7 PI, §8 charges, §9 skype credit, §10 refunds, §11 termination, §12 warranties/liability/indemnity, §13 third party, §14 additional terms, §15 privacy, §16 US gov, §17 contact, §18 general boilerplate, §19 numbers/manager/subscriptions/wifi/sms/premium/video, §20 pay by mobile/arbitration. Continuité par défaut : les conséquences/procédures/exemples prolongent le bloc ouvert.",
+    "segments": [
+      {
+        "start_id": 0,
+        "theme": "PREAMBLE_SCOPE",
+        "rationale": "ouverture, invitation à lire",
+        "evidence_span": "please read carefully before downloading the software"
+      },
+      {
+        "start_id": 4,
+        "theme": "PREAMBLE_SCOPE",
+        "rationale": "point-clé emergency services",
+        "evidence_span": "no access to emergency services"
+      },
+      {
+        "start_id": 7,
+        "theme": "PREAMBLE_SCOPE",
+        "rationale": "point-clé restrictions on use",
+        "evidence_span": "check restrictions on use"
+      },
+      {
+        "start_id": 9,
+        "theme": "PREAMBLE_SCOPE",
+        "rationale": "point-clé ownership of numbers",
+        "evidence_span": "no ownership of numbers"
+      },
+      {
+        "start_id": 14,
+        "theme": "PREAMBLE_SCOPE",
+        "rationale": "point-clé skype credit inactive",
+        "evidence_span": "skype credit becomes inactive after 180 days"
+      },
+      {
+        "start_id": 16,
+        "theme": "PREAMBLE_SCOPE",
+        "rationale": "point-clé arbitration clause",
+        "evidence_span": "arbitration clause and class action waiver"
+      },
+      {
+        "start_id": 18,
+        "theme": "DEFINITIONS",
+        "rationale": "section 1 définitions",
+        "evidence_span": "are licensed"
+      },
+      {
+        "start_id": 27,
+        "theme": "PREAMBLE_SCOPE",
+        "rationale": "section 2 acceptation des termes",
+        "evidence_span": "you must first accept these terms"
+      },
+      {
+        "start_id": 34,
+        "theme": "MODIFICATION_OF_TERMS",
+        "rationale": "section 3 changements aux termes",
+        "evidence_span": "skype may make changes to these terms"
+      },
+      {
+        "start_id": 41,
+        "theme": "LICENSE_IP",
+        "rationale": "section 4 octroi de licence",
+        "evidence_span": "you are granted a limited"
+      },
+      {
+        "start_id": 55,
+        "theme": "ACCEPTABLE_USE",
+        "rationale": "section 5 usage du logiciel - équipement",
+        "evidence_span": "use of the software and products and skype websites"
+      },
+      {
+        "start_id": 61,
+        "theme": "ACCEPTABLE_USE",
+        "rationale": "5.3 updates",
+        "evidence_span": "updates to the software"
+      },
+      {
+        "start_id": 68,
+        "theme": "ACCEPTABLE_USE",
+        "rationale": "5.4 suspension maintenance",
+        "evidence_span": "suspension , technical improvement and maintenance"
+      },
+      {
+        "start_id": 72,
+        "theme": "ACCEPTABLE_USE",
+        "rationale": "5.5 no access to emergency",
+        "evidence_span": "no access to emergency services"
+      },
+      {
+        "start_id": 76,
+        "theme": "ACCEPTABLE_USE",
+        "rationale": "5.6 limited emergency calling",
+        "evidence_span": "limited emergency calling"
+      },
+      {
+        "start_id": 95,
+        "theme": "USER_CONTENT",
+        "rationale": "5.7 content of communications",
+        "evidence_span": "content of communications"
+      },
+      {
+        "start_id": 105,
+        "theme": "USER_CONTENT",
+        "rationale": "5.8 notice and take-down",
+        "evidence_span": "notice and take-down"
+      },
+      {
+        "start_id": 113,
+        "theme": "WARRANTY_DISCLAIMER",
+        "rationale": "5.9 quality cannot guarantee",
+        "evidence_span": "skype can not guarantee"
+      },
+      {
+        "start_id": 116,
+        "theme": "ACCEPTABLE_USE",
+        "rationale": "5.10 changes to products",
+        "evidence_span": "changes to products"
+      },
+      {
+        "start_id": 123,
+        "theme": "LICENSE_IP",
+        "rationale": "5.11 unsolicited ideas/feedback",
+        "evidence_span": "unsolicited ideas"
+      },
+      {
+        "start_id": 125,
+        "theme": "LICENSE_IP",
+        "rationale": "5.12 reports property of skype",
+        "evidence_span": "reports"
+      },
+      {
+        "start_id": 130,
+        "theme": "LICENSE_IP",
+        "rationale": "5.13 linking",
+        "evidence_span": "linking"
+      },
+      {
+        "start_id": 135,
+        "theme": "ELIGIBILITY_ACCOUNT",
+        "rationale": "section 6 user account creation",
+        "evidence_span": "you will be asked to create a user account"
+      },
+      {
+        "start_id": 143,
+        "theme": "ACCEPTABLE_USE",
+        "rationale": "6.2 lawful use",
+        "evidence_span": "lawful use"
+      },
+      {
+        "start_id": 146,
+        "theme": "ACCEPTABLE_USE",
+        "rationale": "6.3 prohibited use",
+        "evidence_span": "prohibited use"
+      },
+      {
+        "start_id": 158,
+        "theme": "USER_CONTENT",
+        "rationale": "6.4 user submissions",
+        "evidence_span": "user submissions"
+      },
+      {
+        "start_id": 174,
+        "theme": "PRIVACY_DATA",
+        "rationale": "6.5 your information",
+        "evidence_span": "your information"
+      },
+      {
+        "start_id": 176,
+        "theme": "ACCEPTABLE_USE",
+        "rationale": "individual use no resell",
+        "evidence_span": "for your individual use"
+      },
+      {
+        "start_id": 178,
+        "theme": "ACCEPTABLE_USE",
+        "rationale": "6.7 export restrictions",
+        "evidence_span": "export restrictions"
+      },
+      {
+        "start_id": 184,
+        "theme": "LICENSE_IP",
+        "rationale": "section 7 intellectual property",
+        "evidence_span": "protected by intellectual property laws"
+      },
+      {
+        "start_id": 197,
+        "theme": "PAYMENT_BILLING",
+        "rationale": "section 8 charges calling phones",
+        "evidence_span": "calling phones and premium rate numbers"
+      },
+      {
+        "start_id": 228,
+        "theme": "PAYMENT_BILLING",
+        "rationale": "section 9 skype credit",
+        "evidence_span": "you can pay for select paid-for products using skype credit"
+      },
+      {
+        "start_id": 239,
+        "theme": "SUBSCRIPTION_RENEWAL",
+        "rationale": "recurring payment subscription",
+        "evidence_span": "subscription basis"
+      },
+      {
+        "start_id": 247,
+        "theme": "PAYMENT_BILLING",
+        "rationale": "section 10 refunds cooling-off",
+        "evidence_span": "cooling-off period"
+      },
+      {
+        "start_id": 257,
+        "theme": "TERMINATION",
+        "rationale": "section 11 termination",
+        "evidence_span": "you may terminate your relationship with skype"
+      },
+      {
+        "start_id": 262,
+        "theme": "WARRANTY_DISCLAIMER",
+        "rationale": "section 12 exclusion of warranties",
+        "evidence_span": "exclusion of warranties"
+      },
+      {
+        "start_id": 266,
+        "theme": "LIABILITY_LIMITATION",
+        "rationale": "12.3 liability not excluded",
+        "evidence_span": "exclude or restrict skype 's liability"
+      },
+      {
+        "start_id": 284,
+        "theme": "INDEMNIFICATION",
+        "rationale": "12.7 indemnify and hold harmless",
+        "evidence_span": "you will indemnify and hold skype harmless"
+      },
+      {
+        "start_id": 285,
+        "theme": "THIRD_PARTY",
+        "rationale": "section 13 third-party websites products services",
+        "evidence_span": "third-party websites , products and services"
+      },
+      {
+        "start_id": 298,
+        "theme": "MISC_BOILERPLATE",
+        "rationale": "section 14 additional terms etiquette",
+        "evidence_span": "skype etiquette"
+      },
+      {
+        "start_id": 305,
+        "theme": "PRIVACY_DATA",
+        "rationale": "section 15 confidential information privacy",
+        "evidence_span": "your confidential information and your privacy"
+      },
+      {
+        "start_id": 308,
+        "theme": "MISC_BOILERPLATE",
+        "rationale": "section 16 US government rights",
+        "evidence_span": "commercial computer software"
+      },
+      {
+        "start_id": 310,
+        "theme": "MISC_BOILERPLATE",
+        "rationale": "section 17 contacting skype",
+        "evidence_span": "to contact skype"
+      },
+      {
+        "start_id": 313,
+        "theme": "MISC_BOILERPLATE",
+        "rationale": "section 18 general electronic communication",
+        "evidence_span": "electronic communication"
+      },
+      {
+        "start_id": 327,
+        "theme": "GOVERNING_LAW",
+        "rationale": "18.9 governing law luxembourg",
+        "evidence_span": "governed by and interpreted in accordance with the laws of luxembourg"
+      },
+      {
+        "start_id": 329,
+        "theme": "LICENSE_IP",
+        "rationale": "18.10 avc/h.264 patent license notice",
+        "evidence_span": "avc/h .264 notice"
+      },
+      {
+        "start_id": 332,
+        "theme": "MISC_BOILERPLATE",
+        "rationale": "section 19 skype numbers",
+        "evidence_span": "skype numbers"
+      },
+      {
+        "start_id": 346,
+        "theme": "ELIGIBILITY_ACCOUNT",
+        "rationale": "19.2 user account on skype manager",
+        "evidence_span": "user account on skype manager"
+      },
+      {
+        "start_id": 354,
+        "theme": "SUBSCRIPTION_RENEWAL",
+        "rationale": "fair usage policy subscriptions",
+        "evidence_span": "fair usage policy"
+      },
+      {
+        "start_id": 376,
+        "theme": "THIRD_PARTY",
+        "rationale": "skype wifi partner terms",
+        "evidence_span": "skype wifi is provided by one of skype 's wifi partners"
+      },
+      {
+        "start_id": 381,
+        "theme": "PAYMENT_BILLING",
+        "rationale": "sms charges",
+        "evidence_span": "each sms message has a limit of 160 characters"
+      },
+      {
+        "start_id": 385,
+        "theme": "SUBSCRIPTION_RENEWAL",
+        "rationale": "skype premium fair usage policy",
+        "evidence_span": "a fair usage policy applies"
+      },
+      {
+        "start_id": 400,
+        "theme": "SUBSCRIPTION_RENEWAL",
+        "rationale": "qik premium fair usage",
+        "evidence_span": "qik premium fair usage policy"
+      },
+      {
+        "start_id": 406,
+        "theme": "SUBSCRIPTION_RENEWAL",
+        "rationale": "video messaging fair use",
+        "evidence_span": "video messaging"
+      },
+      {
+        "start_id": 412,
+        "theme": "PAYMENT_BILLING",
+        "rationale": "section 20 pay by mobile",
+        "evidence_span": "pay for skype credit"
+      },
+      {
+        "start_id": 416,
+        "theme": "DISPUTE_ARBITRATION",
+        "rationale": "20.3 binding arbitration class action waiver",
+        "evidence_span": "binding arbitration and class action waiver"
+      },
+      {
+        "start_id": 453,
+        "theme": "PREAMBLE_SCOPE",
+        "rationale": "acknowledgement final acceptation",
+        "evidence_span": "you expressly acknowledge that you have read these terms"
+      }
+    ]
+  },
+  "annotations": [
+    {
+      "id": 0,
+      "theme": "PREAMBLE_SCOPE",
+      "block_id": 0,
+      "is_block_start": true,
+      "rationale": "ouverture du document, invitation à lire avant de télécharger",
+      "rationale_codes": {
+        "decision_trigger": "document_start",
+        "relation_to_prev": "document_start",
+        "evidence_span": "please read carefully before downloading the software",
+        "revised_from_plan": false,
+        "confidence": 0.97
+      },
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 1,
+      "theme": "PREAMBLE_SCOPE",
+      "block_id": 0,
+      "is_block_start": false,
+      "reason": "importance de lire ce document, prolonge l'ouverture",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 2,
+      "theme": "PREAMBLE_SCOPE",
+      "block_id": 0,
+      "is_block_start": false,
+      "reason": "annonce des points-clés à souligner",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 3,
+      "theme": "PREAMBLE_SCOPE",
+      "block_id": 1,
+      "is_block_start": true,
+      "rationale": "point-clé titre sur l'absence d'accès aux services d'urgence",
+      "rationale_codes": {
+        "decision_trigger": "title_marker",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "no access to emergency services",
+        "revised_from_plan": true,
+        "confidence": 0.7
+      },
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 4,
+      "theme": "PREAMBLE_SCOPE",
+      "block_id": 1,
+      "is_block_start": false,
+      "reason": "précision sur les circonstances limitées (point-clé urgence)",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 5,
+      "theme": "PREAMBLE_SCOPE",
+      "block_id": 1,
+      "is_block_start": false,
+      "reason": "obligation d'arrangements alternatifs, prolonge le point-clé urgence",
+      "legal_nature": "OBLIGATION",
+      "legal_nature_marker": "you must"
+    },
+    {
+      "id": 6,
+      "theme": "PREAMBLE_SCOPE",
+      "block_id": 2,
+      "is_block_start": true,
+      "rationale": "point-clé titre restrictions on use",
+      "rationale_codes": {
+        "decision_trigger": "title_marker",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "check restrictions on use",
+        "revised_from_plan": false,
+        "confidence": 0.7
+      },
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 7,
+      "theme": "PREAMBLE_SCOPE",
+      "block_id": 2,
+      "is_block_start": false,
+      "reason": "responsabilité de l'usage légal, prolonge le point-clé restrictions",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 8,
+      "theme": "PREAMBLE_SCOPE",
+      "block_id": 3,
+      "is_block_start": true,
+      "rationale": "point-clé titre no ownership of numbers",
+      "rationale_codes": {
+        "decision_trigger": "title_marker",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "no ownership of numbers",
+        "revised_from_plan": false,
+        "confidence": 0.7
+      },
+      "legal_nature": "PROHIBITION",
+      "legal_nature_marker": "do not"
+    },
+    {
+      "id": 9,
+      "theme": "PREAMBLE_SCOPE",
+      "block_id": 3,
+      "is_block_start": false,
+      "reason": "skype peut changer le numéro, prolonge le point-clé numéros",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 10,
+      "theme": "PREAMBLE_SCOPE",
+      "block_id": 3,
+      "is_block_start": false,
+      "reason": "interdiction de transfert, prolonge le point-clé numéros",
+      "legal_nature": "PROHIBITION",
+      "legal_nature_marker": "will not"
+    },
+    {
+      "id": 11,
+      "theme": "PREAMBLE_SCOPE",
+      "block_id": 3,
+      "is_block_start": false,
+      "reason": "conformité aux exigences d'allocation, prolonge le point-clé numéros",
+      "legal_nature": "OBLIGATION",
+      "legal_nature_marker": "you must"
+    },
+    {
+      "id": 12,
+      "theme": "PREAMBLE_SCOPE",
+      "block_id": 3,
+      "is_block_start": false,
+      "reason": "renvoi vers paragraphe 19.1, prolonge le point-clé numéros",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 13,
+      "theme": "PREAMBLE_SCOPE",
+      "block_id": 4,
+      "is_block_start": true,
+      "rationale": "point-clé titre skype credit inactive after 180 days",
+      "rationale_codes": {
+        "decision_trigger": "title_marker",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "skype credit becomes inactive after 180 days",
+        "revised_from_plan": false,
+        "confidence": 0.7
+      },
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 14,
+      "theme": "PREAMBLE_SCOPE",
+      "block_id": 4,
+      "is_block_start": false,
+      "reason": "renvoi vers paragraphe 9.2, prolonge le point-clé credit",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 15,
+      "theme": "PREAMBLE_SCOPE",
+      "block_id": 5,
+      "is_block_start": true,
+      "rationale": "point-clé titre arbitration clause and class action waiver",
+      "rationale_codes": {
+        "decision_trigger": "title_marker",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "arbitration clause and class action waiver",
+        "revised_from_plan": false,
+        "confidence": 0.72
+      },
+      "legal_nature": "GOVERNANCE",
+      "legal_nature_marker": "arbitration"
+    },
+    {
+      "id": 16,
+      "theme": "PREAMBLE_SCOPE",
+      "block_id": 5,
+      "is_block_start": false,
+      "reason": "renvoi vers paragraphe 20.3, prolonge le point-clé arbitrage",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 17,
+      "theme": "DEFINITIONS",
+      "block_id": 6,
+      "is_block_start": true,
+      "rationale": "1.1 définit les termes software, internet communications software",
+      "rationale_codes": {
+        "decision_trigger": "numbering",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "internet communications software",
+        "revised_from_plan": false,
+        "confidence": 0.85
+      },
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 18,
+      "theme": "DEFINITIONS",
+      "block_id": 6,
+      "is_block_start": false,
+      "reason": "1.2 définit free products",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 19,
+      "theme": "DEFINITIONS",
+      "block_id": 6,
+      "is_block_start": false,
+      "reason": "1.3 définit paid for products",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 20,
+      "theme": "DEFINITIONS",
+      "block_id": 6,
+      "is_block_start": false,
+      "reason": "1.4 définit skype websites",
+      "legal_nature": "DEFINITION",
+      "legal_nature_marker": "means"
+    },
+    {
+      "id": 21,
+      "theme": "DEFINITIONS",
+      "block_id": 6,
+      "is_block_start": false,
+      "reason": "1.5 définit skype et adresse",
+      "legal_nature": "DEFINITION",
+      "legal_nature_marker": "means"
+    },
+    {
+      "id": 22,
+      "theme": "DEFINITIONS",
+      "block_id": 6,
+      "is_block_start": false,
+      "reason": "définit products",
+      "legal_nature": "DEFINITION",
+      "legal_nature_marker": "means"
+    },
+    {
+      "id": 23,
+      "theme": "DEFINITIONS",
+      "block_id": 6,
+      "is_block_start": false,
+      "reason": "définit you/your",
+      "legal_nature": "DEFINITION",
+      "legal_nature_marker": "means"
+    },
+    {
+      "id": 24,
+      "theme": "DEFINITIONS",
+      "block_id": 6,
+      "is_block_start": false,
+      "reason": "1.6 définit les terms (accord)",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 25,
+      "theme": "DEFINITIONS",
+      "block_id": 6,
+      "is_block_start": false,
+      "reason": "préséance du document, prolonge la définition de l'accord",
+      "legal_nature": "OBLIGATION",
+      "legal_nature_marker": "shall"
+    },
+    {
+      "id": 26,
+      "theme": "PREAMBLE_SCOPE",
+      "block_id": 7,
+      "is_block_start": true,
+      "rationale": "2.1 acceptation des termes, portée et entrée en vigueur de l'accord",
+      "rationale_codes": {
+        "decision_trigger": "numbering",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "you must first accept these terms",
+        "revised_from_plan": false,
+        "confidence": 0.78
+      },
+      "legal_nature": "OBLIGATION",
+      "legal_nature_marker": "you must"
+    },
+    {
+      "id": 27,
+      "theme": "PREAMBLE_SCOPE",
+      "block_id": 7,
+      "is_block_start": false,
+      "reason": "conseil d'imprimer une copie, prolonge l'acceptation",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 28,
+      "theme": "PREAMBLE_SCOPE",
+      "block_id": 7,
+      "is_block_start": false,
+      "reason": "effectivité des termes jusqu'à résiliation, prolonge l'acceptation",
+      "legal_nature": "GOVERNANCE",
+      "legal_nature_marker": "terminate"
+    },
+    {
+      "id": 29,
+      "theme": "ELIGIBILITY_ACCOUNT",
+      "block_id": 8,
+      "is_block_start": true,
+      "rationale": "2.2 conditions d'éligibilité pour accepter les termes (âge, légalité)",
+      "rationale_codes": {
+        "decision_trigger": "numbering",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "you can not accept these terms if",
+        "revised_from_plan": true,
+        "confidence": 0.68
+      },
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 30,
+      "theme": "THIRD_PARTY",
+      "block_id": 9,
+      "is_block_start": true,
+      "rationale": "2.3 partenaire local fournissant les produits avec ses propres conditions",
+      "rationale_codes": {
+        "decision_trigger": "numbering",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "skype 's local partner",
+        "revised_from_plan": true,
+        "confidence": 0.62
+      },
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 31,
+      "theme": "THIRD_PARTY",
+      "block_id": 9,
+      "is_block_start": false,
+      "reason": "le partenaire local peut demander ses propres conditions",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 32,
+      "theme": "THIRD_PARTY",
+      "block_id": 9,
+      "is_block_start": false,
+      "reason": "préséance des local terms en cas d'incohérence, prolonge le sujet partenaire local",
+      "legal_nature": "OBLIGATION",
+      "legal_nature_marker": "shall"
+    },
+    {
+      "id": 33,
+      "theme": "MODIFICATION_OF_TERMS",
+      "block_id": 10,
+      "is_block_start": true,
+      "rationale": "3.1 skype peut modifier les termes de temps à autre",
+      "rationale_codes": {
+        "decision_trigger": "numbering",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "skype may make changes to these terms",
+        "revised_from_plan": false,
+        "confidence": 0.88
+      },
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 34,
+      "theme": "MODIFICATION_OF_TERMS",
+      "block_id": 10,
+      "is_block_start": false,
+      "reason": "publication des changements, procédure de modification",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 35,
+      "theme": "MODIFICATION_OF_TERMS",
+      "block_id": 10,
+      "is_block_start": false,
+      "reason": "publication des changements aux fair usage policies",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 36,
+      "theme": "MODIFICATION_OF_TERMS",
+      "block_id": 10,
+      "is_block_start": false,
+      "reason": "effectivité des changements à la publication",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 37,
+      "theme": "MODIFICATION_OF_TERMS",
+      "block_id": 10,
+      "is_block_start": false,
+      "reason": "invitation à revoir les termes régulièrement",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 38,
+      "theme": "MODIFICATION_OF_TERMS",
+      "block_id": 10,
+      "is_block_start": false,
+      "reason": "acceptation par usage continu, effet de la modification",
+      "legal_nature": "OBLIGATION",
+      "legal_nature_marker": "shall"
+    },
+    {
+      "id": 39,
+      "theme": "MODIFICATION_OF_TERMS",
+      "block_id": 10,
+      "is_block_start": false,
+      "reason": "droit de résilier si désaccord, conséquence de la modification",
+      "legal_nature": "PROHIBITION",
+      "legal_nature_marker": "do not"
+    },
+    {
+      "id": 40,
+      "theme": "LICENSE_IP",
+      "block_id": 11,
+      "is_block_start": true,
+      "rationale": "4.1 octroi d'une licence limitée non-exclusive d'utiliser le logiciel",
+      "rationale_codes": {
+        "decision_trigger": "topic_keyword",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "you are granted a limited",
+        "revised_from_plan": false,
+        "confidence": 0.88
+      },
+      "legal_nature": "RIGHT_GRANT",
+      "legal_nature_marker": "license to"
+    },
+    {
+      "id": 41,
+      "theme": "LICENSE_IP",
+      "block_id": 11,
+      "is_block_start": false,
+      "reason": "précisions sur les administrateurs IT et usage en entreprise",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 42,
+      "theme": "LICENSE_IP",
+      "block_id": 11,
+      "is_block_start": false,
+      "reason": "skype réserve tous les droits non octroyés",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 43,
+      "theme": "LICENSE_IP",
+      "block_id": 11,
+      "is_block_start": false,
+      "reason": "chapeau des restrictions de licence (you may not)",
+      "legal_nature": "PROHIBITION",
+      "legal_nature_marker": "may not"
+    },
+    {
+      "id": 44,
+      "theme": "LICENSE_IP",
+      "block_id": 11,
+      "is_block_start": false,
+      "reason": "(a) interdiction de sous-licence/vente, item de la liste de restrictions",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 45,
+      "theme": "LICENSE_IP",
+      "block_id": 11,
+      "is_block_start": false,
+      "reason": "(b) interdiction de reverse engineering, item de restrictions",
+      "legal_nature": "LIMITATION_DISCLAIMER",
+      "legal_nature_marker": "to the extent permitted"
+    },
+    {
+      "id": 46,
+      "theme": "LICENSE_IP",
+      "block_id": 11,
+      "is_block_start": false,
+      "reason": "(c) interdiction de retirer les notices de copyright, item de restrictions",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 47,
+      "theme": "LICENSE_IP",
+      "block_id": 11,
+      "is_block_start": false,
+      "reason": "(d) interdiction d'usage commercial, item de restrictions",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 48,
+      "theme": "LICENSE_IP",
+      "block_id": 11,
+      "is_block_start": false,
+      "reason": "exception pour communications professionnelles propres",
+      "legal_nature": "PROHIBITION",
+      "legal_nature_marker": "shall not"
+    },
+    {
+      "id": 49,
+      "theme": "LICENSE_IP",
+      "block_id": 11,
+      "is_block_start": false,
+      "reason": "(e) usage uniquement via user account, item de restrictions",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 50,
+      "theme": "THIRD_PARTY",
+      "block_id": 12,
+      "is_block_start": true,
+      "rationale": "4.2 usage avec third-party technology, licence séparée potentielle",
+      "rationale_codes": {
+        "decision_trigger": "topic_keyword",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "third-party technology",
+        "revised_from_plan": true,
+        "confidence": 0.6
+      },
+      "legal_nature": "PROHIBITION",
+      "legal_nature_marker": "may not"
+    },
+    {
+      "id": 51,
+      "theme": "THIRD_PARTY",
+      "block_id": 12,
+      "is_block_start": false,
+      "reason": "code tiers licencié par skype, prolonge le sujet code/technologie tiers",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 52,
+      "theme": "THIRD_PARTY",
+      "block_id": 12,
+      "is_block_start": false,
+      "reason": "notices pour le code tiers, prolonge",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 53,
+      "theme": "THIRD_PARTY",
+      "block_id": 12,
+      "is_block_start": false,
+      "reason": "scripts tiers licenciés par les tiers, prolonge",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 54,
+      "theme": "ACCEPTABLE_USE",
+      "block_id": 13,
+      "is_block_start": true,
+      "rationale": "titre de section 5 sur l'usage du logiciel, des produits et des sites",
+      "rationale_codes": {
+        "decision_trigger": "title_marker",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "use of the software and products and skype websites",
+        "revised_from_plan": false,
+        "confidence": 0.7
+      },
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 55,
+      "theme": "ACCEPTABLE_USE",
+      "block_id": 13,
+      "is_block_start": false,
+      "reason": "5.1 équipement nécessaire, prolonge l'usage du logiciel",
+      "legal_nature": "OBLIGATION",
+      "legal_nature_marker": "you will"
+    },
+    {
+      "id": 56,
+      "theme": "ACCEPTABLE_USE",
+      "block_id": 13,
+      "is_block_start": false,
+      "reason": "responsabilité de fournir l'équipement, prolonge",
+      "legal_nature": "OBLIGATION",
+      "legal_nature_marker": "you are responsible"
+    },
+    {
+      "id": 57,
+      "theme": "ACCEPTABLE_USE",
+      "block_id": 13,
+      "is_block_start": false,
+      "reason": "5.2 usage des capacités de l'équipement, prolonge l'usage",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 58,
+      "theme": "ACCEPTABLE_USE",
+      "block_id": 13,
+      "is_block_start": false,
+      "reason": "consentement du tiers propriétaire du processeur, prolonge",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 59,
+      "theme": "ACCEPTABLE_USE",
+      "block_id": 13,
+      "is_block_start": false,
+      "reason": "représentation d'avoir obtenu le consentement, prolonge",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 60,
+      "theme": "ACCEPTABLE_USE",
+      "block_id": 14,
+      "is_block_start": true,
+      "rationale": "5.3 mises à jour du logiciel, skype peut vérifier la version",
+      "rationale_codes": {
+        "decision_trigger": "numbering",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "updates to the software",
+        "revised_from_plan": false,
+        "confidence": 0.62
+      },
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 61,
+      "theme": "ACCEPTABLE_USE",
+      "block_id": 14,
+      "is_block_start": false,
+      "reason": "termes mis à jour requis pour les updates, prolonge",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 62,
+      "theme": "ACCEPTABLE_USE",
+      "block_id": 14,
+      "is_block_start": false,
+      "reason": "pas d'obligation de fournir des updates, prolonge",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 63,
+      "theme": "ACCEPTABLE_USE",
+      "block_id": 14,
+      "is_block_start": false,
+      "reason": "skype peut imposer/télécharger les updates, prolonge",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 64,
+      "theme": "ACCEPTABLE_USE",
+      "block_id": 14,
+      "is_block_start": false,
+      "reason": "microsoft peut aussi télécharger des updates, prolonge",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 65,
+      "theme": "ACCEPTABLE_USE",
+      "block_id": 14,
+      "is_block_start": false,
+      "reason": "but des updates, prolonge",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 66,
+      "theme": "ACCEPTABLE_USE",
+      "block_id": 14,
+      "is_block_start": false,
+      "reason": "accord de recevoir les updates, prolonge",
+      "legal_nature": "OBLIGATION",
+      "legal_nature_marker": "you agree to"
+    },
+    {
+      "id": 67,
+      "theme": "ACCEPTABLE_USE",
+      "block_id": 15,
+      "is_block_start": true,
+      "rationale": "5.4 suspension, amélioration technique et maintenance",
+      "rationale_codes": {
+        "decision_trigger": "numbering",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "suspension , technical improvement and maintenance",
+        "revised_from_plan": false,
+        "confidence": 0.65
+      },
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 68,
+      "theme": "ACCEPTABLE_USE",
+      "block_id": 15,
+      "is_block_start": false,
+      "reason": "suspension temporaire pendant la maintenance, prolonge",
+      "legal_nature": "GOVERNANCE",
+      "legal_nature_marker": "suspend"
+    },
+    {
+      "id": 69,
+      "theme": "ACCEPTABLE_USE",
+      "block_id": 15,
+      "is_block_start": false,
+      "reason": "publication préalable de la suspension, prolonge",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 70,
+      "theme": "ACCEPTABLE_USE",
+      "block_id": 15,
+      "is_block_start": false,
+      "reason": "pas de droit à dommages pour suspension, conséquence",
+      "legal_nature": "PROHIBITION",
+      "legal_nature_marker": "will not"
+    },
+    {
+      "id": 71,
+      "theme": "ACCEPTABLE_USE",
+      "block_id": 16,
+      "is_block_start": true,
+      "rationale": "5.5 absence d'accès aux services d'urgence, clause autonome de portée du service",
+      "rationale_codes": {
+        "decision_trigger": "numbering",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "no access to emergency services",
+        "revised_from_plan": false,
+        "confidence": 0.68
+      },
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 72,
+      "theme": "ACCEPTABLE_USE",
+      "block_id": 16,
+      "is_block_start": false,
+      "reason": "différences avec téléphonie traditionnelle, prolonge l'urgence",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 73,
+      "theme": "ACCEPTABLE_USE",
+      "block_id": 16,
+      "is_block_start": false,
+      "reason": "reconnaissance des limites d'accès aux urgences, prolonge",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 74,
+      "theme": "ACCEPTABLE_USE",
+      "block_id": 16,
+      "is_block_start": false,
+      "reason": "info sur le 112, prolonge l'urgence",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 75,
+      "theme": "ACCEPTABLE_USE",
+      "block_id": 17,
+      "is_block_start": true,
+      "rationale": "5.6 limited emergency calling, titre de sous-section sur l'appel d'urgence limité",
+      "rationale_codes": {
+        "decision_trigger": "title_marker",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "limited emergency calling",
+        "revised_from_plan": false,
+        "confidence": 0.6
+      },
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 76,
+      "theme": "ACCEPTABLE_USE",
+      "block_id": 17,
+      "is_block_start": false,
+      "reason": "5.6.1 appel d'urgence limité dans certains pays, prolonge",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 77,
+      "theme": "ACCEPTABLE_USE",
+      "block_id": 17,
+      "is_block_start": false,
+      "reason": "listing des pays activés, prolonge",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 78,
+      "theme": "ACCEPTABLE_USE",
+      "block_id": 17,
+      "is_block_start": false,
+      "reason": "indisponibilité ailleurs, prolonge",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 79,
+      "theme": "ACCEPTABLE_USE",
+      "block_id": 17,
+      "is_block_start": false,
+      "reason": "garder la téléphonie traditionnelle, prolonge",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 80,
+      "theme": "ACCEPTABLE_USE",
+      "block_id": 17,
+      "is_block_start": false,
+      "reason": "chapeau des notes (i)-(iv), prolonge",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 81,
+      "theme": "ACCEPTABLE_USE",
+      "block_id": 17,
+      "is_block_start": false,
+      "reason": "(i) panne de courant peut interrompre l'appel, item",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 82,
+      "theme": "ACCEPTABLE_USE",
+      "block_id": 17,
+      "is_block_start": false,
+      "reason": "limites de qualité, item",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 83,
+      "theme": "ACCEPTABLE_USE",
+      "block_id": 17,
+      "is_block_start": false,
+      "reason": "(ii) priorité réseau moindre, item",
+      "legal_nature": "PROHIBITION",
+      "legal_nature_marker": "may not"
+    },
+    {
+      "id": 84,
+      "theme": "ACCEPTABLE_USE",
+      "block_id": 17,
+      "is_block_start": false,
+      "reason": "(iii) indiquer sa localisation à l'opérateur, item",
+      "legal_nature": "OBLIGATION",
+      "legal_nature_marker": "you will"
+    },
+    {
+      "id": 85,
+      "theme": "ACCEPTABLE_USE",
+      "block_id": 17,
+      "is_block_start": false,
+      "reason": "conséquence du défaut d'information, prolonge",
+      "legal_nature": "PROHIBITION",
+      "legal_nature_marker": "may not"
+    },
+    {
+      "id": 86,
+      "theme": "ACCEPTABLE_USE",
+      "block_id": 17,
+      "is_block_start": false,
+      "reason": "pas de responsabilité skype pour appel échoué, prolonge",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 87,
+      "theme": "ACCEPTABLE_USE",
+      "block_id": 17,
+      "is_block_start": false,
+      "reason": "(iv) pas d'appel d'urgence hors pays activés, item",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 88,
+      "theme": "ACCEPTABLE_USE",
+      "block_id": 17,
+      "is_block_start": false,
+      "reason": "5.6.2 configuration de la localisation, prolonge",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 89,
+      "theme": "ACCEPTABLE_USE",
+      "block_id": 17,
+      "is_block_start": false,
+      "reason": "responsabilité de tenir la localisation à jour, prolonge",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 90,
+      "theme": "ACCEPTABLE_USE",
+      "block_id": 17,
+      "is_block_start": false,
+      "reason": "pas de support dans la majorité des pays, prolonge",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 91,
+      "theme": "ACCEPTABLE_USE",
+      "block_id": 17,
+      "is_block_start": false,
+      "reason": "pas de facturation des appels d'urgence, prolonge",
+      "legal_nature": "PROHIBITION",
+      "legal_nature_marker": "will not"
+    },
+    {
+      "id": 92,
+      "theme": "ACCEPTABLE_USE",
+      "block_id": 17,
+      "is_block_start": false,
+      "reason": "ne pas tenter d'appel si pays non supporté, prolonge",
+      "legal_nature": "PROHIBITION",
+      "legal_nature_marker": "agree not to"
+    },
+    {
+      "id": 93,
+      "theme": "ACCEPTABLE_USE",
+      "block_id": 17,
+      "is_block_start": false,
+      "reason": "informer l'autre utilisateur du compte, prolonge",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 94,
+      "theme": "USER_CONTENT",
+      "block_id": 18,
+      "is_block_start": true,
+      "rationale": "5.7 contenu des communications, responsabilité du contenu transmis",
+      "rationale_codes": {
+        "decision_trigger": "numbering",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "content of communications",
+        "revised_from_plan": false,
+        "confidence": 0.7
+      },
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 95,
+      "theme": "USER_CONTENT",
+      "block_id": 18,
+      "is_block_start": false,
+      "reason": "contenu transmis au destinataire, prolonge",
+      "legal_nature": "SCOPE_APPLICABILITY",
+      "legal_nature_marker": "by using"
+    },
+    {
+      "id": 96,
+      "theme": "USER_CONTENT",
+      "block_id": 18,
+      "is_block_start": false,
+      "reason": "responsabilité de l'auteur du contenu, prolonge",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 97,
+      "theme": "USER_CONTENT",
+      "block_id": 18,
+      "is_block_start": false,
+      "reason": "exposition possible à contenu offensant, prolonge",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 98,
+      "theme": "USER_CONTENT",
+      "block_id": 18,
+      "is_block_start": false,
+      "reason": "contenu protégé par PI tiers, prolonge",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 99,
+      "theme": "USER_CONTENT",
+      "block_id": 18,
+      "is_block_start": false,
+      "reason": "responsabilité du contenu communiqué, prolonge",
+      "legal_nature": "OBLIGATION",
+      "legal_nature_marker": "you are responsible"
+    },
+    {
+      "id": 100,
+      "theme": "USER_CONTENT",
+      "block_id": 18,
+      "is_block_start": false,
+      "reason": "responsabilité de ne pas soumettre certain matériel, prolonge",
+      "legal_nature": "PROHIBITION",
+      "legal_nature_marker": "do not"
+    },
+    {
+      "id": 101,
+      "theme": "USER_CONTENT",
+      "block_id": 18,
+      "is_block_start": false,
+      "reason": "droit de skype de revoir le contenu, prolonge",
+      "legal_nature": "OBLIGATION",
+      "legal_nature_marker": "shall"
+    },
+    {
+      "id": 102,
+      "theme": "USER_CONTENT",
+      "block_id": 18,
+      "is_block_start": false,
+      "reason": "skype peut bloquer/retirer le contenu, prolonge",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 103,
+      "theme": "USER_CONTENT",
+      "block_id": 18,
+      "is_block_start": false,
+      "reason": "retrait et résiliation en cas de violation, prolonge",
+      "legal_nature": "GOVERNANCE",
+      "legal_nature_marker": "terminate"
+    },
+    {
+      "id": 104,
+      "theme": "USER_CONTENT",
+      "block_id": 19,
+      "is_block_start": true,
+      "rationale": "5.8 notice and take-down, procédure de retrait des user submissions",
+      "rationale_codes": {
+        "decision_trigger": "topic_keyword",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "notice and take-down",
+        "revised_from_plan": false,
+        "confidence": 0.62
+      },
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 105,
+      "theme": "USER_CONTENT",
+      "block_id": 19,
+      "is_block_start": false,
+      "reason": "retrait sans admission de responsabilité, prolonge",
+      "legal_nature": "OBLIGATION",
+      "legal_nature_marker": "shall"
+    },
+    {
+      "id": 106,
+      "theme": "USER_CONTENT",
+      "block_id": 19,
+      "is_block_start": false,
+      "reason": "pas d'obligation de remettre, prolonge",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 107,
+      "theme": "USER_CONTENT",
+      "block_id": 19,
+      "is_block_start": false,
+      "reason": "procédure de notification d'infraction, prolonge",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 108,
+      "theme": "USER_CONTENT",
+      "block_id": 19,
+      "is_block_start": false,
+      "reason": "lien vers la procédure de takedown, prolonge",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 109,
+      "theme": "USER_CONTENT",
+      "block_id": 19,
+      "is_block_start": false,
+      "reason": "vérification d'identité du plaignant, prolonge",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 110,
+      "theme": "USER_CONTENT",
+      "block_id": 19,
+      "is_block_start": false,
+      "reason": "responsabilité des conséquences de la plainte, prolonge",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 111,
+      "theme": "USER_CONTENT",
+      "block_id": 19,
+      "is_block_start": false,
+      "reason": "responsabilité pour info fausse, prolonge",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 112,
+      "theme": "WARRANTY_DISCLAIMER",
+      "block_id": 20,
+      "is_block_start": true,
+      "rationale": "5.9 qualité, skype ne garantit pas un fonctionnement sans erreur",
+      "rationale_codes": {
+        "decision_trigger": "numbering",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "skype can not guarantee",
+        "revised_from_plan": false,
+        "confidence": 0.7
+      },
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 113,
+      "theme": "WARRANTY_DISCLAIMER",
+      "block_id": 20,
+      "is_block_start": false,
+      "reason": "facteurs affectant la qualité, prolonge le disclaimer",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 114,
+      "theme": "WARRANTY_DISCLAIMER",
+      "block_id": 20,
+      "is_block_start": false,
+      "reason": "pas de responsabilité pour interruption, prolonge",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 115,
+      "theme": "ACCEPTABLE_USE",
+      "block_id": 21,
+      "is_block_start": true,
+      "rationale": "5.10 changements aux produits, skype peut modifier les fonctionnalités",
+      "rationale_codes": {
+        "decision_trigger": "numbering",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "changes to products",
+        "revised_from_plan": false,
+        "confidence": 0.6
+      },
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 116,
+      "theme": "ACCEPTABLE_USE",
+      "block_id": 21,
+      "is_block_start": false,
+      "reason": "variation des produits et fonctionnalités, prolonge",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 117,
+      "theme": "ACCEPTABLE_USE",
+      "block_id": 21,
+      "is_block_start": false,
+      "reason": "exigences techniques sur le site, prolonge",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 118,
+      "theme": "ACCEPTABLE_USE",
+      "block_id": 21,
+      "is_block_start": false,
+      "reason": "droit de résilier si désaccord avec changements, conséquence",
+      "legal_nature": "PROHIBITION",
+      "legal_nature_marker": "do not"
+    },
+    {
+      "id": 119,
+      "theme": "ACCEPTABLE_USE",
+      "block_id": 21,
+      "is_block_start": false,
+      "reason": "mise à niveau possible nécessaire, prolonge",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 120,
+      "theme": "ACCEPTABLE_USE",
+      "block_id": 21,
+      "is_block_start": false,
+      "reason": "limites d'usage et restrictions géographiques, prolonge",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 121,
+      "theme": "ACCEPTABLE_USE",
+      "block_id": 21,
+      "is_block_start": false,
+      "reason": "vérifier le site pour les restrictions, prolonge",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 122,
+      "theme": "LICENSE_IP",
+      "block_id": 22,
+      "is_block_start": true,
+      "rationale": "5.11 unsolicited ideas, skype n'accepte pas les propositions non sollicitées",
+      "rationale_codes": {
+        "decision_trigger": "topic_keyword",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "unsolicited ideas",
+        "revised_from_plan": false,
+        "confidence": 0.58
+      },
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 123,
+      "theme": "LICENSE_IP",
+      "block_id": 22,
+      "is_block_start": false,
+      "reason": "pas d'obligation de confidentialité sur le feedback, prolonge",
+      "legal_nature": "PROHIBITION",
+      "legal_nature_marker": "shall not"
+    },
+    {
+      "id": 124,
+      "theme": "LICENSE_IP",
+      "block_id": 23,
+      "is_block_start": true,
+      "rationale": "5.12 reports, les rapports deviennent propriété de skype (cession de droits PI)",
+      "rationale_codes": {
+        "decision_trigger": "topic_keyword",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "reports",
+        "revised_from_plan": false,
+        "confidence": 0.58
+      },
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 125,
+      "theme": "LICENSE_IP",
+      "block_id": 23,
+      "is_block_start": false,
+      "reason": "lire les termes spécifiques aux reports, prolonge",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 126,
+      "theme": "LICENSE_IP",
+      "block_id": 23,
+      "is_block_start": false,
+      "reason": "reports réputés propriété de skype, prolonge",
+      "legal_nature": "OBLIGATION",
+      "legal_nature_marker": "shall"
+    },
+    {
+      "id": 127,
+      "theme": "LICENSE_IP",
+      "block_id": 23,
+      "is_block_start": false,
+      "reason": "skype possède tous les droits sur les reports, prolonge",
+      "legal_nature": "OBLIGATION",
+      "legal_nature_marker": "shall"
+    },
+    {
+      "id": 128,
+      "theme": "LICENSE_IP",
+      "block_id": 23,
+      "is_block_start": false,
+      "reason": "reports non confidentiels, prolonge",
+      "legal_nature": "PROHIBITION",
+      "legal_nature_marker": "shall not"
+    },
+    {
+      "id": 129,
+      "theme": "LICENSE_IP",
+      "block_id": 24,
+      "is_block_start": true,
+      "rationale": "5.13 linking, conditions pour lier vers le site skype (usage de la marque/site)",
+      "rationale_codes": {
+        "decision_trigger": "topic_keyword",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "linking",
+        "revised_from_plan": false,
+        "confidence": 0.55
+      },
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 130,
+      "theme": "LICENSE_IP",
+      "block_id": 24,
+      "is_block_start": false,
+      "reason": "pas de lien suggérant une association, prolonge",
+      "legal_nature": "PROHIBITION",
+      "legal_nature_marker": "must not"
+    },
+    {
+      "id": 131,
+      "theme": "LICENSE_IP",
+      "block_id": 24,
+      "is_block_start": false,
+      "reason": "interdiction de framer le site, prolonge",
+      "legal_nature": "PROHIBITION",
+      "legal_nature_marker": "may not"
+    },
+    {
+      "id": 132,
+      "theme": "LICENSE_IP",
+      "block_id": 24,
+      "is_block_start": false,
+      "reason": "lecteur flash qik embeddable, prolonge",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 133,
+      "theme": "LICENSE_IP",
+      "block_id": 24,
+      "is_block_start": false,
+      "reason": "skype peut révoquer la permission de lier, prolonge",
+      "legal_nature": "PROHIBITION",
+      "legal_nature_marker": "will not"
+    },
+    {
+      "id": 134,
+      "theme": "ELIGIBILITY_ACCOUNT",
+      "block_id": 25,
+      "is_block_start": true,
+      "rationale": "6.1 création de compte utilisateur, choix d'identifiant et mot de passe",
+      "rationale_codes": {
+        "decision_trigger": "topic_keyword",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "you will be asked to create a user account",
+        "revised_from_plan": false,
+        "confidence": 0.78
+      },
+      "legal_nature": "OBLIGATION",
+      "legal_nature_marker": "you will"
+    },
+    {
+      "id": 135,
+      "theme": "ELIGIBILITY_ACCOUNT",
+      "block_id": 25,
+      "is_block_start": false,
+      "reason": "recommandation sur le mot de passe, prolonge",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 136,
+      "theme": "ELIGIBILITY_ACCOUNT",
+      "block_id": 25,
+      "is_block_start": false,
+      "reason": "usage uniquement via le compte, prolonge",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 137,
+      "theme": "ELIGIBILITY_ACCOUNT",
+      "block_id": 25,
+      "is_block_start": false,
+      "reason": "responsabilité des activités du compte, prolonge",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 138,
+      "theme": "ELIGIBILITY_ACCOUNT",
+      "block_id": 25,
+      "is_block_start": false,
+      "reason": "garder le mot de passe confidentiel, prolonge",
+      "legal_nature": "PROHIBITION",
+      "legal_nature_marker": "shall not"
+    },
+    {
+      "id": 139,
+      "theme": "ELIGIBILITY_ACCOUNT",
+      "block_id": 25,
+      "is_block_start": false,
+      "reason": "changer le mot de passe si compromis, prolonge",
+      "legal_nature": "OBLIGATION",
+      "legal_nature_marker": "you shall"
+    },
+    {
+      "id": 140,
+      "theme": "ELIGIBILITY_ACCOUNT",
+      "block_id": 25,
+      "is_block_start": false,
+      "reason": "ne pas répondre aux demandes non sollicitées, prolonge",
+      "legal_nature": "PROHIBITION",
+      "legal_nature_marker": "do not"
+    },
+    {
+      "id": 141,
+      "theme": "ELIGIBILITY_ACCOUNT",
+      "block_id": 25,
+      "is_block_start": false,
+      "reason": "pas de responsabilité skype pour défaut de conformité, prolonge",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 142,
+      "theme": "ACCEPTABLE_USE",
+      "block_id": 26,
+      "is_block_start": true,
+      "rationale": "6.2 lawful use, obligation d'usage conforme aux lois locales",
+      "rationale_codes": {
+        "decision_trigger": "topic_keyword",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "lawful use",
+        "revised_from_plan": false,
+        "confidence": 0.62
+      },
+      "legal_nature": "OBLIGATION",
+      "legal_nature_marker": "you must"
+    },
+    {
+      "id": 143,
+      "theme": "ACCEPTABLE_USE",
+      "block_id": 26,
+      "is_block_start": false,
+      "reason": "restrictions de téléchargement dans certains pays, prolonge",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 144,
+      "theme": "ACCEPTABLE_USE",
+      "block_id": 26,
+      "is_block_start": false,
+      "reason": "responsabilité d'usage légal, prolonge",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 145,
+      "theme": "ACCEPTABLE_USE",
+      "block_id": 27,
+      "is_block_start": true,
+      "rationale": "6.3 prohibited use, liste des usages interdits",
+      "rationale_codes": {
+        "decision_trigger": "topic_keyword",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "prohibited use",
+        "revised_from_plan": false,
+        "confidence": 0.72
+      },
+      "legal_nature": "PROHIBITION",
+      "legal_nature_marker": "may not"
+    },
+    {
+      "id": 146,
+      "theme": "ACCEPTABLE_USE",
+      "block_id": 27,
+      "is_block_start": false,
+      "reason": "(a) interception de communications, item interdit",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 147,
+      "theme": "ACCEPTABLE_USE",
+      "block_id": 27,
+      "is_block_start": false,
+      "reason": "(b) virus et codes malveillants, item interdit",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 148,
+      "theme": "ACCEPTABLE_USE",
+      "block_id": 27,
+      "is_block_start": false,
+      "reason": "(c) spam phishing pharming, item interdit",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 149,
+      "theme": "ACCEPTABLE_USE",
+      "block_id": 27,
+      "is_block_start": false,
+      "reason": "(d) exposer des tiers à du contenu offensant, item interdit",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 150,
+      "theme": "ACCEPTABLE_USE",
+      "block_id": 27,
+      "is_block_start": false,
+      "reason": "(e) harcèlement/atteinte à la vie privée, item interdit",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 151,
+      "theme": "ACCEPTABLE_USE",
+      "block_id": 27,
+      "is_block_start": false,
+      "reason": "(f) usage de contenu sous droits tiers, item interdit",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 152,
+      "theme": "ACCEPTABLE_USE",
+      "block_id": 27,
+      "is_block_start": false,
+      "reason": "(g) collecte de données personnelles, item interdit",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 153,
+      "theme": "ACCEPTABLE_USE",
+      "block_id": 27,
+      "is_block_start": false,
+      "reason": "(h) attaque DoS/DDoS, item interdit",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 154,
+      "theme": "ACCEPTABLE_USE",
+      "block_id": 27,
+      "is_block_start": false,
+      "reason": "(i) systèmes automatisés/robots, item interdit",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 155,
+      "theme": "ACCEPTABLE_USE",
+      "block_id": 27,
+      "is_block_start": false,
+      "reason": "exception pour moteurs de recherche, prolonge",
+      "legal_nature": "RIGHT_GRANT",
+      "legal_nature_marker": "permission to"
+    },
+    {
+      "id": 156,
+      "theme": "ACCEPTABLE_USE",
+      "block_id": 27,
+      "is_block_start": false,
+      "reason": "skype peut révoquer ces exceptions, prolonge",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 157,
+      "theme": "USER_CONTENT",
+      "block_id": 28,
+      "is_block_start": true,
+      "rationale": "6.4 user submissions, règles sur les contributions des utilisateurs",
+      "rationale_codes": {
+        "decision_trigger": "topic_keyword",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "user submissions",
+        "revised_from_plan": false,
+        "confidence": 0.68
+      },
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 158,
+      "theme": "USER_CONTENT",
+      "block_id": 28,
+      "is_block_start": false,
+      "reason": "exposition et responsabilité des submissions, prolonge",
+      "legal_nature": "SCOPE_APPLICABILITY",
+      "legal_nature_marker": "by using"
+    },
+    {
+      "id": 159,
+      "theme": "USER_CONTENT",
+      "block_id": 28,
+      "is_block_start": false,
+      "reason": "skype n'endosse pas les submissions, prolonge",
+      "legal_nature": "LIMITATION_DISCLAIMER",
+      "legal_nature_marker": "disclaim"
+    },
+    {
+      "id": 160,
+      "theme": "USER_CONTENT",
+      "block_id": 28,
+      "is_block_start": false,
+      "reason": "chapeau des représentations/garanties, prolonge",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 161,
+      "theme": "USER_CONTENT",
+      "block_id": 28,
+      "is_block_start": false,
+      "reason": "(i) détention des licences et droits PI, item",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 162,
+      "theme": "USER_CONTENT",
+      "block_id": 28,
+      "is_block_start": false,
+      "reason": "(ii) consentement des personnes identifiables, item",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 163,
+      "theme": "USER_CONTENT",
+      "block_id": 28,
+      "is_block_start": false,
+      "reason": "ne pas utiliser le contenu tiers sans permission, prolonge",
+      "legal_nature": "PROHIBITION",
+      "legal_nature_marker": "shall not"
+    },
+    {
+      "id": 164,
+      "theme": "USER_CONTENT",
+      "block_id": 28,
+      "is_block_start": false,
+      "reason": "contenu tiers protégé par PI, prolonge",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 165,
+      "theme": "USER_CONTENT",
+      "block_id": 28,
+      "is_block_start": false,
+      "reason": "ne pas utiliser de contenu tiers sans permission, prolonge",
+      "legal_nature": "PROHIBITION",
+      "legal_nature_marker": "must not"
+    },
+    {
+      "id": 166,
+      "theme": "USER_CONTENT",
+      "block_id": 28,
+      "is_block_start": false,
+      "reason": "octroi à skype d'une licence sur les submissions, prolonge",
+      "legal_nature": "GOVERNANCE",
+      "legal_nature_marker": "governed by"
+    },
+    {
+      "id": 167,
+      "theme": "USER_CONTENT",
+      "block_id": 28,
+      "is_block_start": false,
+      "reason": "octroi aux autres utilisateurs d'une licence, prolonge",
+      "legal_nature": "RIGHT_GRANT",
+      "legal_nature_marker": "hereby grant"
+    },
+    {
+      "id": 168,
+      "theme": "USER_CONTENT",
+      "block_id": 28,
+      "is_block_start": false,
+      "reason": "renonciation aux droits moraux, prolonge",
+      "legal_nature": "LIMITATION_DISCLAIMER",
+      "legal_nature_marker": "to the extent permitted"
+    },
+    {
+      "id": 169,
+      "theme": "USER_CONTENT",
+      "block_id": 28,
+      "is_block_start": false,
+      "reason": "interdiction de submissions diffamatoires, prolonge",
+      "legal_nature": "PROHIBITION",
+      "legal_nature_marker": "may not"
+    },
+    {
+      "id": 170,
+      "theme": "USER_CONTENT",
+      "block_id": 28,
+      "is_block_start": false,
+      "reason": "interdiction de submissions trompeuses/spam, prolonge",
+      "legal_nature": "PROHIBITION",
+      "legal_nature_marker": "may not"
+    },
+    {
+      "id": 171,
+      "theme": "USER_CONTENT",
+      "block_id": 28,
+      "is_block_start": false,
+      "reason": "ne pas solliciter les utilisateurs à des fins commerciales, prolonge",
+      "legal_nature": "PROHIBITION",
+      "legal_nature_marker": "agree not to"
+    },
+    {
+      "id": 172,
+      "theme": "USER_CONTENT",
+      "block_id": 28,
+      "is_block_start": false,
+      "reason": "ne pas contourner les fonctions de sécurité, prolonge",
+      "legal_nature": "PROHIBITION",
+      "legal_nature_marker": "agree not to"
+    },
+    {
+      "id": 173,
+      "theme": "PRIVACY_DATA",
+      "block_id": 29,
+      "is_block_start": true,
+      "rationale": "6.5 your information, skype peut demander des informations à l'utilisateur",
+      "rationale_codes": {
+        "decision_trigger": "topic_keyword",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "your information",
+        "revised_from_plan": false,
+        "confidence": 0.55
+      },
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 174,
+      "theme": "PRIVACY_DATA",
+      "block_id": 29,
+      "is_block_start": false,
+      "reason": "assurer l'exactitude des informations, prolonge",
+      "legal_nature": "OBLIGATION",
+      "legal_nature_marker": "you shall"
+    },
+    {
+      "id": 175,
+      "theme": "ACCEPTABLE_USE",
+      "block_id": 30,
+      "is_block_start": true,
+      "rationale": "6.6 usage individuel, interdiction de revente/commercialisation",
+      "rationale_codes": {
+        "decision_trigger": "lexical_shift",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "the software and products are for your individual use",
+        "revised_from_plan": true,
+        "confidence": 0.55
+      },
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 176,
+      "theme": "ACCEPTABLE_USE",
+      "block_id": 30,
+      "is_block_start": false,
+      "reason": "interdiction de revendre aux tiers, prolonge l'usage individuel",
+      "legal_nature": "PROHIBITION",
+      "legal_nature_marker": "shall not"
+    },
+    {
+      "id": 177,
+      "theme": "ACCEPTABLE_USE",
+      "block_id": 31,
+      "is_block_start": true,
+      "rationale": "6.7 export restrictions, conformité aux règles d'export du logiciel",
+      "rationale_codes": {
+        "decision_trigger": "topic_keyword",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "export restrictions",
+        "revised_from_plan": false,
+        "confidence": 0.7
+      },
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 178,
+      "theme": "ACCEPTABLE_USE",
+      "block_id": 31,
+      "is_block_start": false,
+      "reason": "conformité aux lois d'export, prolonge",
+      "legal_nature": "OBLIGATION",
+      "legal_nature_marker": "you shall"
+    },
+    {
+      "id": 179,
+      "theme": "ACCEPTABLE_USE",
+      "block_id": 31,
+      "is_block_start": false,
+      "reason": "classification ECCN et pays sous embargo, prolonge",
+      "legal_nature": "PROHIBITION",
+      "legal_nature_marker": "may not"
+    },
+    {
+      "id": 180,
+      "theme": "ACCEPTABLE_USE",
+      "block_id": 31,
+      "is_block_start": false,
+      "reason": "interdiction d'export aux entités sous sanctions, prolonge",
+      "legal_nature": "PROHIBITION",
+      "legal_nature_marker": "may not"
+    },
+    {
+      "id": 181,
+      "theme": "ACCEPTABLE_USE",
+      "block_id": 31,
+      "is_block_start": false,
+      "reason": "renvoi vers BIS et EAR, prolonge",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 182,
+      "theme": "ACCEPTABLE_USE",
+      "block_id": 31,
+      "is_block_start": false,
+      "reason": "certification de non-appartenance aux pays embargo, prolonge",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 183,
+      "theme": "LICENSE_IP",
+      "block_id": 32,
+      "is_block_start": true,
+      "rationale": "7.1 le logiciel contient des informations propriétaires protégées par les lois PI",
+      "rationale_codes": {
+        "decision_trigger": "numbering",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "protected by intellectual property laws",
+        "revised_from_plan": false,
+        "confidence": 0.85
+      },
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 184,
+      "theme": "LICENSE_IP",
+      "block_id": 32,
+      "is_block_start": false,
+      "reason": "7.2 contenu propriété de skype protégé par copyright, prolonge",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 185,
+      "theme": "LICENSE_IP",
+      "block_id": 32,
+      "is_block_start": false,
+      "reason": "contenu non reproductible sans permission, prolonge",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 186,
+      "theme": "LICENSE_IP",
+      "block_id": 32,
+      "is_block_start": false,
+      "reason": "usage personnel non commercial des submissions qik, prolonge",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 187,
+      "theme": "LICENSE_IP",
+      "block_id": 32,
+      "is_block_start": false,
+      "reason": "skype réserve tous les droits non octroyés, prolonge",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 188,
+      "theme": "LICENSE_IP",
+      "block_id": 32,
+      "is_block_start": false,
+      "reason": "7.3 propriété exclusive de la PI par skype, prolonge",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 189,
+      "theme": "LICENSE_IP",
+      "block_id": 32,
+      "is_block_start": false,
+      "reason": "ne pas porter atteinte aux droits PI de skype, prolonge",
+      "legal_nature": "PROHIBITION",
+      "legal_nature_marker": "will not"
+    },
+    {
+      "id": 190,
+      "theme": "LICENSE_IP",
+      "block_id": 32,
+      "is_block_start": false,
+      "reason": "7.4 marques skype et logos, prolonge la PI",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 191,
+      "theme": "LICENSE_IP",
+      "block_id": 32,
+      "is_block_start": false,
+      "reason": "enregistrement des marques dans de nombreux pays, prolonge",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 192,
+      "theme": "LICENSE_IP",
+      "block_id": 32,
+      "is_block_start": false,
+      "reason": "interdiction d'usage des marques skype, prolonge",
+      "legal_nature": "PROHIBITION",
+      "legal_nature_marker": "may not"
+    },
+    {
+      "id": 193,
+      "theme": "LICENSE_IP",
+      "block_id": 32,
+      "is_block_start": false,
+      "reason": "autres marques propriété de leurs titulaires, prolonge",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 194,
+      "theme": "LICENSE_IP",
+      "block_id": 32,
+      "is_block_start": false,
+      "reason": "interdiction d'enregistrer des noms/marques skype, prolonge",
+      "legal_nature": "PROHIBITION",
+      "legal_nature_marker": "shall not"
+    },
+    {
+      "id": 195,
+      "theme": "LICENSE_IP",
+      "block_id": 32,
+      "is_block_start": false,
+      "reason": "renvoi vers les trademark guidelines, prolonge",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 196,
+      "theme": "PAYMENT_BILLING",
+      "block_id": 33,
+      "is_block_start": true,
+      "rationale": "8.1 charges pour appeler des téléphones avec skype credit",
+      "rationale_codes": {
+        "decision_trigger": "numbering",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "calling phones and premium rate numbers with skype credit",
+        "revised_from_plan": false,
+        "confidence": 0.82
+      },
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 197,
+      "theme": "PAYMENT_BILLING",
+      "block_id": 33,
+      "is_block_start": false,
+      "reason": "(i) frais de connexion et tarif minute, item de tarification",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 198,
+      "theme": "PAYMENT_BILLING",
+      "block_id": 33,
+      "is_block_start": false,
+      "reason": "déconnexion après 4h et nouveau frais, prolonge",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 199,
+      "theme": "PAYMENT_BILLING",
+      "block_id": 33,
+      "is_block_start": false,
+      "reason": "(ii) tarifs premium rate, item de tarification",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 200,
+      "theme": "PAYMENT_BILLING",
+      "block_id": 33,
+      "is_block_start": false,
+      "reason": "pas de frais de connexion premium, prolonge",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 201,
+      "theme": "PAYMENT_BILLING",
+      "block_id": 33,
+      "is_block_start": false,
+      "reason": "(iii) skype peut changer les tarifs, prolonge",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 202,
+      "theme": "PAYMENT_BILLING",
+      "block_id": 33,
+      "is_block_start": false,
+      "reason": "nouveau tarif au prochain achat, prolonge",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 203,
+      "theme": "PAYMENT_BILLING",
+      "block_id": 33,
+      "is_block_start": false,
+      "reason": "vérifier les tarifs avant l'appel, prolonge",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 204,
+      "theme": "PAYMENT_BILLING",
+      "block_id": 33,
+      "is_block_start": false,
+      "reason": "ne pas appeler si refus des tarifs, prolonge",
+      "legal_nature": "PROHIBITION",
+      "legal_nature_marker": "do not"
+    },
+    {
+      "id": 205,
+      "theme": "PAYMENT_BILLING",
+      "block_id": 33,
+      "is_block_start": false,
+      "reason": "(iv) durée par incréments d'une minute, prolonge",
+      "legal_nature": "OBLIGATION",
+      "legal_nature_marker": "shall"
+    },
+    {
+      "id": 206,
+      "theme": "PAYMENT_BILLING",
+      "block_id": 33,
+      "is_block_start": false,
+      "reason": "arrondi des fractions de minute, prolonge",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 207,
+      "theme": "PAYMENT_BILLING",
+      "block_id": 33,
+      "is_block_start": false,
+      "reason": "frais de connexion en début d'appel, prolonge",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 208,
+      "theme": "PAYMENT_BILLING",
+      "block_id": 33,
+      "is_block_start": false,
+      "reason": "arrondi des fractions de cent, prolonge",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 209,
+      "theme": "PAYMENT_BILLING",
+      "block_id": 33,
+      "is_block_start": false,
+      "reason": "déduction automatique du solde, prolonge",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 210,
+      "theme": "PAYMENT_BILLING",
+      "block_id": 34,
+      "is_block_start": true,
+      "rationale": "8.2 charges pour autres produits payants, confirmation avant achat",
+      "rationale_codes": {
+        "decision_trigger": "numbering",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "charges for other paid for products",
+        "revised_from_plan": true,
+        "confidence": 0.55
+      },
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 211,
+      "theme": "PAYMENT_BILLING",
+      "block_id": 34,
+      "is_block_start": false,
+      "reason": "skype peut changer les charges, prolonge",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 212,
+      "theme": "PAYMENT_BILLING",
+      "block_id": 34,
+      "is_block_start": false,
+      "reason": "choix d'accepter les nouvelles charges, prolonge",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 213,
+      "theme": "PAYMENT_BILLING",
+      "block_id": 34,
+      "is_block_start": false,
+      "reason": "nouvelles charges au prochain achat, prolonge",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 214,
+      "theme": "PAYMENT_BILLING",
+      "block_id": 35,
+      "is_block_start": true,
+      "rationale": "8.3 offres promotionnelles, produits gratuits en période d'essai",
+      "rationale_codes": {
+        "decision_trigger": "numbering",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "promotional offers",
+        "revised_from_plan": true,
+        "confidence": 0.55
+      },
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 215,
+      "theme": "PAYMENT_BILLING",
+      "block_id": 35,
+      "is_block_start": false,
+      "reason": "droit de facturer en cas d'abus de l'offre, prolonge",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 216,
+      "theme": "PAYMENT_BILLING",
+      "block_id": 36,
+      "is_block_start": true,
+      "rationale": "8.4 taxes, skype peut collecter la TVA au taux applicable",
+      "rationale_codes": {
+        "decision_trigger": "numbering",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "skype may collect vat or other indirect taxes",
+        "revised_from_plan": true,
+        "confidence": 0.6
+      },
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 217,
+      "theme": "PAYMENT_BILLING",
+      "block_id": 36,
+      "is_block_start": false,
+      "reason": "TVA luxembourgeoise 15%, prolonge la clause taxes",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 218,
+      "theme": "PAYMENT_BILLING",
+      "block_id": 36,
+      "is_block_start": false,
+      "reason": "TVA suisse 8%, prolonge",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 219,
+      "theme": "PAYMENT_BILLING",
+      "block_id": 36,
+      "is_block_start": false,
+      "reason": "autres taxes locales, prolonge",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 220,
+      "theme": "PAYMENT_BILLING",
+      "block_id": 36,
+      "is_block_start": false,
+      "reason": "TVA sur vouchers/cartes prépayées, prolonge",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 221,
+      "theme": "PAYMENT_BILLING",
+      "block_id": 36,
+      "is_block_start": false,
+      "reason": "renonciation au remboursement de TVA, prolonge",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 222,
+      "theme": "PAYMENT_BILLING",
+      "block_id": 36,
+      "is_block_start": false,
+      "reason": "solde affiché hors taxes, prolonge",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 223,
+      "theme": "PAYMENT_BILLING",
+      "block_id": 36,
+      "is_block_start": false,
+      "reason": "territoires hors champ TVA UE, prolonge",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 224,
+      "theme": "PAYMENT_BILLING",
+      "block_id": 36,
+      "is_block_start": false,
+      "reason": "liste des territoires exemptés non desservis, prolonge",
+      "legal_nature": "PROHIBITION",
+      "legal_nature_marker": "do not"
+    },
+    {
+      "id": 225,
+      "theme": "PAYMENT_BILLING",
+      "block_id": 37,
+      "is_block_start": true,
+      "rationale": "8.5 third-party charges, usage de données et frais de roaming de l'opérateur mobile",
+      "rationale_codes": {
+        "decision_trigger": "numbering",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "third-party charges",
+        "revised_from_plan": true,
+        "confidence": 0.55
+      },
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 226,
+      "theme": "PAYMENT_BILLING",
+      "block_id": 37,
+      "is_block_start": false,
+      "reason": "responsabilité des frais de roaming, prolonge",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 227,
+      "theme": "PAYMENT_BILLING",
+      "block_id": 38,
+      "is_block_start": true,
+      "rationale": "section 9 - paiement de produits avec skype credit",
+      "rationale_codes": {
+        "decision_trigger": "lexical_shift",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "you can pay for select paid-for products using skype credit",
+        "revised_from_plan": false,
+        "confidence": 0.6
+      },
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 228,
+      "theme": "PAYMENT_BILLING",
+      "block_id": 38,
+      "is_block_start": false,
+      "reason": "achat de skype credit, prolonge",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 229,
+      "theme": "PAYMENT_BILLING",
+      "block_id": 38,
+      "is_block_start": false,
+      "reason": "crédit ajouté au compte à l'achat, prolonge",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 230,
+      "theme": "PAYMENT_BILLING",
+      "block_id": 38,
+      "is_block_start": false,
+      "reason": "crédit inactif après 180 jours, prolonge",
+      "legal_nature": "PROHIBITION",
+      "legal_nature_marker": "do not"
+    },
+    {
+      "id": 231,
+      "theme": "PAYMENT_BILLING",
+      "block_id": 38,
+      "is_block_start": false,
+      "reason": "lien de réactivation du crédit, prolonge",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 232,
+      "theme": "PAYMENT_BILLING",
+      "block_id": 38,
+      "is_block_start": false,
+      "reason": "crédit réactivé non remboursable, prolonge",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 233,
+      "theme": "PAYMENT_BILLING",
+      "block_id": 38,
+      "is_block_start": false,
+      "reason": "expiration du crédit au Japon, prolonge",
+      "legal_nature": "OBLIGATION",
+      "legal_nature_marker": "shall"
+    },
+    {
+      "id": 234,
+      "theme": "PAYMENT_BILLING",
+      "block_id": 38,
+      "is_block_start": false,
+      "reason": "interdiction d'usage du crédit expiré, prolonge",
+      "legal_nature": "PROHIBITION",
+      "legal_nature_marker": "you are not permitted"
+    },
+    {
+      "id": 235,
+      "theme": "PAYMENT_BILLING",
+      "block_id": 38,
+      "is_block_start": false,
+      "reason": "pas de garantie d'usage du crédit pour tous produits, prolonge",
+      "legal_nature": "OBLIGATION",
+      "legal_nature_marker": "you will"
+    },
+    {
+      "id": 236,
+      "theme": "PAYMENT_BILLING",
+      "block_id": 38,
+      "is_block_start": false,
+      "reason": "autre méthode de paiement disponible, prolonge",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 237,
+      "theme": "PAYMENT_BILLING",
+      "block_id": 38,
+      "is_block_start": false,
+      "reason": "skype peut amender les méthodes de paiement, prolonge",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 238,
+      "theme": "SUBSCRIPTION_RENEWAL",
+      "block_id": 39,
+      "is_block_start": true,
+      "rationale": "achat sur base d'abonnement, paiement récurrent jusqu'à résiliation",
+      "rationale_codes": {
+        "decision_trigger": "topic_keyword",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "this is a recurring payment",
+        "revised_from_plan": false,
+        "confidence": 0.72
+      },
+      "legal_nature": "GOVERNANCE",
+      "legal_nature_marker": "terminate"
+    },
+    {
+      "id": 239,
+      "theme": "SUBSCRIPTION_RENEWAL",
+      "block_id": 39,
+      "is_block_start": false,
+      "reason": "(a) fonction auto-recharge activée par défaut, prolonge",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 240,
+      "theme": "SUBSCRIPTION_RENEWAL",
+      "block_id": 39,
+      "is_block_start": false,
+      "reason": "recharge du solde au même montant, prolonge",
+      "legal_nature": "SCOPE_APPLICABILITY",
+      "legal_nature_marker": "by accessing"
+    },
+    {
+      "id": 241,
+      "theme": "SUBSCRIPTION_RENEWAL",
+      "block_id": 39,
+      "is_block_start": false,
+      "reason": "exemple de recharge, prolonge",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 242,
+      "theme": "SUBSCRIPTION_RENEWAL",
+      "block_id": 39,
+      "is_block_start": false,
+      "reason": "recharge sous le seuil, prolonge",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 243,
+      "theme": "SUBSCRIPTION_RENEWAL",
+      "block_id": 39,
+      "is_block_start": false,
+      "reason": "décocher la case pour désactiver, prolonge",
+      "legal_nature": "PROHIBITION",
+      "legal_nature_marker": "do not"
+    },
+    {
+      "id": 244,
+      "theme": "SUBSCRIPTION_RENEWAL",
+      "block_id": 39,
+      "is_block_start": false,
+      "reason": "(b) recharge pour abonnement récurrent, prolonge",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 245,
+      "theme": "SUBSCRIPTION_RENEWAL",
+      "block_id": 39,
+      "is_block_start": false,
+      "reason": "(c) désactivation de l'auto-recharge à tout moment, prolonge",
+      "legal_nature": "SCOPE_APPLICABILITY",
+      "legal_nature_marker": "by accessing"
+    },
+    {
+      "id": 246,
+      "theme": "PAYMENT_BILLING",
+      "block_id": 40,
+      "is_block_start": true,
+      "rationale": "10.1 section 10 remboursements, période de rétractation de 15 jours",
+      "rationale_codes": {
+        "decision_trigger": "numbering",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "cooling-off period",
+        "revised_from_plan": false,
+        "confidence": 0.68
+      },
+      "legal_nature": "OBLIGATION",
+      "legal_nature_marker": "you will"
+    },
+    {
+      "id": 247,
+      "theme": "PAYMENT_BILLING",
+      "block_id": 40,
+      "is_block_start": false,
+      "reason": "10.2 hors période, seuls abonnements remboursables, prolonge",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 248,
+      "theme": "PAYMENT_BILLING",
+      "block_id": 40,
+      "is_block_start": false,
+      "reason": "10.3 définition de l'usage d'un produit payant, prolonge",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 249,
+      "theme": "PAYMENT_BILLING",
+      "block_id": 40,
+      "is_block_start": false,
+      "reason": "allocation de numéros avant fin de rétractation, prolonge",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 250,
+      "theme": "PAYMENT_BILLING",
+      "block_id": 40,
+      "is_block_start": false,
+      "reason": "10.4 exclusions de la rétractation, prolonge",
+      "legal_nature": "PROHIBITION",
+      "legal_nature_marker": "do not"
+    },
+    {
+      "id": 251,
+      "theme": "PAYMENT_BILLING",
+      "block_id": 40,
+      "is_block_start": false,
+      "reason": "exclusion membership skype developer, prolonge",
+      "legal_nature": "PROHIBITION",
+      "legal_nature_marker": "do not"
+    },
+    {
+      "id": 252,
+      "theme": "PAYMENT_BILLING",
+      "block_id": 40,
+      "is_block_start": false,
+      "reason": "10.5 contacter skype sous 90 jours pour erreur, prolonge",
+      "legal_nature": "OBLIGATION",
+      "legal_nature_marker": "you must"
+    },
+    {
+      "id": 253,
+      "theme": "PAYMENT_BILLING",
+      "block_id": 40,
+      "is_block_start": false,
+      "reason": "pas de remboursement après 90 jours, prolonge",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 254,
+      "theme": "PAYMENT_BILLING",
+      "block_id": 40,
+      "is_block_start": false,
+      "reason": "10.6 droit de refuser un remboursement abusif, prolonge",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 255,
+      "theme": "PAYMENT_BILLING",
+      "block_id": 40,
+      "is_block_start": false,
+      "reason": "10.7 la politique n'affecte pas les droits statutaires, prolonge",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 256,
+      "theme": "TERMINATION",
+      "block_id": 41,
+      "is_block_start": true,
+      "rationale": "11.1 section 11 résiliation, l'utilisateur peut résilier à tout moment",
+      "rationale_codes": {
+        "decision_trigger": "numbering",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "you may terminate your relationship with skype",
+        "revised_from_plan": false,
+        "confidence": 0.85
+      },
+      "legal_nature": "GOVERNANCE",
+      "legal_nature_marker": "terminate"
+    },
+    {
+      "id": 257,
+      "theme": "TERMINATION",
+      "block_id": 41,
+      "is_block_start": false,
+      "reason": "11.2 skype peut résilier/suspendre, prolonge",
+      "legal_nature": "GOVERNANCE",
+      "legal_nature_marker": "jurisdiction"
+    },
+    {
+      "id": 258,
+      "theme": "TERMINATION",
+      "block_id": 41,
+      "is_block_start": false,
+      "reason": "11.3 modalités de la résiliation par skype, prolonge",
+      "legal_nature": "GOVERNANCE",
+      "legal_nature_marker": "termination"
+    },
+    {
+      "id": 259,
+      "theme": "TERMINATION",
+      "block_id": 41,
+      "is_block_start": false,
+      "reason": "annulation des comptes inactifs, prolonge",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 260,
+      "theme": "TERMINATION",
+      "block_id": 41,
+      "is_block_start": false,
+      "reason": "11.4 conséquences de la résiliation, prolonge",
+      "legal_nature": "GOVERNANCE",
+      "legal_nature_marker": "terminate"
+    },
+    {
+      "id": 261,
+      "theme": "WARRANTY_DISCLAIMER",
+      "block_id": 42,
+      "is_block_start": true,
+      "rationale": "titre section 12 - exclusion de garanties, limitation de responsabilité et indemnité",
+      "rationale_codes": {
+        "decision_trigger": "title_marker",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "exclusion of warranties , limitation of liability and indemnity",
+        "revised_from_plan": false,
+        "confidence": 0.62
+      },
+      "legal_nature": "LIMITATION_DISCLAIMER",
+      "legal_nature_marker": "warranties"
+    },
+    {
+      "id": 262,
+      "theme": "WARRANTY_DISCLAIMER",
+      "block_id": 42,
+      "is_block_start": false,
+      "reason": "12.1 définition de skype pour ce paragraphe, prolonge",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 263,
+      "theme": "WARRANTY_DISCLAIMER",
+      "block_id": 42,
+      "is_block_start": false,
+      "reason": "12.2 no warranties, fourni as is sans garanties, prolonge",
+      "legal_nature": "LIMITATION_DISCLAIMER",
+      "legal_nature_marker": "as is"
+    },
+    {
+      "id": 264,
+      "theme": "WARRANTY_DISCLAIMER",
+      "block_id": 42,
+      "is_block_start": false,
+      "reason": "pas de garantie de disponibilité, prolonge le disclaimer",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 265,
+      "theme": "LIABILITY_LIMITATION",
+      "block_id": 43,
+      "is_block_start": true,
+      "rationale": "12.3 limitation de la responsabilité de skype (exceptions à l'exclusion)",
+      "rationale_codes": {
+        "decision_trigger": "numbering",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "exclude or restrict skype 's liability",
+        "revised_from_plan": false,
+        "confidence": 0.62
+      },
+      "legal_nature": "OBLIGATION",
+      "legal_nature_marker": "shall"
+    },
+    {
+      "id": 266,
+      "theme": "LIABILITY_LIMITATION",
+      "block_id": 43,
+      "is_block_start": false,
+      "reason": "12.4 no liability pour logiciel gratuit, prolonge",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 267,
+      "theme": "LIABILITY_LIMITATION",
+      "block_id": 43,
+      "is_block_start": false,
+      "reason": "seul recours désinstaller le logiciel, prolonge",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 268,
+      "theme": "LIABILITY_LIMITATION",
+      "block_id": 43,
+      "is_block_start": false,
+      "reason": "12.5 limitation chapeau des dommages exclus, prolonge",
+      "legal_nature": "PROHIBITION",
+      "legal_nature_marker": "shall not"
+    },
+    {
+      "id": 269,
+      "theme": "LIABILITY_LIMITATION",
+      "block_id": 43,
+      "is_block_start": false,
+      "reason": "(a) dommages indirects, item exclu",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 270,
+      "theme": "LIABILITY_LIMITATION",
+      "block_id": 43,
+      "is_block_start": false,
+      "reason": "(b) perte de revenus/profits, item exclu",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 271,
+      "theme": "LIABILITY_LIMITATION",
+      "block_id": 43,
+      "is_block_start": false,
+      "reason": "(c) corruption de données, item exclu",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 272,
+      "theme": "LIABILITY_LIMITATION",
+      "block_id": 43,
+      "is_block_start": false,
+      "reason": "(d) chapeau des pertes liées aux urgences, prolonge",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 273,
+      "theme": "LIABILITY_LIMITATION",
+      "block_id": 43,
+      "is_block_start": false,
+      "reason": "(i) incapacité de contacter les urgences, item",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 274,
+      "theme": "LIABILITY_LIMITATION",
+      "block_id": 43,
+      "is_block_start": false,
+      "reason": "(ii) défaut d'arrangements alternatifs, item",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 275,
+      "theme": "LIABILITY_LIMITATION",
+      "block_id": 43,
+      "is_block_start": false,
+      "reason": "(iii) limites de service du 5.6, item",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 276,
+      "theme": "LIABILITY_LIMITATION",
+      "block_id": 43,
+      "is_block_start": false,
+      "reason": "(iv) défaut d'info de localisation, item",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 277,
+      "theme": "LIABILITY_LIMITATION",
+      "block_id": 43,
+      "is_block_start": false,
+      "reason": "(v) conduite des opérateurs tiers, item",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 278,
+      "theme": "LIABILITY_LIMITATION",
+      "block_id": 43,
+      "is_block_start": false,
+      "reason": "(e) chapeau des pertes liées aux tiers, prolonge",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 279,
+      "theme": "LIABILITY_LIMITATION",
+      "block_id": 43,
+      "is_block_start": false,
+      "reason": "(i) produit/service tiers, item",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 280,
+      "theme": "LIABILITY_LIMITATION",
+      "block_id": 43,
+      "is_block_start": false,
+      "reason": "(ii) technologie tierce, item",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 281,
+      "theme": "LIABILITY_LIMITATION",
+      "block_id": 43,
+      "is_block_start": false,
+      "reason": "(iii) site tiers, item",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 282,
+      "theme": "LIABILITY_LIMITATION",
+      "block_id": 43,
+      "is_block_start": false,
+      "reason": "12.6 plafond de responsabilité totale, prolonge la limitation",
+      "legal_nature": "PROHIBITION",
+      "legal_nature_marker": "shall not"
+    },
+    {
+      "id": 283,
+      "theme": "INDEMNIFICATION",
+      "block_id": 44,
+      "is_block_start": true,
+      "rationale": "12.7 indemnisation, l'utilisateur indemnise skype contre les réclamations tierces",
+      "rationale_codes": {
+        "decision_trigger": "topic_keyword",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "you will indemnify and hold skype harmless",
+        "revised_from_plan": false,
+        "confidence": 0.85
+      },
+      "legal_nature": "RISK_ALLOCATION",
+      "legal_nature_marker": "indemnify"
+    },
+    {
+      "id": 284,
+      "theme": "THIRD_PARTY",
+      "block_id": 45,
+      "is_block_start": true,
+      "rationale": "titre section 13 - sites, produits et services tiers",
+      "rationale_codes": {
+        "decision_trigger": "title_marker",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "third-party websites , products and services",
+        "revised_from_plan": false,
+        "confidence": 0.7
+      },
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 285,
+      "theme": "THIRD_PARTY",
+      "block_id": 45,
+      "is_block_start": false,
+      "reason": "13.1 tiers peuvent offrir produits/services, prolonge",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 286,
+      "theme": "THIRD_PARTY",
+      "block_id": 45,
+      "is_block_start": false,
+      "reason": "skype assiste sans responsabilité, prolonge",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 287,
+      "theme": "THIRD_PARTY",
+      "block_id": 45,
+      "is_block_start": false,
+      "reason": "produits tiers soumis aux conditions du fournisseur, prolonge",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 288,
+      "theme": "THIRD_PARTY",
+      "block_id": 45,
+      "is_block_start": false,
+      "reason": "revoir les conditions tierces avant achat, prolonge",
+      "legal_nature": "PROHIBITION",
+      "legal_nature_marker": "shall not"
+    },
+    {
+      "id": 289,
+      "theme": "THIRD_PARTY",
+      "block_id": 45,
+      "is_block_start": false,
+      "reason": "13.2 info et prix des produits tiers fournis par le marchand, prolonge",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 290,
+      "theme": "THIRD_PARTY",
+      "block_id": 45,
+      "is_block_start": false,
+      "reason": "le marchand peut changer ses prix, prolonge",
+      "legal_nature": "GOVERNANCE",
+      "legal_nature_marker": "terminate"
+    },
+    {
+      "id": 291,
+      "theme": "THIRD_PARTY",
+      "block_id": 45,
+      "is_block_start": false,
+      "reason": "skype non impliqué dans les transactions avec le marchand, prolonge",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 292,
+      "theme": "THIRD_PARTY",
+      "block_id": 45,
+      "is_block_start": false,
+      "reason": "skype ne garantit pas les produits du marchand, prolonge",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 293,
+      "theme": "THIRD_PARTY",
+      "block_id": 45,
+      "is_block_start": false,
+      "reason": "réclamations dirigées vers le marchand, prolonge",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 294,
+      "theme": "THIRD_PARTY",
+      "block_id": 45,
+      "is_block_start": false,
+      "reason": "13.3 hyperliens vers sites tiers, prolonge",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 295,
+      "theme": "THIRD_PARTY",
+      "block_id": 45,
+      "is_block_start": false,
+      "reason": "skype non responsable des sites tiers, prolonge",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 296,
+      "theme": "THIRD_PARTY",
+      "block_id": 45,
+      "is_block_start": false,
+      "reason": "usage des sites tiers soumis à leurs conditions, prolonge",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 297,
+      "theme": "MISC_BOILERPLATE",
+      "block_id": 46,
+      "is_block_start": true,
+      "rationale": "14.1 section 14 termes additionnels, skype etiquette comme guidelines",
+      "rationale_codes": {
+        "decision_trigger": "numbering",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "skype etiquette",
+        "revised_from_plan": false,
+        "confidence": 0.55
+      },
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 298,
+      "theme": "MISC_BOILERPLATE",
+      "block_id": 46,
+      "is_block_start": false,
+      "reason": "lire les guidelines faisant partie des termes, prolonge",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 299,
+      "theme": "MISC_BOILERPLATE",
+      "block_id": 46,
+      "is_block_start": false,
+      "reason": "14.2 broadcast tos, prolonge les termes additionnels",
+      "legal_nature": "OBLIGATION",
+      "legal_nature_marker": "you must"
+    },
+    {
+      "id": 300,
+      "theme": "MISC_BOILERPLATE",
+      "block_id": 46,
+      "is_block_start": false,
+      "reason": "14.3 SDK et APIs, prolonge les termes additionnels",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 301,
+      "theme": "MISC_BOILERPLATE",
+      "block_id": 46,
+      "is_block_start": false,
+      "reason": "SDK soumis à leurs propres conditions de licence, prolonge",
+      "legal_nature": "SCOPE_APPLICABILITY",
+      "legal_nature_marker": "govern your use"
+    },
+    {
+      "id": 302,
+      "theme": "MISC_BOILERPLATE",
+      "block_id": 46,
+      "is_block_start": false,
+      "reason": "accord de conformité aux conditions SDK, prolonge",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 303,
+      "theme": "MISC_BOILERPLATE",
+      "block_id": 46,
+      "is_block_start": false,
+      "reason": "14.4 notice qik free et open source incorporée, prolonge",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 304,
+      "theme": "PRIVACY_DATA",
+      "block_id": 47,
+      "is_block_start": true,
+      "rationale": "titre section 15 - informations confidentielles et vie privée",
+      "rationale_codes": {
+        "decision_trigger": "title_marker",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "your confidential information and your privacy",
+        "revised_from_plan": false,
+        "confidence": 0.78
+      },
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 305,
+      "theme": "PRIVACY_DATA",
+      "block_id": 47,
+      "is_block_start": false,
+      "reason": "engagement au respect de la vie privée, prolonge",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 306,
+      "theme": "PRIVACY_DATA",
+      "block_id": 47,
+      "is_block_start": false,
+      "reason": "traitement des données selon la privacy policy, prolonge",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 307,
+      "theme": "MISC_BOILERPLATE",
+      "block_id": 48,
+      "is_block_start": true,
+      "rationale": "section 16 - logiciel commercial pour le gouvernement US (clause réglementaire)",
+      "rationale_codes": {
+        "decision_trigger": "lexical_shift",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "commercial computer software",
+        "revised_from_plan": false,
+        "confidence": 0.55
+      },
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 308,
+      "theme": "MISC_BOILERPLATE",
+      "block_id": 48,
+      "is_block_start": false,
+      "reason": "usage par le gouvernement US soumis à restrictions, prolonge",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 309,
+      "theme": "MISC_BOILERPLATE",
+      "block_id": 49,
+      "is_block_start": true,
+      "rationale": "17.1 section 17 - contacter skype pour le logiciel skype",
+      "rationale_codes": {
+        "decision_trigger": "numbering",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "to contact skype in relation to the skype software",
+        "revised_from_plan": false,
+        "confidence": 0.6
+      },
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 310,
+      "theme": "MISC_BOILERPLATE",
+      "block_id": 49,
+      "is_block_start": false,
+      "reason": "17.2 contacter skype pour le logiciel qik, prolonge",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 311,
+      "theme": "MISC_BOILERPLATE",
+      "block_id": 49,
+      "is_block_start": false,
+      "reason": "17.3 demande non reconnue si autre moyen, prolonge",
+      "legal_nature": "DEFINITION",
+      "legal_nature_marker": "means"
+    },
+    {
+      "id": 312,
+      "theme": "MISC_BOILERPLATE",
+      "block_id": 50,
+      "is_block_start": true,
+      "rationale": "18.1 section 18 général, accord sur l'usage de communications électroniques",
+      "rationale_codes": {
+        "decision_trigger": "numbering",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "you agree to the use of electronic communication",
+        "revised_from_plan": false,
+        "confidence": 0.6
+      },
+      "legal_nature": "OBLIGATION",
+      "legal_nature_marker": "you agree to"
+    },
+    {
+      "id": 313,
+      "theme": "MISC_BOILERPLATE",
+      "block_id": 50,
+      "is_block_start": false,
+      "reason": "18.2 traduction des termes, prolonge boilerplate",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 314,
+      "theme": "MISC_BOILERPLATE",
+      "block_id": 50,
+      "is_block_start": false,
+      "reason": "version anglaise prévaut en cas d'incohérence, prolonge",
+      "legal_nature": "OBLIGATION",
+      "legal_nature_marker": "shall"
+    },
+    {
+      "id": 315,
+      "theme": "MISC_BOILERPLATE",
+      "block_id": 50,
+      "is_block_start": false,
+      "reason": "18.3 entire agreement, prolonge boilerplate",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 316,
+      "theme": "MISC_BOILERPLATE",
+      "block_id": 50,
+      "is_block_start": false,
+      "reason": "18.4 severability, prolonge boilerplate",
+      "legal_nature": "GOVERNANCE",
+      "legal_nature_marker": "jurisdiction"
+    },
+    {
+      "id": 317,
+      "theme": "MISC_BOILERPLATE",
+      "block_id": 50,
+      "is_block_start": false,
+      "reason": "renvoi à 20.3(i) sur la séparabilité de l'arbitrage, prolonge",
+      "legal_nature": "GOVERNANCE",
+      "legal_nature_marker": "arbitration"
+    },
+    {
+      "id": 318,
+      "theme": "MISC_BOILERPLATE",
+      "block_id": 50,
+      "is_block_start": false,
+      "reason": "préséance de 20.3(i), prolonge",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 319,
+      "theme": "MISC_BOILERPLATE",
+      "block_id": 50,
+      "is_block_start": false,
+      "reason": "18.5 non-waiver, prolonge boilerplate",
+      "legal_nature": "PROHIBITION",
+      "legal_nature_marker": "shall not"
+    },
+    {
+      "id": 320,
+      "theme": "MISC_BOILERPLATE",
+      "block_id": 50,
+      "is_block_start": false,
+      "reason": "renonciation à une violation n'est pas générale, prolonge",
+      "legal_nature": "PROHIBITION",
+      "legal_nature_marker": "shall not"
+    },
+    {
+      "id": 321,
+      "theme": "MISC_BOILERPLATE",
+      "block_id": 50,
+      "is_block_start": false,
+      "reason": "18.6 non-assignment par l'utilisateur, prolonge",
+      "legal_nature": "PROHIBITION",
+      "legal_nature_marker": "may not"
+    },
+    {
+      "id": 322,
+      "theme": "MISC_BOILERPLATE",
+      "block_id": 50,
+      "is_block_start": false,
+      "reason": "skype peut céder les termes, prolonge",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 323,
+      "theme": "MISC_BOILERPLATE",
+      "block_id": 50,
+      "is_block_start": false,
+      "reason": "18.7 survie de certaines clauses, prolonge",
+      "legal_nature": "GOVERNANCE",
+      "legal_nature_marker": "termination"
+    },
+    {
+      "id": 324,
+      "theme": "MISC_BOILERPLATE",
+      "block_id": 50,
+      "is_block_start": false,
+      "reason": "18.8 force majeure, prolonge boilerplate",
+      "legal_nature": "PROHIBITION",
+      "legal_nature_marker": "will not"
+    },
+    {
+      "id": 325,
+      "theme": "MISC_BOILERPLATE",
+      "block_id": 50,
+      "is_block_start": false,
+      "reason": "définition de l'événement de force majeure, prolonge",
+      "legal_nature": "DEFINITION",
+      "legal_nature_marker": "means"
+    },
+    {
+      "id": 326,
+      "theme": "GOVERNING_LAW",
+      "block_id": 51,
+      "is_block_start": true,
+      "rationale": "18.9 droit applicable, termes régis par le droit luxembourgeois",
+      "rationale_codes": {
+        "decision_trigger": "topic_keyword",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "governed by and interpreted in accordance with the laws of luxembourg",
+        "revised_from_plan": false,
+        "confidence": 0.82
+      },
+      "legal_nature": "GOVERNANCE",
+      "legal_nature_marker": "governed by"
+    },
+    {
+      "id": 327,
+      "theme": "GOVERNING_LAW",
+      "block_id": 51,
+      "is_block_start": false,
+      "reason": "20.3 régi par le federal arbitration act, prolonge le droit applicable",
+      "legal_nature": "GOVERNANCE",
+      "legal_nature_marker": "governed by"
+    },
+    {
+      "id": 328,
+      "theme": "LICENSE_IP",
+      "block_id": 52,
+      "is_block_start": true,
+      "rationale": "18.10 notice AVC/H.264, licence de brevet pour le codec vidéo",
+      "rationale_codes": {
+        "decision_trigger": "topic_keyword",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "avc/h .264 notice",
+        "revised_from_plan": true,
+        "confidence": 0.55
+      },
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 329,
+      "theme": "LICENSE_IP",
+      "block_id": 52,
+      "is_block_start": false,
+      "reason": "aucune autre licence implicite, prolonge la notice AVC",
+      "legal_nature": "OBLIGATION",
+      "legal_nature_marker": "shall"
+    },
+    {
+      "id": 330,
+      "theme": "LICENSE_IP",
+      "block_id": 52,
+      "is_block_start": false,
+      "reason": "info supplémentaire via MPEG LA, prolonge",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 331,
+      "theme": "MISC_BOILERPLATE",
+      "block_id": 53,
+      "is_block_start": true,
+      "rationale": "19.1 section 19 - skype numbers et skype to go numbers (titre)",
+      "rationale_codes": {
+        "decision_trigger": "title_marker",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "skype numbers",
+        "revised_from_plan": false,
+        "confidence": 0.55
+      },
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 332,
+      "theme": "MISC_BOILERPLATE",
+      "block_id": 53,
+      "is_block_start": false,
+      "reason": "(a) availability and use, sous-titre, prolonge",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 333,
+      "theme": "MISC_BOILERPLATE",
+      "block_id": 53,
+      "is_block_start": false,
+      "reason": "chapeau des conditions sur les numéros, prolonge",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 334,
+      "theme": "MISC_BOILERPLATE",
+      "block_id": 53,
+      "is_block_start": false,
+      "reason": "(i) pas de propriété du numéro, item",
+      "legal_nature": "PROHIBITION",
+      "legal_nature_marker": "do not"
+    },
+    {
+      "id": 335,
+      "theme": "MISC_BOILERPLATE",
+      "block_id": 53,
+      "is_block_start": false,
+      "reason": "(ii) numéro soumis aux règles de numérotation, item",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 336,
+      "theme": "MISC_BOILERPLATE",
+      "block_id": 53,
+      "is_block_start": false,
+      "reason": "(iii) conformité aux exigences d'allocation, item",
+      "legal_nature": "OBLIGATION",
+      "legal_nature_marker": "you will"
+    },
+    {
+      "id": 337,
+      "theme": "MISC_BOILERPLATE",
+      "block_id": 53,
+      "is_block_start": false,
+      "reason": "(iv) pas de transfert du numéro, item",
+      "legal_nature": "PROHIBITION",
+      "legal_nature_marker": "will not"
+    },
+    {
+      "id": 338,
+      "theme": "MISC_BOILERPLATE",
+      "block_id": 53,
+      "is_block_start": false,
+      "reason": "responsabilité de résidence/localisation, prolonge",
+      "legal_nature": "OBLIGATION",
+      "legal_nature_marker": "you are responsible"
+    },
+    {
+      "id": 339,
+      "theme": "MISC_BOILERPLATE",
+      "block_id": 53,
+      "is_block_start": false,
+      "reason": "(v) fournir des infos exactes, item",
+      "legal_nature": "OBLIGATION",
+      "legal_nature_marker": "you will"
+    },
+    {
+      "id": 340,
+      "theme": "MISC_BOILERPLATE",
+      "block_id": 53,
+      "is_block_start": false,
+      "reason": "skype peut changer les termes des numéros, prolonge",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 341,
+      "theme": "MISC_BOILERPLATE",
+      "block_id": 53,
+      "is_block_start": false,
+      "reason": "numéro fourni par un partenaire dans certains pays, prolonge",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 342,
+      "theme": "MISC_BOILERPLATE",
+      "block_id": 53,
+      "is_block_start": false,
+      "reason": "(b) other changes to numbers, sous-titre, prolonge",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 343,
+      "theme": "MISC_BOILERPLATE",
+      "block_id": 53,
+      "is_block_start": false,
+      "reason": "notification du changement de numéro, prolonge",
+      "legal_nature": "META",
+      "legal_nature_marker": "effective date"
+    },
+    {
+      "id": 344,
+      "theme": "MISC_BOILERPLATE",
+      "block_id": 53,
+      "is_block_start": false,
+      "reason": "droit de résilier le numéro si refus, prolonge",
+      "legal_nature": "PROHIBITION",
+      "legal_nature_marker": "do not"
+    },
+    {
+      "id": 345,
+      "theme": "ELIGIBILITY_ACCOUNT",
+      "block_id": 54,
+      "is_block_start": true,
+      "rationale": "19.2 user account on skype manager (compte sur skype manager)",
+      "rationale_codes": {
+        "decision_trigger": "title_marker",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "user account on skype manager",
+        "revised_from_plan": false,
+        "confidence": 0.6
+      },
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 346,
+      "theme": "ELIGIBILITY_ACCOUNT",
+      "block_id": 54,
+      "is_block_start": false,
+      "reason": "(a) un seul skype manager à la fois, prolonge",
+      "legal_nature": "PROHIBITION",
+      "legal_nature_marker": "you are not permitted"
+    },
+    {
+      "id": 347,
+      "theme": "ELIGIBILITY_ACCOUNT",
+      "block_id": 54,
+      "is_block_start": false,
+      "reason": "(b) reprise du numéro par l'administrateur, prolonge",
+      "legal_nature": "OBLIGATION",
+      "legal_nature_marker": "shall"
+    },
+    {
+      "id": 348,
+      "theme": "ELIGIBILITY_ACCOUNT",
+      "block_id": 54,
+      "is_block_start": false,
+      "reason": "droit d'usage du numéro par l'administrateur, prolonge",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 349,
+      "theme": "ELIGIBILITY_ACCOUNT",
+      "block_id": 54,
+      "is_block_start": false,
+      "reason": "(c) personal and traffic data, sous-titre, prolonge",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 350,
+      "theme": "ELIGIBILITY_ACCOUNT",
+      "block_id": 54,
+      "is_block_start": false,
+      "reason": "l'administrateur peut voir l'activité du compte, prolonge",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 351,
+      "theme": "ELIGIBILITY_ACCOUNT",
+      "block_id": 54,
+      "is_block_start": false,
+      "reason": "retrait de l'accord à tout moment, prolonge",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 352,
+      "theme": "ELIGIBILITY_ACCOUNT",
+      "block_id": 54,
+      "is_block_start": false,
+      "reason": "données du répertoire visibles par les membres, prolonge",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 353,
+      "theme": "SUBSCRIPTION_RENEWAL",
+      "block_id": 55,
+      "is_block_start": true,
+      "rationale": "19.3 fair usage policy des subscriptions, plans d'appel",
+      "rationale_codes": {
+        "decision_trigger": "title_marker",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "fair usage policy",
+        "revised_from_plan": false,
+        "confidence": 0.6
+      },
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 354,
+      "theme": "SUBSCRIPTION_RENEWAL",
+      "block_id": 55,
+      "is_block_start": false,
+      "reason": "souhait de meilleurs plans au meilleur prix, prolonge",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 355,
+      "theme": "SUBSCRIPTION_RENEWAL",
+      "block_id": 55,
+      "is_block_start": false,
+      "reason": "FUP conçue pour prévenir l'abus, prolonge",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 356,
+      "theme": "SUBSCRIPTION_RENEWAL",
+      "block_id": 55,
+      "is_block_start": false,
+      "reason": "appels illimités sous réserve de la FUP, prolonge",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 357,
+      "theme": "SUBSCRIPTION_RENEWAL",
+      "block_id": 55,
+      "is_block_start": false,
+      "reason": "appels illimités vers mobiles si stipulé, prolonge",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 358,
+      "theme": "SUBSCRIPTION_RENEWAL",
+      "block_id": 55,
+      "is_block_start": false,
+      "reason": "déconnexion après 2h, prolonge",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 359,
+      "theme": "SUBSCRIPTION_RENEWAL",
+      "block_id": 55,
+      "is_block_start": false,
+      "reason": "abonnements pour usage individuel, prolonge",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 360,
+      "theme": "SUBSCRIPTION_RENEWAL",
+      "block_id": 55,
+      "is_block_start": false,
+      "reason": "chapeau des pratiques non légitimes, prolonge",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 361,
+      "theme": "SUBSCRIPTION_RENEWAL",
+      "block_id": 55,
+      "is_block_start": false,
+      "reason": "(i) télémarketing/call centre, item",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 362,
+      "theme": "SUBSCRIPTION_RENEWAL",
+      "block_id": 55,
+      "is_block_start": false,
+      "reason": "(ii) revente de minutes, item",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 363,
+      "theme": "SUBSCRIPTION_RENEWAL",
+      "block_id": 55,
+      "is_block_start": false,
+      "reason": "(iii) partage d'abonnements, item",
+      "legal_nature": "DEFINITION",
+      "legal_nature_marker": "means"
+    },
+    {
+      "id": 364,
+      "theme": "SUBSCRIPTION_RENEWAL",
+      "block_id": 55,
+      "is_block_start": false,
+      "reason": "(iv) appels générant des revenus, item",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 365,
+      "theme": "SUBSCRIPTION_RENEWAL",
+      "block_id": 55,
+      "is_block_start": false,
+      "reason": "(v) schémas d'appels inhabituels, item",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 366,
+      "theme": "SUBSCRIPTION_RENEWAL",
+      "block_id": 55,
+      "is_block_start": false,
+      "reason": "autres pratiques pertinentes, prolonge",
+      "legal_nature": "PROHIBITION",
+      "legal_nature_marker": "prohibited"
+    },
+    {
+      "id": 367,
+      "theme": "SUBSCRIPTION_RENEWAL",
+      "block_id": 55,
+      "is_block_start": false,
+      "reason": "skype peut suspendre en cas d'usage contraire, prolonge",
+      "legal_nature": "GOVERNANCE",
+      "legal_nature_marker": "terminate"
+    },
+    {
+      "id": 368,
+      "theme": "SUBSCRIPTION_RENEWAL",
+      "block_id": 55,
+      "is_block_start": false,
+      "reason": "notification d'usage impropre avant suspension, prolonge",
+      "legal_nature": "GOVERNANCE",
+      "legal_nature_marker": "termination"
+    },
+    {
+      "id": 369,
+      "theme": "SUBSCRIPTION_RENEWAL",
+      "block_id": 55,
+      "is_block_start": false,
+      "reason": "(b) skype peut retirer/changer les subscriptions, prolonge",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 370,
+      "theme": "SUBSCRIPTION_RENEWAL",
+      "block_id": 55,
+      "is_block_start": false,
+      "reason": "notification des changements de subscription, prolonge",
+      "legal_nature": "META",
+      "legal_nature_marker": "effective date"
+    },
+    {
+      "id": 371,
+      "theme": "SUBSCRIPTION_RENEWAL",
+      "block_id": 55,
+      "is_block_start": false,
+      "reason": "droit de résilier si refus des changements, prolonge",
+      "legal_nature": "PROHIBITION",
+      "legal_nature_marker": "do not"
+    },
+    {
+      "id": 372,
+      "theme": "SUBSCRIPTION_RENEWAL",
+      "block_id": 55,
+      "is_block_start": false,
+      "reason": "(c) unlimited world extra terme fixe de 2 ans, prolonge",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 373,
+      "theme": "SUBSCRIPTION_RENEWAL",
+      "block_id": 55,
+      "is_block_start": false,
+      "reason": "pas de résiliation avant terme sauf violation, prolonge",
+      "legal_nature": "PROHIBITION",
+      "legal_nature_marker": "you are not permitted"
+    },
+    {
+      "id": 374,
+      "theme": "SUBSCRIPTION_RENEWAL",
+      "block_id": 55,
+      "is_block_start": false,
+      "reason": "facturation mensuelle récurrente, prolonge",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 375,
+      "theme": "THIRD_PARTY",
+      "block_id": 56,
+      "is_block_start": true,
+      "rationale": "19.4 skype wifi fourni par un partenaire wifi, soumis aux conditions du partenaire",
+      "rationale_codes": {
+        "decision_trigger": "lexical_shift",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "skype wifi is provided by one of skype 's wifi partners",
+        "revised_from_plan": false,
+        "confidence": 0.6
+      },
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 376,
+      "theme": "THIRD_PARTY",
+      "block_id": 56,
+      "is_block_start": false,
+      "reason": "usage de skype wifi soumis aux conditions du partenaire, prolonge",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 377,
+      "theme": "THIRD_PARTY",
+      "block_id": 56,
+      "is_block_start": false,
+      "reason": "notification de l'identité du fournisseur wifi, prolonge",
+      "legal_nature": "OBLIGATION",
+      "legal_nature_marker": "you will"
+    },
+    {
+      "id": 378,
+      "theme": "THIRD_PARTY",
+      "block_id": 56,
+      "is_block_start": false,
+      "reason": "lire les conditions du partenaire, prolonge",
+      "legal_nature": "OBLIGATION",
+      "legal_nature_marker": "you agree to"
+    },
+    {
+      "id": 379,
+      "theme": "THIRD_PARTY",
+      "block_id": 56,
+      "is_block_start": false,
+      "reason": "paiement du wifi via skype credit, prolonge",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 380,
+      "theme": "PAYMENT_BILLING",
+      "block_id": 57,
+      "is_block_start": true,
+      "rationale": "19.5 sms, limite de 160 caractères et facturation par message",
+      "rationale_codes": {
+        "decision_trigger": "lexical_shift",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "each sms message has a limit of 160 characters",
+        "revised_from_plan": true,
+        "confidence": 0.55
+      },
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 381,
+      "theme": "PAYMENT_BILLING",
+      "block_id": 57,
+      "is_block_start": false,
+      "reason": "facturation des messages longs scindés, prolonge",
+      "legal_nature": "OBLIGATION",
+      "legal_nature_marker": "you will"
+    },
+    {
+      "id": 382,
+      "theme": "PAYMENT_BILLING",
+      "block_id": 57,
+      "is_block_start": false,
+      "reason": "facturation par destinataire, prolonge",
+      "legal_nature": "OBLIGATION",
+      "legal_nature_marker": "you will"
+    },
+    {
+      "id": 383,
+      "theme": "PAYMENT_BILLING",
+      "block_id": 57,
+      "is_block_start": false,
+      "reason": "remboursement si sms non délivré, prolonge",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 384,
+      "theme": "SUBSCRIPTION_RENEWAL",
+      "block_id": 58,
+      "is_block_start": true,
+      "rationale": "19.6 fair usage policy du skype premium, incorporée par référence",
+      "rationale_codes": {
+        "decision_trigger": "topic_keyword",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "a fair usage policy applies",
+        "revised_from_plan": true,
+        "confidence": 0.55
+      },
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 385,
+      "theme": "SUBSCRIPTION_RENEWAL",
+      "block_id": 58,
+      "is_block_start": false,
+      "reason": "droit de changer la FUP, prolonge",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 386,
+      "theme": "SUBSCRIPTION_RENEWAL",
+      "block_id": 58,
+      "is_block_start": false,
+      "reason": "effectivité des changements à la publication, prolonge",
+      "legal_nature": "OBLIGATION",
+      "legal_nature_marker": "shall"
+    },
+    {
+      "id": 387,
+      "theme": "SUBSCRIPTION_RENEWAL",
+      "block_id": 58,
+      "is_block_start": false,
+      "reason": "usage continu vaut acceptation de la FUP révisée, prolonge",
+      "legal_nature": "OBLIGATION",
+      "legal_nature_marker": "shall"
+    },
+    {
+      "id": 388,
+      "theme": "SUBSCRIPTION_RENEWAL",
+      "block_id": 58,
+      "is_block_start": false,
+      "reason": "(b) number of participants, sous-titre, prolonge",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 389,
+      "theme": "SUBSCRIPTION_RENEWAL",
+      "block_id": 58,
+      "is_block_start": false,
+      "reason": "participants au group video call, prolonge",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 390,
+      "theme": "SUBSCRIPTION_RENEWAL",
+      "block_id": 58,
+      "is_block_start": false,
+      "reason": "détails sur le site skype premium, prolonge",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 391,
+      "theme": "SUBSCRIPTION_RENEWAL",
+      "block_id": 58,
+      "is_block_start": false,
+      "reason": "(c) audio conversion, sous-titre, prolonge",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 392,
+      "theme": "SUBSCRIPTION_RENEWAL",
+      "block_id": 58,
+      "is_block_start": false,
+      "reason": "conversion vidéo vers audio à l'expiration, prolonge",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 393,
+      "theme": "SUBSCRIPTION_RENEWAL",
+      "block_id": 58,
+      "is_block_start": false,
+      "reason": "(d) software versions, sous-titre, prolonge",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 394,
+      "theme": "SUBSCRIPTION_RENEWAL",
+      "block_id": 58,
+      "is_block_start": false,
+      "reason": "appel audio si version non supportée, prolonge",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 395,
+      "theme": "SUBSCRIPTION_RENEWAL",
+      "block_id": 58,
+      "is_block_start": false,
+      "reason": "exigences système pour le group video, prolonge",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 396,
+      "theme": "SUBSCRIPTION_RENEWAL",
+      "block_id": 58,
+      "is_block_start": false,
+      "reason": "(e) live chat, sous-titre, prolonge",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 397,
+      "theme": "SUBSCRIPTION_RENEWAL",
+      "block_id": 58,
+      "is_block_start": false,
+      "reason": "live chat disponible avec le premium, prolonge",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 398,
+      "theme": "SUBSCRIPTION_RENEWAL",
+      "block_id": 58,
+      "is_block_start": false,
+      "reason": "support 24h en anglais seulement, prolonge",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 399,
+      "theme": "SUBSCRIPTION_RENEWAL",
+      "block_id": 59,
+      "is_block_start": true,
+      "rationale": "19.7 qik premium fair usage policy (titre)",
+      "rationale_codes": {
+        "decision_trigger": "title_marker",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "qik premium fair usage policy",
+        "revised_from_plan": false,
+        "confidence": 0.58
+      },
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 400,
+      "theme": "SUBSCRIPTION_RENEWAL",
+      "block_id": 59,
+      "is_block_start": false,
+      "reason": "FUP de 15gb par utilisateur par mois, prolonge",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 401,
+      "theme": "SUBSCRIPTION_RENEWAL",
+      "block_id": 59,
+      "is_block_start": false,
+      "reason": "limites de vidéos atteintes, prolonge",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 402,
+      "theme": "SUBSCRIPTION_RENEWAL",
+      "block_id": 59,
+      "is_block_start": false,
+      "reason": "droit de changer la FUP, prolonge",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 403,
+      "theme": "SUBSCRIPTION_RENEWAL",
+      "block_id": 59,
+      "is_block_start": false,
+      "reason": "effectivité des changements à la publication, prolonge",
+      "legal_nature": "OBLIGATION",
+      "legal_nature_marker": "shall"
+    },
+    {
+      "id": 404,
+      "theme": "SUBSCRIPTION_RENEWAL",
+      "block_id": 59,
+      "is_block_start": false,
+      "reason": "usage continu vaut acceptation de la FUP révisée, prolonge",
+      "legal_nature": "OBLIGATION",
+      "legal_nature_marker": "shall"
+    },
+    {
+      "id": 405,
+      "theme": "SUBSCRIPTION_RENEWAL",
+      "block_id": 60,
+      "is_block_start": true,
+      "rationale": "19.8 skype video messaging (titre de sous-section)",
+      "rationale_codes": {
+        "decision_trigger": "title_marker",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "skype video messaging",
+        "revised_from_plan": false,
+        "confidence": 0.55
+      },
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 406,
+      "theme": "SUBSCRIPTION_RENEWAL",
+      "block_id": 60,
+      "is_block_start": false,
+      "reason": "messages limités si non-abonné premium, prolonge",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 407,
+      "theme": "SUBSCRIPTION_RENEWAL",
+      "block_id": 60,
+      "is_block_start": false,
+      "reason": "FUP conçue pour prévenir l'abus du video messaging, prolonge",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 408,
+      "theme": "SUBSCRIPTION_RENEWAL",
+      "block_id": 60,
+      "is_block_start": false,
+      "reason": "usage personnel et non commercial, prolonge",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 409,
+      "theme": "SUBSCRIPTION_RENEWAL",
+      "block_id": 60,
+      "is_block_start": false,
+      "reason": "droit de prendre en compte l'activité inhabituelle, prolonge",
+      "legal_nature": "PROHIBITION",
+      "legal_nature_marker": "prohibited"
+    },
+    {
+      "id": 410,
+      "theme": "SUBSCRIPTION_RENEWAL",
+      "block_id": 60,
+      "is_block_start": false,
+      "reason": "skype peut suspendre en cas d'usage contraire, prolonge",
+      "legal_nature": "GOVERNANCE",
+      "legal_nature_marker": "terminate"
+    },
+    {
+      "id": 411,
+      "theme": "PAYMENT_BILLING",
+      "block_id": 61,
+      "is_block_start": true,
+      "rationale": "20.1 section 20 - pay by mobile, paiement via la facture mobile",
+      "rationale_codes": {
+        "decision_trigger": "numbering",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "pay for skype credit",
+        "revised_from_plan": false,
+        "confidence": 0.62
+      },
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 412,
+      "theme": "PAYMENT_BILLING",
+      "block_id": 61,
+      "is_block_start": false,
+      "reason": "20.2 chapeau, en sélectionnant pay by mobile, prolonge",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 413,
+      "theme": "PAYMENT_BILLING",
+      "block_id": 61,
+      "is_block_start": false,
+      "reason": "(a) autorisation de facturer l'opérateur, prolonge",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 414,
+      "theme": "PAYMENT_BILLING",
+      "block_id": 61,
+      "is_block_start": false,
+      "reason": "(b) représentation d'être responsable du compte mobile, prolonge",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 415,
+      "theme": "DISPUTE_ARBITRATION",
+      "block_id": 62,
+      "is_block_start": true,
+      "rationale": "20.3 arbitrage contraignant et renonciation à l'action collective pour comptes US",
+      "rationale_codes": {
+        "decision_trigger": "topic_keyword",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "binding arbitration and class action waiver for united states accounts",
+        "revised_from_plan": false,
+        "confidence": 0.88
+      },
+      "legal_nature": "GOVERNANCE",
+      "legal_nature_marker": "arbitration"
+    },
+    {
+      "id": 416,
+      "theme": "DISPUTE_ARBITRATION",
+      "block_id": 62,
+      "is_block_start": false,
+      "reason": "termes additionnels si compte US, prolonge l'arbitrage",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 417,
+      "theme": "DISPUTE_ARBITRATION",
+      "block_id": 62,
+      "is_block_start": false,
+      "reason": "(a) portée du paragraphe 20.3 sur les disputes, prolonge",
+      "legal_nature": "SCOPE_APPLICABILITY",
+      "legal_nature_marker": "applies to"
+    },
+    {
+      "id": 418,
+      "theme": "DISPUTE_ARBITRATION",
+      "block_id": 62,
+      "is_block_start": false,
+      "reason": "définition de dispute, prolonge",
+      "legal_nature": "DEFINITION",
+      "legal_nature_marker": "means"
+    },
+    {
+      "id": 419,
+      "theme": "DISPUTE_ARBITRATION",
+      "block_id": 62,
+      "is_block_start": false,
+      "reason": "sens le plus large de dispute, prolonge",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 420,
+      "theme": "DISPUTE_ARBITRATION",
+      "block_id": 62,
+      "is_block_start": false,
+      "reason": "(b) notice of dispute requise, prolonge",
+      "legal_nature": "OBLIGATION",
+      "legal_nature_marker": "you must"
+    },
+    {
+      "id": 421,
+      "theme": "DISPUTE_ARBITRATION",
+      "block_id": 62,
+      "is_block_start": false,
+      "reason": "adresse d'envoi de la notice, prolonge",
+      "legal_nature": "OBLIGATION",
+      "legal_nature_marker": "you must"
+    },
+    {
+      "id": 422,
+      "theme": "DISPUTE_ARBITRATION",
+      "block_id": 62,
+      "is_block_start": false,
+      "reason": "envoi à l'autre disputed party, prolonge",
+      "legal_nature": "META",
+      "legal_nature_marker": "principal place of business"
+    },
+    {
+      "id": 423,
+      "theme": "DISPUTE_ARBITRATION",
+      "block_id": 62,
+      "is_block_start": false,
+      "reason": "envoi de la notice à votre adresse, prolonge",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 424,
+      "theme": "DISPUTE_ARBITRATION",
+      "block_id": 62,
+      "is_block_start": false,
+      "reason": "négociation informelle de 60 jours, prolonge",
+      "legal_nature": "GOVERNANCE",
+      "legal_nature_marker": "arbitration"
+    },
+    {
+      "id": 425,
+      "theme": "DISPUTE_ARBITRATION",
+      "block_id": 62,
+      "is_block_start": false,
+      "reason": "(c) litige possible en small claims court, prolonge",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 426,
+      "theme": "DISPUTE_ARBITRATION",
+      "block_id": 62,
+      "is_block_start": false,
+      "reason": "small claims sans négociation préalable, prolonge",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 427,
+      "theme": "DISPUTE_ARBITRATION",
+      "block_id": 62,
+      "is_block_start": false,
+      "reason": "(d) binding arbitration, sous-titre, prolonge",
+      "legal_nature": "GOVERNANCE",
+      "legal_nature_marker": "arbitration"
+    },
+    {
+      "id": 428,
+      "theme": "DISPUTE_ARBITRATION",
+      "block_id": 62,
+      "is_block_start": false,
+      "reason": "arbitrage exclusif régi par le FAA, prolonge",
+      "legal_nature": "PROHIBITION",
+      "legal_nature_marker": "do not"
+    },
+    {
+      "id": 429,
+      "theme": "DISPUTE_ARBITRATION",
+      "block_id": 62,
+      "is_block_start": false,
+      "reason": "renonciation au droit de litiger en justice, prolonge",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 430,
+      "theme": "DISPUTE_ARBITRATION",
+      "block_id": 62,
+      "is_block_start": false,
+      "reason": "résolution devant un arbitre neutre, prolonge",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 431,
+      "theme": "DISPUTE_ARBITRATION",
+      "block_id": 62,
+      "is_block_start": false,
+      "reason": "exécution de la sentence arbitrale, prolonge",
+      "legal_nature": "GOVERNANCE",
+      "legal_nature_marker": "jurisdiction"
+    },
+    {
+      "id": 432,
+      "theme": "DISPUTE_ARBITRATION",
+      "block_id": 62,
+      "is_block_start": false,
+      "reason": "(e) class action waiver, sous-titre, prolonge",
+      "legal_nature": "GOVERNANCE",
+      "legal_nature_marker": "class action"
+    },
+    {
+      "id": 433,
+      "theme": "DISPUTE_ARBITRATION",
+      "block_id": 62,
+      "is_block_start": false,
+      "reason": "procédures sur base individuelle, prolonge",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 434,
+      "theme": "DISPUTE_ARBITRATION",
+      "block_id": 62,
+      "is_block_start": false,
+      "reason": "pas d'action collective, prolonge",
+      "legal_nature": "GOVERNANCE",
+      "legal_nature_marker": "class action"
+    },
+    {
+      "id": 435,
+      "theme": "DISPUTE_ARBITRATION",
+      "block_id": 62,
+      "is_block_start": false,
+      "reason": "pas de combinaison d'arbitrages, prolonge",
+      "legal_nature": "GOVERNANCE",
+      "legal_nature_marker": "arbitration"
+    },
+    {
+      "id": 436,
+      "theme": "DISPUTE_ARBITRATION",
+      "block_id": 62,
+      "is_block_start": false,
+      "reason": "(f) arbitrage conduit par l'AAA, prolonge",
+      "legal_nature": "GOVERNANCE",
+      "legal_nature_marker": "arbitration"
+    },
+    {
+      "id": 437,
+      "theme": "DISPUTE_ARBITRATION",
+      "block_id": 62,
+      "is_block_start": false,
+      "reason": "procédures supplémentaires consommateurs, prolonge",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 438,
+      "theme": "DISPUTE_ARBITRATION",
+      "block_id": 62,
+      "is_block_start": false,
+      "reason": "info via adr.org, prolonge",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 439,
+      "theme": "DISPUTE_ARBITRATION",
+      "block_id": 62,
+      "is_block_start": false,
+      "reason": "remboursement des frais de dossier, prolonge",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 440,
+      "theme": "DISPUTE_ARBITRATION",
+      "block_id": 62,
+      "is_block_start": false,
+      "reason": "accord sur les procédures et frais, prolonge",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 441,
+      "theme": "DISPUTE_ARBITRATION",
+      "block_id": 62,
+      "is_block_start": false,
+      "reason": "soumission du formulaire d'arbitrage, prolonge",
+      "legal_nature": "GOVERNANCE",
+      "legal_nature_marker": "arbitration"
+    },
+    {
+      "id": 442,
+      "theme": "DISPUTE_ARBITRATION",
+      "block_id": 62,
+      "is_block_start": false,
+      "reason": "lieu d'arbitrage dans le comté de résidence, prolonge",
+      "legal_nature": "META",
+      "legal_nature_marker": "principal place of business"
+    },
+    {
+      "id": 443,
+      "theme": "DISPUTE_ARBITRATION",
+      "block_id": 62,
+      "is_block_start": false,
+      "reason": "skype arbitre dans votre comté, prolonge",
+      "legal_nature": "GOVERNANCE",
+      "legal_nature_marker": "arbitration"
+    },
+    {
+      "id": 444,
+      "theme": "DISPUTE_ARBITRATION",
+      "block_id": 62,
+      "is_block_start": false,
+      "reason": "(g) délai d'un an pour déposer une réclamation, prolonge",
+      "legal_nature": "LIMITATION_DISCLAIMER",
+      "legal_nature_marker": "to the extent permitted"
+    },
+    {
+      "id": 445,
+      "theme": "DISPUTE_ARBITRATION",
+      "block_id": 62,
+      "is_block_start": false,
+      "reason": "début du délai d'un an, prolonge",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 446,
+      "theme": "DISPUTE_ARBITRATION",
+      "block_id": 62,
+      "is_block_start": false,
+      "reason": "réclamation prescrite après un an, prolonge",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 447,
+      "theme": "DISPUTE_ARBITRATION",
+      "block_id": 62,
+      "is_block_start": false,
+      "reason": "(h) rejet des changements futurs d'arbitrage, sous-titre, prolonge",
+      "legal_nature": "GOVERNANCE",
+      "legal_nature_marker": "arbitration"
+    },
+    {
+      "id": 448,
+      "theme": "DISPUTE_ARBITRATION",
+      "block_id": 62,
+      "is_block_start": false,
+      "reason": "version applicable si rejet, prolonge",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 449,
+      "theme": "DISPUTE_ARBITRATION",
+      "block_id": 62,
+      "is_block_start": false,
+      "reason": "(i) severability du class action waiver, prolonge",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 450,
+      "theme": "DISPUTE_ARBITRATION",
+      "block_id": 62,
+      "is_block_start": false,
+      "reason": "séparation des parties illégales, prolonge",
+      "legal_nature": "PROHIBITION",
+      "legal_nature_marker": "will not"
+    },
+    {
+      "id": 451,
+      "theme": "DISPUTE_ARBITRATION",
+      "block_id": 62,
+      "is_block_start": false,
+      "reason": "parties illégales séparées et portées en justice, prolonge",
+      "legal_nature": "GOVERNANCE",
+      "legal_nature_marker": "arbitration"
+    },
+    {
+      "id": 452,
+      "theme": "DISPUTE_ARBITRATION",
+      "block_id": 62,
+      "is_block_start": false,
+      "reason": "séparation d'autres provisions de 20.3, prolonge",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 453,
+      "theme": "PREAMBLE_SCOPE",
+      "block_id": 63,
+      "is_block_start": true,
+      "rationale": "acknowledgement final, l'utilisateur reconnaît avoir lu et compris les termes",
+      "rationale_codes": {
+        "decision_trigger": "lexical_shift",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "you expressly acknowledge that you have read these terms",
+        "revised_from_plan": false,
+        "confidence": 0.75
+      },
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 454,
+      "theme": "PREAMBLE_SCOPE",
+      "block_id": 63,
+      "is_block_start": false,
+      "reason": "consentement final en cliquant accept, prolonge l'acknowledgement",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    }
+  ]
+}

@@ -1,0 +1,987 @@
+{
+  "doc": "Netflix",
+  "judge": "claude",
+  "version": "v9.3",
+  "plan": {
+    "macro_sections": [
+      {
+        "id": 0,
+        "theme": "PREAMBLE_SCOPE",
+        "anchor_id": 0,
+        "evidence_span": "netflix provides a subscription service"
+      },
+      {
+        "id": 1,
+        "theme": "SUBSCRIPTION_RENEWAL",
+        "anchor_id": 4,
+        "evidence_span": "your netflix membership will continue month-to-month until terminated"
+      },
+      {
+        "id": 2,
+        "theme": "PAYMENT_BILLING",
+        "anchor_id": 15,
+        "evidence_span": "we will charge your payment method for your monthly membership fee"
+      },
+      {
+        "id": 3,
+        "theme": "TERMINATION",
+        "anchor_id": 26,
+        "evidence_span": "you can cancel your netflix membership at any time"
+      },
+      {
+        "id": 4,
+        "theme": "MODIFICATION_OF_TERMS",
+        "anchor_id": 33,
+        "evidence_span": "changes to the price and service plans"
+      },
+      {
+        "id": 5,
+        "theme": "ELIGIBILITY_ACCOUNT",
+        "anchor_id": 35,
+        "evidence_span": "you must be 18 years of age"
+      },
+      {
+        "id": 6,
+        "theme": "LICENSE_IP",
+        "anchor_id": 37,
+        "evidence_span": "the netflix service and any content viewed through the service are for your personal and non-commercial use only"
+      },
+      {
+        "id": 7,
+        "theme": "OTHER_SERVICE_AVAILABILITY",
+        "anchor_id": 44,
+        "evidence_span": "netflix regularly makes changes to the service"
+      },
+      {
+        "id": 8,
+        "theme": "ACCEPTABLE_USE",
+        "anchor_id": 50,
+        "evidence_span": "you agree to use the netflix service"
+      },
+      {
+        "id": 9,
+        "theme": "GOVERNING_LAW",
+        "anchor_id": 73,
+        "evidence_span": "these terms of use shall be governed by"
+      },
+      {
+        "id": 10,
+        "theme": "MISC_BOILERPLATE",
+        "anchor_id": 75,
+        "evidence_span": "netflix does not accept unsolicited materials or ideas"
+      },
+      {
+        "id": 11,
+        "theme": "META",
+        "anchor_id": 85,
+        "evidence_span": "last updated"
+      }
+    ],
+    "clauses": [
+      {
+        "clause_id": 0,
+        "macro": 0,
+        "theme": "PREAMBLE_SCOPE",
+        "anchor_id": 0,
+        "evidence_span": "netflix provides a subscription service"
+      },
+      {
+        "clause_id": 1,
+        "macro": 0,
+        "theme": "DEFINITIONS",
+        "anchor_id": 3,
+        "evidence_span": "as used in these terms of use"
+      },
+      {
+        "clause_id": 2,
+        "macro": 1,
+        "theme": "SUBSCRIPTION_RENEWAL",
+        "anchor_id": 4,
+        "evidence_span": "your netflix membership will continue month-to-month until terminated"
+      },
+      {
+        "clause_id": 3,
+        "macro": 1,
+        "theme": "PAYMENT_BILLING",
+        "anchor_id": 5,
+        "evidence_span": "to use the netflix service you must have internet access"
+      },
+      {
+        "clause_id": 4,
+        "macro": 1,
+        "theme": "SUBSCRIPTION_RENEWAL",
+        "anchor_id": 8,
+        "evidence_span": "your netflix membership may start with a free trial"
+      },
+      {
+        "clause_id": 5,
+        "macro": 1,
+        "theme": "ELIGIBILITY_ACCOUNT",
+        "anchor_id": 10,
+        "evidence_span": "free trial eligibility is determined by netflix"
+      },
+      {
+        "clause_id": 6,
+        "macro": 2,
+        "theme": "PAYMENT_BILLING",
+        "anchor_id": 15,
+        "evidence_span": "we will charge your payment method for your monthly membership fee"
+      },
+      {
+        "clause_id": 7,
+        "macro": 2,
+        "theme": "PAYMENT_BILLING",
+        "anchor_id": 20,
+        "evidence_span": "if a payment is not successfully settled"
+      },
+      {
+        "clause_id": 8,
+        "macro": 3,
+        "theme": "TERMINATION",
+        "anchor_id": 26,
+        "evidence_span": "you can cancel your netflix membership at any time"
+      },
+      {
+        "clause_id": 9,
+        "macro": 3,
+        "theme": "THIRD_PARTY",
+        "anchor_id": 31,
+        "evidence_span": "if you signed up for netflix using your account with a third party"
+      },
+      {
+        "clause_id": 10,
+        "macro": 4,
+        "theme": "MODIFICATION_OF_TERMS",
+        "anchor_id": 33,
+        "evidence_span": "changes to the price and service plans"
+      },
+      {
+        "clause_id": 11,
+        "macro": 5,
+        "theme": "ELIGIBILITY_ACCOUNT",
+        "anchor_id": 35,
+        "evidence_span": "you must be 18 years of age"
+      },
+      {
+        "clause_id": 12,
+        "macro": 6,
+        "theme": "LICENSE_IP",
+        "anchor_id": 37,
+        "evidence_span": "the netflix service and any content viewed through the service are for your personal and non-commercial use only"
+      },
+      {
+        "clause_id": 13,
+        "macro": 6,
+        "theme": "LICENSE_IP",
+        "anchor_id": 41,
+        "evidence_span": "you may view the netflix content primarily within the country"
+      },
+      {
+        "clause_id": 14,
+        "macro": 7,
+        "theme": "OTHER_SERVICE_AVAILABILITY",
+        "anchor_id": 44,
+        "evidence_span": "netflix regularly makes changes to the service"
+      },
+      {
+        "clause_id": 15,
+        "macro": 7,
+        "theme": "OTHER_SERVICE_AVAILABILITY",
+        "anchor_id": 47,
+        "evidence_span": "some netflix content is available for temporary download and offline viewing"
+      },
+      {
+        "clause_id": 16,
+        "macro": 8,
+        "theme": "ACCEPTABLE_USE",
+        "anchor_id": 50,
+        "evidence_span": "you agree to use the netflix service"
+      },
+      {
+        "clause_id": 17,
+        "macro": 8,
+        "theme": "TERMINATION",
+        "anchor_id": 54,
+        "evidence_span": "we may terminate or restrict your use of our service"
+      },
+      {
+        "clause_id": 18,
+        "macro": 7,
+        "theme": "OTHER_SERVICE_AVAILABILITY",
+        "anchor_id": 55,
+        "evidence_span": "the quality of the display of the netflix content may vary"
+      },
+      {
+        "clause_id": 19,
+        "macro": 7,
+        "theme": "THIRD_PARTY",
+        "anchor_id": 65,
+        "evidence_span": "the netflix software is developed by"
+      },
+      {
+        "clause_id": 20,
+        "macro": 5,
+        "theme": "ELIGIBILITY_ACCOUNT",
+        "anchor_id": 69,
+        "evidence_span": "the member who created the netflix account"
+      },
+      {
+        "clause_id": 21,
+        "macro": 3,
+        "theme": "TERMINATION",
+        "anchor_id": 72,
+        "evidence_span": "we can terminate your account or place your account on hold"
+      },
+      {
+        "clause_id": 22,
+        "macro": 9,
+        "theme": "GOVERNING_LAW",
+        "anchor_id": 73,
+        "evidence_span": "these terms of use shall be governed by"
+      },
+      {
+        "clause_id": 23,
+        "macro": 10,
+        "theme": "MISC_BOILERPLATE",
+        "anchor_id": 75,
+        "evidence_span": "netflix does not accept unsolicited materials or ideas"
+      },
+      {
+        "clause_id": 24,
+        "macro": 10,
+        "theme": "PRIVACY_DATA",
+        "anchor_id": 77,
+        "evidence_span": "customer service may best be able to assist you by using a remote access support tool"
+      },
+      {
+        "clause_id": 25,
+        "macro": 10,
+        "theme": "MISC_BOILERPLATE",
+        "anchor_id": 79,
+        "evidence_span": "in the event of any conflict between these terms of use"
+      },
+      {
+        "clause_id": 26,
+        "macro": 10,
+        "theme": "MISC_BOILERPLATE",
+        "anchor_id": 80,
+        "evidence_span": "if any provision or provisions of these terms of use"
+      },
+      {
+        "clause_id": 27,
+        "macro": 4,
+        "theme": "MODIFICATION_OF_TERMS",
+        "anchor_id": 81,
+        "evidence_span": "changes to terms of use"
+      },
+      {
+        "clause_id": 28,
+        "macro": 10,
+        "theme": "PRIVACY_DATA",
+        "anchor_id": 84,
+        "evidence_span": "we will send you information relating to your account"
+      },
+      {
+        "clause_id": 29,
+        "macro": 11,
+        "theme": "META",
+        "anchor_id": 85,
+        "evidence_span": "last updated"
+      }
+    ]
+  },
+  "assignment": [
+    {
+      "id": 0,
+      "decision": "ADVANCE",
+      "block_id": 0,
+      "is_block_start": true,
+      "theme": "PREAMBLE_SCOPE",
+      "plan_ref": 0,
+      "evidence_span": "netflix provides a subscription service",
+      "unplanned": false
+    },
+    {
+      "id": 1,
+      "decision": "STAY",
+      "block_id": 0,
+      "is_block_start": false,
+      "theme": "PREAMBLE_SCOPE"
+    },
+    {
+      "id": 2,
+      "decision": "STAY",
+      "block_id": 0,
+      "is_block_start": false,
+      "theme": "PREAMBLE_SCOPE"
+    },
+    {
+      "id": 3,
+      "decision": "ADVANCE",
+      "block_id": 1,
+      "is_block_start": true,
+      "theme": "DEFINITIONS",
+      "plan_ref": 1,
+      "evidence_span": "as used in these terms of use",
+      "unplanned": false
+    },
+    {
+      "id": 4,
+      "decision": "ADVANCE",
+      "block_id": 2,
+      "is_block_start": true,
+      "theme": "SUBSCRIPTION_RENEWAL",
+      "plan_ref": 2,
+      "evidence_span": "your netflix membership will continue month-to-month until terminated",
+      "unplanned": false
+    },
+    {
+      "id": 5,
+      "decision": "ADVANCE",
+      "block_id": 3,
+      "is_block_start": true,
+      "theme": "PAYMENT_BILLING",
+      "plan_ref": 3,
+      "evidence_span": "to use the netflix service you must have internet access",
+      "unplanned": false
+    },
+    {
+      "id": 6,
+      "decision": "STAY",
+      "block_id": 3,
+      "is_block_start": false,
+      "theme": "PAYMENT_BILLING"
+    },
+    {
+      "id": 7,
+      "decision": "STAY",
+      "block_id": 3,
+      "is_block_start": false,
+      "theme": "PAYMENT_BILLING"
+    },
+    {
+      "id": 8,
+      "decision": "ADVANCE",
+      "block_id": 4,
+      "is_block_start": true,
+      "theme": "SUBSCRIPTION_RENEWAL",
+      "plan_ref": 4,
+      "evidence_span": "your netflix membership may start with a free trial",
+      "unplanned": false
+    },
+    {
+      "id": 9,
+      "decision": "STAY",
+      "block_id": 4,
+      "is_block_start": false,
+      "theme": "SUBSCRIPTION_RENEWAL"
+    },
+    {
+      "id": 10,
+      "decision": "ADVANCE",
+      "block_id": 5,
+      "is_block_start": true,
+      "theme": "ELIGIBILITY_ACCOUNT",
+      "plan_ref": 5,
+      "evidence_span": "free trial eligibility is determined by netflix",
+      "unplanned": false
+    },
+    {
+      "id": 11,
+      "decision": "STAY",
+      "block_id": 5,
+      "is_block_start": false,
+      "theme": "ELIGIBILITY_ACCOUNT"
+    },
+    {
+      "id": 12,
+      "decision": "STAY",
+      "block_id": 5,
+      "is_block_start": false,
+      "theme": "ELIGIBILITY_ACCOUNT"
+    },
+    {
+      "id": 13,
+      "decision": "STAY",
+      "block_id": 5,
+      "is_block_start": false,
+      "theme": "ELIGIBILITY_ACCOUNT"
+    },
+    {
+      "id": 14,
+      "decision": "STAY",
+      "block_id": 5,
+      "is_block_start": false,
+      "theme": "ELIGIBILITY_ACCOUNT"
+    },
+    {
+      "id": 15,
+      "decision": "ADVANCE",
+      "block_id": 6,
+      "is_block_start": true,
+      "theme": "PAYMENT_BILLING",
+      "plan_ref": 6,
+      "evidence_span": "we will charge your payment method for your monthly membership fee",
+      "unplanned": false
+    },
+    {
+      "id": 16,
+      "decision": "STAY",
+      "block_id": 6,
+      "is_block_start": false,
+      "theme": "PAYMENT_BILLING"
+    },
+    {
+      "id": 17,
+      "decision": "STAY",
+      "block_id": 6,
+      "is_block_start": false,
+      "theme": "PAYMENT_BILLING"
+    },
+    {
+      "id": 18,
+      "decision": "STAY",
+      "block_id": 6,
+      "is_block_start": false,
+      "theme": "PAYMENT_BILLING"
+    },
+    {
+      "id": 19,
+      "decision": "STAY",
+      "block_id": 6,
+      "is_block_start": false,
+      "theme": "PAYMENT_BILLING"
+    },
+    {
+      "id": 20,
+      "decision": "ADVANCE",
+      "block_id": 7,
+      "is_block_start": true,
+      "theme": "PAYMENT_BILLING",
+      "plan_ref": 7,
+      "evidence_span": "if a payment is not successfully settled",
+      "unplanned": false
+    },
+    {
+      "id": 21,
+      "decision": "STAY",
+      "block_id": 7,
+      "is_block_start": false,
+      "theme": "PAYMENT_BILLING"
+    },
+    {
+      "id": 22,
+      "decision": "STAY",
+      "block_id": 7,
+      "is_block_start": false,
+      "theme": "PAYMENT_BILLING"
+    },
+    {
+      "id": 23,
+      "decision": "STAY",
+      "block_id": 7,
+      "is_block_start": false,
+      "theme": "PAYMENT_BILLING"
+    },
+    {
+      "id": 24,
+      "decision": "STAY",
+      "block_id": 7,
+      "is_block_start": false,
+      "theme": "PAYMENT_BILLING"
+    },
+    {
+      "id": 25,
+      "decision": "STAY",
+      "block_id": 7,
+      "is_block_start": false,
+      "theme": "PAYMENT_BILLING"
+    },
+    {
+      "id": 26,
+      "decision": "ADVANCE",
+      "block_id": 8,
+      "is_block_start": true,
+      "theme": "TERMINATION",
+      "plan_ref": 8,
+      "evidence_span": "you can cancel your netflix membership at any time",
+      "unplanned": false
+    },
+    {
+      "id": 27,
+      "decision": "STAY",
+      "block_id": 8,
+      "is_block_start": false,
+      "theme": "TERMINATION"
+    },
+    {
+      "id": 28,
+      "decision": "STAY",
+      "block_id": 8,
+      "is_block_start": false,
+      "theme": "TERMINATION"
+    },
+    {
+      "id": 29,
+      "decision": "STAY",
+      "block_id": 8,
+      "is_block_start": false,
+      "theme": "TERMINATION"
+    },
+    {
+      "id": 30,
+      "decision": "STAY",
+      "block_id": 8,
+      "is_block_start": false,
+      "theme": "TERMINATION"
+    },
+    {
+      "id": 31,
+      "decision": "ADVANCE",
+      "block_id": 9,
+      "is_block_start": true,
+      "theme": "THIRD_PARTY",
+      "plan_ref": 9,
+      "evidence_span": "if you signed up for netflix using your account with a third party",
+      "unplanned": false
+    },
+    {
+      "id": 32,
+      "decision": "STAY",
+      "block_id": 9,
+      "is_block_start": false,
+      "theme": "THIRD_PARTY"
+    },
+    {
+      "id": 33,
+      "decision": "ADVANCE",
+      "block_id": 10,
+      "is_block_start": true,
+      "theme": "MODIFICATION_OF_TERMS",
+      "plan_ref": 10,
+      "evidence_span": "changes to the price and service plans",
+      "unplanned": false
+    },
+    {
+      "id": 34,
+      "decision": "STAY",
+      "block_id": 10,
+      "is_block_start": false,
+      "theme": "MODIFICATION_OF_TERMS"
+    },
+    {
+      "id": 35,
+      "decision": "ADVANCE",
+      "block_id": 11,
+      "is_block_start": true,
+      "theme": "ELIGIBILITY_ACCOUNT",
+      "plan_ref": 11,
+      "evidence_span": "you must be 18 years of age",
+      "unplanned": false
+    },
+    {
+      "id": 36,
+      "decision": "STAY",
+      "block_id": 11,
+      "is_block_start": false,
+      "theme": "ELIGIBILITY_ACCOUNT"
+    },
+    {
+      "id": 37,
+      "decision": "ADVANCE",
+      "block_id": 12,
+      "is_block_start": true,
+      "theme": "LICENSE_IP",
+      "plan_ref": 12,
+      "evidence_span": "the netflix service and any content viewed through the service are for your personal and non-commercial use only",
+      "unplanned": false
+    },
+    {
+      "id": 38,
+      "decision": "STAY",
+      "block_id": 12,
+      "is_block_start": false,
+      "theme": "LICENSE_IP"
+    },
+    {
+      "id": 39,
+      "decision": "STAY",
+      "block_id": 12,
+      "is_block_start": false,
+      "theme": "LICENSE_IP"
+    },
+    {
+      "id": 40,
+      "decision": "STAY",
+      "block_id": 12,
+      "is_block_start": false,
+      "theme": "LICENSE_IP"
+    },
+    {
+      "id": 41,
+      "decision": "ADVANCE",
+      "block_id": 13,
+      "is_block_start": true,
+      "theme": "LICENSE_IP",
+      "plan_ref": 13,
+      "evidence_span": "you may view the netflix content primarily within the country",
+      "unplanned": false
+    },
+    {
+      "id": 42,
+      "decision": "STAY",
+      "block_id": 13,
+      "is_block_start": false,
+      "theme": "LICENSE_IP"
+    },
+    {
+      "id": 43,
+      "decision": "STAY",
+      "block_id": 13,
+      "is_block_start": false,
+      "theme": "LICENSE_IP"
+    },
+    {
+      "id": 44,
+      "decision": "ADVANCE",
+      "block_id": 14,
+      "is_block_start": true,
+      "theme": "OTHER_SERVICE_AVAILABILITY",
+      "plan_ref": 14,
+      "evidence_span": "netflix regularly makes changes to the service",
+      "unplanned": false
+    },
+    {
+      "id": 45,
+      "decision": "STAY",
+      "block_id": 14,
+      "is_block_start": false,
+      "theme": "OTHER_SERVICE_AVAILABILITY"
+    },
+    {
+      "id": 46,
+      "decision": "STAY",
+      "block_id": 14,
+      "is_block_start": false,
+      "theme": "OTHER_SERVICE_AVAILABILITY"
+    },
+    {
+      "id": 47,
+      "decision": "ADVANCE",
+      "block_id": 15,
+      "is_block_start": true,
+      "theme": "OTHER_SERVICE_AVAILABILITY",
+      "plan_ref": 15,
+      "evidence_span": "some netflix content is available for temporary download and offline viewing",
+      "unplanned": false
+    },
+    {
+      "id": 48,
+      "decision": "STAY",
+      "block_id": 15,
+      "is_block_start": false,
+      "theme": "OTHER_SERVICE_AVAILABILITY"
+    },
+    {
+      "id": 49,
+      "decision": "STAY",
+      "block_id": 15,
+      "is_block_start": false,
+      "theme": "OTHER_SERVICE_AVAILABILITY"
+    },
+    {
+      "id": 50,
+      "decision": "ADVANCE",
+      "block_id": 16,
+      "is_block_start": true,
+      "theme": "ACCEPTABLE_USE",
+      "plan_ref": 16,
+      "evidence_span": "you agree to use the netflix service",
+      "unplanned": false
+    },
+    {
+      "id": 51,
+      "decision": "STAY",
+      "block_id": 16,
+      "is_block_start": false,
+      "theme": "ACCEPTABLE_USE"
+    },
+    {
+      "id": 52,
+      "decision": "STAY",
+      "block_id": 16,
+      "is_block_start": false,
+      "theme": "ACCEPTABLE_USE"
+    },
+    {
+      "id": 53,
+      "decision": "STAY",
+      "block_id": 16,
+      "is_block_start": false,
+      "theme": "ACCEPTABLE_USE"
+    },
+    {
+      "id": 54,
+      "decision": "ADVANCE",
+      "block_id": 17,
+      "is_block_start": true,
+      "theme": "TERMINATION",
+      "plan_ref": 17,
+      "evidence_span": "we may terminate or restrict your use of our service",
+      "unplanned": false
+    },
+    {
+      "id": 55,
+      "decision": "ADVANCE",
+      "block_id": 18,
+      "is_block_start": true,
+      "theme": "OTHER_SERVICE_AVAILABILITY",
+      "plan_ref": 18,
+      "evidence_span": "the quality of the display of the netflix content may vary",
+      "unplanned": false
+    },
+    {
+      "id": 56,
+      "decision": "STAY",
+      "block_id": 18,
+      "is_block_start": false,
+      "theme": "OTHER_SERVICE_AVAILABILITY"
+    },
+    {
+      "id": 57,
+      "decision": "STAY",
+      "block_id": 18,
+      "is_block_start": false,
+      "theme": "OTHER_SERVICE_AVAILABILITY"
+    },
+    {
+      "id": 58,
+      "decision": "STAY",
+      "block_id": 18,
+      "is_block_start": false,
+      "theme": "OTHER_SERVICE_AVAILABILITY"
+    },
+    {
+      "id": 59,
+      "decision": "STAY",
+      "block_id": 18,
+      "is_block_start": false,
+      "theme": "OTHER_SERVICE_AVAILABILITY"
+    },
+    {
+      "id": 60,
+      "decision": "STAY",
+      "block_id": 18,
+      "is_block_start": false,
+      "theme": "OTHER_SERVICE_AVAILABILITY"
+    },
+    {
+      "id": 61,
+      "decision": "STAY",
+      "block_id": 18,
+      "is_block_start": false,
+      "theme": "OTHER_SERVICE_AVAILABILITY"
+    },
+    {
+      "id": 62,
+      "decision": "STAY",
+      "block_id": 18,
+      "is_block_start": false,
+      "theme": "OTHER_SERVICE_AVAILABILITY"
+    },
+    {
+      "id": 63,
+      "decision": "STAY",
+      "block_id": 18,
+      "is_block_start": false,
+      "theme": "OTHER_SERVICE_AVAILABILITY"
+    },
+    {
+      "id": 64,
+      "decision": "STAY",
+      "block_id": 18,
+      "is_block_start": false,
+      "theme": "OTHER_SERVICE_AVAILABILITY"
+    },
+    {
+      "id": 65,
+      "decision": "ADVANCE",
+      "block_id": 19,
+      "is_block_start": true,
+      "theme": "THIRD_PARTY",
+      "plan_ref": 19,
+      "evidence_span": "the netflix software is developed by",
+      "unplanned": false
+    },
+    {
+      "id": 66,
+      "decision": "STAY",
+      "block_id": 19,
+      "is_block_start": false,
+      "theme": "THIRD_PARTY"
+    },
+    {
+      "id": 67,
+      "decision": "STAY",
+      "block_id": 19,
+      "is_block_start": false,
+      "theme": "THIRD_PARTY"
+    },
+    {
+      "id": 68,
+      "decision": "STAY",
+      "block_id": 19,
+      "is_block_start": false,
+      "theme": "THIRD_PARTY"
+    },
+    {
+      "id": 69,
+      "decision": "ADVANCE",
+      "block_id": 20,
+      "is_block_start": true,
+      "theme": "ELIGIBILITY_ACCOUNT",
+      "plan_ref": 20,
+      "evidence_span": "the member who created the netflix account",
+      "unplanned": false
+    },
+    {
+      "id": 70,
+      "decision": "STAY",
+      "block_id": 20,
+      "is_block_start": false,
+      "theme": "ELIGIBILITY_ACCOUNT"
+    },
+    {
+      "id": 71,
+      "decision": "STAY",
+      "block_id": 20,
+      "is_block_start": false,
+      "theme": "ELIGIBILITY_ACCOUNT"
+    },
+    {
+      "id": 72,
+      "decision": "ADVANCE",
+      "block_id": 21,
+      "is_block_start": true,
+      "theme": "TERMINATION",
+      "plan_ref": 21,
+      "evidence_span": "we can terminate your account or place your account on hold",
+      "unplanned": false
+    },
+    {
+      "id": 73,
+      "decision": "ADVANCE",
+      "block_id": 22,
+      "is_block_start": true,
+      "theme": "GOVERNING_LAW",
+      "plan_ref": 22,
+      "evidence_span": "these terms of use shall be governed by",
+      "unplanned": false
+    },
+    {
+      "id": 74,
+      "decision": "STAY",
+      "block_id": 22,
+      "is_block_start": false,
+      "theme": "GOVERNING_LAW"
+    },
+    {
+      "id": 75,
+      "decision": "ADVANCE",
+      "block_id": 23,
+      "is_block_start": true,
+      "theme": "MISC_BOILERPLATE",
+      "plan_ref": 23,
+      "evidence_span": "netflix does not accept unsolicited materials or ideas",
+      "unplanned": false
+    },
+    {
+      "id": 76,
+      "decision": "STAY",
+      "block_id": 23,
+      "is_block_start": false,
+      "theme": "MISC_BOILERPLATE"
+    },
+    {
+      "id": 77,
+      "decision": "ADVANCE",
+      "block_id": 24,
+      "is_block_start": true,
+      "theme": "PRIVACY_DATA",
+      "plan_ref": 24,
+      "evidence_span": "customer service may best be able to assist you by using a remote access support tool",
+      "unplanned": false
+    },
+    {
+      "id": 78,
+      "decision": "STAY",
+      "block_id": 24,
+      "is_block_start": false,
+      "theme": "PRIVACY_DATA"
+    },
+    {
+      "id": 79,
+      "decision": "ADVANCE",
+      "block_id": 25,
+      "is_block_start": true,
+      "theme": "MISC_BOILERPLATE",
+      "plan_ref": 25,
+      "evidence_span": "in the event of any conflict between these terms of use",
+      "unplanned": false
+    },
+    {
+      "id": 80,
+      "decision": "ADVANCE",
+      "block_id": 26,
+      "is_block_start": true,
+      "theme": "MISC_BOILERPLATE",
+      "plan_ref": 26,
+      "evidence_span": "if any provision or provisions of these terms of use",
+      "unplanned": false
+    },
+    {
+      "id": 81,
+      "decision": "ADVANCE",
+      "block_id": 27,
+      "is_block_start": true,
+      "theme": "MODIFICATION_OF_TERMS",
+      "plan_ref": 27,
+      "evidence_span": "changes to terms of use",
+      "unplanned": false
+    },
+    {
+      "id": 82,
+      "decision": "STAY",
+      "block_id": 27,
+      "is_block_start": false,
+      "theme": "MODIFICATION_OF_TERMS"
+    },
+    {
+      "id": 83,
+      "decision": "STAY",
+      "block_id": 27,
+      "is_block_start": false,
+      "theme": "MODIFICATION_OF_TERMS"
+    },
+    {
+      "id": 84,
+      "decision": "ADVANCE",
+      "block_id": 28,
+      "is_block_start": true,
+      "theme": "PRIVACY_DATA",
+      "plan_ref": 28,
+      "evidence_span": "we will send you information relating to your account",
+      "unplanned": false
+    },
+    {
+      "id": 85,
+      "decision": "ADVANCE",
+      "block_id": 29,
+      "is_block_start": true,
+      "theme": "META",
+      "plan_ref": 29,
+      "evidence_span": "last updated",
+      "unplanned": false
+    }
+  ]
+}

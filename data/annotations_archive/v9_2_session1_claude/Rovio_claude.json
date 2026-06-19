@@ -1,0 +1,1203 @@
+{
+  "doc": "Rovio",
+  "judge": "claude",
+  "version": "v9.2-nature-derived",
+  "document_plan": {
+    "estimated_n_blocks": 16,
+    "rationale_global": "EULA Rovio de structure narrative (un seul marqueur numerote 6.1 a id 60, quatre titres-like a 20/49/60/92, meta a 1/2/98). Flux : titre d'ouverture (id 0), meta date/version anterieure (id 1-2), preambule/portee (id 3-4), definitions software/services (id 5-8), octroi de licence du logiciel et des services avec acceptation et terme (id 9-19), propriete intellectuelle/reserve de droits (id 20-24), services tiers (id 25-28), transfert du logiciel physique (id 29, rattache a la licence), mesures de controle d'acces / usage acceptable (id 30-33), contenu utilisateur et cession de droits (id 34-37), connexion internet/comptes - eligibilite-acces (id 38-42), collecte d'information/vie privee (id 43-48), paiements et biens virtuels (id 49-59), garantie support physique 6.1 (id 60-68), disclaimer 'as is' (id 69-75, rattache au theme garantie), limitation de responsabilite (id 75-80), resiliation (id 81-83), remedes equitables - boilerplate (id 84), definition affiliate (id 85-86), indemnite (id 87), miscellaneous/modification (id 88-91), droit applicable (id 92-94), arbitrage (id 95-97), contact - meta (id 98). Continuite par defaut : les phrases qui prolongent une clause (procedure, effet, exception) restent dans le bloc.",
+    "segments": [
+      {
+        "start_id": 0,
+        "theme": "PREAMBLE_SCOPE",
+        "rationale": "titre d'ouverture de l'accord",
+        "evidence_span": "terms of service and end user license agreement"
+      },
+      {
+        "start_id": 1,
+        "theme": "META",
+        "rationale": "date d'application",
+        "evidence_span": "applicable from : 7 may 2013 ."
+      },
+      {
+        "start_id": 3,
+        "theme": "PREAMBLE_SCOPE",
+        "rationale": "constitution de l'accord entre les parties",
+        "evidence_span": "constitute an agreement between you and rovio"
+      },
+      {
+        "start_id": 5,
+        "theme": "DEFINITIONS",
+        "rationale": "definition de 'software'",
+        "evidence_span": "`` software '' means all software programs"
+      },
+      {
+        "start_id": 9,
+        "theme": "LICENSE_IP",
+        "rationale": "octroi de licence du logiciel",
+        "evidence_span": "the software is licensed , not sold ."
+      },
+      {
+        "start_id": 20,
+        "theme": "LICENSE_IP",
+        "rationale": "titre ownership ; no other licenses",
+        "evidence_span": "ownership ; no other licenses ."
+      },
+      {
+        "start_id": 25,
+        "theme": "THIRD_PARTY",
+        "rationale": "liens vers services tiers",
+        "evidence_span": "links to third party services"
+      },
+      {
+        "start_id": 29,
+        "theme": "LICENSE_IP",
+        "rationale": "transfert du logiciel sur support physique",
+        "evidence_span": "transfer the entire software"
+      },
+      {
+        "start_id": 30,
+        "theme": "ACCEPTABLE_USE",
+        "rationale": "mesures de controle d'acces, interdiction de contournement",
+        "evidence_span": "measures to control access"
+      },
+      {
+        "start_id": 34,
+        "theme": "USER_CONTENT",
+        "rationale": "creation de contenu par l'utilisateur et cession de droits",
+        "evidence_span": "allow you to create content"
+      },
+      {
+        "start_id": 38,
+        "theme": "ELIGIBILITY_ACCOUNT",
+        "rationale": "exigence de connexion internet et de compte valide",
+        "evidence_span": "require an internet connection"
+      },
+      {
+        "start_id": 43,
+        "theme": "PRIVACY_DATA",
+        "rationale": "titre information collection and use ; privacy policy",
+        "evidence_span": "information collection and use ; privacy policy"
+      },
+      {
+        "start_id": 49,
+        "theme": "PAYMENT_BILLING",
+        "rationale": "titre payments and purchases of virtual goods",
+        "evidence_span": "payments and purchases of virtual goods"
+      },
+      {
+        "start_id": 60,
+        "theme": "WARRANTY_DISCLAIMER",
+        "rationale": "titre 6.1 warranty for physical software products",
+        "evidence_span": "6.1 warranty for physical software products"
+      },
+      {
+        "start_id": 75,
+        "theme": "LIABILITY_LIMITATION",
+        "rationale": "limitation de responsabilite",
+        "evidence_span": "in no event will rovio"
+      },
+      {
+        "start_id": 81,
+        "theme": "TERMINATION",
+        "rationale": "titre termination + resiliation automatique",
+        "evidence_span": "termination : this eula will terminate automatically"
+      },
+      {
+        "start_id": 84,
+        "theme": "MISC_BOILERPLATE",
+        "rationale": "equitable remedies",
+        "evidence_span": "equitable remedies :"
+      },
+      {
+        "start_id": 85,
+        "theme": "DEFINITIONS",
+        "rationale": "definition d'affiliate",
+        "evidence_span": "an `` affiliate '' or rovio means"
+      },
+      {
+        "start_id": 87,
+        "theme": "INDEMNIFICATION",
+        "rationale": "obligation d'indemnisation",
+        "evidence_span": "indemnity :"
+      },
+      {
+        "start_id": 88,
+        "theme": "MISC_BOILERPLATE",
+        "rationale": "miscellaneous : accord complet, modification, divisibilite",
+        "evidence_span": "miscellaneous :"
+      },
+      {
+        "start_id": 92,
+        "theme": "GOVERNING_LAW",
+        "rationale": "titre governing law and dispute resolution",
+        "evidence_span": "governing law and dispute resolution ."
+      },
+      {
+        "start_id": 95,
+        "theme": "DISPUTE_ARBITRATION",
+        "rationale": "reglement des differends par arbitrage",
+        "evidence_span": "any dispute , controversy or claim"
+      },
+      {
+        "start_id": 98,
+        "theme": "META",
+        "rationale": "coordonnees de contact",
+        "evidence_span": "you may contact support@rovio.com ."
+      }
+    ]
+  },
+  "annotations": [
+    {
+      "id": 0,
+      "theme": "PREAMBLE_SCOPE",
+      "block_id": 0,
+      "is_block_start": true,
+      "rationale": "titre d'ouverture du document, cite « terms of service and end user license agreement »",
+      "rationale_codes": {
+        "decision_trigger": "document_start",
+        "relation_to_prev": "document_start",
+        "evidence_span": "terms of service and end user license agreement",
+        "revised_from_plan": false,
+        "confidence": 0.95
+      },
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 1,
+      "theme": "META",
+      "block_id": 1,
+      "is_block_start": true,
+      "rationale": "metadonnee de date d'application, cite « applicable from : 7 may 2013 »",
+      "rationale_codes": {
+        "decision_trigger": "topic_keyword",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "applicable from : 7 may 2013 .",
+        "revised_from_plan": false,
+        "confidence": 0.9
+      },
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 2,
+      "theme": "META",
+      "block_id": 1,
+      "is_block_start": false,
+      "reason": "renvoi a la version anterieure, prolonge le bloc meta",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 3,
+      "theme": "PREAMBLE_SCOPE",
+      "block_id": 2,
+      "is_block_start": true,
+      "rationale": "constitution de l'accord entre les parties, cite « constitute an agreement between you and rovio »",
+      "rationale_codes": {
+        "decision_trigger": "topic_keyword",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "constitute an agreement between you and rovio",
+        "revised_from_plan": false,
+        "confidence": 0.85
+      },
+      "legal_nature": "META",
+      "legal_nature_marker": "ltd"
+    },
+    {
+      "id": 4,
+      "theme": "PREAMBLE_SCOPE",
+      "block_id": 2,
+      "is_block_start": false,
+      "reason": "portee de l'eula sur l'usage du logiciel et des services",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 5,
+      "theme": "DEFINITIONS",
+      "block_id": 3,
+      "is_block_start": true,
+      "rationale": "definition formelle de 'software', cite « `` software '' means all software programs »",
+      "rationale_codes": {
+        "decision_trigger": "definition_marker",
+        "relation_to_prev": "definition_chain",
+        "evidence_span": "`` software '' means all software programs",
+        "revised_from_plan": false,
+        "confidence": 0.9
+      },
+      "legal_nature": "DEFINITION",
+      "legal_nature_marker": "means"
+    },
+    {
+      "id": 6,
+      "theme": "DEFINITIONS",
+      "block_id": 3,
+      "is_block_start": false,
+      "reason": "extension de la definition de software (mises a jour, manuels)",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 7,
+      "theme": "DEFINITIONS",
+      "block_id": 3,
+      "is_block_start": false,
+      "reason": "definition de 'services', chaine de definitions",
+      "legal_nature": "DEFINITION",
+      "legal_nature_marker": "means"
+    },
+    {
+      "id": 8,
+      "theme": "DEFINITIONS",
+      "block_id": 3,
+      "is_block_start": false,
+      "reason": "definition collective 'rovio services'",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 9,
+      "theme": "LICENSE_IP",
+      "block_id": 4,
+      "is_block_start": true,
+      "rationale": "ouverture de la clause de licence, cite « the software is licensed , not sold »",
+      "rationale_codes": {
+        "decision_trigger": "topic_keyword",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "the software is licensed , not sold .",
+        "revised_from_plan": false,
+        "confidence": 0.85
+      },
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 10,
+      "theme": "LICENSE_IP",
+      "block_id": 4,
+      "is_block_start": false,
+      "reason": "usage soumis aux conditions de l'eula, prolonge la licence",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 11,
+      "theme": "LICENSE_IP",
+      "block_id": 4,
+      "is_block_start": false,
+      "reason": "acceptation par installation/usage, effet de la licence",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 12,
+      "theme": "LICENSE_IP",
+      "block_id": 4,
+      "is_block_start": false,
+      "reason": "non-acceptation : ne pas installer, prolonge l'acceptation",
+      "legal_nature": "PROHIBITION",
+      "legal_nature_marker": "do not"
+    },
+    {
+      "id": 13,
+      "theme": "LICENSE_IP",
+      "block_id": 4,
+      "is_block_start": false,
+      "reason": "octroi de la licence non exclusive d'usage du logiciel",
+      "legal_nature": "RIGHT_GRANT",
+      "legal_nature_marker": "hereby grant"
+    },
+    {
+      "id": 14,
+      "theme": "LICENSE_IP",
+      "block_id": 4,
+      "is_block_start": false,
+      "reason": "droits soumis a la conformite, prolonge l'octroi",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 15,
+      "theme": "LICENSE_IP",
+      "block_id": 4,
+      "is_block_start": false,
+      "reason": "absence de transfert de propriete, prolonge la licence",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 16,
+      "theme": "LICENSE_IP",
+      "block_id": 4,
+      "is_block_start": false,
+      "reason": "octroi de licence d'usage des services, parallele a id 13",
+      "legal_nature": "RIGHT_GRANT",
+      "legal_nature_marker": "hereby grant"
+    },
+    {
+      "id": 17,
+      "theme": "LICENSE_IP",
+      "block_id": 4,
+      "is_block_start": false,
+      "reason": "droits soumis a la conformite, reprend id 14",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 18,
+      "theme": "LICENSE_IP",
+      "block_id": 4,
+      "is_block_start": false,
+      "reason": "duree/terme de la licence, effet de la licence",
+      "legal_nature": "GOVERNANCE",
+      "legal_nature_marker": "termination"
+    },
+    {
+      "id": 19,
+      "theme": "LICENSE_IP",
+      "block_id": 4,
+      "is_block_start": false,
+      "reason": "resiliation de la licence en cas de contournement, prolonge la licence",
+      "legal_nature": "GOVERNANCE",
+      "legal_nature_marker": "terminate"
+    },
+    {
+      "id": 20,
+      "theme": "LICENSE_IP",
+      "block_id": 5,
+      "is_block_start": true,
+      "rationale": "titre de section propriete, cite « ownership ; no other licenses »",
+      "rationale_codes": {
+        "decision_trigger": "title_marker",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "ownership ; no other licenses .",
+        "revised_from_plan": false,
+        "confidence": 0.8
+      },
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 21,
+      "theme": "LICENSE_IP",
+      "block_id": 5,
+      "is_block_start": false,
+      "reason": "retention de tous droits, titres et interets par rovio",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 22,
+      "theme": "LICENSE_IP",
+      "block_id": 5,
+      "is_block_start": false,
+      "reason": "protection par les lois et traites, prolonge la propriete",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 23,
+      "theme": "LICENSE_IP",
+      "block_id": 5,
+      "is_block_start": false,
+      "reason": "interdiction de copie sans consentement, prolonge la propriete",
+      "legal_nature": "PROHIBITION",
+      "legal_nature_marker": "may not"
+    },
+    {
+      "id": 24,
+      "theme": "LICENSE_IP",
+      "block_id": 5,
+      "is_block_start": false,
+      "reason": "reserve des droits non accordes, prolonge la propriete",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 25,
+      "theme": "THIRD_PARTY",
+      "block_id": 6,
+      "is_block_start": true,
+      "rationale": "ouverture sur les services tiers, cite « links to third party services »",
+      "rationale_codes": {
+        "decision_trigger": "topic_keyword",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "links to third party services",
+        "revised_from_plan": false,
+        "confidence": 0.85
+      },
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 26,
+      "theme": "THIRD_PARTY",
+      "block_id": 6,
+      "is_block_start": false,
+      "reason": "exemples de services tiers, prolonge le bloc",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 27,
+      "theme": "THIRD_PARTY",
+      "block_id": 6,
+      "is_block_start": false,
+      "reason": "soumission aux conditions des tiers, prolonge le bloc",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 28,
+      "theme": "THIRD_PARTY",
+      "block_id": 6,
+      "is_block_start": false,
+      "reason": "invitation a lire les conditions tierces, prolonge le bloc",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 29,
+      "theme": "LICENSE_IP",
+      "block_id": 7,
+      "is_block_start": true,
+      "rationale": "transfert du logiciel sur support physique et conditions de cession, cite « transfer the entire software »",
+      "rationale_codes": {
+        "decision_trigger": "topic_keyword",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "transfer the entire software",
+        "revised_from_plan": true,
+        "confidence": 0.6
+      },
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 30,
+      "theme": "ACCEPTABLE_USE",
+      "block_id": 8,
+      "is_block_start": true,
+      "rationale": "mesures de controle d'acces et anti-copie, cite « measures to control access »",
+      "rationale_codes": {
+        "decision_trigger": "topic_keyword",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "measures to control access",
+        "revised_from_plan": false,
+        "confidence": 0.7
+      },
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 31,
+      "theme": "ACCEPTABLE_USE",
+      "block_id": 8,
+      "is_block_start": false,
+      "reason": "acces en ligne reserve aux licences valides, prolonge le controle d'acces",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 32,
+      "theme": "ACCEPTABLE_USE",
+      "block_id": 8,
+      "is_block_start": false,
+      "reason": "interdiction d'interferer avec le controle d'acces, prolonge le bloc",
+      "legal_nature": "PROHIBITION",
+      "legal_nature_marker": "may not"
+    },
+    {
+      "id": 33,
+      "theme": "ACCEPTABLE_USE",
+      "block_id": 8,
+      "is_block_start": false,
+      "reason": "effet du contournement (dysfonctionnement), prolonge le bloc",
+      "legal_nature": "PROHIBITION",
+      "legal_nature_marker": "will not"
+    },
+    {
+      "id": 34,
+      "theme": "USER_CONTENT",
+      "block_id": 9,
+      "is_block_start": true,
+      "rationale": "creation de contenu par l'utilisateur, cite « allow you to create content »",
+      "rationale_codes": {
+        "decision_trigger": "topic_keyword",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "allow you to create content",
+        "revised_from_plan": false,
+        "confidence": 0.75
+      },
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 35,
+      "theme": "USER_CONTENT",
+      "block_id": 9,
+      "is_block_start": false,
+      "reason": "cession de licence sur les contributions, prolonge le contenu utilisateur",
+      "legal_nature": "DEFINITION",
+      "legal_nature_marker": "means"
+    },
+    {
+      "id": 36,
+      "theme": "USER_CONTENT",
+      "block_id": 9,
+      "is_block_start": false,
+      "reason": "renonciation aux droits moraux sur les contributions, prolonge le bloc",
+      "legal_nature": "PROHIBITION",
+      "legal_nature_marker": "prohibited"
+    },
+    {
+      "id": 37,
+      "theme": "USER_CONTENT",
+      "block_id": 9,
+      "is_block_start": false,
+      "reason": "survie de la cession a la resiliation, effet de la clause",
+      "legal_nature": "GOVERNANCE",
+      "legal_nature_marker": "termination"
+    },
+    {
+      "id": 38,
+      "theme": "ELIGIBILITY_ACCOUNT",
+      "block_id": 10,
+      "is_block_start": true,
+      "rationale": "exigence d'une connexion internet et d'un compte, cite « require an internet connection »",
+      "rationale_codes": {
+        "decision_trigger": "topic_keyword",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "require an internet connection",
+        "revised_from_plan": false,
+        "confidence": 0.7
+      },
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 39,
+      "theme": "ELIGIBILITY_ACCOUNT",
+      "block_id": 10,
+      "is_block_start": false,
+      "reason": "obligation de maintenir connexion et compte actif, prolonge le bloc",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 40,
+      "theme": "ELIGIBILITY_ACCOUNT",
+      "block_id": 10,
+      "is_block_start": false,
+      "reason": "frais de transfert de donnees tiers, effet lie a l'acces",
+      "legal_nature": "SCOPE_APPLICABILITY",
+      "legal_nature_marker": "by using"
+    },
+    {
+      "id": 41,
+      "theme": "ELIGIBILITY_ACCOUNT",
+      "block_id": 10,
+      "is_block_start": false,
+      "reason": "consulter l'operateur, prolonge la procedure d'acces",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 42,
+      "theme": "ELIGIBILITY_ACCOUNT",
+      "block_id": 10,
+      "is_block_start": false,
+      "reason": "effet d'absence de compte (dysfonctionnement), prolonge le bloc",
+      "legal_nature": "PROHIBITION",
+      "legal_nature_marker": "may not"
+    },
+    {
+      "id": 43,
+      "theme": "PRIVACY_DATA",
+      "block_id": 11,
+      "is_block_start": true,
+      "rationale": "titre de section vie privee, cite « information collection and use ; privacy policy »",
+      "rationale_codes": {
+        "decision_trigger": "title_marker",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "information collection and use ; privacy policy",
+        "revised_from_plan": false,
+        "confidence": 0.9
+      },
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 44,
+      "theme": "PRIVACY_DATA",
+      "block_id": 11,
+      "is_block_start": false,
+      "reason": "consentement a la collecte et au transfert de donnees, prolonge le bloc",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 45,
+      "theme": "PRIVACY_DATA",
+      "block_id": 11,
+      "is_block_start": false,
+      "reason": "respect des droits a la vie privee, prolonge le bloc",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 46,
+      "theme": "PRIVACY_DATA",
+      "block_id": 11,
+      "is_block_start": false,
+      "reason": "renvoi a la politique de confidentialite, prolonge le bloc",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 47,
+      "theme": "PRIVACY_DATA",
+      "block_id": 11,
+      "is_block_start": false,
+      "reason": "objet de la politique de confidentialite, prolonge le bloc",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 48,
+      "theme": "PRIVACY_DATA",
+      "block_id": 11,
+      "is_block_start": false,
+      "reason": "accord explicite avec la politique de confidentialite, prolonge le bloc",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 49,
+      "theme": "PAYMENT_BILLING",
+      "block_id": 12,
+      "is_block_start": true,
+      "rationale": "titre de section paiements, cite « payments and purchases of virtual goods »",
+      "rationale_codes": {
+        "decision_trigger": "title_marker",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "payments and purchases of virtual goods",
+        "revised_from_plan": false,
+        "confidence": 0.9
+      },
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 50,
+      "theme": "PAYMENT_BILLING",
+      "block_id": 12,
+      "is_block_start": false,
+      "reason": "licence de biens virtuels, prolonge le bloc paiements",
+      "legal_nature": "RIGHT_GRANT",
+      "legal_nature_marker": "license to"
+    },
+    {
+      "id": 51,
+      "theme": "PAYMENT_BILLING",
+      "block_id": 12,
+      "is_block_start": false,
+      "reason": "biens virtuels reputes partie du logiciel, prolonge le bloc",
+      "legal_nature": "OBLIGATION",
+      "legal_nature_marker": "shall"
+    },
+    {
+      "id": 52,
+      "theme": "PAYMENT_BILLING",
+      "block_id": 12,
+      "is_block_start": false,
+      "reason": "modes de licence avec ou sans frais, prolonge le bloc",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 53,
+      "theme": "PAYMENT_BILLING",
+      "block_id": 12,
+      "is_block_start": false,
+      "reason": "licence via monnaie virtuelle tierce, prolonge le bloc",
+      "legal_nature": "SCOPE_APPLICABILITY",
+      "legal_nature_marker": "by using"
+    },
+    {
+      "id": 54,
+      "theme": "PAYMENT_BILLING",
+      "block_id": 12,
+      "is_block_start": false,
+      "reason": "base de licence des biens virtuels, prolonge le bloc",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 55,
+      "theme": "PAYMENT_BILLING",
+      "block_id": 12,
+      "is_block_start": false,
+      "reason": "paiements finaux et non remboursables, prolonge le bloc paiements",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 56,
+      "theme": "PAYMENT_BILLING",
+      "block_id": 12,
+      "is_block_start": false,
+      "reason": "transactions facebook regies par accord tiers, prolonge le bloc",
+      "legal_nature": "GOVERNANCE",
+      "legal_nature_marker": "governed by"
+    },
+    {
+      "id": 57,
+      "theme": "PAYMENT_BILLING",
+      "block_id": 12,
+      "is_block_start": false,
+      "reason": "droit de rovio de gerer/eliminer les biens virtuels, prolonge le bloc",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 58,
+      "theme": "PAYMENT_BILLING",
+      "block_id": 12,
+      "is_block_start": false,
+      "reason": "absence de responsabilite liee a l'exercice de ce droit, effet",
+      "legal_nature": "OBLIGATION",
+      "legal_nature_marker": "shall"
+    },
+    {
+      "id": 59,
+      "theme": "PAYMENT_BILLING",
+      "block_id": 12,
+      "is_block_start": false,
+      "reason": "absence de remboursement des biens virtuels, prolonge le bloc",
+      "legal_nature": "PROHIBITION",
+      "legal_nature_marker": "will not"
+    },
+    {
+      "id": 60,
+      "theme": "WARRANTY_DISCLAIMER",
+      "block_id": 13,
+      "is_block_start": true,
+      "rationale": "titre numerote de la garantie support physique, cite « 6.1 warranty for physical software products »",
+      "rationale_codes": {
+        "decision_trigger": "numbering",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "6.1 warranty for physical software products",
+        "revised_from_plan": false,
+        "confidence": 0.9
+      },
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 61,
+      "theme": "WARRANTY_DISCLAIMER",
+      "block_id": 13,
+      "is_block_start": false,
+      "reason": "garantie de 90 jours sur le support, prolonge le bloc garantie",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 62,
+      "theme": "WARRANTY_DISCLAIMER",
+      "block_id": 13,
+      "is_block_start": false,
+      "reason": "extension de duree selon legislation, prolonge le bloc",
+      "legal_nature": "GOVERNANCE",
+      "legal_nature_marker": "jurisdiction"
+    },
+    {
+      "id": 63,
+      "theme": "WARRANTY_DISCLAIMER",
+      "block_id": 13,
+      "is_block_start": false,
+      "reason": "remplacement du support defectueux, procedure de garantie",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 64,
+      "theme": "WARRANTY_DISCLAIMER",
+      "block_id": 13,
+      "is_block_start": false,
+      "reason": "substitution si logiciel indisponible, prolonge le bloc",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 65,
+      "theme": "WARRANTY_DISCLAIMER",
+      "block_id": 13,
+      "is_block_start": false,
+      "reason": "limitation de la garantie au support, prolonge le bloc",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 66,
+      "theme": "WARRANTY_DISCLAIMER",
+      "block_id": 13,
+      "is_block_start": false,
+      "reason": "nullite si abus/negligence, exception a la garantie",
+      "legal_nature": "PROHIBITION",
+      "legal_nature_marker": "shall not"
+    },
+    {
+      "id": 67,
+      "theme": "WARRANTY_DISCLAIMER",
+      "block_id": 13,
+      "is_block_start": false,
+      "reason": "garanties implicites limitees a la periode, prolonge le bloc",
+      "legal_nature": "LIMITATION_DISCLAIMER",
+      "legal_nature_marker": "warranties"
+    },
+    {
+      "id": 68,
+      "theme": "WARRANTY_DISCLAIMER",
+      "block_id": 13,
+      "is_block_start": false,
+      "reason": "procedure de retour du logiciel, prolonge le bloc garantie",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 69,
+      "theme": "WARRANTY_DISCLAIMER",
+      "block_id": 13,
+      "is_block_start": false,
+      "reason": "disclaimer general 'as is' enchaine sur la garantie physique (meme theme garantie), prolonge le bloc",
+      "legal_nature": "LIMITATION_DISCLAIMER",
+      "legal_nature_marker": "as is"
+    },
+    {
+      "id": 70,
+      "theme": "WARRANTY_DISCLAIMER",
+      "block_id": 13,
+      "is_block_start": false,
+      "reason": "risque integral a la charge de l'utilisateur, prolonge le disclaimer",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 71,
+      "theme": "WARRANTY_DISCLAIMER",
+      "block_id": 13,
+      "is_block_start": false,
+      "reason": "exclusion des garanties implicites, prolonge le disclaimer",
+      "legal_nature": "PROHIBITION",
+      "legal_nature_marker": "do not"
+    },
+    {
+      "id": 72,
+      "theme": "WARRANTY_DISCLAIMER",
+      "block_id": 13,
+      "is_block_start": false,
+      "reason": "absence de garantie de fonctionnement ininterrompu, prolonge le bloc",
+      "legal_nature": "PROHIBITION",
+      "legal_nature_marker": "do not"
+    },
+    {
+      "id": 73,
+      "theme": "WARRANTY_DISCLAIMER",
+      "block_id": 13,
+      "is_block_start": false,
+      "reason": "aucun conseil ne cree de garantie, prolonge le disclaimer",
+      "legal_nature": "OBLIGATION",
+      "legal_nature_marker": "shall"
+    },
+    {
+      "id": 74,
+      "theme": "WARRANTY_DISCLAIMER",
+      "block_id": 13,
+      "is_block_start": false,
+      "reason": "clause de severabilite juridictionnelle du disclaimer, prolonge le bloc",
+      "legal_nature": "PROHIBITION",
+      "legal_nature_marker": "do not"
+    },
+    {
+      "id": 75,
+      "theme": "LIABILITY_LIMITATION",
+      "block_id": 14,
+      "is_block_start": true,
+      "rationale": "exclusion des dommages, cite « in no event will rovio »",
+      "rationale_codes": {
+        "decision_trigger": "topic_keyword",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "in no event will rovio",
+        "revised_from_plan": false,
+        "confidence": 0.85
+      },
+      "legal_nature": "LIMITATION_DISCLAIMER",
+      "legal_nature_marker": "in no event"
+    },
+    {
+      "id": 76,
+      "theme": "LIABILITY_LIMITATION",
+      "block_id": 14,
+      "is_block_start": false,
+      "reason": "beneficiaires tiers de la limitation, prolonge le bloc responsabilite",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 77,
+      "theme": "LIABILITY_LIMITATION",
+      "block_id": 14,
+      "is_block_start": false,
+      "reason": "application a la limite permise par la loi, prolonge le bloc",
+      "legal_nature": "PROHIBITION",
+      "legal_nature_marker": "do not"
+    },
+    {
+      "id": 78,
+      "theme": "LIABILITY_LIMITATION",
+      "block_id": 14,
+      "is_block_start": false,
+      "reason": "inapplicabilite si interdite par la loi, prolonge le bloc",
+      "legal_nature": "PROHIBITION",
+      "legal_nature_marker": "shall not"
+    },
+    {
+      "id": 79,
+      "theme": "LIABILITY_LIMITATION",
+      "block_id": 14,
+      "is_block_start": false,
+      "reason": "droits variables selon juridiction, prolonge le bloc",
+      "legal_nature": "GOVERNANCE",
+      "legal_nature_marker": "jurisdiction"
+    },
+    {
+      "id": 80,
+      "theme": "LIABILITY_LIMITATION",
+      "block_id": 14,
+      "is_block_start": false,
+      "reason": "plafond de responsabilite (prix paye ou 5 euros), prolonge le bloc",
+      "legal_nature": "LIMITATION_DISCLAIMER",
+      "legal_nature_marker": "in no event"
+    },
+    {
+      "id": 81,
+      "theme": "TERMINATION",
+      "block_id": 15,
+      "is_block_start": true,
+      "rationale": "titre et clause de resiliation, cite « termination : this eula will terminate automatically »",
+      "rationale_codes": {
+        "decision_trigger": "title_marker",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "termination : this eula will terminate automatically",
+        "revised_from_plan": false,
+        "confidence": 0.9
+      },
+      "legal_nature": "GOVERNANCE",
+      "legal_nature_marker": "terminate"
+    },
+    {
+      "id": 82,
+      "theme": "TERMINATION",
+      "block_id": 15,
+      "is_block_start": false,
+      "reason": "obligation de detruire les copies, effet de la resiliation",
+      "legal_nature": "OBLIGATION",
+      "legal_nature_marker": "you must"
+    },
+    {
+      "id": 83,
+      "theme": "TERMINATION",
+      "block_id": 15,
+      "is_block_start": false,
+      "reason": "fin de l'eula pour support physique par destruction, prolonge le bloc",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 84,
+      "theme": "MISC_BOILERPLATE",
+      "block_id": 16,
+      "is_block_start": true,
+      "rationale": "clause de remedes equitables, cite « equitable remedies : »",
+      "rationale_codes": {
+        "decision_trigger": "title_marker",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "equitable remedies :",
+        "revised_from_plan": true,
+        "confidence": 0.6
+      },
+      "legal_nature": "OBLIGATION",
+      "legal_nature_marker": "shall"
+    },
+    {
+      "id": 85,
+      "theme": "DEFINITIONS",
+      "block_id": 17,
+      "is_block_start": true,
+      "rationale": "definition d'affiliate, cite « `` affiliate '' or rovio means »",
+      "rationale_codes": {
+        "decision_trigger": "definition_marker",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "`` affiliate '' or rovio means",
+        "revised_from_plan": false,
+        "confidence": 0.8
+      },
+      "legal_nature": "DEFINITION",
+      "legal_nature_marker": "means"
+    },
+    {
+      "id": 86,
+      "theme": "DEFINITIONS",
+      "block_id": 17,
+      "is_block_start": false,
+      "reason": "precision du critere de controle d'affiliate, prolonge la definition",
+      "legal_nature": "OBLIGATION",
+      "legal_nature_marker": "shall"
+    },
+    {
+      "id": 87,
+      "theme": "INDEMNIFICATION",
+      "block_id": 18,
+      "is_block_start": true,
+      "rationale": "obligation d'indemnisation, cite « indemnity : »",
+      "rationale_codes": {
+        "decision_trigger": "title_marker",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "indemnity :",
+        "revised_from_plan": false,
+        "confidence": 0.9
+      },
+      "legal_nature": "RISK_ALLOCATION",
+      "legal_nature_marker": "indemnify"
+    },
+    {
+      "id": 88,
+      "theme": "MISC_BOILERPLATE",
+      "block_id": 19,
+      "is_block_start": true,
+      "rationale": "clause miscellaneous / accord complet, cite « miscellaneous : »",
+      "rationale_codes": {
+        "decision_trigger": "title_marker",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "miscellaneous :",
+        "revised_from_plan": false,
+        "confidence": 0.75
+      },
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 89,
+      "theme": "MISC_BOILERPLATE",
+      "block_id": 19,
+      "is_block_start": false,
+      "reason": "droit de modifier l'eula, prolonge le bloc miscellaneous",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 90,
+      "theme": "MISC_BOILERPLATE",
+      "block_id": 19,
+      "is_block_start": false,
+      "reason": "acceptation des changements par usage continu, prolonge le bloc",
+      "legal_nature": "OBLIGATION",
+      "legal_nature_marker": "you will"
+    },
+    {
+      "id": 91,
+      "theme": "MISC_BOILERPLATE",
+      "block_id": 19,
+      "is_block_start": false,
+      "reason": "clause de severabilite, prolonge le bloc miscellaneous",
+      "legal_nature": "PROHIBITION",
+      "legal_nature_marker": "shall not"
+    },
+    {
+      "id": 92,
+      "theme": "GOVERNING_LAW",
+      "block_id": 20,
+      "is_block_start": true,
+      "rationale": "titre droit applicable et reglement des differends, cite « governing law and dispute resolution »",
+      "rationale_codes": {
+        "decision_trigger": "title_marker",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "governing law and dispute resolution .",
+        "revised_from_plan": false,
+        "confidence": 0.9
+      },
+      "legal_nature": "GOVERNANCE",
+      "legal_nature_marker": "governing law"
+    },
+    {
+      "id": 93,
+      "theme": "GOVERNING_LAW",
+      "block_id": 20,
+      "is_block_start": false,
+      "reason": "loi finlandaise applicable, prolonge le bloc droit applicable",
+      "legal_nature": "GOVERNANCE",
+      "legal_nature_marker": "governed by"
+    },
+    {
+      "id": 94,
+      "theme": "GOVERNING_LAW",
+      "block_id": 20,
+      "is_block_start": false,
+      "reason": "exclusion de la convention de vienne, prolonge le bloc",
+      "legal_nature": "PROHIBITION",
+      "legal_nature_marker": "shall not"
+    },
+    {
+      "id": 95,
+      "theme": "DISPUTE_ARBITRATION",
+      "block_id": 21,
+      "is_block_start": true,
+      "rationale": "reglement des differends par arbitrage, cite « any dispute , controversy or claim »",
+      "rationale_codes": {
+        "decision_trigger": "topic_keyword",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "any dispute , controversy or claim",
+        "revised_from_plan": false,
+        "confidence": 0.75
+      },
+      "legal_nature": "GOVERNANCE",
+      "legal_nature_marker": "arbitration"
+    },
+    {
+      "id": 96,
+      "theme": "DISPUTE_ARBITRATION",
+      "block_id": 21,
+      "is_block_start": false,
+      "reason": "lieu et langue de l'arbitrage, prolonge le bloc arbitrage",
+      "legal_nature": "GOVERNANCE",
+      "legal_nature_marker": "arbitration"
+    },
+    {
+      "id": 97,
+      "theme": "DISPUTE_ARBITRATION",
+      "block_id": 21,
+      "is_block_start": false,
+      "reason": "renonciation aux actions collectives, prolonge le bloc arbitrage",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 98,
+      "theme": "META",
+      "block_id": 22,
+      "is_block_start": true,
+      "rationale": "coordonnees de contact, cite « you may contact support@rovio.com »",
+      "rationale_codes": {
+        "decision_trigger": "topic_keyword",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "you may contact support@rovio.com .",
+        "revised_from_plan": false,
+        "confidence": 0.85
+      },
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    }
+  ]
+}

@@ -1,0 +1,890 @@
+{
+  "doc": "Moves-app",
+  "judge": "claude",
+  "version": "v9.2-nature-derived",
+  "document_plan": {
+    "estimated_n_blocks": 15,
+    "rationale_global": "EULA pour l'app Moves (Protogeo Oy). Structure numérotée par sections (1 a 10). Ouverture META (date effective), puis preambule/portee (qui est qui, acceptation). Section 1 : octroi de licence (LICENSE_IP). Une clause vie privee isolee (id 18). Liste d'usages interdits (ACCEPTABLE_USE). Section 4 : droits de PI et defense contre revendications tierces (LICENSE_IP). Section 5 : exclusion de garantie (WARRANTY_DISCLAIMER). Section 6 : limitation de responsabilite (LIABILITY_LIMITATION). Section 7 : declarations/eligibilite du licencie (ELIGIBILITY_ACCOUNT). Section 8 : resiliation (TERMINATION). Section 9 : clauses boilerplate (cession, divisibilite) et droit applicable. Section 10 : revision des termes (MODIFICATION_OF_TERMS). Fin : contact/responsabilite (META).",
+    "segments": [
+      {
+        "start_id": 0,
+        "theme": "META",
+        "rationale": "date d'entree en vigueur",
+        "evidence_span": "effective date : may 5 , 2014"
+      },
+      {
+        "start_id": 1,
+        "theme": "PREAMBLE_SCOPE",
+        "rationale": "presentation de l'accord et des parties",
+        "evidence_span": "these terms of use"
+      },
+      {
+        "start_id": 9,
+        "theme": "LICENSE_IP",
+        "rationale": "octroi de la licence non-exclusive",
+        "evidence_span": "grants to the licensee a non-exclusive , non-transferable license"
+      },
+      {
+        "start_id": 18,
+        "theme": "PRIVACY_DATA",
+        "rationale": "traitement des donnees personnelles",
+        "evidence_span": "process personal data"
+      },
+      {
+        "start_id": 19,
+        "theme": "ACCEPTABLE_USE",
+        "rationale": "engagements de ne pas faire / usages interdits",
+        "evidence_span": "the licensee undertakes not to"
+      },
+      {
+        "start_id": 27,
+        "theme": "LICENSE_IP",
+        "rationale": "droits de propriete intellectuelle dans le service",
+        "evidence_span": "all intellectual property rights in the service"
+      },
+      {
+        "start_id": 33,
+        "theme": "WARRANTY_DISCLAIMER",
+        "rationale": "service fourni as is, exclusion de garantie",
+        "evidence_span": "as is"
+      },
+      {
+        "start_id": 38,
+        "theme": "LIABILITY_LIMITATION",
+        "rationale": "section 6, responsabilite du licencie / limitation",
+        "evidence_span": "is therefore the licensee 's responsibility"
+      },
+      {
+        "start_id": 52,
+        "theme": "ELIGIBILITY_ACCOUNT",
+        "rationale": "declarations et garanties du licencie (competence, age, sanctions)",
+        "evidence_span": "represents and warrants"
+      },
+      {
+        "start_id": 57,
+        "theme": "TERMINATION",
+        "rationale": "section 8, effet et resiliation de la licence",
+        "evidence_span": "until terminated"
+      },
+      {
+        "start_id": 63,
+        "theme": "MISC_BOILERPLATE",
+        "rationale": "cession des droits et obligations",
+        "evidence_span": "may transfer its rights and obligations"
+      },
+      {
+        "start_id": 65,
+        "theme": "MISC_BOILERPLATE",
+        "rationale": "divisibilite des clauses",
+        "evidence_span": "operates separately"
+      },
+      {
+        "start_id": 67,
+        "theme": "GOVERNING_LAW",
+        "rationale": "droit applicable et juridiction (Finlande)",
+        "evidence_span": "the laws of finland"
+      },
+      {
+        "start_id": 70,
+        "theme": "MODIFICATION_OF_TERMS",
+        "rationale": "section 10, revision des termes",
+        "evidence_span": "entitled to revise these terms of use"
+      },
+      {
+        "start_id": 74,
+        "theme": "META",
+        "rationale": "responsabilite finale et coordonnees de contact",
+        "evidence_span": "should be directed to"
+      }
+    ]
+  },
+  "annotations": [
+    {
+      "id": 0,
+      "theme": "META",
+      "block_id": 0,
+      "is_block_start": true,
+      "rationale": "ouverture du document : date d'entree en vigueur, cite « effective date : may 5 , 2014 »",
+      "rationale_codes": {
+        "decision_trigger": "document_start",
+        "relation_to_prev": "document_start",
+        "evidence_span": "effective date : may 5 , 2014",
+        "revised_from_plan": false,
+        "confidence": 0.97
+      },
+      "legal_nature": "META",
+      "legal_nature_marker": "effective date"
+    },
+    {
+      "id": 1,
+      "theme": "PREAMBLE_SCOPE",
+      "block_id": 1,
+      "is_block_start": true,
+      "rationale": "debut du preambule definissant l'accord et les parties, cite « these terms of use »",
+      "rationale_codes": {
+        "decision_trigger": "topic_keyword",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "these terms of use",
+        "revised_from_plan": false,
+        "confidence": 0.92
+      },
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 2,
+      "theme": "PREAMBLE_SCOPE",
+      "block_id": 1,
+      "is_block_start": false,
+      "reason": "precise la nature de l'accord (licence, pas vente)",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 3,
+      "theme": "PREAMBLE_SCOPE",
+      "block_id": 1,
+      "is_block_start": false,
+      "reason": "le licencieur ne vend pas le service",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 4,
+      "theme": "PREAMBLE_SCOPE",
+      "block_id": 1,
+      "is_block_start": false,
+      "reason": "le licencieur reste proprietaire",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 5,
+      "theme": "PREAMBLE_SCOPE",
+      "block_id": 1,
+      "is_block_start": false,
+      "reason": "acceptation par telechargement/installation",
+      "legal_nature": "OBLIGATION",
+      "legal_nature_marker": "shall"
+    },
+    {
+      "id": 6,
+      "theme": "PREAMBLE_SCOPE",
+      "block_id": 1,
+      "is_block_start": false,
+      "reason": "renvoi aux sections cles (5 et 6)",
+      "legal_nature": "LIMITATION_DISCLAIMER",
+      "legal_nature_marker": "disclaim"
+    },
+    {
+      "id": 7,
+      "theme": "PREAMBLE_SCOPE",
+      "block_id": 1,
+      "is_block_start": false,
+      "reason": "consequence du refus des termes",
+      "legal_nature": "OBLIGATION",
+      "legal_nature_marker": "must"
+    },
+    {
+      "id": 8,
+      "theme": "PREAMBLE_SCOPE",
+      "block_id": 1,
+      "is_block_start": false,
+      "reason": "usage uniquement conforme aux termes",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 9,
+      "theme": "LICENSE_IP",
+      "block_id": 2,
+      "is_block_start": true,
+      "rationale": "section 1.1 : octroi formel de la licence, cite « grants to the licensee a non-exclusive , non-transferable license »",
+      "rationale_codes": {
+        "decision_trigger": "numbering",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "grants to the licensee a non-exclusive , non-transferable license",
+        "revised_from_plan": false,
+        "confidence": 0.93
+      },
+      "legal_nature": "RIGHT_GRANT",
+      "legal_nature_marker": "hereby grant"
+    },
+    {
+      "id": 10,
+      "theme": "LICENSE_IP",
+      "block_id": 2,
+      "is_block_start": false,
+      "reason": "duree de la licence subordonnee au paiement des frais",
+      "legal_nature": "GOVERNANCE",
+      "legal_nature_marker": "terminate"
+    },
+    {
+      "id": 11,
+      "theme": "LICENSE_IP",
+      "block_id": 2,
+      "is_block_start": false,
+      "reason": "1.2 chapeau enumerant les droits sous licence",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 12,
+      "theme": "LICENSE_IP",
+      "block_id": 2,
+      "is_block_start": false,
+      "reason": "item (a) : telecharger/installer/utiliser",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 13,
+      "theme": "LICENSE_IP",
+      "block_id": 2,
+      "is_block_start": false,
+      "reason": "item (b) : recevoir les mises a jour",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 14,
+      "theme": "LICENSE_IP",
+      "block_id": 2,
+      "is_block_start": false,
+      "reason": "1.3 reserve du droit de modifier/suspendre l'acces, prolongement du regime de licence",
+      "legal_nature": "GOVERNANCE",
+      "legal_nature_marker": "suspend"
+    },
+    {
+      "id": 15,
+      "theme": "LICENSE_IP",
+      "block_id": 2,
+      "is_block_start": false,
+      "reason": "non-responsabilite liee au retrait d'acces",
+      "legal_nature": "LIMITATION_DISCLAIMER",
+      "legal_nature_marker": "in no event"
+    },
+    {
+      "id": 16,
+      "theme": "LICENSE_IP",
+      "block_id": 2,
+      "is_block_start": false,
+      "reason": "renvoi a la section 8 pour le remboursement des frais",
+      "legal_nature": "OBLIGATION",
+      "legal_nature_marker": "shall"
+    },
+    {
+      "id": 17,
+      "theme": "PRIVACY_DATA",
+      "block_id": 3,
+      "is_block_start": true,
+      "rationale": "traitement des donnees personnelles selon la politique de confidentialite, cite « process personal data »",
+      "rationale_codes": {
+        "decision_trigger": "topic_keyword",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "process personal data",
+        "revised_from_plan": true,
+        "confidence": 0.8
+      },
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 18,
+      "theme": "ACCEPTABLE_USE",
+      "block_id": 4,
+      "is_block_start": true,
+      "rationale": "chapeau des usages interdits, cite « the licensee undertakes not to »",
+      "rationale_codes": {
+        "decision_trigger": "topic_keyword",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "the licensee undertakes not to",
+        "revised_from_plan": false,
+        "confidence": 0.9
+      },
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 19,
+      "theme": "ACCEPTABLE_USE",
+      "block_id": 4,
+      "is_block_start": false,
+      "reason": "item (a) : interdiction de copier",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 20,
+      "theme": "ACCEPTABLE_USE",
+      "block_id": 4,
+      "is_block_start": false,
+      "reason": "item (b) : interdiction de louer/vendre/sous-licencier",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 21,
+      "theme": "ACCEPTABLE_USE",
+      "block_id": 4,
+      "is_block_start": false,
+      "reason": "item (c) : interdiction d'alterer/modifier",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 22,
+      "theme": "ACCEPTABLE_USE",
+      "block_id": 4,
+      "is_block_start": false,
+      "reason": "item (d) : interdiction de retro-ingenierie",
+      "legal_nature": "PROHIBITION",
+      "legal_nature_marker": "prohibited"
+    },
+    {
+      "id": 23,
+      "theme": "ACCEPTABLE_USE",
+      "block_id": 4,
+      "is_block_start": false,
+      "reason": "item (e) : interdiction d'usage commercial",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 24,
+      "theme": "ACCEPTABLE_USE",
+      "block_id": 4,
+      "is_block_start": false,
+      "reason": "item (f) : interdiction d'activites illegales",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 25,
+      "theme": "ACCEPTABLE_USE",
+      "block_id": 4,
+      "is_block_start": false,
+      "reason": "item (g) : interdiction d'exploitation non autorisee",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 26,
+      "theme": "LICENSE_IP",
+      "block_id": 5,
+      "is_block_start": true,
+      "rationale": "section 4.1, chapeau sur les droits de propriete intellectuelle, cite « the licensee acknowledges that »",
+      "rationale_codes": {
+        "decision_trigger": "numbering",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "the licensee acknowledges that",
+        "revised_from_plan": false,
+        "confidence": 0.88
+      },
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 27,
+      "theme": "LICENSE_IP",
+      "block_id": 5,
+      "is_block_start": false,
+      "reason": "item (a) : tous les droits de PI appartiennent au licencieur",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 28,
+      "theme": "LICENSE_IP",
+      "block_id": 5,
+      "is_block_start": false,
+      "reason": "item (b) : droits concedes, non vendus",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 29,
+      "theme": "LICENSE_IP",
+      "block_id": 5,
+      "is_block_start": false,
+      "reason": "item (c) : aucun autre droit que la licence",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 30,
+      "theme": "LICENSE_IP",
+      "block_id": 5,
+      "is_block_start": false,
+      "reason": "item (d) : pas d'acces au code source",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 31,
+      "theme": "LICENSE_IP",
+      "block_id": 5,
+      "is_block_start": false,
+      "reason": "4.2 : defense contre revendications de PI de tiers, prime PI (regle 3.1)",
+      "legal_nature": "OBLIGATION",
+      "legal_nature_marker": "shall"
+    },
+    {
+      "id": 32,
+      "theme": "WARRANTY_DISCLAIMER",
+      "block_id": 6,
+      "is_block_start": true,
+      "rationale": "debut de l'exclusion de garantie : usage au seul risque du licencie, cite « at the licensee 's sole risk »",
+      "rationale_codes": {
+        "decision_trigger": "lexical_shift",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "at the licensee 's sole risk",
+        "revised_from_plan": true,
+        "confidence": 0.82
+      },
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 33,
+      "theme": "WARRANTY_DISCLAIMER",
+      "block_id": 6,
+      "is_block_start": false,
+      "reason": "service fourni « as is », exclusion de toute garantie",
+      "legal_nature": "LIMITATION_DISCLAIMER",
+      "legal_nature_marker": "as is"
+    },
+    {
+      "id": 34,
+      "theme": "WARRANTY_DISCLAIMER",
+      "block_id": 6,
+      "is_block_start": false,
+      "reason": "absence de garantie sur le fonctionnement",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 35,
+      "theme": "WARRANTY_DISCLAIMER",
+      "block_id": 6,
+      "is_block_start": false,
+      "reason": "aucune declaration ne cree de garantie",
+      "legal_nature": "OBLIGATION",
+      "legal_nature_marker": "shall"
+    },
+    {
+      "id": 36,
+      "theme": "WARRANTY_DISCLAIMER",
+      "block_id": 6,
+      "is_block_start": false,
+      "reason": "le licencie assume le cout de reparation si defaut",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 37,
+      "theme": "LIABILITY_LIMITATION",
+      "block_id": 7,
+      "is_block_start": true,
+      "rationale": "section 6.1 : responsabilite du licencie de verifier l'adequation du service, cite « the licensee 's responsibility »",
+      "rationale_codes": {
+        "decision_trigger": "numbering",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "the licensee 's responsibility",
+        "revised_from_plan": false,
+        "confidence": 0.82
+      },
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 38,
+      "theme": "LIABILITY_LIMITATION",
+      "block_id": 7,
+      "is_block_start": false,
+      "reason": "6.2 : licencieur non responsable de l'usage fait du service",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 39,
+      "theme": "LIABILITY_LIMITATION",
+      "block_id": 7,
+      "is_block_start": false,
+      "reason": "risques inherents aux activites physiques assumes par le licencie",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 40,
+      "theme": "LIABILITY_LIMITATION",
+      "block_id": 7,
+      "is_block_start": false,
+      "reason": "recommandation de consulter un medecin, prolongement",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 41,
+      "theme": "LIABILITY_LIMITATION",
+      "block_id": 7,
+      "is_block_start": false,
+      "reason": "6.3 chapeau : exclusion des dommages indirects",
+      "legal_nature": "PROHIBITION",
+      "legal_nature_marker": "prohibited"
+    },
+    {
+      "id": 42,
+      "theme": "LIABILITY_LIMITATION",
+      "block_id": 7,
+      "is_block_start": false,
+      "reason": "item (a) : perte de profit",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 43,
+      "theme": "LIABILITY_LIMITATION",
+      "block_id": 7,
+      "is_block_start": false,
+      "reason": "item (b) : perte d'activite",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 44,
+      "theme": "LIABILITY_LIMITATION",
+      "block_id": 7,
+      "is_block_start": false,
+      "reason": "item (c) : interruption d'activite",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 45,
+      "theme": "LIABILITY_LIMITATION",
+      "block_id": 7,
+      "is_block_start": false,
+      "reason": "item (d) : perte d'opportunite",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 46,
+      "theme": "LIABILITY_LIMITATION",
+      "block_id": 7,
+      "is_block_start": false,
+      "reason": "item (e) : perte de donnees",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 47,
+      "theme": "LIABILITY_LIMITATION",
+      "block_id": 7,
+      "is_block_start": false,
+      "reason": "item (f) : autres dommages commerciaux",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 48,
+      "theme": "LIABILITY_LIMITATION",
+      "block_id": 7,
+      "is_block_start": false,
+      "reason": "cloture de l'enumeration des dommages exclus",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 49,
+      "theme": "LIABILITY_LIMITATION",
+      "block_id": 7,
+      "is_block_start": false,
+      "reason": "6.4 : plafond de responsabilite a 50 euros",
+      "legal_nature": "LIMITATION_DISCLAIMER",
+      "legal_nature_marker": "in no event"
+    },
+    {
+      "id": 50,
+      "theme": "LIABILITY_LIMITATION",
+      "block_id": 7,
+      "is_block_start": false,
+      "reason": "6.5 : prise en charge des reclamations relatives au service",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 51,
+      "theme": "ELIGIBILITY_ACCOUNT",
+      "block_id": 8,
+      "is_block_start": true,
+      "rationale": "section 7.1 chapeau : declarations et garanties du licencie, cite « represents and warrants »",
+      "rationale_codes": {
+        "decision_trigger": "numbering",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "represents and warrants",
+        "revised_from_plan": false,
+        "confidence": 0.85
+      },
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 52,
+      "theme": "ELIGIBILITY_ACCOUNT",
+      "block_id": 8,
+      "is_block_start": false,
+      "reason": "item (a) : capacite juridique",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 53,
+      "theme": "ELIGIBILITY_ACCOUNT",
+      "block_id": 8,
+      "is_block_start": false,
+      "reason": "item (b) : consentement du tuteur si incapacite",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 54,
+      "theme": "ELIGIBILITY_ACCOUNT",
+      "block_id": 8,
+      "is_block_start": false,
+      "reason": "item (c) : non situe dans un pays sous embargo",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 55,
+      "theme": "ELIGIBILITY_ACCOUNT",
+      "block_id": 8,
+      "is_block_start": false,
+      "reason": "item (d) : non liste comme partie interdite",
+      "legal_nature": "PROHIBITION",
+      "legal_nature_marker": "prohibited"
+    },
+    {
+      "id": 56,
+      "theme": "TERMINATION",
+      "block_id": 9,
+      "is_block_start": true,
+      "rationale": "section 8.1 : la licence est effective jusqu'a resiliation, cite « until terminated »",
+      "rationale_codes": {
+        "decision_trigger": "numbering",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "until terminated",
+        "revised_from_plan": false,
+        "confidence": 0.9
+      },
+      "legal_nature": "GOVERNANCE",
+      "legal_nature_marker": "terminate"
+    },
+    {
+      "id": 57,
+      "theme": "TERMINATION",
+      "block_id": 9,
+      "is_block_start": false,
+      "reason": "resiliation automatique en cas de manquement",
+      "legal_nature": "GOVERNANCE",
+      "legal_nature_marker": "terminate"
+    },
+    {
+      "id": 58,
+      "theme": "TERMINATION",
+      "block_id": 9,
+      "is_block_start": false,
+      "reason": "8.2 : effet de la resiliation apres 30 jours si frais payes",
+      "legal_nature": "GOVERNANCE",
+      "legal_nature_marker": "termination"
+    },
+    {
+      "id": 59,
+      "theme": "TERMINATION",
+      "block_id": 9,
+      "is_block_start": false,
+      "reason": "sinon resiliation immediate",
+      "legal_nature": "GOVERNANCE",
+      "legal_nature_marker": "termination"
+    },
+    {
+      "id": 60,
+      "theme": "TERMINATION",
+      "block_id": 9,
+      "is_block_start": false,
+      "reason": "8.3 : cessation d'usage et destruction des copies",
+      "legal_nature": "GOVERNANCE",
+      "legal_nature_marker": "termination"
+    },
+    {
+      "id": 61,
+      "theme": "TERMINATION",
+      "block_id": 9,
+      "is_block_start": false,
+      "reason": "8.4 : remboursement au prorata si resiliation par le licencieur",
+      "legal_nature": "GOVERNANCE",
+      "legal_nature_marker": "terminate"
+    },
+    {
+      "id": 62,
+      "theme": "MISC_BOILERPLATE",
+      "block_id": 10,
+      "is_block_start": true,
+      "rationale": "section 9.1 : cession des droits et obligations, cite « may transfer its rights and obligations »",
+      "rationale_codes": {
+        "decision_trigger": "numbering",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "may transfer its rights and obligations",
+        "revised_from_plan": false,
+        "confidence": 0.83
+      },
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 63,
+      "theme": "MISC_BOILERPLATE",
+      "block_id": 10,
+      "is_block_start": false,
+      "reason": "le licencie ne peut ceder ses droits",
+      "legal_nature": "PROHIBITION",
+      "legal_nature_marker": "may not"
+    },
+    {
+      "id": 64,
+      "theme": "MISC_BOILERPLATE",
+      "block_id": 11,
+      "is_block_start": true,
+      "rationale": "section 9.2 : clause de divisibilite, cite « operates separately »",
+      "rationale_codes": {
+        "decision_trigger": "numbering",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "operates separately",
+        "revised_from_plan": false,
+        "confidence": 0.82
+      },
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 65,
+      "theme": "MISC_BOILERPLATE",
+      "block_id": 11,
+      "is_block_start": false,
+      "reason": "maintien en vigueur des clauses restantes si l'une est invalide",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 66,
+      "theme": "GOVERNING_LAW",
+      "block_id": 12,
+      "is_block_start": true,
+      "rationale": "section 9.3 : droit applicable finlandais, cite « the laws of finland »",
+      "rationale_codes": {
+        "decision_trigger": "numbering",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "the laws of finland",
+        "revised_from_plan": false,
+        "confidence": 0.92
+      },
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 67,
+      "theme": "GOVERNING_LAW",
+      "block_id": 12,
+      "is_block_start": false,
+      "reason": "soumission possible a d'autres lois locales",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 68,
+      "theme": "GOVERNING_LAW",
+      "block_id": 12,
+      "is_block_start": false,
+      "reason": "competence des tribunaux finlandais",
+      "legal_nature": "PROHIBITION",
+      "legal_nature_marker": "prohibited"
+    },
+    {
+      "id": 69,
+      "theme": "MODIFICATION_OF_TERMS",
+      "block_id": 13,
+      "is_block_start": true,
+      "rationale": "section 10.1 : droit de reviser les termes, cite « revise these terms of use »",
+      "rationale_codes": {
+        "decision_trigger": "numbering",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "revise these terms of use",
+        "revised_from_plan": false,
+        "confidence": 0.9
+      },
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 70,
+      "theme": "MODIFICATION_OF_TERMS",
+      "block_id": 13,
+      "is_block_start": false,
+      "reason": "notification des revisions au licencie",
+      "legal_nature": "PROHIBITION",
+      "legal_nature_marker": "shall not"
+    },
+    {
+      "id": 71,
+      "theme": "MODIFICATION_OF_TERMS",
+      "block_id": 13,
+      "is_block_start": false,
+      "reason": "10.2 : non-acceptation des termes revises et cessation d'usage",
+      "legal_nature": "PROHIBITION",
+      "legal_nature_marker": "will not"
+    },
+    {
+      "id": 72,
+      "theme": "MODIFICATION_OF_TERMS",
+      "block_id": 13,
+      "is_block_start": false,
+      "reason": "renvoi a la section 8.4 pour le remboursement",
+      "legal_nature": "OBLIGATION",
+      "legal_nature_marker": "shall"
+    },
+    {
+      "id": 73,
+      "theme": "MISC_BOILERPLATE",
+      "block_id": 14,
+      "is_block_start": true,
+      "rationale": "responsabilite finale du licencieur pour le service et son contenu, cite « solely responsible for the service »",
+      "rationale_codes": {
+        "decision_trigger": "lexical_shift",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "solely responsible for the service",
+        "revised_from_plan": true,
+        "confidence": 0.7
+      },
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 74,
+      "theme": "META",
+      "block_id": 15,
+      "is_block_start": true,
+      "rationale": "coordonnees de contact pour questions/reclamations, cite « should be directed to »",
+      "rationale_codes": {
+        "decision_trigger": "topic_keyword",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "should be directed to",
+        "revised_from_plan": false,
+        "confidence": 0.85
+      },
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    }
+  ]
+}

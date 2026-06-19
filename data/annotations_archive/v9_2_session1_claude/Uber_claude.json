@@ -1,0 +1,1387 @@
+{
+  "doc": "Uber",
+  "judge": "claude",
+  "version": "v9.2-nature-derived",
+  "document_plan": {
+    "estimated_n_blocks": 23,
+    "rationale_global": "ToS Uber narratif (profil NARRATIVE, 0 numerotation, 3 titres nominaux ids 0/23/84). Ouverture META (date id 0) puis preambule/portee (les terms regissent l'acces, acceptation, supersession). Bloc terminaison (uber peut resilier id 6), supplemental terms (portee id 7), amendement (modification of terms id 10), confidentialite/donnees (collecte d'informations, transmission a l'assureur id 13), description du service/plateforme (id 15), octroi de licence et restrictions d'usage + marques (license/IP id 18), services et contenus tiers (titre nominal id 23), propriete IP (id 30), eligibilite/compte (id 32), regles de conduite/usage (id 42), messages SMS/donnees (id 45), promo codes paiement (id 48), user content (id 51), exigences techniques d'acces (id 57), charges & facturation incl. repair/cleaning (id 62), puis le grand bloc 'disclaimers ; limitation of liability ; indemnity' (titre nominal id 84) decompose en garantie as is (id 84), limitation de responsabilite (id 90), indemnisation (id 97), droit applicable (id 98), arbitrage/mediation (id 100), DMCA/copyright license/IP (id 107), et boilerplate final notices/cession/divisibilite/integralite (id 109). Decoupage cible ~23 blocs, dans/au-dessus de la borne OBJ [15,23].",
+    "segments": [
+      {
+        "start_id": 0,
+        "theme": "META",
+        "rationale": "ligne de date d'edition",
+        "evidence_span": "last updated : march 16 , 2017"
+      },
+      {
+        "start_id": 1,
+        "theme": "PREAMBLE_SCOPE",
+        "rationale": "les terms regissent l'acces ou l'usage des services",
+        "evidence_span": "these terms of use"
+      },
+      {
+        "start_id": 6,
+        "theme": "TERMINATION",
+        "rationale": "uber peut resilier ces terms a tout moment",
+        "evidence_span": "uber may immediately terminate these terms"
+      },
+      {
+        "start_id": 7,
+        "theme": "PREAMBLE_SCOPE",
+        "rationale": "supplemental terms et leur articulation avec ces terms (portee)",
+        "evidence_span": "supplemental terms may apply"
+      },
+      {
+        "start_id": 10,
+        "theme": "MODIFICATION_OF_TERMS",
+        "rationale": "uber peut amender les terms",
+        "evidence_span": "uber may amend the terms"
+      },
+      {
+        "start_id": 13,
+        "theme": "PRIVACY_DATA",
+        "rationale": "collecte et usage des informations personnelles, privacy policy",
+        "evidence_span": "our collection and use of personal information"
+      },
+      {
+        "start_id": 15,
+        "theme": "PREAMBLE_SCOPE",
+        "rationale": "description de la plateforme technologique et du role d'uber",
+        "evidence_span": "the services constitute a technology platform"
+      },
+      {
+        "start_id": 18,
+        "theme": "LICENSE_IP",
+        "rationale": "octroi de licence limitee a l'utilisateur",
+        "evidence_span": "uber grants you a limited"
+      },
+      {
+        "start_id": 23,
+        "theme": "THIRD_PARTY",
+        "rationale": "titre nominal : services et contenus tiers",
+        "evidence_span": "third party services and content ."
+      },
+      {
+        "start_id": 30,
+        "theme": "LICENSE_IP",
+        "rationale": "propriete des services et droits reserves d'uber",
+        "evidence_span": "remain uber 's property"
+      },
+      {
+        "start_id": 32,
+        "theme": "ELIGIBILITY_ACCOUNT",
+        "rationale": "enregistrement et maintien d'un compte",
+        "evidence_span": "register for and maintain an active personal user services account"
+      },
+      {
+        "start_id": 42,
+        "theme": "ACCEPTABLE_USE",
+        "rationale": "conformite aux lois et usage licite des services",
+        "evidence_span": "comply with all applicable laws"
+      },
+      {
+        "start_id": 45,
+        "theme": "PRIVACY_DATA",
+        "rationale": "messages texte SMS et opt-out",
+        "evidence_span": "informational text"
+      },
+      {
+        "start_id": 48,
+        "theme": "PAYMENT_BILLING",
+        "rationale": "promo codes et credits",
+        "evidence_span": "promotional codes"
+      },
+      {
+        "start_id": 51,
+        "theme": "USER_CONTENT",
+        "rationale": "contenu utilisateur soumis a uber",
+        "evidence_span": "user content"
+      },
+      {
+        "start_id": 57,
+        "theme": "ACCEPTABLE_USE",
+        "rationale": "exigences techniques d'acces (reseau, materiel)",
+        "evidence_span": "data network access necessary"
+      },
+      {
+        "start_id": 62,
+        "theme": "PAYMENT_BILLING",
+        "rationale": "charges, paiement et facturation",
+        "evidence_span": "charges to you for the services"
+      },
+      {
+        "start_id": 84,
+        "theme": "WARRANTY_DISCLAIMER",
+        "rationale": "titre nominal disclaimers, puis as is",
+        "evidence_span": "disclaimers ; limitation of liability ; indemnity ."
+      },
+      {
+        "start_id": 90,
+        "theme": "LIABILITY_LIMITATION",
+        "rationale": "limitation des dommages indirects",
+        "evidence_span": "shall not be liable for indirect"
+      },
+      {
+        "start_id": 97,
+        "theme": "INDEMNIFICATION",
+        "rationale": "obligation d'indemniser uber",
+        "evidence_span": "you agree to indemnify and hold uber"
+      },
+      {
+        "start_id": 98,
+        "theme": "GOVERNING_LAW",
+        "rationale": "droit des pays-bas applicable",
+        "evidence_span": "governed by and construed in accordance with the laws of the netherlands"
+      },
+      {
+        "start_id": 100,
+        "theme": "DISPUTE_ARBITRATION",
+        "rationale": "mediation puis arbitrage des litiges",
+        "evidence_span": "submitted to mediation proceedings"
+      },
+      {
+        "start_id": 107,
+        "theme": "LICENSE_IP",
+        "rationale": "reclamations pour infraction au copyright (DMCA)",
+        "evidence_span": "claims of copyright infringement"
+      },
+      {
+        "start_id": 109,
+        "theme": "MISC_BOILERPLATE",
+        "rationale": "notices, cession, absence de partenariat, divisibilite, integralite, interpretation",
+        "evidence_span": "uber may give notice"
+      }
+    ]
+  },
+  "annotations": [
+    {
+      "id": 0,
+      "theme": "META",
+      "block_id": 0,
+      "is_block_start": true,
+      "rationale": "ligne de date d'edition, aucun effet juridique, cite « last updated : march 16 , 2017 »",
+      "rationale_codes": {
+        "decision_trigger": "document_start",
+        "relation_to_prev": "document_start",
+        "evidence_span": "last updated : march 16 , 2017",
+        "revised_from_plan": false,
+        "confidence": 0.97
+      },
+      "legal_nature": "META",
+      "legal_nature_marker": "last updated"
+    },
+    {
+      "id": 1,
+      "theme": "PREAMBLE_SCOPE",
+      "block_id": 1,
+      "is_block_start": true,
+      "rationale": "ouverture du contrat : les terms regissent l'acces/usage, cite « these terms of use »",
+      "rationale_codes": {
+        "decision_trigger": "topic_keyword",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "these terms of use",
+        "revised_from_plan": false,
+        "confidence": 0.95
+      },
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 2,
+      "theme": "PREAMBLE_SCOPE",
+      "block_id": 1,
+      "is_block_start": false,
+      "reason": "invitation a lire les terms, prolonge le preambule",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 3,
+      "theme": "PREAMBLE_SCOPE",
+      "block_id": 1,
+      "is_block_start": false,
+      "reason": "acceptation : l'usage vaut accord contractuel",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 4,
+      "theme": "PREAMBLE_SCOPE",
+      "block_id": 1,
+      "is_block_start": false,
+      "reason": "consequence : refus = pas d'acces, prolonge l'acceptation",
+      "legal_nature": "PROHIBITION",
+      "legal_nature_marker": "may not"
+    },
+    {
+      "id": 5,
+      "theme": "PREAMBLE_SCOPE",
+      "block_id": 1,
+      "is_block_start": false,
+      "reason": "supersession des accords anterieurs, portee du contrat",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 6,
+      "theme": "TERMINATION",
+      "block_id": 2,
+      "is_block_start": true,
+      "rationale": "nouveau sujet a effet autonome : resiliation par uber, cite « uber may immediately terminate these terms »",
+      "rationale_codes": {
+        "decision_trigger": "topic_keyword",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "uber may immediately terminate these terms",
+        "revised_from_plan": false,
+        "confidence": 0.78
+      },
+      "legal_nature": "GOVERNANCE",
+      "legal_nature_marker": "terminate"
+    },
+    {
+      "id": 7,
+      "theme": "PREAMBLE_SCOPE",
+      "block_id": 3,
+      "is_block_start": true,
+      "rationale": "nouveau sujet : application des supplemental terms (portee), cite « supplemental terms may apply »",
+      "rationale_codes": {
+        "decision_trigger": "topic_keyword",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "supplemental terms may apply",
+        "revised_from_plan": false,
+        "confidence": 0.72
+      },
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 8,
+      "theme": "PREAMBLE_SCOPE",
+      "block_id": 3,
+      "is_block_start": false,
+      "reason": "les supplemental terms font partie des terms, prolonge",
+      "legal_nature": "OBLIGATION",
+      "legal_nature_marker": "shall"
+    },
+    {
+      "id": 9,
+      "theme": "PREAMBLE_SCOPE",
+      "block_id": 3,
+      "is_block_start": false,
+      "reason": "regle de prevalence en cas de conflit, prolonge la portee",
+      "legal_nature": "OBLIGATION",
+      "legal_nature_marker": "shall"
+    },
+    {
+      "id": 10,
+      "theme": "MODIFICATION_OF_TERMS",
+      "block_id": 4,
+      "is_block_start": true,
+      "rationale": "nouveau sujet a effet autonome : amendement des terms, cite « uber may amend the terms »",
+      "rationale_codes": {
+        "decision_trigger": "topic_keyword",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "uber may amend the terms",
+        "revised_from_plan": false,
+        "confidence": 0.85
+      },
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 11,
+      "theme": "MODIFICATION_OF_TERMS",
+      "block_id": 4,
+      "is_block_start": false,
+      "reason": "prise d'effet des amendements par publication, prolonge",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 12,
+      "theme": "MODIFICATION_OF_TERMS",
+      "block_id": 4,
+      "is_block_start": false,
+      "reason": "usage continu = consentement aux terms amendes, prolonge",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 13,
+      "theme": "PRIVACY_DATA",
+      "block_id": 5,
+      "is_block_start": true,
+      "rationale": "nouveau sujet : collecte et usage des donnees personnelles, cite « our collection and use of personal information »",
+      "rationale_codes": {
+        "decision_trigger": "topic_keyword",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "our collection and use of personal information",
+        "revised_from_plan": false,
+        "confidence": 0.83
+      },
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 14,
+      "theme": "PRIVACY_DATA",
+      "block_id": 5,
+      "is_block_start": false,
+      "reason": "transmission d'informations a un assureur/processeur, prolonge le theme donnees",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 15,
+      "theme": "PREAMBLE_SCOPE",
+      "block_id": 6,
+      "is_block_start": true,
+      "rationale": "nouveau sujet : nature de la plateforme et role d'uber (portee), cite « the services constitute a technology platform »",
+      "rationale_codes": {
+        "decision_trigger": "topic_keyword",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "the services constitute a technology platform",
+        "revised_from_plan": false,
+        "confidence": 0.7
+      },
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 16,
+      "theme": "PREAMBLE_SCOPE",
+      "block_id": 6,
+      "is_block_start": false,
+      "reason": "services pour usage personnel non commercial, prolonge la portee",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 17,
+      "theme": "PREAMBLE_SCOPE",
+      "block_id": 6,
+      "is_block_start": false,
+      "reason": "uber n'est pas transporteur, prolonge la description du service",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 18,
+      "theme": "LICENSE_IP",
+      "block_id": 7,
+      "is_block_start": true,
+      "rationale": "nouveau sujet a effet autonome : octroi de licence limitee, cite « uber grants you a limited »",
+      "rationale_codes": {
+        "decision_trigger": "topic_keyword",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "uber grants you a limited",
+        "revised_from_plan": false,
+        "confidence": 0.86
+      },
+      "legal_nature": "RIGHT_GRANT",
+      "legal_nature_marker": "grants you"
+    },
+    {
+      "id": 19,
+      "theme": "LICENSE_IP",
+      "block_id": 7,
+      "is_block_start": false,
+      "reason": "droits non accordes reserves a uber, prolonge la licence",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 20,
+      "theme": "LICENSE_IP",
+      "block_id": 7,
+      "is_block_start": false,
+      "reason": "restrictions d'usage (no copy, reverse engineer) liees a la licence/IP, prolonge",
+      "legal_nature": "PROHIBITION",
+      "legal_nature_marker": "may not"
+    },
+    {
+      "id": 21,
+      "theme": "LICENSE_IP",
+      "block_id": 7,
+      "is_block_start": false,
+      "reason": "marques et request brands d'uber, PI prime, prolonge",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 22,
+      "theme": "LICENSE_IP",
+      "block_id": 7,
+      "is_block_start": false,
+      "reason": "marques disponibles via filiales/tiers, prolonge l'enumeration des brands",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 23,
+      "theme": "THIRD_PARTY",
+      "block_id": 8,
+      "is_block_start": true,
+      "rationale": "titre nominal court sans verbe conjugue ouvrant une section, cite « third party services and content . »",
+      "rationale_codes": {
+        "decision_trigger": "title_marker",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "third party services and content .",
+        "revised_from_plan": false,
+        "confidence": 0.88
+      },
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 24,
+      "theme": "THIRD_PARTY",
+      "block_id": 8,
+      "is_block_start": false,
+      "reason": "services/contenus tiers non controles par uber, prolonge le titre",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 25,
+      "theme": "THIRD_PARTY",
+      "block_id": 8,
+      "is_block_start": false,
+      "reason": "d'autres terms/privacy peuvent s'appliquer aux tiers, prolonge",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 26,
+      "theme": "THIRD_PARTY",
+      "block_id": 8,
+      "is_block_start": false,
+      "reason": "uber non responsable des produits/services tiers, prolonge",
+      "legal_nature": "LIMITATION_DISCLAIMER",
+      "legal_nature_marker": "in no event"
+    },
+    {
+      "id": 27,
+      "theme": "THIRD_PARTY",
+      "block_id": 8,
+      "is_block_start": false,
+      "reason": "apple/google/etc. beneficiaires tiers du contrat, prolonge",
+      "legal_nature": "META",
+      "legal_nature_marker": "inc."
+    },
+    {
+      "id": 28,
+      "theme": "THIRD_PARTY",
+      "block_id": 8,
+      "is_block_start": false,
+      "reason": "ces beneficiaires tiers ne sont pas parties, prolonge",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 29,
+      "theme": "THIRD_PARTY",
+      "block_id": 8,
+      "is_block_start": false,
+      "reason": "acces via ces appareils soumis aux terms du beneficiaire tiers, prolonge",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 30,
+      "theme": "LICENSE_IP",
+      "block_id": 9,
+      "is_block_start": true,
+      "rationale": "retour a la propriete IP : les services et droits restent la propriete d'uber, cite « remain uber 's property »",
+      "rationale_codes": {
+        "decision_trigger": "lexical_shift",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "remain uber 's property",
+        "revised_from_plan": false,
+        "confidence": 0.74
+      },
+      "legal_nature": "OBLIGATION",
+      "legal_nature_marker": "shall"
+    },
+    {
+      "id": 31,
+      "theme": "LICENSE_IP",
+      "block_id": 9,
+      "is_block_start": false,
+      "reason": "aucun droit sur marques/noms d'uber hors licence accordee, prolonge la propriete IP",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 32,
+      "theme": "ELIGIBILITY_ACCOUNT",
+      "block_id": 10,
+      "is_block_start": true,
+      "rationale": "nouveau sujet : enregistrement et maintien d'un compte, cite « register for and maintain an active personal user services account »",
+      "rationale_codes": {
+        "decision_trigger": "topic_keyword",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "register for and maintain an active personal user services account",
+        "revised_from_plan": false,
+        "confidence": 0.86
+      },
+      "legal_nature": "OBLIGATION",
+      "legal_nature_marker": "must"
+    },
+    {
+      "id": 33,
+      "theme": "ELIGIBILITY_ACCOUNT",
+      "block_id": 10,
+      "is_block_start": false,
+      "reason": "condition d'age (18 ans) pour obtenir un compte, prolonge l'eligibilite",
+      "legal_nature": "GOVERNANCE",
+      "legal_nature_marker": "jurisdiction"
+    },
+    {
+      "id": 34,
+      "theme": "ELIGIBILITY_ACCOUNT",
+      "block_id": 10,
+      "is_block_start": false,
+      "reason": "informations requises a l'enregistrement, prolonge",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 35,
+      "theme": "ELIGIBILITY_ACCOUNT",
+      "block_id": 10,
+      "is_block_start": false,
+      "reason": "maintenir des informations exactes, prolonge",
+      "legal_nature": "OBLIGATION",
+      "legal_nature_marker": "you agree to"
+    },
+    {
+      "id": 36,
+      "theme": "ELIGIBILITY_ACCOUNT",
+      "block_id": 10,
+      "is_block_start": false,
+      "reason": "consequence d'infos inexactes, prolonge",
+      "legal_nature": "GOVERNANCE",
+      "legal_nature_marker": "termination"
+    },
+    {
+      "id": 37,
+      "theme": "ELIGIBILITY_ACCOUNT",
+      "block_id": 10,
+      "is_block_start": false,
+      "reason": "responsabilite et securite du compte, prolonge",
+      "legal_nature": "OBLIGATION",
+      "legal_nature_marker": "you agree to"
+    },
+    {
+      "id": 38,
+      "theme": "ELIGIBILITY_ACCOUNT",
+      "block_id": 10,
+      "is_block_start": false,
+      "reason": "un seul compte autorise, prolonge",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 39,
+      "theme": "ELIGIBILITY_ACCOUNT",
+      "block_id": 10,
+      "is_block_start": false,
+      "reason": "service indisponible aux moins de 18 ans, prolonge l'eligibilite",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 40,
+      "theme": "ELIGIBILITY_ACCOUNT",
+      "block_id": 10,
+      "is_block_start": false,
+      "reason": "pas de tiers ni de mineurs sur le compte, prolonge",
+      "legal_nature": "PROHIBITION",
+      "legal_nature_marker": "may not"
+    },
+    {
+      "id": 41,
+      "theme": "ELIGIBILITY_ACCOUNT",
+      "block_id": 10,
+      "is_block_start": false,
+      "reason": "interdiction de cession du compte, prolonge",
+      "legal_nature": "PROHIBITION",
+      "legal_nature_marker": "may not"
+    },
+    {
+      "id": 42,
+      "theme": "ACCEPTABLE_USE",
+      "block_id": 11,
+      "is_block_start": true,
+      "rationale": "nouveau sujet : conformite legale et usage licite des services, cite « comply with all applicable laws »",
+      "rationale_codes": {
+        "decision_trigger": "topic_keyword",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "comply with all applicable laws",
+        "revised_from_plan": false,
+        "confidence": 0.76
+      },
+      "legal_nature": "OBLIGATION",
+      "legal_nature_marker": "you agree to"
+    },
+    {
+      "id": 43,
+      "theme": "ACCEPTABLE_USE",
+      "block_id": 11,
+      "is_block_start": false,
+      "reason": "interdiction de causer nuisance/dommage, prolonge les regles de conduite",
+      "legal_nature": "PROHIBITION",
+      "legal_nature_marker": "will not"
+    },
+    {
+      "id": 44,
+      "theme": "ACCEPTABLE_USE",
+      "block_id": 11,
+      "is_block_start": false,
+      "reason": "preuve d'identite pouvant etre exigee, prolonge l'usage",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 45,
+      "theme": "PRIVACY_DATA",
+      "block_id": 12,
+      "is_block_start": true,
+      "rationale": "nouveau sujet : messages texte (SMS) lies a la creation de compte, cite « informational text »",
+      "rationale_codes": {
+        "decision_trigger": "topic_keyword",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "informational text",
+        "revised_from_plan": false,
+        "confidence": 0.68
+      },
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 46,
+      "theme": "PRIVACY_DATA",
+      "block_id": 12,
+      "is_block_start": false,
+      "reason": "opt-out des SMS, prolonge",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 47,
+      "theme": "PRIVACY_DATA",
+      "block_id": 12,
+      "is_block_start": false,
+      "reason": "effet de l'opt-out sur l'usage, prolonge",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 48,
+      "theme": "PAYMENT_BILLING",
+      "block_id": 13,
+      "is_block_start": true,
+      "rationale": "nouveau sujet : creation de promo codes redeemables en credit, cite « promotional codes »",
+      "rationale_codes": {
+        "decision_trigger": "topic_keyword",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "promotional codes",
+        "revised_from_plan": false,
+        "confidence": 0.74
+      },
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 49,
+      "theme": "PAYMENT_BILLING",
+      "block_id": 13,
+      "is_block_start": false,
+      "reason": "conditions d'usage des promo codes, prolonge",
+      "legal_nature": "PROHIBITION",
+      "legal_nature_marker": "may not"
+    },
+    {
+      "id": 50,
+      "theme": "PAYMENT_BILLING",
+      "block_id": 13,
+      "is_block_start": false,
+      "reason": "uber peut retenir/deduire les credits, prolonge",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 51,
+      "theme": "USER_CONTENT",
+      "block_id": 14,
+      "is_block_start": true,
+      "rationale": "nouveau sujet : soumission de contenu utilisateur, cite « user content »",
+      "rationale_codes": {
+        "decision_trigger": "topic_keyword",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "user content",
+        "revised_from_plan": false,
+        "confidence": 0.84
+      },
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 52,
+      "theme": "USER_CONTENT",
+      "block_id": 14,
+      "is_block_start": false,
+      "reason": "le user content reste la propriete de l'utilisateur, prolonge",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 53,
+      "theme": "USER_CONTENT",
+      "block_id": 14,
+      "is_block_start": false,
+      "reason": "licence accordee a uber sur le user content, prolonge",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 54,
+      "theme": "USER_CONTENT",
+      "block_id": 14,
+      "is_block_start": false,
+      "reason": "garanties de l'utilisateur sur le user content, prolonge",
+      "legal_nature": "RIGHT_GRANT",
+      "legal_nature_marker": "license to"
+    },
+    {
+      "id": 55,
+      "theme": "USER_CONTENT",
+      "block_id": 14,
+      "is_block_start": false,
+      "reason": "interdiction de contenu offensant, prolonge",
+      "legal_nature": "OBLIGATION",
+      "legal_nature_marker": "you agree to"
+    },
+    {
+      "id": 56,
+      "theme": "USER_CONTENT",
+      "block_id": 14,
+      "is_block_start": false,
+      "reason": "uber peut surveiller/retirer le user content, prolonge",
+      "legal_nature": "PROHIBITION",
+      "legal_nature_marker": "shall not"
+    },
+    {
+      "id": 57,
+      "theme": "ACCEPTABLE_USE",
+      "block_id": 15,
+      "is_block_start": true,
+      "rationale": "nouveau sujet : exigences techniques d'acces (reseau de donnees), cite « data network access necessary »",
+      "rationale_codes": {
+        "decision_trigger": "topic_keyword",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "data network access necessary",
+        "revised_from_plan": false,
+        "confidence": 0.65
+      },
+      "legal_nature": "OBLIGATION",
+      "legal_nature_marker": "you are responsible"
+    },
+    {
+      "id": 58,
+      "theme": "ACCEPTABLE_USE",
+      "block_id": 15,
+      "is_block_start": false,
+      "reason": "responsabilite des frais reseau/data, prolonge",
+      "legal_nature": "OBLIGATION",
+      "legal_nature_marker": "you shall"
+    },
+    {
+      "id": 59,
+      "theme": "ACCEPTABLE_USE",
+      "block_id": 15,
+      "is_block_start": false,
+      "reason": "responsabilite du materiel compatible, prolonge",
+      "legal_nature": "OBLIGATION",
+      "legal_nature_marker": "you are responsible"
+    },
+    {
+      "id": 60,
+      "theme": "ACCEPTABLE_USE",
+      "block_id": 15,
+      "is_block_start": false,
+      "reason": "uber ne garantit pas le fonctionnement sur tout materiel, prolonge",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 61,
+      "theme": "ACCEPTABLE_USE",
+      "block_id": 15,
+      "is_block_start": false,
+      "reason": "services sujets a pannes/delais d'internet, prolonge les exigences techniques",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 62,
+      "theme": "PAYMENT_BILLING",
+      "block_id": 16,
+      "is_block_start": true,
+      "rationale": "nouveau sujet a effet autonome : charges pour les services/biens, cite « charges to you for the services »",
+      "rationale_codes": {
+        "decision_trigger": "topic_keyword",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "charges to you for the services",
+        "revised_from_plan": false,
+        "confidence": 0.85
+      },
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 63,
+      "theme": "PAYMENT_BILLING",
+      "block_id": 16,
+      "is_block_start": false,
+      "reason": "uber facilite le paiement comme agent de collecte, prolonge",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 64,
+      "theme": "PAYMENT_BILLING",
+      "block_id": 16,
+      "is_block_start": false,
+      "reason": "paiement equivaut a paiement direct au tiers, prolonge",
+      "legal_nature": "OBLIGATION",
+      "legal_nature_marker": "shall"
+    },
+    {
+      "id": 65,
+      "theme": "PAYMENT_BILLING",
+      "block_id": 16,
+      "is_block_start": false,
+      "reason": "taxes incluses dans les charges, prolonge",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 66,
+      "theme": "PAYMENT_BILLING",
+      "block_id": 16,
+      "is_block_start": false,
+      "reason": "charges finales et non remboursables, prolonge",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 67,
+      "theme": "PAYMENT_BILLING",
+      "block_id": 16,
+      "is_block_start": false,
+      "reason": "droit de demander des charges inferieures, prolonge",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 68,
+      "theme": "PAYMENT_BILLING",
+      "block_id": 16,
+      "is_block_start": false,
+      "reason": "uber repond aux demandes de modification de charges, prolonge",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 69,
+      "theme": "PAYMENT_BILLING",
+      "block_id": 16,
+      "is_block_start": false,
+      "reason": "charges dues immediatement, recu par email, prolonge",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 70,
+      "theme": "PAYMENT_BILLING",
+      "block_id": 16,
+      "is_block_start": false,
+      "reason": "usage du moyen de paiement secondaire, prolonge",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 71,
+      "theme": "PAYMENT_BILLING",
+      "block_id": 16,
+      "is_block_start": false,
+      "reason": "uber peut etablir/reviser les charges, prolonge",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 72,
+      "theme": "PAYMENT_BILLING",
+      "block_id": 16,
+      "is_block_start": false,
+      "reason": "charges majorees en periode de forte demande, prolonge",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 73,
+      "theme": "PAYMENT_BILLING",
+      "block_id": 16,
+      "is_block_start": false,
+      "reason": "information sur les charges, responsabilite de l'utilisateur, prolonge",
+      "legal_nature": "OBLIGATION",
+      "legal_nature_marker": "you will"
+    },
+    {
+      "id": 74,
+      "theme": "PAYMENT_BILLING",
+      "block_id": 16,
+      "is_block_start": false,
+      "reason": "offres promotionnelles et remises, prolonge la facturation",
+      "legal_nature": "OBLIGATION",
+      "legal_nature_marker": "shall"
+    },
+    {
+      "id": 75,
+      "theme": "PAYMENT_BILLING",
+      "block_id": 16,
+      "is_block_start": false,
+      "reason": "frais d'annulation, prolonge",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 76,
+      "theme": "PAYMENT_BILLING",
+      "block_id": 16,
+      "is_block_start": false,
+      "reason": "structure de paiement compense le tiers, prolonge",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 77,
+      "theme": "PAYMENT_BILLING",
+      "block_id": 16,
+      "is_block_start": false,
+      "reason": "pas de tip designe par uber, prolonge",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 78,
+      "theme": "PAYMENT_BILLING",
+      "block_id": 16,
+      "is_block_start": false,
+      "reason": "precision sur le pourboire 'voluntary', prolonge",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 79,
+      "theme": "PAYMENT_BILLING",
+      "block_id": 16,
+      "is_block_start": false,
+      "reason": "liberte de donner un pourboire, aucune obligation, prolonge",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 80,
+      "theme": "PAYMENT_BILLING",
+      "block_id": 16,
+      "is_block_start": false,
+      "reason": "opportunite de noter l'experience apres paiement, prolonge",
+      "legal_nature": "OBLIGATION",
+      "legal_nature_marker": "you will"
+    },
+    {
+      "id": 81,
+      "theme": "PAYMENT_BILLING",
+      "block_id": 16,
+      "is_block_start": false,
+      "reason": "responsabilite des frais de reparation/nettoyage, prolonge la facturation",
+      "legal_nature": "OBLIGATION",
+      "legal_nature_marker": "you shall"
+    },
+    {
+      "id": 82,
+      "theme": "PAYMENT_BILLING",
+      "block_id": 16,
+      "is_block_start": false,
+      "reason": "uber facilite le paiement de la reparation/nettoyage, prolonge",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 83,
+      "theme": "PAYMENT_BILLING",
+      "block_id": 16,
+      "is_block_start": false,
+      "reason": "montants transferes au tiers, non remboursables, prolonge",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 84,
+      "theme": "WARRANTY_DISCLAIMER",
+      "block_id": 17,
+      "is_block_start": true,
+      "rationale": "titre nominal court ouvrant une section, cite « disclaimers ; limitation of liability ; indemnity . »",
+      "rationale_codes": {
+        "decision_trigger": "title_marker",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "disclaimers ; limitation of liability ; indemnity .",
+        "revised_from_plan": false,
+        "confidence": 0.82
+      },
+      "legal_nature": "LIMITATION_DISCLAIMER",
+      "legal_nature_marker": "disclaim"
+    },
+    {
+      "id": 85,
+      "theme": "WARRANTY_DISCLAIMER",
+      "block_id": 17,
+      "is_block_start": false,
+      "reason": "services fournis 'as is', prolonge le disclaimer de garantie",
+      "legal_nature": "LIMITATION_DISCLAIMER",
+      "legal_nature_marker": "as is"
+    },
+    {
+      "id": 86,
+      "theme": "WARRANTY_DISCLAIMER",
+      "block_id": 17,
+      "is_block_start": false,
+      "reason": "uber rejette toutes garanties implicites, prolonge",
+      "legal_nature": "LIMITATION_DISCLAIMER",
+      "legal_nature_marker": "warranties"
+    },
+    {
+      "id": 87,
+      "theme": "WARRANTY_DISCLAIMER",
+      "block_id": 17,
+      "is_block_start": false,
+      "reason": "aucune garantie de fiabilite/disponibilite, prolonge",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 88,
+      "theme": "WARRANTY_DISCLAIMER",
+      "block_id": 17,
+      "is_block_start": false,
+      "reason": "aucune garantie sur les tiers, prolonge",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 89,
+      "theme": "WARRANTY_DISCLAIMER",
+      "block_id": 17,
+      "is_block_start": false,
+      "reason": "risque entier supporte par l'utilisateur, prolonge le disclaimer",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 90,
+      "theme": "LIABILITY_LIMITATION",
+      "block_id": 18,
+      "is_block_start": true,
+      "rationale": "nouveau sujet a effet autonome : limitation des dommages, cite « shall not be liable for indirect »",
+      "rationale_codes": {
+        "decision_trigger": "topic_keyword",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "shall not be liable for indirect",
+        "revised_from_plan": false,
+        "confidence": 0.83
+      },
+      "legal_nature": "PROHIBITION",
+      "legal_nature_marker": "shall not"
+    },
+    {
+      "id": 91,
+      "theme": "LIABILITY_LIMITATION",
+      "block_id": 18,
+      "is_block_start": false,
+      "reason": "non-responsabilite pour usage/relation tiers, prolonge",
+      "legal_nature": "PROHIBITION",
+      "legal_nature_marker": "shall not"
+    },
+    {
+      "id": 92,
+      "theme": "LIABILITY_LIMITATION",
+      "block_id": 18,
+      "is_block_start": false,
+      "reason": "non-responsabilite pour force majeure, prolonge",
+      "legal_nature": "PROHIBITION",
+      "legal_nature_marker": "shall not"
+    },
+    {
+      "id": 93,
+      "theme": "LIABILITY_LIMITATION",
+      "block_id": 18,
+      "is_block_start": false,
+      "reason": "reconnaissance que les tiers peuvent ne pas etre licencies, prolonge le contexte de limitation",
+      "legal_nature": "PROHIBITION",
+      "legal_nature_marker": "may not"
+    },
+    {
+      "id": 94,
+      "theme": "LIABILITY_LIMITATION",
+      "block_id": 18,
+      "is_block_start": false,
+      "reason": "plafond de responsabilite a 500 euros, prolonge",
+      "legal_nature": "LIMITATION_DISCLAIMER",
+      "legal_nature_marker": "in no event"
+    },
+    {
+      "id": 95,
+      "theme": "LIABILITY_LIMITATION",
+      "block_id": 18,
+      "is_block_start": false,
+      "reason": "pas de responsabilite pour services tiers, prolonge",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 96,
+      "theme": "LIABILITY_LIMITATION",
+      "block_id": 18,
+      "is_block_start": false,
+      "reason": "reserve sur les droits du consommateur, prolonge",
+      "legal_nature": "PROHIBITION",
+      "legal_nature_marker": "do not"
+    },
+    {
+      "id": 97,
+      "theme": "INDEMNIFICATION",
+      "block_id": 19,
+      "is_block_start": true,
+      "rationale": "nouveau sujet a effet autonome : obligation d'indemniser uber, cite « you agree to indemnify and hold uber »",
+      "rationale_codes": {
+        "decision_trigger": "topic_keyword",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "you agree to indemnify and hold uber",
+        "revised_from_plan": false,
+        "confidence": 0.88
+      },
+      "legal_nature": "RISK_ALLOCATION",
+      "legal_nature_marker": "indemnify"
+    },
+    {
+      "id": 98,
+      "theme": "GOVERNING_LAW",
+      "block_id": 20,
+      "is_block_start": true,
+      "rationale": "nouveau sujet : droit applicable (pays-bas), cite « governed by and construed in accordance with the laws of the netherlands »",
+      "rationale_codes": {
+        "decision_trigger": "topic_keyword",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "governed by and construed in accordance with the laws of the netherlands",
+        "revised_from_plan": false,
+        "confidence": 0.87
+      },
+      "legal_nature": "GOVERNANCE",
+      "legal_nature_marker": "governed by"
+    },
+    {
+      "id": 99,
+      "theme": "GOVERNING_LAW",
+      "block_id": 20,
+      "is_block_start": false,
+      "reason": "exclusion de la convention de vienne (CISG), prolonge le droit applicable",
+      "legal_nature": "PROHIBITION",
+      "legal_nature_marker": "shall not"
+    },
+    {
+      "id": 100,
+      "theme": "DISPUTE_ARBITRATION",
+      "block_id": 21,
+      "is_block_start": true,
+      "rationale": "nouveau sujet a effet autonome : mediation puis arbitrage des litiges, cite « submitted to mediation proceedings »",
+      "rationale_codes": {
+        "decision_trigger": "topic_keyword",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "submitted to mediation proceedings",
+        "revised_from_plan": false,
+        "confidence": 0.85
+      },
+      "legal_nature": "OBLIGATION",
+      "legal_nature_marker": "shall"
+    },
+    {
+      "id": 101,
+      "theme": "DISPUTE_ARBITRATION",
+      "block_id": 21,
+      "is_block_start": false,
+      "reason": "renvoi a l'arbitrage si non regle, prolonge",
+      "legal_nature": "GOVERNANCE",
+      "legal_nature_marker": "arbitration"
+    },
+    {
+      "id": 102,
+      "theme": "DISPUTE_ARBITRATION",
+      "block_id": 21,
+      "is_block_start": false,
+      "reason": "exclusion de l'arbitre d'urgence, prolonge",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 103,
+      "theme": "DISPUTE_ARBITRATION",
+      "block_id": 21,
+      "is_block_start": false,
+      "reason": "un seul arbitre selon les regles icc, prolonge",
+      "legal_nature": "OBLIGATION",
+      "legal_nature_marker": "shall"
+    },
+    {
+      "id": 104,
+      "theme": "DISPUTE_ARBITRATION",
+      "block_id": 21,
+      "is_block_start": false,
+      "reason": "lieu de mediation/arbitrage a amsterdam, prolonge",
+      "legal_nature": "GOVERNANCE",
+      "legal_nature_marker": "arbitration"
+    },
+    {
+      "id": 105,
+      "theme": "DISPUTE_ARBITRATION",
+      "block_id": 21,
+      "is_block_start": false,
+      "reason": "langue de la procedure, prolonge",
+      "legal_nature": "PROHIBITION",
+      "legal_nature_marker": "do not"
+    },
+    {
+      "id": 106,
+      "theme": "DISPUTE_ARBITRATION",
+      "block_id": 21,
+      "is_block_start": false,
+      "reason": "confidentialite de la procedure, prolonge",
+      "legal_nature": "PROHIBITION",
+      "legal_nature_marker": "shall not"
+    },
+    {
+      "id": 107,
+      "theme": "LICENSE_IP",
+      "block_id": 22,
+      "is_block_start": true,
+      "rationale": "nouveau sujet : reclamations d'infraction au copyright (DMCA), PI prime, cite « claims of copyright infringement »",
+      "rationale_codes": {
+        "decision_trigger": "topic_keyword",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "claims of copyright infringement",
+        "revised_from_plan": false,
+        "confidence": 0.8
+      },
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 108,
+      "theme": "LICENSE_IP",
+      "block_id": 22,
+      "is_block_start": false,
+      "reason": "adresse de l'agent designe pour le copyright, prolonge le DMCA",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 109,
+      "theme": "MISC_BOILERPLATE",
+      "block_id": 23,
+      "is_block_start": true,
+      "rationale": "nouveau sujet : clauses finales boilerplate (notices), cite « uber may give notice »",
+      "rationale_codes": {
+        "decision_trigger": "topic_keyword",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "uber may give notice",
+        "revised_from_plan": false,
+        "confidence": 0.72
+      },
+      "legal_nature": "DEFINITION",
+      "legal_nature_marker": "means"
+    },
+    {
+      "id": 110,
+      "theme": "MISC_BOILERPLATE",
+      "block_id": 23,
+      "is_block_start": false,
+      "reason": "modalite de notice a uber, prolonge le boilerplate",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 111,
+      "theme": "MISC_BOILERPLATE",
+      "block_id": 23,
+      "is_block_start": false,
+      "reason": "interdiction de cession par l'utilisateur, prolonge",
+      "legal_nature": "PROHIBITION",
+      "legal_nature_marker": "may not"
+    },
+    {
+      "id": 112,
+      "theme": "MISC_BOILERPLATE",
+      "block_id": 23,
+      "is_block_start": false,
+      "reason": "autorisation de cession par uber, prolonge",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 113,
+      "theme": "MISC_BOILERPLATE",
+      "block_id": 23,
+      "is_block_start": false,
+      "reason": "absence de joint venture/partenariat, prolonge",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 114,
+      "theme": "MISC_BOILERPLATE",
+      "block_id": 23,
+      "is_block_start": false,
+      "reason": "clause de divisibilite (provision illegale/invalide), prolonge",
+      "legal_nature": "PROHIBITION",
+      "legal_nature_marker": "shall not"
+    },
+    {
+      "id": 115,
+      "theme": "MISC_BOILERPLATE",
+      "block_id": 23,
+      "is_block_start": false,
+      "reason": "remplacement de la clause invalide, prolonge la divisibilite",
+      "legal_nature": "OBLIGATION",
+      "legal_nature_marker": "shall"
+    },
+    {
+      "id": 116,
+      "theme": "MISC_BOILERPLATE",
+      "block_id": 23,
+      "is_block_start": false,
+      "reason": "clause d'integralite, prolonge le boilerplate",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 117,
+      "theme": "MISC_BOILERPLATE",
+      "block_id": 23,
+      "is_block_start": false,
+      "reason": "regle d'interpretation 'including', prolonge le boilerplate final",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    }
+  ]
+}

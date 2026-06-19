@@ -1,0 +1,2395 @@
+{
+  "doc": "Evernote",
+  "judge": "claude",
+  "version": "v9.1",
+  "document_plan": {
+    "estimated_n_blocks": 38,
+    "rationale_global": "ToS rédigé en style FAQ : chaque question-titre (« what are the terms of service ? », « what is the evernote service ? », etc.) ouvre une section thématique. Les frontières naissent de ces questions-titres et de quelques libellés nominaux (« right to modify the service . », « limitation of liability and disclaimer of warranties . »). Continuité par défaut à l'intérieur de chaque réponse. Préséance §3.1 appliquée : PI > contenu, dispute/arbitrage regroupés en DISPUTE_ARBITRATION, exclusion de responsabilité = LIABILITY_LIMITATION distincte de WARRANTY_DISCLAIMER.",
+    "segments": [
+      {
+        "start_id": 0,
+        "theme": "META",
+        "rationale": "date d'effet en tête de doc",
+        "evidence_span": "effective date : august 28 , 2017"
+      },
+      {
+        "start_id": 1,
+        "theme": "PREAMBLE_SCOPE",
+        "rationale": "invitation à accéder, soumise à l'accord",
+        "evidence_span": "your invitation is subject to your agreement with these terms"
+      },
+      {
+        "start_id": 3,
+        "theme": "PREAMBLE_SCOPE",
+        "rationale": "titre FAQ sur la nature des terms",
+        "evidence_span": "what are the terms of service ?"
+      },
+      {
+        "start_id": 9,
+        "theme": "PREAMBLE_SCOPE",
+        "rationale": "titre FAQ : définition du service",
+        "evidence_span": "what is the evernote service ?"
+      },
+      {
+        "start_id": 12,
+        "theme": "PREAMBLE_SCOPE",
+        "rationale": "titre FAQ : parties au contrat",
+        "evidence_span": "who are the parties ?"
+      },
+      {
+        "start_id": 21,
+        "theme": "PREAMBLE_SCOPE",
+        "rationale": "titre FAQ : autres contrats / accords séparés",
+        "evidence_span": "is this the only contract i have with evernote ?"
+      },
+      {
+        "start_id": 28,
+        "theme": "MODIFICATION_OF_TERMS",
+        "rationale": "titre FAQ : modification des terms",
+        "evidence_span": "will these terms of service ever change ?"
+      },
+      {
+        "start_id": 34,
+        "theme": "ELIGIBILITY_ACCOUNT",
+        "rationale": "titre FAQ : création de compte",
+        "evidence_span": "what do i have to do to use the evernote service ?"
+      },
+      {
+        "start_id": 46,
+        "theme": "ELIGIBILITY_ACCOUNT",
+        "rationale": "titre FAQ : partage de compte",
+        "evidence_span": "can i share my account with someone else ?"
+      },
+      {
+        "start_id": 51,
+        "theme": "LICENSE_IP",
+        "rationale": "titre FAQ : droits accordés dans le service",
+        "evidence_span": "what are my rights in the evernote service ?"
+      },
+      {
+        "start_id": 55,
+        "theme": "USER_CONTENT",
+        "rationale": "titre FAQ : propriété des données utilisateur",
+        "evidence_span": "my data is mine"
+      },
+      {
+        "start_id": 59,
+        "theme": "LICENSE_IP",
+        "rationale": "titre FAQ : licence accordée à evernote",
+        "evidence_span": "what is the license i have to grant to evernote ?"
+      },
+      {
+        "start_id": 70,
+        "theme": "ACCEPTABLE_USE",
+        "rationale": "titre FAQ : garanties/représentations de l'utilisateur",
+        "evidence_span": "what other assurances do i have to grant to evernote ?"
+      },
+      {
+        "start_id": 73,
+        "theme": "ACCEPTABLE_USE",
+        "rationale": "titre FAQ : règles d'usage du service",
+        "evidence_span": "are there rules about what i can do on the evernote service ?"
+      },
+      {
+        "start_id": 80,
+        "theme": "LICENSE_IP",
+        "rationale": "titre FAQ : droits d'evernote sur le service",
+        "evidence_span": "evernote has some rights relating to the service ?"
+      },
+      {
+        "start_id": 84,
+        "theme": "GOVERNING_LAW",
+        "rationale": "libellé nominal : droit de modifier le service",
+        "evidence_span": "right to modify the service ."
+      },
+      {
+        "start_id": 93,
+        "theme": "THIRD_PARTY",
+        "rationale": "libellé nominal : droit d'engager des tiers",
+        "evidence_span": "right to engage third parties ."
+      },
+      {
+        "start_id": 97,
+        "theme": "THIRD_PARTY",
+        "rationale": "libellé nominal : logiciels tiers",
+        "evidence_span": "right to use third-party software ."
+      },
+      {
+        "start_id": 101,
+        "theme": "GOVERNING_LAW",
+        "rationale": "libellé nominal : droit de mettre à jour le logiciel",
+        "evidence_span": "right to update our software ."
+      },
+      {
+        "start_id": 105,
+        "theme": "PREAMBLE_SCOPE",
+        "rationale": "titre FAQ : applicabilité aux comptes business",
+        "evidence_span": "do these terms apply to evernote business users ?"
+      },
+      {
+        "start_id": 110,
+        "theme": "LICENSE_IP",
+        "rationale": "titre FAQ : réponse aux violations de PI / DMCA",
+        "evidence_span": "how does evernote respond to copyright or other intellectual property violations ?"
+      },
+      {
+        "start_id": 114,
+        "theme": "ELIGIBILITY_ACCOUNT",
+        "rationale": "passage sur les mineurs / consentement parental",
+        "evidence_span": "evernote is not directed to minors"
+      },
+      {
+        "start_id": 118,
+        "theme": "PRIVACY_DATA",
+        "rationale": "titre FAQ : localisation des données",
+        "evidence_span": "where does my data go ?"
+      },
+      {
+        "start_id": 122,
+        "theme": "TERMINATION",
+        "rationale": "titre FAQ : fermeture du compte",
+        "evidence_span": "how is my account closed ?"
+      },
+      {
+        "start_id": 130,
+        "theme": "TERMINATION",
+        "rationale": "titre FAQ : compte après le décès",
+        "evidence_span": "what happens to my account when i die ?"
+      },
+      {
+        "start_id": 136,
+        "theme": "LICENSE_IP",
+        "rationale": "titre FAQ : droits sur les contributions/idées",
+        "evidence_span": "what are my rights ?"
+      },
+      {
+        "start_id": 138,
+        "theme": "THIRD_PARTY",
+        "rationale": "modèle économique / publicité de tiers",
+        "evidence_span": "our business model"
+      },
+      {
+        "start_id": 143,
+        "theme": "THIRD_PARTY",
+        "rationale": "titre FAQ : autres points (liens et contenus tiers)",
+        "evidence_span": "what else do i need to know ?"
+      },
+      {
+        "start_id": 147,
+        "theme": "INDEMNIFICATION",
+        "rationale": "clause d'indemnisation autonome",
+        "evidence_span": "you agree to indemnify and hold evernote"
+      },
+      {
+        "start_id": 149,
+        "theme": "LIABILITY_LIMITATION",
+        "rationale": "libellé nominal : limitation de responsabilité et disclaimer",
+        "evidence_span": "limitation of liability and disclaimer of warranties ."
+      },
+      {
+        "start_id": 158,
+        "theme": "LIABILITY_LIMITATION",
+        "rationale": "exclusion des dommages, distincte du disclaimer",
+        "evidence_span": "shall not be liable"
+      },
+      {
+        "start_id": 162,
+        "theme": "MISC_BOILERPLATE",
+        "rationale": "titre FAQ : notification d'evernote vers l'utilisateur",
+        "evidence_span": "how will that happen ?"
+      },
+      {
+        "start_id": 165,
+        "theme": "MISC_BOILERPLATE",
+        "rationale": "titre FAQ : notification vers evernote",
+        "evidence_span": "how can i send a notice to evernote ?"
+      },
+      {
+        "start_id": 172,
+        "theme": "GOVERNING_LAW",
+        "rationale": "titre FAQ : restrictions d'export / pays interdits",
+        "evidence_span": "are there countries where i 'm not allowed to use evernote ?"
+      },
+      {
+        "start_id": 177,
+        "theme": "GOVERNING_LAW",
+        "rationale": "titre FAQ : loi applicable",
+        "evidence_span": "what law applies to my use of evernote ?"
+      },
+      {
+        "start_id": 182,
+        "theme": "DISPUTE_ARBITRATION",
+        "rationale": "titre FAQ : réclamations et résolution des litiges",
+        "evidence_span": "what do i do if i think i have a claim against evernote ?"
+      },
+      {
+        "start_id": 225,
+        "theme": "GOVERNING_LAW",
+        "rationale": "libellé : avis spécial pour les utilisateurs de californie",
+        "evidence_span": "special notice for california users ."
+      },
+      {
+        "start_id": 229,
+        "theme": "MISC_BOILERPLATE",
+        "rationale": "clauses finales : intégralité de l'accord, tiers bénéficiaires, titres",
+        "evidence_span": "a couple of final , but important , points ."
+      }
+    ]
+  },
+  "annotations": [
+    {
+      "id": 0,
+      "theme": "META",
+      "legal_nature": "META",
+      "block_id": 0,
+      "is_block_start": true,
+      "rationale": "date d'effet non normative en tête de document, cite « effective date »",
+      "rationale_codes": {
+        "decision_trigger": "document_start",
+        "relation_to_prev": "document_start",
+        "evidence_span": "effective date : august 28 , 2017",
+        "revised_from_plan": false,
+        "confidence": 0.95
+      }
+    },
+    {
+      "id": 1,
+      "theme": "PREAMBLE_SCOPE",
+      "legal_nature": "SCOPE_APPLICABILITY",
+      "block_id": 1,
+      "is_block_start": true,
+      "rationale": "ouvre le cadre : l'invitation est subordonnée à l'accord aux terms",
+      "rationale_codes": {
+        "decision_trigger": "topic_keyword",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "subject to your agreement with these terms of service",
+        "revised_from_plan": false,
+        "confidence": 0.9
+      }
+    },
+    {
+      "id": 2,
+      "theme": "PREAMBLE_SCOPE",
+      "legal_nature": "SCOPE_APPLICABILITY",
+      "block_id": 1,
+      "is_block_start": false,
+      "reason": "continue le préambule : décrit ce que couvre le document"
+    },
+    {
+      "id": 3,
+      "theme": "PREAMBLE_SCOPE",
+      "legal_nature": "UNKNOWN",
+      "block_id": 2,
+      "is_block_start": true,
+      "rationale": "question-titre FAQ ouvrant la section sur la nature des terms",
+      "rationale_codes": {
+        "decision_trigger": "title_marker",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "what are the terms of service ?",
+        "revised_from_plan": false,
+        "confidence": 0.88
+      }
+    },
+    {
+      "id": 4,
+      "theme": "PREAMBLE_SCOPE",
+      "legal_nature": "SCOPE_APPLICABILITY",
+      "block_id": 2,
+      "is_block_start": false,
+      "reason": "réponse au titre : les terms constituent un contrat"
+    },
+    {
+      "id": 5,
+      "theme": "PREAMBLE_SCOPE",
+      "legal_nature": "SCOPE_APPLICABILITY",
+      "block_id": 2,
+      "is_block_start": false,
+      "reason": "énumère les documents inclus dans les terms"
+    },
+    {
+      "id": 6,
+      "theme": "PREAMBLE_SCOPE",
+      "legal_nature": "SCOPE_APPLICABILITY",
+      "block_id": 2,
+      "is_block_start": false,
+      "reason": "condition d'accès : pas d'accord, pas de droit d'usage"
+    },
+    {
+      "id": 7,
+      "theme": "PREAMBLE_SCOPE",
+      "legal_nature": "SCOPE_APPLICABILITY",
+      "block_id": 2,
+      "is_block_start": false,
+      "reason": "acceptation réputée par l'usage du service"
+    },
+    {
+      "id": 8,
+      "theme": "PREAMBLE_SCOPE",
+      "legal_nature": "SCOPE_APPLICABILITY",
+      "block_id": 2,
+      "is_block_start": false,
+      "reason": "acceptation de la privacy policy par l'usage, prolonge l'acceptation"
+    },
+    {
+      "id": 9,
+      "theme": "PREAMBLE_SCOPE",
+      "legal_nature": "DEFINITION",
+      "block_id": 3,
+      "is_block_start": true,
+      "rationale": "question-titre FAQ ouvrant la définition du « service »",
+      "rationale_codes": {
+        "decision_trigger": "title_marker",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "what is the evernote service ?",
+        "revised_from_plan": false,
+        "confidence": 0.85
+      }
+    },
+    {
+      "id": 10,
+      "theme": "PREAMBLE_SCOPE",
+      "legal_nature": "DEFINITION",
+      "block_id": 3,
+      "is_block_start": false,
+      "reason": "définit le terme « service »"
+    },
+    {
+      "id": 11,
+      "theme": "PREAMBLE_SCOPE",
+      "legal_nature": "OBLIGATION",
+      "block_id": 3,
+      "is_block_start": false,
+      "reason": "contrepartie : accepter les terms, prolonge la définition du cadre"
+    },
+    {
+      "id": 12,
+      "theme": "PREAMBLE_SCOPE",
+      "legal_nature": "UNKNOWN",
+      "block_id": 4,
+      "is_block_start": true,
+      "rationale": "question-titre FAQ ouvrant la section sur les parties au contrat",
+      "rationale_codes": {
+        "decision_trigger": "title_marker",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "who are the parties ?",
+        "revised_from_plan": false,
+        "confidence": 0.85
+      }
+    },
+    {
+      "id": 13,
+      "theme": "PREAMBLE_SCOPE",
+      "legal_nature": "DEFINITION",
+      "block_id": 4,
+      "is_block_start": false,
+      "reason": "identifie l'utilisateur comme partie au contrat"
+    },
+    {
+      "id": 14,
+      "theme": "PREAMBLE_SCOPE",
+      "legal_nature": "DEFINITION",
+      "block_id": 4,
+      "is_block_start": false,
+      "reason": "définit le titulaire de compte"
+    },
+    {
+      "id": 15,
+      "theme": "PREAMBLE_SCOPE",
+      "legal_nature": "META",
+      "block_id": 4,
+      "is_block_start": false,
+      "reason": "identité de l'entité contractante selon la résidence"
+    },
+    {
+      "id": 16,
+      "theme": "PREAMBLE_SCOPE",
+      "legal_nature": "META",
+      "block_id": 4,
+      "is_block_start": false,
+      "reason": "identité de l'entité brésilienne, fait non normatif"
+    },
+    {
+      "id": 17,
+      "theme": "PREAMBLE_SCOPE",
+      "legal_nature": "META",
+      "block_id": 4,
+      "is_block_start": false,
+      "reason": "identité de l'entité suisse, fait non normatif"
+    },
+    {
+      "id": 18,
+      "theme": "PREAMBLE_SCOPE",
+      "legal_nature": "DEFINITION",
+      "block_id": 4,
+      "is_block_start": false,
+      "reason": "définit les termes « evernote », « we », « us »"
+    },
+    {
+      "id": 19,
+      "theme": "PREAMBLE_SCOPE",
+      "legal_nature": "SCOPE_APPLICABILITY",
+      "block_id": 4,
+      "is_block_start": false,
+      "reason": "cas des achats via revendeur, prolonge l'identification des parties"
+    },
+    {
+      "id": 20,
+      "theme": "PREAMBLE_SCOPE",
+      "legal_nature": "UNKNOWN",
+      "block_id": 4,
+      "is_block_start": false,
+      "reason": "renvoi aux commercial terms, prolonge le même sujet"
+    },
+    {
+      "id": 21,
+      "theme": "PREAMBLE_SCOPE",
+      "legal_nature": "UNKNOWN",
+      "block_id": 5,
+      "is_block_start": true,
+      "rationale": "question-titre FAQ ouvrant la section sur les autres accords/accords séparés",
+      "rationale_codes": {
+        "decision_trigger": "title_marker",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "is this the only contract i have with evernote ?",
+        "revised_from_plan": false,
+        "confidence": 0.83
+      }
+    },
+    {
+      "id": 22,
+      "theme": "PREAMBLE_SCOPE",
+      "legal_nature": "UNKNOWN",
+      "block_id": 5,
+      "is_block_start": false,
+      "reason": "réponse : cela dépend de l'usage, transition vague"
+    },
+    {
+      "id": 23,
+      "theme": "PREAMBLE_SCOPE",
+      "legal_nature": "SCOPE_APPLICABILITY",
+      "block_id": 5,
+      "is_block_start": false,
+      "reason": "cas EULA pour l'installation de logiciel"
+    },
+    {
+      "id": 24,
+      "theme": "PREAMBLE_SCOPE",
+      "legal_nature": "SCOPE_APPLICABILITY",
+      "block_id": 5,
+      "is_block_start": false,
+      "reason": "cas commercial terms pour l'abonnement"
+    },
+    {
+      "id": 25,
+      "theme": "PREAMBLE_SCOPE",
+      "legal_nature": "SCOPE_APPLICABILITY",
+      "block_id": 5,
+      "is_block_start": false,
+      "reason": "cas d'accords séparés pour produits liés"
+    },
+    {
+      "id": 26,
+      "theme": "PREAMBLE_SCOPE",
+      "legal_nature": "DEFINITION",
+      "block_id": 5,
+      "is_block_start": false,
+      "reason": "définit le terme « separate agreement »"
+    },
+    {
+      "id": 27,
+      "theme": "PREAMBLE_SCOPE",
+      "legal_nature": "GOVERNANCE",
+      "block_id": 5,
+      "is_block_start": false,
+      "reason": "règle de préséance des accords séparés en cas de conflit"
+    },
+    {
+      "id": 28,
+      "theme": "MODIFICATION_OF_TERMS",
+      "legal_nature": "GOVERNANCE",
+      "block_id": 6,
+      "is_block_start": true,
+      "rationale": "question-titre FAQ ouvrant la section modification des terms",
+      "rationale_codes": {
+        "decision_trigger": "title_marker",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "will these terms of service ever change ?",
+        "revised_from_plan": false,
+        "confidence": 0.9
+      }
+    },
+    {
+      "id": 29,
+      "theme": "MODIFICATION_OF_TERMS",
+      "legal_nature": "GOVERNANCE",
+      "block_id": 6,
+      "is_block_start": false,
+      "reason": "les terms peuvent être amendés, prolonge la section"
+    },
+    {
+      "id": 30,
+      "theme": "MODIFICATION_OF_TERMS",
+      "legal_nature": "GOVERNANCE",
+      "block_id": 6,
+      "is_block_start": false,
+      "reason": "notification en cas de changement significatif"
+    },
+    {
+      "id": 31,
+      "theme": "MODIFICATION_OF_TERMS",
+      "legal_nature": "GOVERNANCE",
+      "block_id": 6,
+      "is_block_start": false,
+      "reason": "consentement réputé par l'usage continu"
+    },
+    {
+      "id": 32,
+      "theme": "MODIFICATION_OF_TERMS",
+      "legal_nature": "GOVERNANCE",
+      "block_id": 6,
+      "is_block_start": false,
+      "reason": "exigence d'écrit signé pour autres amendements"
+    },
+    {
+      "id": 33,
+      "theme": "MODIFICATION_OF_TERMS",
+      "legal_nature": "GOVERNANCE",
+      "block_id": 6,
+      "is_block_start": false,
+      "reason": "clarification : email ne constitue pas un écrit valable"
+    },
+    {
+      "id": 34,
+      "theme": "ELIGIBILITY_ACCOUNT",
+      "legal_nature": "UNKNOWN",
+      "block_id": 7,
+      "is_block_start": true,
+      "rationale": "question-titre FAQ ouvrant la section création/gestion de compte",
+      "rationale_codes": {
+        "decision_trigger": "title_marker",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "what do i have to do to use the evernote service ?",
+        "revised_from_plan": false,
+        "confidence": 0.88
+      }
+    },
+    {
+      "id": 35,
+      "theme": "ELIGIBILITY_ACCOUNT",
+      "legal_nature": "OBLIGATION",
+      "block_id": 7,
+      "is_block_start": false,
+      "reason": "il faut créer un compte"
+    },
+    {
+      "id": 36,
+      "theme": "ELIGIBILITY_ACCOUNT",
+      "legal_nature": "UNKNOWN",
+      "block_id": 7,
+      "is_block_start": false,
+      "reason": "décrit le mécanisme de création de compte"
+    },
+    {
+      "id": 37,
+      "theme": "ELIGIBILITY_ACCOUNT",
+      "legal_nature": "UNKNOWN",
+      "block_id": 7,
+      "is_block_start": false,
+      "reason": "précision sur les anciens comptes"
+    },
+    {
+      "id": 38,
+      "theme": "ELIGIBILITY_ACCOUNT",
+      "legal_nature": "DEFINITION",
+      "block_id": 7,
+      "is_block_start": false,
+      "reason": "définit « basic subscriber information »"
+    },
+    {
+      "id": 39,
+      "theme": "ELIGIBILITY_ACCOUNT",
+      "legal_nature": "OBLIGATION",
+      "block_id": 7,
+      "is_block_start": false,
+      "reason": "encouragement à utiliser un mot de passe distinct"
+    },
+    {
+      "id": 40,
+      "theme": "ELIGIBILITY_ACCOUNT",
+      "legal_nature": "OBLIGATION",
+      "block_id": 7,
+      "is_block_start": false,
+      "reason": "responsabilité de l'utilisateur sur ses informations de compte"
+    },
+    {
+      "id": 41,
+      "theme": "ELIGIBILITY_ACCOUNT",
+      "legal_nature": "LIMITATION_DISCLAIMER",
+      "block_id": 7,
+      "is_block_start": false,
+      "reason": "exclusion de responsabilité d'evernote, même sujet compte"
+    },
+    {
+      "id": 42,
+      "theme": "ELIGIBILITY_ACCOUNT",
+      "legal_nature": "OBLIGATION",
+      "block_id": 7,
+      "is_block_start": false,
+      "reason": "obligation de changer le mot de passe en cas d'usage non autorisé"
+    },
+    {
+      "id": 43,
+      "theme": "ELIGIBILITY_ACCOUNT",
+      "legal_nature": "OBLIGATION",
+      "block_id": 7,
+      "is_block_start": false,
+      "reason": "accès via navigateur ou logiciel client, prolonge"
+    },
+    {
+      "id": 44,
+      "theme": "ELIGIBILITY_ACCOUNT",
+      "legal_nature": "OBLIGATION",
+      "block_id": 7,
+      "is_block_start": false,
+      "reason": "responsabilité d'obtenir les appareils et la connectivité"
+    },
+    {
+      "id": 45,
+      "theme": "ELIGIBILITY_ACCOUNT",
+      "legal_nature": "LIMITATION_DISCLAIMER",
+      "block_id": 7,
+      "is_block_start": false,
+      "reason": "absence de responsabilité sur la disponibilité d'internet"
+    },
+    {
+      "id": 46,
+      "theme": "ELIGIBILITY_ACCOUNT",
+      "legal_nature": "UNKNOWN",
+      "block_id": 8,
+      "is_block_start": true,
+      "rationale": "question-titre FAQ ouvrant le sous-sujet du partage de compte",
+      "rationale_codes": {
+        "decision_trigger": "title_marker",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "can i share my account with someone else ?",
+        "revised_from_plan": false,
+        "confidence": 0.8
+      }
+    },
+    {
+      "id": 47,
+      "theme": "ELIGIBILITY_ACCOUNT",
+      "legal_nature": "PROHIBITION",
+      "block_id": 8,
+      "is_block_start": false,
+      "reason": "les comptes ne doivent pas être partagés"
+    },
+    {
+      "id": 48,
+      "theme": "ELIGIBILITY_ACCOUNT",
+      "legal_nature": "UNKNOWN",
+      "block_id": 8,
+      "is_block_start": false,
+      "reason": "conséquence du partage des informations"
+    },
+    {
+      "id": 49,
+      "theme": "ELIGIBILITY_ACCOUNT",
+      "legal_nature": "LIMITATION_DISCLAIMER",
+      "block_id": 8,
+      "is_block_start": false,
+      "reason": "exclusion de responsabilité en cas de partage"
+    },
+    {
+      "id": 50,
+      "theme": "ELIGIBILITY_ACCOUNT",
+      "legal_nature": "OBLIGATION",
+      "block_id": 8,
+      "is_block_start": false,
+      "reason": "incitation à ne pas partager les informations"
+    },
+    {
+      "id": 51,
+      "theme": "LICENSE_IP",
+      "legal_nature": "RIGHT_GRANT",
+      "block_id": 9,
+      "is_block_start": true,
+      "rationale": "question-titre FAQ ouvrant la licence accordée à l'utilisateur sur le service",
+      "rationale_codes": {
+        "decision_trigger": "title_marker",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "what are my rights in the evernote service ?",
+        "revised_from_plan": false,
+        "confidence": 0.85
+      }
+    },
+    {
+      "id": 52,
+      "theme": "LICENSE_IP",
+      "legal_nature": "RIGHT_GRANT",
+      "block_id": 9,
+      "is_block_start": false,
+      "reason": "octroi d'une licence limitée d'usage du service"
+    },
+    {
+      "id": 53,
+      "theme": "LICENSE_IP",
+      "legal_nature": "RIGHT_GRANT",
+      "block_id": 9,
+      "is_block_start": false,
+      "reason": "octroi d'une licence sur le logiciel evernote"
+    },
+    {
+      "id": 54,
+      "theme": "LICENSE_IP",
+      "legal_nature": "LIMITATION_DISCLAIMER",
+      "block_id": 9,
+      "is_block_start": false,
+      "reason": "aucun autre droit obtenu, prolonge la licence"
+    },
+    {
+      "id": 55,
+      "theme": "USER_CONTENT",
+      "legal_nature": "RIGHT_GRANT",
+      "block_id": 10,
+      "is_block_start": true,
+      "rationale": "question-titre FAQ sur la propriété du contenu utilisateur (« my data is mine »)",
+      "rationale_codes": {
+        "decision_trigger": "title_marker",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "my data is mine",
+        "revised_from_plan": false,
+        "confidence": 0.78
+      }
+    },
+    {
+      "id": 56,
+      "theme": "USER_CONTENT",
+      "legal_nature": "RIGHT_GRANT",
+      "block_id": 10,
+      "is_block_start": false,
+      "reason": "l'utilisateur conserve ses droits d'auteur sur son contenu"
+    },
+    {
+      "id": 57,
+      "theme": "USER_CONTENT",
+      "legal_nature": "OBLIGATION",
+      "block_id": 10,
+      "is_block_start": false,
+      "reason": "obligation d'octroyer une licence limitée à evernote"
+    },
+    {
+      "id": 58,
+      "theme": "USER_CONTENT",
+      "legal_nature": "LIMITATION_DISCLAIMER",
+      "block_id": 10,
+      "is_block_start": false,
+      "reason": "evernote n'obtient pas de titre sur le contenu, prolonge"
+    },
+    {
+      "id": 59,
+      "theme": "LICENSE_IP",
+      "legal_nature": "RIGHT_GRANT",
+      "block_id": 11,
+      "is_block_start": true,
+      "rationale": "question-titre FAQ ouvrant la licence de PI accordée à evernote ; PI prime (§3.1)",
+      "rationale_codes": {
+        "decision_trigger": "title_marker",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "what is the license i have to grant to evernote ?",
+        "revised_from_plan": false,
+        "confidence": 0.85
+      }
+    },
+    {
+      "id": 60,
+      "theme": "LICENSE_IP",
+      "legal_nature": "RIGHT_GRANT",
+      "block_id": 11,
+      "is_block_start": false,
+      "reason": "evernote doit obtenir des droits de licence limités sur le contenu PI"
+    },
+    {
+      "id": 61,
+      "theme": "LICENSE_IP",
+      "legal_nature": "UNKNOWN",
+      "block_id": 11,
+      "is_block_start": false,
+      "reason": "exemple : copyright bloquerait le traitement sans ces droits"
+    },
+    {
+      "id": 62,
+      "theme": "LICENSE_IP",
+      "legal_nature": "RIGHT_GRANT",
+      "block_id": 11,
+      "is_block_start": false,
+      "reason": "octroi de la licence d'affichage, distribution, modification"
+    },
+    {
+      "id": 63,
+      "theme": "LICENSE_IP",
+      "legal_nature": "RIGHT_GRANT",
+      "block_id": 11,
+      "is_block_start": false,
+      "reason": "droit d'evernote de refuser de stocker/afficher du contenu"
+    },
+    {
+      "id": 64,
+      "theme": "LICENSE_IP",
+      "legal_nature": "RIGHT_GRANT",
+      "block_id": 11,
+      "is_block_start": false,
+      "reason": "portée de la licence : royalty-free, sous-licenciable, mondiale"
+    },
+    {
+      "id": 65,
+      "theme": "LICENSE_IP",
+      "legal_nature": "RIGHT_GRANT",
+      "block_id": 11,
+      "is_block_start": false,
+      "reason": "extension de la licence aux services tiers intégrés"
+    },
+    {
+      "id": 66,
+      "theme": "LICENSE_IP",
+      "legal_nature": "RIGHT_GRANT",
+      "block_id": 11,
+      "is_block_start": false,
+      "reason": "licence d'accès/extraction via service tiers"
+    },
+    {
+      "id": 67,
+      "theme": "LICENSE_IP",
+      "legal_nature": "LIMITATION_DISCLAIMER",
+      "block_id": 11,
+      "is_block_start": false,
+      "reason": "absence de responsabilité pour les applications tierces"
+    },
+    {
+      "id": 68,
+      "theme": "LICENSE_IP",
+      "legal_nature": "OBLIGATION",
+      "block_id": 11,
+      "is_block_start": false,
+      "reason": "représentation et garantie de l'utilisateur sur ses droits"
+    },
+    {
+      "id": 69,
+      "theme": "LICENSE_IP",
+      "legal_nature": "RIGHT_GRANT",
+      "block_id": 11,
+      "is_block_start": false,
+      "reason": "droit d'evernote d'adapter techniquement le contenu"
+    },
+    {
+      "id": 70,
+      "theme": "ACCEPTABLE_USE",
+      "legal_nature": "OBLIGATION",
+      "block_id": 12,
+      "is_block_start": true,
+      "rationale": "question-titre FAQ ouvrant les représentations sur l'envoi de messages",
+      "rationale_codes": {
+        "decision_trigger": "title_marker",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "what other assurances do i have to grant to evernote ?",
+        "revised_from_plan": false,
+        "confidence": 0.78
+      }
+    },
+    {
+      "id": 71,
+      "theme": "ACCEPTABLE_USE",
+      "legal_nature": "OBLIGATION",
+      "block_id": 12,
+      "is_block_start": false,
+      "reason": "représentation sur la relation avec les destinataires de messages"
+    },
+    {
+      "id": 72,
+      "theme": "ACCEPTABLE_USE",
+      "legal_nature": "OBLIGATION",
+      "block_id": 12,
+      "is_block_start": false,
+      "reason": "représentation et garantie d'agir dans la légalité avec consentement"
+    },
+    {
+      "id": 73,
+      "theme": "ACCEPTABLE_USE",
+      "legal_nature": "UNKNOWN",
+      "block_id": 13,
+      "is_block_start": true,
+      "rationale": "question-titre FAQ ouvrant les règles d'usage acceptable du service",
+      "rationale_codes": {
+        "decision_trigger": "title_marker",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "are there rules about what i can do on the evernote service ?",
+        "revised_from_plan": false,
+        "confidence": 0.85
+      }
+    },
+    {
+      "id": 74,
+      "theme": "ACCEPTABLE_USE",
+      "legal_nature": "OBLIGATION",
+      "block_id": 13,
+      "is_block_start": false,
+      "reason": "l'usage doit être conforme aux terms"
+    },
+    {
+      "id": 75,
+      "theme": "ACCEPTABLE_USE",
+      "legal_nature": "OBLIGATION",
+      "block_id": 13,
+      "is_block_start": false,
+      "reason": "responsabilité de l'utilisateur pour sa conduite"
+    },
+    {
+      "id": 76,
+      "theme": "ACCEPTABLE_USE",
+      "legal_nature": "OBLIGATION",
+      "block_id": 13,
+      "is_block_start": false,
+      "reason": "responsabilité pour tout le contenu du compte"
+    },
+    {
+      "id": 77,
+      "theme": "ACCEPTABLE_USE",
+      "legal_nature": "SCOPE_APPLICABILITY",
+      "block_id": 13,
+      "is_block_start": false,
+      "reason": "champ d'application : contenu privé, partagé ou transmis"
+    },
+    {
+      "id": 78,
+      "theme": "ACCEPTABLE_USE",
+      "legal_nature": "UNKNOWN",
+      "block_id": 13,
+      "is_block_start": false,
+      "reason": "renvoi aux user guidelines pour conduite prohibée"
+    },
+    {
+      "id": 79,
+      "theme": "ACCEPTABLE_USE",
+      "legal_nature": "RIGHT_GRANT",
+      "block_id": 13,
+      "is_block_start": false,
+      "reason": "droit d'evernote de retirer le contenu en violation"
+    },
+    {
+      "id": 80,
+      "theme": "LICENSE_IP",
+      "legal_nature": "RIGHT_GRANT",
+      "block_id": 14,
+      "is_block_start": true,
+      "rationale": "question-titre FAQ ouvrant les droits de propriété d'evernote sur le service",
+      "rationale_codes": {
+        "decision_trigger": "title_marker",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "evernote has some rights relating to the service ?",
+        "revised_from_plan": false,
+        "confidence": 0.82
+      }
+    },
+    {
+      "id": 81,
+      "theme": "LICENSE_IP",
+      "legal_nature": "RIGHT_GRANT",
+      "block_id": 14,
+      "is_block_start": false,
+      "reason": "evernote détient tous les droits de PI sur le service"
+    },
+    {
+      "id": 82,
+      "theme": "LICENSE_IP",
+      "legal_nature": "SCOPE_APPLICABILITY",
+      "block_id": 14,
+      "is_block_start": false,
+      "reason": "les droits sont protégés par marques, brevets, copyrights"
+    },
+    {
+      "id": 83,
+      "theme": "LICENSE_IP",
+      "legal_nature": "PROHIBITION",
+      "block_id": 14,
+      "is_block_start": false,
+      "reason": "interdiction de décompiler/extraire le code source, même sujet PI"
+    },
+    {
+      "id": 84,
+      "theme": "GOVERNING_LAW",
+      "legal_nature": "RIGHT_GRANT",
+      "block_id": 15,
+      "is_block_start": true,
+      "rationale": "libellé nominal court ouvrant la sous-section sur le droit de modifier le service",
+      "rationale_codes": {
+        "decision_trigger": "title_marker",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "right to modify the service .",
+        "revised_from_plan": false,
+        "confidence": 0.8
+      }
+    },
+    {
+      "id": 85,
+      "theme": "GOVERNING_LAW",
+      "legal_nature": "RIGHT_GRANT",
+      "block_id": 15,
+      "is_block_start": false,
+      "reason": "evernote retient le droit d'implémenter de nouveaux éléments"
+    },
+    {
+      "id": 86,
+      "theme": "GOVERNING_LAW",
+      "legal_nature": "UNKNOWN",
+      "block_id": 15,
+      "is_block_start": false,
+      "reason": "remarque sur l'amélioration attendue des modifications"
+    },
+    {
+      "id": 87,
+      "theme": "GOVERNING_LAW",
+      "legal_nature": "RIGHT_GRANT",
+      "block_id": 15,
+      "is_block_start": false,
+      "reason": "droit d'établir des limites de stockage et d'usage"
+    },
+    {
+      "id": 88,
+      "theme": "GOVERNING_LAW",
+      "legal_nature": "UNKNOWN",
+      "block_id": 15,
+      "is_block_start": false,
+      "reason": "exemple : evernote basic vs versions payantes"
+    },
+    {
+      "id": 89,
+      "theme": "GOVERNING_LAW",
+      "legal_nature": "LIMITATION_DISCLAIMER",
+      "block_id": 15,
+      "is_block_start": false,
+      "reason": "absence de responsabilité pour restriction d'accès au contenu"
+    },
+    {
+      "id": 90,
+      "theme": "GOVERNING_LAW",
+      "legal_nature": "LIMITATION_DISCLAIMER",
+      "block_id": 15,
+      "is_block_start": false,
+      "reason": "non-responsabilité pour modification/suspension du service"
+    },
+    {
+      "id": 91,
+      "theme": "GOVERNING_LAW",
+      "legal_nature": "OBLIGATION",
+      "block_id": 15,
+      "is_block_start": false,
+      "reason": "recours du subscriber payant en cas d'impact défavorable"
+    },
+    {
+      "id": 92,
+      "theme": "GOVERNING_LAW",
+      "legal_nature": "OBLIGATION",
+      "block_id": 15,
+      "is_block_start": false,
+      "reason": "remède proposé : remboursement/extension, prolonge"
+    },
+    {
+      "id": 93,
+      "theme": "THIRD_PARTY",
+      "legal_nature": "RIGHT_GRANT",
+      "block_id": 16,
+      "is_block_start": true,
+      "rationale": "libellé nominal court ouvrant la sous-section sur l'engagement de tiers",
+      "rationale_codes": {
+        "decision_trigger": "title_marker",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "right to engage third parties .",
+        "revised_from_plan": false,
+        "confidence": 0.82
+      }
+    },
+    {
+      "id": 94,
+      "theme": "THIRD_PARTY",
+      "legal_nature": "DEFINITION",
+      "block_id": 16,
+      "is_block_start": false,
+      "reason": "définit « service providers » et accord de l'utilisateur"
+    },
+    {
+      "id": 95,
+      "theme": "THIRD_PARTY",
+      "legal_nature": "RIGHT_GRANT",
+      "block_id": 16,
+      "is_block_start": false,
+      "reason": "droit de contracter avec des revendeurs et processeurs de paiement"
+    },
+    {
+      "id": 96,
+      "theme": "THIRD_PARTY",
+      "legal_nature": "UNKNOWN",
+      "block_id": 16,
+      "is_block_start": false,
+      "reason": "renvoi à la privacy policy et aux commercial terms"
+    },
+    {
+      "id": 97,
+      "theme": "THIRD_PARTY",
+      "legal_nature": "UNKNOWN",
+      "block_id": 17,
+      "is_block_start": true,
+      "rationale": "libellé nominal court ouvrant la sous-section sur les logiciels tiers",
+      "rationale_codes": {
+        "decision_trigger": "title_marker",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "right to use third-party software .",
+        "revised_from_plan": false,
+        "confidence": 0.8
+      }
+    },
+    {
+      "id": 98,
+      "theme": "THIRD_PARTY",
+      "legal_nature": "SCOPE_APPLICABILITY",
+      "block_id": 17,
+      "is_block_start": false,
+      "reason": "logiciels tiers inclus selon les termes des licenciants"
+    },
+    {
+      "id": 99,
+      "theme": "THIRD_PARTY",
+      "legal_nature": "UNKNOWN",
+      "block_id": 17,
+      "is_block_start": false,
+      "reason": "fournit des informations sur ces logiciels tiers"
+    },
+    {
+      "id": 100,
+      "theme": "THIRD_PARTY",
+      "legal_nature": "LIMITATION_DISCLAIMER",
+      "block_id": 17,
+      "is_block_start": false,
+      "reason": "disclaimer de garantie sur les logiciels tiers"
+    },
+    {
+      "id": 101,
+      "theme": "GOVERNING_LAW",
+      "legal_nature": "RIGHT_GRANT",
+      "block_id": 18,
+      "is_block_start": true,
+      "rationale": "libellé nominal court ouvrant la sous-section sur la mise à jour du logiciel",
+      "rationale_codes": {
+        "decision_trigger": "title_marker",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "right to update our software .",
+        "revised_from_plan": false,
+        "confidence": 0.8
+      }
+    },
+    {
+      "id": 102,
+      "theme": "GOVERNING_LAW",
+      "legal_nature": "RIGHT_GRANT",
+      "block_id": 18,
+      "is_block_start": false,
+      "reason": "evernote peut télécharger automatiquement des mises à jour"
+    },
+    {
+      "id": 103,
+      "theme": "GOVERNING_LAW",
+      "legal_nature": "RIGHT_GRANT",
+      "block_id": 18,
+      "is_block_start": false,
+      "reason": "evernote peut exiger l'installation de la mise à jour"
+    },
+    {
+      "id": 104,
+      "theme": "GOVERNING_LAW",
+      "legal_nature": "OBLIGATION",
+      "block_id": 18,
+      "is_block_start": false,
+      "reason": "l'utilisateur accepte de recevoir ces mises à jour"
+    },
+    {
+      "id": 105,
+      "theme": "PREAMBLE_SCOPE",
+      "legal_nature": "SCOPE_APPLICABILITY",
+      "block_id": 19,
+      "is_block_start": true,
+      "rationale": "question-titre FAQ ouvrant l'applicabilité aux comptes business",
+      "rationale_codes": {
+        "decision_trigger": "title_marker",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "do these terms apply to evernote business users ?",
+        "revised_from_plan": false,
+        "confidence": 0.82
+      }
+    },
+    {
+      "id": 106,
+      "theme": "PREAMBLE_SCOPE",
+      "legal_nature": "SCOPE_APPLICABILITY",
+      "block_id": 19,
+      "is_block_start": false,
+      "reason": "champ : usage business régi par ces terms sauf conflit"
+    },
+    {
+      "id": 107,
+      "theme": "PREAMBLE_SCOPE",
+      "legal_nature": "OBLIGATION",
+      "block_id": 19,
+      "is_block_start": false,
+      "reason": "obligation du customer/administrator de partager les terms"
+    },
+    {
+      "id": 108,
+      "theme": "PREAMBLE_SCOPE",
+      "legal_nature": "UNKNOWN",
+      "block_id": 19,
+      "is_block_start": false,
+      "reason": "note sur les règles propres du customer business"
+    },
+    {
+      "id": 109,
+      "theme": "PREAMBLE_SCOPE",
+      "legal_nature": "UNKNOWN",
+      "block_id": 19,
+      "is_block_start": false,
+      "reason": "renvoi à la privacy policy pour plus d'informations"
+    },
+    {
+      "id": 110,
+      "theme": "LICENSE_IP",
+      "legal_nature": "GOVERNANCE",
+      "block_id": 20,
+      "is_block_start": true,
+      "rationale": "question-titre FAQ sur la réponse aux violations de PI (DMCA → LICENSE_IP, §3.1)",
+      "rationale_codes": {
+        "decision_trigger": "title_marker",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "how does evernote respond to copyright or other intellectual property violations ?",
+        "revised_from_plan": false,
+        "confidence": 0.85
+      }
+    },
+    {
+      "id": 111,
+      "theme": "LICENSE_IP",
+      "legal_nature": "GOVERNANCE",
+      "block_id": 20,
+      "is_block_start": false,
+      "reason": "réponse aux notices d'infraction conformes au DMCA"
+    },
+    {
+      "id": 112,
+      "theme": "LICENSE_IP",
+      "legal_nature": "OBLIGATION",
+      "block_id": 20,
+      "is_block_start": false,
+      "reason": "procédure de notification à l'équipe compliance PI"
+    },
+    {
+      "id": 113,
+      "theme": "LICENSE_IP",
+      "legal_nature": "LIMITATION_DISCLAIMER",
+      "block_id": 20,
+      "is_block_start": false,
+      "reason": "evernote n'a aucune obligation d'agir pour protéger les droits"
+    },
+    {
+      "id": 114,
+      "theme": "ELIGIBILITY_ACCOUNT",
+      "legal_nature": "PROHIBITION",
+      "block_id": 21,
+      "is_block_start": true,
+      "rationale": "nouveau sujet autonome : éligibilité des mineurs, cite « evernote is not directed to minors »",
+      "rationale_codes": {
+        "decision_trigger": "topic_keyword",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "evernote is not directed to minors",
+        "revised_from_plan": false,
+        "confidence": 0.75
+      }
+    },
+    {
+      "id": 115,
+      "theme": "ELIGIBILITY_ACCOUNT",
+      "legal_nature": "OBLIGATION",
+      "block_id": 21,
+      "is_block_start": false,
+      "reason": "dépendance vis-à-vis des parents/tuteurs"
+    },
+    {
+      "id": 116,
+      "theme": "ELIGIBILITY_ACCOUNT",
+      "legal_nature": "OBLIGATION",
+      "block_id": 21,
+      "is_block_start": false,
+      "reason": "evernote ne collecte pas d'infos de mineurs sans consentement"
+    },
+    {
+      "id": 117,
+      "theme": "ELIGIBILITY_ACCOUNT",
+      "legal_nature": "OBLIGATION",
+      "block_id": 21,
+      "is_block_start": false,
+      "reason": "suppression des infos obtenues en violation, prolonge"
+    },
+    {
+      "id": 118,
+      "theme": "PRIVACY_DATA",
+      "legal_nature": "SCOPE_APPLICABILITY",
+      "block_id": 22,
+      "is_block_start": true,
+      "rationale": "question-titre FAQ ouvrant la localisation/transfert des données",
+      "rationale_codes": {
+        "decision_trigger": "title_marker",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "where does my data go ?",
+        "revised_from_plan": false,
+        "confidence": 0.85
+      }
+    },
+    {
+      "id": 119,
+      "theme": "PRIVACY_DATA",
+      "legal_nature": "SCOPE_APPLICABILITY",
+      "block_id": 22,
+      "is_block_start": false,
+      "reason": "données stockées aux États-Unis selon la privacy policy"
+    },
+    {
+      "id": 120,
+      "theme": "PRIVACY_DATA",
+      "legal_nature": "SCOPE_APPLICABILITY",
+      "block_id": 22,
+      "is_block_start": false,
+      "reason": "transmissions via réseaux d'evernote et de tiers"
+    },
+    {
+      "id": 121,
+      "theme": "PRIVACY_DATA",
+      "legal_nature": "SCOPE_APPLICABILITY",
+      "block_id": 22,
+      "is_block_start": false,
+      "reason": "consentement aux transmissions interétatiques/internationales"
+    },
+    {
+      "id": 122,
+      "theme": "TERMINATION",
+      "legal_nature": "RIGHT_GRANT",
+      "block_id": 23,
+      "is_block_start": true,
+      "rationale": "question-titre FAQ ouvrant la fermeture/désactivation du compte",
+      "rationale_codes": {
+        "decision_trigger": "title_marker",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "how is my account closed ?",
+        "revised_from_plan": false,
+        "confidence": 0.88
+      }
+    },
+    {
+      "id": 123,
+      "theme": "TERMINATION",
+      "legal_nature": "RIGHT_GRANT",
+      "block_id": 23,
+      "is_block_start": false,
+      "reason": "l'utilisateur peut désactiver son compte à tout moment"
+    },
+    {
+      "id": 124,
+      "theme": "TERMINATION",
+      "legal_nature": "OBLIGATION",
+      "block_id": 23,
+      "is_block_start": false,
+      "reason": "étapes spécifiques pour désactiver le compte"
+    },
+    {
+      "id": 125,
+      "theme": "TERMINATION",
+      "legal_nature": "OBLIGATION",
+      "block_id": 23,
+      "is_block_start": false,
+      "reason": "annulation de l'abonnement payant selon les commercial terms"
+    },
+    {
+      "id": 126,
+      "theme": "TERMINATION",
+      "legal_nature": "RIGHT_GRANT",
+      "block_id": 23,
+      "is_block_start": false,
+      "reason": "droit d'evernote de suspendre/fermer le compte"
+    },
+    {
+      "id": 127,
+      "theme": "TERMINATION",
+      "legal_nature": "SCOPE_APPLICABILITY",
+      "block_id": 23,
+      "is_block_start": false,
+      "reason": "énumère les motifs de suspension/fermeture"
+    },
+    {
+      "id": 128,
+      "theme": "TERMINATION",
+      "legal_nature": "OBLIGATION",
+      "block_id": 23,
+      "is_block_start": false,
+      "reason": "préavis de 30 jours avant fermeture"
+    },
+    {
+      "id": 129,
+      "theme": "TERMINATION",
+      "legal_nature": "GOVERNANCE",
+      "block_id": 23,
+      "is_block_start": false,
+      "reason": "effet : plus d'accès au contenu après le préavis"
+    },
+    {
+      "id": 130,
+      "theme": "TERMINATION",
+      "legal_nature": "UNKNOWN",
+      "block_id": 24,
+      "is_block_start": true,
+      "rationale": "question-titre FAQ ouvrant le sort du compte au décès",
+      "rationale_codes": {
+        "decision_trigger": "title_marker",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "what happens to my account when i die ?",
+        "revised_from_plan": false,
+        "confidence": 0.78
+      }
+    },
+    {
+      "id": 131,
+      "theme": "TERMINATION",
+      "legal_nature": "OBLIGATION",
+      "block_id": 24,
+      "is_block_start": false,
+      "reason": "engagement de protéger la confidentialité après le décès"
+    },
+    {
+      "id": 132,
+      "theme": "TERMINATION",
+      "legal_nature": "OBLIGATION",
+      "block_id": 24,
+      "is_block_start": false,
+      "reason": "l'utilisateur doit mettre en place un processus d'accès"
+    },
+    {
+      "id": 133,
+      "theme": "TERMINATION",
+      "legal_nature": "OBLIGATION",
+      "block_id": 24,
+      "is_block_start": false,
+      "reason": "evernote ne fournira pas les infos sauf obligation légale"
+    },
+    {
+      "id": 134,
+      "theme": "TERMINATION",
+      "legal_nature": "OBLIGATION",
+      "block_id": 24,
+      "is_block_start": false,
+      "reason": "incitation à inclure les infos dans le testament"
+    },
+    {
+      "id": 135,
+      "theme": "TERMINATION",
+      "legal_nature": "UNKNOWN",
+      "block_id": 24,
+      "is_block_start": false,
+      "reason": "renvoi aux commercial terms pour la fin de paiement au décès"
+    },
+    {
+      "id": 136,
+      "theme": "LICENSE_IP",
+      "legal_nature": "RIGHT_GRANT",
+      "block_id": 25,
+      "is_block_start": true,
+      "rationale": "question-titre FAQ ouvrant les droits sur les contributions/idées soumises",
+      "rationale_codes": {
+        "decision_trigger": "title_marker",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "what are my rights ?",
+        "revised_from_plan": false,
+        "confidence": 0.75
+      }
+    },
+    {
+      "id": 137,
+      "theme": "LICENSE_IP",
+      "legal_nature": "RIGHT_GRANT",
+      "block_id": 25,
+      "is_block_start": false,
+      "reason": "les contributions deviennent propriété d'evernote sans contrepartie"
+    },
+    {
+      "id": 138,
+      "theme": "THIRD_PARTY",
+      "legal_nature": "UNKNOWN",
+      "block_id": 26,
+      "is_block_start": true,
+      "rationale": "nouveau sujet autonome : modèle économique et publicité de tiers, cite « our business model »",
+      "rationale_codes": {
+        "decision_trigger": "topic_keyword",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "our business model",
+        "revised_from_plan": false,
+        "confidence": 0.7
+      }
+    },
+    {
+      "id": 139,
+      "theme": "THIRD_PARTY",
+      "legal_nature": "RIGHT_GRANT",
+      "block_id": 26,
+      "is_block_start": false,
+      "reason": "evernote peut afficher des publicités payées par des tiers"
+    },
+    {
+      "id": 140,
+      "theme": "THIRD_PARTY",
+      "legal_nature": "UNKNOWN",
+      "block_id": 26,
+      "is_block_start": false,
+      "reason": "renvoi à la privacy policy et cookie page"
+    },
+    {
+      "id": 141,
+      "theme": "THIRD_PARTY",
+      "legal_nature": "LIMITATION_DISCLAIMER",
+      "block_id": 26,
+      "is_block_start": false,
+      "reason": "non-responsabilité pour les pertes liées à la publicité"
+    },
+    {
+      "id": 142,
+      "theme": "THIRD_PARTY",
+      "legal_nature": "RISK_ALLOCATION",
+      "block_id": 26,
+      "is_block_start": false,
+      "reason": "les interactions avec annonceurs sont uniquement entre l'utilisateur et eux"
+    },
+    {
+      "id": 143,
+      "theme": "THIRD_PARTY",
+      "legal_nature": "UNKNOWN",
+      "block_id": 27,
+      "is_block_start": true,
+      "rationale": "question-titre FAQ « what else do i need to know ? » suivie du libellé liens tiers",
+      "rationale_codes": {
+        "decision_trigger": "title_marker",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "what else do i need to know ?",
+        "revised_from_plan": false,
+        "confidence": 0.78
+      }
+    },
+    {
+      "id": 144,
+      "theme": "THIRD_PARTY",
+      "legal_nature": "UNKNOWN",
+      "block_id": 27,
+      "is_block_start": false,
+      "reason": "libellé : liens, contenus et programmation tiers"
+    },
+    {
+      "id": 145,
+      "theme": "THIRD_PARTY",
+      "legal_nature": "SCOPE_APPLICABILITY",
+      "block_id": 27,
+      "is_block_start": false,
+      "reason": "evernote peut inclure des ressources et liens tiers"
+    },
+    {
+      "id": 146,
+      "theme": "THIRD_PARTY",
+      "legal_nature": "LIMITATION_DISCLAIMER",
+      "block_id": 27,
+      "is_block_start": false,
+      "reason": "non-responsabilité pour les sites/contenus tiers"
+    },
+    {
+      "id": 147,
+      "theme": "INDEMNIFICATION",
+      "legal_nature": "RISK_ALLOCATION",
+      "block_id": 28,
+      "is_block_start": true,
+      "rationale": "effet juridique autonome : obligation d'indemniser evernote",
+      "rationale_codes": {
+        "decision_trigger": "topic_keyword",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "you agree to indemnify and hold evernote",
+        "revised_from_plan": false,
+        "confidence": 0.85
+      }
+    },
+    {
+      "id": 148,
+      "theme": "INDEMNIFICATION",
+      "legal_nature": "RISK_ALLOCATION",
+      "block_id": 28,
+      "is_block_start": false,
+      "reason": "mécanisme de notification de réclamation, prolonge l'indemnisation"
+    },
+    {
+      "id": 149,
+      "theme": "WARRANTY_DISCLAIMER",
+      "legal_nature": "LIMITATION_DISCLAIMER",
+      "block_id": 29,
+      "is_block_start": true,
+      "rationale": "libellé nominal ouvrant la section disclaimer de garanties et limitation de responsabilité",
+      "rationale_codes": {
+        "decision_trigger": "title_marker",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "disclaimer of warranties",
+        "revised_from_plan": false,
+        "confidence": 0.85
+      }
+    },
+    {
+      "id": 150,
+      "theme": "WARRANTY_DISCLAIMER",
+      "legal_nature": "LIMITATION_DISCLAIMER",
+      "block_id": 29,
+      "is_block_start": false,
+      "reason": "service « as is », prolonge la section limitation/disclaimer"
+    },
+    {
+      "id": 151,
+      "theme": "WARRANTY_DISCLAIMER",
+      "legal_nature": "UNKNOWN",
+      "block_id": 29,
+      "is_block_start": false,
+      "reason": "chapeau d'énumération : « you expressly understand and agree that »"
+    },
+    {
+      "id": 152,
+      "theme": "WARRANTY_DISCLAIMER",
+      "legal_nature": "RISK_ALLOCATION",
+      "block_id": 29,
+      "is_block_start": false,
+      "reason": "usage du service aux risques de l'utilisateur"
+    },
+    {
+      "id": 153,
+      "theme": "WARRANTY_DISCLAIMER",
+      "legal_nature": "LIMITATION_DISCLAIMER",
+      "block_id": 29,
+      "is_block_start": false,
+      "reason": "service fourni « as is » et « as available »"
+    },
+    {
+      "id": 154,
+      "theme": "WARRANTY_DISCLAIMER",
+      "legal_nature": "LIMITATION_DISCLAIMER",
+      "block_id": 29,
+      "is_block_start": false,
+      "reason": "disclaimer de toutes garanties implicites"
+    },
+    {
+      "id": 155,
+      "theme": "WARRANTY_DISCLAIMER",
+      "legal_nature": "LIMITATION_DISCLAIMER",
+      "block_id": 29,
+      "is_block_start": false,
+      "reason": "evernote ne garantit pas les exigences/disponibilité"
+    },
+    {
+      "id": 156,
+      "theme": "WARRANTY_DISCLAIMER",
+      "legal_nature": "RISK_ALLOCATION",
+      "block_id": 29,
+      "is_block_start": false,
+      "reason": "téléchargement aux risques de l'utilisateur"
+    },
+    {
+      "id": 157,
+      "theme": "WARRANTY_DISCLAIMER",
+      "legal_nature": "LIMITATION_DISCLAIMER",
+      "block_id": 29,
+      "is_block_start": false,
+      "reason": "aucune garantie créée par conseil oral ou écrit"
+    },
+    {
+      "id": 158,
+      "theme": "LIABILITY_LIMITATION",
+      "legal_nature": "LIMITATION_DISCLAIMER",
+      "block_id": 30,
+      "is_block_start": true,
+      "rationale": "ouvre la limitation de responsabilité : exclusion des dommages, cite « shall not be liable »",
+      "rationale_codes": {
+        "decision_trigger": "topic_keyword",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "shall not be liable",
+        "revised_from_plan": false,
+        "confidence": 0.78
+      }
+    },
+    {
+      "id": 159,
+      "theme": "LIABILITY_LIMITATION",
+      "legal_nature": "LIMITATION_DISCLAIMER",
+      "block_id": 30,
+      "is_block_start": false,
+      "reason": "réserve : rien n'exclut ce qui ne peut l'être légalement"
+    },
+    {
+      "id": 160,
+      "theme": "LIABILITY_LIMITATION",
+      "legal_nature": "LIMITATION_DISCLAIMER",
+      "block_id": 30,
+      "is_block_start": false,
+      "reason": "certaines juridictions interdisent ces exclusions"
+    },
+    {
+      "id": 161,
+      "theme": "LIABILITY_LIMITATION",
+      "legal_nature": "LIMITATION_DISCLAIMER",
+      "block_id": 30,
+      "is_block_start": false,
+      "reason": "seules les limitations légales s'appliquent, prolonge"
+    },
+    {
+      "id": 162,
+      "theme": "MISC_BOILERPLATE",
+      "legal_nature": "GOVERNANCE",
+      "block_id": 31,
+      "is_block_start": true,
+      "rationale": "question-titre FAQ ouvrant les modalités de notification d'evernote vers l'utilisateur",
+      "rationale_codes": {
+        "decision_trigger": "title_marker",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "how will that happen ?",
+        "revised_from_plan": false,
+        "confidence": 0.75
+      }
+    },
+    {
+      "id": 163,
+      "theme": "MISC_BOILERPLATE",
+      "legal_nature": "OBLIGATION",
+      "block_id": 31,
+      "is_block_start": false,
+      "reason": "importance de garder ses informations à jour"
+    },
+    {
+      "id": 164,
+      "theme": "MISC_BOILERPLATE",
+      "legal_nature": "GOVERNANCE",
+      "block_id": 31,
+      "is_block_start": false,
+      "reason": "moyens de notification : email, courrier, postings"
+    },
+    {
+      "id": 165,
+      "theme": "MISC_BOILERPLATE",
+      "legal_nature": "GOVERNANCE",
+      "block_id": 32,
+      "is_block_start": true,
+      "rationale": "question-titre FAQ ouvrant les modalités de notification vers evernote",
+      "rationale_codes": {
+        "decision_trigger": "title_marker",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "how can i send a notice to evernote ?",
+        "revised_from_plan": false,
+        "confidence": 0.78
+      }
+    },
+    {
+      "id": 166,
+      "theme": "MISC_BOILERPLATE",
+      "legal_nature": "GOVERNANCE",
+      "block_id": 32,
+      "is_block_start": false,
+      "reason": "notice à evernote par email à compliance@evernote.com"
+    },
+    {
+      "id": 167,
+      "theme": "MISC_BOILERPLATE",
+      "legal_nature": "GOVERNANCE",
+      "block_id": 32,
+      "is_block_start": false,
+      "reason": "cette adresse email peut être mise à jour"
+    },
+    {
+      "id": 168,
+      "theme": "MISC_BOILERPLATE",
+      "legal_nature": "GOVERNANCE",
+      "block_id": 32,
+      "is_block_start": false,
+      "reason": "adresse postale alternative si email indisponible"
+    },
+    {
+      "id": 169,
+      "theme": "MISC_BOILERPLATE",
+      "legal_nature": "META",
+      "block_id": 32,
+      "is_block_start": false,
+      "reason": "adresse postale (redwood city), fait non normatif"
+    },
+    {
+      "id": 170,
+      "theme": "MISC_BOILERPLATE",
+      "legal_nature": "META",
+      "block_id": 32,
+      "is_block_start": false,
+      "reason": "numéro d'enregistrement fiscal, fait non normatif"
+    },
+    {
+      "id": 171,
+      "theme": "MISC_BOILERPLATE",
+      "legal_nature": "META",
+      "block_id": 32,
+      "is_block_start": false,
+      "reason": "code postal são paulo, fait non normatif"
+    },
+    {
+      "id": 172,
+      "theme": "GOVERNING_LAW",
+      "legal_nature": "PROHIBITION",
+      "block_id": 33,
+      "is_block_start": true,
+      "rationale": "question-titre FAQ ouvrant les restrictions d'export / pays interdits",
+      "rationale_codes": {
+        "decision_trigger": "title_marker",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "are there countries where i 'm not allowed to use evernote ?",
+        "revised_from_plan": false,
+        "confidence": 0.8
+      }
+    },
+    {
+      "id": 173,
+      "theme": "GOVERNING_LAW",
+      "legal_nature": "PROHIBITION",
+      "block_id": 33,
+      "is_block_start": false,
+      "reason": "interdiction d'exporter le service hors cadre légal US"
+    },
+    {
+      "id": 174,
+      "theme": "GOVERNING_LAW",
+      "legal_nature": "PROHIBITION",
+      "block_id": 33,
+      "is_block_start": false,
+      "reason": "détail des restrictions de sanctions US"
+    },
+    {
+      "id": 175,
+      "theme": "GOVERNING_LAW",
+      "legal_nature": "OBLIGATION",
+      "block_id": 33,
+      "is_block_start": false,
+      "reason": "représentation de ne pas être situé dans un pays sanctionné"
+    },
+    {
+      "id": 176,
+      "theme": "GOVERNING_LAW",
+      "legal_nature": "OBLIGATION",
+      "block_id": 33,
+      "is_block_start": false,
+      "reason": "responsabilité de conformité au contrôle d'export"
+    },
+    {
+      "id": 177,
+      "theme": "GOVERNING_LAW",
+      "legal_nature": "GOVERNANCE",
+      "block_id": 34,
+      "is_block_start": true,
+      "rationale": "question-titre FAQ ouvrant la loi applicable selon la résidence",
+      "rationale_codes": {
+        "decision_trigger": "title_marker",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "what law applies to my use of evernote ?",
+        "revised_from_plan": false,
+        "confidence": 0.88
+      }
+    },
+    {
+      "id": 178,
+      "theme": "GOVERNING_LAW",
+      "legal_nature": "GOVERNANCE",
+      "block_id": 34,
+      "is_block_start": false,
+      "reason": "loi de Californie pour résidents US/Canada"
+    },
+    {
+      "id": 179,
+      "theme": "GOVERNING_LAW",
+      "legal_nature": "GOVERNANCE",
+      "block_id": 34,
+      "is_block_start": false,
+      "reason": "loi du Brésil pour résidents brésiliens"
+    },
+    {
+      "id": 180,
+      "theme": "GOVERNING_LAW",
+      "legal_nature": "GOVERNANCE",
+      "block_id": 34,
+      "is_block_start": false,
+      "reason": "loi de Suisse pour les autres résidents"
+    },
+    {
+      "id": 181,
+      "theme": "GOVERNING_LAW",
+      "legal_nature": "GOVERNANCE",
+      "block_id": 34,
+      "is_block_start": false,
+      "reason": "clause de divisibilité (severability), prolonge la gouvernance"
+    },
+    {
+      "id": 182,
+      "theme": "DISPUTE_ARBITRATION",
+      "legal_nature": "GOVERNANCE",
+      "block_id": 35,
+      "is_block_start": true,
+      "rationale": "question-titre FAQ ouvrant la section réclamations et résolution des litiges",
+      "rationale_codes": {
+        "decision_trigger": "title_marker",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "what do i do if i think i have a claim against evernote ?",
+        "revised_from_plan": false,
+        "confidence": 0.9
+      }
+    },
+    {
+      "id": 183,
+      "theme": "DISPUTE_ARBITRATION",
+      "legal_nature": "UNKNOWN",
+      "block_id": 35,
+      "is_block_start": false,
+      "reason": "libellé d'introduction : « let us know about your complaint »"
+    },
+    {
+      "id": 184,
+      "theme": "DISPUTE_ARBITRATION",
+      "legal_nature": "OBLIGATION",
+      "block_id": 35,
+      "is_block_start": false,
+      "reason": "encouragement à contacter le support client"
+    },
+    {
+      "id": 185,
+      "theme": "DISPUTE_ARBITRATION",
+      "legal_nature": "OBLIGATION",
+      "block_id": 35,
+      "is_block_start": false,
+      "reason": "toute réclamation doit suivre les processus des terms"
+    },
+    {
+      "id": 186,
+      "theme": "DISPUTE_ARBITRATION",
+      "legal_nature": "OBLIGATION",
+      "block_id": 35,
+      "is_block_start": false,
+      "reason": "conséquences d'une réclamation initiée hors processus"
+    },
+    {
+      "id": 187,
+      "theme": "DISPUTE_ARBITRATION",
+      "legal_nature": "OBLIGATION",
+      "block_id": 35,
+      "is_block_start": false,
+      "reason": "envoi préalable d'une « notice of dispute »"
+    },
+    {
+      "id": 188,
+      "theme": "DISPUTE_ARBITRATION",
+      "legal_nature": "OBLIGATION",
+      "block_id": 35,
+      "is_block_start": false,
+      "reason": "négociation informelle dans les 60 jours"
+    },
+    {
+      "id": 189,
+      "theme": "DISPUTE_ARBITRATION",
+      "legal_nature": "GOVERNANCE",
+      "block_id": 35,
+      "is_block_start": false,
+      "reason": "procédure formelle si le litige reste non résolu"
+    },
+    {
+      "id": 190,
+      "theme": "DISPUTE_ARBITRATION",
+      "legal_nature": "GOVERNANCE",
+      "block_id": 35,
+      "is_block_start": false,
+      "reason": "juridiction exclusive san mateo county pour US/Canada"
+    },
+    {
+      "id": 191,
+      "theme": "DISPUTE_ARBITRATION",
+      "legal_nature": "OBLIGATION",
+      "block_id": 35,
+      "is_block_start": false,
+      "reason": "soumission à la juridiction exclusive de san mateo"
+    },
+    {
+      "id": 192,
+      "theme": "DISPUTE_ARBITRATION",
+      "legal_nature": "GOVERNANCE",
+      "block_id": 35,
+      "is_block_start": false,
+      "reason": "juridiction exclusive são paolo pour résidents brésiliens"
+    },
+    {
+      "id": 193,
+      "theme": "DISPUTE_ARBITRATION",
+      "legal_nature": "OBLIGATION",
+      "block_id": 35,
+      "is_block_start": false,
+      "reason": "soumission à la juridiction exclusive de são paolo"
+    },
+    {
+      "id": 194,
+      "theme": "DISPUTE_ARBITRATION",
+      "legal_nature": "GOVERNANCE",
+      "block_id": 35,
+      "is_block_start": false,
+      "reason": "juridiction exclusive zurich pour les autres résidents"
+    },
+    {
+      "id": 195,
+      "theme": "DISPUTE_ARBITRATION",
+      "legal_nature": "OBLIGATION",
+      "block_id": 35,
+      "is_block_start": false,
+      "reason": "soumission à la juridiction exclusive de zurich"
+    },
+    {
+      "id": 196,
+      "theme": "DISPUTE_ARBITRATION",
+      "legal_nature": "RIGHT_GRANT",
+      "block_id": 35,
+      "is_block_start": false,
+      "reason": "option d'arbitrage pour réclamations < 10 000 USD"
+    },
+    {
+      "id": 197,
+      "theme": "DISPUTE_ARBITRATION",
+      "legal_nature": "GOVERNANCE",
+      "block_id": 35,
+      "is_block_start": false,
+      "reason": "modalités du processus de résolution alternative"
+    },
+    {
+      "id": 198,
+      "theme": "DISPUTE_ARBITRATION",
+      "legal_nature": "UNKNOWN",
+      "block_id": 35,
+      "is_block_start": false,
+      "reason": "note pour les résidents de l'UE"
+    },
+    {
+      "id": 199,
+      "theme": "DISPUTE_ARBITRATION",
+      "legal_nature": "GOVERNANCE",
+      "block_id": 35,
+      "is_block_start": false,
+      "reason": "arbitrage obligatoire pour les résidents US (FAA)"
+    },
+    {
+      "id": 200,
+      "theme": "DISPUTE_ARBITRATION",
+      "legal_nature": "GOVERNANCE",
+      "block_id": 35,
+      "is_block_start": false,
+      "reason": "le FAA régit l'interprétation de l'accord d'arbitrage"
+    },
+    {
+      "id": 201,
+      "theme": "DISPUTE_ARBITRATION",
+      "legal_nature": "SCOPE_APPLICABILITY",
+      "block_id": 35,
+      "is_block_start": false,
+      "reason": "exception pour les utilisateurs ayant opté out avant 2012"
+    },
+    {
+      "id": 202,
+      "theme": "DISPUTE_ARBITRATION",
+      "legal_nature": "GOVERNANCE",
+      "block_id": 35,
+      "is_block_start": false,
+      "reason": "arbitrage conduit par l'AAA selon ses règles"
+    },
+    {
+      "id": 203,
+      "theme": "DISPUTE_ARBITRATION",
+      "legal_nature": "GOVERNANCE",
+      "block_id": 35,
+      "is_block_start": false,
+      "reason": "modalités d'initiation via le site de l'AAA"
+    },
+    {
+      "id": 204,
+      "theme": "DISPUTE_ARBITRATION",
+      "legal_nature": "GOVERNANCE",
+      "block_id": 35,
+      "is_block_start": false,
+      "reason": "lieu de l'arbitrage : comté de résidence"
+    },
+    {
+      "id": 205,
+      "theme": "DISPUTE_ARBITRATION",
+      "legal_nature": "GOVERNANCE",
+      "block_id": 35,
+      "is_block_start": false,
+      "reason": "arbitrage par téléphone/écrit pour relief ≤ 10 000 USD"
+    },
+    {
+      "id": 206,
+      "theme": "DISPUTE_ARBITRATION",
+      "legal_nature": "GOVERNANCE",
+      "block_id": 35,
+      "is_block_start": false,
+      "reason": "présence à l'audience par téléphone possible"
+    },
+    {
+      "id": 207,
+      "theme": "DISPUTE_ARBITRATION",
+      "legal_nature": "GOVERNANCE",
+      "block_id": 35,
+      "is_block_start": false,
+      "reason": "l'arbitre applique la loi de Californie"
+    },
+    {
+      "id": 208,
+      "theme": "DISPUTE_ARBITRATION",
+      "legal_nature": "GOVERNANCE",
+      "block_id": 35,
+      "is_block_start": false,
+      "reason": "l'arbitre n'est pas lié par les arbitrages d'autres utilisateurs"
+    },
+    {
+      "id": 209,
+      "theme": "DISPUTE_ARBITRATION",
+      "legal_nature": "GOVERNANCE",
+      "block_id": 35,
+      "is_block_start": false,
+      "reason": "la sentence est finale et contraignante"
+    },
+    {
+      "id": 210,
+      "theme": "DISPUTE_ARBITRATION",
+      "legal_nature": "GOVERNANCE",
+      "block_id": 35,
+      "is_block_start": false,
+      "reason": "les règles AAA régissent le paiement des frais"
+    },
+    {
+      "id": 211,
+      "theme": "DISPUTE_ARBITRATION",
+      "legal_nature": "OBLIGATION",
+      "block_id": 35,
+      "is_block_start": false,
+      "reason": "evernote paie les frais pour réclamations ≤ 10 000 USD"
+    },
+    {
+      "id": 212,
+      "theme": "DISPUTE_ARBITRATION",
+      "legal_nature": "OBLIGATION",
+      "block_id": 35,
+      "is_block_start": false,
+      "reason": "arrangements de paiement des frais à l'AAA"
+    },
+    {
+      "id": 213,
+      "theme": "DISPUTE_ARBITRATION",
+      "legal_nature": "OBLIGATION",
+      "block_id": 35,
+      "is_block_start": false,
+      "reason": "evernote paie une part des frais si coût prohibitif"
+    },
+    {
+      "id": 214,
+      "theme": "DISPUTE_ARBITRATION",
+      "legal_nature": "OBLIGATION",
+      "block_id": 35,
+      "is_block_start": false,
+      "reason": "remboursement des frais si réclamation frivole"
+    },
+    {
+      "id": 215,
+      "theme": "DISPUTE_ARBITRATION",
+      "legal_nature": "PROHIBITION",
+      "block_id": 35,
+      "is_block_start": false,
+      "reason": "réclamations individuelles uniquement, pas d'action collective"
+    },
+    {
+      "id": 216,
+      "theme": "DISPUTE_ARBITRATION",
+      "legal_nature": "DEFINITION",
+      "block_id": 35,
+      "is_block_start": false,
+      "reason": "définit « prohibition of class and representative actions »"
+    },
+    {
+      "id": 217,
+      "theme": "DISPUTE_ARBITRATION",
+      "legal_nature": "PROHIBITION",
+      "block_id": 35,
+      "is_block_start": false,
+      "reason": "l'arbitre ne peut pas consolider les réclamations"
+    },
+    {
+      "id": 218,
+      "theme": "DISPUTE_ARBITRATION",
+      "legal_nature": "LIMITATION_DISCLAIMER",
+      "block_id": 35,
+      "is_block_start": false,
+      "reason": "relief seulement en faveur de la partie individuelle"
+    },
+    {
+      "id": 219,
+      "theme": "DISPUTE_ARBITRATION",
+      "legal_nature": "LIMITATION_DISCLAIMER",
+      "block_id": 35,
+      "is_block_start": false,
+      "reason": "le relief ne peut affecter d'autres utilisateurs"
+    },
+    {
+      "id": 220,
+      "theme": "DISPUTE_ARBITRATION",
+      "legal_nature": "GOVERNANCE",
+      "block_id": 35,
+      "is_block_start": false,
+      "reason": "divisibilité de l'accord d'arbitrage"
+    },
+    {
+      "id": 221,
+      "theme": "DISPUTE_ARBITRATION",
+      "legal_nature": "GOVERNANCE",
+      "block_id": 35,
+      "is_block_start": false,
+      "reason": "nullité de l'accord si l'interdiction d'action collective est invalide"
+    },
+    {
+      "id": 222,
+      "theme": "DISPUTE_ARBITRATION",
+      "legal_nature": "UNKNOWN",
+      "block_id": 35,
+      "is_block_start": false,
+      "reason": "fragment de transition renvoyant à cette section"
+    },
+    {
+      "id": 223,
+      "theme": "DISPUTE_ARBITRATION",
+      "legal_nature": "OBLIGATION",
+      "block_id": 35,
+      "is_block_start": false,
+      "reason": "délai de prescription d'un an pour les réclamations"
+    },
+    {
+      "id": 224,
+      "theme": "DISPUTE_ARBITRATION",
+      "legal_nature": "GOVERNANCE",
+      "block_id": 35,
+      "is_block_start": false,
+      "reason": "cette section « claims are time-barred » est un accord distinct"
+    },
+    {
+      "id": 225,
+      "theme": "GOVERNING_LAW",
+      "legal_nature": "GOVERNANCE",
+      "block_id": 36,
+      "is_block_start": true,
+      "rationale": "libellé nominal ouvrant l'avis consommateur spécifique aux utilisateurs de californie",
+      "rationale_codes": {
+        "decision_trigger": "title_marker",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "special notice for california users .",
+        "revised_from_plan": false,
+        "confidence": 0.8
+      }
+    },
+    {
+      "id": 226,
+      "theme": "GOVERNING_LAW",
+      "legal_nature": "META",
+      "block_id": 36,
+      "is_block_start": false,
+      "reason": "coordonnées de l'unité d'assistance consommateur de californie"
+    },
+    {
+      "id": 227,
+      "theme": "GOVERNING_LAW",
+      "legal_nature": "GOVERNANCE",
+      "block_id": 36,
+      "is_block_start": false,
+      "reason": "contact email/adresse pour les notices"
+    },
+    {
+      "id": 228,
+      "theme": "GOVERNING_LAW",
+      "legal_nature": "META",
+      "block_id": 36,
+      "is_block_start": false,
+      "reason": "adresse postale redwood city, fait non normatif"
+    },
+    {
+      "id": 229,
+      "theme": "MISC_BOILERPLATE",
+      "legal_nature": "UNKNOWN",
+      "block_id": 37,
+      "is_block_start": true,
+      "rationale": "libellé d'introduction aux clauses finales boilerplate, cite « a couple of final ... points »",
+      "rationale_codes": {
+        "decision_trigger": "title_marker",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "a couple of final , but important , points .",
+        "revised_from_plan": false,
+        "confidence": 0.78
+      }
+    },
+    {
+      "id": 230,
+      "theme": "MISC_BOILERPLATE",
+      "legal_nature": "GOVERNANCE",
+      "block_id": 37,
+      "is_block_start": false,
+      "reason": "clause d'intégralité de l'accord (entire agreement)"
+    },
+    {
+      "id": 231,
+      "theme": "MISC_BOILERPLATE",
+      "legal_nature": "GOVERNANCE",
+      "block_id": 37,
+      "is_block_start": false,
+      "reason": "ces terms remplacent les accords antérieurs"
+    },
+    {
+      "id": 232,
+      "theme": "MISC_BOILERPLATE",
+      "legal_nature": "SCOPE_APPLICABILITY",
+      "block_id": 37,
+      "is_block_start": false,
+      "reason": "produits/services tiers soumis à leurs propres conditions"
+    },
+    {
+      "id": 233,
+      "theme": "MISC_BOILERPLATE",
+      "legal_nature": "RIGHT_GRANT",
+      "block_id": 37,
+      "is_block_start": false,
+      "reason": "clause de tiers bénéficiaires (affiliés)"
+    },
+    {
+      "id": 234,
+      "theme": "MISC_BOILERPLATE",
+      "legal_nature": "LIMITATION_DISCLAIMER",
+      "block_id": 37,
+      "is_block_start": false,
+      "reason": "aucun autre tiers bénéficiaire"
+    },
+    {
+      "id": 235,
+      "theme": "MISC_BOILERPLATE",
+      "legal_nature": "GOVERNANCE",
+      "block_id": 37,
+      "is_block_start": false,
+      "reason": "les titres de section n'ont pas d'effet légal"
+    }
+  ]
+}

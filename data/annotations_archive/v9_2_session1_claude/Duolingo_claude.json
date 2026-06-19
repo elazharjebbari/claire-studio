@@ -1,0 +1,1611 @@
+{
+  "doc": "Duolingo",
+  "judge": "claude",
+  "version": "v9.2-nature-derived",
+  "document_plan": {
+    "estimated_n_blocks": 26,
+    "rationale_global": "ToS Duolingo de profil narratif, sans numerotation ni marqueurs de liste, mais avec des titres nominaux internes (ids 67, 75, 81, 89, 101 zone copyright) detectes en docfeatures. Le document suit l'ordre classique : identite d'entite (META id0), preambule/portee (terms govern, acceptation), modification des termes, avis d'arbitrage, description et modification du service, eligibilite/compte, contenu contributeur et licence, representations et garanties utilisateur, usage acceptable, indemnisation, licence logicielle des apps, clauses Apple App Store (third party beneficiary), abonnement auto-renouvelable, monnaie/objets virtuels et paiement/facturation, remboursements de test, liens et publicite tiers (titre), disclaimer de garantie (titre 'no representations or warranties'), limitation de responsabilite (titre), resiliation et survie, droits de propriete (titre 'proprietary rights'), confidentialite, notice DMCA copyright (titre), droit applicable, arbitrage des litiges, et clauses boilerplate finales (langue, entierete, divisibilite, renonciation, cession), puis date de revision (META). Le docfeatures suggere ~22 blocs (range 16-28) ; j'estime 26 vu le decoupage thematique fin (paiement vs abonnement vs remboursement separes ; preambule vs modification ; garanties vs usage acceptable).",
+    "segments": [
+      {
+        "start_id": 0,
+        "theme": "META",
+        "rationale": "identite de l'entite operatrice",
+        "evidence_span": "are operated by duolingo , inc"
+      },
+      {
+        "start_id": 1,
+        "theme": "PREAMBLE_SCOPE",
+        "rationale": "portee : use of the service is subject to terms",
+        "evidence_span": "access and use of the service is subject to the following terms and conditions"
+      },
+      {
+        "start_id": 3,
+        "theme": "MODIFICATION_OF_TERMS",
+        "rationale": "duolingo may amend update or change these terms",
+        "evidence_span": "duolingo may amend , update or change these terms and conditions"
+      },
+      {
+        "start_id": 7,
+        "theme": "DISPUTE_ARBITRATION",
+        "rationale": "avis d'une provision d'arbitrage obligatoire",
+        "evidence_span": "a mandatory arbitration of disputes provision"
+      },
+      {
+        "start_id": 9,
+        "theme": "PREAMBLE_SCOPE",
+        "rationale": "description du service propose",
+        "evidence_span": "the service allows users to access and use a variety of educational services"
+      },
+      {
+        "start_id": 11,
+        "theme": "ELIGIBILITY_ACCOUNT",
+        "rationale": "enregistrement et compte",
+        "evidence_span": "in connection with registering for and using the service"
+      },
+      {
+        "start_id": 12,
+        "theme": "USER_CONTENT",
+        "rationale": "contenu contributeur et licence accordee",
+        "evidence_span": "if you are or become a course contributor"
+      },
+      {
+        "start_id": 19,
+        "theme": "WARRANTY_DISCLAIMER",
+        "rationale": "declarations et garanties de l'utilisateur",
+        "evidence_span": "you represent that you own or have secured all legal rights"
+      },
+      {
+        "start_id": 26,
+        "theme": "ACCEPTABLE_USE",
+        "rationale": "interdictions de contenu/usage",
+        "evidence_span": "you will not upload , display or otherwise provide"
+      },
+      {
+        "start_id": 28,
+        "theme": "INDEMNIFICATION",
+        "rationale": "defend indemnify and hold harmless",
+        "evidence_span": "you agree to defend , indemnify and hold harmless duolingo"
+      },
+      {
+        "start_id": 29,
+        "theme": "LICENSE_IP",
+        "rationale": "licence logicielle des apps",
+        "evidence_span": "duolingo grants you a non-transferable , non-exclusive license"
+      },
+      {
+        "start_id": 32,
+        "theme": "THIRD_PARTY",
+        "rationale": "clauses Apple App Store et beneficiaire tiers",
+        "evidence_span": "if you are using the apps from the apple app store"
+      },
+      {
+        "start_id": 42,
+        "theme": "SUBSCRIPTION_RENEWAL",
+        "rationale": "abonnement auto-renouvelable",
+        "evidence_span": "auto-renewing periodic subscription"
+      },
+      {
+        "start_id": 45,
+        "theme": "PAYMENT_BILLING",
+        "rationale": "monnaie virtuelle, frais et facturation",
+        "evidence_span": "you may purchase , with `` real world '' money"
+      },
+      {
+        "start_id": 60,
+        "theme": "PAYMENT_BILLING",
+        "rationale": "remboursements et test issue (paiement)",
+        "evidence_span": "you will receive no refund or exchange of any kind"
+      },
+      {
+        "start_id": 67,
+        "theme": "THIRD_PARTY",
+        "rationale": "titre 'third-party links sites and services'",
+        "evidence_span": "third-party links , sites , and services"
+      },
+      {
+        "start_id": 75,
+        "theme": "WARRANTY_DISCLAIMER",
+        "rationale": "titre 'no representations or warranties'",
+        "evidence_span": "no representations or warranties by duolingo"
+      },
+      {
+        "start_id": 81,
+        "theme": "LIABILITY_LIMITATION",
+        "rationale": "titre 'limitation of liability'",
+        "evidence_span": "limitation on types of damages/limitation of liability"
+      },
+      {
+        "start_id": 86,
+        "theme": "TERMINATION",
+        "rationale": "duolingo may terminate your access",
+        "evidence_span": "duolingo may terminate your access and use of the service"
+      },
+      {
+        "start_id": 89,
+        "theme": "LICENSE_IP",
+        "rationale": "titre 'proprietary rights in service content'",
+        "evidence_span": "proprietary rights in service content and activity materials"
+      },
+      {
+        "start_id": 99,
+        "theme": "PRIVACY_DATA",
+        "rationale": "politique de confidentialite",
+        "evidence_span": "use of the service is also governed by our privacy policy"
+      },
+      {
+        "start_id": 101,
+        "theme": "LICENSE_IP",
+        "rationale": "titre notice DMCA copyright",
+        "evidence_span": "notice for claims of copyright violations"
+      },
+      {
+        "start_id": 112,
+        "theme": "GOVERNING_LAW",
+        "rationale": "loi applicable Pennsylvania",
+        "evidence_span": "shall be governed by and construed under the laws of the commonwealth of pennsylvania"
+      },
+      {
+        "start_id": 113,
+        "theme": "DISPUTE_ARBITRATION",
+        "rationale": "arbitrage obligatoire des litiges",
+        "evidence_span": "resolved by binding arbitration"
+      },
+      {
+        "start_id": 132,
+        "theme": "MISC_BOILERPLATE",
+        "rationale": "langue, entierete, divisibilite, renonciation, cession",
+        "evidence_span": "this agreement was originally written in english"
+      },
+      {
+        "start_id": 139,
+        "theme": "META",
+        "rationale": "date de derniere revision",
+        "evidence_span": "last revised on december 11th"
+      }
+    ]
+  },
+  "annotations": [
+    {
+      "id": 0,
+      "theme": "META",
+      "block_id": 0,
+      "is_block_start": true,
+      "rationale": "ouverture du document : identite de l'entite operatrice, cite « are operated by duolingo , inc »",
+      "rationale_codes": {
+        "decision_trigger": "document_start",
+        "relation_to_prev": "document_start",
+        "evidence_span": "are operated by duolingo , inc",
+        "revised_from_plan": false,
+        "confidence": 0.9
+      },
+      "legal_nature": "META",
+      "legal_nature_marker": "inc."
+    },
+    {
+      "id": 1,
+      "theme": "PREAMBLE_SCOPE",
+      "block_id": 1,
+      "is_block_start": true,
+      "rationale": "changement de sujet vers la portee de l'accord, cite « access and use of the service is subject to the following terms and conditions »",
+      "rationale_codes": {
+        "decision_trigger": "topic_keyword",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "access and use of the service is subject to the following terms and conditions",
+        "revised_from_plan": false,
+        "confidence": 0.88
+      },
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 2,
+      "theme": "PREAMBLE_SCOPE",
+      "block_id": 1,
+      "is_block_start": false,
+      "reason": "acceptation par l'usage et consentement a etre lie, prolonge la portee",
+      "legal_nature": "SCOPE_APPLICABILITY",
+      "legal_nature_marker": "by accessing"
+    },
+    {
+      "id": 3,
+      "theme": "MODIFICATION_OF_TERMS",
+      "block_id": 2,
+      "is_block_start": true,
+      "rationale": "nouveau sujet : pouvoir de modifier les termes, cite « duolingo may amend , update or change these terms and conditions »",
+      "rationale_codes": {
+        "decision_trigger": "topic_keyword",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "duolingo may amend , update or change these terms and conditions",
+        "revised_from_plan": false,
+        "confidence": 0.86
+      },
+      "legal_nature": "GOVERNANCE",
+      "legal_nature_marker": "change these terms"
+    },
+    {
+      "id": 4,
+      "theme": "MODIFICATION_OF_TERMS",
+      "block_id": 2,
+      "is_block_start": false,
+      "reason": "procedure de notification des changements",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 5,
+      "theme": "MODIFICATION_OF_TERMS",
+      "block_id": 2,
+      "is_block_start": false,
+      "reason": "prise d'effet des revisions",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 6,
+      "theme": "MODIFICATION_OF_TERMS",
+      "block_id": 2,
+      "is_block_start": false,
+      "reason": "consequence du desaccord avec les termes modifies",
+      "legal_nature": "PROHIBITION",
+      "legal_nature_marker": "do not"
+    },
+    {
+      "id": 7,
+      "theme": "DISPUTE_ARBITRATION",
+      "block_id": 3,
+      "is_block_start": true,
+      "rationale": "nouveau sujet : avis de provision d'arbitrage obligatoire, cite « a mandatory arbitration of disputes provision »",
+      "rationale_codes": {
+        "decision_trigger": "topic_keyword",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "a mandatory arbitration of disputes provision",
+        "revised_from_plan": false,
+        "confidence": 0.8
+      },
+      "legal_nature": "GOVERNANCE",
+      "legal_nature_marker": "arbitration"
+    },
+    {
+      "id": 8,
+      "theme": "DISPUTE_ARBITRATION",
+      "block_id": 3,
+      "is_block_start": false,
+      "reason": "renvoi a la clause arbitrage plus bas, prolonge l'avis",
+      "legal_nature": "GOVERNANCE",
+      "legal_nature_marker": "governing law"
+    },
+    {
+      "id": 9,
+      "theme": "PREAMBLE_SCOPE",
+      "block_id": 4,
+      "is_block_start": true,
+      "rationale": "retour a la description/portee du service, cite « the service allows users to access and use a variety of educational services »",
+      "rationale_codes": {
+        "decision_trigger": "topic_keyword",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "the service allows users to access and use a variety of educational services",
+        "revised_from_plan": false,
+        "confidence": 0.78
+      },
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 10,
+      "theme": "PREAMBLE_SCOPE",
+      "block_id": 4,
+      "is_block_start": false,
+      "reason": "droit de modifier/suspendre/discontinuer le service, prolonge la description du service",
+      "legal_nature": "GOVERNANCE",
+      "legal_nature_marker": "suspend"
+    },
+    {
+      "id": 11,
+      "theme": "ELIGIBILITY_ACCOUNT",
+      "block_id": 5,
+      "is_block_start": true,
+      "rationale": "nouveau sujet : enregistrement et obligations de compte, cite « in connection with registering for and using the service »",
+      "rationale_codes": {
+        "decision_trigger": "topic_keyword",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "in connection with registering for and using the service",
+        "revised_from_plan": false,
+        "confidence": 0.85
+      },
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 12,
+      "theme": "USER_CONTENT",
+      "block_id": 6,
+      "is_block_start": true,
+      "rationale": "nouveau sujet : statut de contributeur de cours et materiaux soumis, cite « if you are or become a course contributor »",
+      "rationale_codes": {
+        "decision_trigger": "topic_keyword",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "if you are or become a course contributor",
+        "revised_from_plan": false,
+        "confidence": 0.76
+      },
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 13,
+      "theme": "USER_CONTENT",
+      "block_id": 6,
+      "is_block_start": false,
+      "reason": "modalites de creation des cours, prolonge le contenu contributeur",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 14,
+      "theme": "USER_CONTENT",
+      "block_id": 6,
+      "is_block_start": false,
+      "reason": "liberte de cesser l'activite de contributeur",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 15,
+      "theme": "USER_CONTENT",
+      "block_id": 6,
+      "is_block_start": false,
+      "reason": "absence de compensation pour le contenu contributeur",
+      "legal_nature": "PROHIBITION",
+      "legal_nature_marker": "will not"
+    },
+    {
+      "id": 16,
+      "theme": "USER_CONTENT",
+      "block_id": 6,
+      "is_block_start": false,
+      "reason": "propriete des materiaux contributeur, prolonge le sujet",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 17,
+      "theme": "USER_CONTENT",
+      "block_id": 6,
+      "is_block_start": false,
+      "reason": "octroi de licence sur les materiaux contributeur",
+      "legal_nature": "RIGHT_GRANT",
+      "legal_nature_marker": "license to"
+    },
+    {
+      "id": 18,
+      "theme": "USER_CONTENT",
+      "block_id": 6,
+      "is_block_start": false,
+      "reason": "licence sur le contenu soumis (ratings, reviews, content), prolonge le contenu utilisateur",
+      "legal_nature": "GOVERNANCE",
+      "legal_nature_marker": "terminate"
+    },
+    {
+      "id": 19,
+      "theme": "WARRANTY_DISCLAIMER",
+      "block_id": 7,
+      "is_block_start": true,
+      "rationale": "nouveau sujet : declarations et garanties de l'utilisateur, cite « you represent that you own or have secured all legal rights »",
+      "rationale_codes": {
+        "decision_trigger": "topic_keyword",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "you represent that you own or have secured all legal rights",
+        "revised_from_plan": false,
+        "confidence": 0.7
+      },
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 20,
+      "theme": "WARRANTY_DISCLAIMER",
+      "block_id": 7,
+      "is_block_start": false,
+      "reason": "comprehension sur l'acces des autres utilisateurs au contenu",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 21,
+      "theme": "WARRANTY_DISCLAIMER",
+      "block_id": 7,
+      "is_block_start": false,
+      "reason": "garantie de conformite aux lois, prolonge les representations",
+      "legal_nature": "GOVERNANCE",
+      "legal_nature_marker": "jurisdiction"
+    },
+    {
+      "id": 22,
+      "theme": "WARRANTY_DISCLAIMER",
+      "block_id": 7,
+      "is_block_start": false,
+      "reason": "garantie de propriete des materiaux soumis",
+      "legal_nature": "RIGHT_GRANT",
+      "legal_nature_marker": "license to"
+    },
+    {
+      "id": 23,
+      "theme": "WARRANTY_DISCLAIMER",
+      "block_id": 7,
+      "is_block_start": false,
+      "reason": "garantie sur les documents d'identite du test, prolonge les representations",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 24,
+      "theme": "WARRANTY_DISCLAIMER",
+      "block_id": 7,
+      "is_block_start": false,
+      "reason": "garantie de protection du mot de passe et du compte",
+      "legal_nature": "PROHIBITION",
+      "legal_nature_marker": "will not"
+    },
+    {
+      "id": 25,
+      "theme": "WARRANTY_DISCLAIMER",
+      "block_id": 7,
+      "is_block_start": false,
+      "reason": "garantie de non-soumission aux sanctions, prolonge les representations",
+      "legal_nature": "PROHIBITION",
+      "legal_nature_marker": "prohibited"
+    },
+    {
+      "id": 26,
+      "theme": "ACCEPTABLE_USE",
+      "block_id": 8,
+      "is_block_start": true,
+      "rationale": "nouveau sujet : interdictions de contenu et d'usage, cite « you will not upload , display or otherwise provide »",
+      "rationale_codes": {
+        "decision_trigger": "topic_keyword",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "you will not upload , display or otherwise provide",
+        "revised_from_plan": false,
+        "confidence": 0.82
+      },
+      "legal_nature": "PROHIBITION",
+      "legal_nature_marker": "will not"
+    },
+    {
+      "id": 27,
+      "theme": "ACCEPTABLE_USE",
+      "block_id": 8,
+      "is_block_start": false,
+      "reason": "interdiction de tricher/contourner le test, prolonge l'usage acceptable",
+      "legal_nature": "PROHIBITION",
+      "legal_nature_marker": "will not"
+    },
+    {
+      "id": 28,
+      "theme": "INDEMNIFICATION",
+      "block_id": 9,
+      "is_block_start": true,
+      "rationale": "nouveau sujet : indemnisation, cite « you agree to defend , indemnify and hold harmless duolingo »",
+      "rationale_codes": {
+        "decision_trigger": "topic_keyword",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "you agree to defend , indemnify and hold harmless duolingo",
+        "revised_from_plan": false,
+        "confidence": 0.9
+      },
+      "legal_nature": "RISK_ALLOCATION",
+      "legal_nature_marker": "indemnify"
+    },
+    {
+      "id": 29,
+      "theme": "LICENSE_IP",
+      "block_id": 10,
+      "is_block_start": true,
+      "rationale": "nouveau sujet : licence logicielle des apps, cite « duolingo grants you a non-transferable , non-exclusive license »",
+      "rationale_codes": {
+        "decision_trigger": "topic_keyword",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "duolingo grants you a non-transferable , non-exclusive license",
+        "revised_from_plan": false,
+        "confidence": 0.8
+      },
+      "legal_nature": "RIGHT_GRANT",
+      "legal_nature_marker": "grants you"
+    },
+    {
+      "id": 30,
+      "theme": "LICENSE_IP",
+      "block_id": 10,
+      "is_block_start": false,
+      "reason": "interdiction de reverse engineering, prolonge la licence logicielle",
+      "legal_nature": "PROHIBITION",
+      "legal_nature_marker": "may not"
+    },
+    {
+      "id": 31,
+      "theme": "LICENSE_IP",
+      "block_id": 10,
+      "is_block_start": false,
+      "reason": "reserve des droits de PI sur les apps",
+      "legal_nature": "OBLIGATION",
+      "legal_nature_marker": "shall"
+    },
+    {
+      "id": 32,
+      "theme": "THIRD_PARTY",
+      "block_id": 11,
+      "is_block_start": true,
+      "rationale": "nouveau sujet : conditions specifiques Apple App Store, cite « if you are using the apps from the apple app store »",
+      "rationale_codes": {
+        "decision_trigger": "topic_keyword",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "if you are using the apps from the apple app store",
+        "revised_from_plan": false,
+        "confidence": 0.76
+      },
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 33,
+      "theme": "THIRD_PARTY",
+      "block_id": 11,
+      "is_block_start": false,
+      "reason": "preseance des termes Apple, prolonge le sujet App Store",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 34,
+      "theme": "THIRD_PARTY",
+      "block_id": 11,
+      "is_block_start": false,
+      "reason": "accord entre vous et duolingo, pas Apple",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 35,
+      "theme": "THIRD_PARTY",
+      "block_id": 11,
+      "is_block_start": false,
+      "reason": "conformite aux App Store terms",
+      "legal_nature": "OBLIGATION",
+      "legal_nature_marker": "must"
+    },
+    {
+      "id": 36,
+      "theme": "THIRD_PARTY",
+      "block_id": 11,
+      "is_block_start": false,
+      "reason": "absence d'obligation de maintenance d'Apple",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 37,
+      "theme": "THIRD_PARTY",
+      "block_id": 11,
+      "is_block_start": false,
+      "reason": "obligation de garantie/remboursement d'Apple",
+      "legal_nature": "PROHIBITION",
+      "legal_nature_marker": "may not"
+    },
+    {
+      "id": 38,
+      "theme": "THIRD_PARTY",
+      "block_id": 11,
+      "is_block_start": false,
+      "reason": "Apple non responsable des reclamations, prolonge le sujet Apple",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 39,
+      "theme": "THIRD_PARTY",
+      "block_id": 11,
+      "is_block_start": false,
+      "reason": "duolingo responsable des reclamations PI, pas Apple",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 40,
+      "theme": "THIRD_PARTY",
+      "block_id": 11,
+      "is_block_start": false,
+      "reason": "conformite aux termes tiers",
+      "legal_nature": "OBLIGATION",
+      "legal_nature_marker": "you must"
+    },
+    {
+      "id": 41,
+      "theme": "THIRD_PARTY",
+      "block_id": 11,
+      "is_block_start": false,
+      "reason": "Apple beneficiaire tiers, prolonge le sujet App Store",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 42,
+      "theme": "SUBSCRIPTION_RENEWAL",
+      "block_id": 12,
+      "is_block_start": true,
+      "rationale": "nouveau sujet : abonnement auto-renouvelable, cite « if you purchase an auto-renewing periodic subscription »",
+      "rationale_codes": {
+        "decision_trigger": "topic_keyword",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "if you purchase an auto-renewing periodic subscription",
+        "revised_from_plan": false,
+        "confidence": 0.85
+      },
+      "legal_nature": "GOVERNANCE",
+      "legal_nature_marker": "terminate"
+    },
+    {
+      "id": 43,
+      "theme": "SUBSCRIPTION_RENEWAL",
+      "block_id": 12,
+      "is_block_start": false,
+      "reason": "renouvellement automatique, prolonge l'abonnement",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 44,
+      "theme": "SUBSCRIPTION_RENEWAL",
+      "block_id": 12,
+      "is_block_start": false,
+      "reason": "procedure pour annuler le renouvellement",
+      "legal_nature": "PROHIBITION",
+      "legal_nature_marker": "do not"
+    },
+    {
+      "id": 45,
+      "theme": "PAYMENT_BILLING",
+      "block_id": 13,
+      "is_block_start": true,
+      "rationale": "nouveau sujet : monnaie et objets virtuels achetes avec de l'argent reel, cite « you may purchase , with `` real world '' money »",
+      "rationale_codes": {
+        "decision_trigger": "topic_keyword",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "you may purchase , with `` real world '' money",
+        "revised_from_plan": false,
+        "confidence": 0.68
+      },
+      "legal_nature": "RIGHT_GRANT",
+      "legal_nature_marker": "license to"
+    },
+    {
+      "id": 46,
+      "theme": "PAYMENT_BILLING",
+      "block_id": 13,
+      "is_block_start": false,
+      "reason": "achat des objets virtuels uniquement via le service",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 47,
+      "theme": "PAYMENT_BILLING",
+      "block_id": 13,
+      "is_block_start": false,
+      "reason": "controle des objets virtuels par duolingo",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 48,
+      "theme": "PAYMENT_BILLING",
+      "block_id": 13,
+      "is_block_start": false,
+      "reason": "mise a jour du prix des objets virtuels",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 49,
+      "theme": "PAYMENT_BILLING",
+      "block_id": 13,
+      "is_block_start": false,
+      "reason": "absence de responsabilite liee a l'exercice de ces droits",
+      "legal_nature": "OBLIGATION",
+      "legal_nature_marker": "shall"
+    },
+    {
+      "id": 50,
+      "theme": "PAYMENT_BILLING",
+      "block_id": 13,
+      "is_block_start": false,
+      "reason": "interdiction de transfert d'objets virtuels",
+      "legal_nature": "PROHIBITION",
+      "legal_nature_marker": "prohibited"
+    },
+    {
+      "id": 51,
+      "theme": "PAYMENT_BILLING",
+      "block_id": 13,
+      "is_block_start": false,
+      "reason": "interdiction de vente/transfert, prolonge les objets virtuels",
+      "legal_nature": "PROHIBITION",
+      "legal_nature_marker": "shall not"
+    },
+    {
+      "id": 52,
+      "theme": "PAYMENT_BILLING",
+      "block_id": 13,
+      "is_block_start": false,
+      "reason": "obligation de payer frais et taxes",
+      "legal_nature": "OBLIGATION",
+      "legal_nature_marker": "you agree to"
+    },
+    {
+      "id": 53,
+      "theme": "PAYMENT_BILLING",
+      "block_id": 13,
+      "is_block_start": false,
+      "reason": "revision des prix par duolingo",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 54,
+      "theme": "PAYMENT_BILLING",
+      "block_id": 13,
+      "is_block_start": false,
+      "reason": "exactitude des informations de paiement",
+      "legal_nature": "OBLIGATION",
+      "legal_nature_marker": "must"
+    },
+    {
+      "id": 55,
+      "theme": "PAYMENT_BILLING",
+      "block_id": 13,
+      "is_block_start": false,
+      "reason": "obligation de payer toutes les charges",
+      "legal_nature": "OBLIGATION",
+      "legal_nature_marker": "you agree to"
+    },
+    {
+      "id": 56,
+      "theme": "PAYMENT_BILLING",
+      "block_id": 13,
+      "is_block_start": false,
+      "reason": "paiement des taxes applicables",
+      "legal_nature": "OBLIGATION",
+      "legal_nature_marker": "you will"
+    },
+    {
+      "id": 57,
+      "theme": "PAYMENT_BILLING",
+      "block_id": 13,
+      "is_block_start": false,
+      "reason": "traitement par un processeur de paiement tiers",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 58,
+      "theme": "PAYMENT_BILLING",
+      "block_id": 13,
+      "is_block_start": false,
+      "reason": "incitation a connaitre les pratiques du tiers, prolonge le paiement",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 59,
+      "theme": "PAYMENT_BILLING",
+      "block_id": 13,
+      "is_block_start": false,
+      "reason": "non-responsabilite envers le processeur de paiement tiers",
+      "legal_nature": "LIMITATION_DISCLAIMER",
+      "legal_nature_marker": "in no event"
+    },
+    {
+      "id": 60,
+      "theme": "PAYMENT_BILLING",
+      "block_id": 14,
+      "is_block_start": true,
+      "rationale": "nouveau sujet : politique de remboursement (no refund), cite « you will receive no refund or exchange of any kind »",
+      "rationale_codes": {
+        "decision_trigger": "topic_keyword",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "you will receive no refund or exchange of any kind",
+        "revised_from_plan": false,
+        "confidence": 0.66
+      },
+      "legal_nature": "GOVERNANCE",
+      "legal_nature_marker": "terminate"
+    },
+    {
+      "id": 61,
+      "theme": "PAYMENT_BILLING",
+      "block_id": 14,
+      "is_block_start": false,
+      "reason": "remboursement en cas de test issue, prolonge les remboursements",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 62,
+      "theme": "PAYMENT_BILLING",
+      "block_id": 14,
+      "is_block_start": false,
+      "reason": "definition de test issue, prolonge le sujet remboursement",
+      "legal_nature": "DEFINITION",
+      "legal_nature_marker": "means"
+    },
+    {
+      "id": 63,
+      "theme": "PAYMENT_BILLING",
+      "block_id": 14,
+      "is_block_start": false,
+      "reason": "appreciation discretionnaire du test issue",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 64,
+      "theme": "PAYMENT_BILLING",
+      "block_id": 14,
+      "is_block_start": false,
+      "reason": "exclusion des resiliations pour violation, pas de refund",
+      "legal_nature": "PROHIBITION",
+      "legal_nature_marker": "will not"
+    },
+    {
+      "id": 65,
+      "theme": "PAYMENT_BILLING",
+      "block_id": 14,
+      "is_block_start": false,
+      "reason": "montant du remboursement plafonne",
+      "legal_nature": "PROHIBITION",
+      "legal_nature_marker": "will not"
+    },
+    {
+      "id": 66,
+      "theme": "PAYMENT_BILLING",
+      "block_id": 14,
+      "is_block_start": false,
+      "reason": "procedure de reclamation de remboursement, prolonge le sujet",
+      "legal_nature": "OBLIGATION",
+      "legal_nature_marker": "must"
+    },
+    {
+      "id": 67,
+      "theme": "THIRD_PARTY",
+      "block_id": 15,
+      "is_block_start": true,
+      "rationale": "titre nominal court de section, cite « third-party links , sites , and services »",
+      "rationale_codes": {
+        "decision_trigger": "title_marker",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "third-party links , sites , and services",
+        "revised_from_plan": false,
+        "confidence": 0.9
+      },
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 68,
+      "theme": "THIRD_PARTY",
+      "block_id": 15,
+      "is_block_start": false,
+      "reason": "presence de liens vers des sites tiers, prolonge le titre",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 69,
+      "theme": "THIRD_PARTY",
+      "block_id": 15,
+      "is_block_start": false,
+      "reason": "absence d'endossement des sites tiers",
+      "legal_nature": "PROHIBITION",
+      "legal_nature_marker": "do not"
+    },
+    {
+      "id": 70,
+      "theme": "THIRD_PARTY",
+      "block_id": 15,
+      "is_block_start": false,
+      "reason": "non-application des termes aux sites tiers",
+      "legal_nature": "PROHIBITION",
+      "legal_nature_marker": "do not"
+    },
+    {
+      "id": 71,
+      "theme": "THIRD_PARTY",
+      "block_id": 15,
+      "is_block_start": false,
+      "reason": "non-responsabilite pour dommages lies aux sites tiers",
+      "legal_nature": "PROHIBITION",
+      "legal_nature_marker": "shall not"
+    },
+    {
+      "id": 72,
+      "theme": "THIRD_PARTY",
+      "block_id": 15,
+      "is_block_start": false,
+      "reason": "publicite tierce sur le service, prolonge le sujet tiers",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 73,
+      "theme": "THIRD_PARTY",
+      "block_id": 15,
+      "is_block_start": false,
+      "reason": "changement du type de publicite",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 74,
+      "theme": "THIRD_PARTY",
+      "block_id": 15,
+      "is_block_start": false,
+      "reason": "consentement au placement de publicite tierce",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 75,
+      "theme": "WARRANTY_DISCLAIMER",
+      "block_id": 16,
+      "is_block_start": true,
+      "rationale": "titre de section disclaimer de garantie, cite « no representations or warranties by duolingo »",
+      "rationale_codes": {
+        "decision_trigger": "title_marker",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "no representations or warranties by duolingo",
+        "revised_from_plan": false,
+        "confidence": 0.92
+      },
+      "legal_nature": "LIMITATION_DISCLAIMER",
+      "legal_nature_marker": "warranties"
+    },
+    {
+      "id": 76,
+      "theme": "WARRANTY_DISCLAIMER",
+      "block_id": 16,
+      "is_block_start": false,
+      "reason": "service fourni « as is », prolonge le disclaimer",
+      "legal_nature": "LIMITATION_DISCLAIMER",
+      "legal_nature_marker": "as is"
+    },
+    {
+      "id": 77,
+      "theme": "WARRANTY_DISCLAIMER",
+      "block_id": 16,
+      "is_block_start": false,
+      "reason": "exclusion des garanties implicites",
+      "legal_nature": "LIMITATION_DISCLAIMER",
+      "legal_nature_marker": "warranties"
+    },
+    {
+      "id": 78,
+      "theme": "WARRANTY_DISCLAIMER",
+      "block_id": 16,
+      "is_block_start": false,
+      "reason": "absence de garantie sur l'exactitude/disponibilite",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 79,
+      "theme": "WARRANTY_DISCLAIMER",
+      "block_id": 16,
+      "is_block_start": false,
+      "reason": "indisponibilite possible du service, prolonge le disclaimer",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 80,
+      "theme": "WARRANTY_DISCLAIMER",
+      "block_id": 16,
+      "is_block_start": false,
+      "reason": "reserve juridictionnelle sur l'exclusion des garanties",
+      "legal_nature": "PROHIBITION",
+      "legal_nature_marker": "may not"
+    },
+    {
+      "id": 81,
+      "theme": "LIABILITY_LIMITATION",
+      "block_id": 17,
+      "is_block_start": true,
+      "rationale": "titre de section limitation de responsabilite, cite « limitation on types of damages/limitation of liability »",
+      "rationale_codes": {
+        "decision_trigger": "title_marker",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "limitation on types of damages/limitation of liability",
+        "revised_from_plan": false,
+        "confidence": 0.92
+      },
+      "legal_nature": "LIMITATION_DISCLAIMER",
+      "legal_nature_marker": "limitation of liability"
+    },
+    {
+      "id": 82,
+      "theme": "LIABILITY_LIMITATION",
+      "block_id": 17,
+      "is_block_start": false,
+      "reason": "exclusion des dommages indirects, prolonge la limitation",
+      "legal_nature": "LIMITATION_DISCLAIMER",
+      "legal_nature_marker": "in no event"
+    },
+    {
+      "id": 83,
+      "theme": "LIABILITY_LIMITATION",
+      "block_id": 17,
+      "is_block_start": false,
+      "reason": "plafond de responsabilite (montant paye)",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 84,
+      "theme": "LIABILITY_LIMITATION",
+      "block_id": 17,
+      "is_block_start": false,
+      "reason": "limite agregee, prolonge la limitation",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 85,
+      "theme": "LIABILITY_LIMITATION",
+      "block_id": 17,
+      "is_block_start": false,
+      "reason": "plusieurs reclamations n'augmentent pas la limite",
+      "legal_nature": "PROHIBITION",
+      "legal_nature_marker": "will not"
+    },
+    {
+      "id": 86,
+      "theme": "TERMINATION",
+      "block_id": 18,
+      "is_block_start": true,
+      "rationale": "nouveau sujet : resiliation, cite « duolingo may terminate your access and use of the service »",
+      "rationale_codes": {
+        "decision_trigger": "topic_keyword",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "duolingo may terminate your access and use of the service",
+        "revised_from_plan": false,
+        "confidence": 0.86
+      },
+      "legal_nature": "GOVERNANCE",
+      "legal_nature_marker": "terminate"
+    },
+    {
+      "id": 87,
+      "theme": "TERMINATION",
+      "block_id": 18,
+      "is_block_start": false,
+      "reason": "resiliation du compte par l'utilisateur, prolonge la resiliation",
+      "legal_nature": "GOVERNANCE",
+      "legal_nature_marker": "terminate"
+    },
+    {
+      "id": 88,
+      "theme": "TERMINATION",
+      "block_id": 18,
+      "is_block_start": false,
+      "reason": "clause de survie apres resiliation",
+      "legal_nature": "LIMITATION_DISCLAIMER",
+      "legal_nature_marker": "warranties"
+    },
+    {
+      "id": 89,
+      "theme": "LICENSE_IP",
+      "block_id": 19,
+      "is_block_start": true,
+      "rationale": "titre de section droits de propriete, cite « proprietary rights in service content and activity materials »",
+      "rationale_codes": {
+        "decision_trigger": "title_marker",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "proprietary rights in service content and activity materials",
+        "revised_from_plan": false,
+        "confidence": 0.88
+      },
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 90,
+      "theme": "LICENSE_IP",
+      "block_id": 19,
+      "is_block_start": false,
+      "reason": "propriete du service content, prolonge les droits de propriete",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 91,
+      "theme": "LICENSE_IP",
+      "block_id": 19,
+      "is_block_start": false,
+      "reason": "interdiction de copier/redistribuer le service content",
+      "legal_nature": "DEFINITION",
+      "legal_nature_marker": "means"
+    },
+    {
+      "id": 92,
+      "theme": "LICENSE_IP",
+      "block_id": 19,
+      "is_block_start": false,
+      "reason": "interdiction de data mining/scraping",
+      "legal_nature": "PROHIBITION",
+      "legal_nature_marker": "may not"
+    },
+    {
+      "id": 93,
+      "theme": "LICENSE_IP",
+      "block_id": 19,
+      "is_block_start": false,
+      "reason": "propriete des activity materials par duolingo",
+      "legal_nature": "PROHIBITION",
+      "legal_nature_marker": "shall not"
+    },
+    {
+      "id": 94,
+      "theme": "LICENSE_IP",
+      "block_id": 19,
+      "is_block_start": false,
+      "reason": "exclusion des translation materials, prolonge le sujet",
+      "legal_nature": "PROHIBITION",
+      "legal_nature_marker": "will not"
+    },
+    {
+      "id": 95,
+      "theme": "LICENSE_IP",
+      "block_id": 19,
+      "is_block_start": false,
+      "reason": "cession des droits sur les activity materials",
+      "legal_nature": "SCOPE_APPLICABILITY",
+      "legal_nature_marker": "by using"
+    },
+    {
+      "id": 96,
+      "theme": "LICENSE_IP",
+      "block_id": 19,
+      "is_block_start": false,
+      "reason": "reserve des droits non accordes",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 97,
+      "theme": "LICENSE_IP",
+      "block_id": 19,
+      "is_block_start": false,
+      "reason": "marques et logos duolingo (PI prime), prolonge le sujet PI",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 98,
+      "theme": "LICENSE_IP",
+      "block_id": 19,
+      "is_block_start": false,
+      "reason": "absence de licence sur les marques duolingo",
+      "legal_nature": "RIGHT_GRANT",
+      "legal_nature_marker": "license to"
+    },
+    {
+      "id": 99,
+      "theme": "PRIVACY_DATA",
+      "block_id": 20,
+      "is_block_start": true,
+      "rationale": "nouveau sujet : politique de confidentialite, cite « use of the service is also governed by our privacy policy »",
+      "rationale_codes": {
+        "decision_trigger": "topic_keyword",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "use of the service is also governed by our privacy policy",
+        "revised_from_plan": false,
+        "confidence": 0.85
+      },
+      "legal_nature": "GOVERNANCE",
+      "legal_nature_marker": "governed by"
+    },
+    {
+      "id": 100,
+      "theme": "PRIVACY_DATA",
+      "block_id": 20,
+      "is_block_start": false,
+      "reason": "consentement a la politique de confidentialite",
+      "legal_nature": "SCOPE_APPLICABILITY",
+      "legal_nature_marker": "by using"
+    },
+    {
+      "id": 101,
+      "theme": "LICENSE_IP",
+      "block_id": 21,
+      "is_block_start": true,
+      "rationale": "titre de section notice DMCA (la PI prime pour le copyright), cite « notice for claims of copyright violations and agent for notice »",
+      "rationale_codes": {
+        "decision_trigger": "title_marker",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "notice for claims of copyright violations and agent for notice",
+        "revised_from_plan": false,
+        "confidence": 0.8
+      },
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 102,
+      "theme": "LICENSE_IP",
+      "block_id": 21,
+      "is_block_start": false,
+      "reason": "procedure de notification d'infraction DMCA, prolonge la notice copyright",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 103,
+      "theme": "LICENSE_IP",
+      "block_id": 21,
+      "is_block_start": false,
+      "reason": "element requis : signature, prolonge la notice",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 104,
+      "theme": "LICENSE_IP",
+      "block_id": 21,
+      "is_block_start": false,
+      "reason": "element requis : description de l'oeuvre",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 105,
+      "theme": "LICENSE_IP",
+      "block_id": 21,
+      "is_block_start": false,
+      "reason": "element requis : localisation du materiel",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 106,
+      "theme": "LICENSE_IP",
+      "block_id": 21,
+      "is_block_start": false,
+      "reason": "element requis : coordonnees",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 107,
+      "theme": "LICENSE_IP",
+      "block_id": 21,
+      "is_block_start": false,
+      "reason": "element requis : declaration de bonne foi",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 108,
+      "theme": "LICENSE_IP",
+      "block_id": 21,
+      "is_block_start": false,
+      "reason": "element requis : declaration sous serment, prolonge la notice",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 109,
+      "theme": "LICENSE_IP",
+      "block_id": 21,
+      "is_block_start": false,
+      "reason": "renvoi au conseil juridique / 17 u.s.c. § 512",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 110,
+      "theme": "LICENSE_IP",
+      "block_id": 21,
+      "is_block_start": false,
+      "reason": "coordonnees de l'agent DMCA, prolonge la notice copyright",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 111,
+      "theme": "LICENSE_IP",
+      "block_id": 21,
+      "is_block_start": false,
+      "reason": "adresse postale de l'agent DMCA",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 112,
+      "theme": "GOVERNING_LAW",
+      "block_id": 22,
+      "is_block_start": true,
+      "rationale": "nouveau sujet : loi applicable de Pennsylvania, cite « shall be governed by and construed under the laws of the commonwealth of pennsylvania »",
+      "rationale_codes": {
+        "decision_trigger": "topic_keyword",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "shall be governed by and construed under the laws of the commonwealth of pennsylvania",
+        "revised_from_plan": false,
+        "confidence": 0.88
+      },
+      "legal_nature": "GOVERNANCE",
+      "legal_nature_marker": "governed by"
+    },
+    {
+      "id": 113,
+      "theme": "DISPUTE_ARBITRATION",
+      "block_id": 23,
+      "is_block_start": true,
+      "rationale": "nouveau sujet : arbitrage obligatoire des litiges, cite « resolved by binding arbitration »",
+      "rationale_codes": {
+        "decision_trigger": "topic_keyword",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "resolved by binding arbitration",
+        "revised_from_plan": false,
+        "confidence": 0.88
+      },
+      "legal_nature": "GOVERNANCE",
+      "legal_nature_marker": "arbitration"
+    },
+    {
+      "id": 114,
+      "theme": "DISPUTE_ARBITRATION",
+      "block_id": 23,
+      "is_block_start": false,
+      "reason": "chaque partie supporte ses frais, prolonge l'arbitrage",
+      "legal_nature": "GOVERNANCE",
+      "legal_nature_marker": "arbitration"
+    },
+    {
+      "id": 115,
+      "theme": "DISPUTE_ARBITRATION",
+      "block_id": 23,
+      "is_block_start": false,
+      "reason": "option d'opt-out de l'arbitrage",
+      "legal_nature": "PROHIBITION",
+      "legal_nature_marker": "do not"
+    },
+    {
+      "id": 116,
+      "theme": "DISPUTE_ARBITRATION",
+      "block_id": 23,
+      "is_block_start": false,
+      "reason": "notice prealable d'intention d'arbitrer",
+      "legal_nature": "GOVERNANCE",
+      "legal_nature_marker": "arbitration"
+    },
+    {
+      "id": 117,
+      "theme": "DISPUTE_ARBITRATION",
+      "block_id": 23,
+      "is_block_start": false,
+      "reason": "moyens d'envoi de la notice, prolonge l'arbitrage",
+      "legal_nature": "META",
+      "legal_nature_marker": "inc."
+    },
+    {
+      "id": 118,
+      "theme": "DISPUTE_ARBITRATION",
+      "block_id": 23,
+      "is_block_start": false,
+      "reason": "contenu requis de la notice",
+      "legal_nature": "OBLIGATION",
+      "legal_nature_marker": "must"
+    },
+    {
+      "id": 119,
+      "theme": "DISPUTE_ARBITRATION",
+      "block_id": 23,
+      "is_block_start": false,
+      "reason": "notice de duolingo vers l'utilisateur",
+      "legal_nature": "GOVERNANCE",
+      "legal_nature_marker": "arbitration"
+    },
+    {
+      "id": 120,
+      "theme": "DISPUTE_ARBITRATION",
+      "block_id": 23,
+      "is_block_start": false,
+      "reason": "deroulement de l'arbitrage AAA, prolonge l'arbitrage",
+      "legal_nature": "GOVERNANCE",
+      "legal_nature_marker": "governed by"
+    },
+    {
+      "id": 121,
+      "theme": "DISPUTE_ARBITRATION",
+      "block_id": 23,
+      "is_block_start": false,
+      "reason": "disponibilite des regles AAA",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 122,
+      "theme": "DISPUTE_ARBITRATION",
+      "block_id": 23,
+      "is_block_start": false,
+      "reason": "competence de l'arbitre, prolonge l'arbitrage",
+      "legal_nature": "GOVERNANCE",
+      "legal_nature_marker": "arbitration"
+    },
+    {
+      "id": 123,
+      "theme": "DISPUTE_ARBITRATION",
+      "block_id": 23,
+      "is_block_start": false,
+      "reason": "frais d'arbitrage de l'utilisateur",
+      "legal_nature": "GOVERNANCE",
+      "legal_nature_marker": "arbitration"
+    },
+    {
+      "id": 124,
+      "theme": "DISPUTE_ARBITRATION",
+      "block_id": 23,
+      "is_block_start": false,
+      "reason": "remboursement des frais AAA",
+      "legal_nature": "GOVERNANCE",
+      "legal_nature_marker": "governed by"
+    },
+    {
+      "id": 125,
+      "theme": "DISPUTE_ARBITRATION",
+      "block_id": 23,
+      "is_block_start": false,
+      "reason": "langue de l'arbitrage",
+      "legal_nature": "GOVERNANCE",
+      "legal_nature_marker": "arbitration"
+    },
+    {
+      "id": 126,
+      "theme": "DISPUTE_ARBITRATION",
+      "block_id": 23,
+      "is_block_start": false,
+      "reason": "jugement sur la sentence, prolonge l'arbitrage",
+      "legal_nature": "GOVERNANCE",
+      "legal_nature_marker": "jurisdiction"
+    },
+    {
+      "id": 127,
+      "theme": "DISPUTE_ARBITRATION",
+      "block_id": 23,
+      "is_block_start": false,
+      "reason": "arbitrage non-presentiel pour petites sommes",
+      "legal_nature": "GOVERNANCE",
+      "legal_nature_marker": "arbitration"
+    },
+    {
+      "id": 128,
+      "theme": "DISPUTE_ARBITRATION",
+      "block_id": 23,
+      "is_block_start": false,
+      "reason": "renonciation aux actions collectives, prolonge l'arbitrage",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 129,
+      "theme": "DISPUTE_ARBITRATION",
+      "block_id": 23,
+      "is_block_start": false,
+      "reason": "renonciation au jury si proces",
+      "legal_nature": "GOVERNANCE",
+      "legal_nature_marker": "arbitration"
+    },
+    {
+      "id": 130,
+      "theme": "DISPUTE_ARBITRATION",
+      "block_id": 23,
+      "is_block_start": false,
+      "reason": "competence judiciaire si arbitrage invalide, prolonge le sujet",
+      "legal_nature": "GOVERNANCE",
+      "legal_nature_marker": "jurisdiction"
+    },
+    {
+      "id": 131,
+      "theme": "DISPUTE_ARBITRATION",
+      "block_id": 23,
+      "is_block_start": false,
+      "reason": "exception : injonction pour duolingo",
+      "legal_nature": "GOVERNANCE",
+      "legal_nature_marker": "jurisdiction"
+    },
+    {
+      "id": 132,
+      "theme": "MISC_BOILERPLATE",
+      "block_id": 24,
+      "is_block_start": true,
+      "rationale": "nouveau sujet : clauses finales boilerplate (langue), cite « this agreement was originally written in english »",
+      "rationale_codes": {
+        "decision_trigger": "topic_keyword",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "this agreement was originally written in english",
+        "revised_from_plan": false,
+        "confidence": 0.7
+      },
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 133,
+      "theme": "MISC_BOILERPLATE",
+      "block_id": 24,
+      "is_block_start": false,
+      "reason": "primaute de la version anglaise, prolonge la langue",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 134,
+      "theme": "MISC_BOILERPLATE",
+      "block_id": 24,
+      "is_block_start": false,
+      "reason": "clause d'integralite (entire agreement)",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 135,
+      "theme": "MISC_BOILERPLATE",
+      "block_id": 24,
+      "is_block_start": false,
+      "reason": "clause de divisibilite (severability)",
+      "legal_nature": "GOVERNANCE",
+      "legal_nature_marker": "jurisdiction"
+    },
+    {
+      "id": 136,
+      "theme": "MISC_BOILERPLATE",
+      "block_id": 24,
+      "is_block_start": false,
+      "reason": "clause de renonciation (waiver)",
+      "legal_nature": "PROHIBITION",
+      "legal_nature_marker": "will not"
+    },
+    {
+      "id": 137,
+      "theme": "MISC_BOILERPLATE",
+      "block_id": 24,
+      "is_block_start": false,
+      "reason": "clause de cession (assignment)",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 138,
+      "theme": "MISC_BOILERPLATE",
+      "block_id": 24,
+      "is_block_start": false,
+      "reason": "clause de portee obligatoire (binding upon successors), prolonge le boilerplate",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 139,
+      "theme": "META",
+      "block_id": 25,
+      "is_block_start": true,
+      "rationale": "date de derniere revision (meta), cite « last revised on december 11th »",
+      "rationale_codes": {
+        "decision_trigger": "title_marker",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "last revised on december 11th",
+        "revised_from_plan": false,
+        "confidence": 0.85
+      },
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    }
+  ]
+}

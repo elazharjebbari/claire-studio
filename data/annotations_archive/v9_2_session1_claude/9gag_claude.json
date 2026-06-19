@@ -1,0 +1,1550 @@
+{
+  "doc": "9gag",
+  "judge": "claude",
+  "version": "v9.2-nature-derived",
+  "document_plan": {
+    "estimated_n_blocks": 22,
+    "rationale_global": "ToS 9gag narratif (139 phrases). Preambule (objet du site, acceptation par usage, portee des services) id0-10; modification des termes id11; eligibilite par age/juridiction id14; disponibilite du site et exoneration id21; responsabilite d'equipement d'acces id26; propriete intellectuelle/copyright/licence logicielle id28; licence du contenu du souscripteur id39; usage acceptable/contenu interdit id42; disclaimers de contenu id49; garantie 'as is' id59; sites tiers id64; inscription/compte/mot de passe id68; indemnisation id77; limitation de responsabilite id78; frais/paiement id81; resiliation id91; politique de confidentialite id96; boilerplate divers id97; droit applicable Delaware id104; boilerplate (no agency) id105; procedure DMCA copyright id106; actions apres contre-notification id130. Indices E_candidate_boundaries et carte D coherents; granularite ~22 dans la fourchette 14-27.",
+    "segments": [
+      {
+        "start_id": 0,
+        "theme": "PREAMBLE_SCOPE",
+        "rationale": "ouverture du document, titre de liste introduisant l'acceptation des conditions",
+        "evidence_span": "accepting the terms of service"
+      },
+      {
+        "start_id": 11,
+        "theme": "MODIFICATION_OF_TERMS",
+        "rationale": "droit de 9gag de modifier les conditions a tout moment, effet juridique autonome",
+        "evidence_span": "to modify these terms of service at any time"
+      },
+      {
+        "start_id": 14,
+        "theme": "ELIGIBILITY_ACCOUNT",
+        "rationale": "eligibilite par certification d'age (>=13 ans)",
+        "evidence_span": "at least 13 years of age"
+      },
+      {
+        "start_id": 21,
+        "theme": "WARRANTY_DISCLAIMER",
+        "rationale": "disponibilite du site/services et exoneration pour interruptions",
+        "evidence_span": "the site and services are available"
+      },
+      {
+        "start_id": 26,
+        "theme": "ELIGIBILITY_ACCOUNT",
+        "rationale": "responsabilite du souscripteur pour obtenir/maintenir l'equipement d'acces",
+        "evidence_span": "obtaining and maintaining any equipment"
+      },
+      {
+        "start_id": 28,
+        "theme": "LICENSE_IP",
+        "rationale": "usage reserve et propriete intellectuelle des contenus",
+        "evidence_span": "may only be used in accordance with the terms"
+      },
+      {
+        "start_id": 39,
+        "theme": "USER_CONTENT",
+        "rationale": "propriete du contenu du souscripteur et licence accordee a 9gag",
+        "evidence_span": "subscriber content that subscriber contributes to the site"
+      },
+      {
+        "start_id": 42,
+        "theme": "ACCEPTABLE_USE",
+        "rationale": "contenu interdit que le souscripteur s'engage a ne pas publier",
+        "evidence_span": "will not contribute any subscriber content"
+      },
+      {
+        "start_id": 49,
+        "theme": "WARRANTY_DISCLAIMER",
+        "rationale": "absence de relation fiduciaire et disclaimers sur le contenu",
+        "evidence_span": "no special relationship with or fiduciary duty"
+      },
+      {
+        "start_id": 59,
+        "theme": "WARRANTY_DISCLAIMER",
+        "rationale": "fourniture 'as is' sans garantie d'aucune sorte",
+        "evidence_span": "as is"
+      },
+      {
+        "start_id": 64,
+        "theme": "THIRD_PARTY",
+        "rationale": "acces aux sites tiers via liens",
+        "evidence_span": "third party sites on the internet"
+      },
+      {
+        "start_id": 68,
+        "theme": "ELIGIBILITY_ACCOUNT",
+        "rationale": "inscription, selection d'un mot de passe et d'une url",
+        "evidence_span": "required to register with 9gag"
+      },
+      {
+        "start_id": 77,
+        "theme": "INDEMNIFICATION",
+        "rationale": "obligation d'indemnisation du souscripteur",
+        "evidence_span": "indemnify and hold 9gag"
+      },
+      {
+        "start_id": 78,
+        "theme": "LIABILITY_LIMITATION",
+        "rationale": "limitation/exclusion de dommages",
+        "evidence_span": "in no event shall 9gag"
+      },
+      {
+        "start_id": 81,
+        "theme": "PAYMENT_BILLING",
+        "rationale": "certains services requierent paiement de frais",
+        "evidence_span": "require payment of fees"
+      },
+      {
+        "start_id": 91,
+        "theme": "TERMINATION",
+        "rationale": "resiliation des services par l'une ou l'autre partie",
+        "evidence_span": "terminate the services at any time"
+      },
+      {
+        "start_id": 96,
+        "theme": "PRIVACY_DATA",
+        "rationale": "politique de confidentialite regissant les donnees personnelles",
+        "evidence_span": "privacy policy"
+      },
+      {
+        "start_id": 97,
+        "theme": "MISC_BOILERPLATE",
+        "rationale": "integralite de l'accord (clause boilerplate)",
+        "evidence_span": "constitutes the entire agreement"
+      },
+      {
+        "start_id": 104,
+        "theme": "GOVERNING_LAW",
+        "rationale": "droit applicable (Delaware)",
+        "evidence_span": "laws of the state of delaware"
+      },
+      {
+        "start_id": 105,
+        "theme": "MISC_BOILERPLATE",
+        "rationale": "absence d'agence/partenariat (clause boilerplate)",
+        "evidence_span": "no agency , partnership"
+      },
+      {
+        "start_id": 106,
+        "theme": "LICENSE_IP",
+        "rationale": "procedure de notification d'infractions au copyright (DMCA)",
+        "evidence_span": "notice and procedure for making claims of copyright"
+      },
+      {
+        "start_id": 130,
+        "theme": "LICENSE_IP",
+        "rationale": "actions de 9gag apres reception d'une contre-notification",
+        "evidence_span": "9gag actions following receipt of counter notification"
+      }
+    ]
+  },
+  "annotations": [
+    {
+      "id": 0,
+      "theme": "PREAMBLE_SCOPE",
+      "block_id": 0,
+      "is_block_start": true,
+      "rationale": "ouverture du document, titre de liste introduisant l'acceptation des conditions",
+      "rationale_codes": {
+        "decision_trigger": "document_start",
+        "relation_to_prev": "document_start",
+        "evidence_span": "accepting the terms of service",
+        "revised_from_plan": false,
+        "confidence": 0.95
+      },
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 1,
+      "theme": "PREAMBLE_SCOPE",
+      "block_id": 0,
+      "is_block_start": false,
+      "reason": "objet du site, prolonge le preambule",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 2,
+      "theme": "PREAMBLE_SCOPE",
+      "block_id": 0,
+      "is_block_start": false,
+      "reason": "suite de l'objet (services de publication web)",
+      "legal_nature": "META",
+      "legal_nature_marker": "inc"
+    },
+    {
+      "id": 3,
+      "theme": "PREAMBLE_SCOPE",
+      "block_id": 0,
+      "is_block_start": false,
+      "reason": "invite a lire l'accord avant usage",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 4,
+      "theme": "PREAMBLE_SCOPE",
+      "block_id": 0,
+      "is_block_start": false,
+      "reason": "acceptation par usage",
+      "legal_nature": "SCOPE_APPLICABILITY",
+      "legal_nature_marker": "by using"
+    },
+    {
+      "id": 5,
+      "theme": "PREAMBLE_SCOPE",
+      "block_id": 0,
+      "is_block_start": false,
+      "reason": "consequence du desaccord, prolonge l'acceptation",
+      "legal_nature": "PROHIBITION",
+      "legal_nature_marker": "do not"
+    },
+    {
+      "id": 6,
+      "theme": "PREAMBLE_SCOPE",
+      "block_id": 0,
+      "is_block_start": false,
+      "reason": "definition du souscripteur sous les conditions",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 7,
+      "theme": "PREAMBLE_SCOPE",
+      "block_id": 0,
+      "is_block_start": false,
+      "reason": "portee de l'offre de services",
+      "legal_nature": "META",
+      "legal_nature_marker": "inc"
+    },
+    {
+      "id": 8,
+      "theme": "PREAMBLE_SCOPE",
+      "block_id": 0,
+      "is_block_start": false,
+      "reason": "definition de services, prolonge la portee",
+      "legal_nature": "META",
+      "legal_nature_marker": "inc"
+    },
+    {
+      "id": 9,
+      "theme": "PREAMBLE_SCOPE",
+      "block_id": 0,
+      "is_block_start": false,
+      "reason": "droit de modifier/suspendre les services",
+      "legal_nature": "META",
+      "legal_nature_marker": "inc"
+    },
+    {
+      "id": 10,
+      "theme": "PREAMBLE_SCOPE",
+      "block_id": 0,
+      "is_block_start": false,
+      "reason": "limites/restrictions sur les fonctionnalites, prolonge la portee",
+      "legal_nature": "META",
+      "legal_nature_marker": "inc"
+    },
+    {
+      "id": 11,
+      "theme": "MODIFICATION_OF_TERMS",
+      "block_id": 1,
+      "is_block_start": true,
+      "rationale": "nouveau sujet: droit de 9gag de modifier les conditions a tout moment, effet juridique autonome",
+      "rationale_codes": {
+        "decision_trigger": "topic_keyword",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "to modify these terms of service at any time",
+        "revised_from_plan": false,
+        "confidence": 0.9
+      },
+      "legal_nature": "META",
+      "legal_nature_marker": "inc"
+    },
+    {
+      "id": 12,
+      "theme": "MODIFICATION_OF_TERMS",
+      "block_id": 1,
+      "is_block_start": false,
+      "reason": "obligation de relire les modifications, prolonge la modification des termes",
+      "legal_nature": "OBLIGATION",
+      "legal_nature_marker": "shall"
+    },
+    {
+      "id": 13,
+      "theme": "MODIFICATION_OF_TERMS",
+      "block_id": 1,
+      "is_block_start": false,
+      "reason": "usage post-modification vaut acceptation",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 14,
+      "theme": "ELIGIBILITY_ACCOUNT",
+      "block_id": 2,
+      "is_block_start": true,
+      "rationale": "nouveau sujet: eligibilite par certification d'age (>=13 ans)",
+      "rationale_codes": {
+        "decision_trigger": "topic_keyword",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "at least 13 years of age",
+        "revised_from_plan": false,
+        "confidence": 0.9
+      },
+      "legal_nature": "META",
+      "legal_nature_marker": "inc"
+    },
+    {
+      "id": 15,
+      "theme": "ELIGIBILITY_ACCOUNT",
+      "block_id": 2,
+      "is_block_start": false,
+      "reason": "interdiction aux moins de 13 ans de fournir des infos, prolonge l'eligibilite",
+      "legal_nature": "META",
+      "legal_nature_marker": "inc"
+    },
+    {
+      "id": 16,
+      "theme": "ELIGIBILITY_ACCOUNT",
+      "block_id": 2,
+      "is_block_start": false,
+      "reason": "certification d'autorisation legale d'usage",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 17,
+      "theme": "ELIGIBILITY_ACCOUNT",
+      "block_id": 2,
+      "is_block_start": false,
+      "reason": "nullite la ou prohibe par la loi, prolonge l'eligibilite d'acces",
+      "legal_nature": "PROHIBITION",
+      "legal_nature_marker": "prohibited"
+    },
+    {
+      "id": 18,
+      "theme": "ELIGIBILITY_ACCOUNT",
+      "block_id": 2,
+      "is_block_start": false,
+      "reason": "legalite de visualisation hors Hong Kong",
+      "legal_nature": "META",
+      "legal_nature_marker": "inc"
+    },
+    {
+      "id": 19,
+      "theme": "ELIGIBILITY_ACCOUNT",
+      "block_id": 2,
+      "is_block_start": false,
+      "reason": "legalite d'acces selon personnes/pays",
+      "legal_nature": "PROHIBITION",
+      "legal_nature_marker": "may not"
+    },
+    {
+      "id": 20,
+      "theme": "ELIGIBILITY_ACCOUNT",
+      "block_id": 2,
+      "is_block_start": false,
+      "reason": "responsabilite de conformite a sa juridiction",
+      "legal_nature": "GOVERNANCE",
+      "legal_nature_marker": "jurisdiction"
+    },
+    {
+      "id": 21,
+      "theme": "WARRANTY_DISCLAIMER",
+      "block_id": 3,
+      "is_block_start": true,
+      "rationale": "nouveau sujet: disponibilite du site/services et exoneration pour interruptions",
+      "rationale_codes": {
+        "decision_trigger": "topic_keyword",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "the site and services are available",
+        "revised_from_plan": false,
+        "confidence": 0.75
+      },
+      "legal_nature": "META",
+      "legal_nature_marker": "inc"
+    },
+    {
+      "id": 22,
+      "theme": "WARRANTY_DISCLAIMER",
+      "block_id": 3,
+      "is_block_start": false,
+      "reason": "interruptions pour maintenance, prolonge la disponibilite",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 23,
+      "theme": "WARRANTY_DISCLAIMER",
+      "block_id": 3,
+      "is_block_start": false,
+      "reason": "efforts pour minimiser les perturbations",
+      "legal_nature": "META",
+      "legal_nature_marker": "inc"
+    },
+    {
+      "id": 24,
+      "theme": "WARRANTY_DISCLAIMER",
+      "block_id": 3,
+      "is_block_start": false,
+      "reason": "absence de responsabilite pour suspension/indisponibilite",
+      "legal_nature": "META",
+      "legal_nature_marker": "inc"
+    },
+    {
+      "id": 25,
+      "theme": "WARRANTY_DISCLAIMER",
+      "block_id": 3,
+      "is_block_start": false,
+      "reason": "limites de stockage a discretion, prolonge la disponibilite",
+      "legal_nature": "META",
+      "legal_nature_marker": "inc"
+    },
+    {
+      "id": 26,
+      "theme": "ELIGIBILITY_ACCOUNT",
+      "block_id": 4,
+      "is_block_start": true,
+      "rationale": "nouveau sujet: responsabilite du souscripteur pour obtenir/maintenir l'equipement d'acces",
+      "rationale_codes": {
+        "decision_trigger": "topic_keyword",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "obtaining and maintaining any equipment",
+        "revised_from_plan": false,
+        "confidence": 0.7
+      },
+      "legal_nature": "OBLIGATION",
+      "legal_nature_marker": "shall"
+    },
+    {
+      "id": 27,
+      "theme": "ELIGIBILITY_ACCOUNT",
+      "block_id": 4,
+      "is_block_start": false,
+      "reason": "compatibilite de l'equipement, prolonge la responsabilite d'acces",
+      "legal_nature": "OBLIGATION",
+      "legal_nature_marker": "shall"
+    },
+    {
+      "id": 28,
+      "theme": "LICENSE_IP",
+      "block_id": 5,
+      "is_block_start": true,
+      "rationale": "nouveau sujet: usage reserve et propriete intellectuelle des contenus",
+      "rationale_codes": {
+        "decision_trigger": "topic_keyword",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "may only be used in accordance with the terms",
+        "revised_from_plan": false,
+        "confidence": 0.78
+      },
+      "legal_nature": "META",
+      "legal_nature_marker": "inc"
+    },
+    {
+      "id": 29,
+      "theme": "LICENSE_IP",
+      "block_id": 5,
+      "is_block_start": false,
+      "reason": "contenus proprietes de 9gag, copyright",
+      "legal_nature": "META",
+      "legal_nature_marker": "inc"
+    },
+    {
+      "id": 30,
+      "theme": "LICENSE_IP",
+      "block_id": 5,
+      "is_block_start": false,
+      "reason": "usage de l'api selon ses conditions, prolonge la pi",
+      "legal_nature": "META",
+      "legal_nature_marker": "inc"
+    },
+    {
+      "id": 31,
+      "theme": "LICENSE_IP",
+      "block_id": 5,
+      "is_block_start": false,
+      "reason": "marques proprietes de 9gag",
+      "legal_nature": "META",
+      "legal_nature_marker": "inc"
+    },
+    {
+      "id": 32,
+      "theme": "LICENSE_IP",
+      "block_id": 5,
+      "is_block_start": false,
+      "reason": "respect des avis de copyright",
+      "legal_nature": "OBLIGATION",
+      "legal_nature_marker": "shall"
+    },
+    {
+      "id": 33,
+      "theme": "LICENSE_IP",
+      "block_id": 5,
+      "is_block_start": false,
+      "reason": "site protege par copyright comme oeuvre collective",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 34,
+      "theme": "LICENSE_IP",
+      "block_id": 5,
+      "is_block_start": false,
+      "reason": "interdiction de copier/modifier le contenu",
+      "legal_nature": "PROHIBITION",
+      "legal_nature_marker": "may not"
+    },
+    {
+      "id": 35,
+      "theme": "LICENSE_IP",
+      "block_id": 5,
+      "is_block_start": false,
+      "reason": "telechargement pour usage personnel uniquement",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 36,
+      "theme": "LICENSE_IP",
+      "block_id": 5,
+      "is_block_start": false,
+      "reason": "interdiction d'usage non personnel sans permission",
+      "legal_nature": "META",
+      "legal_nature_marker": "inc"
+    },
+    {
+      "id": 37,
+      "theme": "LICENSE_IP",
+      "block_id": 5,
+      "is_block_start": false,
+      "reason": "licence du logiciel telecharge, prolonge la pi",
+      "legal_nature": "META",
+      "legal_nature_marker": "inc"
+    },
+    {
+      "id": 38,
+      "theme": "LICENSE_IP",
+      "block_id": 5,
+      "is_block_start": false,
+      "reason": "retention des droits de pi sur le logiciel",
+      "legal_nature": "META",
+      "legal_nature_marker": "inc"
+    },
+    {
+      "id": 39,
+      "theme": "USER_CONTENT",
+      "block_id": 6,
+      "is_block_start": true,
+      "rationale": "nouveau sujet: propriete du contenu du souscripteur et licence accordee a 9gag",
+      "rationale_codes": {
+        "decision_trigger": "topic_keyword",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "subscriber content that subscriber contributes to the site",
+        "revised_from_plan": false,
+        "confidence": 0.7
+      },
+      "legal_nature": "META",
+      "legal_nature_marker": "inc"
+    },
+    {
+      "id": 40,
+      "theme": "USER_CONTENT",
+      "block_id": 6,
+      "is_block_start": false,
+      "reason": "retrait du contenu a la resiliation, prolonge la licence de contenu",
+      "legal_nature": "META",
+      "legal_nature_marker": "inc"
+    },
+    {
+      "id": 41,
+      "theme": "USER_CONTENT",
+      "block_id": 6,
+      "is_block_start": false,
+      "reason": "garantie de droit a accorder la licence",
+      "legal_nature": "META",
+      "legal_nature_marker": "inc"
+    },
+    {
+      "id": 42,
+      "theme": "ACCEPTABLE_USE",
+      "block_id": 7,
+      "is_block_start": true,
+      "rationale": "nouveau sujet: contenu interdit que le souscripteur s'engage a ne pas publier",
+      "rationale_codes": {
+        "decision_trigger": "topic_keyword",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "will not contribute any subscriber content",
+        "revised_from_plan": false,
+        "confidence": 0.8
+      },
+      "legal_nature": "PROHIBITION",
+      "legal_nature_marker": "will not"
+    },
+    {
+      "id": 43,
+      "theme": "ACCEPTABLE_USE",
+      "block_id": 7,
+      "is_block_start": false,
+      "reason": "droit de retirer le contenu contrevenant, prolonge l'usage acceptable",
+      "legal_nature": "META",
+      "legal_nature_marker": "inc"
+    },
+    {
+      "id": 44,
+      "theme": "ACCEPTABLE_USE",
+      "block_id": 7,
+      "is_block_start": false,
+      "reason": "responsabilite du souscripteur pour son activite",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 45,
+      "theme": "ACCEPTABLE_USE",
+      "block_id": 7,
+      "is_block_start": false,
+      "reason": "activite illegale motif de resiliation, prolonge l'usage acceptable",
+      "legal_nature": "GOVERNANCE",
+      "legal_nature_marker": "termination"
+    },
+    {
+      "id": 46,
+      "theme": "ACCEPTABLE_USE",
+      "block_id": 7,
+      "is_block_start": false,
+      "reason": "interdiction de phishing/obtention d'info",
+      "legal_nature": "META",
+      "legal_nature_marker": "inc"
+    },
+    {
+      "id": 47,
+      "theme": "ACCEPTABLE_USE",
+      "block_id": 7,
+      "is_block_start": false,
+      "reason": "interdiction d'atteintes a la securite",
+      "legal_nature": "PROHIBITION",
+      "legal_nature_marker": "prohibited"
+    },
+    {
+      "id": 48,
+      "theme": "ACCEPTABLE_USE",
+      "block_id": 7,
+      "is_block_start": false,
+      "reason": "liste des usages interdits (spam, harcelement, fausse identite)",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 49,
+      "theme": "WARRANTY_DISCLAIMER",
+      "block_id": 8,
+      "is_block_start": true,
+      "rationale": "nouveau sujet: absence de relation fiduciaire et disclaimers sur le contenu",
+      "rationale_codes": {
+        "decision_trigger": "topic_keyword",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "no special relationship with or fiduciary duty",
+        "revised_from_plan": false,
+        "confidence": 0.7
+      },
+      "legal_nature": "META",
+      "legal_nature_marker": "inc"
+    },
+    {
+      "id": 50,
+      "theme": "WARRANTY_DISCLAIMER",
+      "block_id": 8,
+      "is_block_start": false,
+      "reason": "absence de controle sur l'acces/usage du contenu",
+      "legal_nature": "META",
+      "legal_nature_marker": "inc"
+    },
+    {
+      "id": 51,
+      "theme": "WARRANTY_DISCLAIMER",
+      "block_id": 8,
+      "is_block_start": false,
+      "reason": "contenu sous responsabilite de l'utilisateur",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 52,
+      "theme": "WARRANTY_DISCLAIMER",
+      "block_id": 8,
+      "is_block_start": false,
+      "reason": "pas de surveillance ni responsabilite du contenu",
+      "legal_nature": "META",
+      "legal_nature_marker": "inc"
+    },
+    {
+      "id": 53,
+      "theme": "WARRANTY_DISCLAIMER",
+      "block_id": 8,
+      "is_block_start": false,
+      "reason": "exoneration pour contenu acquis ou non",
+      "legal_nature": "META",
+      "legal_nature_marker": "inc"
+    },
+    {
+      "id": 54,
+      "theme": "WARRANTY_DISCLAIMER",
+      "block_id": 8,
+      "is_block_start": false,
+      "reason": "contenu potentiellement offensant, prolonge le disclaimer de contenu",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 55,
+      "theme": "WARRANTY_DISCLAIMER",
+      "block_id": 8,
+      "is_block_start": false,
+      "reason": "aucune garantie sur l'exactitude/legalite du contenu",
+      "legal_nature": "META",
+      "legal_nature_marker": "inc"
+    },
+    {
+      "id": 56,
+      "theme": "WARRANTY_DISCLAIMER",
+      "block_id": 8,
+      "is_block_start": false,
+      "reason": "pas de responsabilite pour echec de stockage",
+      "legal_nature": "META",
+      "legal_nature_marker": "inc"
+    },
+    {
+      "id": 57,
+      "theme": "WARRANTY_DISCLAIMER",
+      "block_id": 8,
+      "is_block_start": false,
+      "reason": "invitation a sauvegarder ses donnees",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 58,
+      "theme": "WARRANTY_DISCLAIMER",
+      "block_id": 8,
+      "is_block_start": false,
+      "reason": "responsabilite du souscripteur pour ses sauvegardes",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 59,
+      "theme": "WARRANTY_DISCLAIMER",
+      "block_id": 9,
+      "is_block_start": true,
+      "rationale": "nouveau sujet: fourniture 'as is' sans garantie d'aucune sorte",
+      "rationale_codes": {
+        "decision_trigger": "topic_keyword",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "as is",
+        "revised_from_plan": false,
+        "confidence": 0.82
+      },
+      "legal_nature": "LIMITATION_DISCLAIMER",
+      "legal_nature_marker": "as is"
+    },
+    {
+      "id": 60,
+      "theme": "WARRANTY_DISCLAIMER",
+      "block_id": 9,
+      "is_block_start": false,
+      "reason": "absence de garantie de service ininterrompu",
+      "legal_nature": "META",
+      "legal_nature_marker": "inc"
+    },
+    {
+      "id": 61,
+      "theme": "WARRANTY_DISCLAIMER",
+      "block_id": 9,
+      "is_block_start": false,
+      "reason": "disclaimer d'exactitude/fiabilite",
+      "legal_nature": "META",
+      "legal_nature_marker": "inc"
+    },
+    {
+      "id": 62,
+      "theme": "WARRANTY_DISCLAIMER",
+      "block_id": 9,
+      "is_block_start": false,
+      "reason": "non-responsabilite pour prejudices listes",
+      "legal_nature": "META",
+      "legal_nature_marker": "inc"
+    },
+    {
+      "id": 63,
+      "theme": "WARRANTY_DISCLAIMER",
+      "block_id": 9,
+      "is_block_start": false,
+      "reason": "limites de garantie selon juridiction",
+      "legal_nature": "PROHIBITION",
+      "legal_nature_marker": "may not"
+    },
+    {
+      "id": 64,
+      "theme": "THIRD_PARTY",
+      "block_id": 10,
+      "is_block_start": true,
+      "rationale": "nouveau sujet: acces aux sites tiers via liens",
+      "rationale_codes": {
+        "decision_trigger": "topic_keyword",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "third party sites on the internet",
+        "revised_from_plan": false,
+        "confidence": 0.85
+      },
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 65,
+      "theme": "THIRD_PARTY",
+      "block_id": 10,
+      "is_block_start": false,
+      "reason": "sites tiers hors controle de 9gag",
+      "legal_nature": "META",
+      "legal_nature_marker": "inc"
+    },
+    {
+      "id": 66,
+      "theme": "THIRD_PARTY",
+      "block_id": 10,
+      "is_block_start": false,
+      "reason": "aucune garantie sur les sites tiers",
+      "legal_nature": "META",
+      "legal_nature_marker": "inc"
+    },
+    {
+      "id": 67,
+      "theme": "THIRD_PARTY",
+      "block_id": 10,
+      "is_block_start": false,
+      "reason": "renonciation aux reclamations liees aux tiers",
+      "legal_nature": "META",
+      "legal_nature_marker": "inc"
+    },
+    {
+      "id": 68,
+      "theme": "ELIGIBILITY_ACCOUNT",
+      "block_id": 11,
+      "is_block_start": true,
+      "rationale": "nouveau sujet: inscription, selection d'un mot de passe et d'une url",
+      "rationale_codes": {
+        "decision_trigger": "topic_keyword",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "required to register with 9gag",
+        "revised_from_plan": false,
+        "confidence": 0.85
+      },
+      "legal_nature": "META",
+      "legal_nature_marker": "inc"
+    },
+    {
+      "id": 69,
+      "theme": "ELIGIBILITY_ACCOUNT",
+      "block_id": 11,
+      "is_block_start": false,
+      "reason": "fourniture d'infos d'inscription exactes",
+      "legal_nature": "META",
+      "legal_nature_marker": "inc"
+    },
+    {
+      "id": 70,
+      "theme": "ELIGIBILITY_ACCOUNT",
+      "block_id": 11,
+      "is_block_start": false,
+      "reason": "manquement = resiliation du compte",
+      "legal_nature": "GOVERNANCE",
+      "legal_nature_marker": "termination"
+    },
+    {
+      "id": 71,
+      "theme": "ELIGIBILITY_ACCOUNT",
+      "block_id": 11,
+      "is_block_start": false,
+      "reason": "restrictions sur le choix d'url/nom",
+      "legal_nature": "META",
+      "legal_nature_marker": "inc"
+    },
+    {
+      "id": 72,
+      "theme": "ELIGIBILITY_ACCOUNT",
+      "block_id": 11,
+      "is_block_start": false,
+      "reason": "droit de refuser/annuler l'inscription",
+      "legal_nature": "META",
+      "legal_nature_marker": "inc"
+    },
+    {
+      "id": 73,
+      "theme": "ELIGIBILITY_ACCOUNT",
+      "block_id": 11,
+      "is_block_start": false,
+      "reason": "confidentialite du mot de passe",
+      "legal_nature": "META",
+      "legal_nature_marker": "inc"
+    },
+    {
+      "id": 74,
+      "theme": "ELIGIBILITY_ACCOUNT",
+      "block_id": 11,
+      "is_block_start": false,
+      "reason": "responsabilite pour l'activite sous le compte",
+      "legal_nature": "META",
+      "legal_nature_marker": "inc"
+    },
+    {
+      "id": 75,
+      "theme": "ELIGIBILITY_ACCOUNT",
+      "block_id": 11,
+      "is_block_start": false,
+      "reason": "notification en cas d'usage non autorise",
+      "legal_nature": "META",
+      "legal_nature_marker": "inc"
+    },
+    {
+      "id": 76,
+      "theme": "ELIGIBILITY_ACCOUNT",
+      "block_id": 11,
+      "is_block_start": false,
+      "reason": "precautions de securite et disclaimer associe",
+      "legal_nature": "DEFINITION",
+      "legal_nature_marker": "means"
+    },
+    {
+      "id": 77,
+      "theme": "INDEMNIFICATION",
+      "block_id": 12,
+      "is_block_start": true,
+      "rationale": "nouveau sujet: obligation d'indemnisation du souscripteur",
+      "rationale_codes": {
+        "decision_trigger": "topic_keyword",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "indemnify and hold 9gag",
+        "revised_from_plan": false,
+        "confidence": 0.92
+      },
+      "legal_nature": "META",
+      "legal_nature_marker": "inc"
+    },
+    {
+      "id": 78,
+      "theme": "LIABILITY_LIMITATION",
+      "block_id": 13,
+      "is_block_start": true,
+      "rationale": "nouveau sujet: limitation/exclusion de dommages",
+      "rationale_codes": {
+        "decision_trigger": "topic_keyword",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "in no event shall 9gag",
+        "revised_from_plan": false,
+        "confidence": 0.9
+      },
+      "legal_nature": "META",
+      "legal_nature_marker": "inc"
+    },
+    {
+      "id": 79,
+      "theme": "LIABILITY_LIMITATION",
+      "block_id": 13,
+      "is_block_start": false,
+      "reason": "plafond de responsabilite a 300 usd, prolonge la limitation",
+      "legal_nature": "META",
+      "legal_nature_marker": "inc"
+    },
+    {
+      "id": 80,
+      "theme": "LIABILITY_LIMITATION",
+      "block_id": 13,
+      "is_block_start": false,
+      "reason": "limites selon juridiction, prolonge la limitation de responsabilite",
+      "legal_nature": "PROHIBITION",
+      "legal_nature_marker": "may not"
+    },
+    {
+      "id": 81,
+      "theme": "PAYMENT_BILLING",
+      "block_id": 14,
+      "is_block_start": true,
+      "rationale": "nouveau sujet: certains services requierent paiement de frais",
+      "rationale_codes": {
+        "decision_trigger": "topic_keyword",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "require payment of fees",
+        "revised_from_plan": false,
+        "confidence": 0.9
+      },
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 82,
+      "theme": "PAYMENT_BILLING",
+      "block_id": 14,
+      "is_block_start": false,
+      "reason": "frais libelles en usd",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 83,
+      "theme": "PAYMENT_BILLING",
+      "block_id": 14,
+      "is_block_start": false,
+      "reason": "obligation de payer frais et taxes",
+      "legal_nature": "OBLIGATION",
+      "legal_nature_marker": "shall"
+    },
+    {
+      "id": 84,
+      "theme": "PAYMENT_BILLING",
+      "block_id": 14,
+      "is_block_start": false,
+      "reason": "frais non remboursables",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 85,
+      "theme": "PAYMENT_BILLING",
+      "block_id": 14,
+      "is_block_start": false,
+      "reason": "titulaire autorise du moyen de paiement",
+      "legal_nature": "META",
+      "legal_nature_marker": "inc"
+    },
+    {
+      "id": 86,
+      "theme": "PAYMENT_BILLING",
+      "block_id": 14,
+      "is_block_start": false,
+      "reason": "services payants fournis 'as is', prolonge le paiement",
+      "legal_nature": "LIMITATION_DISCLAIMER",
+      "legal_nature_marker": "as is"
+    },
+    {
+      "id": 87,
+      "theme": "PAYMENT_BILLING",
+      "block_id": 14,
+      "is_block_start": false,
+      "reason": "droit de modifier/eliminer les services payants",
+      "legal_nature": "META",
+      "legal_nature_marker": "inc"
+    },
+    {
+      "id": 88,
+      "theme": "PAYMENT_BILLING",
+      "block_id": 14,
+      "is_block_start": false,
+      "reason": "licence limitee sur les biens virtuels payes",
+      "legal_nature": "RIGHT_GRANT",
+      "legal_nature_marker": "license to"
+    },
+    {
+      "id": 89,
+      "theme": "PAYMENT_BILLING",
+      "block_id": 14,
+      "is_block_start": false,
+      "reason": "changement de prix avec preavis",
+      "legal_nature": "META",
+      "legal_nature_marker": "inc"
+    },
+    {
+      "id": 90,
+      "theme": "PAYMENT_BILLING",
+      "block_id": 14,
+      "is_block_start": false,
+      "reason": "annulation possible avant changement de prix",
+      "legal_nature": "PROHIBITION",
+      "legal_nature_marker": "do not"
+    },
+    {
+      "id": 91,
+      "theme": "TERMINATION",
+      "block_id": 15,
+      "is_block_start": true,
+      "rationale": "nouveau sujet: resiliation des services par l'une ou l'autre partie",
+      "rationale_codes": {
+        "decision_trigger": "topic_keyword",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "terminate the services at any time",
+        "revised_from_plan": false,
+        "confidence": 0.9
+      },
+      "legal_nature": "DEFINITION",
+      "legal_nature_marker": "means"
+    },
+    {
+      "id": 92,
+      "theme": "TERMINATION",
+      "block_id": 15,
+      "is_block_start": false,
+      "reason": "resiliation par 9gag en cas de violation",
+      "legal_nature": "META",
+      "legal_nature_marker": "inc"
+    },
+    {
+      "id": 93,
+      "theme": "TERMINATION",
+      "block_id": 15,
+      "is_block_start": false,
+      "reason": "cessation du droit d'usage a la resiliation",
+      "legal_nature": "GOVERNANCE",
+      "legal_nature_marker": "termination"
+    },
+    {
+      "id": 94,
+      "theme": "TERMINATION",
+      "block_id": 15,
+      "is_block_start": false,
+      "reason": "survie de certaines clauses apres resiliation",
+      "legal_nature": "LIMITATION_DISCLAIMER",
+      "legal_nature_marker": "disclaim"
+    },
+    {
+      "id": 95,
+      "theme": "TERMINATION",
+      "block_id": 15,
+      "is_block_start": false,
+      "reason": "obligations subsistantes apres resiliation",
+      "legal_nature": "META",
+      "legal_nature_marker": "inc"
+    },
+    {
+      "id": 96,
+      "theme": "PRIVACY_DATA",
+      "block_id": 16,
+      "is_block_start": true,
+      "rationale": "nouveau sujet: politique de confidentialite regissant les donnees personnelles",
+      "rationale_codes": {
+        "decision_trigger": "topic_keyword",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "privacy policy",
+        "revised_from_plan": false,
+        "confidence": 0.85
+      },
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 97,
+      "theme": "MISC_BOILERPLATE",
+      "block_id": 17,
+      "is_block_start": true,
+      "rationale": "nouveau sujet: integralite de l'accord (clause boilerplate)",
+      "rationale_codes": {
+        "decision_trigger": "topic_keyword",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "constitutes the entire agreement",
+        "revised_from_plan": false,
+        "confidence": 0.78
+      },
+      "legal_nature": "META",
+      "legal_nature_marker": "inc"
+    },
+    {
+      "id": 98,
+      "theme": "MISC_BOILERPLATE",
+      "block_id": 17,
+      "is_block_start": false,
+      "reason": "remplacement des accords anterieurs, prolonge l'integralite",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 99,
+      "theme": "MISC_BOILERPLATE",
+      "block_id": 17,
+      "is_block_start": false,
+      "reason": "clause de non-renonciation (waiver)",
+      "legal_nature": "PROHIBITION",
+      "legal_nature_marker": "shall not"
+    },
+    {
+      "id": 100,
+      "theme": "MISC_BOILERPLATE",
+      "block_id": 17,
+      "is_block_start": false,
+      "reason": "force majeure",
+      "legal_nature": "META",
+      "legal_nature_marker": "inc"
+    },
+    {
+      "id": 101,
+      "theme": "MISC_BOILERPLATE",
+      "block_id": 17,
+      "is_block_start": false,
+      "reason": "clause de divisibilite (severability)",
+      "legal_nature": "OBLIGATION",
+      "legal_nature_marker": "shall"
+    },
+    {
+      "id": 102,
+      "theme": "MISC_BOILERPLATE",
+      "block_id": 17,
+      "is_block_start": false,
+      "reason": "non-cessibilite par le souscripteur",
+      "legal_nature": "META",
+      "legal_nature_marker": "inc"
+    },
+    {
+      "id": 103,
+      "theme": "MISC_BOILERPLATE",
+      "block_id": 17,
+      "is_block_start": false,
+      "reason": "cession possible par 9gag, prolonge le boilerplate",
+      "legal_nature": "META",
+      "legal_nature_marker": "inc"
+    },
+    {
+      "id": 104,
+      "theme": "GOVERNING_LAW",
+      "block_id": 18,
+      "is_block_start": true,
+      "rationale": "nouveau sujet: droit applicable (Delaware)",
+      "rationale_codes": {
+        "decision_trigger": "topic_keyword",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "laws of the state of delaware",
+        "revised_from_plan": false,
+        "confidence": 0.9
+      },
+      "legal_nature": "GOVERNANCE",
+      "legal_nature_marker": "governed by"
+    },
+    {
+      "id": 105,
+      "theme": "MISC_BOILERPLATE",
+      "block_id": 19,
+      "is_block_start": true,
+      "rationale": "nouveau sujet: absence d'agence/partenariat (clause boilerplate)",
+      "rationale_codes": {
+        "decision_trigger": "topic_keyword",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "no agency , partnership",
+        "revised_from_plan": false,
+        "confidence": 0.75
+      },
+      "legal_nature": "META",
+      "legal_nature_marker": "inc"
+    },
+    {
+      "id": 106,
+      "theme": "LICENSE_IP",
+      "block_id": 20,
+      "is_block_start": true,
+      "rationale": "titre de section: procedure de notification d'infractions au copyright (DMCA)",
+      "rationale_codes": {
+        "decision_trigger": "title_marker",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "notice and procedure for making claims of copyright",
+        "revised_from_plan": false,
+        "confidence": 0.9
+      },
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 107,
+      "theme": "LICENSE_IP",
+      "block_id": 20,
+      "is_block_start": false,
+      "reason": "9gag respecte la pi d'autrui",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 108,
+      "theme": "LICENSE_IP",
+      "block_id": 20,
+      "is_block_start": false,
+      "reason": "activite contrefaisante non toleree",
+      "legal_nature": "PROHIBITION",
+      "legal_nature_marker": "will not"
+    },
+    {
+      "id": 109,
+      "theme": "LICENSE_IP",
+      "block_id": 20,
+      "is_block_start": false,
+      "reason": "politique de retrait du materiel contrefaisant",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 110,
+      "theme": "LICENSE_IP",
+      "block_id": 20,
+      "is_block_start": false,
+      "reason": "definition de 'repeat infringer'",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 111,
+      "theme": "LICENSE_IP",
+      "block_id": 20,
+      "is_block_start": false,
+      "reason": "discretion de resilier le compte",
+      "legal_nature": "GOVERNANCE",
+      "legal_nature_marker": "terminate"
+    },
+    {
+      "id": 112,
+      "theme": "LICENSE_IP",
+      "block_id": 20,
+      "is_block_start": false,
+      "reason": "procedure d'envoi de notification de contrefacon",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 113,
+      "theme": "LICENSE_IP",
+      "block_id": 20,
+      "is_block_start": false,
+      "reason": "chapeau de la liste des informations requises",
+      "legal_nature": "OBLIGATION",
+      "legal_nature_marker": "must"
+    },
+    {
+      "id": 114,
+      "theme": "LICENSE_IP",
+      "block_id": 20,
+      "is_block_start": false,
+      "reason": "item de liste: signature, herite du chapeau",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 115,
+      "theme": "LICENSE_IP",
+      "block_id": 20,
+      "is_block_start": false,
+      "reason": "item de liste: identification des oeuvres",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 116,
+      "theme": "LICENSE_IP",
+      "block_id": 20,
+      "is_block_start": false,
+      "reason": "item de liste: identification du materiel infractionnel",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 117,
+      "theme": "LICENSE_IP",
+      "block_id": 20,
+      "is_block_start": false,
+      "reason": "item de liste: coordonnees du plaignant",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 118,
+      "theme": "LICENSE_IP",
+      "block_id": 20,
+      "is_block_start": false,
+      "reason": "item de liste: declaration de bonne foi",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 119,
+      "theme": "LICENSE_IP",
+      "block_id": 20,
+      "is_block_start": false,
+      "reason": "item de liste: declaration sous peine de parjure",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 120,
+      "theme": "LICENSE_IP",
+      "block_id": 20,
+      "is_block_start": false,
+      "reason": "conseil de consulter un avocat / 17 u.s.c. 512",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 121,
+      "theme": "LICENSE_IP",
+      "block_id": 20,
+      "is_block_start": false,
+      "reason": "agent designe pour les notifications",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 122,
+      "theme": "LICENSE_IP",
+      "block_id": 20,
+      "is_block_start": false,
+      "reason": "adresse de l'agent, prolonge la procedure",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 123,
+      "theme": "LICENSE_IP",
+      "block_id": 20,
+      "is_block_start": false,
+      "reason": "droit a une contre-notification, prolonge la procedure dmca",
+      "legal_nature": "OBLIGATION",
+      "legal_nature_marker": "you will"
+    },
+    {
+      "id": 124,
+      "theme": "LICENSE_IP",
+      "block_id": 20,
+      "is_block_start": false,
+      "reason": "exigences de forme de la contre-notification",
+      "legal_nature": "OBLIGATION",
+      "legal_nature_marker": "must"
+    },
+    {
+      "id": 125,
+      "theme": "LICENSE_IP",
+      "block_id": 20,
+      "is_block_start": false,
+      "reason": "item de liste: signature du souscripteur",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 126,
+      "theme": "LICENSE_IP",
+      "block_id": 20,
+      "is_block_start": false,
+      "reason": "item de liste: identification du materiel retire",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 127,
+      "theme": "LICENSE_IP",
+      "block_id": 20,
+      "is_block_start": false,
+      "reason": "item de liste: declaration sous peine de parjure",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 128,
+      "theme": "LICENSE_IP",
+      "block_id": 20,
+      "is_block_start": false,
+      "reason": "item de liste: coordonnees et consentement a la juridiction",
+      "legal_nature": "GOVERNANCE",
+      "legal_nature_marker": "jurisdiction"
+    },
+    {
+      "id": 129,
+      "theme": "LICENSE_IP",
+      "block_id": 20,
+      "is_block_start": false,
+      "reason": "conseil de consulter un avocat pour la contre-notification",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 130,
+      "theme": "LICENSE_IP",
+      "block_id": 21,
+      "is_block_start": true,
+      "rationale": "titre de section: actions de 9gag apres reception d'une contre-notification",
+      "rationale_codes": {
+        "decision_trigger": "title_marker",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "9gag actions following receipt of counter notification",
+        "revised_from_plan": false,
+        "confidence": 0.85
+      },
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 131,
+      "theme": "LICENSE_IP",
+      "block_id": 21,
+      "is_block_start": false,
+      "reason": "delai de remise en ligne du materiel",
+      "legal_nature": "OBLIGATION",
+      "legal_nature_marker": "shall"
+    },
+    {
+      "id": 132,
+      "theme": "LICENSE_IP",
+      "block_id": 21,
+      "is_block_start": false,
+      "reason": "fausses notifications/contre-notifications, prolonge la procedure copyright",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 133,
+      "theme": "LICENSE_IP",
+      "block_id": 21,
+      "is_block_start": false,
+      "reason": "renvoi a la loi sur le copyright",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 134,
+      "theme": "LICENSE_IP",
+      "block_id": 21,
+      "is_block_start": false,
+      "reason": "reference 17 u.s.c. 512 (f), prolonge le copyright act",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 135,
+      "theme": "LICENSE_IP",
+      "block_id": 21,
+      "is_block_start": false,
+      "reason": "droit de reclamer des dommages pour fausse notification",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 136,
+      "theme": "LICENSE_IP",
+      "block_id": 21,
+      "is_block_start": false,
+      "reason": "seules les notices dmca envoyees a l'agent, prolonge la procedure",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 137,
+      "theme": "LICENSE_IP",
+      "block_id": 21,
+      "is_block_start": false,
+      "reason": "seules les notices dmca doivent etre envoyees a l'agent, prolonge la procedure",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 138,
+      "theme": "LICENSE_IP",
+      "block_id": 21,
+      "is_block_start": false,
+      "reason": "autres messages a envoyer au support, cloture de la section dmca",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    }
+  ]
+}

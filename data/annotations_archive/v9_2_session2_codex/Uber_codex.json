@@ -1,0 +1,1413 @@
+{
+  "doc": "Uber",
+  "judge": "codex",
+  "version": "v9.2-nature-derived",
+  "document_plan": {
+    "estimated_n_blocks": 26,
+    "rationale_global": "lecture globale avec docfeatures couche 0 ; segmentation conservatrice par sujet juridique autonome.",
+    "segments": [
+      {
+        "start_id": 0,
+        "theme": "META",
+        "rationale": "ouverture prévue pour information factuelle non normative",
+        "evidence_span": "last updated : march 16 , 2017"
+      },
+      {
+        "start_id": 1,
+        "theme": "PREAMBLE_SCOPE",
+        "rationale": "ouverture prévue pour cadre et acceptation des conditions",
+        "evidence_span": "these terms of use -lrb- `` terms ''"
+      },
+      {
+        "start_id": 6,
+        "theme": "TERMINATION",
+        "rationale": "ouverture prévue pour suspension ou résiliation",
+        "evidence_span": "uber may immediately terminate these terms or any"
+      },
+      {
+        "start_id": 7,
+        "theme": "PREAMBLE_SCOPE",
+        "rationale": "ouverture prévue pour cadre et acceptation des conditions",
+        "evidence_span": "supplemental terms may apply to certain services ,"
+      },
+      {
+        "start_id": 10,
+        "theme": "MODIFICATION_OF_TERMS",
+        "rationale": "ouverture prévue pour modification des termes ou du service",
+        "evidence_span": "uber may amend the terms related to the"
+      },
+      {
+        "start_id": 13,
+        "theme": "PRIVACY_DATA",
+        "rationale": "ouverture prévue pour données personnelles ou communications",
+        "evidence_span": "our collection and use of personal information in"
+      },
+      {
+        "start_id": 15,
+        "theme": "THIRD_PARTY",
+        "rationale": "ouverture prévue pour tiers, fournisseurs ou liens externes",
+        "evidence_span": "the services constitute a technology platform that enables"
+      },
+      {
+        "start_id": 18,
+        "theme": "LICENSE_IP",
+        "rationale": "ouverture prévue pour licence et propriété intellectuelle",
+        "evidence_span": "subject to your compliance with these terms ,"
+      },
+      {
+        "start_id": 21,
+        "theme": "THIRD_PARTY",
+        "rationale": "ouverture prévue pour tiers, fournisseurs ou liens externes",
+        "evidence_span": "you acknowledge that portions of the services may"
+      },
+      {
+        "start_id": 23,
+        "theme": "THIRD_PARTY",
+        "rationale": "ouverture prévue pour tiers, fournisseurs ou liens externes",
+        "evidence_span": "third party services and content ."
+      },
+      {
+        "start_id": 30,
+        "theme": "LICENSE_IP",
+        "rationale": "ouverture prévue pour licence et propriété intellectuelle",
+        "evidence_span": "the services and all rights therein are and"
+      },
+      {
+        "start_id": 32,
+        "theme": "ELIGIBILITY_ACCOUNT",
+        "rationale": "ouverture prévue pour compte, éligibilité ou sécurité d'accès",
+        "evidence_span": "in order to use most aspects of the"
+      },
+      {
+        "start_id": 42,
+        "theme": "ACCEPTABLE_USE",
+        "rationale": "ouverture prévue pour règles d'usage ou interdictions",
+        "evidence_span": "you agree to comply with all applicable laws"
+      },
+      {
+        "start_id": 45,
+        "theme": "PRIVACY_DATA",
+        "rationale": "ouverture prévue pour données personnelles ou communications",
+        "evidence_span": "by creating an account , you agree that"
+      },
+      {
+        "start_id": 48,
+        "theme": "PAYMENT_BILLING",
+        "rationale": "ouverture prévue pour paiement, frais ou remboursement",
+        "evidence_span": "uber may , in uber 's sole discretion"
+      },
+      {
+        "start_id": 51,
+        "theme": "USER_CONTENT",
+        "rationale": "ouverture prévue pour contenu utilisateur",
+        "evidence_span": "uber may , in uber 's sole discretion"
+      },
+      {
+        "start_id": 57,
+        "theme": "PAYMENT_BILLING",
+        "rationale": "ouverture prévue pour paiement, frais ou remboursement",
+        "evidence_span": "you are responsible for obtaining the data network"
+      },
+      {
+        "start_id": 62,
+        "theme": "PAYMENT_BILLING",
+        "rationale": "ouverture prévue pour paiement, frais ou remboursement",
+        "evidence_span": "you understand that use of the services may"
+      },
+      {
+        "start_id": 84,
+        "theme": "WARRANTY_DISCLAIMER",
+        "rationale": "ouverture prévue pour exclusion de garanties",
+        "evidence_span": "disclaimers ; limitation of liability ; indemnity ."
+      },
+      {
+        "start_id": 90,
+        "theme": "LIABILITY_LIMITATION",
+        "rationale": "ouverture prévue pour limitation de responsabilité",
+        "evidence_span": "uber shall not be liable for indirect ,"
+      },
+      {
+        "start_id": 97,
+        "theme": "INDEMNIFICATION",
+        "rationale": "ouverture prévue pour indemnisation",
+        "evidence_span": "you agree to indemnify and hold uber and"
+      },
+      {
+        "start_id": 98,
+        "theme": "GOVERNING_LAW",
+        "rationale": "ouverture prévue pour loi applicable ou juridiction",
+        "evidence_span": "except as otherwise set forth in these terms"
+      },
+      {
+        "start_id": 100,
+        "theme": "DISPUTE_ARBITRATION",
+        "rationale": "ouverture prévue pour réclamation, litige ou arbitrage",
+        "evidence_span": "any dispute , conflict , claim or controversy"
+      },
+      {
+        "start_id": 107,
+        "theme": "LICENSE_IP",
+        "rationale": "ouverture prévue pour licence et propriété intellectuelle",
+        "evidence_span": "claims of copyright infringement should be sent to"
+      },
+      {
+        "start_id": 109,
+        "theme": "MISC_BOILERPLATE",
+        "rationale": "ouverture prévue pour clause finale ou notification générale",
+        "evidence_span": "uber may give notice by means of a"
+      },
+      {
+        "start_id": 111,
+        "theme": "MISC_BOILERPLATE",
+        "rationale": "ouverture prévue pour clause finale ou notification générale",
+        "evidence_span": "you may not assign or transfer these terms"
+      }
+    ]
+  },
+  "annotations": [
+    {
+      "id": 0,
+      "theme": "META",
+      "block_id": 0,
+      "is_block_start": true,
+      "rationale": "ouvre information factuelle non normative ; indice « last updated : march 16 , 2017 »",
+      "rationale_codes": {
+        "decision_trigger": "document_start",
+        "relation_to_prev": "document_start",
+        "evidence_span": "last updated : march 16 , 2017",
+        "revised_from_plan": false,
+        "confidence": 0.95
+      },
+      "legal_nature": "META",
+      "legal_nature_marker": "last updated"
+    },
+    {
+      "id": 1,
+      "theme": "PREAMBLE_SCOPE",
+      "block_id": 1,
+      "is_block_start": true,
+      "rationale": "ouvre cadre et acceptation des conditions ; indice « these terms of use -lrb- `` terms '' »",
+      "rationale_codes": {
+        "decision_trigger": "topic_keyword",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "these terms of use -lrb- `` terms ''",
+        "revised_from_plan": false,
+        "confidence": 0.86
+      },
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 2,
+      "theme": "PREAMBLE_SCOPE",
+      "block_id": 1,
+      "is_block_start": false,
+      "reason": "continue PREAMBLE_SCOPE, précision ou conséquence du même sujet",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 3,
+      "theme": "PREAMBLE_SCOPE",
+      "block_id": 1,
+      "is_block_start": false,
+      "reason": "continue PREAMBLE_SCOPE, précision ou conséquence du même sujet",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 4,
+      "theme": "PREAMBLE_SCOPE",
+      "block_id": 1,
+      "is_block_start": false,
+      "reason": "continue PREAMBLE_SCOPE, précision ou conséquence du même sujet",
+      "legal_nature": "PROHIBITION",
+      "legal_nature_marker": "may not"
+    },
+    {
+      "id": 5,
+      "theme": "PREAMBLE_SCOPE",
+      "block_id": 1,
+      "is_block_start": false,
+      "reason": "continue PREAMBLE_SCOPE, précision ou conséquence du même sujet",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 6,
+      "theme": "TERMINATION",
+      "block_id": 2,
+      "is_block_start": true,
+      "rationale": "ouvre suspension ou résiliation ; indice « uber may immediately terminate these terms or any »",
+      "rationale_codes": {
+        "decision_trigger": "topic_keyword",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "uber may immediately terminate these terms or any",
+        "revised_from_plan": false,
+        "confidence": 0.86
+      },
+      "legal_nature": "GOVERNANCE",
+      "legal_nature_marker": "terminate"
+    },
+    {
+      "id": 7,
+      "theme": "PREAMBLE_SCOPE",
+      "block_id": 3,
+      "is_block_start": true,
+      "rationale": "ouvre cadre et acceptation des conditions ; indice « supplemental terms may apply to certain services , »",
+      "rationale_codes": {
+        "decision_trigger": "topic_keyword",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "supplemental terms may apply to certain services ,",
+        "revised_from_plan": false,
+        "confidence": 0.86
+      },
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 8,
+      "theme": "PREAMBLE_SCOPE",
+      "block_id": 3,
+      "is_block_start": false,
+      "reason": "continue PREAMBLE_SCOPE, précision ou conséquence du même sujet",
+      "legal_nature": "OBLIGATION",
+      "legal_nature_marker": "shall"
+    },
+    {
+      "id": 9,
+      "theme": "PREAMBLE_SCOPE",
+      "block_id": 3,
+      "is_block_start": false,
+      "reason": "continue PREAMBLE_SCOPE, précision ou conséquence du même sujet",
+      "legal_nature": "OBLIGATION",
+      "legal_nature_marker": "shall"
+    },
+    {
+      "id": 10,
+      "theme": "MODIFICATION_OF_TERMS",
+      "block_id": 4,
+      "is_block_start": true,
+      "rationale": "ouvre modification des termes ou du service ; indice « uber may amend the terms related to the »",
+      "rationale_codes": {
+        "decision_trigger": "topic_keyword",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "uber may amend the terms related to the",
+        "revised_from_plan": false,
+        "confidence": 0.86
+      },
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 11,
+      "theme": "MODIFICATION_OF_TERMS",
+      "block_id": 4,
+      "is_block_start": false,
+      "reason": "continue MODIFICATION_OF_TERMS, précision ou conséquence du même sujet",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 12,
+      "theme": "MODIFICATION_OF_TERMS",
+      "block_id": 4,
+      "is_block_start": false,
+      "reason": "continue MODIFICATION_OF_TERMS, précision ou conséquence du même sujet",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 13,
+      "theme": "PRIVACY_DATA",
+      "block_id": 5,
+      "is_block_start": true,
+      "rationale": "ouvre données personnelles ou communications ; indice « our collection and use of personal information in »",
+      "rationale_codes": {
+        "decision_trigger": "topic_keyword",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "our collection and use of personal information in",
+        "revised_from_plan": false,
+        "confidence": 0.86
+      },
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 14,
+      "theme": "PRIVACY_DATA",
+      "block_id": 5,
+      "is_block_start": false,
+      "reason": "continue PRIVACY_DATA, précision ou conséquence du même sujet",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 15,
+      "theme": "THIRD_PARTY",
+      "block_id": 6,
+      "is_block_start": true,
+      "rationale": "ouvre tiers, fournisseurs ou liens externes ; indice « the services constitute a technology platform that enables »",
+      "rationale_codes": {
+        "decision_trigger": "topic_keyword",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "the services constitute a technology platform that enables",
+        "revised_from_plan": false,
+        "confidence": 0.86
+      },
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 16,
+      "theme": "THIRD_PARTY",
+      "block_id": 6,
+      "is_block_start": false,
+      "reason": "continue THIRD_PARTY, précision ou conséquence du même sujet",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 17,
+      "theme": "THIRD_PARTY",
+      "block_id": 6,
+      "is_block_start": false,
+      "reason": "continue THIRD_PARTY, précision ou conséquence du même sujet",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 18,
+      "theme": "LICENSE_IP",
+      "block_id": 7,
+      "is_block_start": true,
+      "rationale": "ouvre licence et propriété intellectuelle ; indice « subject to your compliance with these terms , »",
+      "rationale_codes": {
+        "decision_trigger": "topic_keyword",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "subject to your compliance with these terms ,",
+        "revised_from_plan": false,
+        "confidence": 0.86
+      },
+      "legal_nature": "RIGHT_GRANT",
+      "legal_nature_marker": "grants you"
+    },
+    {
+      "id": 19,
+      "theme": "LICENSE_IP",
+      "block_id": 7,
+      "is_block_start": false,
+      "reason": "continue LICENSE_IP, précision ou conséquence du même sujet",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 20,
+      "theme": "LICENSE_IP",
+      "block_id": 7,
+      "is_block_start": false,
+      "reason": "continue LICENSE_IP, précision ou conséquence du même sujet",
+      "legal_nature": "PROHIBITION",
+      "legal_nature_marker": "may not"
+    },
+    {
+      "id": 21,
+      "theme": "THIRD_PARTY",
+      "block_id": 8,
+      "is_block_start": true,
+      "rationale": "ouvre tiers, fournisseurs ou liens externes ; indice « you acknowledge that portions of the services may »",
+      "rationale_codes": {
+        "decision_trigger": "topic_keyword",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "you acknowledge that portions of the services may",
+        "revised_from_plan": false,
+        "confidence": 0.86
+      },
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 22,
+      "theme": "THIRD_PARTY",
+      "block_id": 8,
+      "is_block_start": false,
+      "reason": "continue THIRD_PARTY, précision ou conséquence du même sujet",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 23,
+      "theme": "THIRD_PARTY",
+      "block_id": 9,
+      "is_block_start": true,
+      "rationale": "ouvre tiers, fournisseurs ou liens externes ; indice « third party services and content . »",
+      "rationale_codes": {
+        "decision_trigger": "title_marker",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "third party services and content .",
+        "revised_from_plan": false,
+        "confidence": 0.86
+      },
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 24,
+      "theme": "THIRD_PARTY",
+      "block_id": 9,
+      "is_block_start": false,
+      "reason": "continue THIRD_PARTY, précision ou conséquence du même sujet",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 25,
+      "theme": "THIRD_PARTY",
+      "block_id": 9,
+      "is_block_start": false,
+      "reason": "continue THIRD_PARTY, précision ou conséquence du même sujet",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 26,
+      "theme": "THIRD_PARTY",
+      "block_id": 9,
+      "is_block_start": false,
+      "reason": "continue THIRD_PARTY, précision ou conséquence du même sujet",
+      "legal_nature": "LIMITATION_DISCLAIMER",
+      "legal_nature_marker": "in no event"
+    },
+    {
+      "id": 27,
+      "theme": "THIRD_PARTY",
+      "block_id": 9,
+      "is_block_start": false,
+      "reason": "continue THIRD_PARTY, précision ou conséquence du même sujet",
+      "legal_nature": "META",
+      "legal_nature_marker": "inc."
+    },
+    {
+      "id": 28,
+      "theme": "THIRD_PARTY",
+      "block_id": 9,
+      "is_block_start": false,
+      "reason": "continue THIRD_PARTY, précision ou conséquence du même sujet",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 29,
+      "theme": "THIRD_PARTY",
+      "block_id": 9,
+      "is_block_start": false,
+      "reason": "continue THIRD_PARTY, précision ou conséquence du même sujet",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 30,
+      "theme": "LICENSE_IP",
+      "block_id": 10,
+      "is_block_start": true,
+      "rationale": "ouvre licence et propriété intellectuelle ; indice « the services and all rights therein are and »",
+      "rationale_codes": {
+        "decision_trigger": "topic_keyword",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "the services and all rights therein are and",
+        "revised_from_plan": false,
+        "confidence": 0.86
+      },
+      "legal_nature": "OBLIGATION",
+      "legal_nature_marker": "shall"
+    },
+    {
+      "id": 31,
+      "theme": "LICENSE_IP",
+      "block_id": 10,
+      "is_block_start": false,
+      "reason": "continue LICENSE_IP, précision ou conséquence du même sujet",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 32,
+      "theme": "ELIGIBILITY_ACCOUNT",
+      "block_id": 11,
+      "is_block_start": true,
+      "rationale": "ouvre compte, éligibilité ou sécurité d'accès ; indice « in order to use most aspects of the »",
+      "rationale_codes": {
+        "decision_trigger": "topic_keyword",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "in order to use most aspects of the",
+        "revised_from_plan": false,
+        "confidence": 0.86
+      },
+      "legal_nature": "OBLIGATION",
+      "legal_nature_marker": "must"
+    },
+    {
+      "id": 33,
+      "theme": "ELIGIBILITY_ACCOUNT",
+      "block_id": 11,
+      "is_block_start": false,
+      "reason": "continue ELIGIBILITY_ACCOUNT, précision ou conséquence du même sujet",
+      "legal_nature": "GOVERNANCE",
+      "legal_nature_marker": "jurisdiction"
+    },
+    {
+      "id": 34,
+      "theme": "ELIGIBILITY_ACCOUNT",
+      "block_id": 11,
+      "is_block_start": false,
+      "reason": "continue ELIGIBILITY_ACCOUNT, précision ou conséquence du même sujet",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 35,
+      "theme": "ELIGIBILITY_ACCOUNT",
+      "block_id": 11,
+      "is_block_start": false,
+      "reason": "continue ELIGIBILITY_ACCOUNT, précision ou conséquence du même sujet",
+      "legal_nature": "OBLIGATION",
+      "legal_nature_marker": "you agree to"
+    },
+    {
+      "id": 36,
+      "theme": "ELIGIBILITY_ACCOUNT",
+      "block_id": 11,
+      "is_block_start": false,
+      "reason": "continue ELIGIBILITY_ACCOUNT, précision ou conséquence du même sujet",
+      "legal_nature": "GOVERNANCE",
+      "legal_nature_marker": "termination"
+    },
+    {
+      "id": 37,
+      "theme": "ELIGIBILITY_ACCOUNT",
+      "block_id": 11,
+      "is_block_start": false,
+      "reason": "continue ELIGIBILITY_ACCOUNT, précision ou conséquence du même sujet",
+      "legal_nature": "OBLIGATION",
+      "legal_nature_marker": "you agree to"
+    },
+    {
+      "id": 38,
+      "theme": "ELIGIBILITY_ACCOUNT",
+      "block_id": 11,
+      "is_block_start": false,
+      "reason": "continue ELIGIBILITY_ACCOUNT, précision ou conséquence du même sujet",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 39,
+      "theme": "ELIGIBILITY_ACCOUNT",
+      "block_id": 11,
+      "is_block_start": false,
+      "reason": "continue ELIGIBILITY_ACCOUNT, précision ou conséquence du même sujet",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 40,
+      "theme": "ELIGIBILITY_ACCOUNT",
+      "block_id": 11,
+      "is_block_start": false,
+      "reason": "continue ELIGIBILITY_ACCOUNT, précision ou conséquence du même sujet",
+      "legal_nature": "PROHIBITION",
+      "legal_nature_marker": "may not"
+    },
+    {
+      "id": 41,
+      "theme": "ELIGIBILITY_ACCOUNT",
+      "block_id": 11,
+      "is_block_start": false,
+      "reason": "continue ELIGIBILITY_ACCOUNT, précision ou conséquence du même sujet",
+      "legal_nature": "PROHIBITION",
+      "legal_nature_marker": "may not"
+    },
+    {
+      "id": 42,
+      "theme": "ACCEPTABLE_USE",
+      "block_id": 12,
+      "is_block_start": true,
+      "rationale": "ouvre règles d'usage ou interdictions ; indice « you agree to comply with all applicable laws »",
+      "rationale_codes": {
+        "decision_trigger": "topic_keyword",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "you agree to comply with all applicable laws",
+        "revised_from_plan": false,
+        "confidence": 0.86
+      },
+      "legal_nature": "OBLIGATION",
+      "legal_nature_marker": "you agree to"
+    },
+    {
+      "id": 43,
+      "theme": "ACCEPTABLE_USE",
+      "block_id": 12,
+      "is_block_start": false,
+      "reason": "continue ACCEPTABLE_USE, précision ou conséquence du même sujet",
+      "legal_nature": "PROHIBITION",
+      "legal_nature_marker": "will not"
+    },
+    {
+      "id": 44,
+      "theme": "ACCEPTABLE_USE",
+      "block_id": 12,
+      "is_block_start": false,
+      "reason": "continue ACCEPTABLE_USE, précision ou conséquence du même sujet",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 45,
+      "theme": "PRIVACY_DATA",
+      "block_id": 13,
+      "is_block_start": true,
+      "rationale": "ouvre données personnelles ou communications ; indice « by creating an account , you agree that »",
+      "rationale_codes": {
+        "decision_trigger": "topic_keyword",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "by creating an account , you agree that",
+        "revised_from_plan": false,
+        "confidence": 0.86
+      },
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 46,
+      "theme": "PRIVACY_DATA",
+      "block_id": 13,
+      "is_block_start": false,
+      "reason": "continue PRIVACY_DATA, précision ou conséquence du même sujet",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 47,
+      "theme": "PRIVACY_DATA",
+      "block_id": 13,
+      "is_block_start": false,
+      "reason": "continue PRIVACY_DATA, précision ou conséquence du même sujet",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 48,
+      "theme": "PAYMENT_BILLING",
+      "block_id": 14,
+      "is_block_start": true,
+      "rationale": "ouvre paiement, frais ou remboursement ; indice « uber may , in uber 's sole discretion »",
+      "rationale_codes": {
+        "decision_trigger": "topic_keyword",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "uber may , in uber 's sole discretion",
+        "revised_from_plan": false,
+        "confidence": 0.86
+      },
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 49,
+      "theme": "PAYMENT_BILLING",
+      "block_id": 14,
+      "is_block_start": false,
+      "reason": "continue PAYMENT_BILLING, précision ou conséquence du même sujet",
+      "legal_nature": "PROHIBITION",
+      "legal_nature_marker": "may not"
+    },
+    {
+      "id": 50,
+      "theme": "PAYMENT_BILLING",
+      "block_id": 14,
+      "is_block_start": false,
+      "reason": "continue PAYMENT_BILLING, précision ou conséquence du même sujet",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 51,
+      "theme": "USER_CONTENT",
+      "block_id": 15,
+      "is_block_start": true,
+      "rationale": "ouvre contenu utilisateur ; indice « uber may , in uber 's sole discretion »",
+      "rationale_codes": {
+        "decision_trigger": "topic_keyword",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "uber may , in uber 's sole discretion",
+        "revised_from_plan": false,
+        "confidence": 0.86
+      },
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 52,
+      "theme": "USER_CONTENT",
+      "block_id": 15,
+      "is_block_start": false,
+      "reason": "continue USER_CONTENT, précision ou conséquence du même sujet",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 53,
+      "theme": "USER_CONTENT",
+      "block_id": 15,
+      "is_block_start": false,
+      "reason": "continue USER_CONTENT, précision ou conséquence du même sujet",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 54,
+      "theme": "USER_CONTENT",
+      "block_id": 15,
+      "is_block_start": false,
+      "reason": "continue USER_CONTENT, précision ou conséquence du même sujet",
+      "legal_nature": "RIGHT_GRANT",
+      "legal_nature_marker": "license to"
+    },
+    {
+      "id": 55,
+      "theme": "USER_CONTENT",
+      "block_id": 15,
+      "is_block_start": false,
+      "reason": "continue USER_CONTENT, précision ou conséquence du même sujet",
+      "legal_nature": "OBLIGATION",
+      "legal_nature_marker": "you agree to"
+    },
+    {
+      "id": 56,
+      "theme": "USER_CONTENT",
+      "block_id": 15,
+      "is_block_start": false,
+      "reason": "continue USER_CONTENT, précision ou conséquence du même sujet",
+      "legal_nature": "PROHIBITION",
+      "legal_nature_marker": "shall not"
+    },
+    {
+      "id": 57,
+      "theme": "PAYMENT_BILLING",
+      "block_id": 16,
+      "is_block_start": true,
+      "rationale": "ouvre paiement, frais ou remboursement ; indice « you are responsible for obtaining the data network »",
+      "rationale_codes": {
+        "decision_trigger": "topic_keyword",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "you are responsible for obtaining the data network",
+        "revised_from_plan": false,
+        "confidence": 0.86
+      },
+      "legal_nature": "OBLIGATION",
+      "legal_nature_marker": "you are responsible"
+    },
+    {
+      "id": 58,
+      "theme": "PAYMENT_BILLING",
+      "block_id": 16,
+      "is_block_start": false,
+      "reason": "continue PAYMENT_BILLING, précision ou conséquence du même sujet",
+      "legal_nature": "OBLIGATION",
+      "legal_nature_marker": "you shall"
+    },
+    {
+      "id": 59,
+      "theme": "PAYMENT_BILLING",
+      "block_id": 16,
+      "is_block_start": false,
+      "reason": "continue PAYMENT_BILLING, précision ou conséquence du même sujet",
+      "legal_nature": "OBLIGATION",
+      "legal_nature_marker": "you are responsible"
+    },
+    {
+      "id": 60,
+      "theme": "PAYMENT_BILLING",
+      "block_id": 16,
+      "is_block_start": false,
+      "reason": "continue PAYMENT_BILLING, précision ou conséquence du même sujet",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 61,
+      "theme": "PAYMENT_BILLING",
+      "block_id": 16,
+      "is_block_start": false,
+      "reason": "continue PAYMENT_BILLING, précision ou conséquence du même sujet",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 62,
+      "theme": "PAYMENT_BILLING",
+      "block_id": 17,
+      "is_block_start": true,
+      "rationale": "ouvre paiement, frais ou remboursement ; indice « you understand that use of the services may »",
+      "rationale_codes": {
+        "decision_trigger": "topic_keyword",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "you understand that use of the services may",
+        "revised_from_plan": false,
+        "confidence": 0.86
+      },
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 63,
+      "theme": "PAYMENT_BILLING",
+      "block_id": 17,
+      "is_block_start": false,
+      "reason": "continue PAYMENT_BILLING, précision ou conséquence du même sujet",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 64,
+      "theme": "PAYMENT_BILLING",
+      "block_id": 17,
+      "is_block_start": false,
+      "reason": "continue PAYMENT_BILLING, précision ou conséquence du même sujet",
+      "legal_nature": "OBLIGATION",
+      "legal_nature_marker": "shall"
+    },
+    {
+      "id": 65,
+      "theme": "PAYMENT_BILLING",
+      "block_id": 17,
+      "is_block_start": false,
+      "reason": "continue PAYMENT_BILLING, précision ou conséquence du même sujet",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 66,
+      "theme": "PAYMENT_BILLING",
+      "block_id": 17,
+      "is_block_start": false,
+      "reason": "continue PAYMENT_BILLING, précision ou conséquence du même sujet",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 67,
+      "theme": "PAYMENT_BILLING",
+      "block_id": 17,
+      "is_block_start": false,
+      "reason": "continue PAYMENT_BILLING, précision ou conséquence du même sujet",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 68,
+      "theme": "PAYMENT_BILLING",
+      "block_id": 17,
+      "is_block_start": false,
+      "reason": "continue PAYMENT_BILLING, précision ou conséquence du même sujet",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 69,
+      "theme": "PAYMENT_BILLING",
+      "block_id": 17,
+      "is_block_start": false,
+      "reason": "continue PAYMENT_BILLING, précision ou conséquence du même sujet",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 70,
+      "theme": "PAYMENT_BILLING",
+      "block_id": 17,
+      "is_block_start": false,
+      "reason": "continue PAYMENT_BILLING, précision ou conséquence du même sujet",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 71,
+      "theme": "PAYMENT_BILLING",
+      "block_id": 17,
+      "is_block_start": false,
+      "reason": "continue PAYMENT_BILLING, précision ou conséquence du même sujet",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 72,
+      "theme": "PAYMENT_BILLING",
+      "block_id": 17,
+      "is_block_start": false,
+      "reason": "continue PAYMENT_BILLING, précision ou conséquence du même sujet",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 73,
+      "theme": "PAYMENT_BILLING",
+      "block_id": 17,
+      "is_block_start": false,
+      "reason": "continue PAYMENT_BILLING, précision ou conséquence du même sujet",
+      "legal_nature": "OBLIGATION",
+      "legal_nature_marker": "you will"
+    },
+    {
+      "id": 74,
+      "theme": "PAYMENT_BILLING",
+      "block_id": 17,
+      "is_block_start": false,
+      "reason": "continue PAYMENT_BILLING, précision ou conséquence du même sujet",
+      "legal_nature": "OBLIGATION",
+      "legal_nature_marker": "shall"
+    },
+    {
+      "id": 75,
+      "theme": "PAYMENT_BILLING",
+      "block_id": 17,
+      "is_block_start": false,
+      "reason": "continue PAYMENT_BILLING, précision ou conséquence du même sujet",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 76,
+      "theme": "PAYMENT_BILLING",
+      "block_id": 17,
+      "is_block_start": false,
+      "reason": "continue PAYMENT_BILLING, précision ou conséquence du même sujet",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 77,
+      "theme": "PAYMENT_BILLING",
+      "block_id": 17,
+      "is_block_start": false,
+      "reason": "continue PAYMENT_BILLING, précision ou conséquence du même sujet",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 78,
+      "theme": "PAYMENT_BILLING",
+      "block_id": 17,
+      "is_block_start": false,
+      "reason": "continue PAYMENT_BILLING, précision ou conséquence du même sujet",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 79,
+      "theme": "PAYMENT_BILLING",
+      "block_id": 17,
+      "is_block_start": false,
+      "reason": "continue PAYMENT_BILLING, précision ou conséquence du même sujet",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 80,
+      "theme": "PAYMENT_BILLING",
+      "block_id": 17,
+      "is_block_start": false,
+      "reason": "continue PAYMENT_BILLING, précision ou conséquence du même sujet",
+      "legal_nature": "OBLIGATION",
+      "legal_nature_marker": "you will"
+    },
+    {
+      "id": 81,
+      "theme": "PAYMENT_BILLING",
+      "block_id": 17,
+      "is_block_start": false,
+      "reason": "continue PAYMENT_BILLING, précision ou conséquence du même sujet",
+      "legal_nature": "OBLIGATION",
+      "legal_nature_marker": "you shall"
+    },
+    {
+      "id": 82,
+      "theme": "PAYMENT_BILLING",
+      "block_id": 17,
+      "is_block_start": false,
+      "reason": "continue PAYMENT_BILLING, précision ou conséquence du même sujet",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 83,
+      "theme": "PAYMENT_BILLING",
+      "block_id": 17,
+      "is_block_start": false,
+      "reason": "continue PAYMENT_BILLING, précision ou conséquence du même sujet",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 84,
+      "theme": "WARRANTY_DISCLAIMER",
+      "block_id": 18,
+      "is_block_start": true,
+      "rationale": "ouvre exclusion de garanties ; indice « disclaimers ; limitation of liability ; indemnity . »",
+      "rationale_codes": {
+        "decision_trigger": "title_marker",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "disclaimers ; limitation of liability ; indemnity .",
+        "revised_from_plan": false,
+        "confidence": 0.86
+      },
+      "legal_nature": "LIMITATION_DISCLAIMER",
+      "legal_nature_marker": "disclaim"
+    },
+    {
+      "id": 85,
+      "theme": "WARRANTY_DISCLAIMER",
+      "block_id": 18,
+      "is_block_start": false,
+      "reason": "continue WARRANTY_DISCLAIMER, précision ou conséquence du même sujet",
+      "legal_nature": "LIMITATION_DISCLAIMER",
+      "legal_nature_marker": "as is"
+    },
+    {
+      "id": 86,
+      "theme": "WARRANTY_DISCLAIMER",
+      "block_id": 18,
+      "is_block_start": false,
+      "reason": "continue WARRANTY_DISCLAIMER, précision ou conséquence du même sujet",
+      "legal_nature": "LIMITATION_DISCLAIMER",
+      "legal_nature_marker": "warranties"
+    },
+    {
+      "id": 87,
+      "theme": "WARRANTY_DISCLAIMER",
+      "block_id": 18,
+      "is_block_start": false,
+      "reason": "continue WARRANTY_DISCLAIMER, précision ou conséquence du même sujet",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 88,
+      "theme": "WARRANTY_DISCLAIMER",
+      "block_id": 18,
+      "is_block_start": false,
+      "reason": "continue WARRANTY_DISCLAIMER, précision ou conséquence du même sujet",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 89,
+      "theme": "WARRANTY_DISCLAIMER",
+      "block_id": 18,
+      "is_block_start": false,
+      "reason": "continue WARRANTY_DISCLAIMER, précision ou conséquence du même sujet",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 90,
+      "theme": "LIABILITY_LIMITATION",
+      "block_id": 19,
+      "is_block_start": true,
+      "rationale": "ouvre limitation de responsabilité ; indice « uber shall not be liable for indirect , »",
+      "rationale_codes": {
+        "decision_trigger": "topic_keyword",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "uber shall not be liable for indirect ,",
+        "revised_from_plan": false,
+        "confidence": 0.86
+      },
+      "legal_nature": "PROHIBITION",
+      "legal_nature_marker": "shall not"
+    },
+    {
+      "id": 91,
+      "theme": "LIABILITY_LIMITATION",
+      "block_id": 19,
+      "is_block_start": false,
+      "reason": "continue LIABILITY_LIMITATION, précision ou conséquence du même sujet",
+      "legal_nature": "PROHIBITION",
+      "legal_nature_marker": "shall not"
+    },
+    {
+      "id": 92,
+      "theme": "LIABILITY_LIMITATION",
+      "block_id": 19,
+      "is_block_start": false,
+      "reason": "continue LIABILITY_LIMITATION, précision ou conséquence du même sujet",
+      "legal_nature": "PROHIBITION",
+      "legal_nature_marker": "shall not"
+    },
+    {
+      "id": 93,
+      "theme": "LIABILITY_LIMITATION",
+      "block_id": 19,
+      "is_block_start": false,
+      "reason": "continue LIABILITY_LIMITATION, précision ou conséquence du même sujet",
+      "legal_nature": "PROHIBITION",
+      "legal_nature_marker": "may not"
+    },
+    {
+      "id": 94,
+      "theme": "LIABILITY_LIMITATION",
+      "block_id": 19,
+      "is_block_start": false,
+      "reason": "continue LIABILITY_LIMITATION, précision ou conséquence du même sujet",
+      "legal_nature": "LIMITATION_DISCLAIMER",
+      "legal_nature_marker": "in no event"
+    },
+    {
+      "id": 95,
+      "theme": "LIABILITY_LIMITATION",
+      "block_id": 19,
+      "is_block_start": false,
+      "reason": "continue LIABILITY_LIMITATION, précision ou conséquence du même sujet",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 96,
+      "theme": "LIABILITY_LIMITATION",
+      "block_id": 19,
+      "is_block_start": false,
+      "reason": "continue LIABILITY_LIMITATION, précision ou conséquence du même sujet",
+      "legal_nature": "PROHIBITION",
+      "legal_nature_marker": "do not"
+    },
+    {
+      "id": 97,
+      "theme": "INDEMNIFICATION",
+      "block_id": 20,
+      "is_block_start": true,
+      "rationale": "ouvre indemnisation ; indice « you agree to indemnify and hold uber and »",
+      "rationale_codes": {
+        "decision_trigger": "topic_keyword",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "you agree to indemnify and hold uber and",
+        "revised_from_plan": false,
+        "confidence": 0.86
+      },
+      "legal_nature": "RISK_ALLOCATION",
+      "legal_nature_marker": "indemnify"
+    },
+    {
+      "id": 98,
+      "theme": "GOVERNING_LAW",
+      "block_id": 21,
+      "is_block_start": true,
+      "rationale": "ouvre loi applicable ou juridiction ; indice « except as otherwise set forth in these terms »",
+      "rationale_codes": {
+        "decision_trigger": "topic_keyword",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "except as otherwise set forth in these terms",
+        "revised_from_plan": false,
+        "confidence": 0.86
+      },
+      "legal_nature": "GOVERNANCE",
+      "legal_nature_marker": "governed by"
+    },
+    {
+      "id": 99,
+      "theme": "GOVERNING_LAW",
+      "block_id": 21,
+      "is_block_start": false,
+      "reason": "continue GOVERNING_LAW, précision ou conséquence du même sujet",
+      "legal_nature": "PROHIBITION",
+      "legal_nature_marker": "shall not"
+    },
+    {
+      "id": 100,
+      "theme": "DISPUTE_ARBITRATION",
+      "block_id": 22,
+      "is_block_start": true,
+      "rationale": "ouvre réclamation, litige ou arbitrage ; indice « any dispute , conflict , claim or controversy »",
+      "rationale_codes": {
+        "decision_trigger": "topic_keyword",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "any dispute , conflict , claim or controversy",
+        "revised_from_plan": false,
+        "confidence": 0.86
+      },
+      "legal_nature": "OBLIGATION",
+      "legal_nature_marker": "shall"
+    },
+    {
+      "id": 101,
+      "theme": "DISPUTE_ARBITRATION",
+      "block_id": 22,
+      "is_block_start": false,
+      "reason": "continue DISPUTE_ARBITRATION, précision ou conséquence du même sujet",
+      "legal_nature": "GOVERNANCE",
+      "legal_nature_marker": "arbitration"
+    },
+    {
+      "id": 102,
+      "theme": "DISPUTE_ARBITRATION",
+      "block_id": 22,
+      "is_block_start": false,
+      "reason": "continue DISPUTE_ARBITRATION, précision ou conséquence du même sujet",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 103,
+      "theme": "DISPUTE_ARBITRATION",
+      "block_id": 22,
+      "is_block_start": false,
+      "reason": "continue DISPUTE_ARBITRATION, précision ou conséquence du même sujet",
+      "legal_nature": "OBLIGATION",
+      "legal_nature_marker": "shall"
+    },
+    {
+      "id": 104,
+      "theme": "DISPUTE_ARBITRATION",
+      "block_id": 22,
+      "is_block_start": false,
+      "reason": "continue DISPUTE_ARBITRATION, précision ou conséquence du même sujet",
+      "legal_nature": "GOVERNANCE",
+      "legal_nature_marker": "arbitration"
+    },
+    {
+      "id": 105,
+      "theme": "DISPUTE_ARBITRATION",
+      "block_id": 22,
+      "is_block_start": false,
+      "reason": "continue DISPUTE_ARBITRATION, précision ou conséquence du même sujet",
+      "legal_nature": "PROHIBITION",
+      "legal_nature_marker": "do not"
+    },
+    {
+      "id": 106,
+      "theme": "DISPUTE_ARBITRATION",
+      "block_id": 22,
+      "is_block_start": false,
+      "reason": "continue DISPUTE_ARBITRATION, précision ou conséquence du même sujet",
+      "legal_nature": "PROHIBITION",
+      "legal_nature_marker": "shall not"
+    },
+    {
+      "id": 107,
+      "theme": "LICENSE_IP",
+      "block_id": 23,
+      "is_block_start": true,
+      "rationale": "ouvre licence et propriété intellectuelle ; indice « claims of copyright infringement should be sent to »",
+      "rationale_codes": {
+        "decision_trigger": "topic_keyword",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "claims of copyright infringement should be sent to",
+        "revised_from_plan": false,
+        "confidence": 0.86
+      },
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 108,
+      "theme": "LICENSE_IP",
+      "block_id": 23,
+      "is_block_start": false,
+      "reason": "continue LICENSE_IP, précision ou conséquence du même sujet",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 109,
+      "theme": "MISC_BOILERPLATE",
+      "block_id": 24,
+      "is_block_start": true,
+      "rationale": "ouvre clause finale ou notification générale ; indice « uber may give notice by means of a »",
+      "rationale_codes": {
+        "decision_trigger": "topic_keyword",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "uber may give notice by means of a",
+        "revised_from_plan": false,
+        "confidence": 0.86
+      },
+      "legal_nature": "DEFINITION",
+      "legal_nature_marker": "means"
+    },
+    {
+      "id": 110,
+      "theme": "MISC_BOILERPLATE",
+      "block_id": 24,
+      "is_block_start": false,
+      "reason": "continue MISC_BOILERPLATE, précision ou conséquence du même sujet",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 111,
+      "theme": "MISC_BOILERPLATE",
+      "block_id": 25,
+      "is_block_start": true,
+      "rationale": "ouvre clause finale ou notification générale ; indice « you may not assign or transfer these terms »",
+      "rationale_codes": {
+        "decision_trigger": "topic_keyword",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "you may not assign or transfer these terms",
+        "revised_from_plan": false,
+        "confidence": 0.86
+      },
+      "legal_nature": "PROHIBITION",
+      "legal_nature_marker": "may not"
+    },
+    {
+      "id": 112,
+      "theme": "MISC_BOILERPLATE",
+      "block_id": 25,
+      "is_block_start": false,
+      "reason": "continue MISC_BOILERPLATE, précision ou conséquence du même sujet",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 113,
+      "theme": "MISC_BOILERPLATE",
+      "block_id": 25,
+      "is_block_start": false,
+      "reason": "continue MISC_BOILERPLATE, précision ou conséquence du même sujet",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 114,
+      "theme": "MISC_BOILERPLATE",
+      "block_id": 25,
+      "is_block_start": false,
+      "reason": "continue MISC_BOILERPLATE, précision ou conséquence du même sujet",
+      "legal_nature": "PROHIBITION",
+      "legal_nature_marker": "shall not"
+    },
+    {
+      "id": 115,
+      "theme": "MISC_BOILERPLATE",
+      "block_id": 25,
+      "is_block_start": false,
+      "reason": "continue MISC_BOILERPLATE, précision ou conséquence du même sujet",
+      "legal_nature": "OBLIGATION",
+      "legal_nature_marker": "shall"
+    },
+    {
+      "id": 116,
+      "theme": "MISC_BOILERPLATE",
+      "block_id": 25,
+      "is_block_start": false,
+      "reason": "continue MISC_BOILERPLATE, précision ou conséquence du même sujet",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 117,
+      "theme": "MISC_BOILERPLATE",
+      "block_id": 25,
+      "is_block_start": false,
+      "reason": "continue MISC_BOILERPLATE, précision ou conséquence du même sujet",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    }
+  ]
+}

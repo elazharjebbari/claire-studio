@@ -25,10 +25,17 @@ logger = logging.getLogger("claire.imports")
 
 @transaction.atomic
 def ingest_preannotation(
-    project: Project, document: Document, judge: str, raw: dict
+    project: Project, document: Document, judge: str, raw: dict,
+    version: str | None = None,
 ) -> PreAnnotation:
-    """Normalise & persist a single pre-annotation (idempotent per key)."""
-    schema_version, pivot = normalize_preannotation(raw)
+    """Normalise & persist a single pre-annotation (idempotent par clé).
+
+    `version` (optionnel) force la version stockée (ex. import d'archive multi-versions
+    « v9 / v9.1 / v9.2 / v9.3 ») ; sinon on détecte la famille (v9.2 / v9.4). L'unicité
+    inclut la version → plusieurs versions coexistent pour un même (doc, juge).
+    """
+    detected, pivot = normalize_preannotation(raw)
+    schema_version = version or detected
 
     pre, created = PreAnnotation.objects.get_or_create(
         project=project,

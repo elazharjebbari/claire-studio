@@ -1,0 +1,1155 @@
+{
+  "doc": "TrueCaller",
+  "judge": "claude",
+  "version": "v9.2-nature-derived",
+  "document_plan": {
+    "estimated_n_blocks": 20,
+    "rationale_global": "ToS TrueCaller au profil narratif (peu de titres : seul id 35 est title-like). La segmentation suit les changements de sujet juridique : préambule/portée et incorporation de termes additionnels en tête, une représentation d'éligibilité (entité commerciale) isolée, confidentialité, octroi de licence + restrictions PI, support/maintenance (boilerplate), garantie sur le contenu partagé, usage acceptable et prohibitions, propriété intellectuelle/copyright, certificat de publication suédois + éditeur responsable (boilerplate de statut), contenu utilisateur (modéré/non modéré, règles de publication, liste a-h), liens tiers, exclusion de garantie, limitation de responsabilité, paiement/facturation, résiliation, dispositions diverses (cession, juridictions), modification des services et des termes, droit applicable, et for/tribunal compétent. Le prior docfeatures suggère 17 blocs (15-19, non contraignant) ; on en obtient 20 du fait de deux clauses autonomes d'une seule phrase (éligibilité id 4, garantie de contenu id 20) et de la scission certificat de publication / contenu utilisateur.",
+    "segments": [
+      {
+        "start_id": 0,
+        "theme": "PREAMBLE_SCOPE",
+        "rationale": "ouverture : identité de l'entité et offre de services",
+        "evidence_span": "offers users"
+      },
+      {
+        "start_id": 4,
+        "theme": "ELIGIBILITY_ACCOUNT",
+        "rationale": "représentation d'autorité si inscription en tant qu'entité commerciale",
+        "evidence_span": "if you are registering with truecaller as a business entity"
+      },
+      {
+        "start_id": 5,
+        "theme": "PREAMBLE_SCOPE",
+        "rationale": "retour à la portée : termes additionnels applicables et incorporés",
+        "evidence_span": "specific terms apply"
+      },
+      {
+        "start_id": 9,
+        "theme": "PRIVACY_DATA",
+        "rationale": "engagement de protection des informations personnelles",
+        "evidence_span": "protection of personal information"
+      },
+      {
+        "start_id": 11,
+        "theme": "LICENSE_IP",
+        "rationale": "octroi du droit limité d'utiliser les services",
+        "evidence_span": "truecaller grants you a personal"
+      },
+      {
+        "start_id": 18,
+        "theme": "MISC_BOILERPLATE",
+        "rationale": "support technique, mises à jour et maintenance",
+        "evidence_span": "technical support"
+      },
+      {
+        "start_id": 20,
+        "theme": "USER_CONTENT",
+        "rationale": "garantie sur l'exactitude du contenu partagé par l'utilisateur",
+        "evidence_span": "you guarantee that any information and other content"
+      },
+      {
+        "start_id": 21,
+        "theme": "ACCEPTABLE_USE",
+        "rationale": "restrictions et interdictions d'usage des services et du contenu",
+        "evidence_span": "you shall not make any commercial use"
+      },
+      {
+        "start_id": 31,
+        "theme": "LICENSE_IP",
+        "rationale": "protection par le droit d'auteur et propriété intellectuelle",
+        "evidence_span": "protected by copyright laws"
+      },
+      {
+        "start_id": 34,
+        "theme": "MISC_BOILERPLATE",
+        "rationale": "certificat de publication suédois et statut constitutionnel de la base",
+        "evidence_span": "publishing certificate"
+      },
+      {
+        "start_id": 38,
+        "theme": "USER_CONTENT",
+        "rationale": "contenu non publié par truecaller (posté par les utilisateurs) et publication",
+        "evidence_span": "any content that is not published by truecaller"
+      },
+      {
+        "start_id": 54,
+        "theme": "THIRD_PARTY",
+        "rationale": "liens vers contenu externe de sites tiers",
+        "evidence_span": "links to external content provided by third party websites"
+      },
+      {
+        "start_id": 56,
+        "theme": "WARRANTY_DISCLAIMER",
+        "rationale": "absence de garantie / services fournis en l'état",
+        "evidence_span": "makes no warranty or representation"
+      },
+      {
+        "start_id": 61,
+        "theme": "LIABILITY_LIMITATION",
+        "rationale": "exclusion de responsabilité pour dommages",
+        "evidence_span": "shall in no event be liable for any direct"
+      },
+      {
+        "start_id": 67,
+        "theme": "PAYMENT_BILLING",
+        "rationale": "services payants, frais et taxes",
+        "evidence_span": "for which a fee will be payable"
+      },
+      {
+        "start_id": 79,
+        "theme": "TERMINATION",
+        "rationale": "résiliation et survie des dispositions",
+        "evidence_span": "until these terms are terminated"
+      },
+      {
+        "start_id": 87,
+        "theme": "MISC_BOILERPLATE",
+        "rationale": "cession des droits et obligations, termes additionnels par juridiction",
+        "evidence_span": "assign and transfer the rights and obligations"
+      },
+      {
+        "start_id": 89,
+        "theme": "MODIFICATION_OF_TERMS",
+        "rationale": "modification des services et des termes",
+        "evidence_span": "change the services at any time"
+      },
+      {
+        "start_id": 96,
+        "theme": "GOVERNING_LAW",
+        "rationale": "droit applicable (lois de la suède)",
+        "evidence_span": "governed and construed in accordance with the laws of sweden"
+      },
+      {
+        "start_id": 97,
+        "theme": "DISPUTE_ARBITRATION",
+        "rationale": "for compétent et tribunal de première instance",
+        "evidence_span": "adjudicated exclusively in sweden"
+      }
+    ]
+  },
+  "annotations": [
+    {
+      "id": 0,
+      "theme": "PREAMBLE_SCOPE",
+      "block_id": 0,
+      "is_block_start": true,
+      "rationale": "début de document : présentation de l'entité « true software scandinavia ab » et de l'offre de services",
+      "rationale_codes": {
+        "decision_trigger": "document_start",
+        "relation_to_prev": "document_start",
+        "evidence_span": "offers users",
+        "revised_from_plan": false,
+        "confidence": 0.97
+      },
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 1,
+      "theme": "PREAMBLE_SCOPE",
+      "block_id": 0,
+      "is_block_start": false,
+      "reason": "portée : ces termes régissent l'usage des services",
+      "legal_nature": "SCOPE_APPLICABILITY",
+      "legal_nature_marker": "govern your use"
+    },
+    {
+      "id": 2,
+      "theme": "PREAMBLE_SCOPE",
+      "block_id": 0,
+      "is_block_start": false,
+      "reason": "acceptation par l'usage, prolonge la portée",
+      "legal_nature": "SCOPE_APPLICABILITY",
+      "legal_nature_marker": "by accessing"
+    },
+    {
+      "id": 3,
+      "theme": "PREAMBLE_SCOPE",
+      "block_id": 0,
+      "is_block_start": false,
+      "reason": "applicabilité des termes tiers dans le cadre des services",
+      "legal_nature": "OBLIGATION",
+      "legal_nature_marker": "shall"
+    },
+    {
+      "id": 4,
+      "theme": "ELIGIBILITY_ACCOUNT",
+      "block_id": 1,
+      "is_block_start": true,
+      "rationale": "nouveau sujet : représentation d'autorité pour inscription en tant qu'entité commerciale, cite « if you are registering with truecaller as a business entity »",
+      "rationale_codes": {
+        "decision_trigger": "topic_keyword",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "if you are registering with truecaller as a business entity",
+        "revised_from_plan": false,
+        "confidence": 0.7
+      },
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 5,
+      "theme": "PREAMBLE_SCOPE",
+      "block_id": 2,
+      "is_block_start": true,
+      "rationale": "retour à la portée : termes spécifiques applicables aux utilisateurs sdk/priority, cite « specific terms apply »",
+      "rationale_codes": {
+        "decision_trigger": "topic_keyword",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "specific terms apply",
+        "revised_from_plan": false,
+        "confidence": 0.65
+      },
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 6,
+      "theme": "PREAMBLE_SCOPE",
+      "block_id": 2,
+      "is_block_start": false,
+      "reason": "dispositions additionnelles pour utilisateurs api",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 7,
+      "theme": "PREAMBLE_SCOPE",
+      "block_id": 2,
+      "is_block_start": false,
+      "reason": "lignes directrices/règles additionnelles pour certaines fonctionnalités",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 8,
+      "theme": "PREAMBLE_SCOPE",
+      "block_id": 2,
+      "is_block_start": false,
+      "reason": "incorporation par référence des termes additionnels",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 9,
+      "theme": "PRIVACY_DATA",
+      "block_id": 3,
+      "is_block_start": true,
+      "rationale": "nouveau sujet : engagement de sécurité et protection des informations personnelles, cite « protection of personal information »",
+      "rationale_codes": {
+        "decision_trigger": "topic_keyword",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "protection of personal information",
+        "revised_from_plan": false,
+        "confidence": 0.9
+      },
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 10,
+      "theme": "PRIVACY_DATA",
+      "block_id": 3,
+      "is_block_start": false,
+      "reason": "renvoi à la politique de confidentialité (collecte, usage, partage)",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 11,
+      "theme": "LICENSE_IP",
+      "block_id": 4,
+      "is_block_start": true,
+      "rationale": "octroi du droit d'utiliser les services, cite « truecaller grants you a personal »",
+      "rationale_codes": {
+        "decision_trigger": "topic_keyword",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "truecaller grants you a personal",
+        "revised_from_plan": false,
+        "confidence": 0.92
+      },
+      "legal_nature": "RIGHT_GRANT",
+      "legal_nature_marker": "grants you"
+    },
+    {
+      "id": 12,
+      "theme": "LICENSE_IP",
+      "block_id": 4,
+      "is_block_start": false,
+      "reason": "restriction de la licence : usage sur appareil possédé/contrôlé",
+      "legal_nature": "PROHIBITION",
+      "legal_nature_marker": "do not"
+    },
+    {
+      "id": 13,
+      "theme": "LICENSE_IP",
+      "block_id": 4,
+      "is_block_start": false,
+      "reason": "interdiction de copie/décompilation/reverse engineering",
+      "legal_nature": "PROHIBITION",
+      "legal_nature_marker": "may not"
+    },
+    {
+      "id": 14,
+      "theme": "LICENSE_IP",
+      "block_id": 4,
+      "is_block_start": false,
+      "reason": "aucun droit sur le nom/marques de truecaller",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 15,
+      "theme": "LICENSE_IP",
+      "block_id": 4,
+      "is_block_start": false,
+      "reason": "réserve de tous les droits non expressément octroyés",
+      "legal_nature": "OBLIGATION",
+      "legal_nature_marker": "shall"
+    },
+    {
+      "id": 16,
+      "theme": "LICENSE_IP",
+      "block_id": 4,
+      "is_block_start": false,
+      "reason": "usage dans une application propre soumis à accord écrit/licence séparée",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 17,
+      "theme": "LICENSE_IP",
+      "block_id": 4,
+      "is_block_start": false,
+      "reason": "usage api/commercial régi par l'addendum de licence",
+      "legal_nature": "GOVERNANCE",
+      "legal_nature_marker": "governed by"
+    },
+    {
+      "id": 18,
+      "theme": "MISC_BOILERPLATE",
+      "block_id": 5,
+      "is_block_start": true,
+      "rationale": "nouveau sujet : fourniture de support technique et de mises à jour, cite « technical support »",
+      "rationale_codes": {
+        "decision_trigger": "topic_keyword",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "technical support",
+        "revised_from_plan": false,
+        "confidence": 0.6
+      },
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 19,
+      "theme": "MISC_BOILERPLATE",
+      "block_id": 5,
+      "is_block_start": false,
+      "reason": "absence d'obligation de support et droit de le limiter/discontinuer",
+      "legal_nature": "OBLIGATION",
+      "legal_nature_marker": "shall"
+    },
+    {
+      "id": 20,
+      "theme": "USER_CONTENT",
+      "block_id": 6,
+      "is_block_start": true,
+      "rationale": "nouveau sujet : garantie de l'utilisateur sur l'exactitude du contenu partagé, cite « you guarantee that any information and other content »",
+      "rationale_codes": {
+        "decision_trigger": "topic_keyword",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "you guarantee that any information and other content",
+        "revised_from_plan": false,
+        "confidence": 0.62
+      },
+      "legal_nature": "PROHIBITION",
+      "legal_nature_marker": "will not"
+    },
+    {
+      "id": 21,
+      "theme": "ACCEPTABLE_USE",
+      "block_id": 7,
+      "is_block_start": true,
+      "rationale": "nouveau sujet : restrictions d'usage, interdiction d'usage commercial, cite « you shall not make any commercial use »",
+      "rationale_codes": {
+        "decision_trigger": "topic_keyword",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "you shall not make any commercial use",
+        "revised_from_plan": false,
+        "confidence": 0.82
+      },
+      "legal_nature": "PROHIBITION",
+      "legal_nature_marker": "shall not"
+    },
+    {
+      "id": 22,
+      "theme": "ACCEPTABLE_USE",
+      "block_id": 7,
+      "is_block_start": false,
+      "reason": "engagement de ne pas contester les droits de truecaller",
+      "legal_nature": "PROHIBITION",
+      "legal_nature_marker": "agree not to"
+    },
+    {
+      "id": 23,
+      "theme": "ACCEPTABLE_USE",
+      "block_id": 7,
+      "is_block_start": false,
+      "reason": "usage limité à ce qui est expressément permis",
+      "legal_nature": "OBLIGATION",
+      "legal_nature_marker": "you agree to"
+    },
+    {
+      "id": 24,
+      "theme": "ACCEPTABLE_USE",
+      "block_id": 7,
+      "is_block_start": false,
+      "reason": "interdiction de contourner le fonctionnement régulier des services",
+      "legal_nature": "DEFINITION",
+      "legal_nature_marker": "means"
+    },
+    {
+      "id": 25,
+      "theme": "ACCEPTABLE_USE",
+      "block_id": 7,
+      "is_block_start": false,
+      "reason": "interdiction du scraping d'informations",
+      "legal_nature": "PROHIBITION",
+      "legal_nature_marker": "prohibited"
+    },
+    {
+      "id": 26,
+      "theme": "ACCEPTABLE_USE",
+      "block_id": 7,
+      "is_block_start": false,
+      "reason": "interdiction d'usage illégal, nuisible ou offensant",
+      "legal_nature": "PROHIBITION",
+      "legal_nature_marker": "may not"
+    },
+    {
+      "id": 27,
+      "theme": "ACCEPTABLE_USE",
+      "block_id": 7,
+      "is_block_start": false,
+      "reason": "interdiction d'exploitation non autorisée des services",
+      "legal_nature": "PROHIBITION",
+      "legal_nature_marker": "agree not to"
+    },
+    {
+      "id": 28,
+      "theme": "ACCEPTABLE_USE",
+      "block_id": 7,
+      "is_block_start": false,
+      "reason": "interdiction de harcèlement/abus/menace via les services",
+      "legal_nature": "PROHIBITION",
+      "legal_nature_marker": "agree not to"
+    },
+    {
+      "id": 29,
+      "theme": "ACCEPTABLE_USE",
+      "block_id": 7,
+      "is_block_start": false,
+      "reason": "conséquence : suspension/résiliation en cas d'usage prohibé (effet de l'usage acceptable)",
+      "legal_nature": "PROHIBITION",
+      "legal_nature_marker": "prohibited"
+    },
+    {
+      "id": 30,
+      "theme": "ACCEPTABLE_USE",
+      "block_id": 7,
+      "is_block_start": false,
+      "reason": "procédure : contacter le support pour signaler une violation",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 31,
+      "theme": "LICENSE_IP",
+      "block_id": 8,
+      "is_block_start": true,
+      "rationale": "nouveau sujet : protection par le droit d'auteur et traités internationaux, cite « protected by copyright laws »",
+      "rationale_codes": {
+        "decision_trigger": "topic_keyword",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "protected by copyright laws",
+        "revised_from_plan": false,
+        "confidence": 0.85
+      },
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 32,
+      "theme": "LICENSE_IP",
+      "block_id": 8,
+      "is_block_start": false,
+      "reason": "rétention de la propriété et des droits de propriété intellectuelle",
+      "legal_nature": "OBLIGATION",
+      "legal_nature_marker": "shall"
+    },
+    {
+      "id": 33,
+      "theme": "LICENSE_IP",
+      "block_id": 8,
+      "is_block_start": false,
+      "reason": "droit limité, aucun droit de PI transféré",
+      "legal_nature": "RIGHT_GRANT",
+      "legal_nature_marker": "you are granted"
+    },
+    {
+      "id": 34,
+      "theme": "MISC_BOILERPLATE",
+      "block_id": 9,
+      "is_block_start": true,
+      "rationale": "nouveau sujet : certificat de publication suédois pour la base de données, cite « publishing certificate »",
+      "rationale_codes": {
+        "decision_trigger": "topic_keyword",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "publishing certificate",
+        "revised_from_plan": false,
+        "confidence": 0.6
+      },
+      "legal_nature": "LIMITATION_DISCLAIMER",
+      "legal_nature_marker": "as is"
+    },
+    {
+      "id": 35,
+      "theme": "MISC_BOILERPLATE",
+      "block_id": 9,
+      "is_block_start": false,
+      "reason": "suite : citation légale (yttrandefrihetsgrundlagen)",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 36,
+      "theme": "MISC_BOILERPLATE",
+      "block_id": 9,
+      "is_block_start": false,
+      "reason": "protection constitutionnelle conférée par le certificat",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 37,
+      "theme": "MISC_BOILERPLATE",
+      "block_id": 9,
+      "is_block_start": false,
+      "reason": "éditeur responsable désigné",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 38,
+      "theme": "USER_CONTENT",
+      "block_id": 10,
+      "is_block_start": true,
+      "rationale": "nouveau sujet : contenu non publié par truecaller (posté par les utilisateurs), cite « any content that is not published by truecaller »",
+      "rationale_codes": {
+        "decision_trigger": "topic_keyword",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "any content that is not published by truecaller",
+        "revised_from_plan": false,
+        "confidence": 0.78
+      },
+      "legal_nature": "PROHIBITION",
+      "legal_nature_marker": "may not"
+    },
+    {
+      "id": 39,
+      "theme": "USER_CONTENT",
+      "block_id": 10,
+      "is_block_start": false,
+      "reason": "contenu non modéré non couvert par la protection constitutionnelle",
+      "legal_nature": "PROHIBITION",
+      "legal_nature_marker": "will not"
+    },
+    {
+      "id": 40,
+      "theme": "USER_CONTENT",
+      "block_id": 10,
+      "is_block_start": false,
+      "reason": "indication du contenu modéré/non modéré par badges",
+      "legal_nature": "SCOPE_APPLICABILITY",
+      "legal_nature_marker": "by using"
+    },
+    {
+      "id": 41,
+      "theme": "USER_CONTENT",
+      "block_id": 10,
+      "is_block_start": false,
+      "reason": "responsabilité de l'utilisateur pour son contenu + chapeau de la liste de règles",
+      "legal_nature": "OBLIGATION",
+      "legal_nature_marker": "you agree to"
+    },
+    {
+      "id": 42,
+      "theme": "USER_CONTENT",
+      "block_id": 10,
+      "is_block_start": false,
+      "reason": "item a : contenu vrai et non trompeur",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 43,
+      "theme": "USER_CONTENT",
+      "block_id": 10,
+      "is_block_start": false,
+      "reason": "item b : non menaçant/diffamatoire/illégal",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 44,
+      "theme": "USER_CONTENT",
+      "block_id": 10,
+      "is_block_start": false,
+      "reason": "item c : appartient à l'utilisateur ou droit de distribution",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 45,
+      "theme": "USER_CONTENT",
+      "block_id": 10,
+      "is_block_start": false,
+      "reason": "item d : pas d'atteinte à la PI ou vie privée d'un tiers",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 46,
+      "theme": "USER_CONTENT",
+      "block_id": 10,
+      "is_block_start": false,
+      "reason": "item e : pas d'information non autorisée (insider/confidentielle)",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 47,
+      "theme": "USER_CONTENT",
+      "block_id": 10,
+      "is_block_start": false,
+      "reason": "item f : pas de spam/publicité non sollicitée",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 48,
+      "theme": "USER_CONTENT",
+      "block_id": 10,
+      "is_block_start": false,
+      "reason": "item g : pas de virus ou technologie nuisible",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 49,
+      "theme": "USER_CONTENT",
+      "block_id": 10,
+      "is_block_start": false,
+      "reason": "item h : exact, juste, non dénigrant",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 50,
+      "theme": "USER_CONTENT",
+      "block_id": 10,
+      "is_block_start": false,
+      "reason": "obligation d'être juste/exact lors d'avis, commentaires, notes",
+      "legal_nature": "OBLIGATION",
+      "legal_nature_marker": "you agree to"
+    },
+    {
+      "id": 51,
+      "theme": "USER_CONTENT",
+      "block_id": 10,
+      "is_block_start": false,
+      "reason": "truecaller apprécie d'être notifié de contenu répréhensible",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 52,
+      "theme": "USER_CONTENT",
+      "block_id": 10,
+      "is_block_start": false,
+      "reason": "procédure : contacter le support pour signaler du contenu répréhensible",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 53,
+      "theme": "USER_CONTENT",
+      "block_id": 10,
+      "is_block_start": false,
+      "reason": "droit de truecaller de retirer tout contenu utilisateur",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 54,
+      "theme": "THIRD_PARTY",
+      "block_id": 11,
+      "is_block_start": true,
+      "rationale": "nouveau sujet : liens vers contenu externe de sites tiers, cite « links to external content provided by third party websites »",
+      "rationale_codes": {
+        "decision_trigger": "topic_keyword",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "links to external content provided by third party websites",
+        "revised_from_plan": false,
+        "confidence": 0.85
+      },
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 55,
+      "theme": "THIRD_PARTY",
+      "block_id": 11,
+      "is_block_start": false,
+      "reason": "contenu tiers soumis à ses propres conditions, non-responsabilité de truecaller",
+      "legal_nature": "PROHIBITION",
+      "legal_nature_marker": "will not"
+    },
+    {
+      "id": 56,
+      "theme": "WARRANTY_DISCLAIMER",
+      "block_id": 12,
+      "is_block_start": true,
+      "rationale": "nouveau sujet : absence de garantie ou de représentation, cite « makes no warranty or representation »",
+      "rationale_codes": {
+        "decision_trigger": "topic_keyword",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "makes no warranty or representation",
+        "revised_from_plan": false,
+        "confidence": 0.9
+      },
+      "legal_nature": "LIMITATION_DISCLAIMER",
+      "legal_nature_marker": "no warranty"
+    },
+    {
+      "id": 57,
+      "theme": "WARRANTY_DISCLAIMER",
+      "block_id": 12,
+      "is_block_start": false,
+      "reason": "services fournis « as is », usage aux risques de l'utilisateur",
+      "legal_nature": "LIMITATION_DISCLAIMER",
+      "legal_nature_marker": "as is"
+    },
+    {
+      "id": 58,
+      "theme": "WARRANTY_DISCLAIMER",
+      "block_id": 12,
+      "is_block_start": false,
+      "reason": "indisponibilité possible, pas de garantie d'accès",
+      "legal_nature": "PROHIBITION",
+      "legal_nature_marker": "will not"
+    },
+    {
+      "id": 59,
+      "theme": "WARRANTY_DISCLAIMER",
+      "block_id": 12,
+      "is_block_start": false,
+      "reason": "aucune garantie de disponibilité dans une localisation particulière",
+      "legal_nature": "LIMITATION_DISCLAIMER",
+      "legal_nature_marker": "no warranty"
+    },
+    {
+      "id": 60,
+      "theme": "WARRANTY_DISCLAIMER",
+      "block_id": 12,
+      "is_block_start": false,
+      "reason": "accès à votre initiative, responsabilité de conformité légale",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 61,
+      "theme": "LIABILITY_LIMITATION",
+      "block_id": 13,
+      "is_block_start": true,
+      "rationale": "nouveau sujet : exclusion de responsabilité pour dommages, cite « shall in no event be liable for any direct »",
+      "rationale_codes": {
+        "decision_trigger": "topic_keyword",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "shall in no event be liable for any direct",
+        "revised_from_plan": false,
+        "confidence": 0.92
+      },
+      "legal_nature": "LIMITATION_DISCLAIMER",
+      "legal_nature_marker": "in no event"
+    },
+    {
+      "id": 62,
+      "theme": "LIABILITY_LIMITATION",
+      "block_id": 13,
+      "is_block_start": false,
+      "reason": "absence de responsabilité pour l'information stockée/traitée",
+      "legal_nature": "OBLIGATION",
+      "legal_nature_marker": "shall"
+    },
+    {
+      "id": 63,
+      "theme": "LIABILITY_LIMITATION",
+      "block_id": 13,
+      "is_block_start": false,
+      "reason": "seul remède : désinstaller et cesser d'utiliser",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 64,
+      "theme": "LIABILITY_LIMITATION",
+      "block_id": 13,
+      "is_block_start": false,
+      "reason": "non-responsabilité quant à la validité/fiabilité du contenu",
+      "legal_nature": "PROHIBITION",
+      "legal_nature_marker": "shall not"
+    },
+    {
+      "id": 65,
+      "theme": "LIABILITY_LIMITATION",
+      "block_id": 13,
+      "is_block_start": false,
+      "reason": "usage du contenu aux risques de l'utilisateur",
+      "legal_nature": "OBLIGATION",
+      "legal_nature_marker": "shall"
+    },
+    {
+      "id": 66,
+      "theme": "LIABILITY_LIMITATION",
+      "block_id": 13,
+      "is_block_start": false,
+      "reason": "réserve : responsabilité non excluable par la loi (droit de la consommation)",
+      "legal_nature": "OBLIGATION",
+      "legal_nature_marker": "shall"
+    },
+    {
+      "id": 67,
+      "theme": "PAYMENT_BILLING",
+      "block_id": 14,
+      "is_block_start": true,
+      "rationale": "nouveau sujet : services payants moyennant des frais, cite « for which a fee will be payable »",
+      "rationale_codes": {
+        "decision_trigger": "topic_keyword",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "for which a fee will be payable",
+        "revised_from_plan": false,
+        "confidence": 0.9
+      },
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 68,
+      "theme": "PAYMENT_BILLING",
+      "block_id": 14,
+      "is_block_start": false,
+      "reason": "frais de change et différences de prix selon localisation",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 69,
+      "theme": "PAYMENT_BILLING",
+      "block_id": 14,
+      "is_block_start": false,
+      "reason": "engagement de payer les frais et taxes applicables",
+      "legal_nature": "OBLIGATION",
+      "legal_nature_marker": "you agree to"
+    },
+    {
+      "id": 70,
+      "theme": "PAYMENT_BILLING",
+      "block_id": 14,
+      "is_block_start": false,
+      "reason": "facturation durant la période, paiement dû jusqu'à fin de période même en cas d'annulation",
+      "legal_nature": "OBLIGATION",
+      "legal_nature_marker": "you agree to"
+    },
+    {
+      "id": 71,
+      "theme": "PAYMENT_BILLING",
+      "block_id": 14,
+      "is_block_start": false,
+      "reason": "possibilité de modifier les frais après notification",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 72,
+      "theme": "PAYMENT_BILLING",
+      "block_id": 14,
+      "is_block_start": false,
+      "reason": "frais non remboursables sauf exception",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 73,
+      "theme": "PAYMENT_BILLING",
+      "block_id": 14,
+      "is_block_start": false,
+      "reason": "conséquence : non-paiement entraîne suspension/résiliation",
+      "legal_nature": "GOVERNANCE",
+      "legal_nature_marker": "termination"
+    },
+    {
+      "id": 74,
+      "theme": "PAYMENT_BILLING",
+      "block_id": 14,
+      "is_block_start": false,
+      "reason": "frais prépayés liés à l'appareil et au numéro",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 75,
+      "theme": "PAYMENT_BILLING",
+      "block_id": 14,
+      "is_block_start": false,
+      "reason": "non-transfert du solde en cas de changement d'appareil/sim, pas de remboursement",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 76,
+      "theme": "PAYMENT_BILLING",
+      "block_id": 14,
+      "is_block_start": false,
+      "reason": "solde prépayé inutilisé expire après 12 mois sans remboursement",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 77,
+      "theme": "PAYMENT_BILLING",
+      "block_id": 14,
+      "is_block_start": false,
+      "reason": "responsabilité des frais de connexion/mobile de l'utilisateur",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 78,
+      "theme": "PAYMENT_BILLING",
+      "block_id": 14,
+      "is_block_start": false,
+      "reason": "renvoi à l'opérateur pour plus d'informations",
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 79,
+      "theme": "TERMINATION",
+      "block_id": 15,
+      "is_block_start": true,
+      "rationale": "nouveau sujet : durée du droit d'usage jusqu'à résiliation, cite « until these terms are terminated »",
+      "rationale_codes": {
+        "decision_trigger": "topic_keyword",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "until these terms are terminated",
+        "revised_from_plan": false,
+        "confidence": 0.9
+      },
+      "legal_nature": "GOVERNANCE",
+      "legal_nature_marker": "terminate"
+    },
+    {
+      "id": 80,
+      "theme": "TERMINATION",
+      "block_id": 15,
+      "is_block_start": false,
+      "reason": "résiliation par truecaller avec préavis de 30 jours",
+      "legal_nature": "GOVERNANCE",
+      "legal_nature_marker": "terminate"
+    },
+    {
+      "id": 81,
+      "theme": "TERMINATION",
+      "block_id": 15,
+      "is_block_start": false,
+      "reason": "résiliation par l'utilisateur en désinstallant",
+      "legal_nature": "GOVERNANCE",
+      "legal_nature_marker": "terminate"
+    },
+    {
+      "id": 82,
+      "theme": "TERMINATION",
+      "block_id": 15,
+      "is_block_start": false,
+      "reason": "résiliation automatique en cas de non-respect",
+      "legal_nature": "GOVERNANCE",
+      "legal_nature_marker": "terminate"
+    },
+    {
+      "id": 83,
+      "theme": "TERMINATION",
+      "block_id": 15,
+      "is_block_start": false,
+      "reason": "effet : cessation d'usage à la résiliation",
+      "legal_nature": "GOVERNANCE",
+      "legal_nature_marker": "termination"
+    },
+    {
+      "id": 84,
+      "theme": "TERMINATION",
+      "block_id": 15,
+      "is_block_start": false,
+      "reason": "pas de remboursement en cas de résiliation pour faute/par l'utilisateur",
+      "legal_nature": "PROHIBITION",
+      "legal_nature_marker": "will not"
+    },
+    {
+      "id": 85,
+      "theme": "TERMINATION",
+      "block_id": 15,
+      "is_block_start": false,
+      "reason": "remboursement des frais inutilisés si résiliation sans cause par truecaller",
+      "legal_nature": "GOVERNANCE",
+      "legal_nature_marker": "termination"
+    },
+    {
+      "id": 86,
+      "theme": "TERMINATION",
+      "block_id": 15,
+      "is_block_start": false,
+      "reason": "survie de certaines clauses après résiliation",
+      "legal_nature": "LIMITATION_DISCLAIMER",
+      "legal_nature_marker": "warranties"
+    },
+    {
+      "id": 87,
+      "theme": "MISC_BOILERPLATE",
+      "block_id": 16,
+      "is_block_start": true,
+      "rationale": "nouveau sujet : cession et transfert des droits et obligations, cite « assign and transfer the rights and obligations »",
+      "rationale_codes": {
+        "decision_trigger": "topic_keyword",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "assign and transfer the rights and obligations",
+        "revised_from_plan": false,
+        "confidence": 0.72
+      },
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 88,
+      "theme": "MISC_BOILERPLATE",
+      "block_id": 16,
+      "is_block_start": false,
+      "reason": "termes additionnels par juridiction via appendices incorporés",
+      "legal_nature": "GOVERNANCE",
+      "legal_nature_marker": "jurisdiction"
+    },
+    {
+      "id": 89,
+      "theme": "MODIFICATION_OF_TERMS",
+      "block_id": 17,
+      "is_block_start": true,
+      "rationale": "nouveau sujet : modification des services à tout moment, cite « change the services at any time »",
+      "rationale_codes": {
+        "decision_trigger": "topic_keyword",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "change the services at any time",
+        "revised_from_plan": false,
+        "confidence": 0.78
+      },
+      "legal_nature": "UNKNOWN",
+      "legal_nature_marker": ""
+    },
+    {
+      "id": 90,
+      "theme": "MODIFICATION_OF_TERMS",
+      "block_id": 17,
+      "is_block_start": false,
+      "reason": "droit de modifier les termes en fournissant/publiant des termes révisés",
+      "legal_nature": "GOVERNANCE",
+      "legal_nature_marker": "modify these terms"
+    },
+    {
+      "id": 91,
+      "theme": "MODIFICATION_OF_TERMS",
+      "block_id": 17,
+      "is_block_start": false,
+      "reason": "en cas de changements matériels, notification et option de résilier",
+      "legal_nature": "GOVERNANCE",
+      "legal_nature_marker": "terminate"
+    },
+    {
+      "id": 92,
+      "theme": "MODIFICATION_OF_TERMS",
+      "block_id": 17,
+      "is_block_start": false,
+      "reason": "remboursement des frais inutilisés si l'utilisateur résilie",
+      "legal_nature": "GOVERNANCE",
+      "legal_nature_marker": "terminate"
+    },
+    {
+      "id": 93,
+      "theme": "MODIFICATION_OF_TERMS",
+      "block_id": 17,
+      "is_block_start": false,
+      "reason": "entrée en vigueur des termes révisés à la publication/notification",
+      "legal_nature": "OBLIGATION",
+      "legal_nature_marker": "shall"
+    },
+    {
+      "id": 94,
+      "theme": "MODIFICATION_OF_TERMS",
+      "block_id": 17,
+      "is_block_start": false,
+      "reason": "dernière version disponible sur le site",
+      "legal_nature": "OBLIGATION",
+      "legal_nature_marker": "you will"
+    },
+    {
+      "id": 95,
+      "theme": "MODIFICATION_OF_TERMS",
+      "block_id": 17,
+      "is_block_start": false,
+      "reason": "usage continu vaut acceptation des termes révisés",
+      "legal_nature": "OBLIGATION",
+      "legal_nature_marker": "shall"
+    },
+    {
+      "id": 96,
+      "theme": "GOVERNING_LAW",
+      "block_id": 18,
+      "is_block_start": true,
+      "rationale": "nouveau sujet : droit applicable, cite « governed and construed in accordance with the laws of sweden »",
+      "rationale_codes": {
+        "decision_trigger": "topic_keyword",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "governed and construed in accordance with the laws of sweden",
+        "revised_from_plan": false,
+        "confidence": 0.92
+      },
+      "legal_nature": "OBLIGATION",
+      "legal_nature_marker": "shall"
+    },
+    {
+      "id": 97,
+      "theme": "DISPUTE_ARBITRATION",
+      "block_id": 19,
+      "is_block_start": true,
+      "rationale": "nouveau sujet : for compétent pour les litiges, cite « adjudicated exclusively in sweden »",
+      "rationale_codes": {
+        "decision_trigger": "topic_keyword",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "adjudicated exclusively in sweden",
+        "revised_from_plan": false,
+        "confidence": 0.85
+      },
+      "legal_nature": "OBLIGATION",
+      "legal_nature_marker": "shall"
+    }
+  ]
+}

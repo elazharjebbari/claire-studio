@@ -1,0 +1,1173 @@
+{
+  "doc": "Booking",
+  "judge": "claude",
+  "version": "v9.0",
+  "document_plan": {
+    "estimated_n_blocks": 17,
+    "rationale_global": "Document narratif (NARRATIVE, 0 numérotation, ~5 titres nominaux non numérotés). Profil de ToS d'intermédiaire de voyage : préambule/cadrage, bloc de définitions (X means), description du rôle d'intermédiaire et garanties, puis sections annoncées par des titres nominaux courts (prix/best price, prépaiement/annulation, correspondance, ranking) et enfin responsabilité, contenu utilisateur, PI, loi applicable, boilerplate de divisibilité, et identité d'entité. On segmente par THÈME, continuité par défaut ; les phrases d'introduction restent dans le cadrage et les conséquences/procédures restent dans leur clause.",
+    "segments": [
+      {"start_id": 0, "theme": "PREAMBLE_SCOPE", "rationale": "ouverture : champ d'application des conditions", "evidence_span": "these terms and conditions"},
+      {"start_id": 3, "theme": "DEFINITIONS", "rationale": "bloc de définitions (X means)", "evidence_span": "means booking.com b.v."},
+      {"start_id": 7, "theme": "THIRD_PARTY", "rationale": "rôle d'intermédiaire entre l'utilisateur et le fournisseur tiers", "evidence_span": "online platform through which suppliers"},
+      {"start_id": 13, "theme": "WARRANTY_DISCLAIMER", "rationale": "exclusion de garantie sur l'exactitude des informations", "evidence_span": "can not guarantee"},
+      {"start_id": 16, "theme": "ACCEPTABLE_USE", "rationale": "usage personnel/non commercial, interdiction de revente", "evidence_span": "personal and non-commercial use only"},
+      {"start_id": 17, "theme": "PAYMENT_BILLING", "rationale": "titre nominal : prix, tarifs barrés et garantie meilleur prix", "evidence_span": "prices , crossed-out rates and best price guarantee"},
+      {"start_id": 49, "theme": "INDEMNIFICATION", "rationale": "exclusion de responsabilité et indemnisation en cas de fraude carte", "evidence_span": "in the event of fraud or unauthorised use"},
+      {"start_id": 54, "theme": "PAYMENT_BILLING", "rationale": "titre nominal : prépaiement, annulation, no-show", "evidence_span": "pre-payment , cancellation , no-show and fine print"},
+      {"start_id": 70, "theme": "PRIVACY_DATA", "rationale": "titre nominal : correspondance et communication", "evidence_span": "correspondence and communication"},
+      {"start_id": 79, "theme": "LIABILITY_LIMITATION", "rationale": "délai de réclamation / forclusion contre booking.com", "evidence_span": "any claim or complaint against booking.com"},
+      {"start_id": 81, "theme": "OTHER_ranking_reviews", "rationale": "titre nominal : ranking, programme préféré, étoiles et avis", "evidence_span": "ranking , preferred programme , stars and guest reviews"},
+      {"start_id": 94, "theme": "LIABILITY_LIMITATION", "rationale": "limitation de responsabilité de booking.com", "evidence_span": "we shall only be liable for direct damages"},
+      {"start_id": 99, "theme": "USER_CONTENT", "rationale": "contenu utilisateur : photos/images uploadées et licence", "evidence_span": "by uploading photos/images"},
+      {"start_id": 107, "theme": "LICENSE_IP", "rationale": "propriété intellectuelle du logiciel et des contenus de la plateforme", "evidence_span": "intellectual property rights"},
+      {"start_id": 111, "theme": "GOVERNING_LAW", "rationale": "loi applicable néerlandaise et juridiction d'Amsterdam", "evidence_span": "governed by and construed in accordance with dutch law"},
+      {"start_id": 116, "theme": "MISC_BOILERPLATE", "rationale": "clause de divisibilité (severability)", "evidence_span": "if any provision of these terms and conditions is or becomes invalid"},
+      {"start_id": 117, "theme": "META", "rationale": "titre nominal puis identité/coordonnées de l'entité et des support companies", "evidence_span": "about booking.com and the support companies"}
+    ]
+  },
+  "annotations": [
+    {
+      "id": 0,
+      "theme": "PREAMBLE_SCOPE",
+      "function": "SCOPE_APPLICABILITY",
+      "block_id": 0,
+      "is_block_start": true,
+      "rationale": "ouverture du document : délimitation du champ d'application des conditions à tous les services.",
+      "rationale_codes": {
+        "decision_trigger": "document_start",
+        "relation_to_prev": "document_start",
+        "evidence_span": "these terms and conditions",
+        "revised_from_plan": false,
+        "confidence": 0.97
+      }
+    },
+    {
+      "id": 1,
+      "theme": "PREAMBLE_SCOPE",
+      "function": "SCOPE_APPLICABILITY",
+      "block_id": 0,
+      "is_block_start": false,
+      "reason": "continue PREAMBLE_SCOPE : modalité d'acceptation des conditions par l'usage du site."
+    },
+    {
+      "id": 2,
+      "theme": "PREAMBLE_SCOPE",
+      "function": "SCOPE_APPLICABILITY",
+      "block_id": 0,
+      "is_block_start": false,
+      "reason": "continue PREAMBLE_SCOPE : propriété/exploitation du site et rappel du champ d'application."
+    },
+    {
+      "id": 3,
+      "theme": "DEFINITIONS",
+      "function": "DEFINITION",
+      "block_id": 1,
+      "is_block_start": true,
+      "rationale": "ouvre le bloc de définitions : définit « booking.com / us / we / our » (marqueur de définition « means »).",
+      "rationale_codes": {
+        "decision_trigger": "definition_marker",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "means booking.com b.v.",
+        "revised_from_plan": false,
+        "confidence": 0.95
+      }
+    },
+    {
+      "id": 4,
+      "theme": "DEFINITIONS",
+      "function": "DEFINITION",
+      "block_id": 1,
+      "is_block_start": false,
+      "reason": "continue DEFINITIONS : définition de « platform »."
+    },
+    {
+      "id": 5,
+      "theme": "DEFINITIONS",
+      "function": "DEFINITION",
+      "block_id": 1,
+      "is_block_start": false,
+      "reason": "continue DEFINITIONS : définition de « service »."
+    },
+    {
+      "id": 6,
+      "theme": "DEFINITIONS",
+      "function": "DEFINITION",
+      "block_id": 1,
+      "is_block_start": false,
+      "reason": "continue DEFINITIONS : définition de « supplier »."
+    },
+    {
+      "id": 7,
+      "theme": "THIRD_PARTY",
+      "function": "SCOPE_APPLICABILITY",
+      "block_id": 2,
+      "is_block_start": true,
+      "rationale": "nouveau sujet : rôle de booking.com comme plateforme intermédiaire entre fournisseurs tiers et visiteurs.",
+      "rationale_codes": {
+        "decision_trigger": "topic_keyword",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "provide an online platform through which suppliers",
+        "revised_from_plan": false,
+        "confidence": 0.82
+      }
+    },
+    {
+      "id": 8,
+      "theme": "THIRD_PARTY",
+      "function": "PROCEDURE_MECHANISM",
+      "block_id": 2,
+      "is_block_start": false,
+      "reason": "continue THIRD_PARTY : la réservation crée une relation contractuelle directe avec le fournisseur."
+    },
+    {
+      "id": 9,
+      "theme": "THIRD_PARTY",
+      "function": "PROCEDURE_MECHANISM",
+      "block_id": 2,
+      "is_block_start": false,
+      "reason": "continue THIRD_PARTY : booking.com agit comme simple intermédiaire transmettant la réservation."
+    },
+    {
+      "id": 10,
+      "theme": "THIRD_PARTY",
+      "function": "PROCEDURE_MECHANISM",
+      "block_id": 2,
+      "is_block_start": false,
+      "reason": "continue THIRD_PARTY : l'information diffusée provient des fournisseurs."
+    },
+    {
+      "id": 11,
+      "theme": "THIRD_PARTY",
+      "function": "PROCEDURE_MECHANISM",
+      "block_id": 2,
+      "is_block_start": false,
+      "reason": "continue THIRD_PARTY : les fournisseurs gèrent eux-mêmes tarifs et disponibilités via l'extranet."
+    },
+    {
+      "id": 12,
+      "theme": "WARRANTY_DISCLAIMER",
+      "function": "LIMITATION_DISCLAIMER",
+      "block_id": 3,
+      "is_block_start": true,
+      "rationale": "nouveau sujet : exclusion de garantie sur l'exactitude/complétude des informations affichées.",
+      "rationale_codes": {
+        "decision_trigger": "lexical_shift",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "can not guarantee that , all information is accurate",
+        "revised_from_plan": true,
+        "confidence": 0.7
+      }
+    },
+    {
+      "id": 13,
+      "theme": "WARRANTY_DISCLAIMER",
+      "function": "LIMITATION_DISCLAIMER",
+      "block_id": 3,
+      "is_block_start": false,
+      "reason": "continue WARRANTY_DISCLAIMER : responsabilité du fournisseur quant à l'exactitude des informations."
+    },
+    {
+      "id": 14,
+      "theme": "WARRANTY_DISCLAIMER",
+      "function": "LIMITATION_DISCLAIMER",
+      "block_id": 3,
+      "is_block_start": false,
+      "reason": "continue WARRANTY_DISCLAIMER : la plateforme ne constitue pas une recommandation/endorsement."
+    },
+    {
+      "id": 15,
+      "theme": "ACCEPTABLE_USE",
+      "function": "SCOPE_APPLICABILITY",
+      "block_id": 4,
+      "is_block_start": true,
+      "rationale": "nouveau sujet : restriction d'usage personnel et non commercial du service.",
+      "rationale_codes": {
+        "decision_trigger": "topic_keyword",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "personal and non-commercial use only",
+        "revised_from_plan": false,
+        "confidence": 0.78
+      }
+    },
+    {
+      "id": 16,
+      "theme": "ACCEPTABLE_USE",
+      "function": "PROHIBITION",
+      "block_id": 4,
+      "is_block_start": false,
+      "reason": "continue ACCEPTABLE_USE : interdiction de revendre, copier, scraper le contenu."
+    },
+    {
+      "id": 17,
+      "theme": "PAYMENT_BILLING",
+      "function": "SCOPE_APPLICABILITY",
+      "block_id": 5,
+      "is_block_start": true,
+      "rationale": "titre nominal court (sans verbe conjugué) annonçant la section prix : « prices , crossed-out rates and best price guarantee ».",
+      "rationale_codes": {
+        "decision_trigger": "title_marker",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "prices , crossed-out rates and best price guarantee",
+        "revised_from_plan": false,
+        "confidence": 0.9
+      }
+    },
+    {
+      "id": 18,
+      "theme": "PAYMENT_BILLING",
+      "function": "PROCEDURE_MECHANISM",
+      "block_id": 5,
+      "is_block_start": false,
+      "reason": "continue PAYMENT_BILLING : les prix sont compétitifs."
+    },
+    {
+      "id": 19,
+      "theme": "PAYMENT_BILLING",
+      "function": "PROCEDURE_MECHANISM",
+      "block_id": 5,
+      "is_block_start": false,
+      "reason": "continue PAYMENT_BILLING : modalités d'affichage des prix par chambre, taxes incluses."
+    },
+    {
+      "id": 20,
+      "theme": "PAYMENT_BILLING",
+      "function": "PROCEDURE_MECHANISM",
+      "block_id": 5,
+      "is_block_start": false,
+      "reason": "continue PAYMENT_BILLING : prix des billets par personne/groupe et validité."
+    },
+    {
+      "id": 21,
+      "theme": "PAYMENT_BILLING",
+      "function": "PROCEDURE_MECHANISM",
+      "block_id": 5,
+      "is_block_start": false,
+      "reason": "continue PAYMENT_BILLING : frais et taxes applicables en cas de no-show/annulation."
+    },
+    {
+      "id": 22,
+      "theme": "PAYMENT_BILLING",
+      "function": "PROCEDURE_MECHANISM",
+      "block_id": 5,
+      "is_block_start": false,
+      "reason": "continue PAYMENT_BILLING : taxes applicables facturables par l'hébergement."
+    },
+    {
+      "id": 23,
+      "theme": "PAYMENT_BILLING",
+      "function": "PROCEDURE_MECHANISM",
+      "block_id": 5,
+      "is_block_start": false,
+      "reason": "continue PAYMENT_BILLING : tarifs moins chers parfois assortis de restrictions (non remboursables)."
+    },
+    {
+      "id": 24,
+      "theme": "PAYMENT_BILLING",
+      "function": "PROCEDURE_MECHANISM",
+      "block_id": 5,
+      "is_block_start": false,
+      "reason": "continue PAYMENT_BILLING : invitation à vérifier les conditions avant réservation."
+    },
+    {
+      "id": 25,
+      "theme": "PAYMENT_BILLING",
+      "function": "PROCEDURE_MECHANISM",
+      "block_id": 5,
+      "is_block_start": false,
+      "reason": "continue PAYMENT_BILLING : explication du tarif barré (crossed-out rate)."
+    },
+    {
+      "id": 26,
+      "theme": "PAYMENT_BILLING",
+      "function": "PROCEDURE_MECHANISM",
+      "block_id": 5,
+      "is_block_start": false,
+      "reason": "continue PAYMENT_BILLING : méthode de comparaison à conditions de réservation identiques."
+    },
+    {
+      "id": 27,
+      "theme": "PAYMENT_BILLING",
+      "function": "PROCEDURE_MECHANISM",
+      "block_id": 5,
+      "is_block_start": false,
+      "reason": "continue PAYMENT_BILLING : conséquence de la comparaison (même chambre moins chère)."
+    },
+    {
+      "id": 28,
+      "theme": "PAYMENT_BILLING",
+      "function": "PROCEDURE_MECHANISM",
+      "block_id": 5,
+      "is_block_start": false,
+      "reason": "continue PAYMENT_BILLING : objectif de prix le plus bas (cadrage best price)."
+    },
+    {
+      "id": 29,
+      "theme": "PAYMENT_BILLING",
+      "function": "PROCEDURE_MECHANISM",
+      "block_id": 5,
+      "is_block_start": false,
+      "reason": "continue PAYMENT_BILLING : mécanisme best price guarantee (alignement de la différence de prix)."
+    },
+    {
+      "id": 30,
+      "theme": "PAYMENT_BILLING",
+      "function": "PROCEDURE_MECHANISM",
+      "block_id": 5,
+      "is_block_start": false,
+      "reason": "continue PAYMENT_BILLING : avertissement sur le convertisseur de devises (informatif)."
+    },
+    {
+      "id": 31,
+      "theme": "PAYMENT_BILLING",
+      "function": "PROCEDURE_MECHANISM",
+      "block_id": 5,
+      "is_block_start": false,
+      "reason": "continue PAYMENT_BILLING : les erreurs manifestes de prix ne sont pas contraignantes."
+    },
+    {
+      "id": 32,
+      "theme": "PAYMENT_BILLING",
+      "function": "PROCEDURE_MECHANISM",
+      "block_id": 5,
+      "is_block_start": false,
+      "reason": "continue PAYMENT_BILLING : signalisation des offres spéciales et promotions."
+    },
+    {
+      "id": 33,
+      "theme": "PAYMENT_BILLING",
+      "function": "PROCEDURE_MECHANISM",
+      "block_id": 5,
+      "is_block_start": false,
+      "reason": "continue PAYMENT_BILLING : renvoi à la politique vie privée/cookies (continuité, pas d'effet autonome)."
+    },
+    {
+      "id": 34,
+      "theme": "PAYMENT_BILLING",
+      "function": "PROCEDURE_MECHANISM",
+      "block_id": 5,
+      "is_block_start": false,
+      "reason": "continue PAYMENT_BILLING : le service est gratuit pour l'utilisateur (pas de frais ajoutés)."
+    },
+    {
+      "id": 35,
+      "theme": "PAYMENT_BILLING",
+      "function": "PROCEDURE_MECHANISM",
+      "block_id": 5,
+      "is_block_start": false,
+      "reason": "continue PAYMENT_BILLING : les fournisseurs paient une commission à booking.com."
+    },
+    {
+      "id": 36,
+      "theme": "PAYMENT_BILLING",
+      "function": "PROCEDURE_MECHANISM",
+      "block_id": 5,
+      "is_block_start": false,
+      "reason": "continue PAYMENT_BILLING : paiement en ligne sécurisé proposé par certains fournisseurs."
+    },
+    {
+      "id": 37,
+      "theme": "PAYMENT_BILLING",
+      "function": "PROCEDURE_MECHANISM",
+      "block_id": 5,
+      "is_block_start": false,
+      "reason": "continue PAYMENT_BILLING : facilitation du paiement via processeurs tiers (booking.com pas merchant of record)."
+    },
+    {
+      "id": 38,
+      "theme": "PAYMENT_BILLING",
+      "function": "PROCEDURE_MECHANISM",
+      "block_id": 5,
+      "is_block_start": false,
+      "reason": "continue PAYMENT_BILLING : traitement sécurisé du paiement vers le compte du fournisseur."
+    },
+    {
+      "id": 39,
+      "theme": "PAYMENT_BILLING",
+      "function": "PROCEDURE_MECHANISM",
+      "block_id": 5,
+      "is_block_start": false,
+      "reason": "continue PAYMENT_BILLING : effet libératoire du paiement facilité (bevrijdende betaling)."
+    },
+    {
+      "id": 40,
+      "theme": "PAYMENT_BILLING",
+      "function": "PROCEDURE_MECHANISM",
+      "block_id": 5,
+      "is_block_start": false,
+      "reason": "continue PAYMENT_BILLING : identité du processeur de paiement (enett) selon la carte."
+    },
+    {
+      "id": 41,
+      "theme": "PAYMENT_BILLING",
+      "function": "PROCEDURE_MECHANISM",
+      "block_id": 5,
+      "is_block_start": false,
+      "reason": "continue PAYMENT_BILLING : enett mandaté par le fournisseur comme agent de paiement."
+    },
+    {
+      "id": 42,
+      "theme": "PAYMENT_BILLING",
+      "function": "PROCEDURE_MECHANISM",
+      "block_id": 5,
+      "is_block_start": false,
+      "reason": "continue PAYMENT_BILLING : enett identifié comme merchant of record."
+    },
+    {
+      "id": 43,
+      "theme": "PAYMENT_BILLING",
+      "function": "PROCEDURE_MECHANISM",
+      "block_id": 5,
+      "is_block_start": false,
+      "reason": "continue PAYMENT_BILLING : extinction de l'obligation envers l'hébergement à réception du paiement."
+    },
+    {
+      "id": 44,
+      "theme": "PAYMENT_BILLING",
+      "function": "PROCEDURE_MECHANISM",
+      "block_id": 5,
+      "is_block_start": false,
+      "reason": "continue PAYMENT_BILLING : enett responsable du paiement, booking.com gère le support client."
+    },
+    {
+      "id": 45,
+      "theme": "PAYMENT_BILLING",
+      "function": "PROCEDURE_MECHANISM",
+      "block_id": 5,
+      "is_block_start": false,
+      "reason": "continue PAYMENT_BILLING : loi applicable au paiement via enett uk (incident dans le mécanisme de paiement)."
+    },
+    {
+      "id": 46,
+      "theme": "PAYMENT_BILLING",
+      "function": "PROCEDURE_MECHANISM",
+      "block_id": 5,
+      "is_block_start": false,
+      "reason": "continue PAYMENT_BILLING : prépaiement exigé pour certains tarifs (préautorisation/charge de la carte)."
+    },
+    {
+      "id": 47,
+      "theme": "PAYMENT_BILLING",
+      "function": "PROCEDURE_MECHANISM",
+      "block_id": 5,
+      "is_block_start": false,
+      "reason": "continue PAYMENT_BILLING : invitation à vérifier les conditions de paiement avant réservation."
+    },
+    {
+      "id": 48,
+      "theme": "PAYMENT_BILLING",
+      "function": "LIMITATION_DISCLAIMER",
+      "block_id": 5,
+      "is_block_start": false,
+      "reason": "continue PAYMENT_BILLING : non-responsabilité pour les charges du fournisseur (conséquence du mécanisme de paiement)."
+    },
+    {
+      "id": 49,
+      "theme": "INDEMNIFICATION",
+      "function": "RISK_ALLOCATION",
+      "block_id": 6,
+      "is_block_start": true,
+      "rationale": "nouveau sujet : répartition du risque et indemnisation en cas de fraude/usage non autorisé de carte.",
+      "rationale_codes": {
+        "decision_trigger": "topic_keyword",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "in the event of fraud or unauthorised use of your credit card",
+        "revised_from_plan": false,
+        "confidence": 0.72
+      }
+    },
+    {
+      "id": 50,
+      "theme": "INDEMNIFICATION",
+      "function": "RISK_ALLOCATION",
+      "block_id": 6,
+      "is_block_start": false,
+      "reason": "continue INDEMNIFICATION : booking.com rembourse la franchise jusqu'à 50 EUR."
+    },
+    {
+      "id": 51,
+      "theme": "INDEMNIFICATION",
+      "function": "PROCEDURE_MECHANISM",
+      "block_id": 6,
+      "is_block_start": false,
+      "reason": "continue INDEMNIFICATION : procédure de signalement de la fraude pour être indemnisé."
+    },
+    {
+      "id": 52,
+      "theme": "INDEMNIFICATION",
+      "function": "PROCEDURE_MECHANISM",
+      "block_id": 6,
+      "is_block_start": false,
+      "reason": "continue INDEMNIFICATION : modalités de l'email de signalement (objet, preuves)."
+    },
+    {
+      "id": 53,
+      "theme": "INDEMNIFICATION",
+      "function": "PROCEDURE_MECHANISM",
+      "block_id": 6,
+      "is_block_start": false,
+      "reason": "continue INDEMNIFICATION : conditions d'application de l'indemnisation (serveur sécurisé, absence de faute)."
+    },
+    {
+      "id": 54,
+      "theme": "PAYMENT_BILLING",
+      "function": "SCOPE_APPLICABILITY",
+      "block_id": 7,
+      "is_block_start": true,
+      "rationale": "titre nominal court annonçant la section annulation/prépaiement : « pre-payment , cancellation , no-show and fine print ».",
+      "rationale_codes": {
+        "decision_trigger": "title_marker",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "pre-payment , cancellation , no-show and fine print",
+        "revised_from_plan": false,
+        "confidence": 0.88
+      }
+    },
+    {
+      "id": 55,
+      "theme": "PAYMENT_BILLING",
+      "function": "OBLIGATION",
+      "block_id": 7,
+      "is_block_start": false,
+      "reason": "continue PAYMENT_BILLING : acceptation de la politique d'annulation/no-show du fournisseur."
+    },
+    {
+      "id": 56,
+      "theme": "PAYMENT_BILLING",
+      "function": "PROCEDURE_MECHANISM",
+      "block_id": 7,
+      "is_block_start": false,
+      "reason": "continue PAYMENT_BILLING : où trouver la politique d'annulation du fournisseur."
+    },
+    {
+      "id": 57,
+      "theme": "PAYMENT_BILLING",
+      "function": "PROCEDURE_MECHANISM",
+      "block_id": 7,
+      "is_block_start": false,
+      "reason": "continue PAYMENT_BILLING : certains tarifs non éligibles à l'annulation/changement."
+    },
+    {
+      "id": 58,
+      "theme": "PAYMENT_BILLING",
+      "function": "PROCEDURE_MECHANISM",
+      "block_id": 7,
+      "is_block_start": false,
+      "reason": "continue PAYMENT_BILLING : taxe de séjour facturable en cas de no-show/annulation."
+    },
+    {
+      "id": 59,
+      "theme": "PAYMENT_BILLING",
+      "function": "PROCEDURE_MECHANISM",
+      "block_id": 7,
+      "is_block_start": false,
+      "reason": "continue PAYMENT_BILLING : invitation à vérifier les conditions avant réservation."
+    },
+    {
+      "id": 60,
+      "theme": "PAYMENT_BILLING",
+      "function": "PROCEDURE_MECHANISM",
+      "block_id": 7,
+      "is_block_start": false,
+      "reason": "continue PAYMENT_BILLING : annulation possible si le prépaiement ne peut être collecté."
+    },
+    {
+      "id": 61,
+      "theme": "PAYMENT_BILLING",
+      "function": "PROCEDURE_MECHANISM",
+      "block_id": 7,
+      "is_block_start": false,
+      "reason": "continue PAYMENT_BILLING : variation des politiques d'annulation/prépaiement selon le type de chambre."
+    },
+    {
+      "id": 62,
+      "theme": "PAYMENT_BILLING",
+      "function": "PROCEDURE_MECHANISM",
+      "block_id": 7,
+      "is_block_start": false,
+      "reason": "continue PAYMENT_BILLING : invitation à lire le fine print et conditions additionnelles."
+    },
+    {
+      "id": 63,
+      "theme": "PAYMENT_BILLING",
+      "function": "PROCEDURE_MECHANISM",
+      "block_id": 7,
+      "is_block_start": false,
+      "reason": "continue PAYMENT_BILLING : risque du retard de paiement / carte invalide à la charge de l'utilisateur."
+    },
+    {
+      "id": 64,
+      "theme": "PAYMENT_BILLING",
+      "function": "PROCEDURE_MECHANISM",
+      "block_id": 7,
+      "is_block_start": false,
+      "reason": "continue PAYMENT_BILLING : procédure pour modifier/annuler via l'email de confirmation."
+    },
+    {
+      "id": 65,
+      "theme": "PAYMENT_BILLING",
+      "function": "PROCEDURE_MECHANISM",
+      "block_id": 7,
+      "is_block_start": false,
+      "reason": "continue PAYMENT_BILLING : frais possibles d'annulation selon la politique de l'hébergement."
+    },
+    {
+      "id": 66,
+      "theme": "PAYMENT_BILLING",
+      "function": "PROCEDURE_MECHANISM",
+      "block_id": 7,
+      "is_block_start": false,
+      "reason": "continue PAYMENT_BILLING : recommandation de lire la politique d'annulation avant réservation."
+    },
+    {
+      "id": 67,
+      "theme": "PAYMENT_BILLING",
+      "function": "PROCEDURE_MECHANISM",
+      "block_id": 7,
+      "is_block_start": false,
+      "reason": "continue PAYMENT_BILLING : communiquer l'arrivée tardive au fournisseur pour éviter le no-show."
+    },
+    {
+      "id": 68,
+      "theme": "PAYMENT_BILLING",
+      "function": "PROCEDURE_MECHANISM",
+      "block_id": 7,
+      "is_block_start": false,
+      "reason": "continue PAYMENT_BILLING : le service client peut aider à informer le fournisseur."
+    },
+    {
+      "id": 69,
+      "theme": "PAYMENT_BILLING",
+      "function": "LIMITATION_DISCLAIMER",
+      "block_id": 7,
+      "is_block_start": false,
+      "reason": "continue PAYMENT_BILLING : non-responsabilité pour les conséquences de l'arrivée tardive (conséquence du mécanisme)."
+    },
+    {
+      "id": 70,
+      "theme": "PRIVACY_DATA",
+      "function": "SCOPE_APPLICABILITY",
+      "block_id": 8,
+      "is_block_start": true,
+      "rationale": "titre nominal court annonçant la section communications : « -lrb- further -rrb- correspondence and communication ».",
+      "rationale_codes": {
+        "decision_trigger": "title_marker",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "correspondence and communication",
+        "revised_from_plan": false,
+        "confidence": 0.78
+      }
+    },
+    {
+      "id": 71,
+      "theme": "PRIVACY_DATA",
+      "function": "PROCEDURE_MECHANISM",
+      "block_id": 8,
+      "is_block_start": false,
+      "reason": "continue PRIVACY_DATA : consentement à recevoir des emails avant/après le séjour."
+    },
+    {
+      "id": 72,
+      "theme": "PRIVACY_DATA",
+      "function": "PROCEDURE_MECHANISM",
+      "block_id": 8,
+      "is_block_start": false,
+      "reason": "continue PRIVACY_DATA : renvoi à la politique vie privée et cookies."
+    },
+    {
+      "id": 73,
+      "theme": "PRIVACY_DATA",
+      "function": "LIMITATION_DISCLAIMER",
+      "block_id": 8,
+      "is_block_start": false,
+      "reason": "continue PRIVACY_DATA : exclusion de responsabilité pour les communications avec le fournisseur."
+    },
+    {
+      "id": 74,
+      "theme": "PRIVACY_DATA",
+      "function": "PROCEDURE_MECHANISM",
+      "block_id": 8,
+      "is_block_start": false,
+      "reason": "continue PRIVACY_DATA : aucun droit dérivable d'une communication avec le fournisseur."
+    },
+    {
+      "id": 75,
+      "theme": "PRIVACY_DATA",
+      "function": "PROCEDURE_MECHANISM",
+      "block_id": 8,
+      "is_block_start": false,
+      "reason": "continue PRIVACY_DATA : pas de garantie de réception/exécution des communications par le fournisseur."
+    },
+    {
+      "id": 76,
+      "theme": "PRIVACY_DATA",
+      "function": "OBLIGATION",
+      "block_id": 8,
+      "is_block_start": false,
+      "reason": "continue PRIVACY_DATA : obligation d'utiliser une adresse email correcte."
+    },
+    {
+      "id": 77,
+      "theme": "PRIVACY_DATA",
+      "function": "LIMITATION_DISCLAIMER",
+      "block_id": 8,
+      "is_block_start": false,
+      "reason": "continue PRIVACY_DATA : non-responsabilité pour les coordonnées erronées (conséquence du point précédent)."
+    },
+    {
+      "id": 78,
+      "theme": "LIABILITY_LIMITATION",
+      "function": "OBLIGATION",
+      "block_id": 9,
+      "is_block_start": true,
+      "rationale": "nouveau sujet : délai impératif de soumission des réclamations (30 jours) contre booking.com.",
+      "rationale_codes": {
+        "decision_trigger": "topic_keyword",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "any claim or complaint against booking.com",
+        "revised_from_plan": true,
+        "confidence": 0.68
+      }
+    },
+    {
+      "id": 79,
+      "theme": "LIABILITY_LIMITATION",
+      "function": "LIMITATION_DISCLAIMER",
+      "block_id": 9,
+      "is_block_start": false,
+      "reason": "continue LIABILITY_LIMITATION : forclusion du droit à indemnisation passé le délai de 30 jours."
+    },
+    {
+      "id": 80,
+      "theme": "LIABILITY_LIMITATION",
+      "function": "PROCEDURE_MECHANISM",
+      "block_id": 9,
+      "is_block_start": false,
+      "reason": "continue LIABILITY_LIMITATION : recommandation de captures d'écran pour étayer une réclamation."
+    },
+    {
+      "id": 81,
+      "theme": "OTHER_ranking_reviews",
+      "function": "SCOPE_APPLICABILITY",
+      "block_id": 10,
+      "is_block_start": true,
+      "rationale": "titre nominal court annonçant la section classement/avis : « ranking , preferred programme , stars and guest reviews ».",
+      "rationale_codes": {
+        "decision_trigger": "title_marker",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "ranking , preferred programme , stars and guest reviews",
+        "revised_from_plan": false,
+        "confidence": 0.8
+      }
+    },
+    {
+      "id": 82,
+      "theme": "OTHER_ranking_reviews",
+      "function": "PROCEDURE_MECHANISM",
+      "block_id": 10,
+      "is_block_start": false,
+      "reason": "continue OTHER_ranking_reviews : réglage par défaut du classement « recommended »."
+    },
+    {
+      "id": 83,
+      "theme": "OTHER_ranking_reviews",
+      "function": "PROCEDURE_MECHANISM",
+      "block_id": 10,
+      "is_block_start": false,
+      "reason": "continue OTHER_ranking_reviews : autres modes de classement proposés."
+    },
+    {
+      "id": 84,
+      "theme": "OTHER_ranking_reviews",
+      "function": "PROCEDURE_MECHANISM",
+      "block_id": 10,
+      "is_block_start": false,
+      "reason": "continue OTHER_ranking_reviews : fonctionnement de l'algorithme de classement par défaut."
+    },
+    {
+      "id": 85,
+      "theme": "OTHER_ranking_reviews",
+      "function": "PROCEDURE_MECHANISM",
+      "block_id": 10,
+      "is_block_start": false,
+      "reason": "continue OTHER_ranking_reviews : commission et paiement comme facteurs (non dominants) du classement."
+    },
+    {
+      "id": 86,
+      "theme": "OTHER_ranking_reviews",
+      "function": "PROCEDURE_MECHANISM",
+      "block_id": 10,
+      "is_block_start": false,
+      "reason": "continue OTHER_ranking_reviews : programme de partenariat préféré (preferred partnership)."
+    },
+    {
+      "id": 87,
+      "theme": "OTHER_ranking_reviews",
+      "function": "PROCEDURE_MECHANISM",
+      "block_id": 10,
+      "is_block_start": false,
+      "reason": "continue OTHER_ranking_reviews : marquage « thumbs-up » et commission plus élevée du préféré."
+    },
+    {
+      "id": 88,
+      "theme": "OTHER_ranking_reviews",
+      "function": "PROCEDURE_MECHANISM",
+      "block_id": 10,
+      "is_block_start": false,
+      "reason": "continue OTHER_ranking_reviews : critères de qualification du statut préféré."
+    },
+    {
+      "id": 89,
+      "theme": "OTHER_ranking_reviews",
+      "function": "PROCEDURE_MECHANISM",
+      "block_id": 10,
+      "is_block_start": false,
+      "reason": "continue OTHER_ranking_reviews : système d'étoiles des hébergements non hôteliers."
+    },
+    {
+      "id": 90,
+      "theme": "OTHER_ranking_reviews",
+      "function": "PROCEDURE_MECHANISM",
+      "block_id": 10,
+      "is_block_start": false,
+      "reason": "continue OTHER_ranking_reviews : usage de l'avis client publié sur la page du fournisseur et par booking.com."
+    },
+    {
+      "id": 91,
+      "theme": "OTHER_ranking_reviews",
+      "function": "PROCEDURE_MECHANISM",
+      "block_id": 10,
+      "is_block_start": false,
+      "reason": "continue OTHER_ranking_reviews : droit d'ajuster/refuser/retirer les avis."
+    },
+    {
+      "id": 92,
+      "theme": "OTHER_ranking_reviews",
+      "function": "PROCEDURE_MECHANISM",
+      "block_id": 10,
+      "is_block_start": false,
+      "reason": "continue OTHER_ranking_reviews : le formulaire d'avis est un sondage sans offre commerciale."
+    },
+    {
+      "id": 93,
+      "theme": "LIABILITY_LIMITATION",
+      "function": "LIMITATION_DISCLAIMER",
+      "block_id": 11,
+      "is_block_start": true,
+      "rationale": "nouveau sujet : limitation de la responsabilité de booking.com aux dommages directs plafonnés.",
+      "rationale_codes": {
+        "decision_trigger": "topic_keyword",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "we shall only be liable for direct damages",
+        "revised_from_plan": false,
+        "confidence": 0.88
+      }
+    },
+    {
+      "id": 94,
+      "theme": "LIABILITY_LIMITATION",
+      "function": "LIMITATION_DISCLAIMER",
+      "block_id": 11,
+      "is_block_start": false,
+      "reason": "continue LIABILITY_LIMITATION : exclusion des dommages indirects/punitifs et des fautes du fournisseur."
+    },
+    {
+      "id": 95,
+      "theme": "LIABILITY_LIMITATION",
+      "function": "RISK_ALLOCATION",
+      "block_id": 11,
+      "is_block_start": false,
+      "reason": "continue LIABILITY_LIMITATION : responsabilité fiscale du fournisseur (répartition de risque rattachée à la responsabilité)."
+    },
+    {
+      "id": 96,
+      "theme": "LIABILITY_LIMITATION",
+      "function": "LIMITATION_DISCLAIMER",
+      "block_id": 11,
+      "is_block_start": false,
+      "reason": "continue LIABILITY_LIMITATION : booking.com non responsable du versement des taxes."
+    },
+    {
+      "id": 97,
+      "theme": "LIABILITY_LIMITATION",
+      "function": "LIMITATION_DISCLAIMER",
+      "block_id": 11,
+      "is_block_start": false,
+      "reason": "continue LIABILITY_LIMITATION : booking.com n'agit pas comme merchant of record."
+    },
+    {
+      "id": 98,
+      "theme": "USER_CONTENT",
+      "function": "RIGHT_GRANT",
+      "block_id": 12,
+      "is_block_start": true,
+      "rationale": "nouveau sujet : contenu fourni par l'utilisateur (photos/images uploadées) et garanties associées.",
+      "rationale_codes": {
+        "decision_trigger": "topic_keyword",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "by uploading photos/images onto our system",
+        "revised_from_plan": false,
+        "confidence": 0.85
+      }
+    },
+    {
+      "id": 99,
+      "theme": "USER_CONTENT",
+      "function": "RIGHT_GRANT",
+      "block_id": 12,
+      "is_block_start": false,
+      "reason": "continue USER_CONTENT : licence mondiale et perpétuelle accordée à booking.com sur les images."
+    },
+    {
+      "id": 100,
+      "theme": "USER_CONTENT",
+      "function": "RISK_ALLOCATION",
+      "block_id": 12,
+      "is_block_start": false,
+      "reason": "continue USER_CONTENT : responsabilité légale de l'uploadeur pour les réclamations de tiers."
+    },
+    {
+      "id": 101,
+      "theme": "USER_CONTENT",
+      "function": "LIMITATION_DISCLAIMER",
+      "block_id": 12,
+      "is_block_start": false,
+      "reason": "continue USER_CONTENT : booking.com ne possède pas et n'endosse pas les images."
+    },
+    {
+      "id": 102,
+      "theme": "USER_CONTENT",
+      "function": "LIMITATION_DISCLAIMER",
+      "block_id": 12,
+      "is_block_start": false,
+      "reason": "continue USER_CONTENT : véracité/droit d'usage assumés par l'uploadeur, pas par booking.com."
+    },
+    {
+      "id": 103,
+      "theme": "USER_CONTENT",
+      "function": "LIMITATION_DISCLAIMER",
+      "block_id": 12,
+      "is_block_start": false,
+      "reason": "continue USER_CONTENT : exclusion de responsabilité pour les photos publiées."
+    },
+    {
+      "id": 104,
+      "theme": "USER_CONTENT",
+      "function": "OBLIGATION",
+      "block_id": 12,
+      "is_block_start": false,
+      "reason": "continue USER_CONTENT : garantie que les images ne contiennent rien d'illicite ni de virus."
+    },
+    {
+      "id": 105,
+      "theme": "USER_CONTENT",
+      "function": "PROCEDURE_MECHANISM",
+      "block_id": 12,
+      "is_block_start": false,
+      "reason": "continue USER_CONTENT : retrait possible des images non conformes (conséquence)."
+    },
+    {
+      "id": 106,
+      "theme": "LICENSE_IP",
+      "function": "RIGHT_GRANT",
+      "block_id": 13,
+      "is_block_start": true,
+      "rationale": "nouveau sujet : propriété intellectuelle du logiciel et des contenus de la plateforme.",
+      "rationale_codes": {
+        "decision_trigger": "topic_keyword",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "intellectual property rights",
+        "revised_from_plan": true,
+        "confidence": 0.78
+      }
+    },
+    {
+      "id": 107,
+      "theme": "LICENSE_IP",
+      "function": "PROHIBITION",
+      "block_id": 13,
+      "is_block_start": false,
+      "reason": "continue LICENSE_IP : booking.com conserve la propriété et interdit la copie/scraping du contenu."
+    },
+    {
+      "id": 108,
+      "theme": "LICENSE_IP",
+      "function": "RIGHT_GRANT",
+      "block_id": 13,
+      "is_block_start": false,
+      "reason": "continue LICENSE_IP : cession à booking.com des droits de PI éventuels de l'utilisateur."
+    },
+    {
+      "id": 109,
+      "theme": "LICENSE_IP",
+      "function": "PROCEDURE_MECHANISM",
+      "block_id": 13,
+      "is_block_start": false,
+      "reason": "continue LICENSE_IP : tout usage illicite constitue une atteinte aux droits de PI (conséquence)."
+    },
+    {
+      "id": 110,
+      "theme": "GOVERNING_LAW",
+      "function": "GOVERNANCE",
+      "block_id": 14,
+      "is_block_start": true,
+      "rationale": "nouveau sujet : loi applicable néerlandaise et compétence des tribunaux d'Amsterdam.",
+      "rationale_codes": {
+        "decision_trigger": "topic_keyword",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "governed by and construed in accordance with dutch law",
+        "revised_from_plan": false,
+        "confidence": 0.9
+      }
+    },
+    {
+      "id": 111,
+      "theme": "GOVERNING_LAW",
+      "function": "PROCEDURE_MECHANISM",
+      "block_id": 14,
+      "is_block_start": false,
+      "reason": "continue GOVERNING_LAW : la version anglaise peut avoir été traduite en d'autres langues."
+    },
+    {
+      "id": 112,
+      "theme": "GOVERNING_LAW",
+      "function": "PROCEDURE_MECHANISM",
+      "block_id": 14,
+      "is_block_start": false,
+      "reason": "continue GOVERNING_LAW : aucune droit dérivable de la version traduite (courtoisie)."
+    },
+    {
+      "id": 113,
+      "theme": "GOVERNING_LAW",
+      "function": "PROCEDURE_MECHANISM",
+      "block_id": 14,
+      "is_block_start": false,
+      "reason": "continue GOVERNING_LAW : prévalence de la version anglaise en cas de divergence linguistique."
+    },
+    {
+      "id": 114,
+      "theme": "GOVERNING_LAW",
+      "function": "PROCEDURE_MECHANISM",
+      "block_id": 14,
+      "is_block_start": false,
+      "reason": "continue GOVERNING_LAW : disponibilité de la version anglaise sur la plateforme/sur demande."
+    },
+    {
+      "id": 115,
+      "theme": "MISC_BOILERPLATE",
+      "function": "GOVERNANCE",
+      "block_id": 15,
+      "is_block_start": true,
+      "rationale": "nouveau sujet : clause de divisibilité (severability) — la nullité d'une stipulation n'affecte pas les autres.",
+      "rationale_codes": {
+        "decision_trigger": "topic_keyword",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "if any provision of these terms and conditions is or becomes invalid",
+        "revised_from_plan": false,
+        "confidence": 0.82
+      }
+    },
+    {
+      "id": 116,
+      "theme": "MISC_BOILERPLATE",
+      "function": "PROCEDURE_MECHANISM",
+      "block_id": 15,
+      "is_block_start": false,
+      "reason": "continue MISC_BOILERPLATE : la stipulation invalide est néanmoins appliquée dans la mesure permise (conséquence de la divisibilité)."
+    },
+    {
+      "id": 117,
+      "theme": "META",
+      "function": "META",
+      "block_id": 16,
+      "is_block_start": true,
+      "rationale": "titre nominal puis identité de l'entité : « about booking.com and the support companies » introduit les coordonnées de l'entité.",
+      "rationale_codes": {
+        "decision_trigger": "title_marker",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "about booking.com and the support companies",
+        "revised_from_plan": false,
+        "confidence": 0.75
+      }
+    },
+    {
+      "id": 118,
+      "theme": "META",
+      "function": "META",
+      "block_id": 16,
+      "is_block_start": false,
+      "reason": "continue META : identité et adresse enregistrée de booking.com b.v."
+    },
+    {
+      "id": 119,
+      "theme": "META",
+      "function": "META",
+      "block_id": 16,
+      "is_block_start": false,
+      "reason": "continue META : numéro de TVA de l'entité."
+    },
+    {
+      "id": 120,
+      "theme": "META",
+      "function": "META",
+      "block_id": 16,
+      "is_block_start": false,
+      "reason": "continue META : siège social et présence des support companies."
+    },
+    {
+      "id": 121,
+      "theme": "META",
+      "function": "META",
+      "block_id": 16,
+      "is_block_start": false,
+      "reason": "continue META : rôle interne de support des support companies."
+    },
+    {
+      "id": 122,
+      "theme": "META",
+      "function": "META",
+      "block_id": 16,
+      "is_block_start": false,
+      "reason": "continue META : certaines support companies fournissent un support client limité."
+    },
+    {
+      "id": 123,
+      "theme": "META",
+      "function": "META",
+      "block_id": 16,
+      "is_block_start": false,
+      "reason": "continue META : les support companies n'ont pas de plateforme."
+    },
+    {
+      "id": 124,
+      "theme": "META",
+      "function": "META",
+      "block_id": 16,
+      "is_block_start": false,
+      "reason": "continue META : les support companies n'ont aucun pouvoir de représenter booking.com."
+    },
+    {
+      "id": 125,
+      "theme": "META",
+      "function": "META",
+      "block_id": 16,
+      "is_block_start": false,
+      "reason": "continue META : absence de relation juridique entre l'utilisateur et les support companies."
+    },
+    {
+      "id": 126,
+      "theme": "META",
+      "function": "META",
+      "block_id": 16,
+      "is_block_start": false,
+      "reason": "continue META : les support companies ne sont pas agents de signification de booking.com."
+    },
+    {
+      "id": 127,
+      "theme": "META",
+      "function": "META",
+      "block_id": 16,
+      "is_block_start": false,
+      "reason": "continue META : booking.com n'accepte aucun domicile hors de son siège d'Amsterdam."
+    }
+  ]
+}

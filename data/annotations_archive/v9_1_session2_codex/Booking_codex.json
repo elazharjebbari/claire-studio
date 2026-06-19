@@ -1,0 +1,1232 @@
+{
+  "doc": "Booking",
+  "judge": "codex",
+  "version": "v9.1",
+  "document_plan": {
+    "estimated_n_blocks": 15,
+    "rationale_global": "Plan établi a priori à partir des titres, changements lexicaux et indices thématiques du document.",
+    "segments": [
+      {
+        "start_id": 0,
+        "theme": "PREAMBLE_SCOPE",
+        "rationale": "Segment anticipé par l'indice « these terms and conditions , as may be ».",
+        "evidence_span": "these terms and conditions , as may be"
+      },
+      {
+        "start_id": 3,
+        "theme": "DEFINITIONS",
+        "rationale": "Segment anticipé par l'indice « `` booking.com '' , `` us '' , ».",
+        "evidence_span": "`` booking.com '' , `` us '' ,"
+      },
+      {
+        "start_id": 7,
+        "theme": "THIRD_PARTY",
+        "rationale": "Segment anticipé par l'indice « through the platform , we -lrb- booking.com b.v. ».",
+        "evidence_span": "through the platform , we -lrb- booking.com b.v."
+      },
+      {
+        "start_id": 15,
+        "theme": "ACCEPTABLE_USE",
+        "rationale": "Segment anticipé par l'indice « our service is made available for personal and ».",
+        "evidence_span": "our service is made available for personal and"
+      },
+      {
+        "start_id": 17,
+        "theme": "PAYMENT_BILLING",
+        "rationale": "Segment anticipé par l'indice « prices , crossed-out rates and best price guarantee ».",
+        "evidence_span": "prices , crossed-out rates and best price guarantee"
+      },
+      {
+        "start_id": 33,
+        "theme": "PRIVACY_DATA",
+        "rationale": "Segment anticipé par l'indice « please have a look at our privacy and ».",
+        "evidence_span": "please have a look at our privacy and"
+      },
+      {
+        "start_id": 34,
+        "theme": "PAYMENT_BILLING",
+        "rationale": "Segment anticipé par l'indice « our service is free of charge because , ».",
+        "evidence_span": "our service is free of charge because ,"
+      },
+      {
+        "start_id": 54,
+        "theme": "PAYMENT_BILLING",
+        "rationale": "Segment anticipé par l'indice « pre-payment , cancellation , no-show and fine print ».",
+        "evidence_span": "pre-payment , cancellation , no-show and fine print"
+      },
+      {
+        "start_id": 70,
+        "theme": "PRIVACY_DATA",
+        "rationale": "Segment anticipé par l'indice « -lrb- further -rrb- correspondence and communication ».",
+        "evidence_span": "-lrb- further -rrb- correspondence and communication"
+      },
+      {
+        "start_id": 81,
+        "theme": "USER_CONTENT",
+        "rationale": "Segment anticipé par l'indice « ranking , preferred programme , stars and guest ».",
+        "evidence_span": "ranking , preferred programme , stars and guest"
+      },
+      {
+        "start_id": 93,
+        "theme": "LIABILITY_LIMITATION",
+        "rationale": "Segment anticipé par l'indice « subject to the limitations set out in these ».",
+        "evidence_span": "subject to the limitations set out in these"
+      },
+      {
+        "start_id": 98,
+        "theme": "USER_CONTENT",
+        "rationale": "Segment anticipé par l'indice « by uploading photos/images onto our system -lrb- for ».",
+        "evidence_span": "by uploading photos/images onto our system -lrb- for"
+      },
+      {
+        "start_id": 106,
+        "theme": "LICENSE_IP",
+        "rationale": "Segment anticipé par l'indice « unless stated otherwise , the software required for ».",
+        "evidence_span": "unless stated otherwise , the software required for"
+      },
+      {
+        "start_id": 110,
+        "theme": "GOVERNING_LAW",
+        "rationale": "Segment anticipé par l'indice « to the extent permitted by law , these ».",
+        "evidence_span": "to the extent permitted by law , these"
+      },
+      {
+        "start_id": 117,
+        "theme": "THIRD_PARTY",
+        "rationale": "Segment anticipé par l'indice « about booking.com and the support companies ».",
+        "evidence_span": "about booking.com and the support companies"
+      }
+    ]
+  },
+  "annotations": [
+    {
+      "id": 0,
+      "theme": "PREAMBLE_SCOPE",
+      "legal_nature": "SCOPE_APPLICABILITY",
+      "block_id": 0,
+      "is_block_start": true,
+      "rationale": "Ouverture du bloc PREAMBLE_SCOPE avec l'indice « these terms and conditions , as may be ».",
+      "rationale_codes": {
+        "decision_trigger": "document_start",
+        "relation_to_prev": "document_start",
+        "evidence_span": "these terms and conditions , as may be",
+        "revised_from_plan": false,
+        "confidence": 0.95
+      }
+    },
+    {
+      "id": 1,
+      "theme": "PREAMBLE_SCOPE",
+      "legal_nature": "DEFINITION",
+      "block_id": 0,
+      "is_block_start": false,
+      "reason": "Continuation du bloc PREAMBLE_SCOPE, même sujet juridique."
+    },
+    {
+      "id": 2,
+      "theme": "PREAMBLE_SCOPE",
+      "legal_nature": "SCOPE_APPLICABILITY",
+      "block_id": 0,
+      "is_block_start": false,
+      "reason": "Continuation du bloc PREAMBLE_SCOPE, même sujet juridique."
+    },
+    {
+      "id": 3,
+      "theme": "DEFINITIONS",
+      "legal_nature": "DEFINITION",
+      "block_id": 1,
+      "is_block_start": true,
+      "rationale": "Ouverture du bloc DEFINITIONS avec l'indice « `` booking.com '' , `` us '' , ».",
+      "rationale_codes": {
+        "decision_trigger": "definition_marker",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "`` booking.com '' , `` us '' ,",
+        "revised_from_plan": false,
+        "confidence": 0.86
+      }
+    },
+    {
+      "id": 4,
+      "theme": "DEFINITIONS",
+      "legal_nature": "DEFINITION",
+      "block_id": 1,
+      "is_block_start": false,
+      "reason": "Continuation du bloc DEFINITIONS, même sujet juridique."
+    },
+    {
+      "id": 5,
+      "theme": "DEFINITIONS",
+      "legal_nature": "DEFINITION",
+      "block_id": 1,
+      "is_block_start": false,
+      "reason": "Continuation du bloc DEFINITIONS, même sujet juridique."
+    },
+    {
+      "id": 6,
+      "theme": "DEFINITIONS",
+      "legal_nature": "DEFINITION",
+      "block_id": 1,
+      "is_block_start": false,
+      "reason": "Continuation du bloc DEFINITIONS, même sujet juridique."
+    },
+    {
+      "id": 7,
+      "theme": "THIRD_PARTY",
+      "legal_nature": "SCOPE_APPLICABILITY",
+      "block_id": 2,
+      "is_block_start": true,
+      "rationale": "Ouverture du bloc THIRD_PARTY avec l'indice « through the platform , we -lrb- booking.com b.v. ».",
+      "rationale_codes": {
+        "decision_trigger": "lexical_shift",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "through the platform , we -lrb- booking.com b.v.",
+        "revised_from_plan": false,
+        "confidence": 0.86
+      }
+    },
+    {
+      "id": 8,
+      "theme": "THIRD_PARTY",
+      "legal_nature": "SCOPE_APPLICABILITY",
+      "block_id": 2,
+      "is_block_start": false,
+      "reason": "Continuation du bloc THIRD_PARTY, même sujet juridique."
+    },
+    {
+      "id": 9,
+      "theme": "THIRD_PARTY",
+      "legal_nature": "SCOPE_APPLICABILITY",
+      "block_id": 2,
+      "is_block_start": false,
+      "reason": "Continuation du bloc THIRD_PARTY, même sujet juridique."
+    },
+    {
+      "id": 10,
+      "theme": "THIRD_PARTY",
+      "legal_nature": "SCOPE_APPLICABILITY",
+      "block_id": 2,
+      "is_block_start": false,
+      "reason": "Continuation du bloc THIRD_PARTY, même sujet juridique."
+    },
+    {
+      "id": 11,
+      "theme": "THIRD_PARTY",
+      "legal_nature": "SCOPE_APPLICABILITY",
+      "block_id": 2,
+      "is_block_start": false,
+      "reason": "Continuation du bloc THIRD_PARTY, même sujet juridique."
+    },
+    {
+      "id": 12,
+      "theme": "THIRD_PARTY",
+      "legal_nature": "SCOPE_APPLICABILITY",
+      "block_id": 2,
+      "is_block_start": false,
+      "reason": "Continuation du bloc THIRD_PARTY, même sujet juridique."
+    },
+    {
+      "id": 13,
+      "theme": "THIRD_PARTY",
+      "legal_nature": "SCOPE_APPLICABILITY",
+      "block_id": 2,
+      "is_block_start": false,
+      "reason": "Continuation du bloc THIRD_PARTY, même sujet juridique."
+    },
+    {
+      "id": 14,
+      "theme": "THIRD_PARTY",
+      "legal_nature": "SCOPE_APPLICABILITY",
+      "block_id": 2,
+      "is_block_start": false,
+      "reason": "Continuation du bloc THIRD_PARTY, même sujet juridique."
+    },
+    {
+      "id": 15,
+      "theme": "ACCEPTABLE_USE",
+      "legal_nature": "PROHIBITION",
+      "block_id": 3,
+      "is_block_start": true,
+      "rationale": "Ouverture du bloc ACCEPTABLE_USE avec l'indice « our service is made available for personal and ».",
+      "rationale_codes": {
+        "decision_trigger": "topic_keyword",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "our service is made available for personal and",
+        "revised_from_plan": false,
+        "confidence": 0.86
+      }
+    },
+    {
+      "id": 16,
+      "theme": "ACCEPTABLE_USE",
+      "legal_nature": "PROHIBITION",
+      "block_id": 3,
+      "is_block_start": false,
+      "reason": "Continuation du bloc ACCEPTABLE_USE, même sujet juridique."
+    },
+    {
+      "id": 17,
+      "theme": "PAYMENT_BILLING",
+      "legal_nature": "OBLIGATION",
+      "block_id": 4,
+      "is_block_start": true,
+      "rationale": "Ouverture du bloc PAYMENT_BILLING avec l'indice « prices , crossed-out rates and best price guarantee ».",
+      "rationale_codes": {
+        "decision_trigger": "title_marker",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "prices , crossed-out rates and best price guarantee",
+        "revised_from_plan": false,
+        "confidence": 0.86
+      }
+    },
+    {
+      "id": 18,
+      "theme": "PAYMENT_BILLING",
+      "legal_nature": "OBLIGATION",
+      "block_id": 4,
+      "is_block_start": false,
+      "reason": "Continuation du bloc PAYMENT_BILLING, même sujet juridique."
+    },
+    {
+      "id": 19,
+      "theme": "PAYMENT_BILLING",
+      "legal_nature": "OBLIGATION",
+      "block_id": 4,
+      "is_block_start": false,
+      "reason": "Continuation du bloc PAYMENT_BILLING, même sujet juridique."
+    },
+    {
+      "id": 20,
+      "theme": "PAYMENT_BILLING",
+      "legal_nature": "OBLIGATION",
+      "block_id": 4,
+      "is_block_start": false,
+      "reason": "Continuation du bloc PAYMENT_BILLING, même sujet juridique."
+    },
+    {
+      "id": 21,
+      "theme": "PAYMENT_BILLING",
+      "legal_nature": "OBLIGATION",
+      "block_id": 4,
+      "is_block_start": false,
+      "reason": "Continuation du bloc PAYMENT_BILLING, même sujet juridique."
+    },
+    {
+      "id": 22,
+      "theme": "PAYMENT_BILLING",
+      "legal_nature": "OBLIGATION",
+      "block_id": 4,
+      "is_block_start": false,
+      "reason": "Continuation du bloc PAYMENT_BILLING, même sujet juridique."
+    },
+    {
+      "id": 23,
+      "theme": "PAYMENT_BILLING",
+      "legal_nature": "OBLIGATION",
+      "block_id": 4,
+      "is_block_start": false,
+      "reason": "Continuation du bloc PAYMENT_BILLING, même sujet juridique."
+    },
+    {
+      "id": 24,
+      "theme": "PAYMENT_BILLING",
+      "legal_nature": "OBLIGATION",
+      "block_id": 4,
+      "is_block_start": false,
+      "reason": "Continuation du bloc PAYMENT_BILLING, même sujet juridique."
+    },
+    {
+      "id": 25,
+      "theme": "PAYMENT_BILLING",
+      "legal_nature": "OBLIGATION",
+      "block_id": 4,
+      "is_block_start": false,
+      "reason": "Continuation du bloc PAYMENT_BILLING, même sujet juridique."
+    },
+    {
+      "id": 26,
+      "theme": "PAYMENT_BILLING",
+      "legal_nature": "OBLIGATION",
+      "block_id": 4,
+      "is_block_start": false,
+      "reason": "Continuation du bloc PAYMENT_BILLING, même sujet juridique."
+    },
+    {
+      "id": 27,
+      "theme": "PAYMENT_BILLING",
+      "legal_nature": "DEFINITION",
+      "block_id": 4,
+      "is_block_start": false,
+      "reason": "Continuation du bloc PAYMENT_BILLING, même sujet juridique."
+    },
+    {
+      "id": 28,
+      "theme": "PAYMENT_BILLING",
+      "legal_nature": "OBLIGATION",
+      "block_id": 4,
+      "is_block_start": false,
+      "reason": "Continuation du bloc PAYMENT_BILLING, même sujet juridique."
+    },
+    {
+      "id": 29,
+      "theme": "PAYMENT_BILLING",
+      "legal_nature": "OBLIGATION",
+      "block_id": 4,
+      "is_block_start": false,
+      "reason": "Continuation du bloc PAYMENT_BILLING, même sujet juridique."
+    },
+    {
+      "id": 30,
+      "theme": "PAYMENT_BILLING",
+      "legal_nature": "OBLIGATION",
+      "block_id": 4,
+      "is_block_start": false,
+      "reason": "Continuation du bloc PAYMENT_BILLING, même sujet juridique."
+    },
+    {
+      "id": 31,
+      "theme": "PAYMENT_BILLING",
+      "legal_nature": "OBLIGATION",
+      "block_id": 4,
+      "is_block_start": false,
+      "reason": "Continuation du bloc PAYMENT_BILLING, même sujet juridique."
+    },
+    {
+      "id": 32,
+      "theme": "PAYMENT_BILLING",
+      "legal_nature": "OBLIGATION",
+      "block_id": 4,
+      "is_block_start": false,
+      "reason": "Continuation du bloc PAYMENT_BILLING, même sujet juridique."
+    },
+    {
+      "id": 33,
+      "theme": "PRIVACY_DATA",
+      "legal_nature": "OBLIGATION",
+      "block_id": 5,
+      "is_block_start": true,
+      "rationale": "Ouverture du bloc PRIVACY_DATA avec l'indice « please have a look at our privacy and ».",
+      "rationale_codes": {
+        "decision_trigger": "topic_keyword",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "please have a look at our privacy and",
+        "revised_from_plan": false,
+        "confidence": 0.86
+      }
+    },
+    {
+      "id": 34,
+      "theme": "PAYMENT_BILLING",
+      "legal_nature": "OBLIGATION",
+      "block_id": 6,
+      "is_block_start": true,
+      "rationale": "Ouverture du bloc PAYMENT_BILLING avec l'indice « our service is free of charge because , ».",
+      "rationale_codes": {
+        "decision_trigger": "lexical_shift",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "our service is free of charge because ,",
+        "revised_from_plan": false,
+        "confidence": 0.86
+      }
+    },
+    {
+      "id": 35,
+      "theme": "PAYMENT_BILLING",
+      "legal_nature": "OBLIGATION",
+      "block_id": 6,
+      "is_block_start": false,
+      "reason": "Continuation du bloc PAYMENT_BILLING, même sujet juridique."
+    },
+    {
+      "id": 36,
+      "theme": "PAYMENT_BILLING",
+      "legal_nature": "DEFINITION",
+      "block_id": 6,
+      "is_block_start": false,
+      "reason": "Continuation du bloc PAYMENT_BILLING, même sujet juridique."
+    },
+    {
+      "id": 37,
+      "theme": "PAYMENT_BILLING",
+      "legal_nature": "OBLIGATION",
+      "block_id": 6,
+      "is_block_start": false,
+      "reason": "Continuation du bloc PAYMENT_BILLING, même sujet juridique."
+    },
+    {
+      "id": 38,
+      "theme": "PAYMENT_BILLING",
+      "legal_nature": "OBLIGATION",
+      "block_id": 6,
+      "is_block_start": false,
+      "reason": "Continuation du bloc PAYMENT_BILLING, même sujet juridique."
+    },
+    {
+      "id": 39,
+      "theme": "PAYMENT_BILLING",
+      "legal_nature": "OBLIGATION",
+      "block_id": 6,
+      "is_block_start": false,
+      "reason": "Continuation du bloc PAYMENT_BILLING, même sujet juridique."
+    },
+    {
+      "id": 40,
+      "theme": "PAYMENT_BILLING",
+      "legal_nature": "OBLIGATION",
+      "block_id": 6,
+      "is_block_start": false,
+      "reason": "Continuation du bloc PAYMENT_BILLING, même sujet juridique."
+    },
+    {
+      "id": 41,
+      "theme": "PAYMENT_BILLING",
+      "legal_nature": "OBLIGATION",
+      "block_id": 6,
+      "is_block_start": false,
+      "reason": "Continuation du bloc PAYMENT_BILLING, même sujet juridique."
+    },
+    {
+      "id": 42,
+      "theme": "PAYMENT_BILLING",
+      "legal_nature": "OBLIGATION",
+      "block_id": 6,
+      "is_block_start": false,
+      "reason": "Continuation du bloc PAYMENT_BILLING, même sujet juridique."
+    },
+    {
+      "id": 43,
+      "theme": "PAYMENT_BILLING",
+      "legal_nature": "OBLIGATION",
+      "block_id": 6,
+      "is_block_start": false,
+      "reason": "Continuation du bloc PAYMENT_BILLING, même sujet juridique."
+    },
+    {
+      "id": 44,
+      "theme": "PAYMENT_BILLING",
+      "legal_nature": "OBLIGATION",
+      "block_id": 6,
+      "is_block_start": false,
+      "reason": "Continuation du bloc PAYMENT_BILLING, même sujet juridique."
+    },
+    {
+      "id": 45,
+      "theme": "PAYMENT_BILLING",
+      "legal_nature": "GOVERNANCE",
+      "block_id": 6,
+      "is_block_start": false,
+      "reason": "Continuation du bloc PAYMENT_BILLING, même sujet juridique."
+    },
+    {
+      "id": 46,
+      "theme": "PAYMENT_BILLING",
+      "legal_nature": "OBLIGATION",
+      "block_id": 6,
+      "is_block_start": false,
+      "reason": "Continuation du bloc PAYMENT_BILLING, même sujet juridique."
+    },
+    {
+      "id": 47,
+      "theme": "PAYMENT_BILLING",
+      "legal_nature": "OBLIGATION",
+      "block_id": 6,
+      "is_block_start": false,
+      "reason": "Continuation du bloc PAYMENT_BILLING, même sujet juridique."
+    },
+    {
+      "id": 48,
+      "theme": "PAYMENT_BILLING",
+      "legal_nature": "OBLIGATION",
+      "block_id": 6,
+      "is_block_start": false,
+      "reason": "Continuation du bloc PAYMENT_BILLING, même sujet juridique."
+    },
+    {
+      "id": 49,
+      "theme": "PAYMENT_BILLING",
+      "legal_nature": "OBLIGATION",
+      "block_id": 6,
+      "is_block_start": false,
+      "reason": "Continuation du bloc PAYMENT_BILLING, même sujet juridique."
+    },
+    {
+      "id": 50,
+      "theme": "PAYMENT_BILLING",
+      "legal_nature": "OBLIGATION",
+      "block_id": 6,
+      "is_block_start": false,
+      "reason": "Continuation du bloc PAYMENT_BILLING, même sujet juridique."
+    },
+    {
+      "id": 51,
+      "theme": "PAYMENT_BILLING",
+      "legal_nature": "OBLIGATION",
+      "block_id": 6,
+      "is_block_start": false,
+      "reason": "Continuation du bloc PAYMENT_BILLING, même sujet juridique."
+    },
+    {
+      "id": 52,
+      "theme": "PAYMENT_BILLING",
+      "legal_nature": "OBLIGATION",
+      "block_id": 6,
+      "is_block_start": false,
+      "reason": "Continuation du bloc PAYMENT_BILLING, même sujet juridique."
+    },
+    {
+      "id": 53,
+      "theme": "PAYMENT_BILLING",
+      "legal_nature": "OBLIGATION",
+      "block_id": 6,
+      "is_block_start": false,
+      "reason": "Continuation du bloc PAYMENT_BILLING, même sujet juridique."
+    },
+    {
+      "id": 54,
+      "theme": "PAYMENT_BILLING",
+      "legal_nature": "GOVERNANCE",
+      "block_id": 7,
+      "is_block_start": true,
+      "rationale": "Ouverture du bloc PAYMENT_BILLING avec l'indice « pre-payment , cancellation , no-show and fine print ».",
+      "rationale_codes": {
+        "decision_trigger": "title_marker",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "pre-payment , cancellation , no-show and fine print",
+        "revised_from_plan": false,
+        "confidence": 0.86
+      }
+    },
+    {
+      "id": 55,
+      "theme": "PAYMENT_BILLING",
+      "legal_nature": "GOVERNANCE",
+      "block_id": 7,
+      "is_block_start": false,
+      "reason": "Continuation du bloc PAYMENT_BILLING, même sujet juridique."
+    },
+    {
+      "id": 56,
+      "theme": "PAYMENT_BILLING",
+      "legal_nature": "GOVERNANCE",
+      "block_id": 7,
+      "is_block_start": false,
+      "reason": "Continuation du bloc PAYMENT_BILLING, même sujet juridique."
+    },
+    {
+      "id": 57,
+      "theme": "PAYMENT_BILLING",
+      "legal_nature": "OBLIGATION",
+      "block_id": 7,
+      "is_block_start": false,
+      "reason": "Continuation du bloc PAYMENT_BILLING, même sujet juridique."
+    },
+    {
+      "id": 58,
+      "theme": "PAYMENT_BILLING",
+      "legal_nature": "GOVERNANCE",
+      "block_id": 7,
+      "is_block_start": false,
+      "reason": "Continuation du bloc PAYMENT_BILLING, même sujet juridique."
+    },
+    {
+      "id": 59,
+      "theme": "PAYMENT_BILLING",
+      "legal_nature": "OBLIGATION",
+      "block_id": 7,
+      "is_block_start": false,
+      "reason": "Continuation du bloc PAYMENT_BILLING, même sujet juridique."
+    },
+    {
+      "id": 60,
+      "theme": "PAYMENT_BILLING",
+      "legal_nature": "OBLIGATION",
+      "block_id": 7,
+      "is_block_start": false,
+      "reason": "Continuation du bloc PAYMENT_BILLING, même sujet juridique."
+    },
+    {
+      "id": 61,
+      "theme": "PAYMENT_BILLING",
+      "legal_nature": "GOVERNANCE",
+      "block_id": 7,
+      "is_block_start": false,
+      "reason": "Continuation du bloc PAYMENT_BILLING, même sujet juridique."
+    },
+    {
+      "id": 62,
+      "theme": "PAYMENT_BILLING",
+      "legal_nature": "OBLIGATION",
+      "block_id": 7,
+      "is_block_start": false,
+      "reason": "Continuation du bloc PAYMENT_BILLING, même sujet juridique."
+    },
+    {
+      "id": 63,
+      "theme": "PAYMENT_BILLING",
+      "legal_nature": "OBLIGATION",
+      "block_id": 7,
+      "is_block_start": false,
+      "reason": "Continuation du bloc PAYMENT_BILLING, même sujet juridique."
+    },
+    {
+      "id": 64,
+      "theme": "PAYMENT_BILLING",
+      "legal_nature": "OBLIGATION",
+      "block_id": 7,
+      "is_block_start": false,
+      "reason": "Continuation du bloc PAYMENT_BILLING, même sujet juridique."
+    },
+    {
+      "id": 65,
+      "theme": "PAYMENT_BILLING",
+      "legal_nature": "OBLIGATION",
+      "block_id": 7,
+      "is_block_start": false,
+      "reason": "Continuation du bloc PAYMENT_BILLING, même sujet juridique."
+    },
+    {
+      "id": 66,
+      "theme": "PAYMENT_BILLING",
+      "legal_nature": "GOVERNANCE",
+      "block_id": 7,
+      "is_block_start": false,
+      "reason": "Continuation du bloc PAYMENT_BILLING, même sujet juridique."
+    },
+    {
+      "id": 67,
+      "theme": "PAYMENT_BILLING",
+      "legal_nature": "GOVERNANCE",
+      "block_id": 7,
+      "is_block_start": false,
+      "reason": "Continuation du bloc PAYMENT_BILLING, même sujet juridique."
+    },
+    {
+      "id": 68,
+      "theme": "PAYMENT_BILLING",
+      "legal_nature": "GOVERNANCE",
+      "block_id": 7,
+      "is_block_start": false,
+      "reason": "Continuation du bloc PAYMENT_BILLING, même sujet juridique."
+    },
+    {
+      "id": 69,
+      "theme": "PAYMENT_BILLING",
+      "legal_nature": "GOVERNANCE",
+      "block_id": 7,
+      "is_block_start": false,
+      "reason": "Continuation du bloc PAYMENT_BILLING, même sujet juridique."
+    },
+    {
+      "id": 70,
+      "theme": "PRIVACY_DATA",
+      "legal_nature": "OBLIGATION",
+      "block_id": 8,
+      "is_block_start": true,
+      "rationale": "Ouverture du bloc PRIVACY_DATA avec l'indice « -lrb- further -rrb- correspondence and communication ».",
+      "rationale_codes": {
+        "decision_trigger": "title_marker",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "-lrb- further -rrb- correspondence and communication",
+        "revised_from_plan": false,
+        "confidence": 0.86
+      }
+    },
+    {
+      "id": 71,
+      "theme": "PRIVACY_DATA",
+      "legal_nature": "OBLIGATION",
+      "block_id": 8,
+      "is_block_start": false,
+      "reason": "Continuation du bloc PRIVACY_DATA, même sujet juridique."
+    },
+    {
+      "id": 72,
+      "theme": "PRIVACY_DATA",
+      "legal_nature": "OBLIGATION",
+      "block_id": 8,
+      "is_block_start": false,
+      "reason": "Continuation du bloc PRIVACY_DATA, même sujet juridique."
+    },
+    {
+      "id": 73,
+      "theme": "PRIVACY_DATA",
+      "legal_nature": "LIMITATION_DISCLAIMER",
+      "block_id": 8,
+      "is_block_start": false,
+      "reason": "Continuation du bloc PRIVACY_DATA, même sujet juridique."
+    },
+    {
+      "id": 74,
+      "theme": "PRIVACY_DATA",
+      "legal_nature": "OBLIGATION",
+      "block_id": 8,
+      "is_block_start": false,
+      "reason": "Continuation du bloc PRIVACY_DATA, même sujet juridique."
+    },
+    {
+      "id": 75,
+      "theme": "PRIVACY_DATA",
+      "legal_nature": "OBLIGATION",
+      "block_id": 8,
+      "is_block_start": false,
+      "reason": "Continuation du bloc PRIVACY_DATA, même sujet juridique."
+    },
+    {
+      "id": 76,
+      "theme": "PRIVACY_DATA",
+      "legal_nature": "OBLIGATION",
+      "block_id": 8,
+      "is_block_start": false,
+      "reason": "Continuation du bloc PRIVACY_DATA, même sujet juridique."
+    },
+    {
+      "id": 77,
+      "theme": "PRIVACY_DATA",
+      "legal_nature": "LIMITATION_DISCLAIMER",
+      "block_id": 8,
+      "is_block_start": false,
+      "reason": "Continuation du bloc PRIVACY_DATA, même sujet juridique."
+    },
+    {
+      "id": 78,
+      "theme": "PRIVACY_DATA",
+      "legal_nature": "OBLIGATION",
+      "block_id": 8,
+      "is_block_start": false,
+      "reason": "Continuation du bloc PRIVACY_DATA, même sujet juridique."
+    },
+    {
+      "id": 79,
+      "theme": "PRIVACY_DATA",
+      "legal_nature": "OBLIGATION",
+      "block_id": 8,
+      "is_block_start": false,
+      "reason": "Continuation du bloc PRIVACY_DATA, même sujet juridique."
+    },
+    {
+      "id": 80,
+      "theme": "PRIVACY_DATA",
+      "legal_nature": "OBLIGATION",
+      "block_id": 8,
+      "is_block_start": false,
+      "reason": "Continuation du bloc PRIVACY_DATA, même sujet juridique."
+    },
+    {
+      "id": 81,
+      "theme": "USER_CONTENT",
+      "legal_nature": "UNKNOWN",
+      "block_id": 9,
+      "is_block_start": true,
+      "rationale": "Ouverture du bloc USER_CONTENT avec l'indice « ranking , preferred programme , stars and guest ».",
+      "rationale_codes": {
+        "decision_trigger": "title_marker",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "ranking , preferred programme , stars and guest",
+        "revised_from_plan": false,
+        "confidence": 0.86
+      }
+    },
+    {
+      "id": 82,
+      "theme": "USER_CONTENT",
+      "legal_nature": "UNKNOWN",
+      "block_id": 9,
+      "is_block_start": false,
+      "reason": "Continuation du bloc USER_CONTENT, même sujet juridique."
+    },
+    {
+      "id": 83,
+      "theme": "USER_CONTENT",
+      "legal_nature": "UNKNOWN",
+      "block_id": 9,
+      "is_block_start": false,
+      "reason": "Continuation du bloc USER_CONTENT, même sujet juridique."
+    },
+    {
+      "id": 84,
+      "theme": "USER_CONTENT",
+      "legal_nature": "OBLIGATION",
+      "block_id": 9,
+      "is_block_start": false,
+      "reason": "Continuation du bloc USER_CONTENT, même sujet juridique."
+    },
+    {
+      "id": 85,
+      "theme": "USER_CONTENT",
+      "legal_nature": "UNKNOWN",
+      "block_id": 9,
+      "is_block_start": false,
+      "reason": "Continuation du bloc USER_CONTENT, même sujet juridique."
+    },
+    {
+      "id": 86,
+      "theme": "USER_CONTENT",
+      "legal_nature": "UNKNOWN",
+      "block_id": 9,
+      "is_block_start": false,
+      "reason": "Continuation du bloc USER_CONTENT, même sujet juridique."
+    },
+    {
+      "id": 87,
+      "theme": "USER_CONTENT",
+      "legal_nature": "UNKNOWN",
+      "block_id": 9,
+      "is_block_start": false,
+      "reason": "Continuation du bloc USER_CONTENT, même sujet juridique."
+    },
+    {
+      "id": 88,
+      "theme": "USER_CONTENT",
+      "legal_nature": "UNKNOWN",
+      "block_id": 9,
+      "is_block_start": false,
+      "reason": "Continuation du bloc USER_CONTENT, même sujet juridique."
+    },
+    {
+      "id": 89,
+      "theme": "USER_CONTENT",
+      "legal_nature": "UNKNOWN",
+      "block_id": 9,
+      "is_block_start": false,
+      "reason": "Continuation du bloc USER_CONTENT, même sujet juridique."
+    },
+    {
+      "id": 90,
+      "theme": "USER_CONTENT",
+      "legal_nature": "UNKNOWN",
+      "block_id": 9,
+      "is_block_start": false,
+      "reason": "Continuation du bloc USER_CONTENT, même sujet juridique."
+    },
+    {
+      "id": 91,
+      "theme": "USER_CONTENT",
+      "legal_nature": "UNKNOWN",
+      "block_id": 9,
+      "is_block_start": false,
+      "reason": "Continuation du bloc USER_CONTENT, même sujet juridique."
+    },
+    {
+      "id": 92,
+      "theme": "USER_CONTENT",
+      "legal_nature": "UNKNOWN",
+      "block_id": 9,
+      "is_block_start": false,
+      "reason": "Continuation du bloc USER_CONTENT, même sujet juridique."
+    },
+    {
+      "id": 93,
+      "theme": "LIABILITY_LIMITATION",
+      "legal_nature": "LIMITATION_DISCLAIMER",
+      "block_id": 10,
+      "is_block_start": true,
+      "rationale": "Ouverture du bloc LIABILITY_LIMITATION avec l'indice « subject to the limitations set out in these ».",
+      "rationale_codes": {
+        "decision_trigger": "topic_keyword",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "subject to the limitations set out in these",
+        "revised_from_plan": false,
+        "confidence": 0.86
+      }
+    },
+    {
+      "id": 94,
+      "theme": "LIABILITY_LIMITATION",
+      "legal_nature": "LIMITATION_DISCLAIMER",
+      "block_id": 10,
+      "is_block_start": false,
+      "reason": "Continuation du bloc LIABILITY_LIMITATION, même sujet juridique."
+    },
+    {
+      "id": 95,
+      "theme": "LIABILITY_LIMITATION",
+      "legal_nature": "LIMITATION_DISCLAIMER",
+      "block_id": 10,
+      "is_block_start": false,
+      "reason": "Continuation du bloc LIABILITY_LIMITATION, même sujet juridique."
+    },
+    {
+      "id": 96,
+      "theme": "LIABILITY_LIMITATION",
+      "legal_nature": "LIMITATION_DISCLAIMER",
+      "block_id": 10,
+      "is_block_start": false,
+      "reason": "Continuation du bloc LIABILITY_LIMITATION, même sujet juridique."
+    },
+    {
+      "id": 97,
+      "theme": "LIABILITY_LIMITATION",
+      "legal_nature": "LIMITATION_DISCLAIMER",
+      "block_id": 10,
+      "is_block_start": false,
+      "reason": "Continuation du bloc LIABILITY_LIMITATION, même sujet juridique."
+    },
+    {
+      "id": 98,
+      "theme": "USER_CONTENT",
+      "legal_nature": "OBLIGATION",
+      "block_id": 11,
+      "is_block_start": true,
+      "rationale": "Ouverture du bloc USER_CONTENT avec l'indice « by uploading photos/images onto our system -lrb- for ».",
+      "rationale_codes": {
+        "decision_trigger": "lexical_shift",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "by uploading photos/images onto our system -lrb- for",
+        "revised_from_plan": false,
+        "confidence": 0.86
+      }
+    },
+    {
+      "id": 99,
+      "theme": "USER_CONTENT",
+      "legal_nature": "RIGHT_GRANT",
+      "block_id": 11,
+      "is_block_start": false,
+      "reason": "Continuation du bloc USER_CONTENT, même sujet juridique."
+    },
+    {
+      "id": 100,
+      "theme": "USER_CONTENT",
+      "legal_nature": "RIGHT_GRANT",
+      "block_id": 11,
+      "is_block_start": false,
+      "reason": "Continuation du bloc USER_CONTENT, même sujet juridique."
+    },
+    {
+      "id": 101,
+      "theme": "USER_CONTENT",
+      "legal_nature": "RIGHT_GRANT",
+      "block_id": 11,
+      "is_block_start": false,
+      "reason": "Continuation du bloc USER_CONTENT, même sujet juridique."
+    },
+    {
+      "id": 102,
+      "theme": "USER_CONTENT",
+      "legal_nature": "RIGHT_GRANT",
+      "block_id": 11,
+      "is_block_start": false,
+      "reason": "Continuation du bloc USER_CONTENT, même sujet juridique."
+    },
+    {
+      "id": 103,
+      "theme": "USER_CONTENT",
+      "legal_nature": "LIMITATION_DISCLAIMER",
+      "block_id": 11,
+      "is_block_start": false,
+      "reason": "Continuation du bloc USER_CONTENT, même sujet juridique."
+    },
+    {
+      "id": 104,
+      "theme": "USER_CONTENT",
+      "legal_nature": "PROHIBITION",
+      "block_id": 11,
+      "is_block_start": false,
+      "reason": "Continuation du bloc USER_CONTENT, même sujet juridique."
+    },
+    {
+      "id": 105,
+      "theme": "USER_CONTENT",
+      "legal_nature": "RIGHT_GRANT",
+      "block_id": 11,
+      "is_block_start": false,
+      "reason": "Continuation du bloc USER_CONTENT, même sujet juridique."
+    },
+    {
+      "id": 106,
+      "theme": "LICENSE_IP",
+      "legal_nature": "RIGHT_GRANT",
+      "block_id": 12,
+      "is_block_start": true,
+      "rationale": "Ouverture du bloc LICENSE_IP avec l'indice « unless stated otherwise , the software required for ».",
+      "rationale_codes": {
+        "decision_trigger": "topic_keyword",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "unless stated otherwise , the software required for",
+        "revised_from_plan": false,
+        "confidence": 0.86
+      }
+    },
+    {
+      "id": 107,
+      "theme": "LICENSE_IP",
+      "legal_nature": "RIGHT_GRANT",
+      "block_id": 12,
+      "is_block_start": false,
+      "reason": "Continuation du bloc LICENSE_IP, même sujet juridique."
+    },
+    {
+      "id": 108,
+      "theme": "LICENSE_IP",
+      "legal_nature": "RIGHT_GRANT",
+      "block_id": 12,
+      "is_block_start": false,
+      "reason": "Continuation du bloc LICENSE_IP, même sujet juridique."
+    },
+    {
+      "id": 109,
+      "theme": "LICENSE_IP",
+      "legal_nature": "RIGHT_GRANT",
+      "block_id": 12,
+      "is_block_start": false,
+      "reason": "Continuation du bloc LICENSE_IP, même sujet juridique."
+    },
+    {
+      "id": 110,
+      "theme": "GOVERNING_LAW",
+      "legal_nature": "GOVERNANCE",
+      "block_id": 13,
+      "is_block_start": true,
+      "rationale": "Ouverture du bloc GOVERNING_LAW avec l'indice « to the extent permitted by law , these ».",
+      "rationale_codes": {
+        "decision_trigger": "topic_keyword",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "to the extent permitted by law , these",
+        "revised_from_plan": false,
+        "confidence": 0.86
+      }
+    },
+    {
+      "id": 111,
+      "theme": "GOVERNING_LAW",
+      "legal_nature": "GOVERNANCE",
+      "block_id": 13,
+      "is_block_start": false,
+      "reason": "Continuation du bloc GOVERNING_LAW, même sujet juridique."
+    },
+    {
+      "id": 112,
+      "theme": "GOVERNING_LAW",
+      "legal_nature": "GOVERNANCE",
+      "block_id": 13,
+      "is_block_start": false,
+      "reason": "Continuation du bloc GOVERNING_LAW, même sujet juridique."
+    },
+    {
+      "id": 113,
+      "theme": "GOVERNING_LAW",
+      "legal_nature": "GOVERNANCE",
+      "block_id": 13,
+      "is_block_start": false,
+      "reason": "Continuation du bloc GOVERNING_LAW, même sujet juridique."
+    },
+    {
+      "id": 114,
+      "theme": "GOVERNING_LAW",
+      "legal_nature": "GOVERNANCE",
+      "block_id": 13,
+      "is_block_start": false,
+      "reason": "Continuation du bloc GOVERNING_LAW, même sujet juridique."
+    },
+    {
+      "id": 115,
+      "theme": "GOVERNING_LAW",
+      "legal_nature": "GOVERNANCE",
+      "block_id": 13,
+      "is_block_start": false,
+      "reason": "Continuation du bloc GOVERNING_LAW, même sujet juridique."
+    },
+    {
+      "id": 116,
+      "theme": "GOVERNING_LAW",
+      "legal_nature": "GOVERNANCE",
+      "block_id": 13,
+      "is_block_start": false,
+      "reason": "Continuation du bloc GOVERNING_LAW, même sujet juridique."
+    },
+    {
+      "id": 117,
+      "theme": "THIRD_PARTY",
+      "legal_nature": "META",
+      "block_id": 14,
+      "is_block_start": true,
+      "rationale": "Ouverture du bloc THIRD_PARTY avec l'indice « about booking.com and the support companies ».",
+      "rationale_codes": {
+        "decision_trigger": "title_marker",
+        "relation_to_prev": "opens_new_topic",
+        "evidence_span": "about booking.com and the support companies",
+        "revised_from_plan": false,
+        "confidence": 0.86
+      }
+    },
+    {
+      "id": 118,
+      "theme": "THIRD_PARTY",
+      "legal_nature": "META",
+      "block_id": 14,
+      "is_block_start": false,
+      "reason": "Continuation du bloc THIRD_PARTY, même sujet juridique."
+    },
+    {
+      "id": 119,
+      "theme": "THIRD_PARTY",
+      "legal_nature": "META",
+      "block_id": 14,
+      "is_block_start": false,
+      "reason": "Continuation du bloc THIRD_PARTY, même sujet juridique."
+    },
+    {
+      "id": 120,
+      "theme": "THIRD_PARTY",
+      "legal_nature": "META",
+      "block_id": 14,
+      "is_block_start": false,
+      "reason": "Continuation du bloc THIRD_PARTY, même sujet juridique."
+    },
+    {
+      "id": 121,
+      "theme": "THIRD_PARTY",
+      "legal_nature": "META",
+      "block_id": 14,
+      "is_block_start": false,
+      "reason": "Continuation du bloc THIRD_PARTY, même sujet juridique."
+    },
+    {
+      "id": 122,
+      "theme": "THIRD_PARTY",
+      "legal_nature": "META",
+      "block_id": 14,
+      "is_block_start": false,
+      "reason": "Continuation du bloc THIRD_PARTY, même sujet juridique."
+    },
+    {
+      "id": 123,
+      "theme": "THIRD_PARTY",
+      "legal_nature": "META",
+      "block_id": 14,
+      "is_block_start": false,
+      "reason": "Continuation du bloc THIRD_PARTY, même sujet juridique."
+    },
+    {
+      "id": 124,
+      "theme": "THIRD_PARTY",
+      "legal_nature": "META",
+      "block_id": 14,
+      "is_block_start": false,
+      "reason": "Continuation du bloc THIRD_PARTY, même sujet juridique."
+    },
+    {
+      "id": 125,
+      "theme": "THIRD_PARTY",
+      "legal_nature": "META",
+      "block_id": 14,
+      "is_block_start": false,
+      "reason": "Continuation du bloc THIRD_PARTY, même sujet juridique."
+    },
+    {
+      "id": 126,
+      "theme": "THIRD_PARTY",
+      "legal_nature": "META",
+      "block_id": 14,
+      "is_block_start": false,
+      "reason": "Continuation du bloc THIRD_PARTY, même sujet juridique."
+    },
+    {
+      "id": 127,
+      "theme": "THIRD_PARTY",
+      "legal_nature": "META",
+      "block_id": 14,
+      "is_block_start": false,
+      "reason": "Continuation du bloc THIRD_PARTY, même sujet juridique."
+    }
+  ]
+}
