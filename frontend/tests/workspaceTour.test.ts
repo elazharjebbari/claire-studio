@@ -21,8 +21,9 @@ describe("Configuration de la visite guidée du workspace", () => {
   });
 
   it("cible des sélecteurs basés sur data-testid ou aria-label", () => {
+    // Autorise l'opérateur de préfixe `^=` (ex. boundary-peek-<index> dynamique).
     for (const step of WORKSPACE_TOUR_STEPS) {
-      expect(step.element).toMatch(/\[(data-testid|aria-label)=/);
+      expect(step.element).toMatch(/\[(data-testid|aria-label)\^?=/);
     }
   });
 

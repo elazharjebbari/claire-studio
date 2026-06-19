@@ -37,8 +37,24 @@ import { SentenceMenu, type JudgeDetail } from "./SentenceMenu";
 import { SelectionToolbar } from "./SelectionToolbar";
 import { LangSwitch } from "./LangSwitch";
 import { LlmSourceSwitch } from "./LlmSourceSwitch";
+import { DivergenceNav } from "./DivergenceNav";
+import { ComparePanel } from "./ComparePanel";
+import { BoundaryEvidence } from "./BoundaryEvidence";
+import { useDivergenceShortcuts } from "./useDivergenceShortcuts";
+import {
+  divergenceAnchors,
+  divergenceOrdinal,
+  nextDivergence,
+  prevDivergence,
+} from "@/lib/divergence";
 
 interface MenuState {
+  index: number;
+  x: number;
+  y: number;
+}
+
+interface BoundaryPopState {
   index: number;
   x: number;
   y: number;
@@ -59,6 +75,9 @@ export function DocumentPanel({
   const focusSentence = useWorkspaceStore((s) => s.focusSentence);
   const drafts = useWorkspaceStore((s) => s.draftClauses);
   const selectClause = useWorkspaceStore((s) => s.selectClause);
+  const resolveDivergence = useWorkspaceStore((s) => s.resolveDivergence);
+  const showComparePanel = useWorkspaceStore((s) => s.showComparePanel);
+  const toggleComparePanel = useWorkspaceStore((s) => s.toggleComparePanel);
   const showUnfairness = useWorkspaceStore((s) => s.showUnfairness);
   const showGhostClaude = useWorkspaceStore((s) => s.showGhostClaude);
   const showGhostCodex = useWorkspaceStore((s) => s.showGhostCodex);
@@ -127,8 +146,68 @@ export function DocumentPanel({
   );
   const runs =
     llmSource === "claude" ? claudeRuns : llmSource === "codex" ? codexRuns : humanRuns;
-  const isJudgeSource = llmSource === "claude" || llmSource === "codex";
   const isCompare = llmSource === "compare";
+
+  // Divergences (P1) — ancres de segments où Claude ≠ Codex (logique pure).
+  const divAnchors = useMemo(
+    () => divergenceAnchors(llm.claudeByIndex, llm.codexByIndex),
+    [llm.claudeByIndex, llm.codexByIndex],
+  );
+  const divOrdinal = divergenceOrdinal(divAnchors, focused);
+  const goNextDivergence = () => {
+    const t = nextDivergence(divAnchors, focused);
+    if (t != null) focusSentence(t);
+  };
+  const goPrevDivergence = () => {
+    const t = prevDivergence(divAnchors, focused);
+    if (t != null) focusSentence(t);
+  };
+  // Adoption au clavier (1/2) de la proposition du juge couvrant la phrase focalisée.
+  const adoptAtFocus = (judge: "claude" | "codex") => {
+    const detail =
+      judge === "claude"
+        ? detailAt(claudeDetailByAnchor, claudeRuns, focused)
+        : detailAt(codexDetailByAnchor, codexRuns, focused);
+    if (detail) resolveDivergence(detail.anchorIndex, judge, detail.theme);
+  };
+
+  // Popover d'aperçu de frontière (P5) — ouvert au clic sur l'icône ou via `e`.
+  const [boundaryPop, setBoundaryPop] = useState<BoundaryPopState | null>(null);
+  const openBoundaryAt = (index: number, x?: number, y?: number) => {
+    if (x != null && y != null) {
+      setBoundaryPop({ index, x, y });
+      return;
+    }
+    // Clavier : ancrer près de la phrase focalisée si on la retrouve dans le DOM.
+    const el =
+      typeof document !== "undefined"
+        ? document.querySelector<HTMLElement>(`[data-sentence-index="${index}"]`)
+        : null;
+    const r = el?.getBoundingClientRect();
+    setBoundaryPop({ index, x: r ? r.right - 40 : 200, y: r ? r.top + 8 : 120 });
+  };
+
+  useDivergenceShortcuts({
+    compareActive: isCompare,
+    onNextDivergence: goNextDivergence,
+    onPrevDivergence: goPrevDivergence,
+    onAdoptClaude: () => adoptAtFocus("claude"),
+    onAdoptCodex: () => adoptAtFocus("codex"),
+    onPeekBoundary: () => openBoundaryAt(focused),
+    onToggleCompare: toggleComparePanel,
+  });
+
+  // Le panneau comparatif n'a de sens que si au moins un juge couvre des phrases.
+  const compareDataReady =
+    llm.claudeByIndex.some((t) => t != null) || llm.codexByIndex.some((t) => t != null);
+
+  // Détails des juges à la frontière en cours d'aperçu (P5).
+  const boundaryClaude = boundaryPop
+    ? detailAt(claudeDetailByAnchor, claudeRuns, boundaryPop.index)
+    : null;
+  const boundaryCodex = boundaryPop
+    ? detailAt(codexDetailByAnchor, codexRuns, boundaryPop.index)
+    : null;
 
   // Traductions FR (P5) — Map index→texte.
   const { byIndex: translations } = useDocumentTranslations(documentId);
@@ -153,19 +232,13 @@ export function DocumentPanel({
 
   return (
     <>
-      <div className="mx-auto max-w-reading px-6 py-8 font-reading text-[17px] leading-reading text-ink">
+      <div className="flex justify-center gap-4 px-6 py-8">
+       <div className="w-full max-w-reading font-reading text-[17px] leading-reading text-ink">
         <div className="mb-4 flex flex-wrap items-center justify-end gap-3 text-sm">
-          <label className="flex cursor-pointer items-center gap-2 text-ink-muted">
-            <input
-              type="checkbox"
-              data-testid="boundary-toggle"
-              checked={showBoundaries}
-              onChange={toggleBoundaries}
-            />
-            Frontières
-          </label>
-          <LlmSourceSwitch />
-          {(isJudgeSource || isCompare) && availableVersions.length > 0 && (
+          {/* P3 : sélecteur de version TOUJOURS visible dès qu'il existe des versions,
+              indépendamment de la source. Le switch n'affecte QUE l'overlay LLM
+              (clé react-query) ; les clauses humaines ne sont jamais touchées. */}
+          {availableVersions.length > 0 && (
             <label className="flex items-center gap-2 text-ink-muted">
               <span>Version</span>
               <select
@@ -182,6 +255,33 @@ export function DocumentPanel({
                 ))}
               </select>
             </label>
+          )}
+          <label className="flex cursor-pointer items-center gap-2 text-ink-muted">
+            <input
+              type="checkbox"
+              data-testid="boundary-toggle"
+              checked={showBoundaries}
+              onChange={toggleBoundaries}
+            />
+            Frontières
+          </label>
+          <LlmSourceSwitch />
+          {compareDataReady && (
+            <button
+              type="button"
+              data-testid="toggle-compare-panel"
+              aria-pressed={showComparePanel}
+              onClick={toggleComparePanel}
+              title="Panneau comparatif Claude/Codex — g"
+              className={
+                "rounded-md border px-2 py-1 transition-colors " +
+                (showComparePanel
+                  ? "border-accent/60 bg-accent/10 text-ink"
+                  : "border-line text-ink-muted hover:bg-panel-muted")
+              }
+            >
+              ⇄ Comparer
+            </button>
           )}
           <LangSwitch />
         </div>
@@ -210,6 +310,15 @@ export function DocumentPanel({
           </div>
         )}
 
+        {isCompare && (
+          <DivergenceNav
+            count={divAnchors.length}
+            ordinal={divOrdinal}
+            onPrev={goPrevDivergence}
+            onNext={goNextDivergence}
+          />
+        )}
+
         {sentences.map((s) => {
           const isFocused = s.index === focused;
           const anchor = anchorByIndex.get(s.index);
@@ -223,6 +332,16 @@ export function DocumentPanel({
           const codexTheme = llm.codexByIndex[s.index] ?? null;
           const bothPresent = claudeTheme != null && codexTheme != null;
           const compareAgree = bothPresent && claudeTheme === codexTheme;
+
+          // Frontière LLM (P5) : début d'un run Claude OU Codex sur cette phrase.
+          // L'aperçu de preuves n'a de sens qu'en mode comparaison ou source juge.
+          const claudeStart = runAt(claudeRuns, s.index);
+          const codexStart = runAt(codexRuns, s.index);
+          const llmFrontier =
+            compareDataReady &&
+            (isCompare || llmSource === "claude" || llmSource === "codex") &&
+            ((claudeStart?.start === s.index && claudeStart.theme != null) ||
+              (codexStart?.start === s.index && codexStart.theme != null));
 
           // Run couvrant la phrase (P2) → rail gauche + détection du début de run.
           const run = runAt(runs, s.index);
@@ -282,6 +401,37 @@ export function DocumentPanel({
                       {badge.tag}
                     </span>
                   )}
+                  {/* Voyant d'arbitrage (P1) : juge adopté sur cette clause. */}
+                  {anchor?.resolvedFrom && (
+                    <span
+                      data-testid={`resolved-${s.index}`}
+                      data-judge={anchor.resolvedFrom}
+                      className="rounded border border-emerald-400/50 bg-emerald-400/10 px-1 text-[9px] font-semibold text-emerald-300"
+                    >
+                      ✓ {anchor.resolvedFrom === "claude" ? "Claude" : "Codex"}
+                    </span>
+                  )}
+                </div>
+              )}
+              {/* Frontière LLM (P5) : marqueur discret + aperçu evidence/rationale.
+                  Indépendant du badge humain car les frontières des juges ne
+                  coïncident pas toujours avec les clauses humaines. */}
+              {llmFrontier && (
+                <div
+                  data-testid={`llm-frontier-${s.index}`}
+                  className="-mb-0.5 mt-2 flex items-center gap-1 pl-2 text-[10px] text-ink-muted"
+                >
+                  <span aria-hidden className="text-ink-muted/70">⊢ frontière LLM</span>
+                  <button
+                    type="button"
+                    data-testid={`boundary-peek-${s.index}`}
+                    aria-label={`Aperçu des preuves LLM à la frontière ${s.index}`}
+                    title="Aperçu evidence/rationale — e"
+                    onClick={(e) => openBoundaryAt(s.index, e.clientX, e.clientY)}
+                    className="rounded px-1 text-[11px] hover:bg-panel-muted"
+                  >
+                    👁
+                  </button>
                 </div>
               )}
               <SentenceRow
@@ -349,6 +499,23 @@ export function DocumentPanel({
             </div>
           );
         })}
+       </div>
+
+       {/* P4 : panneau comparatif sticky, dans le flux de la colonne centrale. */}
+       {showComparePanel && compareDataReady && (
+         <div className="sticky top-4 hidden h-[calc(100vh-9rem)] self-start xl:block">
+           <ComparePanel
+             claudeRuns={claudeRuns}
+             codexRuns={codexRuns}
+             claudeByIndex={llm.claudeByIndex}
+             codexByIndex={llm.codexByIndex}
+             n={n}
+             focused={focused}
+             onJump={(i) => focusSentence(i)}
+             onClose={toggleComparePanel}
+           />
+         </div>
+       )}
       </div>
 
       {/* Tooltip flottant suivant le curseur pendant la sélection multi-blocs (P8). */}
@@ -375,6 +542,15 @@ export function DocumentPanel({
           onClose={() => setMenu(null)}
         />
       )}
+      {boundaryPop && (
+        <BoundaryEvidence
+          x={boundaryPop.x}
+          y={boundaryPop.y}
+          claudeDetail={boundaryClaude}
+          codexDetail={boundaryCodex}
+          onClose={() => setBoundaryPop(null)}
+        />
+      )}
       <SelectionToolbar />
     </>
   );
@@ -396,6 +572,7 @@ function buildJudgeDetailMap(clauses: PreClause[] | undefined): Map<number, Judg
   const map = new Map<number, JudgeDetail>();
   for (const c of clauses ?? []) {
     map.set(c.anchorIndex, {
+      anchorIndex: c.anchorIndex,
       theme: c.themeCode,
       rationale: c.rationale ?? null,
       evidence: c.evidenceSpan ?? null,
@@ -406,7 +583,8 @@ function buildJudgeDetailMap(clauses: PreClause[] | undefined): Map<number, Judg
 
 /**
  * Détail du juge couvrant `index` : on remonte au début du run du juge (l'ancre)
- * pour récupérer le thème + rationale + evidence portés par cette clause.
+ * pour récupérer le thème + rationale + evidence portés par cette clause. L'ancre
+ * (run.start) sert de point d'application à l'arbitrage (resolveDivergence).
  */
 function detailAt(
   detailByAnchor: Map<number, JudgeDetail>,
@@ -415,7 +593,14 @@ function detailAt(
 ): JudgeDetail | null {
   const run = runAt(judgeRuns, index);
   if (!run || run.theme == null) return null;
-  return detailByAnchor.get(run.start) ?? { theme: run.theme, rationale: null, evidence: null };
+  return (
+    detailByAnchor.get(run.start) ?? {
+      anchorIndex: run.start,
+      theme: run.theme,
+      rationale: null,
+      evidence: null,
+    }
+  );
 }
 
 interface Badge {

@@ -8,14 +8,20 @@ CLAIRE Studio est pensé pour le travail au clavier afin de réduire la fatigue.
 |---|---|
 | `j` | Phrase suivante |
 | `k` | Phrase précédente |
+| `n` | Divergence suivante *(mode comparaison)* |
+| `p` | Divergence précédente *(mode comparaison)* |
+| `1` | Adopter la proposition **Claude** sur la divergence courante *(mode comparaison)* |
+| `2` | Adopter la proposition **Codex** sur la divergence courante *(mode comparaison)* |
+| `e` | Aperçu evidence / rationale à la frontière courante |
+| `g` | Afficher / masquer le panneau comparatif |
 | `B` | Poser une frontière de clause sur la phrase focalisée |
 | `T` | Cibler / ouvrir le sélecteur de thème |
 | `C` | Ouvrir un commentaire sur la clause sélectionnée |
-| `0` | Certitude 0 (très incertain) |
-| `1` | Certitude 1 |
-| `2` | Certitude 2 |
-| `3` | Certitude 3 (certain) |
+| `0`–`3` | Certitude de la clause sélectionnée (0 = très incertain → 3 = certain) |
 | `⌘S` | Snapshot (instantané), fonctionne même en saisie |
+
+> Hors mode comparaison, `1`–`2` conservent leur rôle de **certitude** : ils
+> n'adoptent une proposition LLM que lorsqu'une divergence est ciblée.
 
 ## Souris
 

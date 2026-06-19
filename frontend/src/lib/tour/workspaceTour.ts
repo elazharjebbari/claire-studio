@@ -56,10 +56,40 @@ export const WORKSPACE_TOUR_STEPS: TourStep[] = [
       "Basculez l'affichage entre VO (original), Bilingue (VO + FR) et FR (traduction). Toutes les interactions opèrent sur l'index de phrase, quel que soit le mode.",
   },
   {
+    element: '[data-testid="llm-version-select"]',
+    title: "Version des annotations LLM",
+    description:
+      "Choisissez la version d'annotation LLM à comparer (v9, v9.1, v9.2, v9.3…). Le changement est instantané et n'affecte QUE l'overlay LLM : vos clauses humaines ne bougent pas. « Auto » sélectionne la version la plus riche.",
+  },
+  {
+    element: '[data-testid="llm-source-switch"]',
+    title: "Source affichée : humain, Claude, Codex, comparaison",
+    description:
+      "Affichez votre annotation, celle d'un juge, ou le mode Comparaison qui superpose l'accord par phrase (vert = accord, ambre = divergence) et active la navigation des désaccords.",
+  },
+  {
+    element: '[data-testid="divergence-nav"]',
+    title: "Naviguer les divergences",
+    description:
+      "En mode comparaison, sautez de désaccord en désaccord avec les flèches ou les touches n (suivant) / p (précédent). Le compteur indique votre position.",
+  },
+  {
+    element: '[data-testid="toggle-compare-panel"]',
+    title: "Panneau comparatif (touche g)",
+    description:
+      "Ouvrez la vue côte à côte des blocs de Claude et de Codex : couleurs = thèmes, bande centrale = accord (vert) / divergence (ambre) / partiel. Cliquez un bloc pour y sauter.",
+  },
+  {
     element: '[data-testid="sentence-0"]',
     title: "Sélection multi-blocs",
     description:
       "Maintenez le clic-droit et glissez sur plusieurs phrases pour sélectionner une plage de blocs (clauses), puis annotez-les ensemble. Un clic-droit immobile ouvre le menu de la phrase.",
+  },
+  {
+    element: '[data-testid^="boundary-peek-"]',
+    title: "Aperçu des preuves à la frontière (touche e)",
+    description:
+      "Sur une frontière de clause, l'icône 👁 ouvre un aperçu compact des preuves (evidence span) et du raisonnement (rationale) de Claude et de Codex — onglet « Comparer » pour les voir en regard. Vous pouvez adopter une proposition directement depuis cet aperçu.",
   },
   {
     element: '[data-testid="inspector"]',
@@ -119,7 +149,7 @@ export const WORKSPACE_TOUR_STEPS: TourStep[] = [
     element: '[data-testid="annotation-workspace"]',
     title: "C'est tout !",
     description:
-      "Raccourcis clés : j/k navigation, B frontière, T thème, C commentaire, 0–3 certitude, ⌘S snapshot, ⌘K palette. Retrouvez le détail dans le centre d'aide (lien « ? » dans la barre du haut).",
+      "Raccourcis clés : j/k phrase · n/p divergence · 1/2 adopter Claude/Codex · e aperçu frontière · g panneau comparatif · B frontière · T thème · C commentaire · 0–3 certitude · ⌘S snapshot · ⌘K palette. Le détail est dans le centre d'aide (« ? » dans la barre du haut).",
   },
 ];
 

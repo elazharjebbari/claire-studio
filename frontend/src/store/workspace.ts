@@ -27,6 +27,12 @@ export interface DraftClause {
   certainty: Certainty | null;
   /** Provenance si issu d'un seed LLM (F2). */
   seededFrom?: string | null;
+  /**
+   * Arbitrage de divergence (P1) : juge dont la proposition a été ADOPTÉE
+   * explicitement sur cette clause. Alimente le « voyant » visuel. null = décision
+   * humaine non issue d'un arbitrage LLM ponctuel.
+   */
+  resolvedFrom?: "claude" | "codex" | null;
 }
 
 interface WorkspaceState {
@@ -66,6 +72,8 @@ interface WorkspaceState {
   llmSource: LlmSource;
   /** Version d'annotation LLM choisie (multi-versions). null = défaut backend. */
   llmVersion: string | null;
+  /** Panneau comparatif latéral Claude vs Codex visible (P4). */
+  showComparePanel: boolean;
   // Statut de dirty (modifs non snapshotées).
   dirty: boolean;
 
@@ -80,6 +88,12 @@ interface WorkspaceState {
    * créée par accident. Si une ancre existe déjà à cet index, on la sélectionne.
    */
   setBoundary: (anchorIndex: number, theme: string) => void;
+  /**
+   * Arbitrage de divergence (P1) : adopte la proposition d'un juge à l'ancre donnée.
+   * Crée la clause humaine si absente (thème du juge), sinon met à jour son thème ;
+   * marque `resolvedFrom` = juge pour le voyant. Toujours `dirty=true`.
+   */
+  resolveDivergence: (anchorIndex: number, judge: "claude" | "codex", theme: string) => void;
   removeBoundary: (anchorIndex: number) => void;
   updateDraft: (localId: string, patch: Partial<DraftClause>) => void;
   setCertainty: (localId: string, value: Certainty) => void;
@@ -103,6 +117,8 @@ interface WorkspaceState {
   /** Règle la source de segmentation affichée (Q3). */
   setLlmSource: (source: LlmSource) => void;
   setLlmVersion: (version: string | null) => void;
+  /** Bascule le panneau comparatif latéral (P4). */
+  toggleComparePanel: () => void;
   markClean: () => void;
   reset: () => void;
 }
@@ -121,6 +137,7 @@ function fromClause(c: Clause): DraftClause {
     rationale: c.rationale ?? "",
     certainty: c.certainty ?? null,
     seededFrom: c.seededFrom ?? null,
+    resolvedFrom: null,
   };
 }
 
@@ -146,6 +163,7 @@ export const useWorkspaceStore = create<WorkspaceState>((set, get) => ({
   translatedSentences: [],
   llmSource: "human",
   llmVersion: null,
+  showComparePanel: false,
   dirty: false,
 
   init: ({ annotationId, nSentences, clauses }) =>
@@ -163,6 +181,7 @@ export const useWorkspaceStore = create<WorkspaceState>((set, get) => ({
       displayLang: "orig",
       llmSource: "human",
       llmVersion: null,
+      showComparePanel: false,
     }),
 
   focusSentence: (index) =>
@@ -195,6 +214,38 @@ export const useWorkspaceStore = create<WorkspaceState>((set, get) => ({
         evidenceSpan: "",
         rationale: "",
         certainty: null,
+      };
+      return {
+        draftClauses: sortDrafts([...s.draftClauses, draft]),
+        selectedClauseId: draft.localId,
+        dirty: true,
+      };
+    }),
+
+  resolveDivergence: (anchorIndex, judge, theme) =>
+    set((s) => {
+      const existing = s.draftClauses.find((c) => c.anchorIndex === anchorIndex);
+      if (existing) {
+        return {
+          draftClauses: s.draftClauses.map((c) =>
+            c.localId === existing.localId
+              ? { ...c, theme, resolvedFrom: judge }
+              : c,
+          ),
+          selectedClauseId: existing.localId,
+          dirty: true,
+        };
+      }
+      const draft: DraftClause = {
+        localId: nextLocalId(),
+        anchorIndex,
+        theme,
+        legalNature: null,
+        evidenceSpan: "",
+        rationale: "",
+        certainty: null,
+        seededFrom: null,
+        resolvedFrom: judge,
       };
       return {
         draftClauses: sortDrafts([...s.draftClauses, draft]),
@@ -309,6 +360,8 @@ export const useWorkspaceStore = create<WorkspaceState>((set, get) => ({
   setLlmSource: (source) => set({ llmSource: source }),
   setLlmVersion: (version) => set({ llmVersion: version }),
 
+  toggleComparePanel: () => set((s) => ({ showComparePanel: !s.showComparePanel })),
+
   markClean: () => set({ dirty: false }),
 
   reset: () =>
@@ -325,6 +378,7 @@ export const useWorkspaceStore = create<WorkspaceState>((set, get) => ({
       displayLang: "orig",
       llmSource: "human",
       llmVersion: null,
+      showComparePanel: false,
       dirty: false,
     }),
 }));

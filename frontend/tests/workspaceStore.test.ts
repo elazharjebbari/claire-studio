@@ -145,6 +145,42 @@ describe("workspace store", () => {
     expect(useWorkspaceStore.getState().llmVersion).toBeNull();
   });
 
+  it("resolveDivergence crée une clause arbitrée avec voyant (resolvedFrom)", () => {
+    // Ancre 5 vide → adoption de Codex y crée une clause marquée resolvedFrom.
+    useWorkspaceStore.getState().resolveDivergence(5, "codex", "TERMINATION");
+    const d = useWorkspaceStore.getState().draftClauses.find((c) => c.anchorIndex === 5);
+    expect(d?.theme).toBe("TERMINATION");
+    expect(d?.resolvedFrom).toBe("codex");
+    expect(useWorkspaceStore.getState().dirty).toBe(true);
+  });
+
+  it("resolveDivergence met à jour une clause existante et bascule le juge", () => {
+    // Ancre 0 existe déjà (META, baseClauses) → adoption Claude la met à jour en place.
+    useWorkspaceStore.getState().resolveDivergence(0, "claude", "PREAMBLE_SCOPE");
+    const drafts = useWorkspaceStore.getState().draftClauses;
+    expect(drafts.filter((c) => c.anchorIndex === 0)).toHaveLength(1); // pas de doublon
+    const d = drafts.find((c) => c.anchorIndex === 0);
+    expect(d?.theme).toBe("PREAMBLE_SCOPE");
+    expect(d?.resolvedFrom).toBe("claude");
+  });
+
+  it("toggleComparePanel bascule l'état du panneau comparatif (défaut OFF)", () => {
+    expect(useWorkspaceStore.getState().showComparePanel).toBe(false);
+    useWorkspaceStore.getState().toggleComparePanel();
+    expect(useWorkspaceStore.getState().showComparePanel).toBe(true);
+    useWorkspaceStore.getState().reset();
+    expect(useWorkspaceStore.getState().showComparePanel).toBe(false);
+  });
+
+  it("changer de version LLM ne modifie PAS les clauses humaines (non destructif)", () => {
+    const before = useWorkspaceStore.getState().draftClauses;
+    useWorkspaceStore.getState().setLlmVersion("v9.2");
+    useWorkspaceStore.getState().setLlmSource("compare");
+    // llmVersion/llmSource sont des champs d'AFFICHAGE : les drafts restent identiques.
+    expect(useWorkspaceStore.getState().draftClauses).toBe(before);
+    expect(useWorkspaceStore.getState().llmVersion).toBe("v9.2");
+  });
+
   it("init et reset réinitialisent displayLang et selectedClauseIds", () => {
     useWorkspaceStore.getState().setDisplayLang("fr");
     useWorkspaceStore.getState().setSelectedClauses(["c1"]);

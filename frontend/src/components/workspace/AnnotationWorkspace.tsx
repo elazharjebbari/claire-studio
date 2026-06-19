@@ -83,6 +83,7 @@ export function AnnotationWorkspace({ annotationId }: { annotationId: string }) 
               annotationId={annotation.id}
               themeCodes={themeCodes}
               legalNatures={legalNatures}
+              themeFocusRef={themeFocusRef}
             />
           }
         />

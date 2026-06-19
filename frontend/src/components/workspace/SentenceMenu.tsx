@@ -15,16 +15,19 @@
  * à Échap, navigable au clavier (focus piégé sur l'ouverture).
  */
 
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import { useWorkspaceStore } from "@/store/workspace";
 import { getThemeToken } from "@/lib/tokens";
 import { runAt, type Run } from "@/lib/runs";
 import { ThemePalette } from "@/components/ui/ThemePalette";
 import { CertaintyPicker } from "@/components/ui/CertaintyPicker";
+import { useAnchoredPosition } from "./useAnchoredPosition";
 import type { Certainty } from "@/types/contract";
 
-/** Détail d'un juge pour la phrase (thème + rationale + evidence). */
+/** Détail d'un juge pour la phrase (ancre + thème + rationale + evidence). */
 export interface JudgeDetail {
+  /** Ancre (run.start) du juge couvrant la phrase — point d'arbitrage. */
+  anchorIndex: number;
   theme: string;
   rationale: string | null;
   evidence: string | null;
@@ -53,11 +56,12 @@ export function SentenceMenu({
   codexDetail,
   onClose,
 }: SentenceMenuProps) {
-  const ref = useRef<HTMLDivElement>(null);
+  const { ref, style: anchoredStyle } = useAnchoredPosition(x, y);
   const drafts = useWorkspaceStore((s) => s.draftClauses);
   const setBoundary = useWorkspaceStore((s) => s.setBoundary);
   const updateDraft = useWorkspaceStore((s) => s.updateDraft);
   const setCertainty = useWorkspaceStore((s) => s.setCertainty);
+  const resolveDivergence = useWorkspaceStore((s) => s.resolveDivergence);
   const setTranslated = useWorkspaceStore((s) => s.setTranslated);
   const translatedSentences = useWorkspaceStore((s) => s.translatedSentences);
   const displayLang = useWorkspaceStore((s) => s.displayLang);
@@ -99,11 +103,7 @@ export function SentenceMenu({
   // Focus initial sur le popover (a11y : navigation clavier dès l'ouverture).
   useEffect(() => {
     ref.current?.focus();
-  }, []);
-
-  // Borne la position pour rester dans le viewport (défensif).
-  const left = Math.min(x, (typeof window !== "undefined" ? window.innerWidth : 9999) - 300);
-  const top = Math.min(y, (typeof window !== "undefined" ? window.innerHeight : 9999) - 360);
+  }, [ref]);
 
   function handleSetTheme(code: string) {
     if (coveringDraft) {
@@ -121,8 +121,8 @@ export function SentenceMenu({
       aria-label={`Annoter la phrase ${sentenceIndex}`}
       tabIndex={-1}
       data-testid="sentence-menu"
-      className="fixed z-50 w-72 rounded-lg border border-line bg-elevated p-3 text-sm text-ink shadow-xl outline-none"
-      style={{ left, top }}
+      className="fixed z-50 max-h-[88vh] w-72 overflow-auto rounded-lg border border-line bg-elevated p-3 text-sm text-ink shadow-xl outline-none"
+      style={anchoredStyle}
     >
       <div className="mb-2 flex items-center justify-between">
         <span className="text-[11px] font-semibold uppercase tracking-wide text-ink-muted">
@@ -179,8 +179,28 @@ export function SentenceMenu({
               : "Pas de proposition pour cette phrase."}
           </p>
         )}
-        <JudgeBlock judge="claude" detail={claudeDetail ?? null} testid="menu-llm-claude" />
-        <JudgeBlock judge="codex" detail={codexDetail ?? null} testid="menu-llm-codex" />
+        <JudgeBlock
+          judge="claude"
+          detail={claudeDetail ?? null}
+          testid="menu-llm-claude"
+          adopted={coveringDraft?.resolvedFrom === "claude"}
+          onAdopt={() => {
+            if (!claudeDetail) return;
+            resolveDivergence(claudeDetail.anchorIndex, "claude", claudeDetail.theme);
+            onClose();
+          }}
+        />
+        <JudgeBlock
+          judge="codex"
+          detail={codexDetail ?? null}
+          testid="menu-llm-codex"
+          adopted={coveringDraft?.resolvedFrom === "codex"}
+          onAdopt={() => {
+            if (!codexDetail) return;
+            resolveDivergence(codexDetail.anchorIndex, "codex", codexDetail.theme);
+            onClose();
+          }}
+        />
       </section>
 
       {/* (c) Traduire / masquer la traduction de cette phrase (toggle, P9) */}
@@ -203,15 +223,20 @@ export function SentenceMenu({
   );
 }
 
-/** Bloc d'un juge : thème (puce colorée) + rationale (tronqué + dépliable) + evidence. */
+/** Bloc d'un juge : thème (puce colorée) + rationale (tronqué + dépliable) + evidence
+ * + bouton « Choisir » (arbitrage P1). `adopted` affiche le voyant ✓. */
 function JudgeBlock({
   judge,
   detail,
   testid,
+  adopted,
+  onAdopt,
 }: {
   judge: "claude" | "codex";
   detail: JudgeDetail | null;
   testid: string;
+  adopted: boolean;
+  onAdopt: () => void;
 }) {
   const [expanded, setExpanded] = useState(false);
   const name = judge === "claude" ? "Claude" : "Codex";
@@ -240,6 +265,24 @@ function JudgeBlock({
           <span className="text-ink-muted">—</span>
         )}
       </div>
+      {detail && (
+        <div className="mt-1.5 flex items-center gap-2">
+          <button
+            type="button"
+            data-testid={`${testid}-adopt`}
+            onClick={onAdopt}
+            aria-pressed={adopted}
+            className={
+              "rounded border px-2 py-0.5 text-[11px] font-medium transition-colors " +
+              (adopted
+                ? "border-emerald-400/60 bg-emerald-400/10 text-emerald-300"
+                : "border-line text-ink hover:bg-panel-muted")
+            }
+          >
+            {adopted ? `✓ ${name} adopté` : `Choisir ${name}`}
+          </button>
+        </div>
+      )}
       {detail && rationale && (
         <p className="mt-1 text-ink-muted">
           {shown}{" "}

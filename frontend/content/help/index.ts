@@ -18,6 +18,7 @@ import selectionBlocs from "./selection-blocs.md?raw";
 import modesLangue from "./modes-langue.md?raw";
 import themesVocabulaire from "./themes-vocabulaire.md?raw";
 import preannotationsLlm from "./preannotations-llm.md?raw";
+import comparaisonLlm from "./comparaison-llm.md?raw";
 import injusticeClaudette from "./injustice-claudette.md?raw";
 import certitude from "./certitude.md?raw";
 import commentaires from "./commentaires.md?raw";
@@ -37,6 +38,7 @@ export const HELP_CONTENT: Record<string, string> = {
   "modes-langue": modesLangue,
   "themes-vocabulaire": themesVocabulaire,
   "preannotations-llm": preannotationsLlm,
+  "comparaison-llm": comparaisonLlm,
   "injustice-claudette": injusticeClaudette,
   certitude,
   commentaires,
