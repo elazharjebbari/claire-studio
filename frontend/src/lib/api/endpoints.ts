@@ -271,6 +271,21 @@ export function getSentenceHistory(
   return apiFetch(`/documents/${documentId}/sentence-history?index=${index}`);
 }
 
+// ── Exploration des annotations humaines (point 5) ────────────────────────────
+
+export function getProjectInsights(
+  slug: string,
+): Promise<import("@/types/contract").CorpusInsightsResponse> {
+  return apiFetch(`/projects/${slug}/insights`);
+}
+
+export function getDocumentInsights(
+  slug: string,
+  documentId: string,
+): Promise<import("@/types/contract").DocumentInsightsResponse> {
+  return apiFetch(`/projects/${slug}/insights/${documentId}`);
+}
+
 // ── Reviews (F10) ─────────────────────────────────────────────────────────────
 
 export function listReviews(annotationId: string): Promise<Paginated<Review>> {

@@ -348,6 +348,54 @@ export const FIXTURE_ATTRIBUTION = [
   { index: 22, actorId: "u-alice", actorName: "Alice", actorColor: "#06B6D4", verb: "clause.set_certainty", at: "2026-06-17T10:40:00Z" },
 ];
 
+/** Insights corpus (point 5) — KPI + distribution + documents. */
+export const FIXTURE_CORPUS_INSIGHTS = {
+  projectSlug: "claudette-gold-v1",
+  kpi: {
+    documentsAnnotated: 2,
+    documentsTotal: 3,
+    annotators: 3,
+    versions: 5,
+    meanCertainty: 2.1,
+    kappa: 0.74,
+  },
+  themeDistribution: [
+    { theme: "META", count: 4 },
+    { theme: "TERMINATION", count: 6 },
+    { theme: "LIMITATION_LIABILITY", count: 5 },
+    { theme: "ARBITRATION_DISPUTES", count: 3 },
+    { theme: "PRIVACY_DATA", count: 4 },
+    { theme: "MISC_BOILERPLATE", count: 8 },
+  ],
+  documents: [
+    { documentId: "doc-fitbit", title: "Fitbit Terms of Service", status: "submitted", clauses: 17, comments: 4, annotationId: "ann-1" },
+    { documentId: "doc-instagram", title: "Instagram Terms of Use", status: "draft", clauses: 9, comments: 1, annotationId: "ann-2" },
+    { documentId: "doc-booking", title: "Booking.com Terms", status: "unstarted", clauses: 0, comments: 0 },
+  ],
+};
+
+/** Insights d'un document (point 5). */
+export const FIXTURE_DOCUMENT_INSIGHTS = {
+  documentId: "doc-fitbit",
+  title: "Fitbit Terms of Service",
+  annotationId: "ann-1",
+  kpi: { clauses: 17, meanCertainty: 2.1, comments: 4, contributors: 3, agreementWithLlm: 0.68 },
+  themeDistribution: [
+    { theme: "META", count: 2 },
+    { theme: "TERMINATION", count: 2 },
+    { theme: "LIMITATION_LIABILITY", count: 2 },
+    { theme: "PRIVACY_DATA", count: 1 },
+    { theme: "MISC_BOILERPLATE", count: 3 },
+  ],
+  clauseCertainty: [
+    { anchorIndex: 0, certainty: 3, theme: "META" },
+    { anchorIndex: 4, certainty: 2, theme: "ELIGIBILITY_ACCOUNT" },
+    { anchorIndex: 16, certainty: 3, theme: "TERMINATION" },
+    { anchorIndex: 20, certainty: 1, theme: "LIMITATION_LIABILITY" },
+    { anchorIndex: 22, certainty: 2, theme: "ARBITRATION_DISPUTES" },
+  ],
+};
+
 /**
  * Timelines d'annotation par phrase (point 6) — comment l'annotation d'UNE phrase a
  * évolué à travers annotateurs et versions. Indexé par numéro de phrase.

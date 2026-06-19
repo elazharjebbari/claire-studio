@@ -343,6 +343,24 @@ export function useSentenceHistory(
   });
 }
 
+/** Insights corpus — exploration des annotations humaines (point 5). */
+export function useProjectInsights(slug: string | undefined) {
+  return useQuery({
+    queryKey: ["projects", slug ?? "", "insights"],
+    queryFn: () => api.getProjectInsights(slug!),
+    enabled: Boolean(slug),
+  });
+}
+
+/** Insights d'un document (point 5). */
+export function useDocumentInsights(slug: string | undefined, documentId: string | undefined) {
+  return useQuery({
+    queryKey: ["projects", slug ?? "", "insights", documentId ?? ""],
+    queryFn: () => api.getDocumentInsights(slug!, documentId!),
+    enabled: Boolean(slug && documentId),
+  });
+}
+
 export function useResolveComment(annotationId: string) {
   const qc = useQueryClient();
   return useMutation({

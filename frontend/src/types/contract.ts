@@ -273,6 +273,54 @@ export interface SentenceHistoryResponse {
   results: SentenceHistoryEntry[];
 }
 
+// ── Exploration des annotations humaines (point 5) ────────────────────────────
+
+export interface ThemeCount {
+  theme: string;
+  count: number;
+}
+
+/** KPI agrégés au niveau corpus. */
+export interface CorpusInsightsKpi {
+  documentsAnnotated: number;
+  documentsTotal: number;
+  annotators: number;
+  versions: number;
+  meanCertainty: number | null;
+  kappa: number | null;
+}
+
+export interface InsightsDocumentRow {
+  documentId: string;
+  title: string;
+  status: AnnotationStatus | "unstarted";
+  clauses: number;
+  comments: number;
+  annotationId?: string;
+}
+
+export interface CorpusInsightsResponse {
+  projectSlug: string;
+  kpi: CorpusInsightsKpi;
+  themeDistribution: ThemeCount[];
+  documents: InsightsDocumentRow[];
+}
+
+export interface DocumentInsightsResponse {
+  documentId: string;
+  title: string;
+  annotationId?: string;
+  kpi: {
+    clauses: number;
+    meanCertainty: number | null;
+    comments: number;
+    contributors: number;
+    agreementWithLlm: number | null;
+  };
+  themeDistribution: ThemeCount[];
+  clauseCertainty: { anchorIndex: number; certainty: number | null; theme: string }[];
+}
+
 /** Statut d'une clause dans un diff de versions (F3). */
 export type DiffStatus = "added" | "removed" | "modified" | "unchanged";
 

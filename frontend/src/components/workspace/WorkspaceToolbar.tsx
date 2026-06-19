@@ -200,6 +200,15 @@ export function WorkspaceToolbar({
         📚 Versions
       </a>
 
+      <a
+        href={`/projects/${projectSlug}/insights`}
+        data-testid="insights-link"
+        title="Explorer les annotations humaines (corpus & document)"
+        className="rounded-md border border-line px-2 py-1 text-xs text-ink-muted hover:bg-panel-muted"
+      >
+        📊 Insights
+      </a>
+
       <WorkspaceTourButton />
 
       <div className="ml-auto flex items-center gap-3">

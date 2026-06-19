@@ -24,6 +24,8 @@ import {
   FIXTURE_COMMENTS,
   FIXTURE_CONTRIBUTORS,
   FIXTURE_CORPUS,
+  FIXTURE_CORPUS_INSIGHTS,
+  FIXTURE_DOCUMENT_INSIGHTS,
   FIXTURE_DOCUMENT,
   FIXTURE_PREANNOTATIONS,
   FIXTURE_PROGRESS,
@@ -319,6 +321,14 @@ export const handlers = [
     comments = comments.map((c) => (c.id === params.id ? { ...c, resolved: true } : c));
     return HttpResponse.json(comments.find((c) => c.id === params.id));
   }),
+
+  // Insights — exploration des annotations humaines (point 5)
+  http.get(`${BASE}/projects/:slug/insights/:documentId`, ({ params }) =>
+    HttpResponse.json({ ...FIXTURE_DOCUMENT_INSIGHTS, documentId: String(params.documentId) }),
+  ),
+  http.get(`${BASE}/projects/:slug/insights`, () =>
+    HttpResponse.json(FIXTURE_CORPUS_INSIGHTS),
+  ),
 
   // Timeline d'annotation d'une phrase (point 6)
   http.get(`${BASE}/documents/:id/sentence-history`, ({ request }) => {
