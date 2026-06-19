@@ -229,6 +229,41 @@ describe("workspace store", () => {
     expect(useWorkspaceStore.getState().actionLog).toHaveLength(0);
   });
 
+  it("undo/redo restaure puis rétablit l'état des clauses (point 4a)", () => {
+    const before = useWorkspaceStore.getState().draftClauses.length; // 1 (baseClauses)
+    useWorkspaceStore.getState().setBoundary(5, "TERMINATION");
+    expect(useWorkspaceStore.getState().draftClauses).toHaveLength(before + 1);
+
+    // Annuler → revient à l'état d'avant la création.
+    useWorkspaceStore.getState().undo();
+    expect(useWorkspaceStore.getState().draftClauses).toHaveLength(before);
+    expect(useWorkspaceStore.getState().draftClauses.find((c) => c.anchorIndex === 5)).toBeUndefined();
+
+    // Rétablir → la clause revient.
+    useWorkspaceStore.getState().redo();
+    expect(useWorkspaceStore.getState().draftClauses).toHaveLength(before + 1);
+    expect(useWorkspaceStore.getState().draftClauses.find((c) => c.anchorIndex === 5)?.theme).toBe(
+      "TERMINATION",
+    );
+  });
+
+  it("une nouvelle mutation purge la pile de rétablissement (point 4a)", () => {
+    useWorkspaceStore.getState().setBoundary(5, "TERMINATION");
+    useWorkspaceStore.getState().undo();
+    expect(useWorkspaceStore.getState().redoStack.length).toBe(1);
+    // Une nouvelle action efface le futur (impossible de rétablir l'ancienne branche).
+    useWorkspaceStore.getState().setBoundary(6, "META");
+    expect(useWorkspaceStore.getState().redoStack.length).toBe(0);
+  });
+
+  it("undo/redo sont des no-op quand les piles sont vides", () => {
+    const snap = useWorkspaceStore.getState().draftClauses;
+    useWorkspaceStore.getState().undo();
+    expect(useWorkspaceStore.getState().draftClauses).toBe(snap);
+    useWorkspaceStore.getState().redo();
+    expect(useWorkspaceStore.getState().draftClauses).toBe(snap);
+  });
+
   it("init et reset réinitialisent displayLang et selectedClauseIds", () => {
     useWorkspaceStore.getState().setDisplayLang("fr");
     useWorkspaceStore.getState().setSelectedClauses(["c1"]);

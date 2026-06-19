@@ -37,6 +37,10 @@ export function HistoryPanel({ onClose }: { onClose: () => void }) {
   const log = useWorkspaceStore((s) => s.actionLog);
   const focusSentence = useWorkspaceStore((s) => s.focusSentence);
   const selectClause = useWorkspaceStore((s) => s.selectClause);
+  const undo = useWorkspaceStore((s) => s.undo);
+  const redo = useWorkspaceStore((s) => s.redo);
+  const canUndo = useWorkspaceStore((s) => s.undoStack.length > 0);
+  const canRedo = useWorkspaceStore((s) => s.redoStack.length > 0);
 
   const entries = [...log].reverse();
 
@@ -50,15 +54,39 @@ export function HistoryPanel({ onClose }: { onClose: () => void }) {
         <h2 className="text-xs font-semibold uppercase tracking-wide text-ink">
           Historique ({log.length})
         </h2>
-        <button
-          type="button"
-          data-testid="history-close"
-          aria-label="Fermer l'historique"
-          onClick={onClose}
-          className="rounded px-1 text-ink-muted hover:bg-panel-muted"
-        >
-          ✕
-        </button>
+        <div className="flex items-center gap-1">
+          <button
+            type="button"
+            data-testid="undo-btn"
+            aria-label="Annuler (⌘Z)"
+            title="Annuler — ⌘Z / Ctrl+Z"
+            disabled={!canUndo}
+            onClick={() => undo()}
+            className="rounded px-1.5 py-0.5 text-ink-muted hover:bg-panel-muted disabled:opacity-40"
+          >
+            ↶
+          </button>
+          <button
+            type="button"
+            data-testid="redo-btn"
+            aria-label="Rétablir (⌘Y)"
+            title="Rétablir — ⌘⇧Z / ⌘Y"
+            disabled={!canRedo}
+            onClick={() => redo()}
+            className="rounded px-1.5 py-0.5 text-ink-muted hover:bg-panel-muted disabled:opacity-40"
+          >
+            ↷
+          </button>
+          <button
+            type="button"
+            data-testid="history-close"
+            aria-label="Fermer l'historique"
+            onClick={onClose}
+            className="rounded px-1 text-ink-muted hover:bg-panel-muted"
+          >
+            ✕
+          </button>
+        </div>
       </div>
       <ul className="min-h-0 flex-1 overflow-auto p-2">
         {entries.length === 0 && (

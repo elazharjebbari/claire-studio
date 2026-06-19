@@ -96,6 +96,10 @@ interface WorkspaceState {
   prefilledJudge: PrefillJudge;
   /** Journal des actions humaines de la session (point 2). */
   actionLog: ActionEntry[];
+  /** Pile d'annulation : snapshots de draftClauses AVANT chaque mutation (point 4a). */
+  undoStack: DraftClause[][];
+  /** Pile de rétablissement (point 4a). */
+  redoStack: DraftClause[][];
   // Statut de dirty (modifs non snapshotées).
   dirty: boolean;
 
@@ -150,6 +154,10 @@ interface WorkspaceState {
   toggleComparePanel: () => void;
   /** Vide le journal d'actions (ex. après soumission). */
   clearActionLog: () => void;
+  /** Annule la dernière mutation de clauses (point 4a). */
+  undo: () => void;
+  /** Rétablit la dernière mutation annulée (point 4a). */
+  redo: () => void;
   markClean: () => void;
   reset: () => void;
 }
@@ -164,6 +172,13 @@ function appendLog(log: ActionEntry[], e: Omit<ActionEntry, "id" | "ts">): Actio
   const entry: ActionEntry = { id: `act-${Date.now()}-${(logCounter += 1)}`, ts: Date.now(), ...e };
   const next = [...log, entry];
   return next.length > ACTION_LOG_CAP ? next.slice(next.length - ACTION_LOG_CAP) : next;
+}
+
+const UNDO_DEPTH = 200;
+/** Empile un snapshot de draftClauses sur la pile d'annulation (borné). */
+function pushUndo(stack: DraftClause[][], snapshot: DraftClause[]): DraftClause[][] {
+  const next = [...stack, snapshot];
+  return next.length > UNDO_DEPTH ? next.slice(next.length - UNDO_DEPTH) : next;
 }
 
 function fromClause(c: Clause): DraftClause {
@@ -206,6 +221,8 @@ export const useWorkspaceStore = create<WorkspaceState>((set, get) => ({
   showComparePanel: false,
   prefilledJudge: null,
   actionLog: [],
+  undoStack: [],
+  redoStack: [],
   dirty: false,
 
   init: ({ annotationId, nSentences, clauses }) =>
@@ -226,6 +243,8 @@ export const useWorkspaceStore = create<WorkspaceState>((set, get) => ({
       showComparePanel: false,
       prefilledJudge: null,
       actionLog: [],
+      undoStack: [],
+      redoStack: [],
     }),
 
   focusSentence: (index) =>
@@ -263,6 +282,8 @@ export const useWorkspaceStore = create<WorkspaceState>((set, get) => ({
         draftClauses: sortDrafts([...s.draftClauses, draft]),
         selectedClauseId: draft.localId,
         dirty: true,
+        undoStack: pushUndo(s.undoStack, s.draftClauses),
+        redoStack: [],
         actionLog: appendLog(s.actionLog, {
           kind: "clause.create",
           label: `Clause ${theme} créée @${anchorIndex}`,
@@ -284,6 +305,8 @@ export const useWorkspaceStore = create<WorkspaceState>((set, get) => ({
           ),
           selectedClauseId: existing.localId,
           dirty: true,
+          undoStack: pushUndo(s.undoStack, s.draftClauses),
+          redoStack: [],
           actionLog: appendLog(s.actionLog, {
             kind: "divergence.adopt",
             label: `Adopté ${judge} (${theme}) @${anchorIndex}`,
@@ -307,6 +330,8 @@ export const useWorkspaceStore = create<WorkspaceState>((set, get) => ({
         draftClauses: sortDrafts([...s.draftClauses, draft]),
         selectedClauseId: draft.localId,
         dirty: true,
+        undoStack: pushUndo(s.undoStack, s.draftClauses),
+        redoStack: [],
         actionLog: appendLog(s.actionLog, {
           kind: "divergence.adopt",
           label: `Adopté ${judge} (${theme}) @${anchorIndex}`,
@@ -320,6 +345,8 @@ export const useWorkspaceStore = create<WorkspaceState>((set, get) => ({
     set((s) => ({
       draftClauses: s.draftClauses.filter((c) => c.anchorIndex !== anchorIndex),
       dirty: true,
+      undoStack: pushUndo(s.undoStack, s.draftClauses),
+      redoStack: [],
       actionLog: appendLog(s.actionLog, {
         kind: "clause.delete",
         label: `Clause supprimée @${anchorIndex}`,
@@ -338,6 +365,8 @@ export const useWorkspaceStore = create<WorkspaceState>((set, get) => ({
           c.localId === localId ? { ...c, ...patch } : c,
         ),
         dirty: true,
+        undoStack: pushUndo(s.undoStack, s.draftClauses),
+        redoStack: [],
         actionLog: appendLog(s.actionLog, {
           kind: verb,
           label:
@@ -358,6 +387,8 @@ export const useWorkspaceStore = create<WorkspaceState>((set, get) => ({
           c.localId === localId ? { ...c, certainty: value } : c,
         ),
         dirty: true,
+        undoStack: pushUndo(s.undoStack, s.draftClauses),
+        redoStack: [],
         actionLog: appendLog(s.actionLog, {
           kind: "clause.set_certainty",
           label: `Certitude ${value} @${target?.anchorIndex ?? "?"}`,
@@ -419,6 +450,8 @@ export const useWorkspaceStore = create<WorkspaceState>((set, get) => ({
         draftClauses: sortDrafts([...human, ...seeded]),
         prefilledJudge: judge,
         dirty: true,
+        undoStack: pushUndo(s.undoStack, s.draftClauses),
+        redoStack: [],
         actionLog: appendLog(s.actionLog, {
           kind: judge == null ? "prefill.clear" : "prefill.switch",
           label:
@@ -495,6 +528,40 @@ export const useWorkspaceStore = create<WorkspaceState>((set, get) => ({
 
   clearActionLog: () => set({ actionLog: [] }),
 
+  undo: () =>
+    set((s) => {
+      if (s.undoStack.length === 0) return {};
+      const prev = s.undoStack[s.undoStack.length - 1]!;
+      const validSel = prev.some((c) => c.localId === s.selectedClauseId)
+        ? s.selectedClauseId
+        : null;
+      return {
+        draftClauses: prev,
+        undoStack: s.undoStack.slice(0, -1),
+        redoStack: [...s.redoStack, s.draftClauses],
+        selectedClauseId: validSel,
+        dirty: true,
+        actionLog: appendLog(s.actionLog, { kind: "undo", label: "Annulation" }),
+      };
+    }),
+
+  redo: () =>
+    set((s) => {
+      if (s.redoStack.length === 0) return {};
+      const next = s.redoStack[s.redoStack.length - 1]!;
+      const validSel = next.some((c) => c.localId === s.selectedClauseId)
+        ? s.selectedClauseId
+        : null;
+      return {
+        draftClauses: next,
+        redoStack: s.redoStack.slice(0, -1),
+        undoStack: [...s.undoStack, s.draftClauses],
+        selectedClauseId: validSel,
+        dirty: true,
+        actionLog: appendLog(s.actionLog, { kind: "redo", label: "Rétablissement" }),
+      };
+    }),
+
   markClean: () => set({ dirty: false }),
 
   reset: () =>
@@ -514,6 +581,8 @@ export const useWorkspaceStore = create<WorkspaceState>((set, get) => ({
       showComparePanel: false,
       prefilledJudge: null,
       actionLog: [],
+      undoStack: [],
+      redoStack: [],
       dirty: false,
     }),
 }));

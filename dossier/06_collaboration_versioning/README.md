@@ -17,7 +17,7 @@ architecture, plan de conception, plan de développement, plan d'action.
 | 0 | Pré-remplissage commutable + barre de navigation documents | `10_prefill_document_nav.md` | **livré ce cycle** |
 | 1 | En-tête d'annotation **sticky** au scroll | `10_prefill_document_nav.md` | **livré ce cycle** |
 | 2 | Versioning à la soumission (nom + description) + historique d'actions | `03_versioning_history.md` | **livré ce cycle (socle)** |
-| 4a | Undo / redo (Ctrl+Z / Ctrl+Y) + boîte d'actions | `04_undo_redo.md` | spécifié → cycle suivant |
+| 4a | Undo / redo (Ctrl+Z / Ctrl+Y) + boîte d'actions | `04_undo_redo.md` | **livré ce cycle** |
 | 3 | Attribution multi-annotateurs + commentaires (phrase/bloc/partie) | `05_attribution_comments.md` | spécifié → cycle suivant |
 | 4b | Collaboration **temps réel** + gestion de conflits + lien de partage | `06_realtime_collaboration.md` | spécifié → cycle suivant |
 | 5 | Écran d'exploration / qualification des annotations humaines | `07_analytics_screen.md` | spécifié → cycle suivant |

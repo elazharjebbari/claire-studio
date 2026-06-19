@@ -40,6 +40,21 @@ export function useWorkspaceShortcuts(cb: ShortcutCallbacks = {}) {
         cb.onSnapshot?.();
         return;
       }
+      // ⌘Z / Ctrl+Z : annuler ; ⌘⇧Z ou ⌘Y : rétablir (point 4a). On laisse l'undo
+      // natif opérer dans les champs de saisie (pas d'interception si editable).
+      if ((e.metaKey || e.ctrlKey) && e.key.toLowerCase() === "z") {
+        if (editable) return;
+        e.preventDefault();
+        if (e.shiftKey) store.redo();
+        else store.undo();
+        return;
+      }
+      if ((e.metaKey || e.ctrlKey) && e.key.toLowerCase() === "y") {
+        if (editable) return;
+        e.preventDefault();
+        store.redo();
+        return;
+      }
       if (editable || e.metaKey || e.ctrlKey || e.altKey) return;
 
       switch (e.key) {

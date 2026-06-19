@@ -18,6 +18,8 @@ CLAIRE Studio est pensé pour le travail au clavier afin de réduire la fatigue.
 | `T` | Cibler / ouvrir le sélecteur de thème |
 | `C` | Ouvrir un commentaire sur la clause sélectionnée |
 | `0`–`3` | Certitude de la clause sélectionnée (0 = très incertain → 3 = certain) |
+| `⌘Z` | Annuler la dernière modification de clauses |
+| `⌘⇧Z` / `⌘Y` | Rétablir |
 | `⌘S` | Snapshot (instantané), fonctionne même en saisie |
 
 > Hors mode comparaison, `1`–`2` conservent leur rôle de **certitude** : ils

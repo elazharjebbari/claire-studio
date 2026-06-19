@@ -79,4 +79,21 @@ test.describe("Collaboration & versioning — socle (points 0,1,2)", () => {
     await entry.click();
     await expect(page.getByTestId("sentence-9")).toHaveAttribute("data-focused", "true");
   });
+
+  test("annuler / rétablir une création de clause (point 4a)", async ({ page }) => {
+    await open(page);
+    await page.getByTestId("sentence-9").click();
+    await page.getByTestId("inspector").getByTestId("theme-option-TERMINATION").click();
+    const planChip = page
+      .getByRole("complementary", { name: "Plan du document" })
+      .getByTestId("clause-chip")
+      .filter({ hasText: "[9]" });
+    await expect(planChip).toBeVisible();
+
+    await page.getByTestId("toggle-history").click();
+    await page.getByTestId("undo-btn").click();
+    await expect(planChip).toHaveCount(0); // clause annulée
+    await page.getByTestId("redo-btn").click();
+    await expect(planChip).toBeVisible(); // clause rétablie
+  });
 });
