@@ -190,6 +190,9 @@ REST_FRAMEWORK = {
         # Generous reads, stricter writes/exports for authenticated traffic.
         "burst": env("THROTTLE_BURST_RATE", default="120/min"),
         "exports": env("THROTTLE_EXPORTS_RATE", default="10/min"),
+        # Onboarding (chantier E) : anti-abus inscription / reset mot de passe.
+        "register": env("THROTTLE_REGISTER_RATE", default="10/hour"),
+        "password_reset": env("THROTTLE_PASSWORD_RESET_RATE", default="5/hour"),
     },
 }
 

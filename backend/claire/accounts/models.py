@@ -22,6 +22,8 @@ class User(AbstractUser):
     )
     display_name = models.CharField(max_length=150, blank=True)
     locale = models.CharField(max_length=12, default="en")
+    # Vérification e-mail (chantier E). Les comptes seedés sont marqués vérifiés.
+    is_email_verified = models.BooleanField(default=False)
 
     REQUIRED_FIELDS = ["email"]
 

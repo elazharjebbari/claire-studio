@@ -11,11 +11,19 @@ from rest_framework.routers import DefaultRouter
 from rest_framework.views import APIView
 from rest_framework_simplejwt.views import TokenRefreshView
 
-from claire.accounts.views import LoginView, MeView
+from claire.accounts.views import (
+    LoginView,
+    MeView,
+    PasswordResetConfirmView,
+    PasswordResetRequestView,
+    RegisterView,
+    VerifyEmailView,
+)
 from claire.annotations.views import (
     AnnotationViewSet,
     ClauseViewSet,
 )
+from claire.audit.views import ActivityEventViewSet
 from claire.collaboration.views import CommentViewSet
 from claire.corpora.views import (
     CorpusViewSet,
@@ -26,7 +34,6 @@ from claire.imports.views import PreAnnotationViewSet
 from claire.projects.views import ProjectViewSet
 from claire.schemes.views import LabelSchemeViewSet
 from claire.translations.views import TranslationSetViewSet
-from claire.audit.views import ActivityEventViewSet
 
 router = DefaultRouter(trailing_slash=False)
 router.register("corpora", CorpusViewSet, basename="corpus")
@@ -95,6 +102,15 @@ urlpatterns = [
     # Auth (JWT) — CONTRACT §3
     path("auth/login", LoginView.as_view(), name="auth-login"),
     path("auth/refresh", TokenRefreshView.as_view(), name="auth-refresh"),
+    # Onboarding (chantier E) — inscription, vérification e-mail, reset mot de passe.
+    path("auth/register", RegisterView.as_view(), name="auth-register"),
+    path("auth/verify-email", VerifyEmailView.as_view(), name="auth-verify-email"),
+    path("auth/password-reset", PasswordResetRequestView.as_view(), name="auth-password-reset"),
+    path(
+        "auth/password-reset/confirm",
+        PasswordResetConfirmView.as_view(),
+        name="auth-password-reset-confirm",
+    ),
     path("me", MeView.as_view(), name="me"),
     path("", include(router.urls)),
 ]

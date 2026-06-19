@@ -50,6 +50,8 @@ export interface User {
   role: UserRole;
   displayName?: string;
   locale?: string;
+  /** Vérification e-mail (chantier E). */
+  isEmailVerified?: boolean;
 }
 
 export interface Corpus {

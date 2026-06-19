@@ -141,6 +141,7 @@ class Command(BaseCommand):
                 "display_name": username.title(),
                 "is_staff": is_super,
                 "is_superuser": is_super,
+                "is_email_verified": True,
             },
         )
         if created:
