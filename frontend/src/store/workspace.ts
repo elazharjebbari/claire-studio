@@ -270,10 +270,29 @@ export const useWorkspaceStore = create<WorkspaceState>((set, get) => ({
 
   setBoundary: (anchorIndex, theme) =>
     set((s) => {
-      if (s.draftClauses.some((c) => c.anchorIndex === anchorIndex)) {
-        // Une ancre existe déjà : on la sélectionne plutôt que d'en créer une 2e.
-        const existing = s.draftClauses.find((c) => c.anchorIndex === anchorIndex)!;
-        return { selectedClauseId: existing.localId };
+      const existing = s.draftClauses.find((c) => c.anchorIndex === anchorIndex);
+      if (existing) {
+        // Une ancre existe déjà : choisir un thème RE-THÉMATISE la clause en place
+        // (corrige le bug couleur §6 — rail/badge dérivent du thème de la clause
+        // couvrante). Thème inchangé → simple (re)sélection, sans marquer dirty.
+        if (existing.theme === theme) {
+          return { selectedClauseId: existing.localId };
+        }
+        return {
+          draftClauses: s.draftClauses.map((c) =>
+            c.localId === existing.localId ? { ...c, theme } : c,
+          ),
+          selectedClauseId: existing.localId,
+          dirty: true,
+          undoStack: pushUndo(s.undoStack, s.draftClauses),
+          redoStack: [],
+          actionLog: appendLog(s.actionLog, {
+            kind: "clause.retheme",
+            label: `Thème → ${theme} @${anchorIndex}`,
+            anchorIndex,
+            localId: existing.localId,
+          }),
+        };
       }
       const draft: DraftClause = {
         localId: nextLocalId(),

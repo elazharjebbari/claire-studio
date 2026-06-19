@@ -1,5 +1,7 @@
 import { beforeEach, describe, expect, it } from "vitest";
 import { useWorkspaceStore } from "@/store/workspace";
+import { computeRuns, runThemeAt } from "@/lib/runs";
+import { getThemeToken } from "@/lib/tokens";
 import type { Clause } from "@/types/contract";
 
 const baseClauses: Clause[] = [
@@ -43,6 +45,37 @@ describe("workspace store", () => {
     // setBoundary exige désormais un thème explicite (plus de défaut Boilerplate).
     useWorkspaceStore.getState().setBoundary(0, "META");
     expect(useWorkspaceStore.getState().draftClauses).toHaveLength(1);
+  });
+
+  it("setBoundary re-thématise une clause existante (corrige le bug couleur, §6)", () => {
+    // anchor 0 existe déjà (META, baseClauses). Choisir un thème via setBoundary
+    // — chemin de l'inspecteur « aucune clause » quand la clause n'est pas
+    // sélectionnée — DOIT re-thématiser en place, sinon la couleur ne change jamais.
+    useWorkspaceStore.getState().setBoundary(0, "TERMINATION");
+    const drafts = useWorkspaceStore.getState().draftClauses;
+    expect(drafts.filter((c) => c.anchorIndex === 0)).toHaveLength(1); // pas de doublon
+    expect(drafts.find((c) => c.anchorIndex === 0)?.theme).toBe("TERMINATION");
+    expect(useWorkspaceStore.getState().dirty).toBe(true);
+  });
+
+  it("setBoundary sur le même thème reste un no-op (pas de dirty parasite)", () => {
+    useWorkspaceStore.getState().setBoundary(0, "META");
+    expect(useWorkspaceStore.getState().draftClauses).toHaveLength(1);
+    expect(useWorkspaceStore.getState().dirty).toBe(false);
+  });
+
+  it("re-thématiser change la couleur dérivée du rail (§6)", () => {
+    // La couleur du rail = getThemeToken(runThemeAt(...)).color. Elle DOIT suivre
+    // le thème de la clause couvrante après re-thématisation (symptôme rapporté).
+    const colorBefore = getThemeToken(
+      runThemeAt(computeRuns(useWorkspaceStore.getState().draftClauses, 10), 0),
+    ).color;
+    useWorkspaceStore.getState().setBoundary(0, "TERMINATION");
+    const colorAfter = getThemeToken(
+      runThemeAt(computeRuns(useWorkspaceStore.getState().draftClauses, 10), 0),
+    ).color;
+    expect(colorAfter).not.toBe(colorBefore);
+    expect(colorAfter).toBe(getThemeToken("TERMINATION").color);
   });
 
   it("règle la certitude de la clause sélectionnée", () => {

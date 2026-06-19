@@ -66,6 +66,32 @@ test.describe("Workspace d'annotation (F1)", () => {
     ).toBeVisible();
   });
 
+  test("re-thématiser met à jour immédiatement le rail + le badge dans le document (§6)", async ({ page }) => {
+    // Régression du bug couleur : choisir un thème pour une phrase déjà annotée
+    // doit changer IMMÉDIATEMENT le rail coloré (box-shadow inline) ET le badge de
+    // clause affichés dans le document — pas seulement l'inspecteur.
+    const sentence = page.getByTestId("sentence-0"); // ancre META existante (fixtures)
+    await sentence.click();
+    const railBefore = await sentence.getAttribute("style");
+
+    const input = page.getByTestId("inspector").getByLabel("Rechercher un thème");
+    await input.fill("résiliation");
+    await page.getByTestId("inspector").getByTestId("theme-option-TERMINATION").click();
+
+    // Le rail gauche (box-shadow) de la phrase change de couleur immédiatement.
+    await expect(async () => {
+      expect(await sentence.getAttribute("style")).not.toBe(railBefore);
+    }).toPass();
+    // Le badge de clause dans le document reflète le nouveau thème.
+    await expect(
+      page
+        .getByRole("region", { name: "Document" })
+        .getByTestId("clause-badge")
+        .filter({ hasText: "Résiliation" })
+        .first(),
+    ).toBeVisible();
+  });
+
   test("snapshot via le bouton", async ({ page }) => {
     await page.getByTestId("snapshot-btn").click();
     await expect(page.getByTestId("snapshot-msg")).toBeVisible();
