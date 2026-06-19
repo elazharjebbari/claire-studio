@@ -56,7 +56,7 @@ echo "▶ Frontend : env mode réel, dépendances, dev server…"
   cd "$ROOT/frontend"
   [ -f .env.local ] || cp .env.local.example .env.local
   [ -d node_modules ] || npm install
-  echo "▶ Frontend sur http://localhost:3000  → se connecter alice / claire-demo"
+  echo "▶ Frontend sur http://localhost:3001  → se connecter alice / claire-demo"
   npm run dev
 ) &
 FRONT=$!

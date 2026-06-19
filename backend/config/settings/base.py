@@ -21,7 +21,16 @@ PROJECT_ROOT = REPO_ROOT.parent
 env = environ.Env(
     DJANGO_DEBUG=(bool, False),
     DJANGO_ALLOWED_HOSTS=(list, ["localhost", "127.0.0.1"]),
-    CORS_ALLOWED_ORIGINS=(list, ["http://localhost:3000", "http://127.0.0.1:3000"]),
+    CORS_ALLOWED_ORIGINS=(
+        list,
+        [
+            "http://localhost:3001",
+            "http://127.0.0.1:3001",
+            # Tolère l'ancien port 3000 le temps de la transition.
+            "http://localhost:3000",
+            "http://127.0.0.1:3000",
+        ],
+    ),
 )
 
 # Read .env if present (never committed).
@@ -274,7 +283,7 @@ EMAIL_TIMEOUT = env.int("EMAIL_TIMEOUT", default=10)
 DEFAULT_FROM_EMAIL = env(
     "DEFAULT_FROM_EMAIL", default="CLAIRE Studio <no-reply@claire.local>"
 )
-FRONTEND_BASE_URL = env("FRONTEND_BASE_URL", default="http://localhost:3000")
+FRONTEND_BASE_URL = env("FRONTEND_BASE_URL", default="http://localhost:3001")
 # Durée de validité des liens signés (vérif e-mail / reset), en secondes.
 EMAIL_TOKEN_MAX_AGE = env.int("EMAIL_TOKEN_MAX_AGE", default=60 * 60 * 24)
 

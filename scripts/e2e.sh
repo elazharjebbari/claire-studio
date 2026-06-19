@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 # -----------------------------------------------------------------------------
 # e2e.sh — Playwright contre la pile RÉELLE (12 specs F1->F12, Q-FON-01).
-# Orchestration : Postgres -> migrate -> seed -> backend :8000 -> frontend :3000
+# Orchestration : Postgres -> migrate -> seed -> backend :8000 -> frontend :3001
 #                 -> attendre healthchecks -> playwright test -> teardown.
 # -----------------------------------------------------------------------------
 set -euo pipefail
@@ -10,7 +10,7 @@ ROOT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 cd "$ROOT_DIR"
 
 BACKEND_PORT="${BACKEND_PORT:-8000}"
-FRONTEND_PORT="${FRONTEND_PORT:-3000}"
+FRONTEND_PORT="${FRONTEND_PORT:-3001}"
 E2E_BASE_URL="${E2E_BASE_URL:-http://localhost:${FRONTEND_PORT}}"
 E2E_API_URL="${E2E_API_URL:-http://localhost:${BACKEND_PORT}/api/v1}"
 

@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 # -----------------------------------------------------------------------------
-# dev_up.sh — Lance la pile de dev : Postgres (docker) + backend :8000 + frontend :3000.
+# dev_up.sh — Lance la pile de dev : Postgres (docker) + backend :8000 + frontend :3001.
 # Mode local : Postgres en conteneur, backend & frontend en processus locaux.
 # Arrête proprement les deux à Ctrl-C.
 # -----------------------------------------------------------------------------
@@ -10,7 +10,7 @@ ROOT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 cd "$ROOT_DIR"
 
 BACKEND_PORT="${BACKEND_PORT:-8000}"
-FRONTEND_PORT="${FRONTEND_PORT:-3000}"
+FRONTEND_PORT="${FRONTEND_PORT:-3001}"
 
 log() { printf '\033[36m[dev_up]\033[0m %s\n' "$*"; }
 err() { printf '\033[31m[dev_up][ERR]\033[0m %s\n' "$*" >&2; }

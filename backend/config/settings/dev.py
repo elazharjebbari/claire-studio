@@ -1,4 +1,4 @@
-"""Development settings — SQLite, debug on, permissive CORS for localhost:3000."""
+"""Development settings — SQLite, debug on, permissive CORS for localhost:3001."""
 
 from .base import *  # noqa: F401,F403
 from .base import REST_FRAMEWORK, env

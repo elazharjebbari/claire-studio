@@ -337,7 +337,7 @@ export const handlers = [
     return HttpResponse.json(
       {
         token,
-        url: `http://localhost:3000/join/${token}`,
+        url: `http://localhost:3001/join/${token}`,
         roleGranted: body.role_granted ?? "annotator",
         expiresAt: body.expires_at ?? new Date(Date.now() + 7 * 864e5).toISOString(),
         maxUses: body.max_uses ?? null,
