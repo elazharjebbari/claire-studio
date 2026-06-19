@@ -49,6 +49,9 @@ export default function WelcomePage() {
           CLAIRE<span className="text-accent"> Studio</span>
         </span>
         <nav className="flex items-center gap-3 text-sm">
+          <Link href="/public" data-testid="welcome-public" className="text-ink-muted hover:text-ink">
+            Projets publiés
+          </Link>
           <Link href="/login" data-testid="welcome-login" className="text-ink-muted hover:text-ink">
             Se connecter
           </Link>

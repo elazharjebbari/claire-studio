@@ -25,6 +25,7 @@ function projectNav(slug: string | undefined): NavItem[] {
     items.push({ href: `/projects/${slug}/docs`, label: "Documents", icon: "▤" });
   }
   items.push({ href: `/projects`, label: "Mes projets", icon: "▢" });
+  items.push({ href: `/public`, label: "Projets publiés", icon: "◎" });
   items.push({ href: `/compare`, label: "Comparer", icon: "⇄" });
   items.push({ href: `/settings`, label: "Préférences", icon: "⚙" });
   return items;

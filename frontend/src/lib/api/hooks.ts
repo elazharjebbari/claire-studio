@@ -117,6 +117,22 @@ export function useProject(slug: string | undefined) {
   });
 }
 
+// Publication publique (chantier F) — lecture seule, sans auth.
+export function usePublicProjects() {
+  return useQuery({
+    queryKey: ["public-projects"],
+    queryFn: api.listPublicProjects,
+  });
+}
+
+export function usePublicProject(slug: string | undefined) {
+  return useQuery({
+    queryKey: ["public-project", slug ?? ""],
+    queryFn: () => api.getPublicProject(slug!),
+    enabled: Boolean(slug),
+  });
+}
+
 export function useAssignments(slug: string | undefined) {
   return useQuery({
     queryKey: qk.assignments(slug ?? ""),

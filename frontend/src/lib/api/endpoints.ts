@@ -22,6 +22,9 @@ import type {
   PreAnnotation,
   Project,
   ProjectProgress,
+  ProjectVisibility,
+  PublicProject,
+  PublicProjectDetail,
   Review,
   AnnotationVersion,
   TranslationSet,
@@ -136,6 +139,27 @@ export function listProjects(): Promise<Paginated<Project>> {
 
 export function getProject(slug: string): Promise<Project> {
   return apiFetch<Project>(`/projects/${slug}`);
+}
+
+// ── Publication (chantier F) ───────────────────────────────────────────────────
+
+export function listPublicProjects(): Promise<Paginated<PublicProject>> {
+  return apiFetch<Paginated<PublicProject>>("/public/projects");
+}
+
+export function getPublicProject(slug: string): Promise<PublicProjectDetail> {
+  return apiFetch<PublicProjectDetail>(`/public/projects/${slug}`);
+}
+
+/** Admin : publie / dépublie un projet (PATCH visibility). */
+export function setProjectVisibility(
+  slug: string,
+  visibility: ProjectVisibility,
+): Promise<Project> {
+  return apiFetch<Project>(`/projects/${slug}`, {
+    method: "PATCH",
+    body: { visibility },
+  });
 }
 
 export function listAssignments(slug: string): Promise<Paginated<Assignment>> {

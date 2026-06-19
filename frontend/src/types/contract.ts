@@ -132,6 +132,8 @@ export interface LabelScheme {
   legalNatures: LegalNature[];
 }
 
+export type ProjectVisibility = "private" | "public";
+
 export interface Project {
   id: string;
   slug: string;
@@ -140,8 +142,28 @@ export interface Project {
   schemeSlug: string;
   guidelines?: string;
   status: string;
+  /** Publication (chantier F) ; privé par défaut. */
+  visibility?: ProjectVisibility;
   myRole?: "annotator" | "reviewer" | "lead";
   progress?: ProjectProgress;
+}
+
+/** Projet publié (vue publique lecture seule, chantier F). */
+export interface PublicProject {
+  slug: string;
+  name: string;
+  corpusSlug: string;
+}
+
+export interface PublicProjectDetail extends PublicProject {
+  kpi: {
+    documentsTotal: number;
+    documentsAnnotated: number;
+    annotators: number;
+    meanCertainty: number | null;
+    kappa: number | null;
+  };
+  themeDistribution: Array<{ theme: string; count: number }>;
 }
 
 /** κ de Cohen par thème (et frontières) pour le tableau de bord IAA (feature 10). */

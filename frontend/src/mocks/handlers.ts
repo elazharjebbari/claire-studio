@@ -126,6 +126,38 @@ export const handlers = [
   ),
   http.get(`${BASE}/projects/:slug/progress`, () => HttpResponse.json(FIXTURE_PROGRESS)),
 
+  // Publication publique (chantier F) — lecture seule.
+  http.get(`${BASE}/public/projects`, () =>
+    HttpResponse.json(
+      page([
+        {
+          slug: FIXTURE_PROJECT.slug,
+          name: FIXTURE_PROJECT.name,
+          corpusSlug: FIXTURE_PROJECT.corpusSlug,
+        },
+      ]),
+    ),
+  ),
+  http.get(`${BASE}/public/projects/:slug`, ({ params }) =>
+    HttpResponse.json({
+      slug: params.slug,
+      name: FIXTURE_PROJECT.name,
+      corpusSlug: FIXTURE_PROJECT.corpusSlug,
+      kpi: {
+        documentsTotal: 12,
+        documentsAnnotated: 8,
+        annotators: 2,
+        meanCertainty: 2.1,
+        kappa: 0.42,
+      },
+      themeDistribution: [
+        { theme: "TERMINATION", count: 9 },
+        { theme: "PRIVACY_DATA", count: 7 },
+        { theme: "LIMITATION_LIABILITY", count: 5 },
+      ],
+    }),
+  ),
+
   // Annotations
   http.get(`${BASE}/annotations`, () => HttpResponse.json(page([annotation]))),
   http.get(`${BASE}/annotations/:id`, () => HttpResponse.json(annotation)),
