@@ -69,10 +69,6 @@ from claire.translations.services import sync_translation_set
 logger = logging.getLogger("claire.seed")
 User = get_user_model()
 
-CORPUS_SLUG = "claudette-tos"
-PROJECT_SLUG = "claudette-gold-v1"
-TRANSLATION_FOLDER = "claudette_fr"
-
 
 class Command(BaseCommand):
     help = "Feed the DB with the real CLAUDETTE data + pre-annotations (idempotent)."
@@ -88,9 +84,35 @@ class Command(BaseCommand):
             help="Delete data rows (annotations, preannotations, documents, "
                  "translations, projects) before refeeding. Users/scheme kept.",
         )
+        # Dé-rigidification (H1/H2) : plus aucune valeur métier en dur ; défauts
+        # depuis settings (env-driven), surchargeables au cas par cas en CLI.
+        parser.add_argument(
+            "--corpus-slug", default=None,
+            help="Slug du corpus (défaut: settings.SEED_CORPUS_SLUG).",
+        )
+        parser.add_argument(
+            "--project-slug", default=None,
+            help="Slug du projet (défaut: settings.SEED_PROJECT_SLUG).",
+        )
+        parser.add_argument(
+            "--translation-folder", default=None,
+            help="Sous-dossier de traductions (défaut: settings.SEED_TRANSLATION_FOLDER).",
+        )
+        parser.add_argument(
+            "--password", default=None,
+            help="Mot de passe des comptes de démo (défaut: settings.SEED_PASSWORD).",
+        )
 
     @transaction.atomic
     def handle(self, *args, **options):
+        # Valeurs effectives : CLI > settings (env) > défaut. Rien en dur.
+        self.password = options["password"] or settings.SEED_PASSWORD
+        corpus_slug = options["corpus_slug"] or settings.SEED_CORPUS_SLUG
+        project_slug = options["project_slug"] or settings.SEED_PROJECT_SLUG
+        self.translation_folder = (
+            options["translation_folder"] or settings.SEED_TRANSLATION_FOLDER
+        )
+
         if options["reset"]:
             self._reset()
 
@@ -108,11 +130,13 @@ class Command(BaseCommand):
         alice = self._user("alice", "annotator", "alice@claire.local")
         bob = self._user("bob", "annotator", "bob@claire.local")
         rita = self._user("rita", "reviewer", "rita@claire.local")
-        self.stdout.write("  users: admin, alice, bob, rita (password 'claire-demo')")
+        self.stdout.write(
+            f"  users: admin, alice, bob, rita (password '{self.password}')"
+        )
 
         # 3. Corpus + documents ---------------------------------------------
         corpus, _ = Corpus.objects.update_or_create(
-            slug=CORPUS_SLUG,
+            slug=corpus_slug,
             defaults={
                 "name": "CLAUDETTE ToS (UNFAIR-ToS)",
                 "description": "Terms of Service with unfairness annotations (Lippi 2019).",
@@ -126,7 +150,7 @@ class Command(BaseCommand):
 
         # 4. Pre-annotations (claude + codex) -------------------------------
         project, _ = Project.objects.update_or_create(
-            slug=PROJECT_SLUG,
+            slug=project_slug,
             defaults={
                 "name": "CLAUDETTE Gold v1",
                 "corpus": corpus,
@@ -203,7 +227,7 @@ class Command(BaseCommand):
             },
         )
         # Always (re)set the demo password so logins are predictable & idempotent.
-        user.set_password("claire-demo")
+        user.set_password(self.password)
         user.save(update_fields=["password"])
         return user
 
@@ -311,16 +335,18 @@ class Command(BaseCommand):
 
     # ---------------------------------------------------------- translations
     def _declare_translations(self, corpus) -> TranslationSet | None:
-        folder = Path(settings.TRANSLATIONS_ROOT) / TRANSLATION_FOLDER
+        folder = Path(settings.TRANSLATIONS_ROOT) / self.translation_folder
         if not folder.exists():
-            self.stdout.write("  translations: claudette_fr folder absent, skipped")
+            self.stdout.write(
+                f"  translations: {self.translation_folder} folder absent, skipped"
+            )
             return None
         ts, _ = TranslationSet.objects.update_or_create(
             corpus=corpus,
             name="CLAUDETTE FR",
             defaults={
                 "target_language": "fr",
-                "folder_path": TRANSLATION_FOLDER,
+                "folder_path": self.translation_folder,
                 "mapping_strategy": "by_external_id",
                 "status": "declared",
             },

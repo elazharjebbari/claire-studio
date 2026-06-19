@@ -238,6 +238,20 @@ FEATURE_FLAGS = {
     "version_explorer": env.bool("FEATURE_VERSION_EXPLORER", default=True),
 }
 
+# --- Seed defaults (dé-rigidification — H1/H2/§7) ----------------------------
+# Valeurs « métier » des seeders rendues configurables : aucune constante figée
+# dans le code. Les défauts reproduisent la démo CLAUDETTE mais peuvent pointer un
+# tout autre corpus/projet via l'environnement. Le mot de passe de démo n'est plus
+# un secret en dur. SEED_HUMAN_FROM_LLM=False ⇒ l'annotation humaine démarre VIDE
+# (le LLM reste une suggestion à adopter, cf. CONTRACT / chantier B).
+SEED_PASSWORD = env("CLAIRE_SEED_PASSWORD", default="claire-demo")
+SEED_CORPUS_SLUG = env("CLAIRE_SEED_CORPUS_SLUG", default="claudette-tos")
+SEED_PROJECT_SLUG = env("CLAIRE_SEED_PROJECT_SLUG", default="claudette-gold-v1")
+SEED_TRANSLATION_FOLDER = env(
+    "CLAIRE_SEED_TRANSLATION_FOLDER", default="claudette_fr"
+)
+SEED_HUMAN_FROM_LLM = env.bool("CLAIRE_SEED_HUMAN_FROM_LLM", default=False)
+
 # --- Logging (structured, debuggable) ----------------------------------------
 LOGGING = {
     "version": 1,

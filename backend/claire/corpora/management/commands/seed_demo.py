@@ -70,7 +70,7 @@ class Command(BaseCommand):
         self.stdout.write(f"  scheme: {scheme.slug} ({scheme.themes.count()} themes)")
 
         corpus, _ = Corpus.objects.update_or_create(
-            slug="claudette-tos",
+            slug=settings.SEED_CORPUS_SLUG,
             defaults={
                 "name": "CLAUDETTE ToS (UNFAIR-ToS)",
                 "description": "Terms of Service with unfairness annotations (Lippi 2019).",
@@ -85,7 +85,7 @@ class Command(BaseCommand):
         self.stdout.write(f"  documents: {[d.external_id for d in documents]}")
 
         project, _ = Project.objects.update_or_create(
-            slug="claudette-gold-v1",
+            slug=settings.SEED_PROJECT_SLUG,
             defaults={
                 "name": "CLAUDETTE Gold v1",
                 "corpus": corpus,
@@ -135,7 +135,7 @@ class Command(BaseCommand):
             },
         )
         if created:
-            user.set_password("claire-demo")
+            user.set_password(settings.SEED_PASSWORD)
             user.save()
         return user
 
