@@ -254,11 +254,33 @@ export function listPreAnnotations(params: {
   project?: string;
   document?: string;
   judge?: string;
+  /** Version d'annotation à charger (multi-versions). Défaut backend si absent. */
+  version?: string;
 }): Promise<Paginated<PreAnnotation>> {
   const qs = new URLSearchParams(
     Object.entries(params).filter(([, v]) => v) as [string, string][],
   ).toString();
   return apiFetch<Paginated<PreAnnotation>>(`/preannotations?${qs}`);
+}
+
+export interface AnnotationVersionRow {
+  version: string;
+  judge: string;
+  nClauses: number;
+}
+export interface AnnotationVersionsResponse {
+  versions: string[];
+  count: number;
+  results: AnnotationVersionRow[];
+}
+
+/** Versions LLM disponibles pour un document (multi-versions). */
+export function getAnnotationVersions(
+  documentId: string,
+): Promise<AnnotationVersionsResponse> {
+  return apiFetch<AnnotationVersionsResponse>(
+    `/documents/${documentId}/annotation-versions`,
+  );
 }
 
 export function importPreAnnotations(

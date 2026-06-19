@@ -64,6 +64,8 @@ interface WorkspaceState {
    *  - `compare` : superposition de l'accord par phrase entre les deux juges.
    */
   llmSource: LlmSource;
+  /** Version d'annotation LLM choisie (multi-versions). null = défaut backend. */
+  llmVersion: string | null;
   // Statut de dirty (modifs non snapshotées).
   dirty: boolean;
 
@@ -100,6 +102,7 @@ interface WorkspaceState {
   setDisplayLang: (lang: "orig" | "both" | "fr") => void;
   /** Règle la source de segmentation affichée (Q3). */
   setLlmSource: (source: LlmSource) => void;
+  setLlmVersion: (version: string | null) => void;
   markClean: () => void;
   reset: () => void;
 }
@@ -142,6 +145,7 @@ export const useWorkspaceStore = create<WorkspaceState>((set, get) => ({
   displayLang: "orig",
   translatedSentences: [],
   llmSource: "human",
+  llmVersion: null,
   dirty: false,
 
   init: ({ annotationId, nSentences, clauses }) =>
@@ -158,6 +162,7 @@ export const useWorkspaceStore = create<WorkspaceState>((set, get) => ({
       translatedSentences: [],
       displayLang: "orig",
       llmSource: "human",
+      llmVersion: null,
     }),
 
   focusSentence: (index) =>
@@ -302,6 +307,7 @@ export const useWorkspaceStore = create<WorkspaceState>((set, get) => ({
   setDisplayLang: (lang) => set({ displayLang: lang }),
 
   setLlmSource: (source) => set({ llmSource: source }),
+  setLlmVersion: (version) => set({ llmVersion: version }),
 
   markClean: () => set({ dirty: false }),
 
@@ -318,6 +324,7 @@ export const useWorkspaceStore = create<WorkspaceState>((set, get) => ({
       translatedSentences: [],
       displayLang: "orig",
       llmSource: "human",
+      llmVersion: null,
       dirty: false,
     }),
 }));

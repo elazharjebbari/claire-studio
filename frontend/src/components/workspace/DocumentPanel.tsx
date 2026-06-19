@@ -28,7 +28,7 @@ import type { PreClause, ReferenceLabel, Sentence } from "@/types/contract";
 import { useWorkspaceStore } from "@/store/workspace";
 import { getThemeToken } from "@/lib/tokens";
 import { computeRuns, runAt, type Run } from "@/lib/runs";
-import { useDocumentTranslations, useLlmAgreement } from "@/lib/api/hooks";
+import { useAnnotationVersions, useDocumentTranslations, useLlmAgreement } from "@/lib/api/hooks";
 import { cn } from "@/lib/cn";
 import { unfairnessStyle, useUnfairnessIndex, type UnfairnessMark } from "./useUnfairness";
 import { useLongPress } from "./useLongPress";
@@ -77,8 +77,14 @@ export function DocumentPanel({
 
   const n = nSentences || sentences.length;
 
-  // Accord LLM (Q3) — projection par phrase + score + détails par juge.
-  const llm = useLlmAgreement(documentId, projectSlug);
+  const llmVersion = useWorkspaceStore((s) => s.llmVersion);
+  const setLlmVersion = useWorkspaceStore((s) => s.setLlmVersion);
+  // Versions LLM disponibles pour ce document (multi-versions).
+  const versionsQuery = useAnnotationVersions(documentId);
+  const availableVersions = versionsQuery.data?.versions ?? [];
+
+  // Accord LLM (Q3) — projection par phrase + score + détails par juge, pour la version choisie.
+  const llm = useLlmAgreement(documentId, projectSlug, llmVersion);
 
   // Détails (rationale/evidence) d'un juge indexés par ancre → menu phrase enrichi.
   const claudeDetailByAnchor = useMemo(
@@ -159,6 +165,24 @@ export function DocumentPanel({
             Frontières
           </label>
           <LlmSourceSwitch />
+          {(isJudgeSource || isCompare) && availableVersions.length > 0 && (
+            <label className="flex items-center gap-2 text-ink-muted">
+              <span>Version</span>
+              <select
+                data-testid="llm-version-select"
+                className="rounded-md border border-line bg-panel px-2 py-1 text-ink"
+                value={llmVersion ?? ""}
+                onChange={(e) => setLlmVersion(e.target.value || null)}
+              >
+                <option value="">Auto (plus riche)</option>
+                {availableVersions.map((v) => (
+                  <option key={v} value={v}>
+                    {v}
+                  </option>
+                ))}
+              </select>
+            </label>
+          )}
           <LangSwitch />
         </div>
 

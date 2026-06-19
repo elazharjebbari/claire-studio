@@ -339,6 +339,17 @@ export const handlers = [
     return HttpResponse.json(existing ?? FIXTURE_PREANNOTATIONS[0], { status: 201 });
   }),
 
+  // Versions LLM disponibles pour un document (multi-versions).
+  http.get(`${BASE}/documents/:id/annotation-versions`, () => {
+    const results = FIXTURE_PREANNOTATIONS.map((p) => ({
+      version: p.schemaVersion,
+      judge: p.judge,
+      nClauses: p.clauses?.length ?? 0,
+    }));
+    const versions = [...new Set(results.map((r) => r.version))].sort();
+    return HttpResponse.json({ versions, count: results.length, results });
+  }),
+
   // Exports (F5)
   http.post(`${BASE}/projects/:slug/exports`, async ({ params, request }) => {
     const body = (await request.json()) as { format: string };

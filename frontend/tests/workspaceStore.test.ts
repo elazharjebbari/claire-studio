@@ -130,6 +130,21 @@ describe("workspace store", () => {
     expect(useWorkspaceStore.getState().selectedClauseIds).toEqual([]);
   });
 
+  it("pilote la source et la version LLM, réinitialisées au reset (multi-versions)", () => {
+    expect(useWorkspaceStore.getState().llmSource).toBe("human");
+    expect(useWorkspaceStore.getState().llmVersion).toBeNull();
+    useWorkspaceStore.getState().setLlmSource("compare");
+    useWorkspaceStore.getState().setLlmVersion("v9.2");
+    expect(useWorkspaceStore.getState().llmSource).toBe("compare");
+    expect(useWorkspaceStore.getState().llmVersion).toBe("v9.2");
+    // null = auto (version la plus riche, tolérante aux champs en plus/en moins).
+    useWorkspaceStore.getState().setLlmVersion(null);
+    expect(useWorkspaceStore.getState().llmVersion).toBeNull();
+    useWorkspaceStore.getState().reset();
+    expect(useWorkspaceStore.getState().llmSource).toBe("human");
+    expect(useWorkspaceStore.getState().llmVersion).toBeNull();
+  });
+
   it("init et reset réinitialisent displayLang et selectedClauseIds", () => {
     useWorkspaceStore.getState().setDisplayLang("fr");
     useWorkspaceStore.getState().setSelectedClauses(["c1"]);

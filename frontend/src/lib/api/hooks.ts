@@ -181,11 +181,25 @@ export function useReviews(id: string | undefined) {
   });
 }
 
-export function usePreAnnotations(project: string | undefined, document: string | undefined) {
+export function usePreAnnotations(
+  project: string | undefined,
+  document: string | undefined,
+  version?: string | null,
+) {
   return useQuery({
-    queryKey: qk.preannotations(project ?? "", document ?? ""),
-    queryFn: () => api.listPreAnnotations({ project, document }),
+    queryKey: [...qk.preannotations(project ?? "", document ?? ""), version ?? "default"],
+    queryFn: () =>
+      api.listPreAnnotations({ project, document, version: version ?? undefined }),
     enabled: Boolean(project && document),
+  });
+}
+
+/** Versions LLM disponibles pour un document (multi-versions). */
+export function useAnnotationVersions(documentId: string | undefined) {
+  return useQuery({
+    queryKey: ["documents", documentId ?? "", "annotation-versions"],
+    queryFn: () => api.getAnnotationVersions(documentId!),
+    enabled: Boolean(documentId),
   });
 }
 
@@ -207,8 +221,9 @@ export function useProjectPreAnnotations(project: string | undefined) {
 export function useLlmAgreement(
   documentId: string | undefined,
   projectSlug: string | undefined,
+  version?: string | null,
 ) {
-  const pre = usePreAnnotations(projectSlug, documentId);
+  const pre = usePreAnnotations(projectSlug, documentId, version);
   const doc = useDocument(documentId);
 
   return useMemo(() => {
