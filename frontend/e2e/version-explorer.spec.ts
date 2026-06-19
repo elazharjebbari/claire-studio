@@ -10,8 +10,12 @@ test.describe("Explorateur de versions (point 6)", () => {
     await page.goto("/history/ann-1");
     const items = page.getByTestId("version-item");
     await expect(items.first()).toBeVisible();
-    // Nom + description + diff visibles.
-    await expect(page.getByText("données & résiliation")).toBeVisible();
+    // Nom + description + diff visibles. La fixture v2 réutilise « données &
+    // résiliation » dans name ET label → on cible le version-item et on prend le
+    // premier (sélecteur déterministe, sinon strict-mode violation).
+    await expect(
+      items.filter({ hasText: "données & résiliation" }).first(),
+    ).toBeVisible();
     await expect(page.getByText(/Différences/)).toBeVisible();
   });
 
