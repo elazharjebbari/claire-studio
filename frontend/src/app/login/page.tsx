@@ -2,6 +2,7 @@
 
 /** Authentification JWT (CONTRACT §3 /auth/login). SSO-ready (placeholder). */
 
+import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useState } from "react";
 import { login } from "@/lib/api/endpoints";
@@ -65,6 +66,14 @@ export default function LoginPage() {
             Se connecter via SSO (à venir)
           </button>
         </form>
+        <div className="mt-4 flex items-center justify-between text-xs text-ink-muted">
+          <Link href="/signup" data-testid="login-to-signup" className="text-accent hover:underline">
+            Créer un compte
+          </Link>
+          <Link href="/forgot-password" className="hover:underline">
+            Mot de passe oublié ?
+          </Link>
+        </div>
       </Panel>
     </div>
   );

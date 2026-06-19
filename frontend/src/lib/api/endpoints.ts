@@ -50,6 +50,44 @@ export function getMe(): Promise<User> {
   return apiFetch<User>("/me");
 }
 
+// ── Onboarding (chantier E) — endpoints publics ────────────────────────────────
+
+export function register(payload: {
+  username: string;
+  email: string;
+  password: string;
+  displayName?: string;
+}): Promise<User> {
+  return apiFetch<User>("/auth/register", { method: "POST", body: payload });
+}
+
+export function verifyEmail(token: string): Promise<{ detail: string }> {
+  return apiFetch("/auth/verify-email", { method: "POST", body: { token } });
+}
+
+export function requestPasswordReset(email: string): Promise<{ detail: string }> {
+  return apiFetch("/auth/password-reset", { method: "POST", body: { email } });
+}
+
+export function confirmPasswordReset(
+  uid: string,
+  token: string,
+  newPassword: string,
+): Promise<{ detail: string }> {
+  return apiFetch("/auth/password-reset/confirm", {
+    method: "POST",
+    body: { uid, token, newPassword },
+  });
+}
+
+/** Met à jour le profil de l'utilisateur courant (display_name, locale). */
+export function updateProfile(payload: {
+  displayName?: string;
+  locale?: string;
+}): Promise<User> {
+  return apiFetch<User>("/me", { method: "PATCH", body: payload });
+}
+
 /** GET /health (sans auth) — état du backend (status + compteurs). */
 export function getHealth(): Promise<HealthStatus> {
   return apiFetch<HealthStatus>("/health");
