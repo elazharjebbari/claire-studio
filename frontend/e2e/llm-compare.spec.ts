@@ -53,7 +53,10 @@ test.describe("Comparaison & arbitrage LLM", () => {
 
   test("adoption au clavier 1 = Claude sur la divergence courante", async ({ page }) => {
     await openCompare(page);
-    await page.getByTestId("divergence-next").click(); // cible la 1re divergence (phrase 1)
+    // Focalise une phrase couverte par Claude (cf. test menu qui adopte → resolved-1) ;
+    // « 1 » adopte Claude sur la phrase focalisée. divergence-next ne tombe pas
+    // forcément sur la phrase 1 selon la fixture → sélection explicite, déterministe.
+    await page.getByTestId("sentence-1").click();
     await page.keyboard.press("1");
     await expect(page.getByTestId("resolved-1")).toBeVisible();
   });
