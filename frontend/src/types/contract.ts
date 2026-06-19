@@ -273,6 +273,43 @@ export interface SentenceHistoryResponse {
   results: SentenceHistoryEntry[];
 }
 
+// ── Collaboration temps réel & partage (points 4b/7) ─────────────────────────
+
+export interface PresenceParticipant {
+  userId: string;
+  name: string;
+  color: string;
+  /** Phrase actuellement regardée (curseur ambiant). */
+  focusSentence?: number | null;
+  active: boolean;
+}
+
+export interface PresenceResponse {
+  count: number;
+  results: PresenceParticipant[];
+}
+
+export interface ShareLink {
+  token: string;
+  url: string;
+  roleGranted: "annotator" | "reviewer";
+  expiresAt: string;
+  maxUses?: number | null;
+  usedCount: number;
+  revoked: boolean;
+}
+
+/** Feature flags effectifs (l'UI s'y conforme) — cf. dossier config-flags.yaml. */
+export interface FeatureFlags {
+  realtimeCollaboration: boolean;
+  presence: boolean;
+  attributionOverlay: boolean;
+  commentsMultilevel: boolean;
+  undoRedo: boolean;
+  analyticsScreen: boolean;
+  versionExplorer: boolean;
+}
+
 // ── Exploration des annotations humaines (point 5) ────────────────────────────
 
 export interface ThemeCount {

@@ -19,10 +19,10 @@ architecture, plan de conception, plan de développement, plan d'action.
 | 2 | Versioning à la soumission (nom + description) + historique d'actions | `03_versioning_history.md` | **livré ce cycle (socle)** |
 | 4a | Undo / redo (Ctrl+Z / Ctrl+Y) + boîte d'actions | `04_undo_redo.md` | **livré ce cycle** |
 | 3 | Attribution multi-annotateurs + commentaires (phrase/bloc/partie) | `05_attribution_comments.md` | **livré ce cycle** |
-| 4b | Collaboration **temps réel** + gestion de conflits + lien de partage | `06_realtime_collaboration.md` | spécifié → cycle suivant |
+| 4b | Collaboration **temps réel** + gestion de conflits + lien de partage | `06_realtime_collaboration.md` | **front livré (présence/partage MSW) ; infra WS/CRDT en local** |
 | 5 | Écran d'exploration / qualification des annotations humaines | `07_analytics_screen.md` | **livré ce cycle** |
 | 6 | Explorateur de versions (document **et** phrase) | `08_version_explorer.md` | **livré ce cycle** |
-| 7 | UX du mode collaboratif (ergonomie maximale) | `09_collab_ux.md` | spécifié → cycle suivant |
+| 7 | UX du mode collaboratif (ergonomie maximale) | `09_collab_ux.md` | **front livré (CollabBar/présence/invite) ; affiné en local** |
 
 ## Index des documents
 

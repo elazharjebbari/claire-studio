@@ -42,6 +42,7 @@ import { SentenceMenu, type JudgeDetail } from "./SentenceMenu";
 import { SelectionToolbar } from "./SelectionToolbar";
 import { LangSwitch } from "./LangSwitch";
 import { LlmSourceSwitch } from "./LlmSourceSwitch";
+import { CollabBar } from "./CollabBar";
 import { DivergenceNav } from "./DivergenceNav";
 import { ComparePanel } from "./ComparePanel";
 import { BoundaryEvidence } from "./BoundaryEvidence";
@@ -253,8 +254,10 @@ export function DocumentPanel({
        <div className="w-full max-w-reading font-reading text-[17px] leading-reading text-ink">
         <div
           data-testid="document-controls"
-          className="sticky top-0 z-20 -mx-2 mb-4 flex flex-wrap items-center justify-end gap-3 border-b border-line/40 bg-reading/90 px-2 py-2 text-sm backdrop-blur supports-[backdrop-filter]:bg-reading/75"
+          className="sticky top-0 z-20 -mx-2 mb-4 flex flex-wrap items-center gap-3 border-b border-line/40 bg-reading/90 px-2 py-2 text-sm backdrop-blur supports-[backdrop-filter]:bg-reading/75"
         >
+          <CollabBar projectSlug={projectSlug} />
+          <div className="flex flex-1 flex-wrap items-center justify-end gap-3">
           {/* P3 : sélecteur de version TOUJOURS visible dès qu'il existe des versions,
               indépendamment de la source. Le switch n'affecte QUE l'overlay LLM
               (clé react-query) ; les clauses humaines ne sont jamais touchées. */}
@@ -319,6 +322,7 @@ export function DocumentPanel({
             </button>
           )}
           <LangSwitch />
+          </div>
         </div>
 
         {/* Bandeau de score d'accord (Q3) — affiché en mode comparaison. */}

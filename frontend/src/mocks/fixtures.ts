@@ -348,6 +348,26 @@ export const FIXTURE_ATTRIBUTION = [
   { index: 22, actorId: "u-alice", actorName: "Alice", actorColor: "#06B6D4", verb: "clause.set_certainty", at: "2026-06-17T10:40:00Z" },
 ];
 
+/** Présence collaborative (points 4b/7). */
+export const FIXTURE_PRESENCE = {
+  count: 2,
+  results: [
+    { userId: "u-alice", name: "Alice", color: "#06B6D4", focusSentence: 4, active: true },
+    { userId: "u-bruno", name: "Bruno", color: "#F59E0B", focusSentence: 16, active: true },
+  ],
+};
+
+/** Feature flags effectifs (mock : collaboratif activé pour la démo/e2e). */
+export const FIXTURE_FLAGS = {
+  realtimeCollaboration: true,
+  presence: true,
+  attributionOverlay: true,
+  commentsMultilevel: true,
+  undoRedo: true,
+  analyticsScreen: true,
+  versionExplorer: true,
+};
+
 /** Insights corpus (point 5) — KPI + distribution + documents. */
 export const FIXTURE_CORPUS_INSIGHTS = {
   projectSlug: "claudette-gold-v1",

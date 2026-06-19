@@ -361,6 +361,35 @@ export function useDocumentInsights(slug: string | undefined, documentId: string
   });
 }
 
+/** Feature flags effectifs (points 4b/7 + admin). */
+export function useFeatureFlags() {
+  return useQuery({
+    queryKey: ["config", "flags"],
+    queryFn: api.getFeatureFlags,
+    staleTime: 60_000,
+  });
+}
+
+/** Présence collaborative d'une annotation (points 4b/7). Poll léger. */
+export function usePresence(annotationId: string | undefined, enabled = true) {
+  return useQuery({
+    queryKey: ["annotations", annotationId ?? "", "presence"],
+    queryFn: () => api.getPresence(annotationId!),
+    enabled: Boolean(annotationId) && enabled,
+    refetchInterval: enabled ? 10_000 : false,
+  });
+}
+
+export function useCreateShareLink(slug: string) {
+  return useMutation({
+    mutationFn: (payload: {
+      roleGranted: "annotator" | "reviewer";
+      expiresAt: string;
+      maxUses?: number;
+    }) => api.createShareLink(slug, payload),
+  });
+}
+
 export function useResolveComment(annotationId: string) {
   const qc = useQueryClient();
   return useMutation({

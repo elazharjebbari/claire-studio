@@ -286,6 +286,32 @@ export function getDocumentInsights(
   return apiFetch(`/projects/${slug}/insights/${documentId}`);
 }
 
+// ── Collaboration temps réel & partage (points 4b/7) ─────────────────────────
+
+export function getFeatureFlags(): Promise<import("@/types/contract").FeatureFlags> {
+  return apiFetch(`/config/flags`);
+}
+
+export function getPresence(
+  annotationId: string,
+): Promise<import("@/types/contract").PresenceResponse> {
+  return apiFetch(`/annotations/${annotationId}/presence`);
+}
+
+export function createShareLink(
+  slug: string,
+  payload: { roleGranted: "annotator" | "reviewer"; expiresAt: string; maxUses?: number },
+): Promise<import("@/types/contract").ShareLink> {
+  return apiFetch(`/projects/${slug}/share-links`, {
+    method: "POST",
+    body: {
+      role_granted: payload.roleGranted,
+      expires_at: payload.expiresAt,
+      max_uses: payload.maxUses ?? null,
+    },
+  });
+}
+
 // ── Reviews (F10) ─────────────────────────────────────────────────────────────
 
 export function listReviews(annotationId: string): Promise<Paginated<Review>> {

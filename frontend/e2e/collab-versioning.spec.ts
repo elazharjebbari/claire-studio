@@ -117,4 +117,16 @@ test.describe("Collaboration & versioning — socle (points 0,1,2)", () => {
     // La clause à l'ancre 0 (META, fixtures) porte une pastille d'auteur.
     await expect(page.getByTestId("attribution-0")).toBeVisible();
   });
+
+  test("présence collaborative + génération d'un lien de partage (points 4b/7)", async ({ page }) => {
+    await open(page);
+    // Barre de présence visible (flag presence actif en mock) avec participants.
+    await expect(page.getByTestId("collab-bar")).toBeVisible();
+    await expect(page.getByTestId("presence-u-alice")).toBeVisible();
+    // Invitation → génération d'un lien signé.
+    await page.getByTestId("collab-invite").click();
+    await expect(page.getByTestId("share-dialog")).toBeVisible();
+    await page.getByTestId("share-generate").click();
+    await expect(page.getByTestId("share-link")).toHaveValue(/\/join\/shr_/);
+  });
 });

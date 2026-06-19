@@ -26,6 +26,8 @@ import {
   FIXTURE_CORPUS,
   FIXTURE_CORPUS_INSIGHTS,
   FIXTURE_DOCUMENT_INSIGHTS,
+  FIXTURE_FLAGS,
+  FIXTURE_PRESENCE,
   FIXTURE_DOCUMENT,
   FIXTURE_PREANNOTATIONS,
   FIXTURE_PROGRESS,
@@ -320,6 +322,31 @@ export const handlers = [
   http.post(`${BASE}/comments/:id/resolve`, ({ params }) => {
     comments = comments.map((c) => (c.id === params.id ? { ...c, resolved: true } : c));
     return HttpResponse.json(comments.find((c) => c.id === params.id));
+  }),
+
+  // Collaboration temps réel & partage (points 4b/7)
+  http.get(`${BASE}/config/flags`, () => HttpResponse.json(FIXTURE_FLAGS)),
+  http.get(`${BASE}/annotations/:id/presence`, () => HttpResponse.json(FIXTURE_PRESENCE)),
+  http.post(`${BASE}/projects/:slug/share-links`, async ({ params, request }) => {
+    const body = (await request.json().catch(() => ({}))) as {
+      role_granted?: string;
+      expires_at?: string;
+      max_uses?: number | null;
+    };
+    const token = `shr_${Math.random().toString(36).slice(2, 10)}`;
+    return HttpResponse.json(
+      {
+        token,
+        url: `http://localhost:3000/join/${token}`,
+        roleGranted: body.role_granted ?? "annotator",
+        expiresAt: body.expires_at ?? new Date(Date.now() + 7 * 864e5).toISOString(),
+        maxUses: body.max_uses ?? null,
+        usedCount: 0,
+        revoked: false,
+        projectSlug: String(params.slug),
+      },
+      { status: 201 },
+    );
   }),
 
   // Insights — exploration des annotations humaines (point 5)
