@@ -263,6 +263,14 @@ export function getAttribution(
   return apiFetch(`/annotations/${annotationId}/attribution?by=${by}`);
 }
 
+/** Timeline d'annotation d'une phrase (tous annotateurs/versions) — point 6. */
+export function getSentenceHistory(
+  documentId: string,
+  index: number,
+): Promise<import("@/types/contract").SentenceHistoryResponse> {
+  return apiFetch(`/documents/${documentId}/sentence-history?index=${index}`);
+}
+
 // ── Reviews (F10) ─────────────────────────────────────────────────────────────
 
 export function listReviews(annotationId: string): Promise<Paginated<Review>> {

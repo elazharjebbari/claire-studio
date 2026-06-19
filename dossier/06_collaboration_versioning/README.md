@@ -21,7 +21,7 @@ architecture, plan de conception, plan de développement, plan d'action.
 | 3 | Attribution multi-annotateurs + commentaires (phrase/bloc/partie) | `05_attribution_comments.md` | **livré ce cycle** |
 | 4b | Collaboration **temps réel** + gestion de conflits + lien de partage | `06_realtime_collaboration.md` | spécifié → cycle suivant |
 | 5 | Écran d'exploration / qualification des annotations humaines | `07_analytics_screen.md` | spécifié → cycle suivant |
-| 6 | Explorateur de versions (document **et** phrase) | `08_version_explorer.md` | spécifié → cycle suivant |
+| 6 | Explorateur de versions (document **et** phrase) | `08_version_explorer.md` | **livré ce cycle** |
 | 7 | UX du mode collaboratif (ergonomie maximale) | `09_collab_ux.md` | spécifié → cycle suivant |
 
 ## Index des documents

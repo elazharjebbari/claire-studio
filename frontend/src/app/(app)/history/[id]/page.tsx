@@ -7,13 +7,15 @@
  */
 
 import { useEffect, useMemo, useState } from "react";
-import { useVersions, useVersionDiff } from "@/lib/api/hooks";
+import { useAnnotation, useVersions, useVersionDiff } from "@/lib/api/hooks";
 import { Panel, Button } from "@/components/ui/primitives";
 import { DiffView } from "@/components/history/DiffView";
+import { SentenceTimeline } from "@/components/history/SentenceTimeline";
 import { cn } from "@/lib/cn";
 
 export default function HistoryPage({ params }: { params: { id: string } }) {
   const { data } = useVersions(params.id);
+  const { data: annotation } = useAnnotation(params.id);
   const versions = useMemo(
     () => (data?.results ?? []).slice().sort((a, b) => a.number - b.number),
     [data],
@@ -68,13 +70,28 @@ export default function HistoryPage({ params }: { params: { id: string } }) {
                   <div className="flex items-center justify-between">
                     <span className="font-semibold text-ink">
                       v{v.number}
-                      {v.label ? ` · ${v.label}` : ""}
+                      {v.name ?? v.label ? ` · ${v.name ?? v.label}` : ""}
                     </span>
                     <span className="text-xs text-ink-muted">
                       {new Date(v.createdAt).toLocaleDateString("fr-FR")}
                     </span>
                   </div>
-                  <p className="text-xs text-ink-muted">
+                  {v.kind && (
+                    <span
+                      className={cn(
+                        "mt-0.5 inline-block rounded px-1 text-[9px] font-semibold uppercase",
+                        v.kind === "soumission"
+                          ? "bg-accent/15 text-ink"
+                          : "bg-panel-muted text-ink-muted",
+                      )}
+                    >
+                      {v.kind === "soumission" ? "soumission" : v.kind === "auto" ? "auto" : "snapshot"}
+                    </span>
+                  )}
+                  {v.description && (
+                    <p className="mt-1 text-xs italic text-ink-muted">{v.description}</p>
+                  )}
+                  <p className="mt-1 text-xs text-ink-muted">
                     {v.snapshot.clauses.length} clause(s) · certitude{" "}
                     {v.snapshot.global_certainty} · {v.authorId}
                   </p>
@@ -116,6 +133,16 @@ export default function HistoryPage({ params }: { params: { id: string } }) {
             <p className="text-sm text-ink-muted">
               Sélectionnez une version de base et une cible dans la timeline.
             </p>
+          )}
+        </Panel>
+
+        {/* Évolution d'une phrase à travers annotateurs & versions (point 6). */}
+        <h2 className="mb-3 mt-6 text-lg font-semibold text-ink">Évolution d'une phrase</h2>
+        <Panel className="p-4">
+          {annotation?.documentId ? (
+            <SentenceTimeline documentId={annotation.documentId} />
+          ) : (
+            <p className="text-sm text-ink-muted">Chargement du document…</p>
           )}
         </Panel>
       </div>

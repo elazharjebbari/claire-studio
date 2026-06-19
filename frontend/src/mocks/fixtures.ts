@@ -348,6 +348,21 @@ export const FIXTURE_ATTRIBUTION = [
   { index: 22, actorId: "u-alice", actorName: "Alice", actorColor: "#06B6D4", verb: "clause.set_certainty", at: "2026-06-17T10:40:00Z" },
 ];
 
+/**
+ * Timelines d'annotation par phrase (point 6) — comment l'annotation d'UNE phrase a
+ * évolué à travers annotateurs et versions. Indexé par numéro de phrase.
+ */
+export const FIXTURE_SENTENCE_HISTORY: Record<number, import("@/types/contract").SentenceHistoryEntry[]> = {
+  16: [
+    { version: 1, actorId: "u-alice", actorName: "Alice", actorColor: "#06B6D4", verb: "clause.create", before: null, after: "TERMINATION", rationale: "Clause de résiliation", createdAt: "2026-06-15T09:35:00Z" },
+    { version: 2, actorId: "u-bruno", actorName: "Bruno", actorColor: "#F59E0B", verb: "clause.retheme", before: "TERMINATION", after: "TERMINATION", rationale: "Confirmé après relecture", createdAt: "2026-06-16T14:50:00Z" },
+    { version: 2, actorId: "u-alice", actorName: "Alice", actorColor: "#06B6D4", verb: "clause.set_certainty", before: "2", after: "3", rationale: null, createdAt: "2026-06-16T15:00:00Z" },
+  ],
+  0: [
+    { version: 1, actorId: "u-alice", actorName: "Alice", actorColor: "#06B6D4", verb: "clause.create", before: null, after: "META", rationale: "Titre", createdAt: "2026-06-15T09:30:00Z" },
+  ],
+};
+
 export const FIXTURE_REVIEWS: Review[] = [];
 
 export const FIXTURE_ACTIVITY: ActivityEvent[] = [
@@ -389,6 +404,10 @@ export const FIXTURE_VERSIONS: AnnotationVersion[] = [
     number: 1,
     authorId: "u-alice",
     label: "Premier jet",
+    name: "Premier jet",
+    description: "Première passe : en-tête, périmètre, éligibilité.",
+    kind: "snapshot_manuel",
+    stats: { clauses: 3, meanCertainty: 1.7 },
     createdAt: "2026-06-15T09:30:00Z",
     snapshot: {
       doc: "Fitbit",
@@ -410,6 +429,10 @@ export const FIXTURE_VERSIONS: AnnotationVersion[] = [
     number: 2,
     authorId: "u-alice",
     label: "Ajout données & résiliation",
+    name: "v2 — données & résiliation",
+    description: "Ajout des clauses de données et de résiliation après relecture de Bruno.",
+    kind: "soumission",
+    stats: { clauses: 6, meanCertainty: 2.1 },
     createdAt: "2026-06-16T15:00:00Z",
     snapshot: {
       doc: "Fitbit",

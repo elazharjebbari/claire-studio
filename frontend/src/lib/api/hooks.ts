@@ -331,6 +331,18 @@ export function useAttribution(
   });
 }
 
+/** Timeline d'annotation d'une phrase (tous annotateurs/versions) — point 6. */
+export function useSentenceHistory(
+  documentId: string | undefined,
+  index: number | null,
+) {
+  return useQuery({
+    queryKey: ["documents", documentId ?? "", "sentence-history", index ?? -1],
+    queryFn: () => api.getSentenceHistory(documentId!, index!),
+    enabled: Boolean(documentId) && index != null && index >= 0,
+  });
+}
+
 export function useResolveComment(annotationId: string) {
   const qc = useQueryClient();
   return useMutation({

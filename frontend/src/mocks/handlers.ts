@@ -27,6 +27,7 @@ import {
   FIXTURE_DOCUMENT,
   FIXTURE_PREANNOTATIONS,
   FIXTURE_PROGRESS,
+  FIXTURE_SENTENCE_HISTORY,
   FIXTURE_PROJECT,
   FIXTURE_REVIEWS,
   FIXTURE_SCHEME,
@@ -317,6 +318,13 @@ export const handlers = [
   http.post(`${BASE}/comments/:id/resolve`, ({ params }) => {
     comments = comments.map((c) => (c.id === params.id ? { ...c, resolved: true } : c));
     return HttpResponse.json(comments.find((c) => c.id === params.id));
+  }),
+
+  // Timeline d'annotation d'une phrase (point 6)
+  http.get(`${BASE}/documents/:id/sentence-history`, ({ request }) => {
+    const index = Number(new URL(request.url).searchParams.get("index") ?? "-1");
+    const results = FIXTURE_SENTENCE_HISTORY[index] ?? [];
+    return HttpResponse.json({ index, count: results.length, results });
   }),
 
   // Attribution & contributeurs (point 3)

@@ -191,6 +191,15 @@ export function WorkspaceToolbar({
         💬 Commentaires
       </button>
 
+      <a
+        href={`/history/${annotationId}`}
+        data-testid="versions-link"
+        title="Versions enregistrées (document & phrase)"
+        className="rounded-md border border-line px-2 py-1 text-xs text-ink-muted hover:bg-panel-muted"
+      >
+        📚 Versions
+      </a>
+
       <WorkspaceTourButton />
 
       <div className="ml-auto flex items-center gap-3">

@@ -242,8 +242,35 @@ export interface AnnotationVersion {
   number: number;
   authorId: string;
   label?: string;
+  /** Nom de la version (soumission) — point 2/6. */
+  name?: string;
+  /** Description libre de la version. */
+  description?: string | null;
+  /** Type de version. */
+  kind?: "snapshot_manuel" | "soumission" | "auto";
+  /** Stats figées (point 2). */
+  stats?: { clauses?: number; meanCertainty?: number | null } | null;
   createdAt: string;
   snapshot: PivotClauseDocument;
+}
+
+/** Entrée de timeline d'annotation d'une phrase (point 6). */
+export interface SentenceHistoryEntry {
+  version: number | null;
+  actorId: string;
+  actorName: string;
+  actorColor: string;
+  verb: string;
+  before?: string | null;
+  after?: string | null;
+  rationale?: string | null;
+  createdAt: string;
+}
+
+export interface SentenceHistoryResponse {
+  index: number;
+  count: number;
+  results: SentenceHistoryEntry[];
 }
 
 /** Statut d'une clause dans un diff de versions (F3). */
