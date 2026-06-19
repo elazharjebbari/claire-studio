@@ -90,6 +90,8 @@ export interface DocumentSummary {
   language?: string;
   nSentences: number;
   checksum?: string;
+  /** Voyant : une traduction (FR) est disponible pour ce document. */
+  hasTranslation?: boolean;
 }
 
 export interface DocumentDetail extends DocumentSummary {
@@ -336,6 +338,8 @@ export interface InsightsDocumentRow {
   annotationId?: string;
   /** Nombre de pages estimé (≈ 25 phrases / page) — point 5. */
   approxPages?: number;
+  /** Une traduction (FR) est disponible. */
+  hasTranslation?: boolean;
 }
 
 export interface CorpusInsightsResponse {

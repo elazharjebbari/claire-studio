@@ -17,14 +17,19 @@ import { CertaintyPicker } from "@/components/ui/CertaintyPicker";
 import { ClauseChip } from "@/components/ui/ClauseChip";
 import { Field } from "@/components/ui/primitives";
 import { CommentThread } from "./CommentThread";
+import { InspectorJudgeCompare } from "./InspectorJudgeCompare";
 
 export function InspectorPanel({
   annotationId,
+  documentId,
+  projectSlug,
   themeCodes,
   legalNatures,
   themeFocusRef,
 }: {
   annotationId: string;
+  documentId?: string;
+  projectSlug?: string;
   themeCodes: string[];
   legalNatures: LegalNature[];
   /** Permet au workspace de focaliser l'input de recherche de thème (touche B/T). */
@@ -141,6 +146,15 @@ export function InspectorPanel({
           className="rounded-md border border-line bg-panel-muted px-2 py-1.5 text-sm text-ink"
         />
       </Field>
+
+      <InspectorJudgeCompare
+        documentId={documentId}
+        projectSlug={projectSlug}
+        anchorIndex={draft.anchorIndex}
+        draftLocalId={draft.localId}
+        humanEvidence={draft.evidenceSpan}
+        humanRationale={draft.rationale}
+      />
 
       <div>
         <h3 className="mb-1 text-xs font-semibold uppercase tracking-wide text-ink-muted">

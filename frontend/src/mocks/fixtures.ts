@@ -207,10 +207,42 @@ export const FIXTURE_ASSIGNMENTS: Assignment[] = [
       title: "Fitbit",
       language: "en",
       nSentences: FITBIT_SENTENCES.length,
+      hasTranslation: true,
     },
     assigneeId: "u-alice",
     status: "draft",
     annotationId: "ann-1",
+  },
+  {
+    id: "as-2",
+    projectSlug: "claudette-gold-v1",
+    document: {
+      id: "doc-instagram",
+      corpusId: "c-claudette",
+      externalId: "instagram",
+      title: "Instagram Terms of Use",
+      language: "en",
+      nSentences: 40,
+      hasTranslation: true,
+    },
+    assigneeId: "u-alice",
+    status: "unstarted",
+    annotationId: "ann-2",
+  },
+  {
+    id: "as-3",
+    projectSlug: "claudette-gold-v1",
+    document: {
+      id: "doc-booking",
+      corpusId: "c-claudette",
+      externalId: "booking",
+      title: "Booking.com Terms",
+      language: "en",
+      nSentences: 52,
+      hasTranslation: false,
+    },
+    assigneeId: "u-alice",
+    status: "unstarted",
   },
 ];
 
@@ -388,9 +420,9 @@ export const FIXTURE_CORPUS_INSIGHTS = {
     { theme: "MISC_BOILERPLATE", count: 8 },
   ],
   documents: [
-    { documentId: "doc-fitbit", title: "Fitbit Terms of Service", status: "submitted", clauses: 17, comments: 4, annotationId: "ann-1", approxPages: 2 },
-    { documentId: "doc-instagram", title: "Instagram Terms of Use", status: "draft", clauses: 9, comments: 1, annotationId: "ann-2", approxPages: 4 },
-    { documentId: "doc-booking", title: "Booking.com Terms", status: "unstarted", clauses: 0, comments: 0, approxPages: 6 },
+    { documentId: "doc-fitbit", title: "Fitbit Terms of Service", status: "submitted", clauses: 17, comments: 4, annotationId: "ann-1", approxPages: 2, hasTranslation: true },
+    { documentId: "doc-instagram", title: "Instagram Terms of Use", status: "draft", clauses: 9, comments: 1, annotationId: "ann-2", approxPages: 4, hasTranslation: true },
+    { documentId: "doc-booking", title: "Booking.com Terms", status: "unstarted", clauses: 0, comments: 0, approxPages: 6, hasTranslation: false },
   ],
 };
 

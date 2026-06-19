@@ -15,6 +15,7 @@
 
 import { useEffect, useMemo, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
+import { Languages } from "lucide-react";
 import { useAssignments } from "@/lib/api/hooks";
 import { useWorkspaceStore } from "@/store/workspace";
 
@@ -81,8 +82,16 @@ export function DocumentSwitcher({
         onClick={() => setOpen((v) => !v)}
         className="flex max-w-[22rem] items-center gap-2 rounded-md border border-line bg-panel-muted/40 px-2 py-1 text-sm text-ink hover:bg-panel-muted"
       >
-        <span aria-hidden>📄</span>
         <span className="truncate">{currentTitle}</span>
+        {current?.document.hasTranslation && (
+          <span
+            data-testid="doc-translated-current"
+            title="Traduction FR disponible"
+            className="inline-flex shrink-0 items-center gap-0.5 rounded bg-sky-400/15 px-1 text-[9px] font-semibold text-sky-300"
+          >
+            <Languages size={10} aria-hidden /> FR
+          </span>
+        )}
         {dirty && (
           <span
             data-testid="draft-indicator"
@@ -150,6 +159,15 @@ export function DocumentSwitcher({
                     <span className="flex min-w-0 items-center gap-2">
                       {isCurrent && <span aria-hidden className="text-accent">›</span>}
                       <span className="truncate text-ink">{r.document.title}</span>
+                      {r.document.hasTranslation && (
+                        <span
+                          data-testid={`doc-translated-${r.document.id}`}
+                          title="Traduction FR disponible"
+                          className="inline-flex shrink-0 items-center gap-0.5 rounded bg-sky-400/15 px-1 text-[9px] font-semibold text-sky-300"
+                        >
+                          <Languages size={10} aria-hidden /> FR
+                        </span>
+                      )}
                       {isCurrent && dirty && (
                         <span className="shrink-0 rounded bg-amber-400/15 px-1 text-[9px] font-semibold text-amber-300">
                           ● brouillon

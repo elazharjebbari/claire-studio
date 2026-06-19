@@ -5,6 +5,8 @@ import { test, expect, type Page } from "@playwright/test";
  * recherche), en-tête sticky, soumission versionnée, historique d'actions.
  */
 
+test.use({ viewport: { width: 1440, height: 900 } });
+
 async function open(page: Page) {
   await page.goto("/annotate/ann-1");
   await expect(page.getByTestId("annotation-workspace")).toBeVisible();
@@ -116,6 +118,42 @@ test.describe("Collaboration & versioning — socle (points 0,1,2)", () => {
     await page.getByTestId("toggle-attribution").click();
     // La clause à l'ancre 0 (META, fixtures) porte une pastille d'auteur.
     await expect(page.getByTestId("attribution-0")).toBeVisible();
+  });
+
+  test("le fantôme LLM reste visible même sur une phrase ancrée (fix overlay)", async ({ page }) => {
+    await open(page);
+    await page.getByTestId("toggle-ghost-claude").click();
+    // L'ancre 0 porte une clause humaine ET une proposition Claude → le fantôme
+    // doit s'afficher (correctif : plus masqué par la présence d'une ancre humaine).
+    await expect(page.getByTestId("ghost-claude-0")).toBeVisible();
+  });
+
+  test("l'inspecteur compare la source evidence/rationale (Vous/Claude/Codex)", async ({ page }) => {
+    await open(page);
+    await page.getByTestId("sentence-0").click();
+    const cmp = page.getByTestId("inspector-source-compare");
+    await expect(cmp).toBeVisible();
+    await page.getByTestId("inspector-source-claude").click();
+    await expect(page.getByTestId("inspector-source-content")).toBeVisible();
+    await expect(page.getByTestId("inspector-source-adopt")).toBeVisible();
+  });
+
+  test("le sélecteur de document signale les traductions disponibles", async ({ page }) => {
+    await open(page);
+    await page.getByTestId("document-switcher-button").click();
+    await expect(page.getByTestId("doc-translated-doc-fitbit")).toBeVisible();
+  });
+
+  test("la barre de divergences reste sticky + nav dans le panneau comparatif", async ({ page }) => {
+    await open(page);
+    await page.getByTestId("llm-compare").click();
+    await expect(page.getByTestId("divergence-nav")).toBeVisible();
+    await page.getByTestId("sentence-25").scrollIntoViewIfNeeded();
+    await expect(page.getByTestId("divergence-nav")).toBeInViewport();
+    // Panneau comparatif : navigation des désaccords.
+    await page.keyboard.press("g");
+    await expect(page.getByTestId("compare-divergence-nav")).toBeVisible();
+    await page.getByTestId("compare-divergence-next").click();
   });
 
   test("présence collaborative + génération d'un lien de partage (points 4b/7)", async ({ page }) => {

@@ -6,7 +6,7 @@
  */
 
 import Link from "next/link";
-import { FileText, MessageSquare } from "lucide-react";
+import { FileText, MessageSquare, Languages } from "lucide-react";
 import { useProjectInsights } from "@/lib/api/hooks";
 import { Panel } from "@/components/ui/primitives";
 import { ThemeBars } from "@/components/insights/ThemeBars";
@@ -69,7 +69,18 @@ export default function CorpusInsightsPage({ params }: { params: { slug: string 
                     data-testid={`insights-doc-${d.documentId}`}
                     className="flex items-center justify-between gap-2 rounded-md px-2 py-1.5 text-sm hover:bg-panel-muted"
                   >
-                    <span className="min-w-0 truncate text-ink">{d.title}</span>
+                    <span className="flex min-w-0 items-center gap-1.5">
+                      <span className="truncate text-ink">{d.title}</span>
+                      {d.hasTranslation && (
+                        <span
+                          data-testid={`insights-translated-${d.documentId}`}
+                          title="Traduction FR disponible"
+                          className="inline-flex shrink-0 items-center gap-0.5 rounded bg-sky-400/15 px-1 text-[9px] font-semibold text-sky-300"
+                        >
+                          <Languages size={10} aria-hidden /> FR
+                        </span>
+                      )}
+                    </span>
                     <span className="flex shrink-0 items-center gap-2 text-[11px] text-ink-muted">
                       <span className="rounded bg-panel-muted px-1 uppercase">{d.status}</span>
                       {d.approxPages != null && (

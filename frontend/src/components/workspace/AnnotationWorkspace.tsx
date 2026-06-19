@@ -88,6 +88,8 @@ export function AnnotationWorkspace({ annotationId }: { annotationId: string }) 
           right={
             <InspectorPanel
               annotationId={annotation.id}
+              documentId={annotation.documentId}
+              projectSlug={annotation.projectSlug}
               themeCodes={themeCodes}
               legalNatures={legalNatures}
               themeFocusRef={themeFocusRef}

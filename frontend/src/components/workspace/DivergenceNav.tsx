@@ -27,7 +27,7 @@ export function DivergenceNav({ count, ordinal, onPrev, onNext }: DivergenceNavP
       data-testid="divergence-nav"
       role="navigation"
       aria-label="Navigation des divergences"
-      className="mb-4 flex items-center gap-2 rounded-md border border-amber-400/40 bg-amber-400/5 px-3 py-1.5 text-sm"
+      className="sticky top-[3.25rem] z-10 mb-4 flex items-center gap-2 rounded-md border border-amber-400/40 bg-amber-400/10 px-3 py-1.5 text-sm backdrop-blur supports-[backdrop-filter]:bg-amber-400/10"
     >
       <AlertTriangle size={14} className="text-amber-400" aria-hidden />
       <span className="font-medium text-ink">Divergences</span>

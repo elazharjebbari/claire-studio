@@ -128,6 +128,12 @@ export const WORKSPACE_TOUR_STEPS: TourStep[] = [
       "Ouvrez le journal de vos actions (création, thème, certitude, arbitrage…). Cliquez une entrée pour revenir sur la phrase concernée. Socle de l'annulation/rétablissement à venir.",
   },
   {
+    element: '[data-testid="inspector-source-compare"]',
+    title: "Comparer la source (Vous / Claude / Codex)",
+    description:
+      "Sous l'evidence span et le rationale, comparez votre annotation à celle de Claude ou Codex pour la clause sélectionnée, et reprenez leur proposition en un clic.",
+  },
+  {
     element: '[data-testid="toggle-unfairness"]',
     title: "Overlay d'injustice CLAUDETTE",
     description:

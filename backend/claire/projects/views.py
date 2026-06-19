@@ -127,6 +127,7 @@ class ProjectViewSet(viewsets.ModelViewSet):
         from claire.annotations.models import Annotation, AnnotationVersion, Clause
         from claire.collaboration.models import Comment
         from claire.common.identity import approx_pages
+        from claire.translations.models import Translation
 
         project = self.get_object()
         docs = list(project.corpus.documents.all())
@@ -162,6 +163,7 @@ class ProjectViewSet(viewsets.ModelViewSet):
                     ).count(),
                     "annotation_id": rep.pk if rep else None,
                     "approx_pages": approx_pages(d.n_sentences),
+                    "has_translation": Translation.objects.filter(document=d).exists(),
                 }
             )
 

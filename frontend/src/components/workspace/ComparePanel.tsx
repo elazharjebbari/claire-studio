@@ -15,8 +15,15 @@
  * Toute la logique (runs, accord) est dérivée de fonctions pures déjà testées.
  */
 
+import { ChevronLeft, ChevronRight, X } from "lucide-react";
 import { getThemeToken } from "@/lib/tokens";
 import type { Run } from "@/lib/runs";
+import {
+  divergenceAnchors,
+  divergenceOrdinal,
+  nextDivergence,
+  prevDivergence,
+} from "@/lib/divergence";
 
 interface AgreeSegment {
   start: number;
@@ -128,6 +135,8 @@ export function ComparePanel({
   onClose: () => void;
 }) {
   const segs = agreementSegments(claudeByIndex, codexByIndex, n);
+  const divAnchors = divergenceAnchors(claudeByIndex, codexByIndex);
+  const divOrdinal = divergenceOrdinal(divAnchors, focused);
 
   return (
     <aside
@@ -144,11 +153,50 @@ export function ComparePanel({
           data-testid="compare-panel-close"
           aria-label="Fermer le panneau comparatif"
           onClick={onClose}
-          className="rounded px-1 text-ink-muted hover:bg-panel-muted"
+          className="inline-flex items-center rounded px-1 text-ink-muted hover:bg-panel-muted"
         >
-          ✕
+          <X size={14} aria-hidden />
         </button>
       </div>
+
+      {/* Navigation des divergences depuis le panneau (saute + recentre). */}
+      {divAnchors.length > 0 && (
+        <div
+          data-testid="compare-divergence-nav"
+          className="mb-2 flex items-center gap-2 rounded-md border border-amber-400/40 bg-amber-400/10 px-2 py-1 text-[11px]"
+        >
+          <span className="font-medium text-ink">Désaccords</span>
+          <span data-testid="compare-divergence-counter" className="font-mono text-ink-muted">
+            {divOrdinal > 0 ? `${divOrdinal} / ${divAnchors.length}` : `– / ${divAnchors.length}`}
+          </span>
+          <div className="ml-auto flex items-center gap-1">
+            <button
+              type="button"
+              data-testid="compare-divergence-prev"
+              aria-label="Désaccord précédent"
+              onClick={() => {
+                const t = prevDivergence(divAnchors, focused);
+                if (t != null) onJump(t);
+              }}
+              className="inline-flex items-center rounded border border-line px-1 py-0.5 text-ink hover:bg-panel-muted"
+            >
+              <ChevronLeft size={13} aria-hidden />
+            </button>
+            <button
+              type="button"
+              data-testid="compare-divergence-next"
+              aria-label="Désaccord suivant"
+              onClick={() => {
+                const t = nextDivergence(divAnchors, focused);
+                if (t != null) onJump(t);
+              }}
+              className="inline-flex items-center rounded border border-line px-1 py-0.5 text-ink hover:bg-panel-muted"
+            >
+              <ChevronRight size={13} aria-hidden />
+            </button>
+          </div>
+        </div>
+      )}
 
       <div className="flex min-h-0 flex-1 gap-1.5">
         <JudgeRail
@@ -163,23 +211,35 @@ export function ComparePanel({
         {/* Bande d'accord centrale. */}
         <div className="flex w-3 flex-col pt-4" data-testid="compare-agreement-strip">
           <div className="flex min-h-0 flex-1 flex-col overflow-hidden rounded">
-            {segs.map((sgmt) => (
-              <div
-                key={`${sgmt.start}-${sgmt.status}`}
-                data-status={sgmt.status}
-                title={
-                  (sgmt.status === "agree"
-                    ? "Accord"
-                    : sgmt.status === "diverge"
-                      ? "Divergence"
-                      : "Couverture partielle") + ` — phrases ${sgmt.start}–${sgmt.end}`
-                }
-                style={{
-                  flexGrow: Math.max(1, sgmt.end - sgmt.start + 1),
-                  backgroundColor: STATUS_COLOR[sgmt.status],
-                }}
-              />
-            ))}
+            {segs.map((sgmt) => {
+              const title =
+                (sgmt.status === "agree"
+                  ? "Accord"
+                  : sgmt.status === "diverge"
+                    ? "Divergence — cliquer pour arbitrer"
+                    : "Couverture partielle") + ` — phrases ${sgmt.start}–${sgmt.end}`;
+              const style = {
+                flexGrow: Math.max(1, sgmt.end - sgmt.start + 1),
+                backgroundColor: STATUS_COLOR[sgmt.status],
+              } as const;
+              if (sgmt.status === "diverge") {
+                return (
+                  <button
+                    key={`${sgmt.start}-${sgmt.status}`}
+                    type="button"
+                    data-status={sgmt.status}
+                    data-testid={`compare-diverge-${sgmt.start}`}
+                    title={title}
+                    style={style}
+                    onClick={() => onJump(sgmt.start)}
+                    className="w-full cursor-pointer hover:brightness-110"
+                  />
+                );
+              }
+              return (
+                <div key={`${sgmt.start}-${sgmt.status}`} data-status={sgmt.status} title={title} style={style} />
+              );
+            })}
           </div>
         </div>
 

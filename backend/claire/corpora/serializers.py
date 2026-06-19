@@ -59,13 +59,20 @@ class DocumentListSerializer(serializers.ModelSerializer):
     corpus_id = serializers.PrimaryKeyRelatedField(
         source="corpus", read_only=True
     )
+    # Voyant « traduction disponible » (UI) — vrai si ≥ 1 traduction stockée.
+    has_translation = serializers.SerializerMethodField()
 
     class Meta:
         model = Document
         fields = [
             "id", "corpus_id", "external_id", "title", "language",
-            "n_sentences", "checksum",
+            "n_sentences", "checksum", "has_translation",
         ]
+
+    def get_has_translation(self, obj) -> bool:
+        from claire.translations.models import Translation
+
+        return Translation.objects.filter(document=obj).exists()
 
 
 class DocumentDetailSerializer(serializers.ModelSerializer):

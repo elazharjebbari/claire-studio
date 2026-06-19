@@ -42,7 +42,7 @@ import { SentenceMenu, type JudgeDetail } from "./SentenceMenu";
 import { SelectionToolbar } from "./SelectionToolbar";
 import { LangSwitch } from "./LangSwitch";
 import { LlmSourceSwitch } from "./LlmSourceSwitch";
-import { Eye, Users, Columns2 } from "lucide-react";
+import { Eye, Users, Columns2, Ghost } from "lucide-react";
 import { CollabBar } from "./CollabBar";
 import { DivergenceNav } from "./DivergenceNav";
 import { ComparePanel } from "./ComparePanel";
@@ -846,9 +846,13 @@ function SentenceRow({
           VO
         </span>
       )}
-      {ghost && !hasAnchor && (
-        <span className="ml-2 rounded bg-panel-muted px-1 font-mono text-[9px] text-ink-muted">
-          fantôme {ghost.judge}:{ghost.theme}
+      {ghost && (
+        <span
+          data-testid={`ghost-${ghost.judge}-${s.index}`}
+          title={`Frontière proposée par ${ghost.judge} (non retenue) : ${ghost.theme}`}
+          className="ml-2 inline-flex items-center gap-1 rounded border border-dashed border-ink-muted/50 bg-panel-muted/60 px-1 font-mono text-[9px] text-ink-muted"
+        >
+          <Ghost size={10} aria-hidden /> {ghost.judge}:{ghost.theme}
         </span>
       )}
     </div>
