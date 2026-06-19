@@ -9,6 +9,8 @@
  * Raccourcis miroir : n (suivant) / p (précédent), gérés par useDivergenceShortcuts.
  */
 
+import { ChevronLeft, ChevronRight, AlertTriangle } from "lucide-react";
+
 interface DivergenceNavProps {
   /** Nombre total de segments de divergence. */
   count: number;
@@ -27,7 +29,7 @@ export function DivergenceNav({ count, ordinal, onPrev, onNext }: DivergenceNavP
       aria-label="Navigation des divergences"
       className="mb-4 flex items-center gap-2 rounded-md border border-amber-400/40 bg-amber-400/5 px-3 py-1.5 text-sm"
     >
-      <span aria-hidden className="h-2 w-2 rounded-full bg-amber-400" />
+      <AlertTriangle size={14} className="text-amber-400" aria-hidden />
       <span className="font-medium text-ink">Divergences</span>
       <span data-testid="divergence-counter" className="font-mono text-ink-muted">
         {ordinal > 0 ? `${ordinal} / ${count}` : `– / ${count}`}
@@ -39,9 +41,9 @@ export function DivergenceNav({ count, ordinal, onPrev, onNext }: DivergenceNavP
           aria-label="Divergence précédente (p)"
           title="Divergence précédente — p"
           onClick={onPrev}
-          className="rounded-md border border-line px-2 py-0.5 text-ink hover:bg-panel-muted"
+          className="inline-flex items-center rounded-md border border-line px-2 py-0.5 text-ink hover:bg-panel-muted"
         >
-          ◂
+          <ChevronLeft size={14} aria-hidden />
         </button>
         <button
           type="button"
@@ -49,9 +51,9 @@ export function DivergenceNav({ count, ordinal, onPrev, onNext }: DivergenceNavP
           aria-label="Divergence suivante (n)"
           title="Divergence suivante — n"
           onClick={onNext}
-          className="rounded-md border border-line px-2 py-0.5 text-ink hover:bg-panel-muted"
+          className="inline-flex items-center rounded-md border border-line px-2 py-0.5 text-ink hover:bg-panel-muted"
         >
-          ▸
+          <ChevronRight size={14} aria-hidden />
         </button>
       </div>
     </div>

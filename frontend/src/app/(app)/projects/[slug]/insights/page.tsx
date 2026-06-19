@@ -6,6 +6,7 @@
  */
 
 import Link from "next/link";
+import { FileText, MessageSquare } from "lucide-react";
 import { useProjectInsights } from "@/lib/api/hooks";
 import { Panel } from "@/components/ui/primitives";
 import { ThemeBars } from "@/components/insights/ThemeBars";
@@ -71,8 +72,18 @@ export default function CorpusInsightsPage({ params }: { params: { slug: string 
                     <span className="min-w-0 truncate text-ink">{d.title}</span>
                     <span className="flex shrink-0 items-center gap-2 text-[11px] text-ink-muted">
                       <span className="rounded bg-panel-muted px-1 uppercase">{d.status}</span>
+                      {d.approxPages != null && (
+                        <span
+                          className="inline-flex items-center gap-1"
+                          title={`≈ ${d.approxPages} page${d.approxPages > 1 ? "s" : ""}`}
+                        >
+                          <FileText size={12} aria-hidden /> ≈ {d.approxPages} p.
+                        </span>
+                      )}
                       <span>{d.clauses} cl.</span>
-                      <span>💬 {d.comments}</span>
+                      <span className="inline-flex items-center gap-1">
+                        <MessageSquare size={12} aria-hidden /> {d.comments}
+                      </span>
                     </span>
                   </Link>
                 </li>

@@ -388,9 +388,9 @@ export const FIXTURE_CORPUS_INSIGHTS = {
     { theme: "MISC_BOILERPLATE", count: 8 },
   ],
   documents: [
-    { documentId: "doc-fitbit", title: "Fitbit Terms of Service", status: "submitted", clauses: 17, comments: 4, annotationId: "ann-1" },
-    { documentId: "doc-instagram", title: "Instagram Terms of Use", status: "draft", clauses: 9, comments: 1, annotationId: "ann-2" },
-    { documentId: "doc-booking", title: "Booking.com Terms", status: "unstarted", clauses: 0, comments: 0 },
+    { documentId: "doc-fitbit", title: "Fitbit Terms of Service", status: "submitted", clauses: 17, comments: 4, annotationId: "ann-1", approxPages: 2 },
+    { documentId: "doc-instagram", title: "Instagram Terms of Use", status: "draft", clauses: 9, comments: 1, annotationId: "ann-2", approxPages: 4 },
+    { documentId: "doc-booking", title: "Booking.com Terms", status: "unstarted", clauses: 0, comments: 0, approxPages: 6 },
   ],
 };
 
@@ -399,7 +399,9 @@ export const FIXTURE_DOCUMENT_INSIGHTS = {
   documentId: "doc-fitbit",
   title: "Fitbit Terms of Service",
   annotationId: "ann-1",
-  kpi: { clauses: 17, meanCertainty: 2.1, comments: 4, contributors: 3, agreementWithLlm: 0.68 },
+  approxPages: 2,
+  nSentences: 33,
+  kpi: { clauses: 17, meanCertainty: 2.1, comments: 4, contributors: 3, agreementWithLlm: 0.68, approxPages: 2 },
   themeDistribution: [
     { theme: "META", count: 2 },
     { theme: "TERMINATION", count: 2 },

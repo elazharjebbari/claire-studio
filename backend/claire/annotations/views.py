@@ -221,6 +221,50 @@ class AnnotationViewSet(viewsets.ModelViewSet):
         qs = annotation.comments.select_related("author")
         return Response(results_envelope(CommentSerializer(qs, many=True).data))
 
+    # --- attribution (point 3) -------------------------------------------
+    @action(detail=True, methods=["get"])
+    def attribution(self, request, pk=None):
+        """GET /annotations/{id}/attribution?by=clause|sentence — dernier auteur par
+        cible. Dérivé des clauses (auteur = annotateur de l'annotation), couleur
+        d'identité déterministe. Renvoie {by, results:[{index,actorId,...}]}."""
+        from claire.common.identity import display_name, user_color
+
+        annotation = self.get_object()
+        by = "sentence" if request.query_params.get("by") == "sentence" else "clause"
+        actor = annotation.annotator
+        results = [
+            {
+                "index": c.anchor_sentence.index,
+                "actor_id": actor.pk if actor else None,
+                "actor_name": display_name(actor),
+                "actor_color": user_color(actor.pk if actor else 0),
+                "verb": "clause.create",
+                "at": annotation.updated_at.isoformat(),
+            }
+            for c in annotation.clauses.select_related("anchor_sentence").all()
+        ]
+        return Response({"by": by, "results": results})
+
+    # --- présence (points 4b/7) ------------------------------------------
+    @action(detail=True, methods=["get"])
+    def presence(self, request, pk=None):
+        """GET /annotations/{id}/presence — participants actifs. Sans backend WS, on
+        renvoie l'utilisateur courant (présence minimale, non temps réel)."""
+        from claire.common.identity import display_name, user_color
+
+        self.get_object()
+        u = request.user
+        results = [
+            {
+                "user_id": u.pk,
+                "name": display_name(u),
+                "color": user_color(u.pk),
+                "focus_sentence": None,
+                "active": True,
+            }
+        ]
+        return Response({"count": len(results), "results": results})
+
     # --- reviews ----------------------------------------------------------
     @action(
         detail=True, methods=["get", "post"],

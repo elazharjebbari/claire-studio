@@ -225,6 +225,19 @@ X_FRAME_OPTIONS = "DENY"
 CORS_ALLOWED_ORIGINS = env("CORS_ALLOWED_ORIGINS")
 CORS_ALLOW_CREDENTIALS = True
 
+# --- Feature flags (points 4b/7 + admin) -------------------------------------
+# Exposés par GET /config/flags ; l'UI s'y conforme. Le temps réel reste OFF par
+# défaut tant que l'infra ASGI/Channels n'est pas active (cf. dossier 06).
+FEATURE_FLAGS = {
+    "realtime_collaboration": env.bool("FEATURE_REALTIME", default=False),
+    "presence": env.bool("FEATURE_PRESENCE", default=True),
+    "attribution_overlay": env.bool("FEATURE_ATTRIBUTION", default=True),
+    "comments_multilevel": env.bool("FEATURE_COMMENTS_MULTILEVEL", default=True),
+    "undo_redo": env.bool("FEATURE_UNDO_REDO", default=True),
+    "analytics_screen": env.bool("FEATURE_ANALYTICS", default=True),
+    "version_explorer": env.bool("FEATURE_VERSION_EXPLORER", default=True),
+}
+
 # --- Logging (structured, debuggable) ----------------------------------------
 LOGGING = {
     "version": 1,

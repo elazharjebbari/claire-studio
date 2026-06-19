@@ -101,3 +101,75 @@ class DocumentViewSet(viewsets.ReadOnlyModelViewSet):
             {"sentenceIndex": t.sentence.index, "text": t.text} for t in rows
         ]
         return Response({"language": lang, "count": len(results), "results": results})
+
+    @action(detail=True, methods=["get"])
+    def contributors(self, request, pk=None):
+        """GET /documents/{id}/contributors — annotateurs ayant contribué (+ couleurs).
+        Point 3 (attribution multi-annotateurs)."""
+        from claire.annotations.models import Annotation
+        from claire.common.identity import display_name, user_color
+
+        document = self.get_object()
+        seen, results = set(), []
+        for ann in (
+            Annotation.objects.filter(document=document).select_related("annotator")
+        ):
+            u = ann.annotator
+            if u is None or u.pk in seen:
+                continue
+            seen.add(u.pk)
+            results.append(
+                {
+                    "user_id": u.pk,
+                    "name": display_name(u),
+                    "color": user_color(u.pk),
+                    "role": getattr(u, "role", "annotator") or "annotator",
+                }
+            )
+        return Response({"count": len(results), "results": results})
+
+    @action(detail=True, methods=["get"], url_path="sentence-history")
+    def sentence_history(self, request, pk=None):
+        """GET /documents/{id}/sentence-history?index=N — évolution de l'annotation
+        d'une phrase à travers annotateurs & versions (point 6). Projection des
+        snapshots de versions (immuables) à l'ancre demandée."""
+        from claire.annotations.models import Annotation
+        from claire.common.identity import display_name, user_color
+
+        document = self.get_object()
+        try:
+            index = int(request.query_params.get("index", "-1"))
+        except (TypeError, ValueError):
+            index = -1
+
+        results = []
+        if index >= 0:
+            pairs = []
+            for ann in Annotation.objects.filter(document=document).select_related(
+                "annotator"
+            ):
+                for v in ann.versions.select_related("author").all():
+                    pairs.append((ann, v))
+            pairs.sort(key=lambda av: av[1].created_at)
+            for ann, v in pairs:
+                clauses = (v.snapshot or {}).get("clauses", [])
+                match = next(
+                    (c for c in clauses if c.get("anchor_index") == index), None
+                )
+                if not match:
+                    continue
+                actor = v.author or ann.annotator
+                results.append(
+                    {
+                        "version": v.number,
+                        "actor_id": actor.pk if actor else None,
+                        "actor_name": display_name(actor),
+                        "actor_color": user_color(actor.pk if actor else 0),
+                        "verb": "clause.snapshot",
+                        "before": None,
+                        "after": match.get("theme"),
+                        "rationale": match.get("rationale"),
+                        "created_at": v.created_at.isoformat(),
+                    }
+                )
+        return Response({"index": index, "count": len(results), "results": results})

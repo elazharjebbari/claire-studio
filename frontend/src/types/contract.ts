@@ -334,6 +334,8 @@ export interface InsightsDocumentRow {
   clauses: number;
   comments: number;
   annotationId?: string;
+  /** Nombre de pages estimé (≈ 25 phrases / page) — point 5. */
+  approxPages?: number;
 }
 
 export interface CorpusInsightsResponse {
@@ -347,6 +349,8 @@ export interface DocumentInsightsResponse {
   documentId: string;
   title: string;
   annotationId?: string;
+  approxPages?: number;
+  nSentences?: number;
   kpi: {
     clauses: number;
     meanCertainty: number | null;

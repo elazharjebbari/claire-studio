@@ -9,19 +9,34 @@
  * Panneau repliable, ouvert via un bouton de la barre d'outils.
  */
 
+import {
+  Undo2,
+  Redo2,
+  X,
+  Plus,
+  Trash2,
+  Tag,
+  Gauge,
+  Check,
+  Download,
+  Eraser,
+  Pencil,
+  Dot,
+  type LucideIcon,
+} from "lucide-react";
 import { useWorkspaceStore } from "@/store/workspace";
 
-const KIND_ICON: Record<string, string> = {
-  "clause.create": "➕",
-  "clause.delete": "🗑",
-  "clause.retheme": "🏷",
-  "clause.set_certainty": "🎚",
-  "clause.set_evidenceSpan": "✎",
-  "clause.set_rationale": "✎",
-  "clause.set_legalNature": "✎",
-  "divergence.adopt": "✓",
-  "prefill.switch": "📥",
-  "prefill.clear": "🧹",
+const KIND_ICON: Record<string, LucideIcon> = {
+  "clause.create": Plus,
+  "clause.delete": Trash2,
+  "clause.retheme": Tag,
+  "clause.set_certainty": Gauge,
+  "clause.set_evidenceSpan": Pencil,
+  "clause.set_rationale": Pencil,
+  "clause.set_legalNature": Pencil,
+  "divergence.adopt": Check,
+  "prefill.switch": Download,
+  "prefill.clear": Eraser,
 };
 
 function timeAgo(ts: number): string {
@@ -62,9 +77,9 @@ export function HistoryPanel({ onClose }: { onClose: () => void }) {
             title="Annuler — ⌘Z / Ctrl+Z"
             disabled={!canUndo}
             onClick={() => undo()}
-            className="rounded px-1.5 py-0.5 text-ink-muted hover:bg-panel-muted disabled:opacity-40"
+            className="inline-flex items-center rounded px-1.5 py-0.5 text-ink-muted hover:bg-panel-muted disabled:opacity-40"
           >
-            ↶
+            <Undo2 size={15} aria-hidden />
           </button>
           <button
             type="button"
@@ -73,18 +88,18 @@ export function HistoryPanel({ onClose }: { onClose: () => void }) {
             title="Rétablir — ⌘⇧Z / ⌘Y"
             disabled={!canRedo}
             onClick={() => redo()}
-            className="rounded px-1.5 py-0.5 text-ink-muted hover:bg-panel-muted disabled:opacity-40"
+            className="inline-flex items-center rounded px-1.5 py-0.5 text-ink-muted hover:bg-panel-muted disabled:opacity-40"
           >
-            ↷
+            <Redo2 size={15} aria-hidden />
           </button>
           <button
             type="button"
             data-testid="history-close"
             aria-label="Fermer l'historique"
             onClick={onClose}
-            className="rounded px-1 text-ink-muted hover:bg-panel-muted"
+            className="inline-flex items-center rounded px-1 text-ink-muted hover:bg-panel-muted"
           >
-            ✕
+            <X size={15} aria-hidden />
           </button>
         </div>
       </div>
@@ -106,9 +121,10 @@ export function HistoryPanel({ onClose }: { onClose: () => void }) {
               }}
               className="flex w-full items-start gap-2 rounded-md px-2 py-1.5 text-left text-xs hover:bg-panel-muted disabled:cursor-default disabled:hover:bg-transparent"
             >
-              <span aria-hidden className="mt-0.5 shrink-0">
-                {KIND_ICON[e.kind] ?? "•"}
-              </span>
+              {(() => {
+                const Ico = KIND_ICON[e.kind] ?? Dot;
+                return <Ico size={13} aria-hidden className="mt-0.5 shrink-0 text-ink-muted" />;
+              })()}
               <span className="min-w-0 flex-1">
                 <span className="block truncate text-ink">{e.label}</span>
                 <span className="text-[10px] text-ink-muted">{timeAgo(e.ts)}</span>

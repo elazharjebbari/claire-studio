@@ -41,6 +41,33 @@ router.register("translations/sets", TranslationSetViewSet, basename="translatio
 router.register("exports", ExportJobViewSet, basename="export")
 router.register("activity", ActivityEventViewSet, basename="activity")
 
+class ConfigFlagsView(APIView):
+    """GET /api/v1/config/flags — feature flags effectifs (l'UI s'y conforme).
+
+    Lus depuis settings.FEATURE_FLAGS (surchargeables par l'admin) avec défauts sûrs.
+    Le rendu camelCase convertit les clés (realtime_collaboration → realtimeCollaboration).
+    """
+
+    permission_classes = [AllowAny]
+    authentication_classes: list = []
+
+    def get(self, request):
+        from django.conf import settings
+
+        flags = getattr(settings, "FEATURE_FLAGS", {})
+        return Response(
+            {
+                "realtime_collaboration": flags.get("realtime_collaboration", False),
+                "presence": flags.get("presence", True),
+                "attribution_overlay": flags.get("attribution_overlay", True),
+                "comments_multilevel": flags.get("comments_multilevel", True),
+                "undo_redo": flags.get("undo_redo", True),
+                "analytics_screen": flags.get("analytics_screen", True),
+                "version_explorer": flags.get("version_explorer", True),
+            }
+        )
+
+
 class HealthView(APIView):
     """GET /api/v1/health — liveness + état des données (sans auth, pour le debug front)."""
 
@@ -63,6 +90,8 @@ class HealthView(APIView):
 urlpatterns = [
     # Liveness / debug (no auth)
     path("health", HealthView.as_view(), name="health"),
+    # Feature flags (no auth) — points 4b/7 + admin
+    path("config/flags", ConfigFlagsView.as_view(), name="config-flags"),
     # Auth (JWT) — CONTRACT §3
     path("auth/login", LoginView.as_view(), name="auth-login"),
     path("auth/refresh", TokenRefreshView.as_view(), name="auth-refresh"),

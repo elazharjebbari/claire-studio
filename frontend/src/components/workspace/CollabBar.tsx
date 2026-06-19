@@ -9,6 +9,7 @@
  */
 
 import { useState } from "react";
+import { UserPlus } from "lucide-react";
 import { useWorkspaceStore } from "@/store/workspace";
 import { useFeatureFlags, usePresence } from "@/lib/api/hooks";
 import { ShareLinkDialog } from "./ShareLinkDialog";
@@ -68,9 +69,9 @@ export function CollabBar({ projectSlug }: { projectSlug?: string }) {
           data-testid="collab-invite"
           onClick={() => setShareOpen(true)}
           title="Inviter un collaborateur (lien de partage)"
-          className="rounded-md border border-line px-2 py-1 text-[11px] text-ink-muted hover:bg-panel-muted"
+          className="inline-flex items-center gap-1 rounded-md border border-line px-2 py-1 text-[11px] text-ink-muted hover:bg-panel-muted"
         >
-          ＋ Inviter
+          <UserPlus size={13} aria-hidden /> Inviter
         </button>
       )}
 

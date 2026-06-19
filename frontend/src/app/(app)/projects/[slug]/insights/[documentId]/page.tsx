@@ -40,7 +40,15 @@ export default function DocumentInsightsPage({
       </Link>
       <h1 className="mb-4 mt-1 text-xl font-semibold text-ink">{data.title}</h1>
 
-      <div className="mb-6 grid grid-cols-2 gap-3 sm:grid-cols-5">
+      <div className="mb-6 grid grid-cols-2 gap-3 sm:grid-cols-6">
+        <Kpi
+          label="Pages (≈)"
+          value={
+            data.approxPages != null
+              ? `${data.approxPages}${data.nSentences ? ` · ${data.nSentences} ph.` : ""}`
+              : "—"
+          }
+        />
         <Kpi label="Clauses" value={String(k.clauses)} />
         <Kpi label="Certitude moy." value={k.meanCertainty == null ? "—" : k.meanCertainty.toFixed(2)} />
         <Kpi label="Commentaires" value={String(k.comments)} />

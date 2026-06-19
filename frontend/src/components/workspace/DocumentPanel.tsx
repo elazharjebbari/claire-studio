@@ -42,6 +42,7 @@ import { SentenceMenu, type JudgeDetail } from "./SentenceMenu";
 import { SelectionToolbar } from "./SelectionToolbar";
 import { LangSwitch } from "./LangSwitch";
 import { LlmSourceSwitch } from "./LlmSourceSwitch";
+import { Eye, Users, Columns2 } from "lucide-react";
 import { CollabBar } from "./CollabBar";
 import { DivergenceNav } from "./DivergenceNav";
 import { ComparePanel } from "./ComparePanel";
@@ -302,7 +303,7 @@ export function DocumentPanel({
                 : "border-line text-ink-muted hover:bg-panel-muted")
             }
           >
-            👤 Attribution
+            <span className="inline-flex items-center gap-1.5"><Users size={14} aria-hidden /> Attribution</span>
           </button>
           {compareDataReady && (
             <button
@@ -318,7 +319,7 @@ export function DocumentPanel({
                   : "border-line text-ink-muted hover:bg-panel-muted")
               }
             >
-              ⇄ Comparer
+              <span className="inline-flex items-center gap-1.5"><Columns2 size={14} aria-hidden /> Comparer</span>
             </button>
           )}
           <LangSwitch />
@@ -477,16 +478,16 @@ export function DocumentPanel({
                   data-testid={`llm-frontier-${s.index}`}
                   className="-mb-0.5 mt-2 flex items-center gap-1 pl-2 text-[10px] text-ink-muted"
                 >
-                  <span aria-hidden className="text-ink-muted/70">⊢ frontière LLM</span>
+                  <span aria-hidden className="text-ink-muted/70">frontière LLM</span>
                   <button
                     type="button"
                     data-testid={`boundary-peek-${s.index}`}
                     aria-label={`Aperçu des preuves LLM à la frontière ${s.index}`}
                     title="Aperçu evidence/rationale — e"
                     onClick={(e) => openBoundaryAt(s.index, e.clientX, e.clientY)}
-                    className="rounded px-1 text-[11px] hover:bg-panel-muted"
+                    className="inline-flex items-center rounded px-1 text-ink-muted hover:bg-panel-muted"
                   >
-                    👁
+                    <Eye size={13} aria-hidden />
                   </button>
                 </div>
               )}

@@ -53,6 +53,13 @@ class CommentSerializer(serializers.ModelSerializer):
         data["sentence_index"] = (
             instance.sentence.index if instance.sentence_id else None
         )
+        # Portée calculée (point 3), sans colonne dédiée : clause > phrase > document.
+        if instance.clause_id:
+            data["scope"] = "clause"
+        elif instance.sentence_id:
+            data["scope"] = "sentence"
+        else:
+            data["scope"] = "document"
         return data
 
     def build_comment_kwargs(self, annotation):

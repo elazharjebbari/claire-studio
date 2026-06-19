@@ -16,6 +16,7 @@ import {
   usePatchAnnotation,
   usePreAnnotations,
 } from "@/lib/api/hooks";
+import { History, MessageSquare, Layers, BarChart3 } from "lucide-react";
 import { preClausesToPivot } from "@/lib/pivot";
 import { WorkspaceTourButton } from "./WorkspaceTourButton";
 import { DocumentSwitcher } from "./DocumentSwitcher";
@@ -176,9 +177,9 @@ export function WorkspaceToolbar({
         data-testid="toggle-history"
         onClick={onToggleHistory}
         title="Historique des actions"
-        className="rounded-md border border-line px-2 py-1 text-xs text-ink-muted hover:bg-panel-muted"
+        className="inline-flex items-center gap-1.5 rounded-md border border-line px-2 py-1 text-xs text-ink-muted hover:bg-panel-muted"
       >
-        🕑 Historique
+        <History size={14} aria-hidden /> Historique
       </button>
 
       <button
@@ -186,27 +187,27 @@ export function WorkspaceToolbar({
         data-testid="toggle-comments"
         onClick={onToggleComments}
         title="Commentaires (général / phrase / sélection / clause)"
-        className="rounded-md border border-line px-2 py-1 text-xs text-ink-muted hover:bg-panel-muted"
+        className="inline-flex items-center gap-1.5 rounded-md border border-line px-2 py-1 text-xs text-ink-muted hover:bg-panel-muted"
       >
-        💬 Commentaires
+        <MessageSquare size={14} aria-hidden /> Commentaires
       </button>
 
       <a
         href={`/history/${annotationId}`}
         data-testid="versions-link"
         title="Versions enregistrées (document & phrase)"
-        className="rounded-md border border-line px-2 py-1 text-xs text-ink-muted hover:bg-panel-muted"
+        className="inline-flex items-center gap-1.5 rounded-md border border-line px-2 py-1 text-xs text-ink-muted hover:bg-panel-muted"
       >
-        📚 Versions
+        <Layers size={14} aria-hidden /> Versions
       </a>
 
       <a
         href={`/projects/${projectSlug}/insights`}
         data-testid="insights-link"
         title="Explorer les annotations humaines (corpus & document)"
-        className="rounded-md border border-line px-2 py-1 text-xs text-ink-muted hover:bg-panel-muted"
+        className="inline-flex items-center gap-1.5 rounded-md border border-line px-2 py-1 text-xs text-ink-muted hover:bg-panel-muted"
       >
-        📊 Insights
+        <BarChart3 size={14} aria-hidden /> Insights
       </a>
 
       <WorkspaceTourButton />
