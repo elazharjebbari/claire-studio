@@ -7,6 +7,8 @@ import { usePathname } from "next/navigation";
 import { cn } from "@/lib/cn";
 import { useUiStore } from "@/store/ui";
 import { useCurrentProjectSlug } from "@/lib/useCurrentProject";
+import { useMe } from "@/lib/api/hooks";
+import { isAdminRole } from "@/lib/roles";
 
 interface NavItem {
   href: string;
@@ -46,6 +48,10 @@ export function Sidebar() {
   const project = useCurrentProjectSlug();
   const pathname = usePathname();
   const items = projectNav(project);
+  // Séparation admin / annotateur (chantier G) : la section Administration n'est
+  // visible que pour les rôles admin/owner ; l'annotateur garde un espace focalisé.
+  const { data: me } = useMe();
+  const isAdmin = isAdminRole(me?.role);
 
   return (
     <nav
@@ -95,7 +101,8 @@ export function Sidebar() {
         })}
       </ul>
 
-      <div className="mt-auto border-t border-line px-2 py-2">
+      {isAdmin && (
+        <div className="mt-auto border-t border-line px-2 py-2" data-testid="admin-nav">
         {!collapsed && (
           <p className="px-2.5 pb-1 text-[10px] font-semibold uppercase tracking-wide text-ink-muted">
             Administration
@@ -125,7 +132,8 @@ export function Sidebar() {
             );
           })}
         </ul>
-      </div>
+        </div>
+      )}
     </nav>
   );
 }
