@@ -252,6 +252,29 @@ SEED_TRANSLATION_FOLDER = env(
 )
 SEED_HUMAN_FROM_LLM = env.bool("CLAIRE_SEED_HUMAN_FROM_LLM", default=False)
 
+# --- E-mail (chantier E) -----------------------------------------------------
+# Aucun secret en dur : tout vient de l'environnement. En dev, backend « console »
+# (les e-mails sont imprimés, aucun SMTP requis) ; prod.py bascule sur SMTP
+# (serveur Stalwart, domaine dédié). FRONTEND_BASE_URL sert à construire les liens
+# de vérification e-mail, réinitialisation de mot de passe et invitations.
+EMAIL_BACKEND = env(
+    "DJANGO_EMAIL_BACKEND",
+    default="django.core.mail.backends.console.EmailBackend",
+)
+EMAIL_HOST = env("EMAIL_HOST", default="localhost")
+EMAIL_PORT = env.int("EMAIL_PORT", default=587)
+EMAIL_HOST_USER = env("EMAIL_HOST_USER", default="")
+EMAIL_HOST_PASSWORD = env("EMAIL_HOST_PASSWORD", default="")
+EMAIL_USE_TLS = env.bool("EMAIL_USE_TLS", default=True)
+EMAIL_USE_SSL = env.bool("EMAIL_USE_SSL", default=False)
+EMAIL_TIMEOUT = env.int("EMAIL_TIMEOUT", default=10)
+DEFAULT_FROM_EMAIL = env(
+    "DEFAULT_FROM_EMAIL", default="CLAIRE Studio <no-reply@claire.local>"
+)
+FRONTEND_BASE_URL = env("FRONTEND_BASE_URL", default="http://localhost:3000")
+# Durée de validité des liens signés (vérif e-mail / reset), en secondes.
+EMAIL_TOKEN_MAX_AGE = env.int("EMAIL_TOKEN_MAX_AGE", default=60 * 60 * 24)
+
 # --- Logging (structured, debuggable) ----------------------------------------
 LOGGING = {
     "version": 1,
