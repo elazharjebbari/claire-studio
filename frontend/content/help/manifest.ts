@@ -21,6 +21,11 @@ export interface HelpSection {
 export const HELP_MANIFEST: HelpSection[] = [
   { slug: "introduction", title: "Introduction", group: "Découverte" },
   { slug: "demarrage", title: "Démarrage", group: "Découverte" },
+  { slug: "corpus-presentation", title: "Le jeu de données", group: "Comprendre le corpus" },
+  { slug: "annotation-types", title: "Types d'annotation & sens", group: "Comprendre le corpus" },
+  { slug: "categories-claudette", title: "Catégories CLAUDETTE", group: "Comprendre le corpus" },
+  { slug: "themes-segmentation", title: "Nos thèmes de segmentation", group: "Comprendre le corpus" },
+  { slug: "guide-annotation", title: "Bien annoter : méthode", group: "Comprendre le corpus" },
   { slug: "workspace", title: "Le workspace", group: "Annoter" },
   { slug: "selection-blocs", title: "Sélection multi-blocs", group: "Annoter" },
   { slug: "modes-langue", title: "Modes de langue & traduction", group: "Annoter" },
@@ -41,6 +46,7 @@ export const HELP_MANIFEST: HelpSection[] = [
 /** Ordre d'apparition des groupes dans la barre latérale. */
 export const HELP_GROUP_ORDER: string[] = [
   "Découverte",
+  "Comprendre le corpus",
   "Annoter",
   "Collaborer",
   "Données",

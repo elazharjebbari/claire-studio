@@ -19,6 +19,11 @@ import modesLangue from "./modes-langue.md?raw";
 import themesVocabulaire from "./themes-vocabulaire.md?raw";
 import preannotationsLlm from "./preannotations-llm.md?raw";
 import comparaisonLlm from "./comparaison-llm.md?raw";
+import corpusPresentation from "./corpus-presentation.md?raw";
+import annotationTypes from "./annotation-types.md?raw";
+import categoriesClaudette from "./categories-claudette.md?raw";
+import themesSegmentation from "./themes-segmentation.md?raw";
+import guideAnnotation from "./guide-annotation.md?raw";
 import injusticeClaudette from "./injustice-claudette.md?raw";
 import certitude from "./certitude.md?raw";
 import commentaires from "./commentaires.md?raw";
@@ -39,6 +44,11 @@ export const HELP_CONTENT: Record<string, string> = {
   "themes-vocabulaire": themesVocabulaire,
   "preannotations-llm": preannotationsLlm,
   "comparaison-llm": comparaisonLlm,
+  "corpus-presentation": corpusPresentation,
+  "annotation-types": annotationTypes,
+  "categories-claudette": categoriesClaudette,
+  "themes-segmentation": themesSegmentation,
+  "guide-annotation": guideAnnotation,
   "injustice-claudette": injusticeClaudette,
   certitude,
   commentaires,

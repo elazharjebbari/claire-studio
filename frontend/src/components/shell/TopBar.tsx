@@ -6,6 +6,7 @@
  */
 
 import Link from "next/link";
+import { BookOpen, HelpCircle, Sun, Moon } from "lucide-react";
 import { useUiStore } from "@/store/ui";
 import { useMe, useProjects } from "@/lib/api/hooks";
 import { ActivityBell } from "./ActivityBell";
@@ -54,12 +55,21 @@ export function TopBar() {
       <div className="ml-auto flex items-center gap-2">
         <Link
           href="/help"
+          data-testid="docs-link"
+          aria-label="Documentation"
+          title="Documentation — comprendre le corpus & bien annoter"
+          className="flex items-center gap-1.5 rounded-md border border-line bg-panel px-2.5 py-1 text-sm text-ink hover:bg-panel-muted"
+        >
+          <BookOpen size={15} aria-hidden /> Documentation
+        </Link>
+        <Link
+          href="/help"
           data-testid="help-link"
           aria-label="Centre d'aide"
           title="Centre d'aide"
-          className="flex h-7 w-7 items-center justify-center rounded-md border border-line bg-panel text-sm text-ink hover:bg-panel-muted"
+          className="flex h-7 w-7 items-center justify-center rounded-md border border-line bg-panel text-ink hover:bg-panel-muted"
         >
-          ?
+          <HelpCircle size={16} aria-hidden />
         </Link>
         <ActivityBell />
         <button
@@ -67,9 +77,9 @@ export function TopBar() {
           data-testid="theme-toggle"
           onClick={toggleTheme}
           aria-label={theme === "dark" ? "Passer au thème clair" : "Passer au thème sombre"}
-          className="rounded-md border border-line bg-panel px-2 py-1 text-sm text-ink hover:bg-panel-muted"
+          className="flex items-center justify-center rounded-md border border-line bg-panel px-2 py-1 text-ink hover:bg-panel-muted"
         >
-          {theme === "dark" ? "☀" : "☾"}
+          {theme === "dark" ? <Sun size={15} aria-hidden /> : <Moon size={15} aria-hidden />}
         </button>
 
         <div className="flex items-center gap-2 rounded-md border border-line bg-panel px-2 py-1">

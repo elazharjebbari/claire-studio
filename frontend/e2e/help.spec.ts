@@ -35,4 +35,21 @@ test.describe("Centre d'aide", () => {
     await page.getByTestId("help-link").click();
     await expect(page.getByTestId("help-center")).toBeVisible();
   });
+
+  test("l'onglet Documentation expose le guide du corpus & des catégories", async ({ page }) => {
+    await page.goto("/");
+    await page.getByTestId("docs-link").click();
+    await expect(page.getByTestId("help-center")).toBeVisible();
+    // Pages de documentation annotateur présentes dans la navigation.
+    await expect(page.getByTestId("help-nav-corpus-presentation")).toBeVisible();
+    await expect(page.getByTestId("help-nav-themes-segmentation")).toBeVisible();
+    await page.getByTestId("help-nav-themes-segmentation").click();
+    await expect(page.getByTestId("help-article")).toHaveAttribute(
+      "data-slug",
+      "themes-segmentation",
+    );
+    await expect(
+      page.getByTestId("help-content").getByText("vocabulaire fermé"),
+    ).toBeVisible();
+  });
 });

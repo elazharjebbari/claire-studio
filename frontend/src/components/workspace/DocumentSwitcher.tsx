@@ -49,11 +49,11 @@ export function DocumentSwitcher({
   const filtered = useMemo(() => {
     const q = query.trim().toLowerCase();
     if (!q) return rows;
+    // Coercition String : en mode réel, document.id (pk Django) est NUMÉRIQUE →
+    // .toLowerCase() planterait. On normalise tous les champs en chaîne.
+    const has = (v: unknown) => String(v ?? "").toLowerCase().includes(q);
     return rows.filter(
-      (r) =>
-        r.document.title.toLowerCase().includes(q) ||
-        r.document.externalId.toLowerCase().includes(q) ||
-        r.document.id.toLowerCase().includes(q),
+      (r) => has(r.document.title) || has(r.document.externalId) || has(r.document.id),
     );
   }, [rows, query]);
 
