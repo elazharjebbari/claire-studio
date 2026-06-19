@@ -6,6 +6,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { cn } from "@/lib/cn";
 import { useUiStore } from "@/store/ui";
+import { useCurrentProjectSlug } from "@/lib/useCurrentProject";
 
 interface NavItem {
   href: string;
@@ -13,15 +14,18 @@ interface NavItem {
   icon: string;
 }
 
-function projectNav(slug: string | null): NavItem[] {
-  const p = slug ?? "claudette-gold-v1";
-  return [
-    { href: `/projects/${p}`, label: "Tableau de bord", icon: "▣" },
-    { href: `/projects/${p}/docs`, label: "Documents", icon: "▤" },
-    { href: `/projects`, label: "Mes projets", icon: "▢" },
-    { href: `/compare`, label: "Comparer", icon: "⇄" },
-    { href: `/settings`, label: "Préférences", icon: "⚙" },
-  ];
+// Plus de slug en dur (H2) : les liens propres au projet n'apparaissent que si un
+// projet courant est résolu ; sinon la nav reste générique (projets, comparer…).
+function projectNav(slug: string | undefined): NavItem[] {
+  const items: NavItem[] = [];
+  if (slug) {
+    items.push({ href: `/projects/${slug}`, label: "Tableau de bord", icon: "▣" });
+    items.push({ href: `/projects/${slug}/docs`, label: "Documents", icon: "▤" });
+  }
+  items.push({ href: `/projects`, label: "Mes projets", icon: "▢" });
+  items.push({ href: `/compare`, label: "Comparer", icon: "⇄" });
+  items.push({ href: `/settings`, label: "Préférences", icon: "⚙" });
+  return items;
 }
 
 const ADMIN_NAV: NavItem[] = [
@@ -39,7 +43,7 @@ const ADMIN_NAV: NavItem[] = [
 export function Sidebar() {
   const collapsed = useUiStore((s) => s.sidebarCollapsed);
   const toggle = useUiStore((s) => s.toggleSidebar);
-  const project = useUiStore((s) => s.currentProjectSlug);
+  const project = useCurrentProjectSlug();
   const pathname = usePathname();
   const items = projectNav(project);
 

@@ -8,6 +8,7 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
 import { useUiStore } from "@/store/ui";
+import { useCurrentProjectSlug } from "@/lib/useCurrentProject";
 
 interface Command {
   id: string;
@@ -21,6 +22,9 @@ export function CommandPalette() {
   const setOpen = useUiStore((s) => s.setCommandPaletteOpen);
   const toggleTheme = useUiStore((s) => s.toggleTheme);
   const router = useRouter();
+  // Projet courant résolu sans slug en dur (H2) : les sauts « projet » pointent
+  // vers le projet courant, ou vers la liste des projets s'il n'y en a pas.
+  const projectSlug = useCurrentProjectSlug();
   const [query, setQuery] = useState("");
   const [active, setActive] = useState(0);
   const inputRef = useRef<HTMLInputElement>(null);
@@ -29,14 +33,22 @@ export function CommandPalette() {
     () => [
       { id: "go-resume", label: "Reprendre le travail", hint: "annotate", run: () => router.push("/") },
       { id: "go-projects", label: "Aller aux projets", run: () => router.push("/projects") },
-      { id: "go-dashboard", label: "Tableau de bord du projet", run: () => router.push("/projects/claudette-gold-v1") },
-      { id: "go-docs", label: "Liste des documents", run: () => router.push("/projects/claudette-gold-v1/docs") },
+      {
+        id: "go-dashboard",
+        label: "Tableau de bord du projet",
+        run: () => router.push(projectSlug ? `/projects/${projectSlug}` : "/projects"),
+      },
+      {
+        id: "go-docs",
+        label: "Liste des documents",
+        run: () => router.push(projectSlug ? `/projects/${projectSlug}/docs` : "/projects"),
+      },
       { id: "go-export", label: "Lancer un export", hint: "admin", run: () => router.push("/admin/exports") },
       { id: "go-compare", label: "Comparer deux annotations", run: () => router.push("/compare") },
       { id: "toggle-theme", label: "Basculer thème clair / sombre", run: toggleTheme },
       { id: "go-settings", label: "Préférences", run: () => router.push("/settings") },
     ],
-    [router, toggleTheme],
+    [router, toggleTheme, projectSlug],
   );
 
   const filtered = useMemo(() => {

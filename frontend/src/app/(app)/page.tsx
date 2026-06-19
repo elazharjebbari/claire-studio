@@ -4,15 +4,19 @@
 
 import Link from "next/link";
 import { useAssignments, useProjects } from "@/lib/api/hooks";
+import { useCurrentProjectSlug } from "@/lib/useCurrentProject";
 import { Panel, Button, StatusPill } from "@/components/ui/primitives";
 
 export default function HomePage() {
   const { data: projects } = useProjects();
-  const { data: assignments } = useAssignments("claudette-gold-v1");
   // Défensif : une réponse inattendue (liste nue, erreur, champ manquant) ne doit
   // jamais white-screener l'accueil.
-  const assignmentList = assignments?.results ?? [];
   const projectList = projects?.results ?? [];
+  // Projet « courant » résolu sans slug en dur (H2) : store UI → 1er projet API.
+  // Sans projet visible, l'accueil dégrade (assignations vides, query désactivée).
+  const currentSlug = useCurrentProjectSlug();
+  const { data: assignments } = useAssignments(currentSlug);
+  const assignmentList = assignments?.results ?? [];
 
   return (
     <div className="mx-auto max-w-4xl px-6 py-10">

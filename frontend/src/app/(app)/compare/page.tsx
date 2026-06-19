@@ -5,6 +5,7 @@
 import { useSearchParams } from "next/navigation";
 import { Suspense } from "react";
 import { useAnnotation, usePreAnnotations } from "@/lib/api/hooks";
+import { useCurrentProjectSlug } from "@/lib/useCurrentProject";
 import { preClausesToPivot } from "@/lib/pivot";
 import { Panel } from "@/components/ui/primitives";
 import { ClauseChip } from "@/components/ui/ClauseChip";
@@ -14,7 +15,9 @@ function CompareInner() {
   const docTitle = sp.get("doc") ?? "—";
   // Paramètres réels passés dans l'URL : ?a=<annotationId>&project=<slug>&document=<id>
   const annotationId = sp.get("a") ?? undefined;
-  const projectSlug = sp.get("project") ?? "claudette-gold-v1";
+  // Slug du projet : paramètre d'URL, sinon projet courant (plus de slug en dur, H2).
+  const currentSlug = useCurrentProjectSlug();
+  const projectSlug = sp.get("project") ?? currentSlug;
   const documentId = sp.get("document") ?? undefined;
   const { data: annotation } = useAnnotation(annotationId);
   const { data: pre } = usePreAnnotations(projectSlug, documentId);
