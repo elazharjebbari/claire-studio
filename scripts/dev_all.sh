@@ -142,9 +142,12 @@ else
 fi
 
 # --- 3. Frontend -------------------------------------------------------------
-log "Frontend : préparation…"
+log "Frontend : préparation (sync des dépendances)…"
+# `npm install` SYSTÉMATIQUE (idempotent, quasi instantané si à jour) : garantit
+# que toute nouvelle dépendance (ex. lucide-react) est présente même si node_modules
+# existe déjà — évite les « Module not found » au build.
 ( cd frontend && { [[ -f .env.local ]] || cp .env.local.example .env.local; } \
-   && { [[ -d node_modules ]] || npm install; } ) || warn "Préparation frontend incomplète."
+   && npm install --no-audit --no-fund ) || warn "Préparation frontend incomplète."
 FE_ENV=""
 [[ "$MOCKS" == "1" ]] && FE_ENV="NEXT_PUBLIC_ENABLE_MOCKS=true"
 spawn frontend bash -c "cd '$ROOT/frontend' && $FE_ENV PORT=$FRONTEND_PORT npm run dev -- -p $FRONTEND_PORT"
