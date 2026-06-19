@@ -6,6 +6,19 @@
 # =============================================================================
 
 services:
+  redis:
+    image: redis:7-alpine
+    container_name: claire-redis
+    command: ["redis-server", "--save", "", "--appendonly", "no"]
+    ports:
+      - "${REDIS_PORT:-6379}:6379"
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 5s
+      timeout: 3s
+      retries: 10
+    restart: unless-stopped
+
   postgres:
     image: postgres:16-alpine
     container_name: claire-postgres
@@ -51,12 +64,36 @@ services:
       start_period: 30s
     restart: unless-stopped
 
+  asgi:
+    # Temps réel : Django Channels via Daphne (WebSocket) — point 4b/7.
+    # Démarré uniquement avec le profil `realtime` : `docker compose --profile realtime up`.
+    build:
+      context: ./backend
+    container_name: claire-asgi
+    profiles: ["realtime"]
+    command: ["python", "-m", "daphne", "-b", "0.0.0.0", "-p", "8001", "config.asgi:application"]
+    env_file:
+      - .env
+    environment:
+      DATABASE_URL: ${DATABASE_URL:-postgresql://claire:claire@postgres:5432/claire}
+      POSTGRES_HOST: postgres
+      REDIS_URL: ${REDIS_URL:-redis://redis:6379/0}
+    ports:
+      - "${ASGI_PORT:-8001}:8001"
+    depends_on:
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    restart: unless-stopped
+
   frontend:
     build:
       context: ./frontend
     container_name: claire-frontend
     environment:
       NEXT_PUBLIC_API_URL: ${NEXT_PUBLIC_API_URL:-http://localhost:8000/api/v1}
+      NEXT_PUBLIC_WS_URL: ${NEXT_PUBLIC_WS_URL:-ws://localhost:8001/ws}
       NEXT_TELEMETRY_DISABLED: "1"
       NODE_ENV: ${NODE_ENV:-development}
     ports:

@@ -8,6 +8,29 @@
 cd /Users/elazhar/PycharmProjects/claire-studio
 ```
 
+## 0bis. Orchestration globale (TOUS les serveurs en parallèle)
+
+Ports prédéfinis dans `scripts/ports.env` : REST **8000**, ASGI/WS **8001**,
+frontend **3000**, Redis **6379**.
+
+```
+make ports        # affiche les ports prédéfinis
+make dev-all      # Redis + REST(:8000) + ASGI(:8001) + frontend(:3000) en parallèle
+                  #   - health-checks, logs unifiés préfixés, Ctrl-C arrête tout
+make dev-all-mocks  # variante : frontend en mode MSW (sans backend requis)
+make stop-all     # libère tous les ports + arrête le Redis docker
+```
+
+Via Docker (pile complète, profil temps réel inclus) :
+```
+docker compose --profile realtime up   # postgres + redis + backend + asgi + frontend
+docker compose ps                       # état + ports publiés
+```
+
+`dev_all.sh` démarre **ce qui est disponible** : si `redis-server`/`daphne`/Channels
+ne sont pas installés, le temps réel est sauté proprement (mode dégradé REST), le
+reste tourne. Idempotent et sans fuite de port (best-effort `lsof`).
+
 ## 1. Backend
 ```
 cd backend

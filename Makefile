@@ -19,8 +19,8 @@ export
 endif
 
 .PHONY: help setup setup-backend setup-frontend migrate seed dev dev-backend dev-frontend \
-        run test test-backend test-frontend e2e lint lint-backend lint-frontend \
-        build build-backend build-frontend logs ps up down reset clean check
+        run serve dev-all dev-all-mocks stop-all ports test test-backend test-frontend e2e \
+        lint lint-backend lint-frontend build build-backend build-frontend logs ps up down reset clean check
 
 help: ## Affiche cette aide
 	@grep -hE '^[a-zA-Z_-]+:.*?## ' $(MAKEFILE_LIST) \
@@ -57,6 +57,18 @@ run: dev ## Alias de `dev`
 
 serve: ## Lance SANS docker : backend SQLite (:8000) + frontend (:3000). Base déjà peuplée par `feed_db`.
 	bash $(SCRIPTS_DIR)/run_real.sh
+
+dev-all: ## ORCHESTRATION GLOBALE : Redis + REST(:8000) + ASGI(:8001) + frontend(:3000) en parallèle
+	bash $(SCRIPTS_DIR)/dev_all.sh
+
+dev-all-mocks: ## Idem dev-all mais frontend en mode MSW (sans backend requis)
+	MOCKS=1 bash $(SCRIPTS_DIR)/dev_all.sh
+
+stop-all: ## Libère tous les ports prédéfinis + arrête Redis docker
+	bash $(SCRIPTS_DIR)/stop_all.sh
+
+ports: ## Affiche les ports prédéfinis de la pile
+	@cat $(SCRIPTS_DIR)/ports.env
 
 # --- Tests -------------------------------------------------------------------
 test: lint test-backend test-frontend ## Lint + pytest + vitest (sans navigateur)
