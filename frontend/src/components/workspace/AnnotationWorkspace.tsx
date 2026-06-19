@@ -47,11 +47,17 @@ export function AnnotationWorkspace({ annotationId }: { annotationId: string }) 
   }, [annotation, doc, init, reset]);
 
   // Hydrate couleurs/labels de thèmes depuis le schéma API (H4) ; repli statique
-  // (design-tokens.json) en mode démo ou si une couleur manque. Réinit au démontage.
-  useEffect(() => {
+  // (design-tokens.json) en mode démo ou si une couleur manque. Hydratation SYNCHRONE
+  // (pendant le rendu), pas dans un effet : setRuntimeThemes mute un état module qui ne
+  // déclenche pas de re-rendu — un effet laisserait le 1er rendu (après arrivée du
+  // schéma) sur le repli statique, soit un flash de couleurs par défaut pour un corpus
+  // tiers. Idempotent ; rebâti seulement quand l'identité du schéma change.
+  const hydratedScheme = useRef<unknown>(undefined);
+  if (hydratedScheme.current !== scheme) {
     setRuntimeThemes(scheme?.themes ?? null);
-    return () => setRuntimeThemes(null);
-  }, [scheme]);
+    hydratedScheme.current = scheme;
+  }
+  useEffect(() => () => setRuntimeThemes(null), []);
 
   const themeFocusRef = useRef<(() => void) | null>(null);
   useWorkspaceShortcuts({
