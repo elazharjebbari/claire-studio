@@ -97,3 +97,22 @@ servira de preuve de bout en bout (étape suivante, transverse audit point 2).
 - **Création d'annotation à la demande** : `createAnnotation` existe (endpoints) mais
   n'est pas câblé à l'UI ; les brouillons vides sont pré-seedés en attendant un flux
   « Commencer l'annotation » (chantier F/UX).
+- **E2E pré-existants rouges** (confirmés en échec sur le baseline `4e8b488`, hors
+  périmètre Vague 1/G) : `prefill.spec.ts:25` (fantômes Claude non affichés) et
+  `llm-compare.spec.ts:54` (adoption clavier « 1 »). À investiguer en chantier I.
+
+## 8. Suite immédiate (chantier G + intégrité du dépôt)
+
+- **Séparation admin / annotateur (chantier G, cœur)** : `AdminGuard` (rôle
+  admin/owner via `/me`) + `(app)/admin/layout.tsx` gardent toutes les routes
+  `/admin/*` (403 explicite sinon) ; la Sidebar n'expose l'Administration qu'aux
+  admins. Helper `isAdminRole` aligné backend. Tests : `adminGuard.test.tsx` (4) +
+  `e2e/admin.spec.ts`. Sélecteur de projet/schéma admin = amélioration UX ultérieure.
+- **Intégrité du dépôt (critique)** : la règle `.gitignore` « exports/ » (pour les
+  artefacts `var/exports`) excluait par erreur **deux sources jamais versionnées** —
+  `frontend/src/app/(app)/admin/exports/page.tsx` ET **toute l'app Django
+  `backend/claire/exports/`** (pourtant dans `INSTALLED_APPS` ⇒ crash sur un clone
+  neuf). Règle resserrée + fichiers restaurés au suivi git.
+- **Régression de test révélée puis corrigée** : `version-explorer.spec.ts` (sélecteur
+  ambigu sur une fixture dupliquée) fiabilisé.
+- **État e2e** : suite verte hormis les 2 échecs pré-existants ci-dessus.
