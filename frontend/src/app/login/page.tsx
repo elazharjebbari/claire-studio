@@ -37,7 +37,12 @@ export default function LoginPage() {
         <h1 className="text-xl font-semibold">
           CLAIRE<span className="text-accent"> Studio</span>
         </h1>
-        <p className="mb-4 text-sm text-ink-muted">Connectez-vous pour annoter.</p>
+        <p className="mb-1 text-sm text-ink-muted">Connectez-vous pour annoter.</p>
+        <p className="mb-4 text-xs text-ink-muted">
+          <Link href="/welcome" className="text-accent hover:underline">
+            Découvrir CLAIRE Studio
+          </Link>
+        </p>
         <form onSubmit={onSubmit} className="flex flex-col gap-3">
           <Field label="Identifiant" htmlFor="username">
             <input
