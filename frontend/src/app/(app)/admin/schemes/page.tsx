@@ -1,12 +1,17 @@
 "use client";
 
-import { useScheme } from "@/lib/api/hooks";
+import { useProject, useScheme } from "@/lib/api/hooks";
+import { useCurrentProjectSlug } from "@/lib/useCurrentProject";
 import { AdminScaffold } from "@/components/admin/AdminTable";
 import { ClauseChip } from "@/components/ui/ClauseChip";
 import { Badge } from "@/components/ui/primitives";
 
 export default function AdminSchemes() {
-  const { data: scheme } = useScheme("claire-themes-v1");
+  // Schéma du projet courant — plus de slug en dur (H2). TODO chantier G : liste
+  // de tous les schémas (sélecteur) via un hook useSchemes().
+  const projectSlug = useCurrentProjectSlug();
+  const { data: project } = useProject(projectSlug);
+  const { data: scheme } = useScheme(project?.schemeSlug);
   return (
     <AdminScaffold
       title="Schémas d'annotation"

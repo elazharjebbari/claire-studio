@@ -1,11 +1,14 @@
 "use client";
 
 import { useProjectPreAnnotations } from "@/lib/api/hooks";
+import { useCurrentProjectSlug } from "@/lib/useCurrentProject";
 import { AdminScaffold } from "@/components/admin/AdminTable";
 import { Badge } from "@/components/ui/primitives";
 
 export default function AdminPreannotations() {
-  const { data } = useProjectPreAnnotations("claudette-gold-v1");
+  // Projet courant — plus de slug en dur (H2). TODO chantier G : sélecteur de projet.
+  const projectSlug = useCurrentProjectSlug();
+  const { data } = useProjectPreAnnotations(projectSlug);
   return (
     <AdminScaffold
       title="Pré-annotations LLM"

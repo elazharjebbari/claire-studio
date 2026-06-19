@@ -8,7 +8,8 @@ import { Panel, StatusPill } from "@/components/ui/primitives";
 
 export default function ProjectDocs({ params }: { params: { slug: string } }) {
   const { data: project } = useProject(params.slug);
-  const { data: docs } = useCorpusDocuments(project?.corpusSlug ?? "claudette-tos");
+  // Corpus du projet — plus de repli en dur (H2) ; query désactivée tant qu'inconnu.
+  const { data: docs } = useCorpusDocuments(project?.corpusSlug ?? "");
   const { data: assignments } = useAssignments(params.slug);
 
   // documentId -> { annotationId, status } depuis les assignations réelles.
