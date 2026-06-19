@@ -1,0 +1,37 @@
+# Feature flags & paramètres administrables (lus par GET /config/flags)
+# L'UI se conforme : un flag OFF masque proprement la surface concernée.
+
+features:
+  realtime_collaboration: false   # Channels + WS + CRDT (cycle suivant)
+  presence: false
+  attribution_overlay: true       # mode "blame" multi-annotateurs
+  comments_multilevel: true       # sentence / clause / range / document
+  undo_redo: true
+  analytics_screen: true
+  version_explorer: true
+  prefill_switch: true            # bascule Claude/Codex (point 0a)
+  document_switcher: true         # barre de navigation documents (point 0b)
+  sticky_header: true             # point 1
+
+limits:
+  undo_depth: 200
+  action_log_cap: 200
+  ws_message_rate_per_sec: 30
+  ws_max_update_bytes: 65536
+  lock_ttl_seconds: 60
+  snapshot_debounce_ms: 3000
+  analytics_refresh_minutes: 15
+  share_link_default_ttl_days: 7
+  share_link_max_uses_default: null
+
+annotator_palette:   # couleurs d'identité (contraste AA, jamais seule porteuse d'info)
+  - "#06B6D4"  # cyan
+  - "#F59E0B"  # amber
+  - "#A78BFA"  # violet
+  - "#34D399"  # emerald
+  - "#F472B6"  # pink
+  - "#60A5FA"  # blue
+
+agreement:
+  conflict_signal: true           # voyant de conflit sur édition concurrente du même champ
+  soft_lock: false                # verrou consultatif par clause (optionnel)

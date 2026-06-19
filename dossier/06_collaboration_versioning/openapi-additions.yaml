@@ -1,0 +1,164 @@
+openapi: 3.0.3
+info:
+  title: CLAIRE Studio — ajouts API (collaboration & versioning)
+  version: 1.0.0
+  description: >
+    Endpoints ajoutés pour le versioning, l'historique, l'attribution, les
+    commentaires multi-niveaux, l'analytics, la collaboration temps réel et le
+    partage. À fusionner dans le schéma principal /api/v1.
+servers:
+  - url: /api/v1
+components:
+  schemas:
+    AnnotationVersion:
+      type: object
+      properties:
+        number: { type: integer }
+        name: { type: string }
+        description: { type: string, nullable: true }
+        kind: { type: string, enum: [snapshot_manuel, soumission, auto] }
+        stats: { type: object, additionalProperties: true }
+        parentVersion: { type: integer, nullable: true }
+        createdBy: { type: string }
+        createdAt: { type: string, format: date-time }
+    SentenceHistoryEntry:
+      type: object
+      properties:
+        version: { type: integer, nullable: true }
+        actor: { type: string }
+        actorColor: { type: string }
+        verb: { type: string }
+        before: { type: object, nullable: true }
+        after: { type: object, nullable: true }
+        rationale: { type: string, nullable: true }
+        createdAt: { type: string, format: date-time }
+    ShareLink:
+      type: object
+      properties:
+        token: { type: string }
+        url: { type: string }
+        roleGranted: { type: string, enum: [annotator, reviewer] }
+        expiresAt: { type: string, format: date-time }
+        maxUses: { type: integer, nullable: true }
+        usedCount: { type: integer }
+        revoked: { type: boolean }
+paths:
+  /annotations/{id}/versions:
+    get:
+      summary: Liste des versions (paginée)
+      parameters: [{ name: id, in: path, required: true, schema: { type: string } }]
+      responses: { '200': { description: OK } }
+    post:
+      summary: Crée une version (snapshot immuable)
+      parameters: [{ name: id, in: path, required: true, schema: { type: string } }]
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name: { type: string }
+                description: { type: string }
+                kind: { type: string, enum: [snapshot_manuel, soumission] }
+      responses: { '201': { description: Créée } }
+  /annotations/{id}/versions/{n}/diff:
+    get:
+      summary: Diff de deux snapshots de version
+      parameters:
+        - { name: id, in: path, required: true, schema: { type: string } }
+        - { name: n, in: path, required: true, schema: { type: integer } }
+        - { name: against, in: query, required: false, schema: { type: integer } }
+      responses: { '200': { description: OK } }
+  /annotations/{id}/versions/{n}/restore:
+    post:
+      summary: Restaure un snapshot dans une nouvelle version
+      parameters:
+        - { name: id, in: path, required: true, schema: { type: string } }
+        - { name: n, in: path, required: true, schema: { type: integer } }
+      responses: { '201': { description: Nouvelle version créée } }
+  /annotations/{id}/submit:
+    post:
+      summary: Soumet l'annotation en créant une version de soumission
+      parameters: [{ name: id, in: path, required: true, schema: { type: string } }]
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [versionName]
+              properties:
+                versionName: { type: string }
+                versionDescription: { type: string }
+      responses: { '200': { description: Soumise } }
+  /documents/{id}/sentence-history:
+    get:
+      summary: Timeline d'annotation d'une phrase (tous annotateurs/versions)
+      parameters:
+        - { name: id, in: path, required: true, schema: { type: string } }
+        - { name: index, in: query, required: true, schema: { type: integer } }
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  index: { type: integer }
+                  results:
+                    type: array
+                    items: { $ref: '#/components/schemas/SentenceHistoryEntry' }
+  /annotations/{id}/attribution:
+    get:
+      summary: Dernier auteur + verbe par cible (phrase ou clause)
+      parameters:
+        - { name: id, in: path, required: true, schema: { type: string } }
+        - { name: by, in: query, schema: { type: string, enum: [sentence, clause] } }
+      responses: { '200': { description: OK } }
+  /projects/{slug}/insights:
+    get:
+      summary: KPI + distributions + activité (corpus)
+      parameters: [{ name: slug, in: path, required: true, schema: { type: string } }]
+      responses: { '200': { description: OK } }
+  /projects/{slug}/insights/{documentId}:
+    get:
+      summary: Métriques détaillées d'un document + heatmap
+      parameters:
+        - { name: slug, in: path, required: true, schema: { type: string } }
+        - { name: documentId, in: path, required: true, schema: { type: string } }
+      responses: { '200': { description: OK } }
+  /annotations/{id}/collab-ticket:
+    get:
+      summary: Ticket WS signé court pour rejoindre la salle collaborative
+      parameters: [{ name: id, in: path, required: true, schema: { type: string } }]
+      responses: { '200': { description: OK } }
+  /projects/{slug}/share-links:
+    get:
+      summary: Liste des liens de partage
+      parameters: [{ name: slug, in: path, required: true, schema: { type: string } }]
+      responses: { '200': { description: OK } }
+    post:
+      summary: Crée un lien de partage signé expirable
+      parameters: [{ name: slug, in: path, required: true, schema: { type: string } }]
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [roleGranted, expiresAt]
+              properties:
+                roleGranted: { type: string, enum: [annotator, reviewer] }
+                expiresAt: { type: string, format: date-time }
+                maxUses: { type: integer }
+      responses: { '201': { description: Créé } }
+  /join/{token}:
+    post:
+      summary: Active la membership via un lien (utilisateur authentifié requis)
+      parameters: [{ name: token, in: path, required: true, schema: { type: string } }]
+      responses:
+        '200': { description: Rejoint }
+        '410': { description: Lien expiré/révoqué }
+  /config/flags:
+    get:
+      summary: Feature flags effectifs (l'UI s'y conforme)
+      responses: { '200': { description: OK } }

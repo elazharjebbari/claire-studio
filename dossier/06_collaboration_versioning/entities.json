@@ -1,0 +1,69 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "CLAIRE Studio — schéma d'entités (extensions collaboration & versioning)",
+  "version": "1.0.0",
+  "entities": {
+    "AnnotationVersion": {
+      "extends": "existing",
+      "added_fields": {
+        "name": { "type": "string", "required_on": "submission", "maxLength": 120 },
+        "description": { "type": "string", "nullable": true },
+        "kind": { "type": "enum", "values": ["snapshot_manuel", "soumission", "auto"] },
+        "snapshot": { "type": "json", "doc": "capture immuable des clauses + champs" },
+        "parent_version": { "type": "fk", "to": "AnnotationVersion", "nullable": true },
+        "stats": { "type": "json", "doc": "#clauses, #par thème, certitude moyenne" }
+      },
+      "constraints": ["unique(annotation, number)", "number monotone"]
+    },
+    "ActivityEvent": {
+      "extends": "existing",
+      "append_only": true,
+      "added_fields": {
+        "document": { "type": "fk", "to": "Document", "nullable": true },
+        "target_type": { "type": "enum", "values": ["document", "annotation", "clause", "sentence", "comment", "version"] },
+        "sentence_index": { "type": "int", "nullable": true },
+        "before": { "type": "json", "nullable": true },
+        "after": { "type": "json", "nullable": true },
+        "client_op_id": { "type": "string", "doc": "idempotence" },
+        "session_id": { "type": "string", "nullable": true }
+      },
+      "indexes": [
+        "(project, created_at)",
+        "(document, sentence_index, created_at)",
+        "(actor, created_at)"
+      ]
+    },
+    "CollaborationSession": {
+      "new": true,
+      "fields": {
+        "project": { "type": "fk", "to": "Project" },
+        "document": { "type": "fk", "to": "Document" },
+        "participants": { "type": "json", "doc": "user_id -> {color, joinedAt}" },
+        "started_at": { "type": "datetime" },
+        "ended_at": { "type": "datetime", "nullable": true }
+      }
+    },
+    "ShareLink": {
+      "new": true,
+      "fields": {
+        "token": { "type": "string", "unique": true, "doc": "HMAC signé" },
+        "project": { "type": "fk", "to": "Project" },
+        "role_granted": { "type": "enum", "values": ["annotator", "reviewer"] },
+        "expires_at": { "type": "datetime" },
+        "max_uses": { "type": "int", "nullable": true },
+        "used_count": { "type": "int", "default": 0 },
+        "revoked": { "type": "bool", "default": false },
+        "created_by": { "type": "fk", "to": "User" }
+      },
+      "security": "vérif HMAC + expiration + quota à chaque usage ; jamais d'accès anonyme"
+    },
+    "Comment": {
+      "extends": "existing",
+      "added_fields": {
+        "scope": { "type": "enum", "values": ["sentence", "clause", "range", "document"], "default": "clause", "doc": "niveau d'ancrage du commentaire (point 3)" },
+        "range_start": { "type": "int", "nullable": true },
+        "range_end": { "type": "int", "nullable": true }
+      }
+    }
+  }
+}

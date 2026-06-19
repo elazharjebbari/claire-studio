@@ -1,0 +1,14 @@
+metric,granularity,formula,source,notes
+documents_annotated,corpus,count(distinct document where annotation.status in (submitted,validated)),Annotation,couverture
+annotators_active,corpus,count(distinct actor in ActivityEvent last 30d),ActivityEvent,engagement
+versions_total,corpus|document,count(AnnotationVersion),AnnotationVersion,inclut snapshots manuels
+mean_certainty,corpus|document,avg(clause.certainty),Clause,certitude moyenne 0-3
+kappa_inter_annotator,corpus|category,cohen_kappa(theme_by_sentence across annotators),Clause+ActivityEvent,par catégorie
+theme_distribution,corpus|document,count(clause) group by theme,Clause,histogramme couleurs de thème
+clause_density,document|sentence,count(ActivityEvent clause.* ) per sentence,ActivityEvent,carte de chaleur
+comments_per_clause,document,count(Comment) / count(Clause),Comment,intensité de discussion
+conflicts_detected,corpus|document,count(ActivityEvent where concurrent same-field),ActivityEvent,collaboratif
+conflicts_resolved,corpus|document,count(conflict resolved via arbitrage/revert),ActivityEvent,collaboratif
+annotation_time_median,corpus|annotator,median(submitted_at - first_event_at) per document,ActivityEvent,temps d'annotation
+agreement_with_llm,document,pct sentences where human theme == judge theme,Clause+PreAnnotation,réutilise l'accord LLM
+top_contributors,corpus,count(ActivityEvent) group by actor order desc,ActivityEvent,classement

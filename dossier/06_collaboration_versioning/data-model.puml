@@ -1,0 +1,125 @@
+@startuml data-model
+title CLAIRE Studio — ERD (extensions collaboration & versioning)
+
+hide circle
+skinparam linetype ortho
+skinparam shadowing false
+
+entity Project {
+  * id
+  --
+  slug
+  name
+  scheme
+}
+entity Membership {
+  * id
+  --
+  project_id <<FK>>
+  user_id <<FK>>
+  role
+  color
+}
+entity Annotation {
+  * id
+  --
+  project_id <<FK>>
+  document_id <<FK>>
+  annotator_id <<FK>>
+  status
+}
+entity Clause {
+  * id
+  --
+  annotation_id <<FK>>
+  anchor_index
+  theme
+  legal_nature
+  evidence_span
+  rationale
+  certainty
+}
+entity AnnotationVersion {
+  * id
+  --
+  annotation_id <<FK>>
+  number
+  name
+  description
+  kind
+  snapshot <<json>>
+  stats <<json>>
+  parent_version_id <<FK>>
+  created_by_id <<FK>>
+  created_at
+}
+entity ActivityEvent {
+  * id  <<append-only>>
+  --
+  project_id <<FK>>
+  document_id <<FK>>
+  actor_id <<FK>>
+  verb
+  target_type
+  sentence_index
+  before <<json>>
+  after <<json>>
+  client_op_id
+  session_id
+  created_at
+}
+entity Comment {
+  * id
+  --
+  annotation_id <<FK>>
+  clause_id <<FK,nullable>>
+  sentence_index
+  scope
+  body
+  author_id <<FK>>
+  resolved
+  thread_root_id <<FK,nullable>>
+}
+entity Review {
+  * id
+  --
+  annotation_id <<FK>>
+  reviewer_id <<FK>>
+  score
+  decision
+  body
+}
+entity CollaborationSession {
+  * id
+  --
+  project_id <<FK>>
+  document_id <<FK>>
+  participants <<json>>
+  started_at
+  ended_at
+}
+entity ShareLink {
+  * id
+  --
+  token <<hmac>>
+  project_id <<FK>>
+  role_granted
+  expires_at
+  max_uses
+  used_count
+  revoked
+  created_by_id <<FK>>
+}
+
+Project ||--o{ Membership
+Project ||--o{ Annotation
+Project ||--o{ ActivityEvent
+Project ||--o{ ShareLink
+Project ||--o{ CollaborationSession
+Annotation ||--o{ Clause
+Annotation ||--o{ AnnotationVersion
+Annotation ||--o{ Comment
+Annotation ||--o{ Review
+AnnotationVersion ||--o| AnnotationVersion : parent
+Clause ||--o{ Comment
+@enduml

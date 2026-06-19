@@ -1,0 +1,60 @@
+@startuml architecture
+title CLAIRE Studio — Architecture collaboration & versioning
+
+skinparam componentStyle rectangle
+skinparam shadowing false
+
+package "Navigateur (Next.js 14 / TS)" {
+  [Workspace UI] as UI
+  [Zustand store\n(édition, undo/redo, action log)] as Z
+  [React Query\n(REST cache)] as RQ
+  [Client WebSocket] as WS
+  [CRDT Yjs (Y.Doc)] as YJS
+  UI --> Z
+  UI --> RQ
+  UI --> YJS
+  YJS <--> WS
+  Z ..> YJS : bind (observer→set)
+}
+
+cloud "Réseau" {
+  [REST /api/v1/*] as REST
+  [WS /ws/annotations/{id}/] as WSEP
+}
+
+RQ --> REST
+WS --> WSEP
+
+package "Backend Django 5.1" {
+  [DRF ViewSets\ncorpora/annotations/comments/\nreviews/activity/accounts] as DRF
+  [Versioning\nAnnotationVersion + snapshots] as VER
+  [Audit append-only\nActivityEvent] as AUD
+  [Analytics\nvues matérialisées] as ANA
+  [Auth JWT + tickets WS\n+ liens de partage signés] as SEC
+}
+
+package "ASGI (Django Channels)" {
+  [Consumer AnnotationRoom\nprésence • broadcast • snapshot] as CONS
+}
+
+REST --> DRF
+WSEP --> CONS
+DRF --> VER
+DRF --> AUD
+DRF --> ANA
+CONS --> AUD
+CONS ..> VER : snapshot debouncé
+
+database "Postgres / SQLite" as DB
+queue "Redis\n(channel layer, présence, verrous)" as REDIS
+
+DRF --> DB
+VER --> DB
+AUD --> DB
+ANA --> DB
+CONS --> REDIS
+CONS --> DB
+
+[MLflow (RGPD-safe)] as ML
+DRF ..> ML : suivi d'expériences
+@enduml

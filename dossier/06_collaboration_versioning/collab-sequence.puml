@@ -1,0 +1,47 @@
+@startuml collab-sequence
+title Édition concurrente — Channels + WebSocket + CRDT (Yjs)
+
+actor "Alice" as A
+actor "Bruno" as B
+participant "Front A\n(Y.Doc + WS)" as FA
+participant "Front B\n(Y.Doc + WS)" as FB
+participant "REST API" as REST
+participant "Consumer\nAnnotationRoom" as C
+database "Redis\n(channel layer)" as R
+database "Postgres" as DB
+
+== Connexion ==
+A -> REST : GET /annotations/{id}/collab-ticket (JWT)
+REST --> A : ticket signé court
+A -> C : WS connect ?ticket
+C -> C : vérifie ticket + membership
+C -> R : join group annotation.{id}
+C -> DB : ActivityEvent(collab.join)
+C --> FA : awareness (participants, couleurs)
+
+B -> REST : GET collab-ticket
+B -> C : WS connect ?ticket
+C -> R : join group
+C --> FB : awareness (Alice présente)
+C --> FA : awareness (Bruno présent)
+
+== Édition concurrente ==
+A -> FA : re-thème clause @12 = TERMINATION
+FA -> C : Yjs update (binaire) + op_id
+C -> R : broadcast group
+R --> FB : Yjs update
+FB -> FB : merge CRDT (clause @12)
+B -> FB : édite certitude clause @30
+FB -> C : Yjs update
+C -> R : broadcast
+R --> FA : merge (clause @30)
+
+== Persistance & audit ==
+C -> C : debounce 2-5 s
+C -> DB : snapshot Y.Doc + ActivityEvent(clause.retheme, set_certainty)
+
+== Soumission ==
+A -> REST : POST versions {name, description, kind:soumission}
+REST -> DB : AnnotationVersion(snapshot, stats) + ActivityEvent(version.submit)
+REST --> A : version créée
+@enduml

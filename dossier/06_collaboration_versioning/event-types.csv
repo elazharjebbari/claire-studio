@@ -1,0 +1,22 @@
+verb,target_type,description,carries_before_after,undoable,emitted_by
+clause.create,clause,Création d'une clause (pose d'ancre + thème),true,true,annotateur
+clause.delete,clause,Suppression d'une clause,true,true,annotateur
+clause.retheme,clause,Changement de thème d'une clause,true,true,annotateur
+clause.set_certainty,clause,Changement de certitude 0-3,true,true,annotateur
+clause.set_legal_nature,clause,Changement de nature juridique,true,true,annotateur
+clause.set_evidence,clause,Édition de l'evidence span,true,true,annotateur
+clause.set_rationale,clause,Édition du rationale,true,true,annotateur
+divergence.adopt,clause,Adoption d'une proposition LLM (Claude/Codex),true,true,annotateur
+prefill.apply,annotation,Pré-remplissage depuis un juge LLM,true,true,annotateur
+prefill.switch,annotation,Bascule du pré-remplissage Claude<->Codex,true,true,annotateur
+annotation.global_certainty,annotation,Certitude globale,true,true,annotateur
+version.snapshot,version,Snapshot manuel (⌘S),false,false,annotateur
+version.submit,version,Soumission versionnée (nom+description),false,false,annotateur
+annotation.submit,annotation,Passage en statut submitted,true,false,annotateur
+comment.add,comment,Ajout d'un commentaire (phrase/clause/range/document),false,false,tous
+comment.resolve,comment,Résolution d'un fil de commentaire,true,false,tous
+review.add,review,Ajout d'une revue (score+décision),false,false,relecteur
+collab.join,document,Un utilisateur rejoint la salle collaborative,false,false,système
+collab.leave,document,Un utilisateur quitte la salle,false,false,système
+share.create,project,Création d'un lien de partage,false,false,owner
+share.consume,project,Activation d'un lien de partage (membership),false,false,système

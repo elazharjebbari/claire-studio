@@ -1,0 +1,30 @@
+{
+  "title": "Matrice rôles × permissions (projet)",
+  "roles": ["owner", "reviewer", "annotator"],
+  "permissions": {
+    "project.manage_members": { "owner": true, "reviewer": false, "annotator": false },
+    "project.create_share_link": { "owner": true, "reviewer": false, "annotator": false },
+    "project.edit_vocabulary": { "owner": true, "reviewer": false, "annotator": false },
+    "project.edit_flags": { "owner": true, "reviewer": false, "annotator": false },
+    "annotation.create_clause": { "owner": true, "reviewer": false, "annotator": true },
+    "annotation.edit_clause": { "owner": true, "reviewer": false, "annotator": true },
+    "annotation.delete_clause": { "owner": true, "reviewer": false, "annotator": true },
+    "annotation.adopt_divergence": { "owner": true, "reviewer": false, "annotator": true },
+    "annotation.create_version": { "owner": true, "reviewer": false, "annotator": true },
+    "annotation.submit": { "owner": true, "reviewer": false, "annotator": true },
+    "annotation.restore_version": { "owner": true, "reviewer": false, "annotator": true },
+    "comment.add": { "owner": true, "reviewer": true, "annotator": true },
+    "comment.resolve_any": { "owner": true, "reviewer": true, "annotator": false },
+    "comment.resolve_own_thread": { "owner": true, "reviewer": true, "annotator": true },
+    "review.add": { "owner": true, "reviewer": true, "annotator": false },
+    "collab.join": { "owner": true, "reviewer": true, "annotator": true },
+    "insights.view": { "owner": true, "reviewer": true, "annotator": true },
+    "activity.view": { "owner": true, "reviewer": true, "annotator": true },
+    "audit.export": { "owner": true, "reviewer": false, "annotator": false }
+  },
+  "notes": [
+    "Le relecteur lit tout, commente, review, mais n'édite pas les clauses.",
+    "L'annotateur édite ses annotations, versionne, soumet ; ne gère pas le projet.",
+    "L'audit (ActivityEvent) est append-only pour tous; export réservé owner."
+  ]
+}
