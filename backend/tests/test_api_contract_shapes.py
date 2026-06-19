@@ -153,7 +153,7 @@ def test_assignments_shape(admin_client):
         _assert_keys(
             a["document"],
             {"id", "corpusId", "externalId", "title", "language",
-             "nSentences", "checksum"},
+             "nSentences", "checksum", "hasTranslation"},
             where="Assignment.document (DocumentSummary)",
         )
 
@@ -316,7 +316,7 @@ def test_versions_comments_reviews_shape(admin_client):
         _assert_keys(
             comments[0],
             {"id", "annotationId", "clauseId", "sentenceIndex", "authorId",
-             "body", "threadRoot", "resolved", "createdAt"},
+             "body", "threadRoot", "resolved", "createdAt", "scope"},
             where="Comment",
         )
 
