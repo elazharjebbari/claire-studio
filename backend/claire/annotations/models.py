@@ -97,6 +97,10 @@ class Clause(models.Model):
         validators=[MaxValueValidator(3)],
     )
     order = models.PositiveIntegerField(default=0)
+    # Idempotence des écritures (chantier C) : identifiant d'opération côté client.
+    # Un même op réémis (retry réseau) ne crée pas de doublon. Vide = pas
+    # d'idempotence (écritures serveur / héritées).
+    client_op_id = models.CharField(max_length=64, blank=True, default="")
 
     class Meta:
         constraints = [
@@ -104,6 +108,13 @@ class Clause(models.Model):
             models.UniqueConstraint(
                 fields=["annotation", "anchor_sentence"],
                 name="uniq_clause_annotation_anchor",
+            ),
+            # Idempotence (chantier C) : un client_op_id non vide est unique par
+            # annotation — un retry retombe sur la même clause.
+            models.UniqueConstraint(
+                fields=["annotation", "client_op_id"],
+                condition=~models.Q(client_op_id=""),
+                name="uniq_clause_client_op",
             ),
             # INV-6
             models.CheckConstraint(

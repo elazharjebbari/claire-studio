@@ -154,6 +154,13 @@ class AnnotationViewSet(viewsets.ModelViewSet):
     @action(detail=True, methods=["post"], url_path="clauses")
     def add_clause(self, request, pk=None):
         annotation = self.get_object()
+        # Idempotence (chantier C) : un retry portant le même client_op_id retombe
+        # sur la clause déjà créée (200) — pas de doublon, pas de conflit faux positif.
+        client_op_id = (request.data.get("client_op_id") or "").strip()
+        if client_op_id:
+            existing = annotation.clauses.filter(client_op_id=client_op_id).first()
+            if existing is not None:
+                return Response(ClauseSerializer(existing).data, status=status.HTTP_200_OK)
         ser = ClauseSerializer(data=request.data)
         ser.is_valid(raise_exception=True)
         attrs = ser._resolve(annotation, dict(ser.validated_data))
@@ -167,7 +174,9 @@ class AnnotationViewSet(viewsets.ModelViewSet):
         ).exists():
             raise Conflict("A clause already starts on this sentence (INV-2).")
         attrs.setdefault("order", annotation.clauses.count())
-        clause = Clause.objects.create(annotation=annotation, **attrs)
+        clause = Clause.objects.create(
+            annotation=annotation, client_op_id=client_op_id, **attrs
+        )
         return Response(
             ClauseSerializer(clause).data, status=status.HTTP_201_CREATED
         )
