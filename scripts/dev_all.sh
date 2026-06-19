@@ -116,13 +116,17 @@ if [[ "$MOCKS" != "1" ]]; then
   fi
   if [[ -x "$VENV/bin/python" ]]; then
     BPY="$VENV/bin/python"
-    log "Backend : install + migrate + feed ($FEED_ARGS)…"
-    ( cd backend && "$BPY" -m pip install -q --upgrade pip \
+    # Mode LOCAL (hors docker) : on force SQLite + le module de settings dev, en
+    # IGNORANT un éventuel DATABASE_URL orienté docker (@postgres) hérité du .env.
+    LOCAL_ENV="DJANGO_SETTINGS_MODULE=config.settings.dev DATABASE_URL=sqlite:///$ROOT/backend/db.sqlite3 POSTGRES_HOST=localhost"
+    log "Backend : install + migrate + feed ($FEED_ARGS)… (SQLite local)"
+    ( cd backend && export $LOCAL_ENV \
+        && "$BPY" -m pip install -q --upgrade pip \
         && "$BPY" -m pip install -q -r requirements.txt \
         && "$BPY" manage.py migrate \
         && "$BPY" manage.py feed_db $FEED_ARGS ) || warn "Préparation backend incomplète."
 
-    spawn backend bash -c "cd '$ROOT/backend' && '$BPY' manage.py runserver 0.0.0.0:$BACKEND_PORT"
+    spawn backend bash -c "cd '$ROOT/backend' && export $LOCAL_ENV && '$BPY' manage.py runserver 0.0.0.0:$BACKEND_PORT"
 
     # ASGI / Channels : seulement si daphne + app channels présents.
     if "$BPY" -c 'import daphne' 2>/dev/null && [[ -f "$ROOT/backend/config/asgi.py" ]]; then
