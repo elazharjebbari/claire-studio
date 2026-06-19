@@ -32,6 +32,7 @@ Usage::
 
 from __future__ import annotations
 
+import argparse
 import json
 import logging
 from pathlib import Path
@@ -43,6 +44,7 @@ from django.db import transaction
 
 from claire.annotations.models import (
     Annotation,
+    AnnotationSource,
     AnnotationStatus,
     AnnotationVersion,
     Clause,
@@ -102,6 +104,14 @@ class Command(BaseCommand):
             "--password", default=None,
             help="Mot de passe des comptes de démo (défaut: settings.SEED_PASSWORD).",
         )
+        # §7 : la version humaine démarre VIDE par défaut (LLM = suggestions à
+        # adopter). --seed-human restaure le pré-remplissage humain depuis le LLM
+        # (démo/IAA peuplée) ; --no-seed-human force le vide. None ⇒ settings.
+        parser.add_argument(
+            "--seed-human", action=argparse.BooleanOptionalAction, default=None,
+            help="Pré-remplir les annotations humaines depuis le LLM "
+                 "(défaut: settings.SEED_HUMAN_FROM_LLM=False ⇒ brouillons vides).",
+        )
 
     @transaction.atomic
     def handle(self, *args, **options):
@@ -111,6 +121,11 @@ class Command(BaseCommand):
         project_slug = options["project_slug"] or settings.SEED_PROJECT_SLUG
         self.translation_folder = (
             options["translation_folder"] or settings.SEED_TRANSLATION_FOLDER
+        )
+        seed_human = (
+            options["seed_human"]
+            if options["seed_human"] is not None
+            else settings.SEED_HUMAN_FROM_LLM
         )
 
         if options["reset"]:
@@ -178,11 +193,24 @@ class Command(BaseCommand):
                     project=project, document=doc, assignee=user
                 )
 
-        # 6. Human annotations seeded from pre-annotations ------------------
-        n_annotations = self._seed_annotations(
-            project, documents, pre_index, alice, bob, rita
-        )
-        self.stdout.write(f"  annotations: {n_annotations} human (submitted)")
+        # 6. Human annotations ----------------------------------------------
+        # §7 : par défaut la version humaine démarre VIDE (brouillons sans clause) ;
+        # le LLM reste une suggestion (PreAnnotation) à adopter dans le workspace,
+        # jamais copiée dans l'annotation humaine. --seed-human restaure le pré-
+        # remplissage depuis le LLM (démo/IAA peuplée).
+        if seed_human:
+            n_annotations = self._seed_annotations(
+                project, documents, pre_index, alice, bob, rita
+            )
+            self.stdout.write(
+                f"  annotations: {n_annotations} human (seeded from LLM, submitted)"
+            )
+        else:
+            n_drafts = self._seed_empty_drafts(project, documents, alice, bob)
+            self.stdout.write(
+                f"  annotations: {n_drafts} empty human drafts "
+                f"(version humaine vide — LLM = suggestions)"
+            )
 
         # 7. Translations ---------------------------------------------------
         ts = self._declare_translations(corpus)
@@ -270,6 +298,28 @@ class Command(BaseCommand):
         return index
 
     # ----------------------------------------------------------- annotations
+    def _seed_empty_drafts(self, project, documents, *annotators) -> int:
+        """Create EMPTY human draft annotations (one per doc × annotator).
+
+        The human version starts empty (CONTRACT / §7): the annotator opens a
+        draft and adopts LLM suggestions incrementally. No clause is copied from
+        the LLM. Idempotent (get_or_create on the unique (project, doc, annotator)).
+        """
+        count = 0
+        for doc in documents:
+            for annotator in annotators:
+                _, created = Annotation.objects.get_or_create(
+                    project=project,
+                    document=doc,
+                    annotator=annotator,
+                    defaults={
+                        "status": AnnotationStatus.DRAFT,
+                        "source": AnnotationSource.HUMAN,
+                    },
+                )
+                count += int(created)
+        return count
+
     def _seed_annotations(
         self, project, documents, pre_index, alice, bob, rita
     ) -> int:

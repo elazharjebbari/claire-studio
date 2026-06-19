@@ -23,7 +23,11 @@ from django.contrib.auth import get_user_model
 from django.core.management.base import BaseCommand
 from django.db import transaction
 
-from claire.annotations.models import AnnotationStatus
+from claire.annotations.models import (
+    Annotation,
+    AnnotationSource,
+    AnnotationStatus,
+)
 from claire.annotations.services import transition_status
 from claire.collaboration.models import Comment
 from claire.corpora.loaders import (
@@ -115,10 +119,15 @@ class Command(BaseCommand):
         pre_index = self._load_preannotations(project, documents)
         self.stdout.write(f"  pre-annotations: {len(pre_index)}")
 
-        # Example annotations seeded from pre-annotations.
-        self._seed_example_annotations(
-            project, documents, pre_index, annotator, annotator2, reviewer
-        )
+        # Human annotations (§7) : version humaine VIDE par défaut (LLM = suggestions).
+        # SEED_HUMAN_FROM_LLM=True restaure des annotations pré-remplies (démo/IAA).
+        if settings.SEED_HUMAN_FROM_LLM:
+            self._seed_example_annotations(
+                project, documents, pre_index, annotator, annotator2, reviewer
+            )
+        else:
+            n = self._seed_empty_drafts(project, documents, annotator, annotator2)
+            self.stdout.write(f"  annotations: {n} empty human drafts (LLM = suggestions)")
 
         self.stdout.write(self.style.SUCCESS("Demo seed complete."))
 
@@ -245,6 +254,26 @@ class Command(BaseCommand):
                 )
                 index[(doc.external_id, entry["judge"])] = pre
         return index
+
+    def _seed_empty_drafts(self, project, documents, *annotators) -> int:
+        """Create EMPTY human draft annotations (§7) — one per doc × annotator.
+
+        Idempotent; no clause copied from the LLM (suggestions only).
+        """
+        count = 0
+        for doc in documents:
+            for annotator in annotators:
+                _, created = Annotation.objects.get_or_create(
+                    project=project,
+                    document=doc,
+                    annotator=annotator,
+                    defaults={
+                        "status": AnnotationStatus.DRAFT,
+                        "source": AnnotationSource.HUMAN,
+                    },
+                )
+                count += int(created)
+        return count
 
     def _seed_example_annotations(
         self, project, documents, pre_index, annotator, annotator2, reviewer

@@ -25,7 +25,7 @@ requires_archive = pytest.mark.skipif(
 
 @requires_archive
 def test_archive_import_multiversion(admin_user):
-    call_command("feed_db", "--max-docs", "12", verbosity=0)
+    call_command("feed_db", "--max-docs", "12", "--seed-human", verbosity=0)
     call_command("import_annotations_archive", verbosity=0)
 
     # Au moins un document porte plusieurs versions pour un même juge.

@@ -48,7 +48,9 @@ def fed_db(db):
     other modules / count-based tests). feed_db --max-docs 1 is fast enough and
     still exercises the real loaders + camelCase serializers end-to-end.
     """
-    call_command("feed_db", "--max-docs", "1", verbosity=0)
+    # --seed-human : ces tests vérifient les shapes d'annotations/versions/
+    # comments/reviews, qui n'existent qu'avec le pré-remplissage humain (§7).
+    call_command("feed_db", "--max-docs", "1", "--seed-human", verbosity=0)
 
 
 @pytest.fixture

@@ -30,7 +30,7 @@ def test_config_flags_no_auth():
 
 
 def test_insights_and_collab_endpoints(admin_user):
-    call_command("feed_db", "--max-docs", "3", verbosity=0)
+    call_command("feed_db", "--max-docs", "3", "--seed-human", verbosity=0)
     client = _client(admin_user)
 
     # Insights corpus : KPI + documents avec approxPages.
@@ -71,7 +71,7 @@ def test_insights_and_collab_endpoints(admin_user):
 
 def test_attribution_and_presence(admin_user):
     """Attribution + présence d'une annotation existante (200, formes camel)."""
-    call_command("feed_db", "--max-docs", "3", verbosity=0)
+    call_command("feed_db", "--max-docs", "3", "--seed-human", verbosity=0)
     from claire.annotations.models import Annotation
 
     ann = Annotation.objects.first()
