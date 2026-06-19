@@ -478,7 +478,7 @@ export function DocumentPanel({
                   data-testid={`llm-frontier-${s.index}`}
                   className="-mb-0.5 mt-2 flex items-center gap-1 pl-2 text-[10px] text-ink-muted"
                 >
-                  <span aria-hidden className="text-ink-muted/70">frontière LLM</span>
+                  <span aria-hidden className="text-ink-muted">frontière LLM</span>
                   <button
                     type="button"
                     data-testid={`boundary-peek-${s.index}`}

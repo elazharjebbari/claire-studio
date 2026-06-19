@@ -12,6 +12,7 @@ import { useState } from "react";
 import { UserPlus } from "lucide-react";
 import { useWorkspaceStore } from "@/store/workspace";
 import { useFeatureFlags, usePresence } from "@/lib/api/hooks";
+import { readableTextColor } from "@/lib/tokens";
 import { ShareLinkDialog } from "./ShareLinkDialog";
 
 function initials(name: string): string {
@@ -50,8 +51,8 @@ export function CollabBar({ projectSlug }: { projectSlug?: string }) {
             key={p.userId}
             data-testid={`presence-${p.userId}`}
             title={`${p.name}${p.focusSentence != null ? ` · phrase ${p.focusSentence}` : ""}`}
-            className="flex h-5 w-5 items-center justify-center rounded-full border border-elevated text-[9px] font-semibold text-white"
-            style={{ backgroundColor: p.color }}
+            className="flex h-5 w-5 items-center justify-center rounded-full border border-elevated text-[9px] font-semibold"
+            style={{ backgroundColor: p.color, color: readableTextColor(p.color) }}
           >
             {initials(p.name)}
           </span>

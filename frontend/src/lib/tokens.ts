@@ -73,3 +73,28 @@ export function hexToRgbChannels(hex: string): string {
   const b = parseInt(clean.slice(4, 6), 16);
   return `${r} ${g} ${b}`;
 }
+
+/** Luminance relative WCAG d'un canal 0–255 (sRGB linéarisé). */
+function relChannel(c: number): number {
+  const s = c / 255;
+  return s <= 0.03928 ? s / 12.92 : Math.pow((s + 0.055) / 1.055, 2.4);
+}
+
+/**
+ * Couleur de texte lisible (quasi-noir ou blanc) sur un fond hex donné, en
+ * maximisant le ratio de contraste WCAG. Garantit l'accessibilité AA des pastilles
+ * dont la couleur de fond est dynamique (avatars de présence, puces de thème) quelle
+ * que soit la teinte choisie. Repli blanc si la couleur n'est pas un #RRGGBB.
+ */
+export function readableTextColor(bgHex: string): string {
+  const m = /^#?([0-9a-fA-F]{6})$/.exec((bgHex ?? "").trim());
+  if (!m) return "#FFFFFF";
+  const n = parseInt(m[1]!, 16);
+  const L =
+    0.2126 * relChannel((n >> 16) & 255) +
+    0.7152 * relChannel((n >> 8) & 255) +
+    0.0722 * relChannel(n & 255);
+  const contrastWhite = 1.05 / (L + 0.05);
+  const contrastBlack = (L + 0.05) / 0.05;
+  return contrastWhite >= contrastBlack ? "#FFFFFF" : "#0B0F14";
+}
