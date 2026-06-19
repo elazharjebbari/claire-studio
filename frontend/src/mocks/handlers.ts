@@ -375,11 +375,19 @@ export const handlers = [
         maxUses: body.max_uses ?? null,
         usedCount: 0,
         revoked: false,
+        usable: true,
         projectSlug: String(params.slug),
       },
       { status: 201 },
     );
   }),
+  http.post(`${BASE}/share-links/:token/join`, () =>
+    HttpResponse.json({
+      projectSlug: FIXTURE_PROJECT.slug,
+      role: "annotator",
+      joined: true,
+    }),
+  ),
 
   // Insights — exploration des annotations humaines (point 5)
   http.get(`${BASE}/projects/:slug/insights/:documentId`, ({ params }) =>

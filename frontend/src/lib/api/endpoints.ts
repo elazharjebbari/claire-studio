@@ -376,6 +376,13 @@ export function createShareLink(
   });
 }
 
+/** Rejoint un projet via un lien de partage (utilisateur authentifié, chantier D). */
+export function joinShareLink(
+  token: string,
+): Promise<{ projectSlug: string; role: string; joined: boolean }> {
+  return apiFetch(`/share-links/${token}/join`, { method: "POST", body: {} });
+}
+
 // ── Reviews (F10) ─────────────────────────────────────────────────────────────
 
 export function listReviews(annotationId: string): Promise<Paginated<Review>> {
