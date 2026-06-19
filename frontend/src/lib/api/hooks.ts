@@ -324,7 +324,8 @@ export function useAddReview(annotationId: string) {
 export function useCreateVersion(annotationId: string) {
   const qc = useQueryClient();
   return useMutation({
-    mutationFn: (label?: string) => api.createVersion(annotationId, label),
+    mutationFn: (opts?: { name?: string; label?: string; description?: string; kind?: string }) =>
+      api.createVersion(annotationId, opts),
     onSuccess: () => qc.invalidateQueries({ queryKey: qk.versions(annotationId) }),
   });
 }

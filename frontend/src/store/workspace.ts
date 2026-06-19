@@ -15,6 +15,24 @@ import type { Certainty, Clause, PivotClause } from "@/types/contract";
 /** Source affichée dans le DocumentPanel (Q3). */
 export type LlmSource = "human" | "claude" | "codex" | "compare";
 
+/** Juge pré-rempli courant (point 0a). null = aucun pré-remplissage actif. */
+export type PrefillJudge = "claude" | "codex" | null;
+
+/**
+ * Entrée du journal d'actions humaines (point 2). Même taxonomie de verbes que
+ * l'audit serveur (event-types.csv). Fonde l'affichage de l'historique et, au
+ * cycle suivant, l'undo/redo. `localId`/`anchorIndex` permettent de recentrer le
+ * document sur la cible de l'action.
+ */
+export interface ActionEntry {
+  id: string;
+  ts: number;
+  kind: string;
+  label: string;
+  anchorIndex?: number;
+  localId?: string;
+}
+
 export interface DraftClause {
   /** id local tant que non persisté ; sinon l'id serveur. */
   localId: string;
@@ -74,6 +92,10 @@ interface WorkspaceState {
   llmVersion: string | null;
   /** Panneau comparatif latéral Claude vs Codex visible (P4). */
   showComparePanel: boolean;
+  /** Juge pré-rempli courant (point 0a). */
+  prefilledJudge: PrefillJudge;
+  /** Journal des actions humaines de la session (point 2). */
+  actionLog: ActionEntry[];
   // Statut de dirty (modifs non snapshotées).
   dirty: boolean;
 
@@ -99,6 +121,13 @@ interface WorkspaceState {
   setCertainty: (localId: string, value: Certainty) => void;
   /** Charge un seed de pré-annotation comme brouillon éditable (F2). */
   seedFromPreAnnotation: (clauses: PivotClause[], judge: string) => void;
+  /**
+   * Pré-remplissage COMMUTABLE (point 0a). Remplace les clauses issues d'un
+   * pré-remplissage antérieur (`seededFrom` = "preannotation:*") par celles du juge
+   * donné, en PRÉSERVANT les clauses humaines (seededFrom nul). Passer `null`
+   * efface le pré-remplissage. Met à jour `prefilledJudge`.
+   */
+  replacePrefill: (clauses: PivotClause[], judge: PrefillJudge) => void;
   setGhost: (clauses: Array<{ anchorIndex: number; theme: string }>, judge: string) => void;
   toggleUnfairness: () => void;
   toggleGhost: (judge: "claude" | "codex") => void;
@@ -119,12 +148,23 @@ interface WorkspaceState {
   setLlmVersion: (version: string | null) => void;
   /** Bascule le panneau comparatif latéral (P4). */
   toggleComparePanel: () => void;
+  /** Vide le journal d'actions (ex. après soumission). */
+  clearActionLog: () => void;
   markClean: () => void;
   reset: () => void;
 }
 
 let localCounter = 0;
 const nextLocalId = () => `local-${Date.now()}-${(localCounter += 1)}`;
+
+let logCounter = 0;
+const ACTION_LOG_CAP = 200;
+/** Ajoute une entrée au journal d'actions, borné à ACTION_LOG_CAP. */
+function appendLog(log: ActionEntry[], e: Omit<ActionEntry, "id" | "ts">): ActionEntry[] {
+  const entry: ActionEntry = { id: `act-${Date.now()}-${(logCounter += 1)}`, ts: Date.now(), ...e };
+  const next = [...log, entry];
+  return next.length > ACTION_LOG_CAP ? next.slice(next.length - ACTION_LOG_CAP) : next;
+}
 
 function fromClause(c: Clause): DraftClause {
   return {
@@ -164,6 +204,8 @@ export const useWorkspaceStore = create<WorkspaceState>((set, get) => ({
   llmSource: "human",
   llmVersion: null,
   showComparePanel: false,
+  prefilledJudge: null,
+  actionLog: [],
   dirty: false,
 
   init: ({ annotationId, nSentences, clauses }) =>
@@ -182,6 +224,8 @@ export const useWorkspaceStore = create<WorkspaceState>((set, get) => ({
       llmSource: "human",
       llmVersion: null,
       showComparePanel: false,
+      prefilledJudge: null,
+      actionLog: [],
     }),
 
   focusSentence: (index) =>
@@ -219,6 +263,12 @@ export const useWorkspaceStore = create<WorkspaceState>((set, get) => ({
         draftClauses: sortDrafts([...s.draftClauses, draft]),
         selectedClauseId: draft.localId,
         dirty: true,
+        actionLog: appendLog(s.actionLog, {
+          kind: "clause.create",
+          label: `Clause ${theme} créée @${anchorIndex}`,
+          anchorIndex,
+          localId: draft.localId,
+        }),
       };
     }),
 
@@ -234,6 +284,12 @@ export const useWorkspaceStore = create<WorkspaceState>((set, get) => ({
           ),
           selectedClauseId: existing.localId,
           dirty: true,
+          actionLog: appendLog(s.actionLog, {
+            kind: "divergence.adopt",
+            label: `Adopté ${judge} (${theme}) @${anchorIndex}`,
+            anchorIndex,
+            localId: existing.localId,
+          }),
         };
       }
       const draft: DraftClause = {
@@ -251,6 +307,12 @@ export const useWorkspaceStore = create<WorkspaceState>((set, get) => ({
         draftClauses: sortDrafts([...s.draftClauses, draft]),
         selectedClauseId: draft.localId,
         dirty: true,
+        actionLog: appendLog(s.actionLog, {
+          kind: "divergence.adopt",
+          label: `Adopté ${judge} (${theme}) @${anchorIndex}`,
+          anchorIndex,
+          localId: draft.localId,
+        }),
       };
     }),
 
@@ -258,23 +320,52 @@ export const useWorkspaceStore = create<WorkspaceState>((set, get) => ({
     set((s) => ({
       draftClauses: s.draftClauses.filter((c) => c.anchorIndex !== anchorIndex),
       dirty: true,
+      actionLog: appendLog(s.actionLog, {
+        kind: "clause.delete",
+        label: `Clause supprimée @${anchorIndex}`,
+        anchorIndex,
+      }),
     })),
 
   updateDraft: (localId, patch) =>
-    set((s) => ({
-      draftClauses: s.draftClauses.map((c) =>
-        c.localId === localId ? { ...c, ...patch } : c,
-      ),
-      dirty: true,
-    })),
+    set((s) => {
+      const target = s.draftClauses.find((c) => c.localId === localId);
+      const field = Object.keys(patch)[0] ?? "champ";
+      const verb =
+        "theme" in patch ? "clause.retheme" : `clause.set_${field}`;
+      return {
+        draftClauses: s.draftClauses.map((c) =>
+          c.localId === localId ? { ...c, ...patch } : c,
+        ),
+        dirty: true,
+        actionLog: appendLog(s.actionLog, {
+          kind: verb,
+          label:
+            "theme" in patch
+              ? `Thème → ${patch.theme} @${target?.anchorIndex ?? "?"}`
+              : `Édition ${field} @${target?.anchorIndex ?? "?"}`,
+          anchorIndex: target?.anchorIndex,
+          localId,
+        }),
+      };
+    }),
 
   setCertainty: (localId, value) =>
-    set((s) => ({
-      draftClauses: s.draftClauses.map((c) =>
-        c.localId === localId ? { ...c, certainty: value } : c,
-      ),
-      dirty: true,
-    })),
+    set((s) => {
+      const target = s.draftClauses.find((c) => c.localId === localId);
+      return {
+        draftClauses: s.draftClauses.map((c) =>
+          c.localId === localId ? { ...c, certainty: value } : c,
+        ),
+        dirty: true,
+        actionLog: appendLog(s.actionLog, {
+          kind: "clause.set_certainty",
+          label: `Certitude ${value} @${target?.anchorIndex ?? "?"}`,
+          anchorIndex: target?.anchorIndex,
+          localId,
+        }),
+      };
+    }),
 
   seedFromPreAnnotation: (clauses, judge) =>
     set((s) => {
@@ -295,6 +386,46 @@ export const useWorkspaceStore = create<WorkspaceState>((set, get) => ({
         draftClauses: sortDrafts([...s.draftClauses, ...seeded]),
         dirty: true,
         selectedClauseId: seeded[0]?.localId ?? s.selectedClauseId,
+      };
+    }),
+
+  replacePrefill: (clauses, judge) =>
+    set((s) => {
+      // 1) On retire UNIQUEMENT les clauses issues d'un pré-remplissage antérieur
+      //    (seededFrom = "preannotation:*"), en PRÉSERVANT l'humain (seededFrom nul)
+      //    et les arbitrages (resolvedFrom).
+      const human = s.draftClauses.filter(
+        (c) => !(c.seededFrom?.startsWith("preannotation:") && !c.resolvedFrom),
+      );
+      const humanAnchors = new Set(human.map((c) => c.anchorIndex));
+      // 2) On seed le nouveau juge sur les ancres libres (jamais par-dessus l'humain).
+      const seeded: DraftClause[] =
+        judge == null
+          ? []
+          : clauses
+              .filter((c) => !humanAnchors.has(c.anchor_index))
+              .map((c) => ({
+                localId: nextLocalId(),
+                anchorIndex: c.anchor_index,
+                theme: c.theme,
+                legalNature: c.legal_nature ?? null,
+                evidenceSpan: c.evidence_span ?? "",
+                rationale: c.rationale ?? "",
+                certainty: c.certainty ?? null,
+                seededFrom: `preannotation:${judge}`,
+                resolvedFrom: null,
+              }));
+      return {
+        draftClauses: sortDrafts([...human, ...seeded]),
+        prefilledJudge: judge,
+        dirty: true,
+        actionLog: appendLog(s.actionLog, {
+          kind: judge == null ? "prefill.clear" : "prefill.switch",
+          label:
+            judge == null
+              ? "Pré-remplissage effacé"
+              : `Pré-rempli depuis ${judge} (${seeded.length} clauses)`,
+        }),
       };
     }),
 
@@ -362,6 +493,8 @@ export const useWorkspaceStore = create<WorkspaceState>((set, get) => ({
 
   toggleComparePanel: () => set((s) => ({ showComparePanel: !s.showComparePanel })),
 
+  clearActionLog: () => set({ actionLog: [] }),
+
   markClean: () => set({ dirty: false }),
 
   reset: () =>
@@ -379,6 +512,8 @@ export const useWorkspaceStore = create<WorkspaceState>((set, get) => ({
       llmSource: "human",
       llmVersion: null,
       showComparePanel: false,
+      prefilledJudge: null,
+      actionLog: [],
       dirty: false,
     }),
 }));

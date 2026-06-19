@@ -110,10 +110,22 @@ export const WORKSPACE_TOUR_STEPS: TourStep[] = [
       "Notez votre confiance sur l'échelle 0–3. Au clavier : touches 0, 1, 2 ou 3 sur la clause sélectionnée.",
   },
   {
-    element: '[data-testid="prefill-claude"]',
-    title: "Pré-remplir depuis un LLM",
+    element: '[data-testid="document-switcher"]',
+    title: "Changer de document",
     description:
-      "Chargez les ancres et thèmes proposés par Claude (ou Codex) comme brouillon éditable. La provenance reste tracée.",
+      "Recherchez un document (autocomplétion) et naviguez d'un contrat à l'autre. Un voyant « ● brouillon » signale les modifications non enregistrées.",
+  },
+  {
+    element: '[data-testid="prefill-switch"]',
+    title: "Pré-remplir depuis un LLM (commutable)",
+    description:
+      "Chargez les ancres et thèmes proposés par Claude ou Codex comme brouillon éditable, et basculez entre les deux : vos clauses humaines sont préservées. « Aucun » retire le pré-remplissage.",
+  },
+  {
+    element: '[data-testid="toggle-history"]',
+    title: "Historique des actions",
+    description:
+      "Ouvrez le journal de vos actions (création, thème, certitude, arbitrage…). Cliquez une entrée pour revenir sur la phrase concernée. Socle de l'annulation/rétablissement à venir.",
   },
   {
     element: '[data-testid="toggle-unfairness"]',

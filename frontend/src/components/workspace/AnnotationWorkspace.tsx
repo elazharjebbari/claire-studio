@@ -14,6 +14,7 @@ import { TocPanel } from "./TocPanel";
 import { DocumentPanel } from "./DocumentPanel";
 import { InspectorPanel } from "./InspectorPanel";
 import { WorkspaceToolbar } from "./WorkspaceToolbar";
+import { HistoryPanel } from "./HistoryPanel";
 import { useWorkspaceShortcuts } from "./useShortcuts";
 
 export function AnnotationWorkspace({ annotationId }: { annotationId: string }) {
@@ -25,6 +26,7 @@ export function AnnotationWorkspace({ annotationId }: { annotationId: string }) 
   const reset = useWorkspaceStore((s) => s.reset);
   const [snapshotFn, setSnapshotFn] = useState<(() => void) | null>(null);
   const registerSnapshot = useCallback((fn: () => void) => setSnapshotFn(() => fn), []);
+  const [showHistory, setShowHistory] = useState(false);
 
   // Initialise le store local dès que l'annotation + le document sont chargés.
   useEffect(() => {
@@ -66,8 +68,10 @@ export function AnnotationWorkspace({ annotationId }: { annotationId: string }) 
         projectSlug={annotation.projectSlug}
         documentId={annotation.documentId}
         onSnapshotRef={registerSnapshot}
+        onToggleHistory={() => setShowHistory((v) => !v)}
       />
-      <div className="min-h-0 flex-1">
+      <div className="flex min-h-0 flex-1">
+        <div className="min-w-0 flex-1">
         <ResizablePanels
           left={<TocPanel docTitle={doc.title} />}
           center={
@@ -87,6 +91,8 @@ export function AnnotationWorkspace({ annotationId }: { annotationId: string }) 
             />
           }
         />
+        </div>
+        {showHistory && <HistoryPanel onClose={() => setShowHistory(false)} />}
       </div>
     </div>
   );

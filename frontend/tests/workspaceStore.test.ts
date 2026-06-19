@@ -181,6 +181,54 @@ describe("workspace store", () => {
     expect(useWorkspaceStore.getState().llmVersion).toBe("v9.2");
   });
 
+  const pivot = (anchor_index: number, theme: string) => ({
+    anchor_index,
+    theme,
+    legal_nature: null,
+    evidence_span: "",
+    rationale: "",
+    certainty: 0 as const,
+  });
+
+  it("replacePrefill bascule de juge sans écraser l'annotation humaine (point 0a)", () => {
+    // anchor 0 = clause humaine (baseClauses, seededFrom null).
+    useWorkspaceStore.getState().replacePrefill([pivot(5, "X"), pivot(0, "ZZ")], "claude");
+    let drafts = useWorkspaceStore.getState().draftClauses;
+    // anchor 0 humain préservé (pas écrasé par le seed), anchor 5 seedé Claude.
+    expect(drafts.find((c) => c.anchorIndex === 0)?.theme).toBe("META");
+    expect(drafts.find((c) => c.anchorIndex === 5)?.seededFrom).toBe("preannotation:claude");
+    expect(useWorkspaceStore.getState().prefilledJudge).toBe("claude");
+
+    // Bascule vers Codex : le seed Claude @5 disparaît, le seed Codex @7 apparaît.
+    useWorkspaceStore.getState().replacePrefill([pivot(7, "Y")], "codex");
+    drafts = useWorkspaceStore.getState().draftClauses;
+    expect(drafts.find((c) => c.anchorIndex === 5)).toBeUndefined();
+    expect(drafts.find((c) => c.anchorIndex === 7)?.seededFrom).toBe("preannotation:codex");
+    expect(drafts.find((c) => c.anchorIndex === 0)?.theme).toBe("META"); // humain intact
+    expect(useWorkspaceStore.getState().prefilledJudge).toBe("codex");
+
+    // Effacer le pré-remplissage : ne reste que l'humain.
+    useWorkspaceStore.getState().replacePrefill([], null);
+    drafts = useWorkspaceStore.getState().draftClauses;
+    expect(drafts.every((c) => !c.seededFrom?.startsWith("preannotation:"))).toBe(true);
+    expect(drafts.find((c) => c.anchorIndex === 0)?.theme).toBe("META");
+    expect(useWorkspaceStore.getState().prefilledJudge).toBeNull();
+  });
+
+  it("journalise les actions et clearActionLog vide le journal (point 2)", () => {
+    expect(useWorkspaceStore.getState().actionLog).toHaveLength(0);
+    useWorkspaceStore.getState().setBoundary(5, "TERMINATION");
+    const id = useWorkspaceStore.getState().draftClauses.find((c) => c.anchorIndex === 5)!.localId;
+    useWorkspaceStore.getState().setCertainty(id, 3);
+    const log = useWorkspaceStore.getState().actionLog;
+    expect(log.length).toBe(2);
+    expect(log[0]!.kind).toBe("clause.create");
+    expect(log[1]!.kind).toBe("clause.set_certainty");
+    expect(log[0]!.anchorIndex).toBe(5);
+    useWorkspaceStore.getState().clearActionLog();
+    expect(useWorkspaceStore.getState().actionLog).toHaveLength(0);
+  });
+
   it("init et reset réinitialisent displayLang et selectedClauseIds", () => {
     useWorkspaceStore.getState().setDisplayLang("fr");
     useWorkspaceStore.getState().setSelectedClauses(["c1"]);

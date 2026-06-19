@@ -1,14 +1,15 @@
 "use client";
 
 /**
- * Barre d'outils du workspace : pré-remplissage LLM (F2), snapshot (F3), certitude
- * globale (F10), soumission (F1). Bandeau de raccourcis + indicateur dirty.
+ * Barre d'outils du workspace : navigation documents (point 0b), pré-remplissage LLM
+ * COMMUTABLE (point 0a), historique d'actions (point 2), snapshot (F3), certitude
+ * globale (F10), soumission VERSIONNÉE (point 2). Indicateur dirty + tour.
  */
 
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import { Button, StatusPill } from "@/components/ui/primitives";
 import { CertaintyPicker } from "@/components/ui/CertaintyPicker";
-import { useWorkspaceStore } from "@/store/workspace";
+import { useWorkspaceStore, type PrefillJudge } from "@/store/workspace";
 import {
   useAnnotation,
   useCreateVersion,
@@ -17,62 +18,76 @@ import {
 } from "@/lib/api/hooks";
 import { preClausesToPivot } from "@/lib/pivot";
 import { WorkspaceTourButton } from "./WorkspaceTourButton";
-import type { Certainty, Judge } from "@/types/contract";
+import { DocumentSwitcher } from "./DocumentSwitcher";
+import { SubmitDialog } from "./SubmitDialog";
+import type { Certainty } from "@/types/contract";
 
 export function WorkspaceToolbar({
   annotationId,
   projectSlug,
   documentId,
   onSnapshotRef,
+  onToggleHistory,
 }: {
   annotationId: string;
   projectSlug: string;
   documentId: string;
   onSnapshotRef?: (fn: () => void) => void;
+  onToggleHistory?: () => void;
 }) {
   const { data: annotation } = useAnnotation(annotationId);
   const { data: preClaude } = usePreAnnotations(projectSlug, documentId);
-  const seedFromPre = useWorkspaceStore((s) => s.seedFromPreAnnotation);
+  const replacePrefill = useWorkspaceStore((s) => s.replacePrefill);
+  const prefilledJudge = useWorkspaceStore((s) => s.prefilledJudge);
   const setGhost = useWorkspaceStore((s) => s.setGhost);
   const dirty = useWorkspaceStore((s) => s.dirty);
   const markClean = useWorkspaceStore((s) => s.markClean);
+  const draftClauses = useWorkspaceStore((s) => s.draftClauses);
 
   const patchAnnotation = usePatchAnnotation(annotationId);
-  // On déstructure `mutate` (référence stable en react-query v5) plutôt que l'objet
-  // mutation entier (recréé à chaque rendu) → `snapshot` reste stable, pas de boucle d'effet.
   const { mutate: createVersionMutate } = useCreateVersion(annotationId);
   const [snapshotMsg, setSnapshotMsg] = useState<string | null>(null);
+  const [submitOpen, setSubmitOpen] = useState(false);
+  const [submitting, setSubmitting] = useState(false);
 
-  function prefillFrom(judge: Judge) {
+  // Pré-remplissage commutable (point 0a) : remplace proprement les clauses seedées.
+  function setPrefill(judge: PrefillJudge) {
+    if (judge == null) {
+      replacePrefill([], null);
+      return;
+    }
     const pre = preClaude?.results.find((p) => p.judge === judge);
     if (!pre) return;
-    seedFromPre(preClausesToPivot(pre.clauses), judge);
-    // Toutes les frontières LLM restent en fantôme pour comparaison.
-    setGhost(
-      pre.clauses.map((c) => ({ anchorIndex: c.anchorIndex, theme: c.themeCode })),
-      judge,
-    );
+    replacePrefill(preClausesToPivot(pre.clauses), judge);
   }
 
+  const stats = useMemo(() => {
+    const withC = draftClauses.filter((c) => c.certainty != null);
+    const mean =
+      withC.length === 0
+        ? null
+        : withC.reduce((a, c) => a + (c.certainty ?? 0), 0) / withC.length;
+    return { clauses: draftClauses.length, meanCertainty: mean };
+  }, [draftClauses]);
+
   const snapshot = useCallback(() => {
-    createVersionMutate("Snapshot manuel", {
-      onSuccess: () => {
-        markClean();
-        setSnapshotMsg("Snapshot enregistré");
-        setTimeout(() => setSnapshotMsg(null), 2000);
+    createVersionMutate(
+      { label: "Snapshot manuel", kind: "snapshot_manuel" },
+      {
+        onSuccess: () => {
+          markClean();
+          setSnapshotMsg("Snapshot enregistré");
+          setTimeout(() => setSnapshotMsg(null), 2000);
+        },
       },
-    });
+    );
   }, [createVersionMutate, markClean]);
 
-  // Expose la fonction snapshot au parent APRÈS le rendu (jamais pendant le rendu,
-  // sinon setState du parent pendant le rendu de l'enfant → boucle infinie).
   useEffect(() => {
     onSnapshotRef?.(snapshot);
   }, [onSnapshotRef, snapshot]);
 
-  // Charge les fantômes des DEUX juges dès que les pré-annotations arrivent, indépendamment
-  // de l'adoption (F2 : overlay de comparaison). DocumentPanel n'affiche un fantôme que sur
-  // une phrase non encore ancrée par l'humain.
+  // Fantômes des deux juges pour l'overlay de comparaison (inchangé).
   useEffect(() => {
     if (!preClaude) return;
     for (const p of preClaude.results) {
@@ -83,8 +98,39 @@ export function WorkspaceToolbar({
     }
   }, [preClaude, setGhost]);
 
+  // Soumission versionnée (point 2) : crée la version de soumission puis passe submitted.
+  function confirmSubmit(payload: { name: string; description: string }) {
+    setSubmitting(true);
+    createVersionMutate(
+      { name: payload.name, description: payload.description, kind: "soumission" },
+      {
+        onSuccess: () => {
+          patchAnnotation.mutate(
+            { status: "submitted" },
+            {
+              onSettled: () => {
+                markClean();
+                setSubmitting(false);
+                setSubmitOpen(false);
+              },
+            },
+          );
+        },
+        onError: () => setSubmitting(false),
+      },
+    );
+  }
+
+  const PREFILL_OPTIONS: { value: PrefillJudge; label: string; testid: string }[] = [
+    { value: null, label: "Aucun", testid: "prefill-none" },
+    { value: "claude", label: "Claude", testid: "prefill-claude" },
+    { value: "codex", label: "Codex", testid: "prefill-codex" },
+  ];
+
   return (
-    <div className="flex items-center gap-3 border-b border-line bg-elevated px-4 py-2">
+    <div className="flex flex-wrap items-center gap-3 border-b border-line bg-elevated px-4 py-2">
+      <DocumentSwitcher projectSlug={projectSlug} currentDocumentId={documentId} />
+
       <StatusPill status={annotation?.status ?? "draft"} />
       {dirty && (
         <span className="text-[11px] text-amber-400" data-testid="dirty-indicator">
@@ -92,22 +138,46 @@ export function WorkspaceToolbar({
         </span>
       )}
 
-      <div className="ml-2 flex items-center gap-1">
-        <Button
-          variant="subtle"
-          data-testid="prefill-claude"
-          onClick={() => prefillFrom("claude")}
-        >
-          Pré-remplir depuis Claude
-        </Button>
-        <Button
-          variant="subtle"
-          data-testid="prefill-codex"
-          onClick={() => prefillFrom("codex")}
-        >
-          Codex
-        </Button>
+      {/* Pré-remplissage commutable (point 0a) */}
+      <div
+        role="radiogroup"
+        aria-label="Pré-remplir depuis un juge LLM"
+        data-testid="prefill-switch"
+        className="ml-1 flex items-center gap-1 rounded-md border border-line bg-panel-muted/40 p-0.5"
+      >
+        <span className="px-1 text-[11px] text-ink-muted">Pré-remplir</span>
+        {PREFILL_OPTIONS.map((opt) => {
+          const active = prefilledJudge === opt.value;
+          return (
+            <button
+              key={opt.testid}
+              type="button"
+              role="radio"
+              aria-checked={active}
+              data-testid={opt.testid}
+              onClick={() => setPrefill(opt.value)}
+              className={
+                "rounded px-2 py-1 text-xs font-medium transition-colors " +
+                (active
+                  ? "bg-accent/15 text-ink ring-1 ring-accent/40"
+                  : "text-ink-muted hover:bg-panel-muted")
+              }
+            >
+              {opt.label}
+            </button>
+          );
+        })}
       </div>
+
+      <button
+        type="button"
+        data-testid="toggle-history"
+        onClick={onToggleHistory}
+        title="Historique des actions"
+        className="rounded-md border border-line px-2 py-1 text-xs text-ink-muted hover:bg-panel-muted"
+      >
+        🕑 Historique
+      </button>
 
       <WorkspaceTourButton />
 
@@ -128,14 +198,19 @@ export function WorkspaceToolbar({
         <Button variant="outline" data-testid="snapshot-btn" onClick={snapshot}>
           Snapshot ⌘S
         </Button>
-        <Button
-          variant="primary"
-          data-testid="submit-btn"
-          onClick={() => patchAnnotation.mutate({ status: "submitted" })}
-        >
+        <Button variant="primary" data-testid="submit-btn" onClick={() => setSubmitOpen(true)}>
           Soumettre
         </Button>
       </div>
+
+      {submitOpen && (
+        <SubmitDialog
+          stats={stats}
+          busy={submitting}
+          onCancel={() => setSubmitOpen(false)}
+          onConfirm={confirmSubmit}
+        />
+      )}
     </div>
   );
 }

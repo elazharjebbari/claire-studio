@@ -186,11 +186,16 @@ export function listVersions(annotationId: string): Promise<Paginated<Annotation
 
 export function createVersion(
   annotationId: string,
-  label?: string,
+  opts?: { name?: string; label?: string; description?: string; kind?: string },
 ): Promise<AnnotationVersion> {
   return apiFetch<AnnotationVersion>(`/annotations/${annotationId}/versions`, {
     method: "POST",
-    body: { label },
+    body: {
+      name: opts?.name,
+      label: opts?.label ?? opts?.name,
+      description: opts?.description,
+      kind: opts?.kind,
+    },
   });
 }
 

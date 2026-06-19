@@ -234,7 +234,10 @@ export function DocumentPanel({
     <>
       <div className="flex justify-center gap-4 px-6 py-8">
        <div className="w-full max-w-reading font-reading text-[17px] leading-reading text-ink">
-        <div className="mb-4 flex flex-wrap items-center justify-end gap-3 text-sm">
+        <div
+          data-testid="document-controls"
+          className="sticky top-0 z-20 -mx-2 mb-4 flex flex-wrap items-center justify-end gap-3 border-b border-line/40 bg-reading/90 px-2 py-2 text-sm backdrop-blur supports-[backdrop-filter]:bg-reading/75"
+        >
           {/* P3 : sélecteur de version TOUJOURS visible dès qu'il existe des versions,
               indépendamment de la source. Le switch n'affecte QUE l'overlay LLM
               (clé react-query) ; les clauses humaines ne sont jamais touchées. */}

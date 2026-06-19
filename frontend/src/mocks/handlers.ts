@@ -217,7 +217,12 @@ export const handlers = [
     ),
   ),
   http.post(`${BASE}/annotations/:id/versions`, async ({ params, request }) => {
-    const body = (await request.json().catch(() => ({}))) as { label?: string };
+    const body = (await request.json().catch(() => ({}))) as {
+      label?: string;
+      name?: string;
+      description?: string;
+      kind?: string;
+    };
     const next = FIXTURE_VERSIONS.length + 1;
     return HttpResponse.json(
       {
@@ -225,7 +230,10 @@ export const handlers = [
         annotationId: String(params.id),
         number: next,
         authorId: "u-alice",
-        label: body.label ?? `Snapshot v${next}`,
+        label: body.name ?? body.label ?? `Snapshot v${next}`,
+        name: body.name ?? body.label ?? `Snapshot v${next}`,
+        description: body.description ?? null,
+        kind: body.kind ?? "snapshot_manuel",
         createdAt: new Date().toISOString(),
         snapshot: {
           doc: "Fitbit",
