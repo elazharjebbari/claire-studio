@@ -77,6 +77,7 @@ INSTALLED_APPS = [
     "django.contrib.messages",
     "django.contrib.staticfiles",
     # 3rd party
+    "channels",
     "rest_framework",
     "rest_framework_simplejwt",
     "rest_framework_simplejwt.token_blacklist",
@@ -129,6 +130,20 @@ TEMPLATES = [
 
 WSGI_APPLICATION = "config.wsgi.application"
 ASGI_APPLICATION = "config.asgi.application"
+
+# --- Channels (temps réel, chantier D) ---------------------------------------
+# Présence/collaboration live via WebSocket. Couche InMemory par défaut (dev/test,
+# mono-process) ; Redis en prod (multi-workers) via CHANNELS_USE_REDIS=true +
+# channels-redis. Le flag FEATURE_FLAGS.realtime_collaboration pilote l'activation UI.
+if env.bool("CHANNELS_USE_REDIS", default=False):
+    CHANNEL_LAYERS = {
+        "default": {
+            "BACKEND": "channels_redis.core.RedisChannelLayer",
+            "CONFIG": {"hosts": [env("REDIS_URL", default="redis://localhost:6379/0")]},
+        }
+    }
+else:
+    CHANNEL_LAYERS = {"default": {"BACKEND": "channels.layers.InMemoryChannelLayer"}}
 
 # --- Database (SQLite dev, Postgres-ready via DATABASE_URL) ------------------
 DATABASES = {

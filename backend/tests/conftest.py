@@ -1,5 +1,20 @@
 """Pytest fixtures & factory-boy factories for CLAIRE Studio tests."""
 
+# Shim daphne (chantier D) : channels.testing.__init__ importe son serveur de test
+# live (qui dépend de daphne) — non utilisé ici, et daphne n'est pas installable dans
+# cet environnement (deps natives sans toolchain). On stubbe daphne.testing pour
+# pouvoir importer WebsocketCommunicator. La couche WS réelle reste InMemory en test.
+import sys as _sys
+import types as _types
+
+if "daphne.testing" not in _sys.modules:
+    _daphne = _types.ModuleType("daphne")
+    _daphne_testing = _types.ModuleType("daphne.testing")
+    _daphne_testing.DaphneProcess = type("DaphneProcess", (), {})
+    _daphne.testing = _daphne_testing
+    _sys.modules.setdefault("daphne", _daphne)
+    _sys.modules["daphne.testing"] = _daphne_testing
+
 import factory
 import pytest
 from django.contrib.auth import get_user_model

@@ -7,8 +7,13 @@ drf-spectacular>=0.27
 djangorestframework-camel-case>=1.4
 django-environ>=0.11
 PyYAML>=6.0
+# realtime (chantier D) — WebSocket via Channels.
+channels>=4.0
+channels-redis>=4.2  # prod : couche Redis (InMemory en dev/test)
+daphne>=4.0          # serveur ASGI (prod/dev) ; non requis pour les tests
 # dev/test
 pytest>=8.0
 pytest-django>=4.8
+pytest-asyncio>=0.23
 factory-boy>=3.3
 ruff>=0.4
