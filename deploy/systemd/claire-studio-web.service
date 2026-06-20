@@ -1,0 +1,15 @@
+[Unit]
+Description=CLAIRE Studio - frontend Next.js
+After=network.target claire-studio.service
+
+[Service]
+User=www-data
+Group=www-data
+WorkingDirectory=/var/www/claire-studio/frontend
+Environment=NODE_ENV=production
+ExecStart=/var/www/claire-studio/frontend/node_modules/.bin/next start -p 8016
+Restart=always
+RestartSec=3
+
+[Install]
+WantedBy=multi-user.target

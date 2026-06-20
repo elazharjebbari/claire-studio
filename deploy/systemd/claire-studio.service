@@ -1,0 +1,15 @@
+[Unit]
+Description=CLAIRE Studio - backend ASGI (daphne / Channels)
+After=network.target postgresql.service redis-server.service
+
+[Service]
+User=www-data
+Group=www-data
+WorkingDirectory=/var/www/claire-studio/backend
+EnvironmentFile=/var/www/claire-studio/backend/.env
+ExecStart=/var/www/claire-studio/backend/.venv/bin/daphne -b 127.0.0.1 -p 8015 config.asgi:application
+Restart=always
+RestartSec=3
+
+[Install]
+WantedBy=multi-user.target
