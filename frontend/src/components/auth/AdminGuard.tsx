@@ -44,7 +44,7 @@ export function AdminGuard({ children }: { children: React.ReactNode }) {
           actuel ne dispose pas de ces droits.
         </p>
         <Link
-          href="/"
+          href="/home"
           className="inline-flex items-center rounded-md border border-line bg-panel px-3 py-1.5 text-sm font-medium hover:bg-panel-muted"
         >
           Retour à l’espace d’annotation

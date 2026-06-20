@@ -30,7 +30,7 @@ function VerifyEmailInner() {
   return (
     <Panel className="w-full max-w-sm p-6 text-center" data-testid="verify-email">
       <h1 className="text-xl font-semibold text-ink">
-        CLAIRE<span className="text-accent"> Studio</span>
+        <span className="font-display font-light tracking-[0.12em]">Pactiva</span>
       </h1>
       {phase === "verifying" && (
         <p className="mt-4 text-sm text-ink-muted">Vérification en cours…</p>
@@ -62,7 +62,7 @@ function VerifyEmailInner() {
 
 export default function VerifyEmailPage() {
   return (
-    <div className="flex min-h-screen items-center justify-center bg-bg px-4 text-ink">
+    <div className="theme-light flex min-h-screen items-center justify-center bg-bg px-4 text-ink">
       <Suspense fallback={<p className="text-sm text-ink-muted">Chargement…</p>}>
         <VerifyEmailInner />
       </Suspense>

@@ -50,7 +50,7 @@ function ResetPasswordInner() {
   return (
     <Panel className="w-full max-w-sm p-6" data-testid="reset-password">
       <h1 className="text-xl font-semibold">
-        CLAIRE<span className="text-accent"> Studio</span>
+        <span className="font-display font-light tracking-[0.12em]">Pactiva</span>
       </h1>
       {done ? (
         <div data-testid="reset-done" className="mt-4 text-sm text-ink-muted">
@@ -96,7 +96,7 @@ function ResetPasswordInner() {
 
 export default function ResetPasswordPage() {
   return (
-    <div className="flex min-h-screen items-center justify-center bg-bg px-4 text-ink">
+    <div className="theme-light flex min-h-screen items-center justify-center bg-bg px-4 text-ink">
       <Suspense fallback={<p className="text-sm text-ink-muted">Chargement…</p>}>
         <ResetPasswordInner />
       </Suspense>

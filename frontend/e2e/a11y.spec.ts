@@ -13,8 +13,8 @@ const WCAG_TAGS = ["wcag2a", "wcag2aa", "wcag21a", "wcag21aa"];
 
 test.describe("Accessibilité (axe-core)", () => {
   test("l'accueil n'a pas de violation sérieuse/critique", async ({ page }) => {
-    await page.goto("/");
-    await expect(page.getByRole("heading", { name: "CLAIRE Studio" })).toBeVisible();
+    await page.goto("/home");
+    await expect(page.getByRole("heading", { name: "Atelier Pactiva" })).toBeVisible();
 
     const results = await new AxeBuilder({ page }).withTags(WCAG_TAGS).analyze();
     const serious = results.violations.filter(

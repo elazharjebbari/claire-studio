@@ -31,7 +31,7 @@ export function CommandPalette() {
 
   const commands: Command[] = useMemo(
     () => [
-      { id: "go-resume", label: "Reprendre le travail", hint: "annotate", run: () => router.push("/") },
+      { id: "go-resume", label: "Reprendre le travail", hint: "annotate", run: () => router.push("/home") },
       { id: "go-projects", label: "Aller aux projets", run: () => router.push("/projects") },
       {
         id: "go-dashboard",

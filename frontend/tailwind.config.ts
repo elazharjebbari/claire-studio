@@ -32,11 +32,20 @@ const config: Config = {
         accent: "rgb(var(--surface-accent) / <alpha-value>)",
         "accent-fg": "rgb(var(--surface-on-accent) / <alpha-value>)",
         reading: "rgb(var(--surface-reading) / <alpha-value>)",
+        // Accent doré de marque (rare) + états sémantiques (bascule clair/sombre via CSS vars).
+        gold: "rgb(var(--brand-gold) / <alpha-value>)",
+        success: "rgb(var(--sem-success) / <alpha-value>)",
+        warning: "rgb(var(--sem-warning) / <alpha-value>)",
+        danger: "rgb(var(--sem-danger) / <alpha-value>)",
+        info: "rgb(var(--sem-info) / <alpha-value>)",
+        // Échelles de marque (fixes, identiques aux deux thèmes) : `bg-brand-navy-500`, `text-brand-gold-500`.
+        brand: { navy: tokens.brand.navy, gold: tokens.brand.gold },
         // Couleurs de thème de clause, accessibles en `text-theme-META`, etc.
         theme: themeColorVars,
       },
       fontFamily: {
         sans: ["var(--font-sans)", "system-ui", "sans-serif"],
+        display: ["var(--font-display)", "var(--font-sans)", "system-ui", "sans-serif"],
         reading: ["var(--font-reading)", "Georgia", "serif"],
         mono: ["var(--font-mono)", "ui-monospace", "monospace"],
       },

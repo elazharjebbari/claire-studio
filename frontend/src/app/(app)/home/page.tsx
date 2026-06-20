@@ -1,6 +1,6 @@
 "use client";
 
-/** Accueil — explication courte du produit + reprise rapide (navigation.md §1, §5). */
+/** Accueil applicatif (/home) — reprise rapide du travail (navigation.md §1, §5). */
 
 import Link from "next/link";
 import { useAssignments, useProjects } from "@/lib/api/hooks";
@@ -20,7 +20,7 @@ export default function HomePage() {
 
   return (
     <div className="mx-auto max-w-4xl px-6 py-10">
-      <h1 className="text-2xl font-semibold text-ink">CLAIRE Studio</h1>
+      <h1 className="font-display text-2xl font-semibold text-ink">Atelier Pactiva</h1>
       <p className="mt-2 max-w-2xl text-ink-muted">
         Atelier d’annotation de clauses contractuelles : segmentez le document en
         clauses, attribuez un thème (vocabulaire fermé), notez votre certitude, et

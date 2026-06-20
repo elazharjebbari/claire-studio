@@ -31,13 +31,13 @@ test.describe("Centre d'aide", () => {
   });
 
   test("le lien d'aide de la TopBar mène au centre d'aide", async ({ page }) => {
-    await page.goto("/");
+    await page.goto("/home");
     await page.getByTestId("help-link").click();
     await expect(page.getByTestId("help-center")).toBeVisible();
   });
 
   test("l'onglet Documentation expose le guide du corpus & des catégories", async ({ page }) => {
-    await page.goto("/");
+    await page.goto("/home");
     await page.getByTestId("docs-link").click();
     await expect(page.getByTestId("help-center")).toBeVisible();
     // Pages de documentation annotateur présentes dans la navigation.

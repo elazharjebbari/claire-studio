@@ -11,10 +11,10 @@ export default function PublicProjectsPage() {
   const projects = data?.results ?? [];
 
   return (
-    <main className="min-h-screen bg-bg text-ink">
+    <main className="theme-light min-h-screen bg-bg text-ink">
       <header className="mx-auto flex max-w-4xl items-center justify-between px-6 py-5">
         <Link href="/welcome" className="text-lg font-semibold">
-          CLAIRE<span className="text-accent"> Studio</span>
+          <span className="font-display font-light tracking-[0.12em]">Pactiva</span>
         </Link>
         <Link href="/login" className="text-sm text-ink-muted hover:text-ink">
           Se connecter

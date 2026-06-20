@@ -5,6 +5,7 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { cn } from "@/lib/cn";
+import { Logo } from "@/components/brand/Logo";
 import { useUiStore } from "@/store/ui";
 import { useCurrentProjectSlug } from "@/lib/useCurrentProject";
 import { useMe } from "@/lib/api/hooks";
@@ -63,11 +64,9 @@ export function Sidebar() {
       )}
     >
       <div className="flex items-center justify-between px-3 py-3">
-        {!collapsed && (
-          <Link href="/" className="font-semibold text-ink">
-            CLAIRE<span className="text-accent"> Studio</span>
-          </Link>
-        )}
+        <Link href="/home" aria-label="Pactiva — accueil" className="text-ink">
+          <Logo size={20} withWordmark={!collapsed} />
+        </Link>
         <button
           type="button"
           onClick={toggle}

@@ -6,6 +6,7 @@ import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
 import { Suspense, useState } from "react";
 import { login } from "@/lib/api/endpoints";
+import { Logo } from "@/components/brand/Logo";
 import { Button, Field, Panel } from "@/components/ui/primitives";
 
 function LoginInner() {
@@ -23,7 +24,7 @@ function LoginInner() {
     try {
       await login(username, password);
       const next = searchParams.get("next");
-      router.push(next ? decodeURIComponent(next) : "/");
+      router.push(next ? decodeURIComponent(next) : "/home");
     } catch {
       setError("Identifiants invalides.");
     } finally {
@@ -32,15 +33,15 @@ function LoginInner() {
   }
 
   return (
-    <div className="flex h-screen items-center justify-center bg-bg text-ink">
+    <div className="theme-light flex h-screen items-center justify-center bg-bg text-ink">
       <Panel className="w-full max-w-sm p-6">
-        <h1 className="text-xl font-semibold">
-          CLAIRE<span className="text-accent"> Studio</span>
-        </h1>
-        <p className="mb-1 text-sm text-ink-muted">Connectez-vous pour annoter.</p>
+        <div className="text-brand-navy-500">
+          <Logo size={26} />
+        </div>
+        <p className="mb-1 mt-4 text-sm text-ink-muted">Connectez-vous pour annoter.</p>
         <p className="mb-4 text-xs text-ink-muted">
-          <Link href="/welcome" className="text-accent hover:underline">
-            Découvrir CLAIRE Studio
+          <Link href="/" className="text-accent hover:underline">
+            Découvrir Pactiva
           </Link>
         </p>
         <form onSubmit={onSubmit} className="flex flex-col gap-3">

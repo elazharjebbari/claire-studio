@@ -8,6 +8,7 @@
  * Valeurs alignées sur design-tokens.json > surface.
  */
 :root {
+  /* Atelier sombre anti-fatigue (F6), habillé de la palette Pactiva. */
   --surface-bg: 11 15 20; /* #0B0F14 */
   --surface-bg-elevated: 17 23 34; /* #111722 */
   --surface-panel: 20 27 38; /* #141B26 */
@@ -15,26 +16,45 @@
   --surface-border: 38 48 63; /* #26303F */
   --surface-text: 230 234 240; /* #E6EAF0 */
   --surface-text-muted: 154 166 182; /* #9AA6B6 */
-  --surface-accent: 91 157 255; /* #5B9DFF */
+  --surface-accent: 78 134 212; /* #4E86D4 — navy Pactiva éclairci (AA sur sombre) */
   --surface-on-accent: 11 15 20; /* texte sur accent (accent clair → texte sombre, AA) */
   --surface-reading: 14 20 28; /* #0E141C */
 
-  --font-sans: ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
+  /* Tokens sémantiques (états) — variante sombre. */
+  --sem-success: 52 199 123; /* #34C77B */
+  --sem-warning: 224 161 0; /* #E0A100 */
+  --sem-danger: 242 88 95; /* #F2585F */
+  --sem-info: 91 157 255; /* #5B9DFF */
+
+  /* Accent de marque doré (rare) — identique aux deux thèmes. */
+  --brand-gold: 186 117 23; /* #BA7517 */
+
+  --font-sans: var(--font-inter), ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
+  --font-display: var(--font-outfit), var(--font-inter), ui-sans-serif, system-ui, sans-serif;
   --font-reading: "Iowan Old Style", Georgia, Cambria, "Times New Roman", serif;
   --font-mono: ui-monospace, SFMono-Regular, Menlo, monospace;
 }
 
-html.light {
+html.light,
+.theme-light {
+  /* Identité institutionnelle Pactiva : navy sur blanc.
+     `.theme-light` force le clair localement (pages publiques) quel que soit le thème <html>. */
+  color-scheme: light;
   --surface-bg: 247 249 252; /* #F7F9FC */
   --surface-bg-elevated: 255 255 255;
   --surface-panel: 255 255 255;
   --surface-panel-muted: 238 242 248; /* #EEF2F8 */
   --surface-border: 216 224 236; /* #D8E0EC */
-  --surface-text: 26 34 48; /* #1A2230 */
+  --surface-text: 14 34 56; /* #0E2238 — navy encré */
   --surface-text-muted: 90 102 120; /* #5A6678 */
-  --surface-accent: 37 99 235; /* #2563EB */
-  --surface-on-accent: 255 255 255; /* texte sur accent (accent foncé → texte blanc, AA) */
+  --surface-accent: 12 68 124; /* #0C447C — navy Pactiva */
+  --surface-on-accent: 255 255 255; /* texte sur accent (navy → texte blanc, AA) */
   --surface-reading: 252 253 255; /* #FCFDFF */
+
+  --sem-success: 30 122 77; /* #1E7A4D */
+  --sem-warning: 154 103 0; /* #9A6700 */
+  --sem-danger: 180 35 42; /* #B4232A */
+  --sem-info: 12 68 124; /* #0C447C */
 }
 
 html,
