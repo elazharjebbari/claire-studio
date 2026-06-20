@@ -4,11 +4,11 @@
 
 import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
-import { useState } from "react";
+import { Suspense, useState } from "react";
 import { login } from "@/lib/api/endpoints";
 import { Button, Field, Panel } from "@/components/ui/primitives";
 
-export default function LoginPage() {
+function LoginInner() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const [username, setUsername] = useState("alice");
@@ -81,5 +81,19 @@ export default function LoginPage() {
         </div>
       </Panel>
     </div>
+  );
+}
+
+export default function LoginPage() {
+  return (
+    <Suspense
+      fallback={
+        <div className="flex h-screen items-center justify-center bg-bg text-ink-muted">
+          Chargement…
+        </div>
+      }
+    >
+      <LoginInner />
+    </Suspense>
   );
 }
