@@ -62,8 +62,14 @@ $SSH "set -e; cd ${VPS_DIR} && \
   cd ../frontend && npm install --no-audit --no-fund && npm run build && \
   systemctl restart ${SERVICES} && systemctl is-active ${SERVICES}"
 
-echo "▶ [4/4] Healthcheck ${HEALTH_URL}…"
-CODE="$($SSH "curl -s -o /dev/null -w '%{http_code}' ${HEALTH_URL}")"
+echo "▶ [4/4] Healthcheck ${HEALTH_URL}… (jusqu'à ~30 s, daphne peut mettre quelques secondes)"
+CODE=000
+for i in $(seq 1 10); do
+  CODE="$($SSH "curl -s -o /dev/null -w '%{http_code}' ${HEALTH_URL}")"
+  [ "${CODE}" = "200" ] && break
+  echo "   tentative ${i}/10 : health=${CODE} — nouvel essai dans 3 s…"
+  sleep 3
+done
 echo "   health=${CODE}"
 if [ "${CODE}" != "200" ]; then
   echo "✗ health != 200 → ROLLBACK vers ${PREV_SHA}"
