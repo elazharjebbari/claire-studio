@@ -11,7 +11,8 @@
 import { useState } from "react";
 import { UserPlus } from "lucide-react";
 import { useWorkspaceStore } from "@/store/workspace";
-import { useFeatureFlags, usePresence } from "@/lib/api/hooks";
+import { useFeatureFlags } from "@/lib/api/hooks";
+import { useLivePresence } from "@/lib/collab/useLivePresence";
 import { readableTextColor } from "@/lib/tokens";
 import { ShareLinkDialog } from "./ShareLinkDialog";
 
@@ -23,13 +24,11 @@ export function CollabBar({ projectSlug }: { projectSlug?: string }) {
   const annotationId = useWorkspaceStore((s) => s.annotationId);
   const { data: flags } = useFeatureFlags();
   const presenceEnabled = Boolean(flags?.presence);
-  const { data: presence } = usePresence(annotationId ?? undefined, presenceEnabled);
+  // Présence temps réel (WebSocket) si l'infra est active, sinon repli REST.
+  const { participants: people, live } = useLivePresence(annotationId, presenceEnabled);
   const [shareOpen, setShareOpen] = useState(false);
 
   if (!presenceEnabled) return null;
-
-  const people = presence?.results ?? [];
-  const live = Boolean(flags?.realtimeCollaboration);
 
   return (
     <div data-testid="collab-bar" className="flex items-center gap-2">

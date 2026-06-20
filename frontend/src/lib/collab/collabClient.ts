@@ -50,15 +50,100 @@ export function createNoopCollab(): CollabClient {
 }
 
 /**
- * Fabrique l'implémentation WebSocket (Channels + Yjs). NON activée tant que
- * NEXT_PUBLIC_WS_URL n'est pas défini ET que l'infra ASGI ne tourne pas : on renvoie
- * alors le repli inerte. L'implémentation complète (y-websocket + awareness) est
- * décrite dans le dossier et se branchera ici sans changer l'UI.
+ * Implémentation WebSocket réelle (Django Channels — chantier D) : présence live par
+ * annotation. Se connecte à `${wsUrl}/ws/presence/{annotationId}/?token=<access>`,
+ * reçoit le roster diffusé (`{type:"presence", participants}`) et publie le focus.
+ * Dégrade proprement : toute erreur laisse `isLive=false` sans casser le chemin solo
+ * (l'appelant retombe sur la présence REST).
  */
-export function createCollabClient(opts: { annotationId: string; wsUrl?: string }): CollabClient {
+export function createWebSocketCollab(opts: {
+  annotationId: string;
+  wsUrl: string;
+  token?: string | null;
+}): CollabClient {
+  let ws: WebSocket | null = null;
+  let live = false;
+  let participants: CollabParticipant[] = [];
+  const subscribers = new Set<(p: CollabParticipant[]) => void>();
+
+  const emit = () => {
+    for (const cb of subscribers) cb(participants);
+  };
+
+  return {
+    get isLive() {
+      return live;
+    },
+    connect() {
+      return new Promise<void>((resolve) => {
+        const base = opts.wsUrl.replace(/\/$/, "");
+        const q = opts.token ? `?token=${encodeURIComponent(opts.token)}` : "";
+        try {
+          ws = new WebSocket(`${base}/ws/presence/${opts.annotationId}/${q}`);
+        } catch {
+          resolve();
+          return;
+        }
+        ws.onopen = () => {
+          live = true;
+          resolve();
+        };
+        ws.onmessage = (event) => {
+          try {
+            const msg = JSON.parse(event.data as string);
+            if (msg.type === "presence") {
+              participants = (msg.participants ?? []) as CollabParticipant[];
+              emit();
+            }
+          } catch {
+            /* message non-JSON ignoré */
+          }
+        };
+        ws.onclose = () => {
+          live = false;
+        };
+        ws.onerror = () => {
+          live = false;
+          resolve(); // ne bloque jamais : on dégrade en REST
+        };
+      });
+    },
+    disconnect() {
+      try {
+        ws?.close();
+      } catch {
+        /* ignore */
+      }
+      ws = null;
+      live = false;
+    },
+    setFocus(sentenceIndex: number) {
+      if (ws && live) ws.send(JSON.stringify({ type: "focus", sentenceIndex }));
+    },
+    broadcast() {
+      /* patches sémantiques : non requis pour la présence (annotations mono-propriétaire) */
+    },
+    onPresence(cb) {
+      subscribers.add(cb);
+      cb(participants);
+      return () => subscribers.delete(cb);
+    },
+  };
+}
+
+/**
+ * Fabrique le client : WebSocket réel si `wsUrl` fourni, sinon repli inerte
+ * (mono-utilisateur REST). L'UI ne dépend que de l'interface CollabClient.
+ */
+export function createCollabClient(opts: {
+  annotationId: string;
+  wsUrl?: string;
+  token?: string | null;
+}): CollabClient {
   if (!opts.wsUrl) return createNoopCollab();
-  // TODO(realtime) : brancher y-websocket + awareness sur `${opts.wsUrl}/annotations/${id}/`.
-  // Conserve le repli tant que l'implémentation WS n'est pas livrée pour éviter toute
-  // régression du chemin solo.
-  return createNoopCollab();
+  return createWebSocketCollab({
+    annotationId: opts.annotationId,
+    wsUrl: opts.wsUrl,
+    token: opts.token,
+  });
 }
