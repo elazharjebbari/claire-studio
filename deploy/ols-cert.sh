@@ -20,7 +20,7 @@ echo "▶ backup httpd_config → $BACKUP"
 
 mkdir -p "$VHROOT/html/.well-known/acme-challenge" "$VHROOT/logs" "$VHDIR"
 cp "/var/www/$APP/deploy/ols/claire.conf" "$VHDIR/claire.conf"
-sed -i "s/pactiva\.legal/$DOMAIN/g" "$VHDIR/claire.conf"
+chown -R nobody:nogroup "$VHROOT"  # OLS tourne en nobody → doit lire le webroot ACME
 
 python3 - "$CONF" "$DOMAIN" <<'PY'
 import sys
@@ -61,6 +61,20 @@ done
 certbot certonly --webroot -w "$VHROOT/html" -d "$DOMAIN" --non-interactive --agree-tos -m "$EMAIL"
 RC="/etc/letsencrypt/renewal/$DOMAIN.conf"
 grep -q "renew_hook" "$RC" 2>/dev/null || echo "renew_hook = /usr/local/lsws/bin/lswsctrl reload" >> "$RC"
+
+# vhssl ajouté SEULEMENT maintenant (le cert existe) — sinon OLS refuse de charger le vhost.
+if ! grep -q "vhssl" "$VHDIR/claire.conf"; then
+  cat >> "$VHDIR/claire.conf" <<VHSSL
+
+vhssl  {
+  keyFile                 /etc/letsencrypt/live/$DOMAIN/privkey.pem
+  certFile                /etc/letsencrypt/live/$DOMAIN/cert.pem
+  certChain               1
+  CACertPath              /etc/letsencrypt/live/$DOMAIN/fullchain.pem
+  CACertFile              /etc/letsencrypt/live/$DOMAIN/chain.pem
+}
+VHSSL
+fi
 /usr/local/lsws/bin/lswsctrl reload
 sleep 3
 
