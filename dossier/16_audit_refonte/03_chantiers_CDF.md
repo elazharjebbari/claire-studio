@@ -1,7 +1,7 @@
 # Chantiers C, F, D — réalisés (suite autonome)
 
-> Branche `refonte/vague1-derigidification`. Tout vert : pytest 96/96 · tsc 0 ·
-> Vitest 109/109 · e2e 68/68 · `next build` OK. Port frontend par défaut = **3001**.
+> Branche `refonte/vague1-derigidification`. Tout vert : pytest 99/99 · tsc 0 ·
+> Vitest 112/112 · e2e 68/68 · `next build` OK. Port frontend par défaut = **3001**.
 
 ## Port 3001 par défaut
 Pour éviter les collisions (un autre projet occupait 3000) : `next dev -p 3001`,
@@ -32,12 +32,22 @@ FRONTEND_BASE_URL backend. Surchargeable via `FRONTEND_PORT`. CORS tolère encor
   (jamais anonyme), refus si révoqué/expiré/épuisé, quota décompté à la 1re adhésion.
 - Front : page `/join/[token]` (jonction + redirection, ou /login?next= si non
   connecté). Tests : 8 backend.
-- **Différé** (infra ASGI/Redis dédiée) : temps réel WebSocket (Channels) + CRDT +
-  présence multi-curseurs. Le flag `realtime_collaboration` reste OFF ; la présence
-  REST « soi » demeure le repli.
+
+### Temps réel (présence WebSocket) — LIVRÉ
+- Backend : **Channels** + ASGI `ProtocolTypeRouter` (HTTP + WS), auth **JWT WS**
+  (token en query string, jamais anonyme), `PresenceConsumer` par annotation
+  diffusant le roster (présents + focus) → **présence multi-utilisateur réelle**.
+  Couche InMemory en dev/test, Redis en prod (`CHANNELS_USE_REDIS`). 3 tests
+  (`WebsocketCommunicator` + shim daphne).
+- Front : `createWebSocketCollab` (client WS réel) + `useLivePresence` (WS si
+  flag+`NEXT_PUBLIC_WS_URL`, sinon repli REST) ; `CollabBar` consomme la même forme.
+- **CRDT : N/A** — les annotations sont mono-propriétaire (INV-4), donc pas de
+  co-édition concurrente d'une même annotation ; le temps réel = présence/awareness
+  (+ liens de partage pour inviter). Serveur ASGI = daphne/uvicorn (prod).
 
 ## Reste
-- D temps réel/CRDT (Channels) — chantier d'infra à part entière.
-- Mineurs : invitations par e-mail (recoupe E/F), présence multi-utilisateur par
-  heartbeat REST, dette lint ruff préexistante (~111), nettoyage e2e zombies (kill
-  des serveurs `next dev` résiduels entre runs).
+- Servir l'ASGI en prod (daphne/uvicorn) + Redis pour la couche Channels multi-workers
+  (config prête via `CHANNELS_USE_REDIS`) ; daphne non installable dans cet env de dev
+  (deps natives) — la présence est testée via InMemory.
+- Mineurs : invitations par e-mail (recoupe E/F), curseurs intra-document plus fins,
+  dette lint ruff préexistante (~111), nettoyage e2e zombies (kill `next dev` résiduels).
