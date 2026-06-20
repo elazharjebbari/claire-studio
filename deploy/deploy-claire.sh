@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 # =============================================================================
-# Déploiement — CLAIRE Studio (claire.eclosie.com)
+# Déploiement — CLAIRE Studio (pactiva.legal)
 # Calqué sur le runbook commun (corolle docs/09-devops-vps). Le code vit sur
 # GitHub → le VPS fait git pull → migrate/collectstatic (backend) + build (front)
 # → restart des 2 services → healthz, avec rollback automatique si healthz != 200.
@@ -22,7 +22,7 @@ VENV_PY="$ROOT/backend/.venv/bin/python"
 APP="claire-studio"
 HOST="${DEPLOY_HOST:-root@46.202.128.168}"
 KEY="${DEPLOY_KEY:-$HOME/.ssh/corolle_deploy}"
-DOMAIN="${DEPLOY_DOMAIN:-claire.eclosie.com}"
+DOMAIN="${DEPLOY_DOMAIN:-pactiva.legal}"
 VPS_DIR="/var/www/${APP}"
 HEALTH_URL="https://${DOMAIN}/api/v1/health"
 SERVICES="${APP} ${APP}-web"
