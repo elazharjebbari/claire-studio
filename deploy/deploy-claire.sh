@@ -57,7 +57,6 @@ $SSH "set -e; cd ${VPS_DIR} && \
   (git checkout -- frontend/package-lock.json 2>/dev/null || true) && \
   git fetch --all -q && git checkout ${BRANCH} && git pull --ff-only && \
   cd backend && .venv/bin/pip install -q -r requirements.txt && \
-  set -a && . .env && set +a && \
   DJANGO_SETTINGS_MODULE=${SETTINGS} .venv/bin/python manage.py migrate --noinput && \
   DJANGO_SETTINGS_MODULE=${SETTINGS} .venv/bin/python manage.py collectstatic --noinput && \
   cd ../frontend && npm install --no-audit --no-fund && npm run build && \
@@ -69,7 +68,7 @@ echo "   health=${CODE}"
 if [ "${CODE}" != "200" ]; then
   echo "✗ health != 200 → ROLLBACK vers ${PREV_SHA}"
   $SSH "set -e; cd ${VPS_DIR} && git reset --hard ${PREV_SHA} && \
-    cd backend && set -a && . .env && set +a && \
+    cd backend && \
     DJANGO_SETTINGS_MODULE=${SETTINGS} .venv/bin/python manage.py migrate --noinput && \
     cd ../frontend && npm run build && systemctl restart ${SERVICES}"
   echo "↩ rollback effectué — déploiement ABANDONNÉ."; exit 1
