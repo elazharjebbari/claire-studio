@@ -55,7 +55,9 @@ fi
 set -a; . ./.env; set +a
 .venv/bin/python manage.py migrate --noinput
 .venv/bin/python manage.py collectstatic --noinput
-.venv/bin/python manage.py feed_db || true
+# seed_demo s'appuie sur les fixtures embarquées (corpus claudette_tos gitignoré,
+# absent du clone) → démo autonome. Pour le corpus complet : rsync data/ puis feed_db.
+.venv/bin/python manage.py seed_demo || true
 
 cd "$DIR/frontend"
 cat > .env.production <<ENV
