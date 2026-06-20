@@ -38,7 +38,9 @@ function LoginInner() {
         <div className="text-brand-navy-500">
           <Logo size={26} />
         </div>
-        <p className="mb-1 mt-4 text-sm text-ink-muted">Connectez-vous pour annoter.</p>
+        <p className="mb-1 mt-4 text-sm text-ink-muted">
+          Connectez-vous pour accéder au système d'annotation.
+        </p>
         <p className="mb-4 text-xs text-ink-muted">
           <Link href="/" className="text-accent hover:underline">
             Découvrir Pactiva

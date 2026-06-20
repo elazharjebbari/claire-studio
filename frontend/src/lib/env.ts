@@ -21,9 +21,14 @@ export const AUTO_LOGIN_USER = process.env.NEXT_PUBLIC_AUTO_LOGIN_USER || "alice
 export const AUTO_LOGIN_PASSWORD =
   process.env.NEXT_PUBLIC_AUTO_LOGIN_PASSWORD || "claire-demo";
 
-/** Affichage de la barre de debug : mode réel, ou forcé via NEXT_PUBLIC_DEBUG. */
+/**
+ * Affichage de la barre de debug : uniquement en DÉVELOPPEMENT (mode réel local),
+ * ou forcé explicitement via NEXT_PUBLIC_DEBUG=true. JAMAIS en production
+ * (NODE_ENV === "production") — le bandeau ne doit pas être exposé aux visiteurs.
+ */
 export const DEBUG_BAR_ENABLED =
-  REAL_MODE || process.env.NEXT_PUBLIC_DEBUG === "true";
+  (REAL_MODE && process.env.NODE_ENV !== "production") ||
+  process.env.NEXT_PUBLIC_DEBUG === "true";
 
 /** Dev runtime (utilisé pour le détail des stacks d'erreur). */
 export const IS_DEV = process.env.NODE_ENV !== "production";

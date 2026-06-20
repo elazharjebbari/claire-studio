@@ -19,14 +19,15 @@ export function Logo({ size = 22, withWordmark = true, className }: LogoProps) {
     <span className={cn("inline-flex items-center gap-2.5", className)}>
       <svg
         height={size}
-        viewBox="13 18 70 64"
+        viewBox="20 16 64 68"
         fill="none"
         aria-hidden
         focusable="false"
         className="shrink-0"
       >
-        <path d="M18 24 61 50M18 76 61 50" stroke="currentColor" strokeWidth={4} />
-        <path d="M61 50 70 44 79 50 70 56Z" fill="#BA7517" />
+        {/* Traits convergeant vers le losange sans se refermer en pointe (cf. réf PNG). */}
+        <path d="M28 24 73 48M28 76 73 52" stroke="currentColor" strokeWidth={2.2} />
+        <path d="M69 50 74 46 79 50 74 54Z" fill="#BA7517" />
       </svg>
       {withWordmark && (
         <span

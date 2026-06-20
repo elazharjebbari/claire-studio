@@ -1,7 +1,8 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" fill="none" role="img" aria-label="Pactiva">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="20 16 64 68" fill="none" role="img" aria-label="Pactiva">
   <title>Pactiva</title>
-  <!-- Marque « convergence » : deux traits convergeant à droite (vecteur, intention) -->
-  <path d="M18 24 61 50M18 76 61 50" stroke="#0C447C" stroke-width="4"/>
-  <!-- Rhombus doré au point de convergence (centre de gravité, ratio ~1.5:1) -->
-  <path d="M61 50 70 44 79 50 70 56Z" fill="#BA7517"/>
+  <!-- Deux traits qui convergent vers le losange SANS se refermer en pointe :
+       ils entrent dans le losange à deux points séparés (haut-gauche / bas-gauche). -->
+  <path d="M28 24 73 48M28 76 73 52" stroke="#0C447C" stroke-width="2"/>
+  <!-- Rhombus doré au point de convergence (ratio ~1.27, sommet gauche dans le vide). -->
+  <path d="M69 50 74 46 79 50 74 54Z" fill="#BA7517"/>
 </svg>

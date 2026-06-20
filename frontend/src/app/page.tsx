@@ -1,7 +1,9 @@
 /**
  * Page d'accueil publique de pactiva.legal — présente l'ambition de Pactiva
- * (intelligence contractuelle souveraine pour les ETI européennes). Route racine
- * publique, sans authentification, thème clair institutionnel forcé (`theme-light`).
+ * (intelligence contractuelle souveraine pour les ETI européennes) et ses modules.
+ * Le système d'annotation n'est QU'UN module parmi d'autres ; on y accède via un
+ * onglet dédié, l'authentification n'intervenant qu'au moment de l'accès.
+ * Route racine publique, sans authentification, thème clair institutionnel forcé.
  * Page statique (aucun hook client).
  */
 
@@ -23,6 +25,28 @@ const PILLARS: Array<{ title: string; body: string }> = [
   },
 ];
 
+// Les systèmes de la plateforme. L'annotation est l'un d'eux (disponible) ;
+// les autres jalonnent la feuille de route. L'accès au système d'annotation est
+// protégé par authentification (déclenchée seulement à l'accès).
+const MODULES: Array<{ title: string; body: string; status: "available" | "soon"; href?: string }> = [
+  {
+    title: "Système d'annotation",
+    body: "Annotation collaborative de clauses : segmentation, thèmes, certitude, accord inter-annotateurs, versions et overlay d'injustice CLAUDETTE.",
+    status: "available",
+    href: "/home",
+  },
+  {
+    title: "Analyse de risque multi-documents",
+    body: "Croisement automatique contrat-cadre, avenants et annexes pour révéler les risques qui vivent dans la tension entre documents.",
+    status: "soon",
+  },
+  {
+    title: "Veille & alertes contractuelles",
+    body: "Alertes lisibles, sourcées et actionnables — multilingues — pour les juristes et les directions achats.",
+    status: "soon",
+  },
+];
+
 export default function HomePage() {
   return (
     <main className="theme-light min-h-screen bg-bg text-ink">
@@ -34,6 +58,9 @@ export default function HomePage() {
         <nav className="flex items-center gap-2 text-sm sm:gap-4">
           <Link href="/public" data-testid="welcome-public" className="text-ink-muted hover:text-ink">
             Projets publiés
+          </Link>
+          <Link href="/home" data-testid="welcome-annotation" className="text-ink-muted hover:text-ink">
+            Système d'annotation
           </Link>
           <Link href="/login" data-testid="welcome-login" className="text-ink-muted hover:text-ink">
             Se connecter
@@ -64,10 +91,10 @@ export default function HomePage() {
         </p>
         <div className="mt-9 flex flex-wrap justify-center gap-3">
           <Link
-            href="/signup"
+            href="#modules"
             className="rounded-md bg-accent px-5 py-2.5 font-medium text-accent-fg hover:brightness-110"
           >
-            Créer un compte
+            Découvrir la plateforme
           </Link>
           <Link
             href="/public"
@@ -150,22 +177,76 @@ export default function HomePage() {
         </div>
       </section>
 
+      {/* Modules de la plateforme — l'annotation est l'un d'eux */}
+      <section id="modules" className="scroll-mt-6 border-t border-line">
+        <div className="mx-auto max-w-5xl px-6 py-16">
+          <h2 className="font-display text-2xl font-normal text-ink sm:text-3xl">
+            La plateforme, module par module
+          </h2>
+          <p className="mt-3 max-w-2xl text-ink-muted">
+            Pactiva se construit comme un ensemble de systèmes complémentaires. Le système
+            d'annotation est disponible dès aujourd'hui ; l'accès demande simplement un compte.
+          </p>
+          <div className="mt-9 grid gap-5 md:grid-cols-3">
+            {MODULES.map((m) => (
+              <article
+                key={m.title}
+                className="flex flex-col rounded-xl border border-line bg-panel p-6"
+              >
+                <div className="flex items-center justify-between">
+                  <span
+                    className={
+                      m.status === "available"
+                        ? "rounded-full bg-accent/10 px-2.5 py-0.5 text-xs font-medium text-accent"
+                        : "rounded-full bg-panel-muted px-2.5 py-0.5 text-xs font-medium text-ink-muted"
+                    }
+                  >
+                    {m.status === "available" ? "Disponible" : "À venir"}
+                  </span>
+                </div>
+                <h3 className="mt-4 font-display text-lg font-medium text-ink">{m.title}</h3>
+                <p className="mt-2 flex-1 text-sm text-ink-muted">{m.body}</p>
+                {m.status === "available" && m.href ? (
+                  <Link
+                    href={m.href}
+                    data-testid="module-annotation"
+                    className="mt-4 inline-flex items-center gap-1 text-sm font-medium text-accent hover:underline"
+                  >
+                    Accéder au système →
+                  </Link>
+                ) : (
+                  <span className="mt-4 text-sm text-ink-muted">Bientôt disponible</span>
+                )}
+              </article>
+            ))}
+          </div>
+        </div>
+      </section>
+
       {/* Appel à l'action */}
-      <section className="mx-auto max-w-4xl px-6 py-20 text-center">
-        <h2 className="font-display text-2xl font-light text-ink sm:text-3xl">
-          Donnez à vos juristes la vision d'ensemble.
-        </h2>
-        <p className="mx-auto mt-4 max-w-xl text-ink-muted">
-          Multilingue, multi-documents, déployable chez vous. L'intelligence contractuelle
-          enfin accessible aux ETI.
-        </p>
-        <div className="mt-8 flex justify-center">
-          <Link
-            href="/signup"
-            className="rounded-md bg-accent px-6 py-3 font-medium text-accent-fg hover:brightness-110"
-          >
-            Commencer avec Pactiva
-          </Link>
+      <section className="border-t border-line bg-panel">
+        <div className="mx-auto max-w-4xl px-6 py-20 text-center">
+          <h2 className="font-display text-2xl font-light text-ink sm:text-3xl">
+            Donnez à vos juristes la vision d'ensemble.
+          </h2>
+          <p className="mx-auto mt-4 max-w-xl text-ink-muted">
+            Multilingue, multi-documents, déployable chez vous. L'intelligence contractuelle
+            enfin accessible aux ETI.
+          </p>
+          <div className="mt-8 flex flex-wrap justify-center gap-3">
+            <Link
+              href="/signup"
+              className="rounded-md bg-accent px-6 py-3 font-medium text-accent-fg hover:brightness-110"
+            >
+              Créer un compte
+            </Link>
+            <Link
+              href="/home"
+              className="rounded-md border border-line px-6 py-3 font-medium text-ink hover:bg-panel-muted"
+            >
+              Accéder au système d'annotation
+            </Link>
+          </div>
         </div>
       </section>
 
@@ -185,11 +266,11 @@ export default function HomePage() {
             <Link href="/public" className="hover:text-ink">
               Projets publiés
             </Link>
+            <Link href="/home" className="hover:text-ink">
+              Système d'annotation
+            </Link>
             <Link href="/login" className="hover:text-ink">
               Se connecter
-            </Link>
-            <Link href="/signup" className="hover:text-ink">
-              Créer un compte
             </Link>
           </nav>
         </div>
