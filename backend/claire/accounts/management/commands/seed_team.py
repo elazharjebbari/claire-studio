@@ -29,8 +29,9 @@ from django.contrib.auth import get_user_model
 from django.core.management.base import BaseCommand, CommandError
 from django.db import transaction
 
-from claire.corpora.models import Corpus
+from claire.corpora.models import Corpus, Document
 from claire.projects.models import (
+    Assignment,
     MembershipRole,
     Project,
     ProjectMembership,
@@ -56,6 +57,10 @@ class Command(BaseCommand):
         parser.add_argument("--project-slug", default="campagne-pactiva")
         parser.add_argument("--project-name", default="Campagne d'annotation Pactiva")
         parser.add_argument("--password-length", type=int, default=14)
+        parser.add_argument(
+            "--assign", action="store_true",
+            help="Assigne tous les documents de la campagne à chaque membre.",
+        )
 
     @transaction.atomic
     def handle(self, *args, **opts):
@@ -122,6 +127,20 @@ class Command(BaseCommand):
                 project=project, user=user, defaults={"role": membership_role}
             )
         self.stdout.write(f"  membres : {', '.join(u.username for u, _ in members)}")
+
+        if opts["assign"]:
+            docs = list(Document.objects.filter(corpus=corpus))
+            made = 0
+            for doc in docs:
+                for user, _ in members:
+                    _, created_a = Assignment.objects.get_or_create(
+                        project=project, document=doc, assignee=user
+                    )
+                    made += int(created_a)
+            self.stdout.write(self.style.SUCCESS(
+                f"  assignations : {len(docs)} doc(s) × {len(members)} membre(s) "
+                f"→ {made} créée(s) ({len(docs) * len(members) - made} déjà présentes)"
+            ))
 
         out_path = opts["out"]
         if out_path:
