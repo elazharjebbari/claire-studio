@@ -52,12 +52,15 @@ ENV
   chmod 600 .env
 fi
 
-set -a; . ./.env; set +a
-.venv/bin/python manage.py migrate --noinput
-.venv/bin/python manage.py collectstatic --noinput
+# base.py lit .env automatiquement (django-environ) ; on ne fait PAS de `. ./.env`
+# (valeurs avec espaces/<> non shell-safe). DJANGO_SETTINGS_MODULE doit être exporté
+# pour choisir le module de settings (le .env ne peut pas le faire à temps).
+PROD="DJANGO_SETTINGS_MODULE=config.settings.prod"
+env $PROD .venv/bin/python manage.py migrate --noinput
+env $PROD .venv/bin/python manage.py collectstatic --noinput
 # seed_demo s'appuie sur les fixtures embarquées (corpus claudette_tos gitignoré,
 # absent du clone) → démo autonome. Pour le corpus complet : rsync data/ puis feed_db.
-.venv/bin/python manage.py seed_demo || true
+env $PROD .venv/bin/python manage.py seed_demo || true
 
 cd "$DIR/frontend"
 cat > .env.production <<ENV
