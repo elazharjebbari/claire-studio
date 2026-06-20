@@ -12,7 +12,7 @@ EMAIL="${CERTBOT_EMAIL:-elazhar.jebbari@gmail.com}"
 CONF=/usr/local/lsws/conf/httpd_config.conf
 VHDIR=/usr/local/lsws/conf/vhosts/$APP
 VHROOT=/usr/local/lsws/$APP
-NEIGHBORS="reviews.eclosie.com tracking.eclosie.com cod.eclosie.com femiglow.eclosie.com"
+NEIGHBORS="reviews.eclosie.com tracking.eclosie.com cod.eclosie.com optimise.eclosie.com"
 
 BACKUP="$CONF.bak.claire.$(date +%s)"
 cp "$CONF" "$BACKUP"
@@ -52,7 +52,8 @@ sleep 3
 
 rollback() { echo "✗ $1 → ROLLBACK"; cp "$BACKUP" "$CONF"; /usr/local/lsws/bin/lswsctrl reload; exit 1; }
 for h in $NEIGHBORS; do
-  c="$(curl -s -o /dev/null -w '%{http_code}' "https://$h/" || echo 000)"
+  getent hosts "$h" >/dev/null 2>&1 || { echo "voisin $h: ignoré (ne résout pas)"; continue; }
+  c="$(curl -s -o /dev/null -w '%{http_code}' --max-time 8 "https://$h/" || echo 000)"
   echo "voisin $h:$c"
   case "$c" in 2*|3*|401|403) ;; *) rollback "voisin $h cassé ($c)";; esac
 done
