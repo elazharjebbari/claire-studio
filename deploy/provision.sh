@@ -69,7 +69,7 @@ NEXT_PUBLIC_API_BASE=https://$DOMAIN/api/v1
 NEXT_PUBLIC_WS_URL=wss://$DOMAIN
 NEXT_PUBLIC_AUTO_LOGIN=false
 ENV
-npm ci --no-audit --no-fund
+npm install --no-audit --no-fund
 npm run build
 
 cp "$DIR/deploy/systemd/$APP.service" "$DIR/deploy/systemd/$APP-web.service" /etc/systemd/system/

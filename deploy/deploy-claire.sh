@@ -53,12 +53,12 @@ git push origin "${BRANCH}"
 echo "▶ [3/4] VPS : pull → backend(migrate/collectstatic) + front(build) → restart…"
 $SSH "set -e; cd ${VPS_DIR} && \
   GIT_SSH_COMMAND='ssh -i /root/.ssh/corolle_repo -o IdentitiesOnly=yes' \
-    git fetch --all -q && git checkout ${BRANCH} && git pull --ff-only && \
+    git checkout -- frontend/package-lock.json 2>/dev/null || true; git fetch --all -q && git checkout ${BRANCH} && git pull --ff-only && \
   cd backend && .venv/bin/pip install -q -r requirements.txt && \
   set -a && . .env && set +a && \
   DJANGO_SETTINGS_MODULE=${SETTINGS} .venv/bin/python manage.py migrate --noinput && \
   DJANGO_SETTINGS_MODULE=${SETTINGS} .venv/bin/python manage.py collectstatic --noinput && \
-  cd ../frontend && npm ci --no-audit --no-fund && npm run build && \
+  cd ../frontend && npm install --no-audit --no-fund && npm run build && \
   systemctl restart ${SERVICES} && systemctl is-active ${SERVICES}"
 
 echo "▶ [4/4] Healthcheck ${HEALTH_URL}…"
