@@ -1,12 +1,11 @@
 /**
- * L0 — durcissement autosave : pas de réessai sur erreurs TERMINALES (401/403),
- * réessai conservé sur transitoire (500). Évite la tempête réseau du bug 403.
+ * Résilience de l'autosave : terminal (401/403, 4xx), transitoire BORNÉ (5xx/réseau)
+ * avec backoff + plafond, et réessai MANUEL. Évite la tempête réseau.
  */
 
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import { renderHook, act } from "@testing-library/react";
 
-// Mock des endpoints appelés par l'autosave (avant import du hook).
 vi.mock("@/lib/api/endpoints", () => ({
   addClause: vi.fn(),
   patchClause: vi.fn(),
@@ -24,7 +23,7 @@ const mockAdd = addClause as unknown as ReturnType<typeof vi.fn>;
 beforeEach(() => {
   vi.useFakeTimers();
   useWorkspaceStore.getState().reset();
-  useAutosaveStore.setState({ saveState: "idle", lastSavedAt: null });
+  useAutosaveStore.setState({ saveState: "idle", lastSavedAt: null, manualRetry: 0 });
   mockAdd.mockReset();
 });
 
@@ -32,48 +31,80 @@ afterEach(() => {
   vi.useRealTimers();
 });
 
-describe("useAutosave — erreurs terminales (L0)", () => {
-  it("403 → un seul essai, état 'unauthorized', AUCUN réessai", async () => {
-    mockAdd.mockRejectedValue(new ApiError(403, "Forbidden"));
-    useWorkspaceStore.getState().init({ annotationId: "a1", nSentences: 5, clauses: [] });
-    renderHook(() => useAutosave("a1"));
+/** Arme un brouillon « à créer » et rend le hook. */
+function armDraft(annId: string) {
+  useWorkspaceStore.getState().init({ annotationId: annId, nSentences: 5, clauses: [] });
+  const view = renderHook(() => useAutosave(annId));
+  act(() => {
+    useWorkspaceStore.getState().setBoundary(0, "META");
+  });
+  return view;
+}
 
-    act(() => {
-      useWorkspaceStore.getState().setBoundary(0, "META");
-    });
-    // Débounce (1200 ms) → 1er essai.
+describe("useAutosave — résilience réseau", () => {
+  it("401/403 → terminal, un seul appel, état unauthorized (non-régression L0)", async () => {
+    mockAdd.mockRejectedValue(new ApiError(403, "Forbidden"));
+    armDraft("a1");
     await act(async () => {
-      await vi.advanceTimersByTimeAsync(1300);
+      await vi.advanceTimersByTimeAsync(2000);
     });
     expect(mockAdd).toHaveBeenCalledTimes(1);
     expect(useAutosaveStore.getState().saveState).toBe("unauthorized");
-
-    // Beaucoup de temps en plus → toujours un seul appel (pas de tempête).
     await act(async () => {
-      await vi.advanceTimersByTimeAsync(15000);
+      await vi.advanceTimersByTimeAsync(60000);
     });
     expect(mockAdd).toHaveBeenCalledTimes(1);
   });
 
-  it("500 → réessai (transitoire), pas d'état terminal", async () => {
-    mockAdd.mockRejectedValue(new ApiError(500, "Server"));
-    useWorkspaceStore.getState().init({ annotationId: "a2", nSentences: 5, clauses: [] });
-    renderHook(() => useAutosave("a2"));
-
-    act(() => {
-      useWorkspaceStore.getState().setBoundary(0, "META");
-    });
+  it("4xx (400) → terminal, un seul appel, état error, AUCUN réessai", async () => {
+    mockAdd.mockRejectedValue(new ApiError(400, "Bad Request"));
+    armDraft("a2");
     await act(async () => {
-      await vi.advanceTimersByTimeAsync(1300);
+      await vi.advanceTimersByTimeAsync(2000);
     });
-    const first = mockAdd.mock.calls.length;
-    expect(first).toBeGreaterThanOrEqual(1);
+    expect(mockAdd).toHaveBeenCalledTimes(1);
+    expect(useAutosaveStore.getState().saveState).toBe("error");
+    await act(async () => {
+      await vi.advanceTimersByTimeAsync(120000);
+    });
+    expect(mockAdd).toHaveBeenCalledTimes(1);
+  });
+
+  it("5xx → réessais BORNÉS (backoff), s'arrête après MAX et n'inonde pas", async () => {
+    mockAdd.mockRejectedValue(new ApiError(500, "Server"));
+    armDraft("a3");
+    await act(async () => {
+      await vi.advanceTimersByTimeAsync(300000);
+    });
+    const n = mockAdd.mock.calls.length;
+    expect(n).toBeGreaterThan(1); // a bien réessayé
+    expect(n).toBeLessThanOrEqual(6); // MAX_ATTEMPTS (5) + tentative initiale
+    expect(useAutosaveStore.getState().saveState).toBe("error");
+    // Stable : plus aucun appel ensuite (pas de boucle infinie).
+    await act(async () => {
+      await vi.advanceTimersByTimeAsync(300000);
+    });
+    expect(mockAdd.mock.calls.length).toBe(n);
+  });
+
+  it("réessai MANUEL relance après abandon (et réussit)", async () => {
+    mockAdd.mockRejectedValue(new ApiError(500, "Server"));
+    armDraft("a4");
+    await act(async () => {
+      await vi.advanceTimersByTimeAsync(300000);
+    });
+    const afterExhaust = mockAdd.mock.calls.length;
     expect(useAutosaveStore.getState().saveState).toBe("error");
 
-    // Le temps passe → nouvelle tentative (convergence replanifiée).
+    // Le serveur revient : le prochain essai réussit.
+    mockAdd.mockResolvedValue({ id: "c1", anchorIndex: 0, theme: "META", order: 0 });
     await act(async () => {
-      await vi.advanceTimersByTimeAsync(1300);
+      useAutosaveStore.getState().triggerRetry();
     });
-    expect(mockAdd.mock.calls.length).toBeGreaterThan(first);
+    await act(async () => {
+      await vi.advanceTimersByTimeAsync(100);
+    });
+    expect(mockAdd.mock.calls.length).toBeGreaterThan(afterExhaust);
+    expect(useAutosaveStore.getState().saveState).toBe("saved");
   });
 });

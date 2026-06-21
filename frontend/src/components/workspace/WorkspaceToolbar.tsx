@@ -260,11 +260,13 @@ export function WorkspaceToolbar({
  * hors-ligne / erreur, et « non enregistré » tant qu'aucune synchro n'a eu lieu. */
 function SaveIndicator({ dirty }: { dirty: boolean }) {
   const saveState = useAutosaveStore((s) => s.saveState);
+  const triggerRetry = useAutosaveStore((s) => s.triggerRetry);
   const view: Record<string, { text: string; cls: string } | null> = {
     saving: { text: "● enregistrement…", cls: "text-amber-400" },
     saved: { text: "✓ enregistré", cls: "text-emerald-400" },
     offline: { text: "⚠ hors-ligne — reprise auto", cls: "text-amber-400" },
-    error: { text: "✗ échec — nouvelle tentative", cls: "text-red-400" },
+    retrying: { text: "↻ échec réseau — nouvelle tentative…", cls: "text-amber-400" },
+    error: { text: "✗ échec d'enregistrement", cls: "text-red-400" },
     unauthorized: {
       text: "✗ non enregistré — session expirée ou lecture seule",
       cls: "text-red-400",
@@ -277,9 +279,19 @@ function SaveIndicator({ dirty }: { dirty: boolean }) {
     <span
       data-testid="save-indicator"
       data-state={saveState}
-      className={`text-[11px] ${v.cls}`}
+      className={`flex items-center gap-1.5 text-[11px] ${v.cls}`}
     >
       {v.text}
+      {saveState === "error" && (
+        <button
+          type="button"
+          data-testid="save-retry"
+          onClick={() => triggerRetry()}
+          className="rounded border border-line px-1.5 py-0.5 text-[11px] font-medium text-ink hover:bg-panel-muted"
+        >
+          Réessayer
+        </button>
+      )}
     </span>
   );
 }
