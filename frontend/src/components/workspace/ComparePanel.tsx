@@ -1,29 +1,35 @@
 "use client";
 
 /**
- * ComparePanel (P4) — comparaison visuelle des segmentations Claude vs Codex.
+ * ComparePanel (P4 + point e) — comparaison visuelle des segmentations de 2 OU 3 juges
+ * (Claude / Codex / Mistral), au choix de l'utilisateur.
  *
- * Trois rails verticaux alignés sur la même échelle de phrases [0, n) :
- *  - gauche  : blocs (runs) de Claude, remplis par la couleur du thème + étiquette.
- *  - centre  : bande d'ACCORD par tranche (emerald = accord, amber = divergence,
- *              slate = couverture partielle), regroupée en segments contigus.
- *  - droite  : blocs (runs) de Codex.
- * La hauteur d'un bloc est proportionnelle à son nombre de phrases (flex-grow). Le
- * bloc contenant la phrase focalisée est mis en valeur ; cliquer un bloc y saute.
+ * Disposition : une bande d'ACCORD N-way à gauche, puis un rail par juge sélectionné,
+ * tous alignés sur la même échelle de phrases [0, n) :
+ *  - bande   : statut par tranche (emerald = tous d'accord, amber = ≥2 thèmes distincts
+ *              = conflit, slate = couverture partielle), regroupée en segments contigus.
+ *  - rail    : blocs (runs) du juge, remplis par la couleur du thème + étiquette.
+ * La hauteur d'un bloc est proportionnelle à son nombre de phrases (flex-grow). Le bloc
+ * contenant la phrase focalisée est mis en valeur ; cliquer un bloc y saute. Les zones
+ * de conflit (amber) sont clickables → 1re phrase du conflit (arbitrage via le menu).
  *
- * Drawer togglable (store.showComparePanel), affiché surtout en mode comparaison.
- * Toute la logique (runs, accord) est dérivée de fonctions pures déjà testées.
+ * Un sélecteur permet de choisir les juges présents dans la zone (min 2). Drawer
+ * togglable (store.showComparePanel). Toute la logique dérive de fonctions pures.
  */
 
 import { ChevronLeft, ChevronRight, X } from "lucide-react";
 import { getThemeToken } from "@/lib/tokens";
 import type { Run } from "@/lib/runs";
-import {
-  divergenceAnchors,
-  divergenceOrdinal,
-  nextDivergence,
-  prevDivergence,
-} from "@/lib/divergence";
+import { segmentsFromRuns, conflictZones } from "@/lib/runs";
+import { nextDivergence, prevDivergence, divergenceOrdinal } from "@/lib/divergence";
+
+/** Un juge affiché dans la comparaison : runs (blocs) + thème par phrase (forward-fill). */
+export interface CompareJudge {
+  id: string;
+  label: string;
+  runs: Run[];
+  byIndex: (string | null)[];
+}
 
 interface AgreeSegment {
   start: number;
@@ -31,20 +37,26 @@ interface AgreeSegment {
   status: "agree" | "diverge" | "partial";
 }
 
-/** Regroupe les phrases en segments d'accord contigus (ignore les phrases sans juge). */
-function agreementSegments(
-  claudeByIndex: (string | null)[],
-  codexByIndex: (string | null)[],
+/**
+ * Regroupe les phrases en segments d'accord contigus, N-way (généralise la version
+ * pairwise). Ignore les phrases que personne ne couvre. Statut par phrase :
+ *  - diverge : ≥ 2 thèmes DISTINCTS parmi les juges présents (conflit) ;
+ *  - partial : tous les présents s'accordent mais tous les juges ne couvrent pas ;
+ *  - agree   : tous les juges couvrent et s'accordent.
+ */
+export function agreementSegments(
+  byIndexList: (string | null)[][],
+  judgeCount: number,
   n: number,
 ): AgreeSegment[] {
   const segs: AgreeSegment[] = [];
   for (let i = 0; i < n; i += 1) {
-    const a = claudeByIndex[i] ?? null;
-    const b = codexByIndex[i] ?? null;
+    const present = byIndexList.map((b) => b[i] ?? null).filter((t): t is string => t != null);
     let status: AgreeSegment["status"] | null;
-    if (a == null && b == null) status = null;
-    else if (a != null && b != null) status = a === b ? "agree" : "diverge";
-    else status = "partial";
+    if (present.length === 0) status = null;
+    else if (new Set(present).size >= 2) status = "diverge";
+    else if (present.length < judgeCount) status = "partial";
+    else status = "agree";
     if (status == null) continue;
     const last = segs[segs.length - 1];
     if (last && last.status === status && last.end === i - 1) last.end = i;
@@ -62,21 +74,19 @@ const STATUS_COLOR: Record<AgreeSegment["status"], string> = {
 function JudgeRail({
   label,
   runs,
-  n,
   focused,
   onJump,
   testid,
 }: {
   label: string;
   runs: Run[];
-  n: number;
   focused: number;
   onJump: (index: number) => void;
   testid: string;
 }) {
   return (
     <div className="flex min-w-0 flex-1 flex-col" data-testid={testid}>
-      <span className="mb-1 text-center text-[11px] font-semibold uppercase tracking-wide text-ink-muted">
+      <span className="mb-1 truncate text-center text-[11px] font-semibold uppercase tracking-wide text-ink-muted">
         {label}
       </span>
       <div className="flex min-h-0 flex-1 flex-col overflow-hidden rounded-md border border-line">
@@ -116,33 +126,47 @@ function JudgeRail({
 }
 
 export function ComparePanel({
-  claudeRuns,
-  codexRuns,
-  claudeByIndex,
-  codexByIndex,
+  judges,
+  allJudges,
+  selectedIds,
+  onToggleJudge,
   n,
   focused,
   onJump,
   onClose,
 }: {
-  claudeRuns: Run[];
-  codexRuns: Run[];
-  claudeByIndex: (string | null)[];
-  codexByIndex: (string | null)[];
+  /** Juges sélectionnés, dans l'ordre d'affichage. */
+  judges: CompareJudge[];
+  /** Tous les juges disponibles (avec données) — pour le sélecteur. */
+  allJudges: { id: string; label: string }[];
+  selectedIds: string[];
+  onToggleJudge: (id: string) => void;
   n: number;
   focused: number;
   onJump: (index: number) => void;
   onClose: () => void;
 }) {
-  const segs = agreementSegments(claudeByIndex, codexByIndex, n);
-  const divAnchors = divergenceAnchors(claudeByIndex, codexByIndex);
+  const segs = agreementSegments(
+    judges.map((j) => j.byIndex),
+    judges.length,
+    n,
+  );
+  // Ancres de conflit N-way (≥2 thèmes distincts) → navigation des désaccords.
+  const divAnchors = conflictZones(
+    judges.map((j) => ({ segments: segmentsFromRuns(j.runs) })),
+    n,
+  ).map((z) => z.start);
   const divOrdinal = divergenceOrdinal(divAnchors, focused);
+  const labels = judges.map((j) => j.label).join(" / ");
 
   return (
     <aside
       data-testid="compare-panel"
-      aria-label="Comparaison Claude / Codex"
-      className="flex h-full w-72 shrink-0 flex-col border-l border-line bg-elevated p-3"
+      aria-label={`Comparaison ${labels}`}
+      className={
+        "flex h-full shrink-0 flex-col border-l border-line bg-elevated p-3 " +
+        (judges.length >= 3 ? "w-96" : "w-72")
+      }
     >
       <div className="mb-2 flex items-center justify-between">
         <h2 className="text-xs font-semibold uppercase tracking-wide text-ink">
@@ -159,7 +183,41 @@ export function ComparePanel({
         </button>
       </div>
 
-      {/* Navigation des divergences depuis le panneau (saute + recentre). */}
+      {/* Sélecteur de juges (point e) : choisir 2 ou 3 modèles dans la zone (min 2). */}
+      {allJudges.length > 2 && (
+        <div
+          data-testid="compare-judge-select"
+          className="mb-2 flex flex-wrap items-center gap-1"
+          role="group"
+          aria-label="Juges à comparer"
+        >
+          {allJudges.map((j) => {
+            const on = selectedIds.includes(j.id);
+            const lastTwo = on && selectedIds.length <= 2; // retrait interdit (min 2)
+            return (
+              <button
+                key={j.id}
+                type="button"
+                data-testid={`compare-judge-toggle-${j.id}`}
+                aria-pressed={on}
+                disabled={lastTwo}
+                onClick={() => onToggleJudge(j.id)}
+                title={lastTwo ? "Au moins 2 juges requis" : on ? `Retirer ${j.label}` : `Ajouter ${j.label}`}
+                className={
+                  "rounded-full border px-2 py-0.5 text-[11px] font-medium transition-colors disabled:cursor-not-allowed disabled:opacity-60 " +
+                  (on
+                    ? "border-accent/50 bg-accent/15 text-ink"
+                    : "border-line text-ink-muted hover:bg-panel-muted")
+                }
+              >
+                {j.label}
+              </button>
+            );
+          })}
+        </div>
+      )}
+
+      {/* Navigation des conflits depuis le panneau (saute + recentre). */}
       {divAnchors.length > 0 && (
         <div
           data-testid="compare-divergence-nav"
@@ -199,16 +257,7 @@ export function ComparePanel({
       )}
 
       <div className="flex min-h-0 flex-1 gap-1.5">
-        <JudgeRail
-          label="Claude"
-          runs={claudeRuns}
-          n={n}
-          focused={focused}
-          onJump={onJump}
-          testid="compare-claude"
-        />
-
-        {/* Bande d'accord centrale. */}
+        {/* Bande d'accord N-way (à gauche). */}
         <div className="flex w-3 flex-col pt-4" data-testid="compare-agreement-strip">
           <div className="flex min-h-0 flex-1 flex-col overflow-hidden rounded">
             {segs.map((sgmt) => {
@@ -216,7 +265,7 @@ export function ComparePanel({
                 (sgmt.status === "agree"
                   ? "Accord"
                   : sgmt.status === "diverge"
-                    ? "Divergence — cliquer pour arbitrer"
+                    ? "Conflit — cliquer pour arbitrer"
                     : "Couverture partielle") + ` — phrases ${sgmt.start}–${sgmt.end}`;
               const style = {
                 flexGrow: Math.max(1, sgmt.end - sgmt.start + 1),
@@ -243,14 +292,17 @@ export function ComparePanel({
           </div>
         </div>
 
-        <JudgeRail
-          label="Codex"
-          runs={codexRuns}
-          n={n}
-          focused={focused}
-          onJump={onJump}
-          testid="compare-codex"
-        />
+        {/* Un rail par juge sélectionné. */}
+        {judges.map((j) => (
+          <JudgeRail
+            key={j.id}
+            label={j.label}
+            runs={j.runs}
+            focused={focused}
+            onJump={onJump}
+            testid={`compare-${j.id}`}
+          />
+        ))}
       </div>
 
       <div className="mt-2 flex flex-wrap items-center gap-x-3 gap-y-1 text-[10px] text-ink-muted">
@@ -260,7 +312,7 @@ export function ComparePanel({
         </span>
         <span className="flex items-center gap-1">
           <span aria-hidden className="h-2 w-2 rounded-full" style={{ background: STATUS_COLOR.diverge }} />
-          divergence
+          conflit
         </span>
         <span className="flex items-center gap-1">
           <span aria-hidden className="h-2 w-2 rounded-full" style={{ background: STATUS_COLOR.partial }} />

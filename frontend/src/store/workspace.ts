@@ -105,8 +105,11 @@ interface WorkspaceState {
   llmSource: LlmSource;
   /** Version d'annotation LLM choisie (multi-versions). null = défaut backend. */
   llmVersion: string | null;
-  /** Panneau comparatif latéral Claude vs Codex visible (P4). */
+  /** Panneau comparatif latéral visible (P4). */
   showComparePanel: boolean;
+  /** Juges sélectionnés dans la zone de comparaison (point e) : 2 ou 3 parmi
+   *  claude/codex/mistral. Défaut : claude + codex. */
+  compareJudges: string[];
   /** Overlay d'attribution multi-annotateurs (qui a touché quoi) — point 3. */
   showAttribution: boolean;
   /** Juge pré-rempli courant (point 0a). */
@@ -194,6 +197,8 @@ interface WorkspaceState {
   setLlmVersion: (version: string | null) => void;
   /** Bascule le panneau comparatif latéral (P4). */
   toggleComparePanel: () => void;
+  /** Ajoute/retire un juge de la zone de comparaison (min 2 conservés). */
+  toggleCompareJudge: (id: string) => void;
   /** Bascule l'overlay d'attribution (point 3). */
   toggleAttribution: () => void;
   /** Vide le journal d'actions (ex. après soumission). */
@@ -285,6 +290,7 @@ export const useWorkspaceStore = create<WorkspaceState>((set, get) => ({
   llmSource: "human",
   llmVersion: null,
   showComparePanel: false,
+  compareJudges: ["claude", "codex"],
   showAttribution: false,
   prefilledJudge: null,
   actionLog: [],
@@ -310,6 +316,7 @@ export const useWorkspaceStore = create<WorkspaceState>((set, get) => ({
       llmSource: "human",
       llmVersion: null,
       showComparePanel: false,
+      compareJudges: ["claude", "codex"],
       showAttribution: false,
       prefilledJudge: null,
       actionLog: [],
@@ -719,6 +726,17 @@ export const useWorkspaceStore = create<WorkspaceState>((set, get) => ({
   setLlmVersion: (version) => set({ llmVersion: version }),
 
   toggleComparePanel: () => set((s) => ({ showComparePanel: !s.showComparePanel })),
+  toggleCompareJudge: (id) =>
+    set((s) => {
+      const has = s.compareJudges.includes(id);
+      // Retrait interdit s'il ne resterait qu'un juge (comparaison = min 2).
+      if (has && s.compareJudges.length <= 2) return s;
+      return {
+        compareJudges: has
+          ? s.compareJudges.filter((j) => j !== id)
+          : [...s.compareJudges, id],
+      };
+    }),
 
   toggleAttribution: () => set((s) => ({ showAttribution: !s.showAttribution })),
 
@@ -775,6 +793,7 @@ export const useWorkspaceStore = create<WorkspaceState>((set, get) => ({
       llmSource: "human",
       llmVersion: null,
       showComparePanel: false,
+      compareJudges: ["claude", "codex"],
       showAttribution: false,
       prefilledJudge: null,
       actionLog: [],

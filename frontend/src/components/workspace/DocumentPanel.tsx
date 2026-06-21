@@ -30,6 +30,7 @@ import { getThemeToken } from "@/lib/tokens";
 import {
   computeRuns,
   runAt,
+  runThemeAt,
   segmentsFromRuns,
   nextBoundaryFrom,
   conflictZones,
@@ -100,6 +101,8 @@ export function DocumentPanel({
   const resolveDivergence = useWorkspaceStore((s) => s.resolveDivergence);
   const showComparePanel = useWorkspaceStore((s) => s.showComparePanel);
   const toggleComparePanel = useWorkspaceStore((s) => s.toggleComparePanel);
+  const compareJudges = useWorkspaceStore((s) => s.compareJudges);
+  const toggleCompareJudge = useWorkspaceStore((s) => s.toggleCompareJudge);
   const showAttribution = useWorkspaceStore((s) => s.showAttribution);
   const toggleAttribution = useWorkspaceStore((s) => s.toggleAttribution);
   const annotationId = useWorkspaceStore((s) => s.annotationId);
@@ -295,9 +298,40 @@ export function DocumentPanel({
     onToggleCompare: toggleComparePanel,
   });
 
-  // Le panneau comparatif n'a de sens que si au moins un juge couvre des phrases.
-  const compareDataReady =
-    llm.claudeByIndex.some((t) => t != null) || llm.codexByIndex.some((t) => t != null);
+  // Comparaison N-way (point e) : thème par phrase (forward-fill) pour CHAQUE juge,
+  // dérivé de ses runs → bande d'accord + zones de conflit à N modèles.
+  const byIndexByJudge = useMemo<Record<string, (string | null)[]>>(() => {
+    const map: Record<string, (string | null)[]> = {};
+    for (const j of LLM_JUDGES) {
+      const r = runsByJudge[j.id] ?? EMPTY_RUNS;
+      map[j.id] = Array.from({ length: n }, (_, i) => runThemeAt(r, i));
+    }
+    return map;
+  }, [runsByJudge, n]);
+  // Juges disponibles (avec données) → sélecteur de la zone de comparaison.
+  const availableCompareJudges = useMemo(
+    () => LLM_JUDGES.filter((j) => !!llm.preByJudge[j.id]?.clauses?.length),
+    [llm.preByJudge],
+  );
+  // Sélection effective : intersection store ∩ disponibles, repli sur les 2 premiers
+  // disponibles (garantit ≥ 2 quand possible, jamais de zone vide).
+  const selectedCompareIds = useMemo(() => {
+    const avail = availableCompareJudges.map((j) => j.id);
+    const picked = compareJudges.filter((id) => avail.includes(id));
+    return picked.length >= 2 ? picked : avail.slice(0, Math.max(2, picked.length));
+  }, [compareJudges, availableCompareJudges]);
+  const compareJudgesData = useMemo(
+    () =>
+      selectedCompareIds.map((id) => ({
+        id,
+        label: llmJudgeLabel(id),
+        runs: runsByJudge[id] ?? EMPTY_RUNS,
+        byIndex: byIndexByJudge[id] ?? [],
+      })),
+    [selectedCompareIds, runsByJudge, byIndexByJudge],
+  );
+  // Le panneau comparatif n'a de sens que si ≥ 2 juges sont disponibles avec données.
+  const compareDataReady = availableCompareJudges.length >= 2;
 
   // Détails des juges à la frontière en cours d'aperçu (P5).
   const boundaryClaude = boundaryPop
@@ -703,10 +737,10 @@ export function DocumentPanel({
        {showComparePanel && compareDataReady && (
          <div className="sticky top-4 hidden h-[calc(100vh-9rem)] self-start xl:block">
            <ComparePanel
-             claudeRuns={claudeRuns}
-             codexRuns={codexRuns}
-             claudeByIndex={llm.claudeByIndex}
-             codexByIndex={llm.codexByIndex}
+             judges={compareJudgesData}
+             allJudges={availableCompareJudges.map((j) => ({ id: j.id, label: j.label }))}
+             selectedIds={selectedCompareIds}
+             onToggleJudge={toggleCompareJudge}
              n={n}
              focused={focused}
              onJump={(i) => focusSentence(i)}
