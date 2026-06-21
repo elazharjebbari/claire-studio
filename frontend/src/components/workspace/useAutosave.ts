@@ -57,6 +57,7 @@ function fromClause(c: Clause): PersistedClause {
     evidenceSpan: c.evidenceSpan ?? "",
     rationale: c.rationale ?? "",
     certainty: c.certainty ?? null,
+    validated: c.validated ?? false,
   };
 }
 
@@ -148,6 +149,7 @@ export function useAutosave(annotationId: string | null) {
           evidenceSpan: d.evidenceSpan,
           rationale: d.rationale,
           certainty: d.certainty,
+          validated: d.validated ?? false,
           clientOpId: d.localId,
         });
         upsert(persistedRef.current, fromClause(created));
@@ -159,6 +161,7 @@ export function useAutosave(annotationId: string | null) {
           evidenceSpan: u.draft.evidenceSpan,
           rationale: u.draft.rationale,
           certainty: u.draft.certainty,
+          validated: u.draft.validated ?? false,
         });
         upsert(persistedRef.current, {
           anchorIndex: u.draft.anchorIndex,
@@ -168,6 +171,7 @@ export function useAutosave(annotationId: string | null) {
           evidenceSpan: u.draft.evidenceSpan ?? "",
           rationale: u.draft.rationale ?? "",
           certainty: u.draft.certainty ?? null,
+          validated: u.draft.validated ?? false,
         });
       }
       for (const id of plan.deletes) {

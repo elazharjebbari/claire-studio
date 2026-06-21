@@ -39,7 +39,7 @@ class ClauseSerializer(serializers.ModelSerializer):
         # These are the *write* inputs (+ certainty/evidence/rationale/order).
         fields = [
             "id", "anchor_index", "theme", "legal_nature",
-            "evidence_span", "rationale", "certainty", "order",
+            "evidence_span", "rationale", "certainty", "order", "validated",
         ]
 
     def to_representation(self, instance):
@@ -56,6 +56,7 @@ class ClauseSerializer(serializers.ModelSerializer):
             "rationale": instance.rationale,
             "certainty": instance.certainty,
             "order": instance.order,
+            "validated": instance.validated,
         }
 
     def _resolve(self, annotation, attrs):

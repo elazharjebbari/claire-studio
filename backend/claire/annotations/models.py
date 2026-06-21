@@ -97,6 +97,10 @@ class Clause(models.Model):
         validators=[MaxValueValidator(3)],
     )
     order = models.PositiveIntegerField(default=0)
+    # Validation humaine explicite (point d) : l'annotateur a validé cette clause
+    # (qu'il l'ait saisie ou adoptée d'un modèle). Les pré-annotations ne valent JAMAIS
+    # référence : seule une clause validated=True compte pour la soumission complète.
+    validated = models.BooleanField(default=False)
     # Idempotence des écritures (chantier C) : identifiant d'opération côté client.
     # Un même op réémis (retry réseau) ne crée pas de doublon. Vide = pas
     # d'idempotence (écritures serveur / héritées).

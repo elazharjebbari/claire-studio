@@ -17,11 +17,13 @@ export interface SubmitDialogProps {
   /** Stats d'aperçu (figées dans la version). */
   stats: { clauses: number; meanCertainty: number | null };
   busy?: boolean;
+  /** Point d : si défini, la soumission est BLOQUÉE (toutes les phrases pas validées). */
+  blockReason?: string | null;
   onCancel: () => void;
   onConfirm: (payload: { name: string; description: string }) => void;
 }
 
-export function SubmitDialog({ stats, busy, onCancel, onConfirm }: SubmitDialogProps) {
+export function SubmitDialog({ stats, busy, blockReason, onCancel, onConfirm }: SubmitDialogProps) {
   const [name, setName] = useState("");
   const [description, setDescription] = useState("");
   const ref = useRef<HTMLInputElement>(null);
@@ -35,7 +37,7 @@ export function SubmitDialog({ stats, busy, onCancel, onConfirm }: SubmitDialogP
     return () => document.removeEventListener("keydown", onKey);
   }, [onCancel]);
 
-  const canSubmit = name.trim().length > 0 && !busy;
+  const canSubmit = name.trim().length > 0 && !busy && !blockReason;
 
   return (
     <div
@@ -55,6 +57,17 @@ export function SubmitDialog({ stats, busy, onCancel, onConfirm }: SubmitDialogP
         <p className="mb-4 text-xs text-ink-muted">
           Cette version est figée (snapshot immuable) et coexiste avec les précédentes.
         </p>
+
+        {blockReason && (
+          <div
+            data-testid="submit-block-reason"
+            role="alert"
+            className="mb-4 rounded-md border border-amber-400/50 bg-amber-400/10 px-3 py-2 text-xs text-amber-200"
+          >
+            ⚠ {blockReason} — validez toutes les phrases avant de soumettre. Les
+            pré-annotations ne comptent pas tant qu'elles ne sont pas validées.
+          </div>
+        )}
 
         <label className="mb-1 block text-xs font-medium text-ink-muted" htmlFor="version-name">
           Nom de la version *

@@ -16,6 +16,7 @@ function draft(partial: Partial<DraftClause> & { anchorIndex: number }): DraftCl
     evidenceSpan: partial.evidenceSpan ?? "",
     rationale: partial.rationale ?? "",
     certainty: partial.certainty ?? null,
+    validated: partial.validated ?? false,
     serverId: partial.serverId,
   };
 }
@@ -29,6 +30,7 @@ function persisted(p: Partial<PersistedClause> & { anchorIndex: number; serverId
     evidenceSpan: p.evidenceSpan ?? "",
     rationale: p.rationale ?? "",
     certainty: p.certainty ?? null,
+    validated: p.validated ?? false,
   };
 }
 
@@ -51,6 +53,15 @@ describe("planClauseSync (diff d'auto-save par ancre)", () => {
       { serverId: "c1", draft: expect.objectContaining({ anchorIndex: 0, theme: "TERMINATION" }) },
     ]);
     expect(plan.deletes).toHaveLength(0);
+  });
+
+  it("détecte une mise à jour quand SEULE la validation change (point d)", () => {
+    const plan = planClauseSync(
+      [draft({ anchorIndex: 0, theme: "META", serverId: "c1", validated: true })],
+      [persisted({ anchorIndex: 0, serverId: "c1", theme: "META", validated: false })],
+    );
+    expect(plan.updates).toHaveLength(1);
+    expect(plan.updates[0]!.draft.validated).toBe(true);
   });
 
   it("détecte une suppression (ancre serveur absente du brouillon)", () => {

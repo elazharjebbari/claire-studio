@@ -12,6 +12,7 @@ import { CertaintyPicker } from "@/components/ui/CertaintyPicker";
 import { useWorkspaceStore, type PrefillJudge } from "@/store/workspace";
 import { useAutosaveStore } from "@/store/autosave";
 import { useUiStore } from "@/store/ui";
+import { validationByIndex, validationSummary } from "@/lib/validation";
 import {
   useAnnotation,
   useCreateVersion,
@@ -49,6 +50,7 @@ export function WorkspaceToolbar({
   const dirty = useWorkspaceStore((s) => s.dirty);
   const markClean = useWorkspaceStore((s) => s.markClean);
   const draftClauses = useWorkspaceStore((s) => s.draftClauses);
+  const nSentences = useWorkspaceStore((s) => s.nSentences);
   // R1 — lecture seule : on neutralise toutes les actions serveur de la barre
   // (soumission, snapshot, certitude, pré-remplissage) sur l'annotation d'autrui.
   const readOnly = useWorkspaceStore((s) => s.readOnly);
@@ -94,6 +96,17 @@ export function WorkspaceToolbar({
         : withC.reduce((a, c) => a + (c.certainty ?? 0), 0) / withC.length;
     return { clauses: draftClauses.length, meanCertainty: mean };
   }, [draftClauses]);
+
+  // Point d — gate de soumission : bloquée tant que toute phrase n'est pas VALIDÉE.
+  const validation = useMemo(
+    () => validationSummary(validationByIndex(draftClauses, nSentences)),
+    [draftClauses, nSentences],
+  );
+  const submitBlockReason = validation.complete
+    ? null
+    : `${validation.pending + validation.uncovered} phrase${
+        validation.pending + validation.uncovered > 1 ? "s" : ""
+      } non validée${validation.pending + validation.uncovered > 1 ? "s" : ""}`;
 
   const snapshot = useCallback(() => {
     createVersionMutate(
@@ -277,6 +290,22 @@ export function WorkspaceToolbar({
         <Button variant="outline" data-testid="snapshot-btn" disabled={readOnly} onClick={snapshot}>
           Snapshot ⌘S
         </Button>
+        <span
+          data-testid="validation-meter"
+          title={
+            validation.complete
+              ? "Toutes les phrases sont validées"
+              : `${validation.validated}/${validation.total} validées · ${validation.pending} en attente · ${validation.uncovered} sans clause`
+          }
+          className={
+            "inline-flex items-center gap-1 rounded-md border px-2 py-1 text-xs font-medium " +
+            (validation.complete
+              ? "border-emerald-400/40 bg-emerald-400/10 text-emerald-300"
+              : "border-amber-400/40 bg-amber-400/10 text-amber-300")
+          }
+        >
+          {validation.complete ? "✓" : "◷"} {validation.validated}/{validation.total}
+        </span>
         <Button
           variant="primary"
           data-testid="submit-btn"
@@ -291,6 +320,7 @@ export function WorkspaceToolbar({
         <SubmitDialog
           stats={stats}
           busy={submitting}
+          blockReason={submitBlockReason}
           onCancel={() => setSubmitOpen(false)}
           onConfirm={confirmSubmit}
         />

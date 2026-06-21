@@ -39,6 +39,7 @@ import {
 import { deriveBlocks, blockAt } from "@/lib/blocks";
 import { ModelBoundaryStrip, ModelBoundaryLegend, type GutterModel } from "./ModelBoundaryRail";
 import { LLM_JUDGES, llmJudgeLabel } from "@/lib/llmJudges";
+import { validationByIndex } from "@/lib/validation";
 import { useUiStore } from "@/store/ui";
 import {
   useAnnotationVersions,
@@ -169,6 +170,9 @@ export function DocumentPanel({
     () => new Map(drafts.map((d) => [d.anchorIndex, d])),
     [drafts],
   );
+  // Point d — statut de validation par phrase (validated / pending / uncovered) pour la
+  // piste de validation à gauche de chaque ligne.
+  const validationStatuses = useMemo(() => validationByIndex(drafts, n), [drafts, n]);
   // D5 — regroupement PAR INDEX (tableau) : si Claude ET Codex proposent une frontière
   // à la même phrase, on les conserve TOUS (l'ancienne Map clée par index n'en gardait
   // qu'un, le dernier). Chaque juge visible est rendu comme un badge distinct.
@@ -550,11 +554,15 @@ export function DocumentPanel({
           const renderFr = displayLang === "fr";
           const missingFr = renderFr && frText == null;
 
+          const vStatus = validationStatuses[s.index] ?? "uncovered";
           return (
             <div
               key={s.id}
               data-sentence-index={s.index}
-              className={"group relative" + (showBoundaries && gutterVisibleModels.length > 0 ? " pr-10" : "")}
+              className={
+                "group relative pl-2" +
+                (showBoundaries && gutterVisibleModels.length > 0 ? " pr-10" : "")
+              }
               onDoubleClick={() => {
                 // S7 — double-clic : sélectionne le BLOC contigu de même thème (mode
                 // bloc) ; sur une phrase neutre, on efface la sélection (S8).
@@ -566,6 +574,34 @@ export function DocumentPanel({
                 }
               }}
             >
+              {/* Point d — piste de validation (bord gauche) : vert = validé, ambre =
+                  annoté non validé, gris = non couvert. Cliquable → focus la phrase. */}
+              <button
+                type="button"
+                data-testid={`validation-track-${s.index}`}
+                data-status={vStatus}
+                onClick={() => focusSentence(s.index)}
+                title={
+                  vStatus === "validated"
+                    ? "Validé"
+                    : vStatus === "pending"
+                      ? "Annoté — à valider"
+                      : "Non annoté"
+                }
+                aria-label={`Phrase ${s.index} — ${
+                  vStatus === "validated" ? "validée" : vStatus === "pending" ? "à valider" : "non annotée"
+                }`}
+                className="absolute bottom-0 left-0 top-0 w-1 cursor-pointer rounded-r-sm transition-colors"
+                style={{
+                  backgroundColor:
+                    vStatus === "validated"
+                      ? "#34D399"
+                      : vStatus === "pending"
+                        ? "#FBBF24"
+                        : "rgb(var(--surface-line))",
+                  opacity: vStatus === "uncovered" ? 0.35 : 0.85,
+                }}
+              />
               {badge && (
                 <div
                   data-testid="clause-badge"

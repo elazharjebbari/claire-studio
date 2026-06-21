@@ -289,7 +289,7 @@ def test_annotations_list_and_detail_shape(admin_client):
     _assert_keys(
         clause,
         {"id", "annotationId", "anchorIndex", "theme", "legalNature",
-         "evidenceSpan", "rationale", "certainty", "order"},
+         "evidenceSpan", "rationale", "certainty", "order", "validated"},
         where="Clause",
     )
     assert isinstance(clause["anchorIndex"], int)

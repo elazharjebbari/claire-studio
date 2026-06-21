@@ -64,6 +64,7 @@ export function SentenceMenu({
   const drafts = useWorkspaceStore((s) => s.draftClauses);
   const toggleBoundary = useWorkspaceStore((s) => s.toggleBoundary);
   const setCertainty = useWorkspaceStore((s) => s.setCertainty);
+  const setValidated = useWorkspaceStore((s) => s.setValidated);
   const resolveDivergence = useWorkspaceStore((s) => s.resolveDivergence);
   const setTranslated = useWorkspaceStore((s) => s.setTranslated);
   const translatedSentences = useWorkspaceStore((s) => s.translatedSentences);
@@ -160,6 +161,23 @@ export function SentenceMenu({
             if (coveringDraft) setCertainty(coveringDraft.localId, v);
           }}
         />
+        {/* Point d — validation explicite de la clause couvrante (référence confirmée). */}
+        {coveringDraft && (
+          <button
+            type="button"
+            data-testid="menu-validate"
+            aria-pressed={coveringDraft.validated ?? false}
+            onClick={() => setValidated(coveringDraft.localId, !(coveringDraft.validated ?? false))}
+            className={
+              "w-full rounded-md border px-2 py-1 text-left text-xs font-medium transition-colors " +
+              ((coveringDraft.validated ?? false)
+                ? "border-emerald-400/60 bg-emerald-400/10 text-emerald-300"
+                : "border-amber-400/50 bg-amber-400/10 text-amber-200 hover:bg-amber-400/20")
+            }
+          >
+            {(coveringDraft.validated ?? false) ? "✓ Phrase validée — cliquer pour dévalider" : "◷ Valider cette phrase"}
+          </button>
+        )}
       </section>
 
       {/* (b) LLM — propositions de chaque juge configuré (Claude/Codex/Mistral…). */}

@@ -28,6 +28,8 @@ export function SelectionToolbar() {
   const setTranslated = useWorkspaceStore((s) => s.setTranslated);
   const clearSelection = useWorkspaceStore((s) => s.clearSelection);
   const clearClauseSelection = useWorkspaceStore((s) => s.clearClauseSelection);
+  const draftClauses = useWorkspaceStore((s) => s.draftClauses);
+  const validateClauses = useWorkspaceStore((s) => s.validateClauses);
   const [palette, setPalette] = useState(false);
 
   // Mode BLOCS prioritaire (P8).
@@ -68,6 +70,15 @@ export function SelectionToolbar() {
     clearSelection();
   }
 
+  function validateSelection() {
+    // Point d — valide les clauses couvrant les phrases sélectionnées (confirme des
+    // pré-remplissages en lot, sans re-thématiser). UN seul undo.
+    const set = new Set(sorted);
+    const ids = draftClauses.filter((d) => set.has(d.anchorIndex)).map((d) => d.localId);
+    if (ids.length) validateClauses(ids, true);
+    clearSelection();
+  }
+
   return (
     <div
       role="toolbar"
@@ -95,6 +106,15 @@ export function SelectionToolbar() {
           className="rounded-md border border-line px-2 py-1 hover:bg-panel-muted"
         >
           Désannoter
+        </button>
+        <button
+          type="button"
+          onClick={validateSelection}
+          data-testid="selection-validate"
+          title="Valider les clauses des phrases sélectionnées"
+          className="rounded-md border border-emerald-400/50 px-2 py-1 text-emerald-300 hover:bg-emerald-400/10"
+        >
+          ✓ Valider
         </button>
         <button
           type="button"
@@ -137,6 +157,7 @@ function BlockToolbar({
   const drafts = useWorkspaceStore((s) => s.draftClauses);
   const nSentences = useWorkspaceStore((s) => s.nSentences);
   const applyBlockOp = useWorkspaceStore((s) => s.applyBlockOp);
+  const validateClauses = useWorkspaceStore((s) => s.validateClauses);
 
   // Ancres + thème de la sélection ; contiguïté = bloc unique extensible/réductible.
   const sel = drafts.filter((d) => ids.includes(d.localId));
@@ -209,6 +230,18 @@ function BlockToolbar({
           className="rounded-md border border-line px-2 py-1 hover:bg-panel-muted"
         >
           Désannoter le bloc
+        </button>
+        <button
+          type="button"
+          onClick={() => {
+            validateClauses(ids, true);
+            clear();
+          }}
+          data-testid="block-validate"
+          title="Valider toutes les clauses du bloc"
+          className="rounded-md border border-emerald-400/50 px-2 py-1 text-emerald-300 hover:bg-emerald-400/10"
+        >
+          ✓ Valider le bloc
         </button>
         <button
           type="button"

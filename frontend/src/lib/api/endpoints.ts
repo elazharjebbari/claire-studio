@@ -287,6 +287,7 @@ export function addClause(
       evidence_span: clause.evidenceSpan ?? "",
       rationale: clause.rationale ?? "",
       certainty: clause.certainty ?? null,
+      validated: clause.validated ?? false,
       // Idempotence (chantier C) : un retry portant le même op ne duplique pas.
       client_op_id: clause.clientOpId,
     },
@@ -302,6 +303,7 @@ export function patchClause(id: string, patch: Partial<Clause>): Promise<Clause>
       evidence_span: patch.evidenceSpan,
       rationale: patch.rationale,
       certainty: patch.certainty,
+      validated: patch.validated,
     },
   });
 }

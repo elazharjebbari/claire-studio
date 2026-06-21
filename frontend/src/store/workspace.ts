@@ -53,6 +53,12 @@ export interface DraftClause {
    * humaine non issue d'un arbitrage LLM ponctuel.
    */
   resolvedFrom?: string | null;
+  /**
+   * Validation humaine explicite (point d). true = l'annotateur a validé cette clause
+   * (saisie manuelle, adoption d'un modèle, ou confirmation d'un pré-remplissage). Un
+   * pré-remplissage non confirmé reste false : il aide mais ne fait jamais référence.
+   */
+  validated?: boolean;
 }
 
 /**
@@ -167,6 +173,14 @@ interface WorkspaceState {
   resolveDivergence: (anchorIndex: number, judge: string, theme: string) => void;
   removeBoundary: (anchorIndex: number) => void;
   updateDraft: (localId: string, patch: Partial<DraftClause>) => void;
+  /**
+   * Validation humaine (point d). `setValidated` (re)marque UNE clause ; `validateClauses`
+   * traite un lot (sélection / bloc) en UN snapshot d'undo. Valider = confirmer que la
+   * clause est la référence (les pré-annotations non validées ne comptent pas pour la
+   * soumission). No-op en lecture seule.
+   */
+  setValidated: (localId: string, value: boolean) => void;
+  validateClauses: (localIds: string[], value: boolean) => void;
   setCertainty: (localId: string, value: Certainty) => void;
   /** Charge un seed de pré-annotation comme brouillon éditable (F2). */
   seedFromPreAnnotation: (clauses: PivotClause[], judge: string) => void;
@@ -264,6 +278,7 @@ function fromClause(c: Clause): DraftClause {
     certainty: c.certainty ?? null,
     seededFrom: c.seededFrom ?? null,
     resolvedFrom: null,
+    validated: c.validated ?? false,
   };
 }
 
@@ -351,8 +366,9 @@ export const useWorkspaceStore = create<WorkspaceState>((set, get) => ({
           return { selectedClauseId: existing.localId };
         }
         return {
+          // Re-thématisation humaine = décision validée (point d).
           draftClauses: s.draftClauses.map((c) =>
-            c.localId === existing.localId ? { ...c, theme } : c,
+            c.localId === existing.localId ? { ...c, theme, validated: true } : c,
           ),
           selectedClauseId: existing.localId,
           dirty: true,
@@ -374,6 +390,8 @@ export const useWorkspaceStore = create<WorkspaceState>((set, get) => ({
         evidenceSpan: "",
         rationale: "",
         certainty: null,
+        // Annotation manuelle = clause validée d'office (point d).
+        validated: true,
       };
       return {
         draftClauses: sortDrafts([...s.draftClauses, draft]),
@@ -426,8 +444,9 @@ export const useWorkspaceStore = create<WorkspaceState>((set, get) => ({
         for (const i of anchors) {
           const idx = drafts.findIndex((c) => c.anchorIndex === i);
           if (idx >= 0) {
-            if (drafts[idx]!.theme !== theme) {
-              drafts[idx] = { ...drafts[idx]!, theme };
+            if (drafts[idx]!.theme !== theme || !drafts[idx]!.validated) {
+              // Geste de bloc humain = décision validée (point d).
+              drafts[idx] = { ...drafts[idx]!, theme, validated: true };
               changed = true;
             }
           } else {
@@ -439,6 +458,7 @@ export const useWorkspaceStore = create<WorkspaceState>((set, get) => ({
               evidenceSpan: "",
               rationale: "",
               certainty: null,
+              validated: true,
             });
             changed = true;
           }
@@ -476,7 +496,7 @@ export const useWorkspaceStore = create<WorkspaceState>((set, get) => ({
         return {
           draftClauses: s.draftClauses.map((c) =>
             c.localId === existing.localId
-              ? { ...c, theme, resolvedFrom: judge }
+              ? { ...c, theme, resolvedFrom: judge, validated: true }
               : c,
           ),
           selectedClauseId: existing.localId,
@@ -501,6 +521,7 @@ export const useWorkspaceStore = create<WorkspaceState>((set, get) => ({
         certainty: null,
         seededFrom: null,
         resolvedFrom: judge,
+        validated: true,
       };
       return {
         draftClauses: sortDrafts([...s.draftClauses, draft]),
@@ -576,6 +597,53 @@ export const useWorkspaceStore = create<WorkspaceState>((set, get) => ({
           label: `Certitude ${value} @${target?.anchorIndex ?? "?"}`,
           anchorIndex: target?.anchorIndex,
           localId,
+        }),
+      };
+    }),
+
+  setValidated: (localId, value) =>
+    set((s) => {
+      if (s.readOnly) return {};
+      const target = s.draftClauses.find((c) => c.localId === localId);
+      if (!target || (target.validated ?? false) === value) return {};
+      return {
+        draftClauses: s.draftClauses.map((c) =>
+          c.localId === localId ? { ...c, validated: value } : c,
+        ),
+        dirty: true,
+        undoStack: pushUndo(s.undoStack, s.draftClauses),
+        redoStack: [],
+        actionLog: appendLog(s.actionLog, {
+          kind: value ? "clause.validate" : "clause.invalidate",
+          label: `${value ? "Validé" : "Dévalidé"} @${target.anchorIndex}`,
+          anchorIndex: target.anchorIndex,
+          localId,
+        }),
+      };
+    }),
+
+  validateClauses: (localIds, value) =>
+    set((s) => {
+      if (s.readOnly) return {};
+      const ids = new Set(localIds);
+      let changed = false;
+      const draftClauses = s.draftClauses.map((c) => {
+        if (ids.has(c.localId) && (c.validated ?? false) !== value) {
+          changed = true;
+          return { ...c, validated: value };
+        }
+        return c;
+      });
+      if (!changed) return {};
+      return {
+        draftClauses,
+        dirty: true,
+        // UN SEUL snapshot pour tout le lot (atomicité d'undo).
+        undoStack: pushUndo(s.undoStack, s.draftClauses),
+        redoStack: [],
+        actionLog: appendLog(s.actionLog, {
+          kind: value ? "block.validate" : "block.invalidate",
+          label: `${value ? "Validé" : "Dévalidé"} ${ids.size} clause${ids.size > 1 ? "s" : ""}`,
         }),
       };
     }),

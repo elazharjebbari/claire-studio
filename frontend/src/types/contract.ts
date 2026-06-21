@@ -266,6 +266,9 @@ export interface Clause {
   rationale?: string;
   certainty?: Certainty | null;
   order: number;
+  /** Validation humaine explicite (point d) : seule une clause validée compte
+   *  pour la soumission complète ; les pré-annotations ne valent jamais référence. */
+  validated?: boolean;
   /** Provenance optionnelle si la clause vient d'une pré-annotation. */
   seededFrom?: string | null;
 }

@@ -21,6 +21,7 @@ export interface PersistedClause {
   evidenceSpan: string;
   rationale: string;
   certainty: number | null;
+  validated: boolean;
 }
 
 export interface ClauseSyncPlan {
@@ -35,7 +36,8 @@ function sameFields(d: DraftClause, p: PersistedClause): boolean {
     (d.legalNature ?? null) === p.legalNature &&
     (d.evidenceSpan ?? "") === p.evidenceSpan &&
     (d.rationale ?? "") === p.rationale &&
-    (d.certainty ?? null) === p.certainty
+    (d.certainty ?? null) === p.certainty &&
+    (d.validated ?? false) === p.validated
   );
 }
 
@@ -82,5 +84,6 @@ export function draftsToPersisted(drafts: DraftClause[]): PersistedClause[] {
       evidenceSpan: d.evidenceSpan ?? "",
       rationale: d.rationale ?? "",
       certainty: d.certainty ?? null,
+      validated: d.validated ?? false,
     }));
 }
