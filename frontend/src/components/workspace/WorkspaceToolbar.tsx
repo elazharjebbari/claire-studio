@@ -47,6 +47,9 @@ export function WorkspaceToolbar({
   const dirty = useWorkspaceStore((s) => s.dirty);
   const markClean = useWorkspaceStore((s) => s.markClean);
   const draftClauses = useWorkspaceStore((s) => s.draftClauses);
+  // R1 — lecture seule : on neutralise toutes les actions serveur de la barre
+  // (soumission, snapshot, certitude, pré-remplissage) sur l'annotation d'autrui.
+  const readOnly = useWorkspaceStore((s) => s.readOnly);
 
   const patchAnnotation = usePatchAnnotation(annotationId);
   const { mutate: createVersionMutate } = useCreateVersion(annotationId);
@@ -157,9 +160,10 @@ export function WorkspaceToolbar({
               role="radio"
               aria-checked={active}
               data-testid={opt.testid}
+              disabled={readOnly}
               onClick={() => setPrefill(opt.value)}
               className={
-                "rounded px-2 py-1 text-xs font-medium transition-colors " +
+                "rounded px-2 py-1 text-xs font-medium transition-colors disabled:cursor-not-allowed disabled:opacity-40 " +
                 (active
                   ? "bg-accent/15 text-ink ring-1 ring-accent/40"
                   : "text-ink-muted hover:bg-panel-muted")
@@ -212,12 +216,14 @@ export function WorkspaceToolbar({
       <WorkspaceTourButton />
 
       <div className="ml-auto flex items-center gap-3">
-        <div className="flex items-center gap-2">
+        <div className={"flex items-center gap-2" + (readOnly ? " pointer-events-none opacity-50" : "")}>
           <span className="text-xs text-ink-muted">Certitude globale</span>
           <CertaintyPicker
             size="sm"
             value={annotation?.globalCertainty ?? null}
-            onChange={(v: Certainty) => patchAnnotation.mutate({ global_certainty: v })}
+            onChange={(v: Certainty) =>
+              readOnly ? undefined : patchAnnotation.mutate({ global_certainty: v })
+            }
           />
         </div>
         {snapshotMsg && (
@@ -225,10 +231,15 @@ export function WorkspaceToolbar({
             {snapshotMsg}
           </span>
         )}
-        <Button variant="outline" data-testid="snapshot-btn" onClick={snapshot}>
+        <Button variant="outline" data-testid="snapshot-btn" disabled={readOnly} onClick={snapshot}>
           Snapshot ⌘S
         </Button>
-        <Button variant="primary" data-testid="submit-btn" onClick={() => setSubmitOpen(true)}>
+        <Button
+          variant="primary"
+          data-testid="submit-btn"
+          disabled={readOnly}
+          onClick={() => setSubmitOpen(true)}
+        >
           Soumettre
         </Button>
       </div>

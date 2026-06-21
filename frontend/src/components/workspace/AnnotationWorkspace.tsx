@@ -10,6 +10,7 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import { Pencil, Eye } from "lucide-react";
 import { useAnnotation, useDocument, useProject, useScheme, useMe } from "@/lib/api/hooks";
 import { useWorkspaceStore } from "@/store/workspace";
+import { useUiStore } from "@/store/ui";
 import { setRuntimeThemes } from "@/lib/tokens";
 import { ResizablePanels } from "./ResizablePanels";
 import { TocPanel } from "./TocPanel";
@@ -34,6 +35,7 @@ export function AnnotationWorkspace({ annotationId }: { annotationId: string }) 
 
   const init = useWorkspaceStore((s) => s.init);
   const reset = useWorkspaceStore((s) => s.reset);
+  const setCurrentProject = useUiStore((s) => s.setCurrentProject);
   const [snapshotFn, setSnapshotFn] = useState<(() => void) | null>(null);
   const registerSnapshot = useCallback((fn: () => void) => setSnapshotFn(() => fn), []);
   const [showHistory, setShowHistory] = useState(false);
@@ -46,10 +48,18 @@ export function AnnotationWorkspace({ annotationId }: { annotationId: string }) 
         annotationId: annotation.id,
         nSentences: doc.nSentences,
         clauses: annotation.clauses,
+        // R1 — lecture seule stricte sur l'annotation d'un AUTRE annotateur.
+        readOnly: !isMine,
       });
     }
     return () => reset();
-  }, [annotation, doc, init, reset]);
+  }, [annotation, doc, init, reset, isMine]);
+
+  // R4 — aligne le projet courant sur le document réellement ouvert (nav cohérente :
+  // file de travail, breadcrumbs, sélecteur de la TopBar suivent ce projet).
+  useEffect(() => {
+    if (annotation?.projectSlug) setCurrentProject(annotation.projectSlug);
+  }, [annotation?.projectSlug, setCurrentProject]);
 
   // Hydrate couleurs/labels de thèmes depuis le schéma API (H4) ; repli statique
   // (design-tokens.json) en mode démo ou si une couleur manque. Hydratation SYNCHRONE
@@ -65,7 +75,9 @@ export function AnnotationWorkspace({ annotationId }: { annotationId: string }) 
   useEffect(() => () => setRuntimeThemes(null), []);
 
   // Auto-save : persiste les clauses en arrière-plan (chantier C), sans perte.
-  useAutosave(annotation?.id ?? null);
+  // R1 — UNIQUEMENT sur MA session : un viewer (lecture seule) n'écrit jamais
+  // (évite tout 403 parasite et garantit l'intégrité de l'annotation d'autrui).
+  useAutosave(isMine ? annotation?.id ?? null : null);
 
   const themeFocusRef = useRef<(() => void) | null>(null);
   useWorkspaceShortcuts({

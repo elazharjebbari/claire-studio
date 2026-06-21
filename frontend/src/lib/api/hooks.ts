@@ -31,6 +31,7 @@ export const qk = {
   project: (slug: string) => ["projects", slug] as const,
   assignments: (slug: string) => ["projects", slug, "assignments"] as const,
   progress: (slug: string) => ["projects", slug, "progress"] as const,
+  iaa: (slug: string) => ["projects", slug, "iaa"] as const,
   members: (slug: string) => ["projects", slug, "members"] as const,
   annotatorsProgress: (slug: string) =>
     ["projects", slug, "annotators-progress"] as const,
@@ -150,6 +151,15 @@ export function useProjectProgress(slug: string | undefined) {
   return useQuery({
     queryKey: qk.progress(slug ?? ""),
     queryFn: () => api.getProjectProgress(slug!),
+    enabled: Boolean(slug),
+  });
+}
+
+/** IAA détaillé (R3) : moyenne + matrice paire-à-paire par document + détail. */
+export function useProjectIaa(slug: string | undefined) {
+  return useQuery({
+    queryKey: qk.iaa(slug ?? ""),
+    queryFn: () => api.getProjectIaa(slug!),
     enabled: Boolean(slug),
   });
 }

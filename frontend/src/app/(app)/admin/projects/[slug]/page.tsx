@@ -8,6 +8,7 @@
 
 import { useMemo, useState } from "react";
 import Link from "next/link";
+import { Download } from "lucide-react";
 import { useQueryClient } from "@tanstack/react-query";
 import * as api from "@/lib/api/endpoints";
 import {
@@ -17,9 +18,10 @@ import {
   useMembers,
   useAssignments,
   useAnnotatorsProgress,
-  useProjectProgress,
+  useProjectIaa,
 } from "@/lib/api/hooks";
 import { Panel, Button, Badge } from "@/components/ui/primitives";
+import type { IaaPair } from "@/types/contract";
 
 type Tab = "assign" | "progress" | "iaa" | "members" | "publish";
 
@@ -268,10 +270,27 @@ function ProgressTab({ slug }: { slug: string }) {
 }
 
 // ── Accord inter-annotateurs (IAA) ─────────────────────────────────────────────
+/** Échappement CSV minimal (RFC 4180) : guillemets si virgule/quote/retour ligne. */
+function csvCell(v: string): string {
+  return /[",\n]/.test(v) ? `"${v.replace(/"/g, '""')}"` : v;
+}
+
 function IaaTab({ slug }: { slug: string }) {
-  const { data: progress } = useProjectProgress(slug);
-  const detail = progress?.iaaDetail;
-  const kappa = progress?.iaa;
+  const { data: iaa } = useProjectIaa(slug);
+  const kappa = iaa?.meanKappa;
+  const detail = iaa?.detail;
+  const pairs = useMemo(() => iaa?.pairs ?? [], [iaa]);
+
+  // Matrice paire-à-paire regroupée par document (drill-down R3 : où κ chute).
+  const byDocument = useMemo(() => {
+    const m = new Map<string, IaaPair[]>();
+    for (const p of pairs) {
+      const arr = m.get(p.document) ?? [];
+      arr.push(p);
+      m.set(p.document, arr);
+    }
+    return Array.from(m.entries());
+  }, [pairs]);
 
   function kappaColor(k: number | null | undefined) {
     if (k == null) return "text-ink-muted";
@@ -280,13 +299,40 @@ function IaaTab({ slug }: { slug: string }) {
     return "text-success";
   }
 
+  // Export CSV côté client (BOM U+FEFF pour Excel ; échappement RFC 4180).
+  function exportCsv() {
+    const header = ["document", "annotateur_a", "annotateur_b", "kappa", "n_phrases"];
+    const rows = pairs.map((p) => [
+      p.document,
+      p.annotatorA,
+      p.annotatorB,
+      String(p.kappa),
+      String(p.nSentences),
+    ]);
+    const csv = [header, ...rows].map((r) => r.map(csvCell).join(",")).join("\n");
+    const blob = new Blob(["\ufeff" + csv], { type: "text/csv;charset=utf-8;" });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = `iaa-${slug}.csv`;
+    a.click();
+    URL.revokeObjectURL(url);
+  }
+
   return (
     <div className="space-y-4">
-      <p className="text-sm text-ink-muted">
-        L'accord inter-annotateurs (κ de Cohen) se calcule sur les annotations
-        <strong className="text-ink"> soumises</strong> des documents annotés par au moins
-        2 annotateurs.
-      </p>
+      <div className="flex items-start justify-between gap-3">
+        <p className="text-sm text-ink-muted">
+          L'accord inter-annotateurs (κ de Cohen) se calcule sur les annotations
+          <strong className="text-ink"> soumises</strong> des documents annotés par au moins
+          2 annotateurs.
+        </p>
+        {pairs.length > 0 && (
+          <Button variant="outline" onClick={exportCsv} data-testid="iaa-export-csv">
+            <Download size={14} aria-hidden /> Exporter CSV
+          </Button>
+        )}
+      </div>
       <div className="grid gap-4 sm:grid-cols-3">
         <Panel className="p-4">
           <div className="text-xs text-ink-muted">κ global (moyen)</div>
@@ -331,6 +377,44 @@ function IaaTab({ slug }: { slug: string }) {
           </table>
         </Panel>
       )}
+      {/* Matrice paire-à-paire par document (R3) — repère où l'accord chute. */}
+      {byDocument.length > 0 && (
+        <Panel className="overflow-auto">
+          <div className="border-b border-line px-3 py-2 text-sm font-medium text-ink">
+            Accord paire-à-paire par document
+          </div>
+          <table className="w-full text-sm" data-testid="iaa-pairwise">
+            <thead>
+              <tr className="border-b border-line text-left text-ink-muted">
+                <th className="px-3 py-2 font-medium">Document</th>
+                <th className="px-3 py-2 font-medium">Annotateur A</th>
+                <th className="px-3 py-2 font-medium">Annotateur B</th>
+                <th className="px-3 py-2 font-medium">κ</th>
+                <th className="px-3 py-2 font-medium">Phrases</th>
+              </tr>
+            </thead>
+            <tbody>
+              {byDocument.map(([doc, ps]) =>
+                ps.map((p, i) => (
+                  <tr
+                    key={`${doc}|${p.annotatorA}|${p.annotatorB}`}
+                    className="border-b border-line/60"
+                  >
+                    <td className="px-3 py-2 text-ink">{i === 0 ? doc : ""}</td>
+                    <td className="px-3 py-2 text-ink-muted">{p.annotatorA}</td>
+                    <td className="px-3 py-2 text-ink-muted">{p.annotatorB}</td>
+                    <td className={"px-3 py-2 font-medium " + kappaColor(p.kappa)}>
+                      {p.kappa.toFixed(2)}
+                    </td>
+                    <td className="px-3 py-2 text-ink-muted">{p.nSentences}</td>
+                  </tr>
+                )),
+              )}
+            </tbody>
+          </table>
+        </Panel>
+      )}
+
       {kappa == null && (
         <p className="rounded-md border border-line bg-panel-muted px-3 py-2 text-sm text-ink-muted">
           Pas encore d'accord calculable : il faut au moins 2 annotations soumises sur un

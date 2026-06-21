@@ -313,3 +313,53 @@ describe("workspace store", () => {
     expect(useWorkspaceStore.getState().selectedClauseIds).toEqual([]);
   });
 });
+
+// ── Lecture seule stricte (R1) ────────────────────────────────────────────────
+describe("workspace store — lecture seule (R1)", () => {
+  beforeEach(() => {
+    useWorkspaceStore.getState().reset();
+    useWorkspaceStore.getState().init({
+      annotationId: "ann-other",
+      nSentences: 10,
+      clauses: baseClauses,
+      readOnly: true,
+    });
+  });
+
+  it("init pose readOnly ; reset le remet à false", () => {
+    expect(useWorkspaceStore.getState().readOnly).toBe(true);
+    useWorkspaceStore.getState().reset();
+    expect(useWorkspaceStore.getState().readOnly).toBe(false);
+  });
+
+  it("setBoundary est neutralisé (pas de création, pas de dirty)", () => {
+    useWorkspaceStore.getState().setBoundary(5, "TERMINATION");
+    const s = useWorkspaceStore.getState();
+    expect(s.draftClauses).toHaveLength(1); // inchangé
+    expect(s.draftClauses.find((c) => c.anchorIndex === 5)).toBeUndefined();
+    expect(s.dirty).toBe(false);
+  });
+
+  it("updateDraft / setCertainty / removeBoundary sont neutralisés", () => {
+    const id = useWorkspaceStore.getState().draftClauses[0]!.localId;
+    useWorkspaceStore.getState().updateDraft(id, { theme: "TERMINATION" });
+    useWorkspaceStore.getState().setCertainty(id, 3);
+    useWorkspaceStore.getState().removeBoundary(0);
+    const s = useWorkspaceStore.getState();
+    expect(s.draftClauses).toHaveLength(1);
+    expect(s.draftClauses[0]!.theme).toBe("META");
+    expect(s.draftClauses[0]!.certainty ?? null).toBeNull();
+    expect(s.dirty).toBe(false);
+  });
+
+  it("resolveDivergence / replacePrefill / seedFromPreAnnotation sont neutralisés", () => {
+    useWorkspaceStore.getState().resolveDivergence(5, "codex", "TERMINATION");
+    useWorkspaceStore.getState().seedFromPreAnnotation(
+      [{ anchor_index: 7, theme: "X", legal_nature: null, evidence_span: "", rationale: "", certainty: 0 }],
+      "claude",
+    );
+    const s = useWorkspaceStore.getState();
+    expect(s.draftClauses).toHaveLength(1);
+    expect(s.dirty).toBe(false);
+  });
+});

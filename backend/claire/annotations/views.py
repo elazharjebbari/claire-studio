@@ -11,6 +11,7 @@ from claire.collaboration.serializers import CommentSerializer, ReviewSerializer
 from claire.common.exceptions import Conflict
 from claire.common.pagination import results_envelope
 from claire.common.permissions import (
+    IsAnnotationOwner,
     IsAnnotationOwnerOrReviewer,
     IsReviewerOrAdmin,
 )
@@ -46,6 +47,17 @@ class AnnotationViewSet(viewsets.ModelViewSet):
     filterset_fields = {
         "status": ["exact"],
     }
+
+    # Écriture du CONTENU réservée au propriétaire (intégrité IAA, R1) : ni admin
+    # ni reviewer n'éditent l'annotation d'autrui. Les autres actions gardent le
+    # défaut `IsAnnotationOwnerOrReviewer` (lecture, versions, comments…), et
+    # `reviews` conserve son `IsReviewerOrAdmin` déclaré sur le @action.
+    _OWNER_ONLY_ACTIONS = {"update", "partial_update", "destroy", "submit", "add_clause"}
+
+    def get_permissions(self):
+        if self.action in self._OWNER_ONLY_ACTIONS:
+            return [IsAnnotationOwner()]
+        return super().get_permissions()
 
     def get_serializer_class(self):
         if self.action == "list":
@@ -374,7 +386,8 @@ class ClauseViewSet(viewsets.ModelViewSet):
         "annotation", "annotation__project__scheme", "theme", "anchor_sentence"
     )
     serializer_class = ClauseSerializer
-    permission_classes = [IsAnnotationOwnerOrReviewer]
+    # Édition d'une clause réservée au propriétaire de l'annotation (R1) ; GET ouvert.
+    permission_classes = [IsAnnotationOwner]
     http_method_names = ["get", "patch", "delete"]
 
     def get_object(self):

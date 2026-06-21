@@ -202,6 +202,27 @@ export interface ProjectProgress {
   iaaDetail?: IaaDetail | null;
 }
 
+/** κ de Cohen d'une paire d'annotateurs sur UN document (matrice pairwise, R3). */
+export interface IaaPair {
+  /** external_id du document comparé. */
+  document: string;
+  annotatorA: string;
+  annotatorB: string;
+  /** κ de Cohen ∈ [-1, 1] sur les thèmes par phrase (forward-fill). */
+  kappa: number;
+  nSentences: number;
+}
+
+/** IAA détaillé renvoyé par /projects/{slug}/iaa (R3) : moyenne + matrice + détail. */
+export interface ProjectIaa {
+  /** κ moyen sur toutes les paires/documents (null si < 2 annotateurs). */
+  meanKappa: number | null;
+  /** Matrice paire-à-paire par document. */
+  pairs: IaaPair[];
+  /** Détail par thème + frontières (null si < 2 annotateurs). */
+  detail?: IaaDetail | null;
+}
+
 export interface Assignment {
   id: string;
   projectSlug: string;

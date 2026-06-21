@@ -268,6 +268,24 @@ class ProjectViewSet(viewsets.ModelViewSet):
             }
         )
 
+    @action(detail=True, methods=["get"])
+    def iaa(self, request, slug=None):
+        """IAA détaillé (R3) : moyenne + matrice PAIRE-À-PAIRE par document + détail.
+
+        `pairs` = [{document, annotatorA, annotatorB, kappa, nSentences}] permet de
+        repérer OÙ l'accord chute (quel document, quelle paire) ; l'export CSV est
+        fait côté client à partir de ce tableau.
+        """
+        project = self.get_object()
+        data = project_iaa(project)
+        return Response(
+            {
+                "mean_kappa": data["mean_kappa"],
+                "pairs": data["pairs"],
+                "detail": project_iaa_detail(project),
+            }
+        )
+
     # --- pre-annotations import (feature 2) -------------------------------
     @action(
         detail=True, methods=["post"],

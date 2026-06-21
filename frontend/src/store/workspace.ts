@@ -102,11 +102,23 @@ interface WorkspaceState {
   undoStack: DraftClause[][];
   /** Pile de rétablissement (point 4a). */
   redoStack: DraftClause[][];
+  /**
+   * Lecture seule (R1) : MA session est éditable ; l'annotation d'un AUTRE
+   * annotateur est consultable mais NON modifiable (intégrité IAA). Quand vrai,
+   * tous les mutateurs de CONTENU sont neutralisés (no-op) — la navigation, la
+   * sélection et les overlays restent disponibles.
+   */
+  readOnly: boolean;
   // Statut de dirty (modifs non snapshotées).
   dirty: boolean;
 
   // Actions
-  init: (params: { annotationId: string; nSentences: number; clauses: Clause[] }) => void;
+  init: (params: {
+    annotationId: string;
+    nSentences: number;
+    clauses: Clause[];
+    readOnly?: boolean;
+  }) => void;
   focusSentence: (index: number) => void;
   moveFocus: (delta: number) => void;
   selectClause: (id: string | null) => void;
@@ -228,12 +240,14 @@ export const useWorkspaceStore = create<WorkspaceState>((set, get) => ({
   actionLog: [],
   undoStack: [],
   redoStack: [],
+  readOnly: false,
   dirty: false,
 
-  init: ({ annotationId, nSentences, clauses }) =>
+  init: ({ annotationId, nSentences, clauses, readOnly = false }) =>
     set({
       annotationId,
       nSentences,
+      readOnly,
       draftClauses: sortDrafts(clauses.map(fromClause)),
       focusedSentence: 0,
       selectedClauseId: clauses[0]?.id ?? null,
@@ -270,6 +284,7 @@ export const useWorkspaceStore = create<WorkspaceState>((set, get) => ({
 
   setBoundary: (anchorIndex, theme) =>
     set((s) => {
+      if (s.readOnly) return {};
       const existing = s.draftClauses.find((c) => c.anchorIndex === anchorIndex);
       if (existing) {
         // Une ancre existe déjà : choisir un thème RE-THÉMATISE la clause en place
@@ -320,6 +335,7 @@ export const useWorkspaceStore = create<WorkspaceState>((set, get) => ({
 
   resolveDivergence: (anchorIndex, judge, theme) =>
     set((s) => {
+      if (s.readOnly) return {};
       const existing = s.draftClauses.find((c) => c.anchorIndex === anchorIndex);
       if (existing) {
         return {
@@ -367,20 +383,25 @@ export const useWorkspaceStore = create<WorkspaceState>((set, get) => ({
     }),
 
   removeBoundary: (anchorIndex) =>
-    set((s) => ({
-      draftClauses: s.draftClauses.filter((c) => c.anchorIndex !== anchorIndex),
-      dirty: true,
-      undoStack: pushUndo(s.undoStack, s.draftClauses),
-      redoStack: [],
-      actionLog: appendLog(s.actionLog, {
-        kind: "clause.delete",
-        label: `Clause supprimée @${anchorIndex}`,
-        anchorIndex,
-      }),
-    })),
+    set((s) =>
+      s.readOnly
+        ? {}
+        : {
+            draftClauses: s.draftClauses.filter((c) => c.anchorIndex !== anchorIndex),
+            dirty: true,
+            undoStack: pushUndo(s.undoStack, s.draftClauses),
+            redoStack: [],
+            actionLog: appendLog(s.actionLog, {
+              kind: "clause.delete",
+              label: `Clause supprimée @${anchorIndex}`,
+              anchorIndex,
+            }),
+          },
+    ),
 
   updateDraft: (localId, patch) =>
     set((s) => {
+      if (s.readOnly) return {};
       const target = s.draftClauses.find((c) => c.localId === localId);
       const field = Object.keys(patch)[0] ?? "champ";
       const verb =
@@ -406,6 +427,7 @@ export const useWorkspaceStore = create<WorkspaceState>((set, get) => ({
 
   setCertainty: (localId, value) =>
     set((s) => {
+      if (s.readOnly) return {};
       const target = s.draftClauses.find((c) => c.localId === localId);
       return {
         draftClauses: s.draftClauses.map((c) =>
@@ -425,6 +447,7 @@ export const useWorkspaceStore = create<WorkspaceState>((set, get) => ({
 
   seedFromPreAnnotation: (clauses, judge) =>
     set((s) => {
+      if (s.readOnly) return {};
       const existingAnchors = new Set(s.draftClauses.map((c) => c.anchorIndex));
       const seeded: DraftClause[] = clauses
         .filter((c) => !existingAnchors.has(c.anchor_index))
@@ -447,6 +470,7 @@ export const useWorkspaceStore = create<WorkspaceState>((set, get) => ({
 
   replacePrefill: (clauses, judge) =>
     set((s) => {
+      if (s.readOnly) return {};
       // 1) On retire UNIQUEMENT les clauses issues d'un pré-remplissage antérieur
       //    (seededFrom = "preannotation:*"), en PRÉSERVANT l'humain (seededFrom nul)
       //    et les arbitrages (resolvedFrom).
@@ -557,7 +581,7 @@ export const useWorkspaceStore = create<WorkspaceState>((set, get) => ({
 
   undo: () =>
     set((s) => {
-      if (s.undoStack.length === 0) return {};
+      if (s.readOnly || s.undoStack.length === 0) return {};
       const prev = s.undoStack[s.undoStack.length - 1]!;
       const validSel = prev.some((c) => c.localId === s.selectedClauseId)
         ? s.selectedClauseId
@@ -574,7 +598,7 @@ export const useWorkspaceStore = create<WorkspaceState>((set, get) => ({
 
   redo: () =>
     set((s) => {
-      if (s.redoStack.length === 0) return {};
+      if (s.readOnly || s.redoStack.length === 0) return {};
       const next = s.redoStack[s.redoStack.length - 1]!;
       const validSel = next.some((c) => c.localId === s.selectedClauseId)
         ? s.selectedClauseId
@@ -611,6 +635,7 @@ export const useWorkspaceStore = create<WorkspaceState>((set, get) => ({
       actionLog: [],
       undoStack: [],
       redoStack: [],
+      readOnly: false,
       dirty: false,
     }),
 }));

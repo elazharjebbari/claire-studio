@@ -55,3 +55,25 @@ class IsAnnotationOwnerOrReviewer(BasePermission):
         if annotator_id == u.id:
             return True
         return u.role in {"reviewer", "admin", "owner"} or u.is_superuser
+
+
+class IsAnnotationOwner(BasePermission):
+    """Object-level: only the annotation's OWNER may write its CONTENT.
+
+    Intégrité IAA (raffinement R1) : une annotation doit rester l'œuvre UNIQUE de
+    son auteur. Contrairement à `IsAnnotationOwnerOrReviewer`, il n'y a AUCUNE
+    dérogation de rôle — même un admin/reviewer ne peut éditer les clauses, la
+    soumission, le statut ou la certitude d'un tiers (cela fausserait l'accord
+    inter-annotateurs). Les reviewers agissent via les endpoints de revue
+    (`reviews`, `comments`), jamais en modifiant le contenu.
+
+    Lecture ouverte (l'isolation projet est assurée par `get_queryset`).
+    """
+
+    def has_permission(self, request, view):
+        return bool(request.user and request.user.is_authenticated)
+
+    def has_object_permission(self, request, view, obj):
+        if request.method in SAFE_METHODS:
+            return True
+        return getattr(obj, "annotator_id", None) == request.user.id

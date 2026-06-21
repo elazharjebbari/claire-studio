@@ -5,6 +5,7 @@
  * d'activité, menu utilisateur (navigation.md §2).
  */
 
+import { useEffect } from "react";
 import Link from "next/link";
 import { BookOpen, HelpCircle, Sun, Moon, ShieldCheck } from "lucide-react";
 import { useUiStore } from "@/store/ui";
@@ -22,6 +23,15 @@ export function TopBar() {
   const { data: me } = useMe();
   const { data: projects } = useProjects();
   const isAdmin = isAdminRole(me?.role);
+
+  // R4 — auto-sélection : dès que des projets sont chargés et qu'aucun n'est
+  // courant, sélectionner (et persister) le premier. La nav projet-dépendante
+  // (file de travail, breadcrumbs, schéma) résout ainsi sans manipulation.
+  useEffect(() => {
+    if (!currentProject && projects?.results?.length) {
+      setProject(projects.results[0]!.slug);
+    }
+  }, [currentProject, projects, setProject]);
 
   return (
     <header className="flex h-12 shrink-0 items-center gap-3 border-b border-line bg-elevated px-3">

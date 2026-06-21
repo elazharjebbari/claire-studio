@@ -23,6 +23,7 @@ import type {
   Paginated,
   PreAnnotation,
   Project,
+  ProjectIaa,
   ProjectProgress,
   ProjectVisibility,
   PublicProject,
@@ -174,6 +175,11 @@ export function listAssignments(slug: string): Promise<Paginated<Assignment>> {
 
 export function getProjectProgress(slug: string): Promise<ProjectProgress> {
   return apiFetch<ProjectProgress>(`/projects/${slug}/progress`);
+}
+
+/** IAA détaillé (R3) : moyenne + matrice paire-à-paire par document + détail. */
+export function getProjectIaa(slug: string): Promise<ProjectIaa> {
+  return apiFetch<ProjectIaa>(`/projects/${slug}/iaa`);
 }
 
 // ── Gestion de campagne (admin) : assignations & membres ───────────────────────
