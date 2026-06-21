@@ -46,6 +46,42 @@ describe("computeRuns", () => {
   });
 });
 
+describe("computeRuns — perSentence (C4 : pas de débordement)", () => {
+  it("une clause ne couvre QUE sa phrase ; le reste est neutre", () => {
+    const runs = computeRuns(
+      [{ anchorIndex: 2, theme: "TERMINATION", localId: "a" }],
+      5,
+      { perSentence: true },
+    );
+    expect(runs).toEqual([
+      { start: 0, end: 1, theme: null, localId: null },
+      { start: 2, end: 2, theme: "TERMINATION", localId: "a" },
+      { start: 3, end: 4, theme: null, localId: null },
+    ]);
+    // La phrase 3 (et au-delà) n'hérite PAS du thème de la clause posée en 2.
+    expect(runThemeAt(runs, 2)).toBe("TERMINATION");
+    expect(runThemeAt(runs, 3)).toBeNull();
+    expect(runThemeAt(runs, 4)).toBeNull();
+  });
+
+  it("plusieurs clauses → une phrase chacune, trous neutres entre elles", () => {
+    const runs = computeRuns(
+      [
+        { anchorIndex: 0, theme: "META", localId: "a" },
+        { anchorIndex: 2, theme: "TERMINATION", localId: "b" },
+      ],
+      4,
+      { perSentence: true },
+    );
+    expect(runs).toEqual([
+      { start: 0, end: 0, theme: "META", localId: "a" },
+      { start: 1, end: 1, theme: null, localId: null },
+      { start: 2, end: 2, theme: "TERMINATION", localId: "b" },
+      { start: 3, end: 3, theme: null, localId: null },
+    ]);
+  });
+});
+
 describe("runAt / runThemeAt", () => {
   const runs = computeRuns(
     [

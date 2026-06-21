@@ -129,6 +129,12 @@ interface WorkspaceState {
    */
   setBoundary: (anchorIndex: number, theme: string) => void;
   /**
+   * Toggle d'annotation (C3) : depuis le menu d'une phrase. Aucune clause → crée
+   * (thème) ; clause de thème DIFFÉRENT → re-thématise ; clause de MÊME thème →
+   * supprime (désannotation). Permet d'annoter/désannoter d'un même geste.
+   */
+  toggleBoundary: (anchorIndex: number, theme: string) => void;
+  /**
    * Arbitrage de divergence (P1) : adopte la proposition d'un juge à l'ancre donnée.
    * Crée la clause humaine si absente (thème du juge), sinon met à jour son thème ;
    * marque `resolvedFrom` = juge pour le voyant. Toujours `dirty=true`.
@@ -333,6 +339,15 @@ export const useWorkspaceStore = create<WorkspaceState>((set, get) => ({
       };
     }),
 
+  toggleBoundary: (anchorIndex, theme) => {
+    const { readOnly, draftClauses, removeBoundary, setBoundary } = get();
+    if (readOnly) return;
+    const existing = draftClauses.find((c) => c.anchorIndex === anchorIndex);
+    // Même thème déjà posé → désannotation ; sinon création / re-thématisation.
+    if (existing && existing.theme === theme) removeBoundary(anchorIndex);
+    else setBoundary(anchorIndex, theme);
+  },
+
   resolveDivergence: (anchorIndex, judge, theme) =>
     set((s) => {
       if (s.readOnly) return {};
@@ -478,23 +493,31 @@ export const useWorkspaceStore = create<WorkspaceState>((set, get) => ({
         (c) => !(c.seededFrom?.startsWith("preannotation:") && !c.resolvedFrom),
       );
       const humanAnchors = new Set(human.map((c) => c.anchorIndex));
-      // 2) On seed le nouveau juge sur les ancres libres (jamais par-dessus l'humain).
-      const seeded: DraftClause[] =
-        judge == null
-          ? []
-          : clauses
-              .filter((c) => !humanAnchors.has(c.anchor_index))
-              .map((c) => ({
-                localId: nextLocalId(),
-                anchorIndex: c.anchor_index,
-                theme: c.theme,
-                legalNature: c.legal_nature ?? null,
-                evidenceSpan: c.evidence_span ?? "",
-                rationale: c.rationale ?? "",
-                certainty: c.certainty ?? null,
-                seededFrom: `preannotation:${judge}`,
-                resolvedFrom: null,
-              }));
+      // 2) Dépliage PAR PHRASE (C4) : chaque segment LLM [start, nextStart−1] devient
+      //    des clauses PAR PHRASE (l'adoption couvre tout le segment, mais reste
+      //    éditable/désannotable phrase à phrase). Jamais par-dessus l'humain.
+      const seeded: DraftClause[] = [];
+      if (judge != null) {
+        const segs = clauses.slice().sort((a, b) => a.anchor_index - b.anchor_index);
+        for (let k = 0; k < segs.length; k += 1) {
+          const seg = segs[k]!;
+          const end = (segs[k + 1]?.anchor_index ?? s.nSentences) - 1;
+          for (let idx = seg.anchor_index; idx <= end && idx < s.nSentences; idx += 1) {
+            if (idx < 0 || humanAnchors.has(idx)) continue;
+            seeded.push({
+              localId: nextLocalId(),
+              anchorIndex: idx,
+              theme: seg.theme,
+              legalNature: seg.legal_nature ?? null,
+              evidenceSpan: seg.evidence_span ?? "",
+              rationale: seg.rationale ?? "",
+              certainty: seg.certainty ?? null,
+              seededFrom: `preannotation:${judge}`,
+              resolvedFrom: null,
+            });
+          }
+        }
+      }
       return {
         draftClauses: sortDrafts([...human, ...seeded]),
         prefilledJudge: judge,

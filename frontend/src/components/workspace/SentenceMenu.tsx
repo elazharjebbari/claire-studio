@@ -58,8 +58,7 @@ export function SentenceMenu({
 }: SentenceMenuProps) {
   const { ref, style: anchoredStyle } = useAnchoredPosition(x, y);
   const drafts = useWorkspaceStore((s) => s.draftClauses);
-  const setBoundary = useWorkspaceStore((s) => s.setBoundary);
-  const updateDraft = useWorkspaceStore((s) => s.updateDraft);
+  const toggleBoundary = useWorkspaceStore((s) => s.toggleBoundary);
   const setCertainty = useWorkspaceStore((s) => s.setCertainty);
   const resolveDivergence = useWorkspaceStore((s) => s.resolveDivergence);
   const setTranslated = useWorkspaceStore((s) => s.setTranslated);
@@ -106,12 +105,10 @@ export function SentenceMenu({
   }, [ref]);
 
   function handleSetTheme(code: string) {
-    if (coveringDraft) {
-      updateDraft(coveringDraft.localId, { theme: code });
-    } else {
-      // Pas de clause couvrante (préfixe neutre) → on pose une frontière ici avec ce thème.
-      setBoundary(sentenceIndex, code);
-    }
+    // C3 — toggle : crée si absent, re-thématise si différent, retire si MÊME thème
+    // (désannotation d'un même geste). Annotation PAR PHRASE (C4) : agit sur cette
+    // phrase précisément, pas sur un span.
+    toggleBoundary(sentenceIndex, code);
   }
 
   return (
@@ -141,7 +138,7 @@ export function SentenceMenu({
       {/* (a) Annoter… — choisir un thème CRÉE/réassigne la clause (Q2, thème requis) */}
       <section className="flex flex-col gap-2 border-b border-line pb-3">
         <h3 className="text-[11px] font-semibold uppercase text-ink-muted">
-          Annoter… {coveringDraft ? "(changer le thème)" : "(choisir un thème)"}
+          Annoter… {coveringDraft ? "(re-cliquer le thème = retirer)" : "(choisir un thème)"}
         </h3>
         <div className="max-h-40 overflow-auto">
           <ThemePalette

@@ -363,3 +363,43 @@ describe("workspace store — lecture seule (R1)", () => {
     expect(s.dirty).toBe(false);
   });
 });
+
+// ── toggleBoundary : annoter / désannoter (C3) ────────────────────────────────
+describe("workspace store — toggleBoundary (C3)", () => {
+  beforeEach(() => {
+    useWorkspaceStore.getState().reset();
+    useWorkspaceStore
+      .getState()
+      .init({ annotationId: "ann-1", nSentences: 10, clauses: baseClauses });
+  });
+
+  it("crée une clause sur une phrase libre", () => {
+    useWorkspaceStore.getState().toggleBoundary(5, "TERMINATION");
+    const d = useWorkspaceStore.getState().draftClauses.find((c) => c.anchorIndex === 5);
+    expect(d?.theme).toBe("TERMINATION");
+  });
+
+  it("re-thématise si le thème diffère (pas de doublon)", () => {
+    useWorkspaceStore.getState().toggleBoundary(0, "TERMINATION"); // 0 = META au départ
+    const at0 = useWorkspaceStore.getState().draftClauses.filter((c) => c.anchorIndex === 0);
+    expect(at0).toHaveLength(1);
+    expect(at0[0]!.theme).toBe("TERMINATION");
+  });
+
+  it("retire la clause si on re-choisit le MÊME thème (désannotation)", () => {
+    // 0 = META ; re-choisir META → suppression.
+    useWorkspaceStore.getState().toggleBoundary(0, "META");
+    expect(
+      useWorkspaceStore.getState().draftClauses.find((c) => c.anchorIndex === 0),
+    ).toBeUndefined();
+  });
+
+  it("est neutralisé en lecture seule", () => {
+    useWorkspaceStore.getState().reset();
+    useWorkspaceStore
+      .getState()
+      .init({ annotationId: "ann-x", nSentences: 10, clauses: baseClauses, readOnly: true });
+    useWorkspaceStore.getState().toggleBoundary(5, "TERMINATION");
+    expect(useWorkspaceStore.getState().draftClauses).toHaveLength(1);
+  });
+});

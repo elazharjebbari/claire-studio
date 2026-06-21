@@ -151,8 +151,10 @@ export function DocumentPanel({
 
   // Runs de la source ACTIVE (Q3). En `human` → clauses humaines ; en `claude`/`codex`
   // → segmentation du juge ; en `compare` → on s'appuie sur la projection par phrase.
+  // Annotation HUMAINE par phrase (C4) : une clause ne colore QUE sa phrase, pas un
+  // span. Les juges LLM (ci-dessous) gardent le forward-fill (segments).
   const humanRuns = useMemo(
-    () => computeRuns(drafts.map((d) => ({ ...d })), n),
+    () => computeRuns(drafts.map((d) => ({ ...d })), n, { perSentence: true }),
     [drafts, n],
   );
   const claudeRuns = useMemo(

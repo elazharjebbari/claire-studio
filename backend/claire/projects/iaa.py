@@ -1,9 +1,10 @@
 """Inter-annotator agreement (feature 7) — Cohen's kappa.
 
-We compute agreement on the per-sentence theme label: for each annotator we
-build a vector of theme codes indexed by anchored sentence (segmentation is
-monotone, so each clause-start labels the span until the next start). Sentences
-not yet reached keep the previous clause's theme (forward fill).
+We compute agreement on the **per-sentence** theme label: for each annotator we
+build a vector of theme codes indexed by sentence. Annotation is per-sentence
+(C4) — sentence *i* takes the theme of the clause anchored exactly at *i*, or
+``None`` if that sentence is unlabeled. No forward-fill: an unlabeled sentence
+is genuinely unlabeled (``None``), not the previous clause's theme.
 """
 
 from __future__ import annotations
@@ -15,20 +16,11 @@ from claire.corpora.models import Document
 
 
 def _theme_vector(annotation: Annotation, n_sentences: int) -> list[str | None]:
-    """Forward-fill theme codes across all sentences from clause anchors."""
-    clauses = list(
-        annotation.clauses.select_related("anchor_sentence", "theme").order_by(
-            "anchor_sentence__index"
-        )
-    )
-    vector: list[str | None] = [None] * n_sentences
-    current: str | None = None
+    """Per-sentence theme codes (C4) : sentence *i* = theme of the clause anchored
+    at *i*, else ``None``. No forward-fill — annotation is per-sentence."""
+    clauses = annotation.clauses.select_related("anchor_sentence", "theme")
     starts = {c.anchor_sentence.index: c.theme.code for c in clauses}
-    for i in range(n_sentences):
-        if i in starts:
-            current = starts[i]
-        vector[i] = current
-    return vector
+    return [starts.get(i) for i in range(n_sentences)]
 
 
 def cohen_kappa(labels_a: list, labels_b: list) -> float:

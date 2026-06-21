@@ -25,9 +25,7 @@ import { ThemePalette } from "@/components/ui/ThemePalette";
 export function SelectionToolbar() {
   const selected = useWorkspaceStore((s) => s.selectedSentences);
   const selectedClauseIds = useWorkspaceStore((s) => s.selectedClauseIds);
-  const drafts = useWorkspaceStore((s) => s.draftClauses);
   const setBoundary = useWorkspaceStore((s) => s.setBoundary);
-  const removeBoundary = useWorkspaceStore((s) => s.removeBoundary);
   const updateDraft = useWorkspaceStore((s) => s.updateDraft);
   const setTranslated = useWorkspaceStore((s) => s.setTranslated);
   const clearSelection = useWorkspaceStore((s) => s.clearSelection);
@@ -57,22 +55,16 @@ export function SelectionToolbar() {
   if (selected.length === 0) return null;
 
   const sorted = selected.slice().sort((a, b) => a - b);
-  const first = sorted[0]!;
-  const last = sorted[sorted.length - 1]!;
 
   function annotate(themeCode: string) {
-    // Supprime toute ancre strictement à l'intérieur (entre first+1 et last) pour
-    // que la clause posée au 1er index couvre toute la sélection.
-    for (const d of drafts) {
-      if (d.anchorIndex > first && d.anchorIndex <= last) removeBoundary(d.anchorIndex);
-    }
-    const existing = useWorkspaceStore.getState().draftClauses.find(
-      (d) => d.anchorIndex === first,
-    );
-    if (existing) {
-      updateDraft(existing.localId, { theme: themeCode });
-    } else {
-      setBoundary(first, themeCode);
+    // C4 — annotation PAR PHRASE : pose le thème sur CHAQUE phrase sélectionnée
+    // (une clause par phrase), au lieu d'une unique clause couvrant toute la plage.
+    for (const i of sorted) {
+      const existing = useWorkspaceStore.getState().draftClauses.find(
+        (d) => d.anchorIndex === i,
+      );
+      if (existing) updateDraft(existing.localId, { theme: themeCode });
+      else setBoundary(i, themeCode);
     }
     setPalette(false);
     clearSelection();

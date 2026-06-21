@@ -23,12 +23,24 @@ export interface Run {
 }
 
 /**
- * Découpe [0, nSentences) en runs contigus, un par clause (triés par anchorIndex).
- * - Préfixe avant la 1re ancre → run neutre `{theme:null, localId:null}`.
- * - Chaque clause couvre de son ancre jusqu'à (ancre suivante - 1), bornée à nSentences-1.
- * - Défensif : ancres hors bornes ignorées, doublons d'ancre fusionnés (1re gagne).
+ * Découpe [0, nSentences) en runs contigus, triés par anchorIndex.
+ *
+ * Deux modes :
+ *  - **span / forward-fill** (défaut) : chaque clause couvre de son ancre jusqu'à
+ *    (ancre suivante − 1), bornée à nSentences−1. Utilisé pour les SEGMENTS LLM
+ *    (data `start_id` + thème) qui sont par nature des spans.
+ *  - **perSentence** (C4) : chaque clause couvre EXACTEMENT sa phrase `[ancre, ancre]` ;
+ *    tout le reste (avant/entre/après) forme des runs neutres `{theme:null}`. Utilisé
+ *    pour l'annotation HUMAINE — annoter une phrase n'affecte qu'elle (pas de
+ *    débordement vers les phrases suivantes).
+ *
+ * Défensif : ancres hors bornes ignorées, doublons d'ancre fusionnés (1re gagne).
  */
-export function computeRuns(drafts: RunAnchor[], nSentences: number): Run[] {
+export function computeRuns(
+  drafts: RunAnchor[],
+  nSentences: number,
+  opts?: { perSentence?: boolean },
+): Run[] {
   if (nSentences <= 0) return [];
 
   // Trie + déduplique par anchorIndex en gardant des ancres valides dans [0, n).
@@ -44,6 +56,22 @@ export function computeRuns(drafts: RunAnchor[], nSentences: number): Run[] {
     });
 
   const runs: Run[] = [];
+
+  if (opts?.perSentence) {
+    // Chaque clause = sa propre phrase ; les intervalles libres = runs neutres.
+    let cursor = 0;
+    for (const a of anchors) {
+      if (a.anchorIndex > cursor) {
+        runs.push({ start: cursor, end: a.anchorIndex - 1, theme: null, localId: null });
+      }
+      runs.push({ start: a.anchorIndex, end: a.anchorIndex, theme: a.theme, localId: a.localId });
+      cursor = a.anchorIndex + 1;
+    }
+    if (cursor < nSentences) {
+      runs.push({ start: cursor, end: nSentences - 1, theme: null, localId: null });
+    }
+    return runs;
+  }
 
   // Préfixe neutre si la 1re ancre n'est pas en 0.
   const firstAnchor = anchors[0]?.anchorIndex ?? nSentences;

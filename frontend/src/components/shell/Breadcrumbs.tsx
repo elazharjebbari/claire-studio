@@ -39,7 +39,14 @@ const LABELS: Record<string, string> = {
 interface Crumb {
   label: string;
   href: string;
+  /** Segment parent SANS page d'index (route dynamique seule) : non cliquable. */
+  noLink?: boolean;
 }
+
+// Segments qui n'existent QUE sous forme dynamique (ex. /history/[id]) : pas de page
+// d'index. Le fil d'Ariane ne doit donc PAS générer de <Link> vers eux, sinon Next.js
+// préfetch /history?_rsc=… → 404. Rendus en texte simple.
+const NO_INDEX_SEGMENTS = new Set(["history"]);
 
 export function Breadcrumbs() {
   const pathname = usePathname();
@@ -69,7 +76,7 @@ export function Breadcrumbs() {
     } else {
       label = LABELS[seg] ?? decodeURIComponent(seg);
     }
-    crumbs.push({ label, href });
+    crumbs.push({ label, href, noLink: NO_INDEX_SEGMENTS.has(seg) });
   });
 
   return (
@@ -96,6 +103,11 @@ export function Breadcrumbs() {
               {last ? (
                 <span aria-current="page" className="truncate font-medium text-ink">
                   {i === 0 && <Home size={13} aria-hidden className="mr-1 inline" />}
+                  {c.label}
+                </span>
+              ) : c.noLink ? (
+                <span className="flex items-center gap-1 truncate text-ink-muted">
+                  {i === 0 && <Home size={13} aria-hidden />}
                   {c.label}
                 </span>
               ) : (
