@@ -8,6 +8,7 @@
 
 import { Sidebar } from "./Sidebar";
 import { TopBar } from "./TopBar";
+import { Breadcrumbs } from "./Breadcrumbs";
 import { CommandPalette } from "./CommandPalette";
 
 export function AppShell({ children }: { children: React.ReactNode }) {
@@ -19,6 +20,7 @@ export function AppShell({ children }: { children: React.ReactNode }) {
       <Sidebar />
       <div className="flex min-w-0 flex-1 flex-col">
         <TopBar />
+        <Breadcrumbs />
         <main id="main-content" className="min-h-0 flex-1 overflow-auto">
           {children}
         </main>

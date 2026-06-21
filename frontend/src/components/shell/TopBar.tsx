@@ -6,9 +6,10 @@
  */
 
 import Link from "next/link";
-import { BookOpen, HelpCircle, Sun, Moon } from "lucide-react";
+import { BookOpen, HelpCircle, Sun, Moon, ShieldCheck } from "lucide-react";
 import { useUiStore } from "@/store/ui";
 import { useMe, useProjects } from "@/lib/api/hooks";
+import { isAdminRole } from "@/lib/roles";
 import { ActivityBell } from "./ActivityBell";
 import { Badge } from "@/components/ui/primitives";
 
@@ -20,6 +21,7 @@ export function TopBar() {
   const setProject = useUiStore((s) => s.setCurrentProject);
   const { data: me } = useMe();
   const { data: projects } = useProjects();
+  const isAdmin = isAdminRole(me?.role);
 
   return (
     <header className="flex h-12 shrink-0 items-center gap-3 border-b border-line bg-elevated px-3">
@@ -53,6 +55,17 @@ export function TopBar() {
       </button>
 
       <div className="ml-auto flex items-center gap-2">
+        {isAdmin && (
+          <Link
+            href="/admin"
+            data-testid="admin-console-link"
+            aria-label="Console d'administration"
+            title="Console d'administration (corpus, campagnes, assignations, utilisateurs…)"
+            className="flex items-center gap-1.5 rounded-md border border-line bg-panel px-2.5 py-1 text-sm font-medium text-ink hover:bg-panel-muted"
+          >
+            <ShieldCheck size={15} aria-hidden className="text-accent" /> Console admin
+          </Link>
+        )}
         <Link
           href="/help"
           data-testid="docs-link"
