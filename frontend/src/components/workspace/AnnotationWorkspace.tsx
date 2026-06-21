@@ -31,7 +31,10 @@ export function AnnotationWorkspace({ annotationId }: { annotationId: string }) 
   const { data: scheme } = useScheme(project?.schemeSlug);
   const { data: me } = useMe();
   // Désambiguïsation (plan §P7) : MA session (édition) vs annotation d'autrui (lecture).
-  const isMine = !me || !annotation || String(annotation.annotatorId) === String(me.id);
+  // SÛR PAR DÉFAUT : tant que l'identité (me) ou l'annotation n'est pas confirmée, on
+  // considère que ce N'EST PAS ma session → lecture seule, donc aucune écriture sous
+  // identité incertaine (évite les 403 d'autosave quand me n'est pas encore chargé).
+  const isMine = !!me && !!annotation && String(annotation.annotatorId) === String(me.id);
 
   const init = useWorkspaceStore((s) => s.init);
   const reset = useWorkspaceStore((s) => s.reset);

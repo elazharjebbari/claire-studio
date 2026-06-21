@@ -76,4 +76,12 @@ class IsAnnotationOwner(BasePermission):
     def has_object_permission(self, request, view, obj):
         if request.method in SAFE_METHODS:
             return True
-        return getattr(obj, "annotator_id", None) == request.user.id
+        # `obj` peut être une Annotation (attr `annotator_id`) OU une Clause : pour
+        # ClauseViewSet, DRF appelle d'abord check_object_permissions sur la CLAUSE
+        # (objet du queryset) — il faut alors remonter à
+        # `clause.annotation.annotator_id`. Sans ce repli, une clause (pas d'attr
+        # `annotator_id`) donnait None → 403 même pour le propriétaire légitime.
+        owner_id = getattr(obj, "annotator_id", None)
+        if owner_id is None:
+            owner_id = getattr(getattr(obj, "annotation", None), "annotator_id", None)
+        return owner_id is not None and owner_id == request.user.id

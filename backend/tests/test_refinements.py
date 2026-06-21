@@ -67,6 +67,29 @@ def test_owner_still_edits_own_annotation(
     assert resp.status_code == 201, resp.content
 
 
+def test_owner_can_patch_and_delete_own_clause(
+    auth, annotation, scheme_with_themes
+):
+    """Régression (bug 403 PATCH/DELETE /clauses) : DRF vérifie la permission sur la
+    CLAUSE (objet du queryset), pas l'annotation. IsAnnotationOwner doit remonter à
+    clause.annotation.annotator_id, sinon le PROPRIÉTAIRE lui-même est rejeté."""
+    owner = auth(annotation.annotator)
+    created = owner.post(
+        f"/api/v1/annotations/{annotation.id}/clauses",
+        {"anchorIndex": 0, "theme": "META"}, format="json",
+    )
+    assert created.status_code == 201, created.content
+    clause_id = created.json()["id"]
+
+    patched = owner.patch(
+        f"/api/v1/clauses/{clause_id}", {"theme": "TERMINATION"}, format="json",
+    )
+    assert patched.status_code == 200, patched.content
+
+    deleted = owner.delete(f"/api/v1/clauses/{clause_id}")
+    assert deleted.status_code in (200, 204), deleted.content
+
+
 # ── R2 — Synchro Assignment.status ↔ état de l'Annotation ───────────────────────
 def test_assignment_status_syncs_with_annotation_lifecycle(
     auth, annotation, scheme_with_themes
