@@ -19,6 +19,7 @@ import {
 } from "@/lib/api/hooks";
 import { History, MessageSquare, Layers, BarChart3 } from "lucide-react";
 import { preClausesToPivot } from "@/lib/pivot";
+import { LLM_JUDGES } from "@/lib/llmJudges";
 import { WorkspaceTourButton } from "./WorkspaceTourButton";
 import { DocumentSwitcher } from "./DocumentSwitcher";
 import { SubmitDialog } from "./SubmitDialog";
@@ -144,10 +145,16 @@ export function WorkspaceToolbar({
 
   // (SaveIndicator est défini hors composant, plus bas.)
 
+  // Options de pré-remplissage générées depuis la config des juges (N-modèles : Mistral
+  // inclus). Un juge sans pré-annotation pour ce document est désactivé.
+  const availableJudges = new Set<string>((preClaude?.results ?? []).map((p) => p.judge));
   const PREFILL_OPTIONS: { value: PrefillJudge; label: string; testid: string }[] = [
     { value: null, label: "Aucun", testid: "prefill-none" },
-    { value: "claude", label: "Claude", testid: "prefill-claude" },
-    { value: "codex", label: "Codex", testid: "prefill-codex" },
+    ...LLM_JUDGES.map((j) => ({
+      value: j.id as PrefillJudge,
+      label: j.label,
+      testid: `prefill-${j.id}`,
+    })),
   ];
 
   return (
@@ -167,6 +174,8 @@ export function WorkspaceToolbar({
         <span className="px-1 text-[11px] text-ink-muted">Pré-remplir</span>
         {PREFILL_OPTIONS.map((opt) => {
           const active = prefilledJudge === opt.value;
+          // Désactivé si lecture seule, ou si ce juge n'a pas de données pour ce document.
+          const noData = opt.value != null && !availableJudges.has(opt.value);
           return (
             <button
               key={opt.testid}
@@ -174,7 +183,8 @@ export function WorkspaceToolbar({
               role="radio"
               aria-checked={active}
               data-testid={opt.testid}
-              disabled={readOnly}
+              disabled={readOnly || noData}
+              title={noData ? "Aucune pré-annotation de ce modèle pour ce document" : undefined}
               onClick={() => requestPrefill(opt.value)}
               className={
                 "rounded px-2 py-1 text-xs font-medium transition-colors disabled:cursor-not-allowed disabled:opacity-40 " +

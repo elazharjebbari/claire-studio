@@ -37,6 +37,7 @@ import {
 } from "@/lib/runs";
 import { deriveBlocks, blockAt } from "@/lib/blocks";
 import { ModelBoundaryStrip, ModelBoundaryLegend, type GutterModel } from "./ModelBoundaryRail";
+import { LLM_JUDGES } from "@/lib/llmJudges";
 import { useUiStore } from "@/store/ui";
 import {
   useAnnotationVersions,
@@ -191,12 +192,23 @@ export function DocumentPanel({
   );
   // Pistes de la réglette (Feature A) : dérivées des runs LLM (forward-fill). Étendre
   // = ajouter une entrée (Mistral…). identityColor = couleur d'IDENTITÉ (≠ catégorie).
+  // N-modèles (Feature A étendue à Mistral) : une piste par juge configuré, dérivée de
+  // ses pré-annotations. Ajouter un modèle = une entrée dans LLM_JUDGES (+ backend/import).
   const gutterAllModels = useMemo<GutterModel[]>(
-    () => [
-      { id: "claude", label: "Claude", initial: "C", segments: segmentsFromRuns(claudeRuns), hasData: !!llm.claudePre?.clauses?.length, identityColor: "#94A3B8" },
-      { id: "codex", label: "Codex", initial: "Cx", segments: segmentsFromRuns(codexRuns), hasData: !!llm.codexPre?.clauses?.length, identityColor: "#A78BFA" },
-    ],
-    [claudeRuns, codexRuns, llm.claudePre, llm.codexPre],
+    () =>
+      LLM_JUDGES.map((j) => {
+        const pre = llm.preByJudge[j.id];
+        const runs = computeRuns(judgeAnchors(pre?.clauses), n);
+        return {
+          id: j.id,
+          label: j.label,
+          initial: j.initial,
+          segments: segmentsFromRuns(runs),
+          hasData: !!pre?.clauses?.length,
+          identityColor: j.identityColor,
+        };
+      }),
+    [llm.preByJudge, n],
   );
   const gutterVisibleModels = useMemo(
     () => gutterAllModels.filter((m) => m.hasData && gutterVisibility[m.id] !== false),

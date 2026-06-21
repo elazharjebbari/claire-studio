@@ -47,6 +47,30 @@ def test_import_preannotations_command(tmp_path, project, document_with_sentence
     )
 
 
+def test_import_preannotations_supports_mistral(tmp_path, project, document_with_sentences):
+    """Mistral est un juge de 1er rang : la commande l'importe comme claude/codex."""
+    from claire.imports.models import PreAnnotation
+
+    raw = {
+        "doc": document_with_sentences.external_id,
+        "judge": "mistral",
+        "version": "v9.2",
+        "document_plan": {
+            "segments": [{"start_id": 0, "theme": "META", "rationale": "", "evidence_span": ""}]
+        },
+    }
+    mdir = tmp_path / "mistral"
+    mdir.mkdir()
+    (mdir / f"{document_with_sentences.external_id}_mistral.json").write_text(
+        json.dumps(raw), encoding="utf-8"
+    )
+    call_command(
+        "import_preannotations",
+        "--project", project.slug, "--dir", str(tmp_path), "--judges", "mistral",
+    )
+    assert PreAnnotation.objects.filter(project=project, judge="mistral").count() == 1
+
+
 def test_preclause_serializer_normalizes_theme(project, document_with_sentences):
     """Le pré-remplissage lit les PreClause via l'API : les codes LEGACY doivent être
     normalisés vers le schéma (sinon 400 « Theme not in scheme » au pré-remplissage)."""

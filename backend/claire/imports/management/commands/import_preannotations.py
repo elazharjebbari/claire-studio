@@ -33,7 +33,7 @@ class Command(BaseCommand):
         )
         parser.add_argument(
             "--judges",
-            default="claude,codex",
+            default="claude,codex,mistral",
             help="juges à importer, séparés par des virgules",
         )
 

@@ -277,6 +277,10 @@ export function useLlmAgreement(
     const results = pre.data?.results ?? [];
     const claudePre: PreAnnotation | undefined = results.find((p) => p.judge === "claude");
     const codexPre: PreAnnotation | undefined = results.find((p) => p.judge === "codex");
+    // Tous les juges présents indexés par id (claude/codex/mistral/…) — source N-modèles
+    // pour la réglette, le pré-remplissage et les fantômes.
+    const preByJudge: Record<string, PreAnnotation> = {};
+    for (const p of results) preByJudge[p.judge] = p;
     const n = doc.data?.nSentences ?? 0;
 
     const toJudge = (p: PreAnnotation | undefined): JudgeClause[] =>
@@ -287,6 +291,7 @@ export function useLlmAgreement(
     return {
       claudePre,
       codexPre,
+      preByJudge,
       claudeByIndex: res.claudeByIndex,
       codexByIndex: res.codexByIndex,
       agreementPct: res.agreementPct,

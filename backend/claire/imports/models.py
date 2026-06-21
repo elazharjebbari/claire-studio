@@ -12,6 +12,7 @@ from claire.projects.models import Project
 class Judge(models.TextChoices):
     CLAUDE = "claude", "Claude"
     CODEX = "codex", "Codex"
+    MISTRAL = "mistral", "Mistral"
     OTHER = "other", "Other"
 
 

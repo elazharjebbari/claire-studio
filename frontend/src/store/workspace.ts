@@ -15,8 +15,9 @@ import type { Certainty, Clause, PivotClause } from "@/types/contract";
 /** Source affichée dans le DocumentPanel (Q3). */
 export type LlmSource = "human" | "claude" | "codex" | "compare";
 
-/** Juge pré-rempli courant (point 0a). null = aucun pré-remplissage actif. */
-export type PrefillJudge = "claude" | "codex" | null;
+/** Juge pré-rempli courant (point 0a). null = aucun. `string` = id de juge (claude,
+ *  codex, mistral, …) pour rester N-modèles. */
+export type PrefillJudge = string | null;
 
 /**
  * Entrée du journal d'actions humaines (point 2). Même taxonomie de verbes que
@@ -50,7 +51,7 @@ export interface DraftClause {
    * explicitement sur cette clause. Alimente le « voyant » visuel. null = décision
    * humaine non issue d'un arbitrage LLM ponctuel.
    */
-  resolvedFrom?: "claude" | "codex" | null;
+  resolvedFrom?: string | null;
 }
 
 /**
@@ -159,7 +160,7 @@ interface WorkspaceState {
    * Crée la clause humaine si absente (thème du juge), sinon met à jour son thème ;
    * marque `resolvedFrom` = juge pour le voyant. Toujours `dirty=true`.
    */
-  resolveDivergence: (anchorIndex: number, judge: "claude" | "codex", theme: string) => void;
+  resolveDivergence: (anchorIndex: number, judge: string, theme: string) => void;
   removeBoundary: (anchorIndex: number) => void;
   updateDraft: (localId: string, patch: Partial<DraftClause>) => void;
   setCertainty: (localId: string, value: Certainty) => void;
