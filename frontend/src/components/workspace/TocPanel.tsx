@@ -5,8 +5,11 @@
  * sauts rapides, et toggles d'overlays (injustice, fantôme LLM). navigation.md §3.
  */
 
+import { useEffect, useState } from "react";
 import { ClauseChip } from "@/components/ui/ClauseChip";
+import { ThemePalette } from "@/components/ui/ThemePalette";
 import { useWorkspaceStore } from "@/store/workspace";
+import { LLM_JUDGES } from "@/lib/llmJudges";
 
 export function TocPanel({ docTitle }: { docTitle: string }) {
   const drafts = useWorkspaceStore((s) => s.draftClauses);
@@ -14,11 +17,62 @@ export function TocPanel({ docTitle }: { docTitle: string }) {
   const selectClause = useWorkspaceStore((s) => s.selectClause);
   const focusSentence = useWorkspaceStore((s) => s.focusSentence);
   const nSentences = useWorkspaceStore((s) => s.nSentences);
+  // Sélection MULTIPLE de clauses dans le plan (Cmd/Ctrl+clic) → annoter/valider en lot.
+  const selectedClauseIds = useWorkspaceStore((s) => s.selectedClauseIds);
+  const setSelectedClauses = useWorkspaceStore((s) => s.setSelectedClauses);
+  const clearClauseSelection = useWorkspaceStore((s) => s.clearClauseSelection);
+  const applyBlockOp = useWorkspaceStore((s) => s.applyBlockOp);
+  const validateClauses = useWorkspaceStore((s) => s.validateClauses);
+  const readOnly = useWorkspaceStore((s) => s.readOnly);
+  const [menu, setMenu] = useState<{ x: number; y: number } | null>(null);
+
+  useEffect(() => {
+    if (!menu) return;
+    const close = () => setMenu(null);
+    document.addEventListener("mousedown", close);
+    document.addEventListener("keydown", close);
+    return () => {
+      document.removeEventListener("mousedown", close);
+      document.removeEventListener("keydown", close);
+    };
+  }, [menu]);
+
+  // Anchors des clauses actuellement sélectionnées (lot) → cible des actions.
+  const selectedAnchors = drafts
+    .filter((d) => selectedClauseIds.includes(d.localId))
+    .map((d) => d.anchorIndex);
+
+  function onChipClick(e: React.MouseEvent, localId: string, anchorIndex: number) {
+    if (e.metaKey || e.ctrlKey) {
+      // Toggle multi-sélection (Cmd sur Mac / Ctrl ailleurs).
+      const has = selectedClauseIds.includes(localId);
+      setSelectedClauses(
+        has ? selectedClauseIds.filter((id) => id !== localId) : [...selectedClauseIds, localId],
+      );
+      return;
+    }
+    selectClause(localId);
+    focusSentence(anchorIndex);
+    clearClauseSelection();
+  }
+
+  function onChipContext(e: React.MouseEvent, localId: string) {
+    e.preventDefault();
+    // S'assurer que la clause cliquée fait partie de la sélection avant d'ouvrir le menu.
+    if (!selectedClauseIds.includes(localId)) {
+      setSelectedClauses(selectedClauseIds.length > 0 ? [...selectedClauseIds, localId] : [localId]);
+    }
+    if (!readOnly) setMenu({ x: e.clientX, y: e.clientY });
+  }
+
+  function annotateSelection(theme: string) {
+    if (selectedAnchors.length > 0) applyBlockOp({ kind: "annotateRange", anchors: selectedAnchors, theme });
+    setMenu(null);
+  }
 
   const showUnfairness = useWorkspaceStore((s) => s.showUnfairness);
   const toggleUnfairness = useWorkspaceStore((s) => s.toggleUnfairness);
-  const showGhostClaude = useWorkspaceStore((s) => s.showGhostClaude);
-  const showGhostCodex = useWorkspaceStore((s) => s.showGhostCodex);
+  const ghostJudges = useWorkspaceStore((s) => s.ghostJudges);
   const toggleGhost = useWorkspaceStore((s) => s.toggleGhost);
   // Overlay « Traduction (FR) » branché sur le mode de langue (P10) : coché = FR,
   // décoché = VO. Bascule cohérente avec le switch segmenté du DocumentPanel.
@@ -74,6 +128,36 @@ export function TocPanel({ docTitle }: { docTitle: string }) {
         </div>
       </div>
 
+      {selectedClauseIds.length > 0 && (
+        <div
+          data-testid="toc-selection-bar"
+          className="flex items-center justify-between gap-2 rounded-md border border-accent/40 bg-accent/10 px-2 py-1 text-[11px] text-ink"
+        >
+          <span>{selectedClauseIds.length} sélectionnée{selectedClauseIds.length > 1 ? "s" : ""}</span>
+          <div className="flex items-center gap-1">
+            <button
+              type="button"
+              data-testid="toc-validate-selection"
+              onClick={() => {
+                validateClauses(selectedClauseIds, true);
+                clearClauseSelection();
+              }}
+              className="rounded border border-emerald-400/50 px-1.5 py-0.5 text-emerald-300 hover:bg-emerald-400/10"
+            >
+              ✓ Valider
+            </button>
+            <button
+              type="button"
+              data-testid="toc-selection-clear"
+              onClick={clearClauseSelection}
+              className="rounded border border-line px-1.5 py-0.5 text-ink-muted hover:bg-panel-muted"
+            >
+              Effacer
+            </button>
+          </div>
+        </div>
+      )}
+
       <nav aria-label="Plan des clauses" className="flex flex-col gap-1">
         {drafts.length === 0 && (
           <p className="rounded-md border border-dashed border-line p-3 text-xs text-ink-muted">
@@ -85,13 +169,11 @@ export function TocPanel({ docTitle }: { docTitle: string }) {
             key={c.localId}
             themeCode={c.theme}
             anchorIndex={c.anchorIndex}
-            selected={selectedId === c.localId}
+            selected={selectedId === c.localId || selectedClauseIds.includes(c.localId)}
             ghost={Boolean(c.seededFrom) && !c.validated}
             validated={Boolean(c.validated)}
-            onClick={() => {
-              selectClause(c.localId);
-              focusSentence(c.anchorIndex);
-            }}
+            onClick={(e) => onChipClick(e, c.localId, c.anchorIndex)}
+            onContextMenu={(e) => onChipContext(e, c.localId)}
             className="w-full justify-start"
           />
         ))}
@@ -110,24 +192,20 @@ export function TocPanel({ docTitle }: { docTitle: string }) {
           />
           Injustice CLAUDETTE
         </label>
-        <label className="flex cursor-pointer items-center gap-2 py-1 text-sm text-ink">
-          <input
-            type="checkbox"
-            data-testid="toggle-ghost-claude"
-            checked={showGhostClaude}
-            onChange={() => toggleGhost("claude")}
-          />
-          Fantôme LLM · claude
-        </label>
-        <label className="flex cursor-pointer items-center gap-2 py-1 text-sm text-ink">
-          <input
-            type="checkbox"
-            data-testid="toggle-ghost-codex"
-            checked={showGhostCodex}
-            onChange={() => toggleGhost("codex")}
-          />
-          Fantôme LLM · codex
-        </label>
+        {LLM_JUDGES.map((j) => (
+          <label
+            key={j.id}
+            className="flex cursor-pointer items-center gap-2 py-1 text-sm text-ink"
+          >
+            <input
+              type="checkbox"
+              data-testid={`toggle-ghost-${j.id}`}
+              checked={ghostJudges[j.id] === true}
+              onChange={() => toggleGhost(j.id)}
+            />
+            Fantôme LLM · {j.label}
+          </label>
+        ))}
         <label className="flex cursor-pointer items-center gap-2 py-1 text-sm text-ink">
           <input
             type="checkbox"
@@ -138,6 +216,58 @@ export function TocPanel({ docTitle }: { docTitle: string }) {
           Traduction (FR)
         </label>
       </fieldset>
+
+      {/* Menu contextuel (clic-droit) : annoter / valider TOUTE la sélection en lot. */}
+      {menu && (
+        <div
+          role="menu"
+          data-testid="toc-clause-menu"
+          onMouseDown={(e) => e.stopPropagation()}
+          className="fixed z-50 w-72 rounded-lg border border-line bg-elevated p-3 text-sm shadow-xl"
+          style={{ top: Math.min(menu.y, (typeof window !== "undefined" ? window.innerHeight : 800) - 360), left: Math.min(menu.x, (typeof window !== "undefined" ? window.innerWidth : 1200) - 300) }}
+        >
+          <div className="mb-2 flex items-center justify-between">
+            <span className="text-[11px] font-semibold uppercase text-ink-muted">
+              {selectedClauseIds.length} clause{selectedClauseIds.length > 1 ? "s" : ""} — annoter
+            </span>
+            <button
+              type="button"
+              onClick={() => setMenu(null)}
+              aria-label="Fermer"
+              className="rounded px-1 text-ink-muted hover:bg-panel-muted"
+            >
+              ✕
+            </button>
+          </div>
+          <ThemePalette value={null} onChange={annotateSelection} autoFocus layout="grid" describeOnHover />
+          <div className="mt-2 flex items-center gap-2">
+            <button
+              type="button"
+              data-testid="toc-menu-validate"
+              onClick={() => {
+                validateClauses(selectedClauseIds, true);
+                setMenu(null);
+                clearClauseSelection();
+              }}
+              className="rounded-md border border-emerald-400/50 px-2 py-1 text-xs text-emerald-300 hover:bg-emerald-400/10"
+            >
+              ✓ Valider la sélection
+            </button>
+            <button
+              type="button"
+              data-testid="toc-menu-desannotate"
+              onClick={() => {
+                if (selectedAnchors.length > 0) applyBlockOp({ kind: "clearBlock", anchors: selectedAnchors });
+                setMenu(null);
+                clearClauseSelection();
+              }}
+              className="rounded-md border border-line px-2 py-1 text-xs text-ink hover:bg-panel-muted"
+            >
+              Désannoter
+            </button>
+          </div>
+        </div>
+      )}
     </div>
   );
 }

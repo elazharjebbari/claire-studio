@@ -18,7 +18,8 @@ export interface ClauseChipProps {
   /** Validation humaine (point d) : ✓ vert si validée, ◷ ambre sinon (plan des clauses). */
   validated?: boolean;
   size?: "sm" | "md";
-  onClick?: () => void;
+  onClick?: (e: React.MouseEvent) => void;
+  onContextMenu?: (e: React.MouseEvent) => void;
   className?: string;
 }
 
@@ -30,6 +31,7 @@ export function ClauseChip({
   validated,
   size = "md",
   onClick,
+  onContextMenu,
   className,
 }: ClauseChipProps) {
   const token = getThemeToken(themeCode);
@@ -40,6 +42,7 @@ export function ClauseChip({
     <Comp
       type={onClick ? "button" : undefined}
       onClick={onClick}
+      onContextMenu={onContextMenu}
       data-testid="clause-chip"
       data-theme={themeCode}
       data-selected={selected || undefined}

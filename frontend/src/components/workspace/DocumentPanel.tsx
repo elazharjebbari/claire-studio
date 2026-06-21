@@ -64,7 +64,6 @@ import { ComparePanel } from "./ComparePanel";
 import { BoundaryEvidence } from "./BoundaryEvidence";
 import { useDivergenceShortcuts } from "./useDivergenceShortcuts";
 import {
-  divergenceAnchors,
   divergenceOrdinal,
   nextDivergence,
   prevDivergence,
@@ -107,8 +106,7 @@ export function DocumentPanel({
   const toggleAttribution = useWorkspaceStore((s) => s.toggleAttribution);
   const annotationId = useWorkspaceStore((s) => s.annotationId);
   const showUnfairness = useWorkspaceStore((s) => s.showUnfairness);
-  const showGhostClaude = useWorkspaceStore((s) => s.showGhostClaude);
-  const showGhostCodex = useWorkspaceStore((s) => s.showGhostCodex);
+  const ghostJudges = useWorkspaceStore((s) => s.ghostJudges);
   const ghosts = useWorkspaceStore((s) => s.ghostClauses);
   const nSentences = useWorkspaceStore((s) => s.nSentences);
   const llmSource = useWorkspaceStore((s) => s.llmSource);
@@ -183,14 +181,13 @@ export function DocumentPanel({
   const ghostByIndex = useMemo(() => {
     const m = new Map<number, Array<{ judge: string; theme: string }>>();
     for (const g of ghosts) {
-      const on = g.judge === "claude" ? showGhostClaude : showGhostCodex;
-      if (!on) continue;
+      if (ghostJudges[g.judge] !== true) continue;
       const arr = m.get(g.anchorIndex) ?? [];
       arr.push({ judge: g.judge, theme: g.theme });
       m.set(g.anchorIndex, arr);
     }
     return m;
-  }, [ghosts, showGhostClaude, showGhostCodex]);
+  }, [ghosts, ghostJudges]);
 
   // Runs de la source ACTIVE (Q3). En `human` → clauses humaines ; en `claude`/`codex`
   // → segmentation du juge ; en `compare` → on s'appuie sur la projection par phrase.
@@ -259,10 +256,50 @@ export function DocumentPanel({
       : runsByJudge[llmSource] ?? humanRuns;
   const isCompare = llmSource === "compare";
 
-  // Divergences (P1) — ancres de segments où Claude ≠ Codex (logique pure).
+  // Comparaison N-way : thème par phrase (forward-fill) pour CHAQUE juge, dérivé de ses
+  // runs. La SÉLECTION suit la réglette « Modèles » (gutterVisibility) : masquer un
+  // modèle le retire de la comparaison ET de la divergence. Source unique.
+  const byIndexByJudge = useMemo<Record<string, (string | null)[]>>(() => {
+    const map: Record<string, (string | null)[]> = {};
+    for (const j of LLM_JUDGES) {
+      const r = runsByJudge[j.id] ?? EMPTY_RUNS;
+      map[j.id] = Array.from({ length: n }, (_, i) => runThemeAt(r, i));
+    }
+    return map;
+  }, [runsByJudge, n]);
+  const availableCompareJudges = useMemo(
+    () => LLM_JUDGES.filter((j) => !!llm.preByJudge[j.id]?.clauses?.length),
+    [llm.preByJudge],
+  );
+  const selectedCompareIds = useMemo(
+    () =>
+      availableCompareJudges
+        .filter((j) => gutterVisibility[j.id] !== false)
+        .map((j) => j.id),
+    [availableCompareJudges, gutterVisibility],
+  );
+  const compareJudgesData = useMemo(
+    () =>
+      selectedCompareIds.map((id) => ({
+        id,
+        label: llmJudgeLabel(id),
+        runs: runsByJudge[id] ?? EMPTY_RUNS,
+        byIndex: byIndexByJudge[id] ?? [],
+      })),
+    [selectedCompareIds, runsByJudge, byIndexByJudge],
+  );
+  // Le panneau comparatif n'a de sens que si ≥ 2 juges sont disponibles avec données.
+  const compareDataReady = availableCompareJudges.length >= 2;
+
+  // Divergences N-way (P1) : ancres des zones où les modèles SÉLECTIONNÉS divergent
+  // (≥ 2 thèmes distincts), pas seulement Claude vs Codex.
   const divAnchors = useMemo(
-    () => divergenceAnchors(llm.claudeByIndex, llm.codexByIndex),
-    [llm.claudeByIndex, llm.codexByIndex],
+    () =>
+      conflictZones(
+        compareJudgesData.map((j) => ({ segments: segmentsFromRuns(j.runs) })),
+        n,
+      ).map((z) => z.start),
+    [compareJudgesData, n],
   );
   const divOrdinal = divergenceOrdinal(divAnchors, focused);
   const goNextDivergence = () => {
@@ -308,43 +345,6 @@ export function DocumentPanel({
     onPeekBoundary: () => openBoundaryAt(focused),
     onToggleCompare: toggleComparePanel,
   });
-
-  // Comparaison N-way (point e) : thème par phrase (forward-fill) pour CHAQUE juge,
-  // dérivé de ses runs → bande d'accord + zones de conflit à N modèles.
-  const byIndexByJudge = useMemo<Record<string, (string | null)[]>>(() => {
-    const map: Record<string, (string | null)[]> = {};
-    for (const j of LLM_JUDGES) {
-      const r = runsByJudge[j.id] ?? EMPTY_RUNS;
-      map[j.id] = Array.from({ length: n }, (_, i) => runThemeAt(r, i));
-    }
-    return map;
-  }, [runsByJudge, n]);
-  // Juges disponibles (avec données). La SÉLECTION de la zone de comparaison suit la
-  // réglette (légende « Modèles » = gutterVisibility) : masquer un modèle dans la
-  // réglette le retire de la comparaison. Source unique → pas de double sélecteur.
-  const availableCompareJudges = useMemo(
-    () => LLM_JUDGES.filter((j) => !!llm.preByJudge[j.id]?.clauses?.length),
-    [llm.preByJudge],
-  );
-  const selectedCompareIds = useMemo(
-    () =>
-      availableCompareJudges
-        .filter((j) => gutterVisibility[j.id] !== false)
-        .map((j) => j.id),
-    [availableCompareJudges, gutterVisibility],
-  );
-  const compareJudgesData = useMemo(
-    () =>
-      selectedCompareIds.map((id) => ({
-        id,
-        label: llmJudgeLabel(id),
-        runs: runsByJudge[id] ?? EMPTY_RUNS,
-        byIndex: byIndexByJudge[id] ?? [],
-      })),
-    [selectedCompareIds, runsByJudge, byIndexByJudge],
-  );
-  // Le panneau comparatif n'a de sens que si ≥ 2 juges sont disponibles avec données.
-  const compareDataReady = availableCompareJudges.length >= 2;
 
   // Détails des juges à la frontière en cours d'aperçu (P5).
   const boundaryClaude = boundaryPop
@@ -555,11 +555,14 @@ export function DocumentPanel({
             ? unfairIndex.get(s.index)
             : undefined;
 
-          // Projection par phrase de chaque juge (Q3).
-          const claudeTheme = llm.claudeByIndex[s.index] ?? null;
-          const codexTheme = llm.codexByIndex[s.index] ?? null;
-          const bothPresent = claudeTheme != null && codexTheme != null;
-          const compareAgree = bothPresent && claudeTheme === codexTheme;
+          // Comparaison N-way par phrase : thèmes des modèles SÉLECTIONNÉS (réglette).
+          const cmpThemes = selectedCompareIds
+            .map((id) => byIndexByJudge[id]?.[s.index] ?? null)
+            .filter((t): t is string => t != null);
+          const compareDistinct = Array.from(new Set(cmpThemes));
+          const comparePresent = cmpThemes.length;
+          const compareAgree = comparePresent >= 2 && compareDistinct.length === 1;
+          const compareDisagree = compareDistinct.length >= 2;
 
           // Frontière LLM (P5) : début d'un run Claude OU Codex sur cette phrase.
           // L'aperçu de preuves est disponible dès qu'il existe des données LLM,
@@ -582,7 +585,7 @@ export function DocumentPanel({
           // En comparaison, le rail traduit l'ACCORD (vert/ambre) et non un thème.
           if (isCompare) {
             runColor =
-              claudeTheme == null && codexTheme == null
+              comparePresent === 0
                 ? undefined
                 : compareAgree
                   ? "#34D399" // emerald-400
@@ -596,10 +599,9 @@ export function DocumentPanel({
             anchor: anchor ? { theme: anchor.theme, seededFrom: anchor.seededFrom } : null,
             run,
             isRunStart,
-            claudeTheme,
-            codexTheme,
+            compareDistinct,
+            comparePresent,
             compareAgree,
-            bothPresent,
           });
 
           const isSelected = selectedSet.has(s.index);
@@ -754,7 +756,7 @@ export function DocumentPanel({
                 isFocused={isFocused}
                 isSelected={isSelected}
                 hasAnchor={Boolean(anchor)}
-                compareState={isCompare ? (compareAgree ? "agree" : bothPresent ? "disagree" : null) : null}
+                compareState={isCompare ? (compareAgree ? "agree" : compareDisagree ? "disagree" : null) : null}
                 ghosts={ghostList}
                 mark={mark}
                 runColor={runColor}
@@ -952,12 +954,13 @@ function computeBadge(args: {
   anchor: { theme: string; seededFrom?: string | null } | null;
   run: Run | undefined;
   isRunStart: boolean;
-  claudeTheme: string | null;
-  codexTheme: string | null;
+  /** Thèmes DISTINCTS des modèles sélectionnés couvrant la phrase (compare N-way). */
+  compareDistinct: string[];
+  /** Nombre de modèles sélectionnés couvrant la phrase. */
+  comparePresent: number;
   compareAgree: boolean;
-  bothPresent: boolean;
 }): Badge | null {
-  const { llmSource, anchor, run, isRunStart, claudeTheme, codexTheme, compareAgree, bothPresent } =
+  const { llmSource, anchor, run, isRunStart, compareDistinct, comparePresent, compareAgree } =
     args;
 
   if (llmSource === "human") {
@@ -979,19 +982,24 @@ function computeBadge(args: {
     };
   }
 
-  // compare : puce uniquement aux phrases où au moins un juge propose un thème ET
-  // où il s'agit d'un début de divergence/accord notable (début de run de Claude).
+  // compare : puce au début d'un run humain, reflétant l'accord/désaccord des modèles
+  // SÉLECTIONNÉS (N-way : Claude/Codex/Mistral selon la réglette).
   if (llmSource === "compare") {
     if (!run || run.theme == null || !isRunStart) return null;
-    if (compareAgree) {
-      return { label: getThemeToken(run.theme).label, color: "#34D399", tag: "accord" };
+    if (compareDistinct.length === 0) return null;
+    if (compareDistinct.length === 1) {
+      const t = getThemeToken(compareDistinct[0]!);
+      return {
+        label: t.label,
+        color: compareAgree ? "#34D399" : "#94A3B8",
+        tag: compareAgree ? "accord" : "partiel",
+      };
     }
-    const cl = claudeTheme ? getThemeToken(claudeTheme).label : "—";
-    const cx = codexTheme ? getThemeToken(codexTheme).label : "—";
+    // ≥ 2 thèmes distincts parmi les modèles sélectionnés → divergence N-way.
     return {
-      label: bothPresent ? `${cl} ≠ ${cx}` : cl !== "—" ? cl : cx,
+      label: compareDistinct.map((c) => getThemeToken(c).label).join(" ≠ "),
       color: "#FBBF24",
-      tag: "divergence",
+      tag: `divergence (${comparePresent})`,
     };
   }
 

@@ -86,8 +86,8 @@ interface WorkspaceState {
   ghostClauses: Array<{ anchorIndex: number; theme: string; judge: string }>;
   // Overlays togglables.
   showUnfairness: boolean;
-  showGhostClaude: boolean;
-  showGhostCodex: boolean;
+  /** Visibilité du fantôme LLM par juge (claude/codex/mistral…). absent/false = masqué. */
+  ghostJudges: Record<string, boolean>;
   showTranslation: boolean;
   /** Affichage des frontières de clause (rail + pointillés). Défaut ON (P2). */
   showBoundaries: boolean;
@@ -196,7 +196,7 @@ interface WorkspaceState {
   replacePrefill: (clauses: PivotClause[], judge: PrefillJudge) => void;
   setGhost: (clauses: Array<{ anchorIndex: number; theme: string }>, judge: string) => void;
   toggleUnfairness: () => void;
-  toggleGhost: (judge: "claude" | "codex") => void;
+  toggleGhost: (judge: string) => void;
   toggleTranslation: () => void;
   // Frontières / multi-sélection / traduction (P1).
   toggleBoundaries: () => void;
@@ -295,8 +295,7 @@ export const useWorkspaceStore = create<WorkspaceState>((set, get) => ({
   draftClauses: [],
   ghostClauses: [],
   showUnfairness: true,
-  showGhostClaude: false,
-  showGhostCodex: false,
+  ghostJudges: {},
   showTranslation: false,
   showBoundaries: true,
   selectedSentences: [],
@@ -792,11 +791,7 @@ export const useWorkspaceStore = create<WorkspaceState>((set, get) => ({
   toggleUnfairness: () => set((s) => ({ showUnfairness: !s.showUnfairness })),
 
   toggleGhost: (judge) =>
-    set((s) =>
-      judge === "claude"
-        ? { showGhostClaude: !s.showGhostClaude }
-        : { showGhostCodex: !s.showGhostCodex },
-    ),
+    set((s) => ({ ghostJudges: { ...s.ghostJudges, [judge]: !s.ghostJudges[judge] } })),
 
   toggleTranslation: () => set((s) => ({ showTranslation: !s.showTranslation })),
 

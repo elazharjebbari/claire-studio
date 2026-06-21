@@ -61,3 +61,15 @@ describe("resolveDivergenceRange (Fix B — adoption de toute la frontière)", (
     expect(useWorkspaceStore.getState().draftClauses).toHaveLength(0);
   });
 });
+
+describe("toggleGhost (fantômes par juge — Mistral inclus)", () => {
+  beforeEach(() => useWorkspaceStore.getState().reset());
+
+  it("bascule la visibilité du fantôme de n'importe quel juge", () => {
+    expect(useWorkspaceStore.getState().ghostJudges.mistral).toBeUndefined();
+    useWorkspaceStore.getState().toggleGhost("mistral");
+    expect(useWorkspaceStore.getState().ghostJudges.mistral).toBe(true);
+    useWorkspaceStore.getState().toggleGhost("mistral");
+    expect(useWorkspaceStore.getState().ghostJudges.mistral).toBe(false);
+  });
+});
