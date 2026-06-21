@@ -7,7 +7,7 @@
  */
 
 import { useCallback, useEffect, useRef, useState } from "react";
-import { ChevronLeft } from "lucide-react";
+import { ChevronLeft, ChevronRight } from "lucide-react";
 
 const STORAGE_KEY = "claire.workspace.layout";
 const MIN = 180;
@@ -25,6 +25,7 @@ export function ResizablePanels({
   right,
   rightCollapsed = false,
   onExpandRight,
+  onCollapseRight,
 }: {
   left: React.ReactNode;
   center: React.ReactNode;
@@ -32,6 +33,8 @@ export function ResizablePanels({
   /** Point f : replie le panneau droit (inspecteur) en un rail fin pour gagner de l'espace. */
   rightCollapsed?: boolean;
   onExpandRight?: () => void;
+  /** Replie l'inspecteur depuis l'aside lui-même (bouton d'en-tête). */
+  onCollapseRight?: () => void;
 }) {
   const [layout, setLayout] = useState<Layout>(DEFAULT);
   const [containerWidth, setContainerWidth] = useState(0);
@@ -181,6 +184,20 @@ export function ResizablePanels({
             className="h-full shrink-0 overflow-y-auto border-l border-line bg-elevated"
             aria-label="Inspecteur"
           >
+            {onCollapseRight && (
+              <div className="sticky top-0 z-10 flex justify-end border-b border-line/40 bg-elevated/85 px-1 py-1 backdrop-blur">
+                <button
+                  type="button"
+                  data-testid="inspector-collapse"
+                  onClick={onCollapseRight}
+                  title="Replier l'inspecteur"
+                  aria-label="Replier l'inspecteur"
+                  className="inline-flex items-center rounded px-1 text-ink-muted hover:bg-panel-muted hover:text-ink"
+                >
+                  <ChevronRight size={16} aria-hidden />
+                </button>
+              </div>
+            )}
             {right}
           </aside>
         </>

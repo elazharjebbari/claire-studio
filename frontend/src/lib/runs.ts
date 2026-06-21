@@ -93,6 +93,25 @@ export function computeRuns(
   return runs;
 }
 
+/**
+ * Fusionne les runs ADJACENTS de même thème (et même nullité) en un seul. Utile pour
+ * l'affichage des frontières d'un juge : plusieurs clauses consécutives de même thème
+ * ne forment qu'UNE frontière visible (ex. Mistral découpe finement mais garde le même
+ * thème). Conserve le localId/anchorIndex du PREMIER run (l'ancre). Pur → testable.
+ */
+export function coalesceRuns(runs: Run[]): Run[] {
+  const out: Run[] = [];
+  for (const r of runs) {
+    const last = out[out.length - 1];
+    if (last && last.theme === r.theme && last.end === r.start - 1) {
+      last.end = r.end; // étend le segment précédent (même thème, contigu)
+    } else {
+      out.push({ ...r });
+    }
+  }
+  return out;
+}
+
 /** Run couvrant l'index donné (ou undefined si hors de tout run). */
 export function runAt(runs: Run[], index: number): Run | undefined {
   return runs.find((r) => index >= r.start && index <= r.end);

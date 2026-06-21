@@ -113,9 +113,6 @@ interface WorkspaceState {
   llmVersion: string | null;
   /** Panneau comparatif latéral visible (P4). */
   showComparePanel: boolean;
-  /** Juges sélectionnés dans la zone de comparaison (point e) : 2 ou 3 parmi
-   *  claude/codex/mistral. Défaut : claude + codex. */
-  compareJudges: string[];
   /** Overlay d'attribution multi-annotateurs (qui a touché quoi) — point 3. */
   showAttribution: boolean;
   /** Juge pré-rempli courant (point 0a). */
@@ -171,6 +168,12 @@ interface WorkspaceState {
    * marque `resolvedFrom` = juge pour le voyant. Toujours `dirty=true`.
    */
   resolveDivergence: (anchorIndex: number, judge: string, theme: string) => void;
+  /**
+   * Adoption d'un SEGMENT entier d'un juge (point d/UX) : crée/met à jour une clause
+   * VALIDÉE (resolvedFrom=judge, thème) pour CHAQUE phrase de [start, end] — pas
+   * seulement l'ancre. UN seul snapshot d'undo. Sert à accepter toute une frontière LLM.
+   */
+  resolveDivergenceRange: (start: number, end: number, judge: string, theme: string) => void;
   removeBoundary: (anchorIndex: number) => void;
   updateDraft: (localId: string, patch: Partial<DraftClause>) => void;
   /**
@@ -211,8 +214,6 @@ interface WorkspaceState {
   setLlmVersion: (version: string | null) => void;
   /** Bascule le panneau comparatif latéral (P4). */
   toggleComparePanel: () => void;
-  /** Ajoute/retire un juge de la zone de comparaison (min 2 conservés). */
-  toggleCompareJudge: (id: string) => void;
   /** Bascule l'overlay d'attribution (point 3). */
   toggleAttribution: () => void;
   /** Vide le journal d'actions (ex. après soumission). */
@@ -305,7 +306,6 @@ export const useWorkspaceStore = create<WorkspaceState>((set, get) => ({
   llmSource: "human",
   llmVersion: null,
   showComparePanel: false,
-  compareJudges: ["claude", "codex"],
   showAttribution: false,
   prefilledJudge: null,
   actionLog: [],
@@ -331,7 +331,6 @@ export const useWorkspaceStore = create<WorkspaceState>((set, get) => ({
       llmSource: "human",
       llmVersion: null,
       showComparePanel: false,
-      compareJudges: ["claude", "codex"],
       showAttribution: false,
       prefilledJudge: null,
       actionLog: [],
@@ -534,6 +533,57 @@ export const useWorkspaceStore = create<WorkspaceState>((set, get) => ({
           label: `Adopté ${judge} (${theme}) @${anchorIndex}`,
           anchorIndex,
           localId: draft.localId,
+        }),
+      };
+    }),
+
+  resolveDivergenceRange: (start, end, judge, theme) =>
+    set((s) => {
+      if (s.readOnly) return {};
+      const lo = Math.max(0, Math.min(start, end));
+      const hi = Math.min(s.nSentences - 1, Math.max(start, end));
+      if (hi < lo) return {};
+      const byAnchor = new Map(s.draftClauses.map((c) => [c.anchorIndex, c]));
+      let drafts = s.draftClauses.slice();
+      let changed = false;
+      for (let i = lo; i <= hi; i += 1) {
+        const existing = byAnchor.get(i);
+        if (existing) {
+          if (existing.theme !== theme || existing.resolvedFrom !== judge || !existing.validated) {
+            drafts = drafts.map((c) =>
+              c.localId === existing.localId
+                ? { ...c, theme, resolvedFrom: judge, validated: true }
+                : c,
+            );
+            changed = true;
+          }
+        } else {
+          drafts.push({
+            localId: nextLocalId(),
+            anchorIndex: i,
+            theme,
+            legalNature: null,
+            evidenceSpan: "",
+            rationale: "",
+            certainty: null,
+            seededFrom: null,
+            resolvedFrom: judge,
+            validated: true,
+          });
+          changed = true;
+        }
+      }
+      if (!changed) return {};
+      return {
+        draftClauses: sortDrafts(drafts),
+        selectedClauseId: byAnchor.get(lo)?.localId ?? s.selectedClauseId,
+        dirty: true,
+        undoStack: pushUndo(s.undoStack, s.draftClauses),
+        redoStack: [],
+        actionLog: appendLog(s.actionLog, {
+          kind: "divergence.adopt",
+          label: `Adopté ${judge} (${theme}) ${lo}–${hi}`,
+          anchorIndex: lo,
         }),
       };
     }),
@@ -794,17 +844,6 @@ export const useWorkspaceStore = create<WorkspaceState>((set, get) => ({
   setLlmVersion: (version) => set({ llmVersion: version }),
 
   toggleComparePanel: () => set((s) => ({ showComparePanel: !s.showComparePanel })),
-  toggleCompareJudge: (id) =>
-    set((s) => {
-      const has = s.compareJudges.includes(id);
-      // Retrait interdit s'il ne resterait qu'un juge (comparaison = min 2).
-      if (has && s.compareJudges.length <= 2) return s;
-      return {
-        compareJudges: has
-          ? s.compareJudges.filter((j) => j !== id)
-          : [...s.compareJudges, id],
-      };
-    }),
 
   toggleAttribution: () => set((s) => ({ showAttribution: !s.showAttribution })),
 
@@ -861,7 +900,6 @@ export const useWorkspaceStore = create<WorkspaceState>((set, get) => ({
       llmSource: "human",
       llmVersion: null,
       showComparePanel: false,
-      compareJudges: ["claude", "codex"],
       showAttribution: false,
       prefilledJudge: null,
       actionLog: [],

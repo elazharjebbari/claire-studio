@@ -35,7 +35,7 @@ export function BoundaryEvidence({
   onClose,
 }: BoundaryEvidenceProps) {
   const { ref, style } = useAnchoredPosition(x, y);
-  const resolveDivergence = useWorkspaceStore((s) => s.resolveDivergence);
+  const resolveDivergenceRange = useWorkspaceStore((s) => s.resolveDivergenceRange);
 
   // Onglet initial : le 1er juge disponible, sinon « comparer ».
   const initial: Tab = claudeDetail ? "claude" : codexDetail ? "codex" : "compare";
@@ -61,7 +61,8 @@ export function BoundaryEvidence({
 
   const adopt = (judge: "claude" | "codex", detail: JudgeDetail | null) => {
     if (!detail) return;
-    resolveDivergence(detail.anchorIndex, judge, detail.theme);
+    // Adoption sur tout le segment du juge (toute la frontière), pas seulement l'ancre.
+    resolveDivergenceRange(detail.anchorIndex, detail.endIndex, judge, detail.theme);
     onClose();
   };
 

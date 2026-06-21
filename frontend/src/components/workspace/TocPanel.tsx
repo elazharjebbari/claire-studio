@@ -27,6 +27,9 @@ export function TocPanel({ docTitle }: { docTitle: string }) {
   const frActive = displayLang === "fr";
 
   const coverage = nSentences > 0 ? Math.round((drafts.length / nSentences) * 100) : 0;
+  const validatedCount = drafts.filter((c) => c.validated).length;
+  const validatedPct =
+    nSentences > 0 ? Math.round((validatedCount / nSentences) * 100) : 0;
 
   return (
     <div className="flex flex-col gap-3 p-3">
@@ -49,6 +52,26 @@ export function TocPanel({ docTitle }: { docTitle: string }) {
             aria-hidden
           />
         </div>
+        {/* Point d — progression de VALIDATION humaine (vert) : phrases validées / total. */}
+        <div className="mt-1.5 flex items-center gap-2">
+          <div
+            className="h-1.5 flex-1 overflow-hidden rounded-full bg-panel-muted"
+            role="progressbar"
+            aria-label={`Validation ${validatedPct}%`}
+            aria-valuenow={validatedPct}
+            aria-valuemin={0}
+            aria-valuemax={100}
+          >
+            <div
+              className="h-full bg-emerald-400 transition-all"
+              style={{ width: `${validatedPct}%` }}
+              aria-hidden
+            />
+          </div>
+          <span className="shrink-0 font-mono text-[10px] text-ink-muted" data-testid="toc-validated">
+            ✓ {validatedCount}/{nSentences}
+          </span>
+        </div>
       </div>
 
       <nav aria-label="Plan des clauses" className="flex flex-col gap-1">
@@ -63,7 +86,8 @@ export function TocPanel({ docTitle }: { docTitle: string }) {
             themeCode={c.theme}
             anchorIndex={c.anchorIndex}
             selected={selectedId === c.localId}
-            ghost={Boolean(c.seededFrom)}
+            ghost={Boolean(c.seededFrom) && !c.validated}
+            validated={Boolean(c.validated)}
             onClick={() => {
               selectClause(c.localId);
               focusSentence(c.anchorIndex);

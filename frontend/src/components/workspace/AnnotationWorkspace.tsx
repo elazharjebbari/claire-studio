@@ -156,6 +156,7 @@ export function AnnotationWorkspace({ annotationId }: { annotationId: string }) 
           }
           rightCollapsed={!inspectorOpen}
           onExpandRight={toggleInspector}
+          onCollapseRight={toggleInspector}
         />
         </div>
         {showComments && (

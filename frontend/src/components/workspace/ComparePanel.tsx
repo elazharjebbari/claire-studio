@@ -127,20 +127,13 @@ function JudgeRail({
 
 export function ComparePanel({
   judges,
-  allJudges,
-  selectedIds,
-  onToggleJudge,
   n,
   focused,
   onJump,
   onClose,
 }: {
-  /** Juges sélectionnés, dans l'ordre d'affichage. */
+  /** Juges sélectionnés (pilotés par la réglette « Modèles »), dans l'ordre d'affichage. */
   judges: CompareJudge[];
-  /** Tous les juges disponibles (avec données) — pour le sélecteur. */
-  allJudges: { id: string; label: string }[];
-  selectedIds: string[];
-  onToggleJudge: (id: string) => void;
   n: number;
   focused: number;
   onJump: (index: number) => void;
@@ -183,39 +176,21 @@ export function ComparePanel({
         </button>
       </div>
 
-      {/* Sélecteur de juges (point e) : choisir 2 ou 3 modèles dans la zone (min 2). */}
-      {allJudges.length > 2 && (
+      {/* Sélection des modèles : pilotée par la réglette « Modèles » (légende). */}
+      <p className="mb-2 text-[10px] text-ink-muted">
+        Modèles comparés : <span className="text-ink">{labels}</span> — ajustez via la
+        réglette « Modèles ».
+      </p>
+
+      {judges.length < 2 ? (
         <div
-          data-testid="compare-judge-select"
-          className="mb-2 flex flex-wrap items-center gap-1"
-          role="group"
-          aria-label="Juges à comparer"
+          data-testid="compare-need-two"
+          className="rounded-md border border-amber-400/40 bg-amber-400/10 px-3 py-2 text-xs text-amber-200"
         >
-          {allJudges.map((j) => {
-            const on = selectedIds.includes(j.id);
-            const lastTwo = on && selectedIds.length <= 2; // retrait interdit (min 2)
-            return (
-              <button
-                key={j.id}
-                type="button"
-                data-testid={`compare-judge-toggle-${j.id}`}
-                aria-pressed={on}
-                disabled={lastTwo}
-                onClick={() => onToggleJudge(j.id)}
-                title={lastTwo ? "Au moins 2 juges requis" : on ? `Retirer ${j.label}` : `Ajouter ${j.label}`}
-                className={
-                  "rounded-full border px-2 py-0.5 text-[11px] font-medium transition-colors disabled:cursor-not-allowed disabled:opacity-60 " +
-                  (on
-                    ? "border-accent/50 bg-accent/15 text-ink"
-                    : "border-line text-ink-muted hover:bg-panel-muted")
-                }
-              >
-                {j.label}
-              </button>
-            );
-          })}
+          Sélectionnez au moins 2 modèles dans la réglette « Modèles » pour comparer.
         </div>
-      )}
+      ) : (
+        <>
 
       {/* Navigation des conflits depuis le panneau (saute + recentre). */}
       {divAnchors.length > 0 && (
@@ -319,6 +294,8 @@ export function ComparePanel({
           partiel
         </span>
       </div>
+        </>
+      )}
     </aside>
   );
 }

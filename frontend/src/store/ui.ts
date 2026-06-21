@@ -22,6 +22,10 @@ interface UiState {
   gutterShowCategory: boolean;
   /** Panneau Inspecteur (droite) ouvert/replié — gain d'espace (point f). */
   inspectorOpen: boolean;
+  /** Zoom du texte de lecture (1 = défaut). Borné [0.8, 1.6] (lisibilité). */
+  readingZoom: number;
+  /** Lignes élargies : utilise la largeur libérée (ex. inspecteur replié). */
+  readingWide: boolean;
   toggleTheme: () => void;
   setTheme: (t: ColorTheme) => void;
   toggleSidebar: () => void;
@@ -31,6 +35,8 @@ interface UiState {
   toggleGutterModel: (id: string) => void;
   toggleGutterCategory: () => void;
   toggleInspector: () => void;
+  setReadingZoom: (z: number) => void;
+  toggleReadingWide: () => void;
 }
 
 export const useUiStore = create<UiState>()(
@@ -44,6 +50,8 @@ export const useUiStore = create<UiState>()(
       gutterModels: {},
       gutterShowCategory: false,
       inspectorOpen: true,
+      readingZoom: 1,
+      readingWide: false,
       toggleTheme: () => set((s) => ({ theme: s.theme === "dark" ? "light" : "dark" })),
       setTheme: (theme) => set({ theme }),
       toggleSidebar: () => set((s) => ({ sidebarCollapsed: !s.sidebarCollapsed })),
@@ -55,6 +63,8 @@ export const useUiStore = create<UiState>()(
         set((s) => ({ gutterModels: { ...s.gutterModels, [id]: s.gutterModels[id] === false } })),
       toggleGutterCategory: () => set((s) => ({ gutterShowCategory: !s.gutterShowCategory })),
       toggleInspector: () => set((s) => ({ inspectorOpen: !s.inspectorOpen })),
+      setReadingZoom: (z) => set({ readingZoom: Math.max(0.8, Math.min(1.6, z)) }),
+      toggleReadingWide: () => set((s) => ({ readingWide: !s.readingWide })),
     }),
     {
       name: "claire.ui",
@@ -66,6 +76,8 @@ export const useUiStore = create<UiState>()(
         gutterModels: s.gutterModels,
         gutterShowCategory: s.gutterShowCategory,
         inspectorOpen: s.inspectorOpen,
+        readingZoom: s.readingZoom,
+        readingWide: s.readingWide,
       }),
     },
   ),

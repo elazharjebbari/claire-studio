@@ -29,6 +29,7 @@ import { useWorkspaceStore } from "@/store/workspace";
 import { getThemeToken } from "@/lib/tokens";
 import {
   computeRuns,
+  coalesceRuns,
   runAt,
   runThemeAt,
   segmentsFromRuns,
@@ -99,11 +100,9 @@ export function DocumentPanel({
   const focusSentence = useWorkspaceStore((s) => s.focusSentence);
   const drafts = useWorkspaceStore((s) => s.draftClauses);
   const selectClause = useWorkspaceStore((s) => s.selectClause);
-  const resolveDivergence = useWorkspaceStore((s) => s.resolveDivergence);
+  const resolveDivergenceRange = useWorkspaceStore((s) => s.resolveDivergenceRange);
   const showComparePanel = useWorkspaceStore((s) => s.showComparePanel);
   const toggleComparePanel = useWorkspaceStore((s) => s.toggleComparePanel);
-  const compareJudges = useWorkspaceStore((s) => s.compareJudges);
-  const toggleCompareJudge = useWorkspaceStore((s) => s.toggleCompareJudge);
   const showAttribution = useWorkspaceStore((s) => s.showAttribution);
   const toggleAttribution = useWorkspaceStore((s) => s.toggleAttribution);
   const annotationId = useWorkspaceStore((s) => s.annotationId);
@@ -119,6 +118,11 @@ export function DocumentPanel({
   // Réglette frontières-modèles (Feature A) — préférences persistées (store UI).
   const gutterShowCategory = useUiStore((s) => s.gutterShowCategory);
   const gutterVisibility = useUiStore((s) => s.gutterModels);
+  // Confort de lecture (point f) : zoom du texte + lignes élargies, persistés.
+  const readingZoom = useUiStore((s) => s.readingZoom);
+  const readingWide = useUiStore((s) => s.readingWide);
+  const setReadingZoom = useUiStore((s) => s.setReadingZoom);
+  const toggleReadingWide = useUiStore((s) => s.toggleReadingWide);
   const selectedSentences = useWorkspaceStore((s) => s.selectedSentences);
   const selectRange = useWorkspaceStore((s) => s.selectRange);
   const toggleSelected = useWorkspaceStore((s) => s.toggleSelected);
@@ -205,7 +209,9 @@ export function DocumentPanel({
   const runsByJudge = useMemo<Record<string, Run[]>>(() => {
     const map: Record<string, Run[]> = {};
     for (const j of LLM_JUDGES) {
-      map[j.id] = computeRuns(judgeAnchors(llm.preByJudge[j.id]?.clauses), n);
+      // coalesceRuns : fusionne les segments adjacents de même thème → une seule
+      // frontière par changement de thème (corrige le découpage très fin, ex. Mistral).
+      map[j.id] = coalesceRuns(computeRuns(judgeAnchors(llm.preByJudge[j.id]?.clauses), n));
     }
     return map;
   }, [llm.preByJudge, n]);
@@ -267,13 +273,14 @@ export function DocumentPanel({
     const t = prevDivergence(divAnchors, focused);
     if (t != null) focusSentence(t);
   };
-  // Adoption au clavier (1/2) de la proposition du juge couvrant la phrase focalisée.
+  // Adoption au clavier (1/2) de la proposition du juge couvrant la phrase focalisée :
+  // sur TOUT le segment du juge (toute la frontière), pas seulement l'ancre.
   const adoptAtFocus = (judge: "claude" | "codex") => {
     const detail =
       judge === "claude"
         ? detailAt(claudeDetailByAnchor, claudeRuns, focused)
         : detailAt(codexDetailByAnchor, codexRuns, focused);
-    if (detail) resolveDivergence(detail.anchorIndex, judge, detail.theme);
+    if (detail) resolveDivergenceRange(detail.anchorIndex, detail.endIndex, judge, detail.theme);
   };
 
   // Popover d'aperçu de frontière (P5) — ouvert au clic sur l'icône ou via `e`.
@@ -312,18 +319,20 @@ export function DocumentPanel({
     }
     return map;
   }, [runsByJudge, n]);
-  // Juges disponibles (avec données) → sélecteur de la zone de comparaison.
+  // Juges disponibles (avec données). La SÉLECTION de la zone de comparaison suit la
+  // réglette (légende « Modèles » = gutterVisibility) : masquer un modèle dans la
+  // réglette le retire de la comparaison. Source unique → pas de double sélecteur.
   const availableCompareJudges = useMemo(
     () => LLM_JUDGES.filter((j) => !!llm.preByJudge[j.id]?.clauses?.length),
     [llm.preByJudge],
   );
-  // Sélection effective : intersection store ∩ disponibles, repli sur les 2 premiers
-  // disponibles (garantit ≥ 2 quand possible, jamais de zone vide).
-  const selectedCompareIds = useMemo(() => {
-    const avail = availableCompareJudges.map((j) => j.id);
-    const picked = compareJudges.filter((id) => avail.includes(id));
-    return picked.length >= 2 ? picked : avail.slice(0, Math.max(2, picked.length));
-  }, [compareJudges, availableCompareJudges]);
+  const selectedCompareIds = useMemo(
+    () =>
+      availableCompareJudges
+        .filter((j) => gutterVisibility[j.id] !== false)
+        .map((j) => j.id),
+    [availableCompareJudges, gutterVisibility],
+  );
   const compareJudgesData = useMemo(
     () =>
       selectedCompareIds.map((id) => ({
@@ -369,7 +378,13 @@ export function DocumentPanel({
   return (
     <>
       <div className="flex justify-center gap-4 px-6 py-8">
-       <div className="w-full max-w-reading font-reading text-[17px] leading-reading text-ink">
+       <div
+        className={
+          "w-full font-reading leading-reading text-ink " +
+          (readingWide ? "max-w-none" : "max-w-reading")
+        }
+        style={{ fontSize: `${Math.round(17 * readingZoom)}px` }}
+       >
         <div
           data-testid="document-controls"
           className="sticky top-0 z-20 -mx-2 mb-4 flex flex-wrap items-center gap-3 border-b border-line/40 bg-reading/90 px-2 py-2 text-sm backdrop-blur supports-[backdrop-filter]:bg-reading/75"
@@ -451,6 +466,50 @@ export function DocumentPanel({
           {gutterAllModels.some((m) => m.hasData) && (
             <ModelBoundaryLegend models={gutterAllModels} />
           )}
+          {/* Confort de lecture (point f) : zoom du texte + lignes élargies. */}
+          <div
+            data-testid="reading-controls"
+            className="inline-flex items-center gap-1 rounded-md border border-line p-0.5 text-ink-muted"
+            role="group"
+            aria-label="Confort de lecture"
+          >
+            <button
+              type="button"
+              data-testid="reading-zoom-out"
+              aria-label="Réduire le texte"
+              title="Réduire le texte"
+              onClick={() => setReadingZoom(Math.round((readingZoom - 0.1) * 10) / 10)}
+              className="rounded px-1.5 py-0.5 text-xs hover:bg-panel-muted"
+            >
+              A−
+            </button>
+            <span className="min-w-[2.5rem] text-center font-mono text-[10px]" data-testid="reading-zoom-value">
+              {Math.round(readingZoom * 100)}%
+            </span>
+            <button
+              type="button"
+              data-testid="reading-zoom-in"
+              aria-label="Agrandir le texte"
+              title="Agrandir le texte"
+              onClick={() => setReadingZoom(Math.round((readingZoom + 0.1) * 10) / 10)}
+              className="rounded px-1.5 py-0.5 text-xs hover:bg-panel-muted"
+            >
+              A+
+            </button>
+            <button
+              type="button"
+              data-testid="reading-wide"
+              aria-pressed={readingWide}
+              title="Élargir les lignes (utilise l'espace libéré)"
+              onClick={toggleReadingWide}
+              className={
+                "rounded px-1.5 py-0.5 text-xs transition-colors " +
+                (readingWide ? "bg-accent/15 text-ink ring-1 ring-accent/40" : "hover:bg-panel-muted")
+              }
+            >
+              ↔
+            </button>
+          </div>
           <LangSwitch />
           </div>
         </div>
@@ -560,7 +619,7 @@ export function DocumentPanel({
               key={s.id}
               data-sentence-index={s.index}
               className={
-                "group relative pl-2" +
+                "group relative pl-5" +
                 (showBoundaries && gutterVisibleModels.length > 0 ? " pr-10" : "")
               }
               onDoubleClick={() => {
@@ -591,7 +650,7 @@ export function DocumentPanel({
                 aria-label={`Phrase ${s.index} — ${
                   vStatus === "validated" ? "validée" : vStatus === "pending" ? "à valider" : "non annotée"
                 }`}
-                className="absolute bottom-0 left-0 top-0 w-1 cursor-pointer rounded-r-sm transition-colors"
+                className="absolute bottom-1 left-1 top-1 w-1 cursor-pointer rounded-full transition-colors"
                 style={{
                   backgroundColor:
                     vStatus === "validated"
@@ -774,9 +833,6 @@ export function DocumentPanel({
          <div className="sticky top-4 hidden h-[calc(100vh-9rem)] self-start xl:block">
            <ComparePanel
              judges={compareJudgesData}
-             allJudges={availableCompareJudges.map((j) => ({ id: j.id, label: j.label }))}
-             selectedIds={selectedCompareIds}
-             onToggleJudge={toggleCompareJudge}
              n={n}
              focused={focused}
              onJump={(i) => focusSentence(i)}
@@ -848,6 +904,8 @@ function buildJudgeDetailMap(clauses: PreClause[] | undefined): Map<number, Judg
   for (const c of clauses ?? []) {
     map.set(c.anchorIndex, {
       anchorIndex: c.anchorIndex,
+      // endIndex réel recalculé dans detailAt depuis le run ; ancre par défaut ici.
+      endIndex: c.anchorIndex,
       theme: c.themeCode,
       rationale: c.rationale ?? null,
       evidence: c.evidenceSpan ?? null,
@@ -868,14 +926,15 @@ function detailAt(
 ): JudgeDetail | null {
   const run = runAt(judgeRuns, index);
   if (!run || run.theme == null) return null;
-  return (
-    detailByAnchor.get(run.start) ?? {
-      anchorIndex: run.start,
-      theme: run.theme,
-      rationale: null,
-      evidence: null,
-    }
-  );
+  const base = detailByAnchor.get(run.start);
+  // endIndex = fin du segment du juge (run.end) → adoption sur toute la frontière.
+  return {
+    anchorIndex: run.start,
+    endIndex: run.end,
+    theme: base?.theme ?? run.theme,
+    rationale: base?.rationale ?? null,
+    evidence: base?.evidence ?? null,
+  };
 }
 
 interface Badge {

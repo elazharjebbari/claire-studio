@@ -15,6 +15,8 @@ export interface ClauseChipProps {
   anchorIndex?: number;
   selected?: boolean;
   ghost?: boolean;
+  /** Validation humaine (point d) : ✓ vert si validée, ◷ ambre sinon (plan des clauses). */
+  validated?: boolean;
   size?: "sm" | "md";
   onClick?: () => void;
   className?: string;
@@ -25,6 +27,7 @@ export function ClauseChip({
   anchorIndex,
   selected = false,
   ghost = false,
+  validated,
   size = "md",
   onClick,
   className,
@@ -41,8 +44,9 @@ export function ClauseChip({
       data-theme={themeCode}
       data-selected={selected || undefined}
       data-ghost={ghost || undefined}
+      data-validated={validated || undefined}
       aria-pressed={onClick ? selected : undefined}
-      title={token.label}
+      title={validated === false ? `${token.label} — à valider` : token.label}
       className={cn(
         "inline-flex items-center gap-1.5 rounded-md border font-medium text-ink transition-colors",
         size === "sm" ? "px-1.5 py-0.5 text-[11px]" : "px-2 py-1 text-xs",
@@ -66,6 +70,17 @@ export function ClauseChip({
         className="h-2 w-2 shrink-0 rounded-full"
         style={{ backgroundColor: token.color }}
       />
+      {validated !== undefined && (
+        <span
+          aria-hidden
+          className={cn(
+            "shrink-0 text-[10px] font-bold leading-none",
+            validated ? "text-emerald-400" : "text-amber-400",
+          )}
+        >
+          {validated ? "✓" : "◷"}
+        </span>
+      )}
       {anchorIndex !== undefined && (
         <span className="font-mono text-ink">[{anchorIndex}]</span>
       )}

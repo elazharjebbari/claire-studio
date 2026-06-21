@@ -28,6 +28,8 @@ import type { Certainty } from "@/types/contract";
 export interface JudgeDetail {
   /** Ancre (run.start) du juge couvrant la phrase — point d'arbitrage. */
   anchorIndex: number;
+  /** Dernière phrase du segment du juge (run.end) — adoption sur TOUTE la frontière. */
+  endIndex: number;
   theme: string;
   rationale: string | null;
   evidence: string | null;
@@ -65,7 +67,7 @@ export function SentenceMenu({
   const toggleBoundary = useWorkspaceStore((s) => s.toggleBoundary);
   const setCertainty = useWorkspaceStore((s) => s.setCertainty);
   const setValidated = useWorkspaceStore((s) => s.setValidated);
-  const resolveDivergence = useWorkspaceStore((s) => s.resolveDivergence);
+  const resolveDivergenceRange = useWorkspaceStore((s) => s.resolveDivergenceRange);
   const setTranslated = useWorkspaceStore((s) => s.setTranslated);
   const translatedSentences = useWorkspaceStore((s) => s.translatedSentences);
   const displayLang = useWorkspaceStore((s) => s.displayLang);
@@ -209,7 +211,9 @@ export function SentenceMenu({
             adopted={coveringDraft?.resolvedFrom === j.id}
             onAdopt={() => {
               if (!j.detail) return;
-              resolveDivergence(j.detail.anchorIndex, j.id, j.detail.theme);
+              // Adoption sur TOUT le segment du juge (toutes les phrases de la frontière),
+              // pas seulement l'ancre — chaque phrase devient validée + resolvedFrom.
+              resolveDivergenceRange(j.detail.anchorIndex, j.detail.endIndex, j.id, j.detail.theme);
               onClose();
             }}
           />
