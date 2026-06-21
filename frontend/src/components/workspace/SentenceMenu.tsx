@@ -6,9 +6,9 @@
  *  (a) Annoter… : ThemePalette (choisir/changer le thème). Choisir un thème CRÉE la
  *      clause à cet index (Q2 : pas de thème par défaut), ou la (ré)assigne si elle
  *      existe. CertaintyPicker pour la clause couvrante.
- *  (b) LLM : pour Claude et Codex, thème + rationale (tronqué + dépliable) + evidence,
- *      + indicateur d'accord ✓/✗ (data-testid menu-llm, llm-agreement,
- *      menu-llm-claude, menu-llm-codex).
+ *  (b) LLM : pour chaque juge configuré (Claude/Codex/Mistral…), thème + rationale
+ *      (tronqué + dépliable) + evidence, + indicateur d'accord ✓/✗ (data-testid menu-llm,
+ *      llm-agreement, menu-llm-<id>). Les juges proviennent de LLM_JUDGES (source unique).
  *  (c) Traduire cette phrase.
  *
  * Positionné en `fixed` aux coordonnées du déclencheur, fermé au clic extérieur et
@@ -33,6 +33,13 @@ export interface JudgeDetail {
   evidence: string | null;
 }
 
+/** Un juge LLM affiché dans le menu : id (claude/codex/mistral…), libellé, détail. */
+export interface JudgeEntry {
+  id: string;
+  label: string;
+  detail: JudgeDetail | null;
+}
+
 export interface SentenceMenuProps {
   sentenceIndex: number;
   /** Coordonnées (clientX/clientY) du déclencheur. */
@@ -40,10 +47,8 @@ export interface SentenceMenuProps {
   y: number;
   /** Runs des clauses humaines (pour retrouver la clause couvrant la phrase). */
   runs: Run[];
-  /** Détail Claude pour la phrase (thème/rationale/evidence), null si absent. */
-  claudeDetail?: JudgeDetail | null;
-  /** Détail Codex pour la phrase, null si absent. */
-  codexDetail?: JudgeDetail | null;
+  /** Détails des juges LLM pour la phrase (Claude/Codex/Mistral…), dans l'ordre d'affichage. */
+  judges?: JudgeEntry[];
   onClose: () => void;
 }
 
@@ -52,8 +57,7 @@ export function SentenceMenu({
   x,
   y,
   runs,
-  claudeDetail,
-  codexDetail,
+  judges = [],
   onClose,
 }: SentenceMenuProps) {
   const { ref, style: anchoredStyle } = useAnchoredPosition(x, y);
@@ -75,10 +79,11 @@ export function SentenceMenu({
     ? drafts.find((d) => d.localId === coveringRun.localId)
     : undefined;
 
-  const claudeTheme = claudeDetail?.theme ?? null;
-  const codexTheme = codexDetail?.theme ?? null;
-  const bothPresent = claudeTheme != null && codexTheme != null;
-  const agree = bothPresent && claudeTheme === codexTheme;
+  // Accord/divergence entre les juges PRÉSENTS (généralisé Claude/Codex/Mistral…).
+  const presentJudges = judges.filter((j) => j.detail?.theme != null);
+  const presentThemes = presentJudges.map((j) => j.detail!.theme);
+  const multiPresent = presentJudges.length >= 2;
+  const allAgree = multiPresent && presentThemes.every((t) => t === presentThemes[0]);
 
   // Clic extérieur + Échap → fermeture.
   useEffect(() => {
@@ -157,48 +162,40 @@ export function SentenceMenu({
         />
       </section>
 
-      {/* (b) LLM — propositions Claude / Codex enrichies (thème + rationale + evidence) */}
+      {/* (b) LLM — propositions de chaque juge configuré (Claude/Codex/Mistral…). */}
       <section className="flex flex-col gap-2 border-b border-line py-3" data-testid="menu-llm">
         <h3 className="text-[11px] font-semibold uppercase text-ink-muted">Propositions LLM</h3>
-        {bothPresent ? (
-          agree ? (
+        {multiPresent ? (
+          allAgree ? (
             <p data-testid="llm-agreement" className="text-xs font-medium text-emerald-400">
-              ✓ Accord — {getThemeToken(claudeTheme!).label}
+              ✓ Accord — {getThemeToken(presentThemes[0]!).label}
             </p>
           ) : (
             <p data-testid="llm-agreement" className="text-xs font-medium text-amber-400">
-              ✗ Divergence
+              ✗ Divergence ({presentJudges.length} juges)
             </p>
           )
         ) : (
           <p data-testid="llm-agreement" className="text-xs text-ink-muted">
-            {claudeTheme || codexTheme
+            {presentJudges.length === 1
               ? "Un seul juge couvre cette phrase."
               : "Pas de proposition pour cette phrase."}
           </p>
         )}
-        <JudgeBlock
-          judge="claude"
-          detail={claudeDetail ?? null}
-          testid="menu-llm-claude"
-          adopted={coveringDraft?.resolvedFrom === "claude"}
-          onAdopt={() => {
-            if (!claudeDetail) return;
-            resolveDivergence(claudeDetail.anchorIndex, "claude", claudeDetail.theme);
-            onClose();
-          }}
-        />
-        <JudgeBlock
-          judge="codex"
-          detail={codexDetail ?? null}
-          testid="menu-llm-codex"
-          adopted={coveringDraft?.resolvedFrom === "codex"}
-          onAdopt={() => {
-            if (!codexDetail) return;
-            resolveDivergence(codexDetail.anchorIndex, "codex", codexDetail.theme);
-            onClose();
-          }}
-        />
+        {judges.map((j) => (
+          <JudgeBlock
+            key={j.id}
+            name={j.label}
+            detail={j.detail}
+            testid={`menu-llm-${j.id}`}
+            adopted={coveringDraft?.resolvedFrom === j.id}
+            onAdopt={() => {
+              if (!j.detail) return;
+              resolveDivergence(j.detail.anchorIndex, j.id, j.detail.theme);
+              onClose();
+            }}
+          />
+        ))}
       </section>
 
       {/* (c) Traduire / masquer la traduction de cette phrase (toggle, P9) */}
@@ -224,20 +221,19 @@ export function SentenceMenu({
 /** Bloc d'un juge : thème (puce colorée) + rationale (tronqué + dépliable) + evidence
  * + bouton « Choisir » (arbitrage P1). `adopted` affiche le voyant ✓. */
 function JudgeBlock({
-  judge,
+  name,
   detail,
   testid,
   adopted,
   onAdopt,
 }: {
-  judge: "claude" | "codex";
+  name: string;
   detail: JudgeDetail | null;
   testid: string;
   adopted: boolean;
   onAdopt: () => void;
 }) {
   const [expanded, setExpanded] = useState(false);
-  const name = judge === "claude" ? "Claude" : "Codex";
   const token = detail ? getThemeToken(detail.theme) : null;
   const rationale = detail?.rationale ?? "";
   const isLong = rationale.length > 90;

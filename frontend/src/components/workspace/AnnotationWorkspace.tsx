@@ -39,6 +39,9 @@ export function AnnotationWorkspace({ annotationId }: { annotationId: string }) 
   const init = useWorkspaceStore((s) => s.init);
   const reset = useWorkspaceStore((s) => s.reset);
   const setCurrentProject = useUiStore((s) => s.setCurrentProject);
+  // Point f : repli de l'inspecteur (droite) pour gagner de l'espace, persisté.
+  const inspectorOpen = useUiStore((s) => s.inspectorOpen);
+  const toggleInspector = useUiStore((s) => s.toggleInspector);
   const [snapshotFn, setSnapshotFn] = useState<(() => void) | null>(null);
   const registerSnapshot = useCallback((fn: () => void) => setSnapshotFn(() => fn), []);
   const [showHistory, setShowHistory] = useState(false);
@@ -151,6 +154,8 @@ export function AnnotationWorkspace({ annotationId }: { annotationId: string }) 
               themeFocusRef={themeFocusRef}
             />
           }
+          rightCollapsed={!inspectorOpen}
+          onExpandRight={toggleInspector}
         />
         </div>
         {showComments && (

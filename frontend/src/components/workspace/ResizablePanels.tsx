@@ -7,6 +7,7 @@
  */
 
 import { useCallback, useEffect, useRef, useState } from "react";
+import { ChevronLeft } from "lucide-react";
 
 const STORAGE_KEY = "claire.workspace.layout";
 const MIN = 180;
@@ -22,10 +23,15 @@ export function ResizablePanels({
   left,
   center,
   right,
+  rightCollapsed = false,
+  onExpandRight,
 }: {
   left: React.ReactNode;
   center: React.ReactNode;
   right: React.ReactNode;
+  /** Point f : replie le panneau droit (inspecteur) en un rail fin pour gagner de l'espace. */
+  rightCollapsed?: boolean;
+  onExpandRight?: () => void;
 }) {
   const [layout, setLayout] = useState<Layout>(DEFAULT);
   const [containerWidth, setContainerWidth] = useState(0);
@@ -147,14 +153,38 @@ export function ResizablePanels({
       >
         {center}
       </section>
-      <Handle side="right" />
-      <aside
-        style={{ width: layout.right }}
-        className="h-full shrink-0 overflow-y-auto border-l border-line bg-elevated"
-        aria-label="Inspecteur"
-      >
-        {right}
-      </aside>
+      {rightCollapsed ? (
+        // Rail fin : l'inspecteur est replié (point f). Bouton vertical pour le déplier.
+        <aside
+          className="flex h-full w-8 shrink-0 flex-col items-center border-l border-line bg-elevated"
+          aria-label="Inspecteur (replié)"
+        >
+          <button
+            type="button"
+            data-testid="inspector-expand"
+            onClick={onExpandRight}
+            title="Déplier l'inspecteur"
+            aria-label="Déplier l'inspecteur"
+            className="flex w-full flex-1 flex-col items-center gap-2 py-3 text-ink-muted hover:bg-panel-muted hover:text-ink"
+          >
+            <ChevronLeft size={16} aria-hidden />
+            <span className="text-[10px] font-semibold uppercase tracking-wide [writing-mode:vertical-rl]">
+              Inspecteur
+            </span>
+          </button>
+        </aside>
+      ) : (
+        <>
+          <Handle side="right" />
+          <aside
+            style={{ width: layout.right }}
+            className="h-full shrink-0 overflow-y-auto border-l border-line bg-elevated"
+            aria-label="Inspecteur"
+          >
+            {right}
+          </aside>
+        </>
+      )}
     </div>
   );
 }

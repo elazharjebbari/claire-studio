@@ -11,13 +11,14 @@ import { Button, StatusPill } from "@/components/ui/primitives";
 import { CertaintyPicker } from "@/components/ui/CertaintyPicker";
 import { useWorkspaceStore, type PrefillJudge } from "@/store/workspace";
 import { useAutosaveStore } from "@/store/autosave";
+import { useUiStore } from "@/store/ui";
 import {
   useAnnotation,
   useCreateVersion,
   usePatchAnnotation,
   usePreAnnotations,
 } from "@/lib/api/hooks";
-import { History, MessageSquare, Layers, BarChart3 } from "lucide-react";
+import { History, MessageSquare, Layers, BarChart3, PanelRight } from "lucide-react";
 import { preClausesToPivot } from "@/lib/pivot";
 import { LLM_JUDGES } from "@/lib/llmJudges";
 import { WorkspaceTourButton } from "./WorkspaceTourButton";
@@ -51,6 +52,8 @@ export function WorkspaceToolbar({
   // R1 — lecture seule : on neutralise toutes les actions serveur de la barre
   // (soumission, snapshot, certitude, pré-remplissage) sur l'annotation d'autrui.
   const readOnly = useWorkspaceStore((s) => s.readOnly);
+  const inspectorOpen = useUiStore((s) => s.inspectorOpen);
+  const toggleInspector = useUiStore((s) => s.toggleInspector);
 
   const patchAnnotation = usePatchAnnotation(annotationId);
   const { mutate: createVersionMutate } = useCreateVersion(annotationId);
@@ -217,6 +220,22 @@ export function WorkspaceToolbar({
         className="inline-flex items-center gap-1.5 rounded-md border border-line px-2 py-1 text-xs text-ink-muted hover:bg-panel-muted"
       >
         <MessageSquare size={14} aria-hidden /> Commentaires
+      </button>
+
+      <button
+        type="button"
+        data-testid="toggle-inspector"
+        onClick={toggleInspector}
+        aria-pressed={inspectorOpen}
+        title={inspectorOpen ? "Replier l'inspecteur" : "Déplier l'inspecteur"}
+        className={
+          "inline-flex items-center gap-1.5 rounded-md border px-2 py-1 text-xs hover:bg-panel-muted " +
+          (inspectorOpen
+            ? "border-accent/40 bg-accent/10 text-ink"
+            : "border-line text-ink-muted")
+        }
+      >
+        <PanelRight size={14} aria-hidden /> Inspecteur
       </button>
 
       <a

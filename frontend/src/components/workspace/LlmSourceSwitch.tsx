@@ -4,9 +4,11 @@
  * LlmSourceSwitch (Q3) — contrôle segmenté de la source de segmentation affichée
  * dans le DocumentPanel :
  *  - `human`   → annotation humaine (édition, actuel)
- *  - `claude`  → segmentation de Claude (lecture seule)
- *  - `codex`   → segmentation de Codex (lecture seule)
- *  - `compare` → superposition de l'accord par phrase entre les deux juges
+ *  - <juge>    → segmentation d'un juge LLM en lecture seule (Claude/Codex/Mistral…)
+ *  - `compare` → superposition de l'accord par phrase entre les juges
+ *
+ * Les juges LLM sont générés depuis LLM_JUDGES (source unique) : ajouter un modèle
+ * = une entrée dans LLM_JUDGES, aucune modif ici.
  *
  * Accessible : `role="radiogroup"` + `role="radio"`, navigable au clavier (flèches
  * ←/→ ; roving tabindex). Couleurs en accent non-textuel, contrastes AA.
@@ -14,12 +16,16 @@
 
 import { useRef } from "react";
 import { useWorkspaceStore, type LlmSource } from "@/store/workspace";
+import { LLM_JUDGES } from "@/lib/llmJudges";
 import { cn } from "@/lib/cn";
 
 const OPTIONS: { value: LlmSource; label: string; testid: string }[] = [
   { value: "human", label: "Humain", testid: "llm-human" },
-  { value: "claude", label: "Claude", testid: "llm-claude" },
-  { value: "codex", label: "Codex", testid: "llm-codex" },
+  ...LLM_JUDGES.map((j) => ({
+    value: j.id as LlmSource,
+    label: j.label,
+    testid: `llm-${j.id}`,
+  })),
   { value: "compare", label: "Comparer", testid: "llm-compare" },
 ];
 

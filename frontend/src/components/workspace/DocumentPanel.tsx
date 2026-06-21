@@ -37,13 +37,14 @@ import {
 } from "@/lib/runs";
 import { deriveBlocks, blockAt } from "@/lib/blocks";
 import { ModelBoundaryStrip, ModelBoundaryLegend, type GutterModel } from "./ModelBoundaryRail";
-import { LLM_JUDGES } from "@/lib/llmJudges";
+import { LLM_JUDGES, llmJudgeLabel } from "@/lib/llmJudges";
 import { useUiStore } from "@/store/ui";
 import {
   useAnnotationVersions,
   useAttribution,
   useDocumentTranslations,
   useLlmAgreement,
+  useMe,
 } from "@/lib/api/hooks";
 import { cn } from "@/lib/cn";
 import { unfairnessStyle, useUnfairnessIndex, type UnfairnessMark } from "./useUnfairness";
@@ -65,6 +66,9 @@ import {
   nextDivergence,
   prevDivergence,
 } from "@/lib/divergence";
+
+// Référence stable pour les juges sans pré-annotation (évite de casser les mémos).
+const EMPTY_RUNS: Run[] = [];
 
 interface MenuState {
   index: number;
@@ -128,19 +132,25 @@ export function DocumentPanel({
   // Versions LLM disponibles pour ce document (multi-versions).
   const versionsQuery = useAnnotationVersions(documentId);
   const availableVersions = versionsQuery.data?.versions ?? [];
+  // Identité de l'annotateur courant (badge de provenance « moi », point c).
+  const me = useMe();
+  const myName = me.data?.displayName || me.data?.username || "moi";
 
   // Accord LLM (Q3) — projection par phrase + score + détails par juge, pour la version choisie.
   const llm = useLlmAgreement(documentId, projectSlug, llmVersion);
 
-  // Détails (rationale/evidence) d'un juge indexés par ancre → menu phrase enrichi.
-  const claudeDetailByAnchor = useMemo(
-    () => buildJudgeDetailMap(llm.claudePre?.clauses),
-    [llm.claudePre],
-  );
-  const codexDetailByAnchor = useMemo(
-    () => buildJudgeDetailMap(llm.codexPre?.clauses),
-    [llm.codexPre],
-  );
+  // Détails (rationale/evidence) par juge, indexés par ancre → menu phrase enrichi.
+  // N-modèles : une map par juge configuré (source unique LLM_JUDGES).
+  const detailMapByJudge = useMemo<Record<string, Map<number, JudgeDetail>>>(() => {
+    const map: Record<string, Map<number, JudgeDetail>> = {};
+    for (const j of LLM_JUDGES) {
+      map[j.id] = buildJudgeDetailMap(llm.preByJudge[j.id]?.clauses);
+    }
+    return map;
+  }, [llm.preByJudge]);
+  const EMPTY_DETAIL = useMemo(() => new Map<number, JudgeDetail>(), []);
+  const claudeDetailByAnchor = detailMapByJudge.claude ?? EMPTY_DETAIL;
+  const codexDetailByAnchor = detailMapByJudge.codex ?? EMPTY_DETAIL;
 
   // Attribution multi-annotateurs (point 3) — dernière modif par ancre de clause.
   const attribution = useAttribution(showAttribution ? annotationId ?? undefined : undefined, "clause");
@@ -182,33 +192,31 @@ export function DocumentPanel({
   // Blocs dérivés (Feature B) : suites contiguës de même thème, pour la sélection
   // de bloc au double-clic (S7). Pure et mémoïsée (B-PERF-1).
   const blocks = useMemo(() => deriveBlocks(humanRuns), [humanRuns]);
-  const claudeRuns = useMemo(
-    () => computeRuns(judgeAnchors(llm.claudePre?.clauses), n),
-    [llm.claudePre, n],
-  );
-  const codexRuns = useMemo(
-    () => computeRuns(judgeAnchors(llm.codexPre?.clauses), n),
-    [llm.codexPre, n],
-  );
-  // Pistes de la réglette (Feature A) : dérivées des runs LLM (forward-fill). Étendre
-  // = ajouter une entrée (Mistral…). identityColor = couleur d'IDENTITÉ (≠ catégorie).
-  // N-modèles (Feature A étendue à Mistral) : une piste par juge configuré, dérivée de
-  // ses pré-annotations. Ajouter un modèle = une entrée dans LLM_JUDGES (+ backend/import).
+  // N-modèles : runs (forward-fill) par juge configuré, dérivés de ses pré-annotations.
+  // Source unique pour la réglette, la source de rendu (switch) et le panneau Comparer.
+  // Ajouter un modèle = une entrée dans LLM_JUDGES (+ backend/import).
+  const runsByJudge = useMemo<Record<string, Run[]>>(() => {
+    const map: Record<string, Run[]> = {};
+    for (const j of LLM_JUDGES) {
+      map[j.id] = computeRuns(judgeAnchors(llm.preByJudge[j.id]?.clauses), n);
+    }
+    return map;
+  }, [llm.preByJudge, n]);
+  const claudeRuns = runsByJudge.claude ?? EMPTY_RUNS;
+  const codexRuns = runsByJudge.codex ?? EMPTY_RUNS;
+  // Pistes de la réglette (Feature A) : dérivées des runs LLM (forward-fill).
+  // identityColor = couleur d'IDENTITÉ (≠ catégorie). Une piste par juge configuré.
   const gutterAllModels = useMemo<GutterModel[]>(
     () =>
-      LLM_JUDGES.map((j) => {
-        const pre = llm.preByJudge[j.id];
-        const runs = computeRuns(judgeAnchors(pre?.clauses), n);
-        return {
-          id: j.id,
-          label: j.label,
-          initial: j.initial,
-          segments: segmentsFromRuns(runs),
-          hasData: !!pre?.clauses?.length,
-          identityColor: j.identityColor,
-        };
-      }),
-    [llm.preByJudge, n],
+      LLM_JUDGES.map((j) => ({
+        id: j.id,
+        label: j.label,
+        initial: j.initial,
+        segments: segmentsFromRuns(runsByJudge[j.id] ?? EMPTY_RUNS),
+        hasData: !!llm.preByJudge[j.id]?.clauses?.length,
+        identityColor: j.identityColor,
+      })),
+    [runsByJudge, llm.preByJudge],
   );
   const gutterVisibleModels = useMemo(
     () => gutterAllModels.filter((m) => m.hasData && gutterVisibility[m.id] !== false),
@@ -230,8 +238,12 @@ export function DocumentPanel({
     }
     return m;
   }, [gutterVisibleModels, n]);
+  // Source de rendu : humain/comparer → runs humains ; sinon runs du juge sélectionné
+  // (Claude/Codex/Mistral…), avec repli sur l'humain si le juge n'a pas de données.
   const runs =
-    llmSource === "claude" ? claudeRuns : llmSource === "codex" ? codexRuns : humanRuns;
+    llmSource === "human" || llmSource === "compare"
+      ? humanRuns
+      : runsByJudge[llmSource] ?? humanRuns;
   const isCompare = llmSource === "compare";
 
   // Divergences (P1) — ancres de segments où Claude ≠ Codex (logique pure).
@@ -551,16 +563,40 @@ export function DocumentPanel({
                       {attributionByAnchor.get(anchor.anchorIndex)!.actorName}
                     </span>
                   )}
-                  {/* Voyant d'arbitrage (P1) : juge adopté sur cette clause. */}
-                  {anchor?.resolvedFrom && (
-                    <span
-                      data-testid={`resolved-${s.index}`}
-                      data-judge={anchor.resolvedFrom}
-                      className="rounded border border-emerald-400/50 bg-emerald-400/10 px-1 text-[9px] font-semibold text-emerald-300"
-                    >
-                      ✓ {anchor.resolvedFrom === "claude" ? "Claude" : "Codex"}
-                    </span>
-                  )}
+                  {/* Provenance par phrase (point c) — une seule pastille, par priorité :
+                      1. juge ADOPTÉ (resolvedFrom) → « ✓ {Juge} » (vert)
+                      2. PRÉ-REMPLI non encore arbitré (seededFrom) → « ◷ {Juge} » (ambre,
+                         aide seulement, pas la référence)
+                      3. annotation HUMAINE → « ✎ moi » (ardoise).
+                      Généralisé à Mistral via llmJudgeLabel. */}
+                  {anchor &&
+                    (anchor.resolvedFrom ? (
+                      <span
+                        data-testid={`resolved-${s.index}`}
+                        data-judge={anchor.resolvedFrom}
+                        className="rounded border border-emerald-400/50 bg-emerald-400/10 px-1 text-[9px] font-semibold text-emerald-300"
+                      >
+                        ✓ {llmJudgeLabel(anchor.resolvedFrom)}
+                      </span>
+                    ) : anchor.seededFrom ? (
+                      <span
+                        data-testid={`seeded-${s.index}`}
+                        data-judge={anchor.seededFrom.replace(/^preannotation:/, "")}
+                        title="Pré-rempli — à valider (n'est pas la référence)"
+                        className="rounded border border-amber-400/40 bg-amber-400/10 px-1 text-[9px] font-semibold text-amber-300"
+                      >
+                        ◷ {llmJudgeLabel(anchor.seededFrom.replace(/^preannotation:/, ""))}
+                      </span>
+                    ) : (
+                      <span
+                        data-testid={`author-${s.index}`}
+                        data-author={myName}
+                        title={`Annoté par ${myName}`}
+                        className="rounded border border-slate-400/40 bg-slate-400/10 px-1 text-[9px] font-semibold text-slate-300"
+                      >
+                        ✎ moi
+                      </span>
+                    ))}
                 </div>
               )}
               {/* Frontière LLM (P5) : marqueur discret + aperçu evidence/rationale.
@@ -699,8 +735,15 @@ export function DocumentPanel({
           x={menu.x}
           y={menu.y}
           runs={humanRuns}
-          claudeDetail={detailAt(claudeDetailByAnchor, claudeRuns, menu.index)}
-          codexDetail={detailAt(codexDetailByAnchor, codexRuns, menu.index)}
+          judges={LLM_JUDGES.map((j) => ({
+            id: j.id,
+            label: j.label,
+            detail: detailAt(
+              detailMapByJudge[j.id] ?? EMPTY_DETAIL,
+              runsByJudge[j.id] ?? EMPTY_RUNS,
+              menu.index,
+            ),
+          }))}
           onClose={() => setMenu(null)}
         />
       )}
@@ -797,8 +840,8 @@ function computeBadge(args: {
     };
   }
 
-  if (llmSource === "claude" || llmSource === "codex") {
-    // Puce au début de chaque run du juge.
+  if (llmSource !== "compare") {
+    // Juge LLM (claude/codex/mistral…) : puce au début de chaque run du juge.
     if (!run || run.theme == null || !isRunStart) return null;
     return {
       label: getThemeToken(run.theme).label,

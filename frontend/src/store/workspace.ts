@@ -12,8 +12,9 @@
 import { create } from "zustand";
 import type { Certainty, Clause, PivotClause } from "@/types/contract";
 
-/** Source affichée dans le DocumentPanel (Q3). */
-export type LlmSource = "human" | "claude" | "codex" | "compare";
+/** Source affichée dans le DocumentPanel (Q3).
+ *  "human" | "compare" | id de juge (claude/codex/mistral…, cf. LLM_JUDGES). */
+export type LlmSource = "human" | "compare" | (string & {});
 
 /** Juge pré-rempli courant (point 0a). null = aucun. `string` = id de juge (claude,
  *  codex, mistral, …) pour rester N-modèles. */

@@ -20,6 +20,8 @@ interface UiState {
   gutterModels: Record<string, boolean>;
   /** Réglette : afficher la teinte/abréviation de catégorie par segment (défaut off). */
   gutterShowCategory: boolean;
+  /** Panneau Inspecteur (droite) ouvert/replié — gain d'espace (point f). */
+  inspectorOpen: boolean;
   toggleTheme: () => void;
   setTheme: (t: ColorTheme) => void;
   toggleSidebar: () => void;
@@ -28,6 +30,7 @@ interface UiState {
   setDensity: (d: "comfortable" | "compact") => void;
   toggleGutterModel: (id: string) => void;
   toggleGutterCategory: () => void;
+  toggleInspector: () => void;
 }
 
 export const useUiStore = create<UiState>()(
@@ -40,6 +43,7 @@ export const useUiStore = create<UiState>()(
       density: "comfortable",
       gutterModels: {},
       gutterShowCategory: false,
+      inspectorOpen: true,
       toggleTheme: () => set((s) => ({ theme: s.theme === "dark" ? "light" : "dark" })),
       setTheme: (theme) => set({ theme }),
       toggleSidebar: () => set((s) => ({ sidebarCollapsed: !s.sidebarCollapsed })),
@@ -50,6 +54,7 @@ export const useUiStore = create<UiState>()(
       toggleGutterModel: (id) =>
         set((s) => ({ gutterModels: { ...s.gutterModels, [id]: s.gutterModels[id] === false } })),
       toggleGutterCategory: () => set((s) => ({ gutterShowCategory: !s.gutterShowCategory })),
+      toggleInspector: () => set((s) => ({ inspectorOpen: !s.inspectorOpen })),
     }),
     {
       name: "claire.ui",
@@ -60,6 +65,7 @@ export const useUiStore = create<UiState>()(
         density: s.density,
         gutterModels: s.gutterModels,
         gutterShowCategory: s.gutterShowCategory,
+        inspectorOpen: s.inspectorOpen,
       }),
     },
   ),
