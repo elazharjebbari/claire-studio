@@ -90,6 +90,19 @@ def test_owner_can_patch_and_delete_own_clause(
     assert deleted.status_code in (200, 204), deleted.content
 
 
+def test_add_clause_numeric_client_op_id_no_500(
+    auth, annotation, scheme_with_themes
+):
+    """Régression (bug 500 'int has no strip') : un clientOpId NUMÉRIQUE (id serveur
+    d'une clause restaurée par un undo) ne doit pas faire planter add_clause."""
+    resp = auth(annotation.annotator).post(
+        f"/api/v1/annotations/{annotation.id}/clauses",
+        {"anchorIndex": 0, "theme": "META", "clientOpId": 123},
+        format="json",
+    )
+    assert resp.status_code in (200, 201), resp.content
+
+
 # ── R2 — Synchro Assignment.status ↔ état de l'Annotation ───────────────────────
 def test_assignment_status_syncs_with_annotation_lifecycle(
     auth, annotation, scheme_with_themes

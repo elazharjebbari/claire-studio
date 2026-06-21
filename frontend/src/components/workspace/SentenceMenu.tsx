@@ -146,6 +146,7 @@ export function SentenceMenu({
           onChange={handleSetTheme}
           autoFocus={false}
           layout="grid"
+          describeOnHover
         />
         <CertaintyPicker
           size="sm"

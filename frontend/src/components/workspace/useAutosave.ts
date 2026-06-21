@@ -30,7 +30,7 @@ const DEBOUNCE_MS = 1200;
 function fromClause(c: Clause): PersistedClause {
   return {
     anchorIndex: c.anchorIndex,
-    serverId: c.id,
+    serverId: String(c.id),
     theme: c.theme,
     legalNature: c.legalNature ?? null,
     evidenceSpan: c.evidenceSpan ?? "",

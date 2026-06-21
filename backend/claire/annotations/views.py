@@ -168,7 +168,10 @@ class AnnotationViewSet(viewsets.ModelViewSet):
         annotation = self.get_object()
         # Idempotence (chantier C) : un retry portant le même client_op_id retombe
         # sur la clause déjà créée (200) — pas de doublon, pas de conflit faux positif.
-        client_op_id = (request.data.get("client_op_id") or "").strip()
+        # Coercition str : le client peut renvoyer un client_op_id NUMÉRIQUE (ex. l'id
+        # serveur d'une clause restaurée par un undo) — `str(...)` évite le 500
+        # (AttributeError: 'int' object has no attribute 'strip') et garde l'idempotence.
+        client_op_id = str(request.data.get("client_op_id") or "").strip()
         if client_op_id:
             existing = annotation.clauses.filter(client_op_id=client_op_id).first()
             if existing is not None:

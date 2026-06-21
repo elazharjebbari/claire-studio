@@ -244,8 +244,11 @@ function blockOpLabel(op: BlockOp, anchors: number[]): string {
 
 function fromClause(c: Clause): DraftClause {
   return {
-    localId: c.id,
-    serverId: c.id,
+    // String(...) : l'API peut sérialiser l'id en NOMBRE ; on garde localId/serverId
+    // en chaîne pour que clientOpId (=localId) reste une chaîne (évite le 500 backend
+    // 'int has no strip' lors d'un undo qui recrée une clause déjà persistée).
+    localId: String(c.id),
+    serverId: String(c.id),
     anchorIndex: c.anchorIndex,
     theme: c.theme,
     legalNature: c.legalNature ?? null,

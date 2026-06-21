@@ -8,6 +8,7 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import { cn } from "@/lib/cn";
 import { THEMES, getThemeToken } from "@/lib/tokens";
+import { getThemeDescription } from "@/lib/themeDescriptions";
 
 export interface ThemePaletteProps {
   value: string | null;
@@ -20,6 +21,8 @@ export interface ThemePaletteProps {
    * toutes les catégories visibles d'un coup, pour le menu clic-droit, D4).
    */
   layout?: "list" | "grid";
+  /** Info-bulle (libellé + description) au survol PROLONGÉ (intention), pour le menu. */
+  describeOnHover?: boolean;
   /**
    * Ref impérative : `.current` est câblé sur une fonction qui focalise le champ
    * de recherche. Permet à un parent (touche `B`, ouverture inspecteur) de donner
@@ -34,12 +37,28 @@ export function ThemePalette({
   themeCodes,
   autoFocus,
   layout = "list",
+  describeOnHover = false,
   focusRef,
 }: ThemePaletteProps) {
   const grid = layout === "grid";
   const [query, setQuery] = useState("");
   const [activeIdx, setActiveIdx] = useState(0);
   const inputRef = useRef<HTMLInputElement>(null);
+  // Info-bulle au survol PROLONGÉ (~450 ms : on soupçonne une intention, pas un simple
+  // passage) → libellé complet + courte description (doc annotateur).
+  const [hovered, setHovered] = useState<string | null>(null);
+  const hoverTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
+  function armTooltip(code: string) {
+    if (!describeOnHover) return;
+    if (hoverTimer.current) clearTimeout(hoverTimer.current);
+    hoverTimer.current = setTimeout(() => setHovered(code), 450);
+  }
+  function disarmTooltip() {
+    if (hoverTimer.current) clearTimeout(hoverTimer.current);
+  }
+  useEffect(() => () => {
+    if (hoverTimer.current) clearTimeout(hoverTimer.current);
+  }, []);
 
   useEffect(() => {
     if (!focusRef) return;
@@ -114,7 +133,12 @@ export function ThemePalette({
                   onChange(t.code);
                 }
               }}
-              onMouseEnter={() => setActiveIdx(i)}
+              onMouseEnter={() => {
+                setActiveIdx(i);
+                armTooltip(t.code);
+              }}
+              onMouseLeave={disarmTooltip}
+              aria-describedby={describeOnHover ? "theme-tooltip" : undefined}
               className={cn(
                 "flex w-full cursor-pointer items-center gap-2 px-2 py-1.5 text-left text-sm transition-colors",
                 grid ? "rounded" : "",
@@ -138,6 +162,27 @@ export function ThemePalette({
           <li className="px-2 py-3 text-sm text-ink-muted">Aucun thème</li>
         )}
       </ul>
+      {/* Info-bulle d'intention : libellé complet + courte description (doc annotateur). */}
+      {describeOnHover && hovered && (
+        <div
+          id="theme-tooltip"
+          role="tooltip"
+          data-testid="theme-tooltip"
+          className="rounded-md border border-line bg-panel-muted px-2 py-1.5 text-xs"
+        >
+          <div className="flex items-center gap-1.5 font-semibold text-ink">
+            <span
+              aria-hidden
+              className="h-2.5 w-2.5 shrink-0 rounded-full"
+              style={{ backgroundColor: getThemeToken(hovered).color }}
+            />
+            {getThemeToken(hovered).label}
+          </div>
+          {getThemeDescription(hovered) && (
+            <p className="mt-0.5 text-ink-muted">{getThemeDescription(hovered)}</p>
+          )}
+        </div>
+      )}
     </div>
   );
 }
