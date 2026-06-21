@@ -265,6 +265,10 @@ function SaveIndicator({ dirty }: { dirty: boolean }) {
     saved: { text: "✓ enregistré", cls: "text-emerald-400" },
     offline: { text: "⚠ hors-ligne — reprise auto", cls: "text-amber-400" },
     error: { text: "✗ échec — nouvelle tentative", cls: "text-red-400" },
+    unauthorized: {
+      text: "✗ non enregistré — session expirée ou lecture seule",
+      cls: "text-red-400",
+    },
     idle: dirty ? { text: "● non enregistré", cls: "text-amber-400" } : null,
   };
   const v = view[saveState] ?? null;

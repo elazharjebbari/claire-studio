@@ -97,6 +97,16 @@ export function getCertaintyToken(value: number | null | undefined): CertaintyTo
   return certaintyByValue.get(value ?? 0) ?? CERTAINTY_SCALE[0]!;
 }
 
+/**
+ * Abréviation 2–3 lettres DÉTERMINISTE d'un code de thème (réglette Feature A).
+ * Prend les 3 premières lettres du 1er mot significatif :
+ * MODIFICATION_OF_TERMS → MOD, TERMINATION → TER, LIMITATION_OF_LIABILITY → LIM.
+ */
+export function abbrevThemeCode(code: string | null | undefined): string {
+  const first = (code ?? "").split(/[_\s-]+/).filter(Boolean)[0];
+  return (first ?? "—").slice(0, 3).toUpperCase();
+}
+
 export function getUnfairnessToken(code: string): UnfairnessCategoryToken | undefined {
   return unfairByCode.get(code);
 }

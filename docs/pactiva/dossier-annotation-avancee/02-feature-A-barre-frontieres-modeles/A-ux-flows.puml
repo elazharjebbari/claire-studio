@@ -1,0 +1,128 @@
+@startuml A-ux-flows
+title Feature A — Réglette multi-pistes : interactions (toggles, survol, clic-centrer)
+
+' ── Diagramme d'activité : cycle de vie d'affichage + interactions ─────────────
+start
+
+:Charger document (sentences, n);
+:Lire pré-annotations LLM
+ (claudePre / codexPre / mistralPre);
+note right
+  Aucun nouvel endpoint :
+  useLlmAgreement expose déjà
+  claudePre / codexPre.
+  mistralPre = futur (même forme).
+end note
+
+:runsByModel[m] = computeRuns(
+   judgeAnchors(pre.clauses), n)  [mémoïsé];
+:Construire models[] visibles
+ (filtrés par gutterModels);
+
+' ── Toggle global (réutilise showBoundaries) ──────────────────────────────────
+if (showBoundaries (case "Frontières") ?) then (OFF)
+  :Gutter NON monté
+   (zéro coût rendu);
+  stop
+else (ON)
+  :Mesurer rowTops / rowHeights
+   (ResizeObserver sur la colonne);
+  :Monter le gutter à droite
+   (sticky, hors max-w-reading);
+endif
+
+repeat
+  fork
+    ' ── A2 : toggle PAR MODÈLE ──
+    :Clic case d'un modèle (légende);
+    if (modèle a des données ?) then (oui)
+      :toggleGutterModel(id);
+      :Recomposer models[]
+       (grille repeat(N, ...));
+      :Largeur du gutter se resserre;
+    else (non)
+      :Case désactivée (aria-disabled)
+       piste grisée / en-tête barré;
+    endif
+  fork again
+    ' ── A3 : toggle CATÉGORIE ──
+    :Clic case "Catégories";
+    :toggleGutterCategory();
+    if (gutterShowCategory ?) then (ON)
+      :Teinter cellules = getThemeToken(theme).color
+       + abréviation (readableTextColor → AA);
+    else (OFF)
+      :Cellules neutres (track.neutralFill)
+       marqueurs ◷ seuls;
+    endif
+  fork again
+    ' ── A6 : SURVOL / FOCUS → tooltip ──
+    :Survol OU focus clavier
+     d'une cellule de début de segment;
+    :Attendre motion.tooltipDelay (~120ms);
+    :Afficher tooltip role="tooltip"
+     [modèle | catégorie | phrases start..end];
+    if (Esc ou sortie ?) then (oui)
+      :Fermer tooltip;
+    endif
+  fork again
+    ' ── A6 : CLIC → centrer la phrase ──
+    :Clic cellule / marqueur
+     (ou Entrée/Espace au clavier);
+    :onJump(startSentence)
+     = focusSentence(startSentence);
+    :scrollIntoView({block:"nearest"})
+     + surlignage bg-accent/10;
+    note right
+      Réutilise exactement
+      le onJump du ComparePanel.
+    end note
+  fork again
+    ' ── A1/A4 : maintien de l'alignement ──
+    :displayLang / translatedSentences changent
+     (hauteur des lignes varie);
+    :Recalculer rowTops / rowHeights;
+    :Réaligner les cellules;
+  end fork
+repeat while (Réglette toujours visible ?) is (oui)
+->non;
+
+:Démonter le gutter;
+stop
+
+' ── État détaillé d'une CELLULE (pur, dérivé des runs) ─────────────────────────
+legend right
+  Cellule (piste m, phrase i) :
+  • i ∈ [run.start, run.end] & run.theme = null  → NEUTRE
+  • run.start == i & run.theme != null            → FRONTIÈRE (marqueur ◷)
+  • run.start <  i & run.theme != null            → CORPS-DE-SEGMENT (teinte si ON)
+  A8 : information = forme (◷) + abréviation, jamais couleur seule.
+end legend
+
+@enduml
+
+' ============================================================================
+' Vue complémentaire : machine à états du TOOLTIP (focus + hover unifiés, A6/A8)
+' ============================================================================
+@startuml A-ux-flows-tooltip
+title Feature A — État du tooltip de cellule (hover + clavier)
+
+[*] --> Idle
+
+state Idle
+state Pending : timer motion.tooltipDelay
+state Shown   : role="tooltip"\n[modèle | catégorie | phrases]
+
+Idle    --> Pending : pointerenter cellule\nOU focus clavier
+Pending --> Shown   : timer écoulé
+Pending --> Idle    : pointerleave / blur (avant délai)
+Shown   --> Idle    : pointerleave / blur
+Shown   --> Idle    : Esc
+Shown   --> Idle    : clic (=> onJump, focus phrase)
+
+note bottom of Shown
+  Ouvrable au FOCUS clavier (pas seulement hover) → A8.
+  prefers-reduced-motion : pas d'animation d'apparition.
+end note
+
+@enduml

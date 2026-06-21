@@ -1,0 +1,88 @@
+@startuml sequence-annotation
+title Annotation par bloc (plage -> applyBlockOp -> autosave incrémental -> backend -> IAA)
+
+skinparam shadowing false
+skinparam defaultFontName "Inter, sans-serif"
+skinparam ParticipantBackgroundColor #FFFFFF
+skinparam ParticipantBorderColor #0C447C
+skinparam ArrowColor #0C447C
+skinparam noteBackgroundColor #EEF2F8
+skinparam noteBorderColor #0C447C
+skinparam sequenceLifeLineBorderColor #B7C2D4
+
+actor "Annotateur" as U
+participant "DocumentPanel\n+ SelectionToolbar" as UI
+participant "lib/blocks.ts\n(deriveBlocks, pur)" as BLK
+participant "store/workspace.ts\n(Zustand)" as ST
+participant "useAutosave\n(débounce 1200ms)" as AS
+participant "lib/autosave.ts\n(planClauseSync, pur)" as PLAN
+participant "DRF\nadd_clause / ClauseViewSet" as API
+database "Clause\n(par phrase)" as DB
+participant "projects/iaa.py\n(_theme_vector, κ)" as IAA
+
+== Geste : sélection d'une plage de phrases ==
+U -> UI : glisser / Maj-clic sur phrases [i..j]
+UI -> ST : selectRange(i, j)
+ST --> UI : selectedSentences = [i..j]
+U -> UI : choisir un thème (palette de la SelectionToolbar)
+
+== Application en lot (UNE transaction d'undo) ==
+UI -> ST : applyBlockOp({ kind:"annotateRange", anchors:[i..j], theme })
+activate ST
+note right of ST
+  if (readOnly) return {}   // R1 opposable côté front
+  pushUndo(draftClauses)    // UN seul snapshot
+  mute le tableau local (créer/re-thématiser par ancre)
+  appendLog("block.annotate", "Bloc <thème> i–j (n phrases)")
+end note
+ST -> ST : set({ draftClauses', dirty:true })  // UN seul rendu
+deactivate ST
+ST --> UI : draftClauses' (j-i+1 clauses par phrase)
+
+== Re-dérivation visuelle (lecture seule, mémoïsée) ==
+UI -> UI : computeRuns(drafts', n, {perSentence:true})  // mémo
+UI -> BLK : deriveBlocks(humanRuns)
+BLK --> UI : blocks (le bloc [i..j] apparaît ; fusion auto si contigu)
+note over UI, BLK : Aucune écriture ici — le "bloc" est une vue dérivée pure.
+
+== Autosave incrémental (hors chemin critique UI) ==
+ST -->> AS : changement de draftClauses (abonnement)
+AS -> AS : debounce 1200 ms
+AS -> PLAN : planClauseSync(drafts', persistedRef)
+PLAN --> AS : { creates:[p], updates:[], deletes:[] }   // diff par ancre
+
+loop pour chaque clause du lot (séquencé)
+  AS -> API : POST /annotations/{id}/clauses\n(anchor_index, theme, client_op_id=localId)
+  activate API
+  note right of API
+    IsAnnotationOwner (objet)
+    INV-2 : une clause-start par phrase
+    idempotence client_op_id → 200 si déjà créé
+  end note
+  API -> DB : INSERT Clause(anchor_sentence, theme)
+  DB --> API : clause (serverId)
+  API --> AS : 201 / 200 (clause)
+  deactivate API
+  AS -> AS : upsert(persistedRef, clause)  // MAJ incrémentale
+end
+
+AS -> ST : markSaved() / markClean()
+
+== Recalcul IAA (à la soumission / au calcul de campagne, par phrase) ==
+U -> API : POST /annotations/{id}/submit
+API -> DB : status = submitted
+API -> IAA : pairwise_kappa_for_document(document, project)
+activate IAA
+IAA -> DB : SELECT clauses (anchor_sentence, theme)
+DB --> IAA : clauses
+IAA -> IAA : _theme_vector → [theme@i ou None]\ncohen_kappa(vec_a, vec_b)  // PAR PHRASE
+note right of IAA
+  Le "bloc" n'apparaît nulle part :
+  même état stocké que N gestes-phrase
+  ⇒ κ identique (invariant B-IAA-1).
+end note
+IAA --> API : κ par paire
+deactivate IAA
+API --> U : annotation soumise (+ κ visible côté dashboard)
+
+@enduml

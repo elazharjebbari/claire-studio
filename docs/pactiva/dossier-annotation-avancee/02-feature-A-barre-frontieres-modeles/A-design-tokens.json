@@ -1,0 +1,105 @@
+{
+  "$meta": {
+    "feature": "A — Réglette multi-pistes verticale (frontières par modèle)",
+    "note": "Tokens PROPOSÉS pour le gutter. Les couleurs de CATÉGORIE ne sont PAS ici : elles viennent du schéma fermé via getThemeToken(code).color (lib/tokens.ts). Ici : seulement neutres de piste, géométrie, opacités, z-index, durées. Objectif : zéro hex en dur dans ModelBoundaryRail.tsx (cohérent Phase 5 identité Pactiva).",
+    "unit": "px sauf opacités (0–1) et durées (ms)",
+    "consumedBy": "frontend/src/components/workspace/ModelBoundaryRail.tsx"
+  },
+  "gutter": {
+    "track": {
+      "width": 24,
+      "widthDense": 16,
+      "gap": 4,
+      "minHitTarget": 24,
+      "borderColor": "rgb(var(--surface-border) / 0.4)",
+      "neutralFill": "rgb(var(--surface-border) / 0.12)",
+      "neutralFillHover": "rgb(var(--surface-border) / 0.22)",
+      "disabledOpacity": 0.35,
+      "header": {
+        "height": 18,
+        "fontSize": 10,
+        "fontWeight": 600,
+        "letterSpacing": 0.2,
+        "color": "rgb(var(--surface-text-muted))"
+      },
+      "identity": [
+        "#94A3B8",
+        "#A78BFA",
+        "#5EEAD4",
+        "#FCD34D",
+        "#F9A8D4"
+      ],
+      "identityNote": "Couleurs d'IDENTITÉ DE PISTE (en-tête uniquement), distinctes des teintes de catégorie ; palette neutre choisie pour rester discriminable en daltonisme. Au-delà de 5 pistes : repli sur l'initiale seule (la forme/lettre porte l'info)."
+    },
+    "cell": {
+      "minHeight": 22,
+      "categoryOpacity": 0.28,
+      "categoryOpacityHover": 0.45,
+      "bodyOpacity": 0.18,
+      "radius": 3,
+      "focusRing": "rgb(var(--surface-accent) / 0.7)",
+      "focusRingWidth": 2
+    },
+    "marker": {
+      "glyph": "◷",
+      "height": 10,
+      "width": 10,
+      "thickness": 2,
+      "radius": 2,
+      "color": "rgb(var(--surface-text))",
+      "colorMuted": "rgb(var(--surface-text-muted))",
+      "agreementHint": "rgb(52 211 153)",
+      "agreementHintNote": "emerald-400 — liseré OPTIONNEL quand 2+ modèles coupent à la même phrase (redondant avec l'alignement, jamais seul porteur d'info)."
+    },
+    "abbr": {
+      "maxChars": 3,
+      "fontSize": 8,
+      "fontFamily": "var(--font-mono)",
+      "fontWeight": 600,
+      "paddingX": 1,
+      "note": "Texte calculé via readableTextColor(themeColor) → contraste AA garanti sur teinte dynamique."
+    },
+    "legend": {
+      "width": 200,
+      "paddingX": 8,
+      "paddingY": 6,
+      "gap": 4,
+      "radius": 6,
+      "bg": "rgb(var(--surface-panel))",
+      "border": "rgb(var(--surface-border))",
+      "fontSize": 12
+    },
+    "tooltip": {
+      "maxWidth": 240,
+      "paddingX": 8,
+      "paddingY": 6,
+      "radius": 6,
+      "fontSize": 12,
+      "lineGap": 2,
+      "bg": "rgb(var(--surface-bg-elevated))",
+      "border": "rgb(var(--surface-border))",
+      "color": "rgb(var(--surface-text))",
+      "shadow": "0 6px 24px rgb(0 0 0 / 0.35)"
+    },
+    "layout": {
+      "stickyTop": 16,
+      "offsetFromReading": 16,
+      "collapseBelow": "xl",
+      "minWidth": 28,
+      "maxWidthSoft": 200
+    },
+    "z": {
+      "track": 10,
+      "marker": 11,
+      "legend": 20,
+      "tooltip": 50
+    },
+    "motion": {
+      "fast": 120,
+      "tooltipDelay": 120,
+      "trackToggle": 150,
+      "easing": "cubic-bezier(0.2, 0, 0, 1)",
+      "respectsReducedMotion": true
+    }
+  }
+}

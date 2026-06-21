@@ -53,6 +53,19 @@ export interface DraftClause {
   resolvedFrom?: "claude" | "codex" | null;
 }
 
+/**
+ * Opération de LOT sur un bloc (Feature B). `annotateRange`/`extend` posent un thème
+ * sur les phrases ; `shrink`/`clearBlock` les désannotent. Appliquée atomiquement
+ * (un seul snapshot undo) par `applyBlockOp`.
+ */
+export interface BlockOp {
+  kind: "annotateRange" | "extend" | "shrink" | "clearBlock";
+  /** Phrases ciblées (ancres). */
+  anchors: number[];
+  /** Thème à poser (requis pour annotateRange/extend ; ignoré pour shrink/clearBlock). */
+  theme?: string;
+}
+
 interface WorkspaceState {
   annotationId: string | null;
   nSentences: number;
@@ -135,6 +148,13 @@ interface WorkspaceState {
    */
   toggleBoundary: (anchorIndex: number, theme: string) => void;
   /**
+   * Primitive de LOT (Feature B, spec §5) : applique une suite de mutations comme UNE
+   * transaction d'undo (un seul snapshot, une seule entrée actionLog, un seul rendu).
+   * Sert aux gestes de bloc : annoter une plage, étendre/réduire, désannoter un bloc.
+   * No-op en lecture seule (R1) ; ancres hors [0, nSentences) ignorées.
+   */
+  applyBlockOp: (op: BlockOp) => void;
+  /**
    * Arbitrage de divergence (P1) : adopte la proposition d'un juge à l'ancre donnée.
    * Crée la clause humaine si absente (thème du juge), sinon met à jour son thème ;
    * marque `resolvedFrom` = juge pour le voyant. Toujours `dirty=true`.
@@ -201,6 +221,25 @@ const UNDO_DEPTH = 200;
 function pushUndo(stack: DraftClause[][], snapshot: DraftClause[]): DraftClause[][] {
   const next = [...stack, snapshot];
   return next.length > UNDO_DEPTH ? next.slice(next.length - UNDO_DEPTH) : next;
+}
+
+/** Libellé lisible d'une opération de bloc pour le journal d'actions. */
+function blockOpLabel(op: BlockOp, anchors: number[]): string {
+  const lo = anchors[0]!;
+  const hi = anchors[anchors.length - 1]!;
+  const range = lo === hi ? `${lo}` : `${lo}–${hi}`;
+  const n = anchors.length;
+  const s = n > 1 ? "s" : "";
+  switch (op.kind) {
+    case "annotateRange":
+      return `Bloc ${op.theme} ${range} (${n} phrase${s})`;
+    case "extend":
+      return `Extension ${op.theme} → ${range}`;
+    case "shrink":
+      return `Réduction ${range} (${n} phrase${s})`;
+    case "clearBlock":
+      return `Bloc retiré ${range} (${n} phrase${s})`;
+  }
 }
 
 function fromClause(c: Clause): DraftClause {
@@ -347,6 +386,75 @@ export const useWorkspaceStore = create<WorkspaceState>((set, get) => ({
     if (existing && existing.theme === theme) removeBoundary(anchorIndex);
     else setBoundary(anchorIndex, theme);
   },
+
+  applyBlockOp: (op) =>
+    set((s) => {
+      if (s.readOnly) return {};
+      const N = s.nSentences;
+      // Ancres valides, dédupliquées, triées.
+      const anchors = Array.from(
+        new Set(op.anchors.filter((i) => Number.isInteger(i) && i >= 0 && i < N)),
+      ).sort((a, b) => a - b);
+      if (anchors.length === 0) return {};
+      const remove = op.kind === "shrink" || op.kind === "clearBlock";
+
+      let drafts = s.draftClauses.slice();
+      let changed = false;
+
+      if (remove) {
+        const targets = new Set(anchors);
+        const next = drafts.filter((c) => !targets.has(c.anchorIndex));
+        if (next.length !== drafts.length) {
+          drafts = next;
+          changed = true;
+        }
+      } else {
+        const theme = op.theme;
+        if (!theme) return {};
+        for (const i of anchors) {
+          const idx = drafts.findIndex((c) => c.anchorIndex === i);
+          if (idx >= 0) {
+            if (drafts[idx]!.theme !== theme) {
+              drafts[idx] = { ...drafts[idx]!, theme };
+              changed = true;
+            }
+          } else {
+            drafts.push({
+              localId: nextLocalId(),
+              anchorIndex: i,
+              theme,
+              legalNature: null,
+              evidenceSpan: "",
+              rationale: "",
+              certainty: null,
+            });
+            changed = true;
+          }
+        }
+      }
+
+      if (!changed) return {}; // idempotent : aucun changement net → pas de snapshot.
+
+      drafts = sortDrafts(drafts);
+      const firstAnchor = anchors[0]!;
+      const selected =
+        drafts.find((c) => c.anchorIndex === firstAnchor)?.localId ??
+        (drafts.some((c) => c.localId === s.selectedClauseId) ? s.selectedClauseId : null);
+
+      return {
+        draftClauses: drafts,
+        dirty: true,
+        // UN SEUL snapshot pour tout le lot (atomicité d'undo, spec §5).
+        undoStack: pushUndo(s.undoStack, s.draftClauses),
+        redoStack: [],
+        selectedClauseId: selected,
+        actionLog: appendLog(s.actionLog, {
+          kind: `block.${op.kind}`,
+          label: blockOpLabel(op, anchors),
+          anchorIndex: firstAnchor,
+        }),
+      };
+    }),
 
   resolveDivergence: (anchorIndex, judge, theme) =>
     set((s) => {

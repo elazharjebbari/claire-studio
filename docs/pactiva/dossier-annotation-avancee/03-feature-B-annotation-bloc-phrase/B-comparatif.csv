@@ -1,0 +1,9 @@
+critere,poids,par-phrase,spans-bornes,hybride-derive,hierarchique,commentaire
+ergonomie spans,5,3,5,5,4,"Plage/poignées/double-clic/merge ; (a) limité à la sélection-plage sans bloc ; (c) atteint (b) sans donnée nouvelle"
+granularite phrase,5,5,2,5,3,"La phrase est l'unité métier (schéma CLAUDETTE) ; (b) dilue la phrase dans un span ; (d) la relègue sous la section"
+justesse IAA,5,5,2,5,2,"_theme_vector par phrase + cohen_kappa (C4) ; (b) force un forward-fill qui regresse C4 ; (d) ambigu selon niveau d'accord"
+cout implementation,4,5,1,4,1,"(a) déjà fait ; (c) 1 fonction pure + 1 primitive store + câblage UI, backend nul ; (b)/(d) migration + DRF + IAA refaits"
+migration necessaire,5,5,1,5,1,"(c) zéro migration (contrat/serializers/IAA intacts) ; (b)/(d) migration DB + backfill bloquants"
+robustesse,4,5,2,5,2,"Source de vérité unique (clauses/phrase) ; (b)/(d) invariants de spans/sections (chevauchement, trous, imbrication) à tenir"
+evolutivite,3,3,4,4,5,"(d) plus riche en théorie (structure documentaire) mais hors besoin ; (c) couche dérivée extensible (autres agrégations) sans schéma"
+score_pondere,,139,74,148,77,"Somme(poids x note) sur les 7 criteres ; (c) hybride-derive en tete (148), suivi de (a) par-phrase (139)"

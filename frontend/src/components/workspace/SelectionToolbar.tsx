@@ -1,21 +1,20 @@
 "use client";
 
 /**
- * SelectionToolbar (P4 + P8) — barre flottante (bas du panneau central).
+ * SelectionToolbar (Feature B) — barre flottante (bas du panneau central).
  *
  * Deux modes mutuellement exclusifs (priorité aux blocs s'ils sont sélectionnés) :
  *
- *  (P8) Sélection multi-BLOCS (`selectedClauseIds`, via right-drag) :
- *   - « N bloc(s) » + « Annoter les blocs » (ThemePalette → applique le thème à
- *     TOUTES les clauses sélectionnées via updateDraft(localId,{theme})) + « Effacer ».
+ *  (P8) Sélection multi-BLOCS (`selectedClauseIds`, via right-drag ou double-clic d'un
+ *   bloc) : « Annoter les blocs », « Étendre/Réduire » (si plage contiguë), « Désannoter
+ *   le bloc ». Tout passe par `applyBlockOp` (lot atomique = UN undo).
  *
- *  (P4) Multi-sélection de PHRASES (`selectedSentences`, Shift/Cmd+clic) :
- *   - « Annoter la sélection » : pose une frontière au 1er index sélectionné, supprime
- *     les ancres internes → la clause couvre la sélection.
- *   - « Traduire la sélection » : marque translated les phrases sélectionnées.
- *   - « Effacer » : vide la sélection.
+ *  (P4) Multi-sélection de PHRASES (`selectedSentences`, Maj/Cmd+clic) :
+ *   « Annoter la sélection » et « Désannoter » via `applyBlockOp` (annotateRange /
+ *   clearBlock), « Traduire la sélection », « Effacer ».
  *
- * Navigable clavier, focus visibles, contrastes AA (tokens).
+ * Navigable clavier, focus visibles, contrastes AA (tokens). Aucune écriture span :
+ * l'annotation reste PAR PHRASE (C4) ; le « bloc » est une vue dérivée.
  */
 
 import { useState } from "react";
@@ -25,8 +24,7 @@ import { ThemePalette } from "@/components/ui/ThemePalette";
 export function SelectionToolbar() {
   const selected = useWorkspaceStore((s) => s.selectedSentences);
   const selectedClauseIds = useWorkspaceStore((s) => s.selectedClauseIds);
-  const setBoundary = useWorkspaceStore((s) => s.setBoundary);
-  const updateDraft = useWorkspaceStore((s) => s.updateDraft);
+  const applyBlockOp = useWorkspaceStore((s) => s.applyBlockOp);
   const setTranslated = useWorkspaceStore((s) => s.setTranslated);
   const clearSelection = useWorkspaceStore((s) => s.clearSelection);
   const clearClauseSelection = useWorkspaceStore((s) => s.clearClauseSelection);
@@ -39,11 +37,6 @@ export function SelectionToolbar() {
         ids={selectedClauseIds}
         palette={palette}
         setPalette={setPalette}
-        annotateBlocks={(themeCode: string) => {
-          for (const id of selectedClauseIds) updateDraft(id, { theme: themeCode });
-          setPalette(false);
-          clearClauseSelection();
-        }}
         clear={() => {
           setPalette(false);
           clearClauseSelection();
@@ -57,15 +50,15 @@ export function SelectionToolbar() {
   const sorted = selected.slice().sort((a, b) => a - b);
 
   function annotate(themeCode: string) {
-    // C4 — annotation PAR PHRASE : pose le thème sur CHAQUE phrase sélectionnée
-    // (une clause par phrase), au lieu d'une unique clause couvrant toute la plage.
-    for (const i of sorted) {
-      const existing = useWorkspaceStore.getState().draftClauses.find(
-        (d) => d.anchorIndex === i,
-      );
-      if (existing) updateDraft(existing.localId, { theme: themeCode });
-      else setBoundary(i, themeCode);
-    }
+    // C4/B2 — annotation PAR PHRASE en UN lot atomique (un seul undo) : une clause
+    // par phrase sélectionnée → un bloc dérivé.
+    applyBlockOp({ kind: "annotateRange", anchors: sorted, theme: themeCode });
+    setPalette(false);
+    clearSelection();
+  }
+
+  function desannotate() {
+    applyBlockOp({ kind: "clearBlock", anchors: sorted });
     setPalette(false);
     clearSelection();
   }
@@ -97,6 +90,14 @@ export function SelectionToolbar() {
         </button>
         <button
           type="button"
+          onClick={desannotate}
+          data-testid="selection-desannotate"
+          className="rounded-md border border-line px-2 py-1 hover:bg-panel-muted"
+        >
+          Désannoter
+        </button>
+        <button
+          type="button"
           onClick={translateSelection}
           data-testid="selection-translate"
           className="rounded-md border border-line px-2 py-1 hover:bg-panel-muted"
@@ -121,20 +122,46 @@ export function SelectionToolbar() {
   );
 }
 
-/** Barre flottante du mode multi-BLOCS (P8). */
+/** Barre flottante du mode multi-BLOCS (P8) — opère via applyBlockOp (lots atomiques). */
 function BlockToolbar({
   ids,
   palette,
   setPalette,
-  annotateBlocks,
   clear,
 }: {
   ids: string[];
   palette: boolean;
   setPalette: (v: boolean | ((p: boolean) => boolean)) => void;
-  annotateBlocks: (themeCode: string) => void;
   clear: () => void;
 }) {
+  const drafts = useWorkspaceStore((s) => s.draftClauses);
+  const nSentences = useWorkspaceStore((s) => s.nSentences);
+  const applyBlockOp = useWorkspaceStore((s) => s.applyBlockOp);
+
+  // Ancres + thème de la sélection ; contiguïté = bloc unique extensible/réductible.
+  const sel = drafts.filter((d) => ids.includes(d.localId));
+  const anchors = sel.map((d) => d.anchorIndex).sort((a, b) => a - b);
+  const theme = sel[0]?.theme;
+  const min = anchors[0];
+  const max = anchors[anchors.length - 1];
+  const contiguous =
+    anchors.length > 0 &&
+    theme != null &&
+    max! - min! + 1 === anchors.length &&
+    sel.every((d) => d.theme === theme);
+  const canExtend = contiguous && max! + 1 < nSentences;
+  const canShrink = contiguous && anchors.length > 1;
+
+  function annotateBlocks(themeCode: string) {
+    applyBlockOp({ kind: "annotateRange", anchors, theme: themeCode });
+    setPalette(false);
+    clear();
+  }
+  function desannotateBlock() {
+    applyBlockOp({ kind: "clearBlock", anchors });
+    clear();
+  }
+
   return (
     <div
       role="toolbar"
@@ -144,7 +171,7 @@ function BlockToolbar({
     >
       <div className="flex items-center gap-2 text-sm text-ink">
         <span className="font-semibold" data-testid="block-select-count">
-          {ids.length} bloc{ids.length > 1 ? "s" : ""}
+          {ids.length} phrase{ids.length > 1 ? "s" : ""} · bloc
         </span>
         <button
           type="button"
@@ -153,7 +180,35 @@ function BlockToolbar({
           data-testid="annotate-blocks"
           className="rounded-md border border-line px-2 py-1 hover:bg-panel-muted"
         >
-          Annoter les blocs
+          Annoter
+        </button>
+        <button
+          type="button"
+          onClick={() => applyBlockOp({ kind: "extend", anchors: [max! + 1], theme })}
+          disabled={!canExtend}
+          data-testid="block-extend"
+          title="Étendre le bloc d'une phrase (vers le bas)"
+          className="rounded-md border border-line px-2 py-1 hover:bg-panel-muted disabled:cursor-not-allowed disabled:opacity-40"
+        >
+          Étendre ＋
+        </button>
+        <button
+          type="button"
+          onClick={() => applyBlockOp({ kind: "shrink", anchors: [max!] })}
+          disabled={!canShrink}
+          data-testid="block-shrink"
+          title="Réduire le bloc d'une phrase (par le bas)"
+          className="rounded-md border border-line px-2 py-1 hover:bg-panel-muted disabled:cursor-not-allowed disabled:opacity-40"
+        >
+          Réduire −
+        </button>
+        <button
+          type="button"
+          onClick={desannotateBlock}
+          data-testid="block-desannotate"
+          className="rounded-md border border-line px-2 py-1 hover:bg-panel-muted"
+        >
+          Désannoter le bloc
         </button>
         <button
           type="button"

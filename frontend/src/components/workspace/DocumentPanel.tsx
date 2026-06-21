@@ -27,7 +27,10 @@ import { useEffect, useMemo, useRef, useState } from "react";
 import type { PreClause, ReferenceLabel, Sentence } from "@/types/contract";
 import { useWorkspaceStore } from "@/store/workspace";
 import { getThemeToken } from "@/lib/tokens";
-import { computeRuns, runAt, type Run } from "@/lib/runs";
+import { computeRuns, runAt, segmentsFromRuns, type Run } from "@/lib/runs";
+import { deriveBlocks, blockAt } from "@/lib/blocks";
+import { ModelBoundaryStrip, ModelBoundaryLegend, type GutterModel } from "./ModelBoundaryRail";
+import { useUiStore } from "@/store/ui";
 import {
   useAnnotationVersions,
   useAttribution,
@@ -97,9 +100,15 @@ export function DocumentPanel({
 
   const showBoundaries = useWorkspaceStore((s) => s.showBoundaries);
   const toggleBoundaries = useWorkspaceStore((s) => s.toggleBoundaries);
+  // Réglette frontières-modèles (Feature A) — préférences persistées (store UI).
+  const gutterShowCategory = useUiStore((s) => s.gutterShowCategory);
+  const gutterVisibility = useUiStore((s) => s.gutterModels);
   const selectedSentences = useWorkspaceStore((s) => s.selectedSentences);
   const selectRange = useWorkspaceStore((s) => s.selectRange);
   const toggleSelected = useWorkspaceStore((s) => s.toggleSelected);
+  const setSelectedClauses = useWorkspaceStore((s) => s.setSelectedClauses);
+  const clearClauseSelection = useWorkspaceStore((s) => s.clearClauseSelection);
+  const clearSelection = useWorkspaceStore((s) => s.clearSelection);
   const displayLang = useWorkspaceStore((s) => s.displayLang);
   const translatedSentences = useWorkspaceStore((s) => s.translatedSentences);
   const setTranslated = useWorkspaceStore((s) => s.setTranslated);
@@ -157,6 +166,9 @@ export function DocumentPanel({
     () => computeRuns(drafts.map((d) => ({ ...d })), n, { perSentence: true }),
     [drafts, n],
   );
+  // Blocs dérivés (Feature B) : suites contiguës de même thème, pour la sélection
+  // de bloc au double-clic (S7). Pure et mémoïsée (B-PERF-1).
+  const blocks = useMemo(() => deriveBlocks(humanRuns), [humanRuns]);
   const claudeRuns = useMemo(
     () => computeRuns(judgeAnchors(llm.claudePre?.clauses), n),
     [llm.claudePre, n],
@@ -164,6 +176,19 @@ export function DocumentPanel({
   const codexRuns = useMemo(
     () => computeRuns(judgeAnchors(llm.codexPre?.clauses), n),
     [llm.codexPre, n],
+  );
+  // Pistes de la réglette (Feature A) : dérivées des runs LLM (forward-fill). Étendre
+  // = ajouter une entrée (Mistral…). identityColor = couleur d'IDENTITÉ (≠ catégorie).
+  const gutterAllModels = useMemo<GutterModel[]>(
+    () => [
+      { id: "claude", label: "Claude", initial: "C", segments: segmentsFromRuns(claudeRuns), hasData: !!llm.claudePre?.clauses?.length, identityColor: "#94A3B8" },
+      { id: "codex", label: "Codex", initial: "Cx", segments: segmentsFromRuns(codexRuns), hasData: !!llm.codexPre?.clauses?.length, identityColor: "#A78BFA" },
+    ],
+    [claudeRuns, codexRuns, llm.claudePre, llm.codexPre],
+  );
+  const gutterVisibleModels = useMemo(
+    () => gutterAllModels.filter((m) => m.hasData && gutterVisibility[m.id] !== false),
+    [gutterAllModels, gutterVisibility],
   );
   const runs =
     llmSource === "claude" ? claudeRuns : llmSource === "codex" ? codexRuns : humanRuns;
@@ -324,6 +349,9 @@ export function DocumentPanel({
               <span className="inline-flex items-center gap-1.5"><Columns2 size={14} aria-hidden /> Comparer</span>
             </button>
           )}
+          {gutterAllModels.some((m) => m.hasData) && (
+            <ModelBoundaryLegend models={gutterAllModels} />
+          )}
           <LangSwitch />
           </div>
         </div>
@@ -428,7 +456,21 @@ export function DocumentPanel({
           const missingFr = renderFr && frText == null;
 
           return (
-            <div key={s.id} data-sentence-index={s.index} className="group relative">
+            <div
+              key={s.id}
+              data-sentence-index={s.index}
+              className={"group relative" + (showBoundaries && gutterVisibleModels.length > 0 ? " pr-10" : "")}
+              onDoubleClick={() => {
+                // S7 — double-clic : sélectionne le BLOC contigu de même thème (mode
+                // bloc) ; sur une phrase neutre, on efface la sélection (S8).
+                const b = blockAt(blocks, s.index);
+                if (b) setSelectedClauses(b.localIds);
+                else {
+                  clearSelection();
+                  clearClauseSelection();
+                }
+              }}
+            >
               {badge && (
                 <div
                   data-testid="clause-badge"
@@ -554,6 +596,15 @@ export function DocumentPanel({
                     ×
                   </button>
                 </p>
+              )}
+              {/* Réglette frontières-modèles (Feature A) : bande alignée à la ligne. */}
+              {showBoundaries && gutterVisibleModels.length > 0 && (
+                <ModelBoundaryStrip
+                  sentenceIndex={s.index}
+                  models={gutterVisibleModels}
+                  showCategory={gutterShowCategory}
+                  onJump={focusSentence}
+                />
               )}
             </div>
           );

@@ -1,0 +1,143 @@
+@startuml B-modele-donnees
+title Feature B — Modèle de données (PERSISTANT) vs représentation du BLOC (DÉRIVÉE)
+
+' ===========================================================================
+'  Convention : ce qui est PERSISTÉ (DB / contrat API) vs ce qui est CALCULÉ
+'  (vue frontend, jamais stockée). Le « Bloc » N'EST PAS une table.
+' ===========================================================================
+
+skinparam shadowing false
+skinparam linetype ortho
+skinparam class {
+  BackgroundColor #FBFBFD
+  BorderColor #4B5563
+  ArrowColor #4B5563
+}
+skinparam package {
+  BorderColor #9CA3AF
+  FontStyle bold
+}
+
+' --------------------------------------------------------------------------
+' (1) PERSISTANT — schéma réel, INCHANGÉ par la Feature B
+'     Source : backend/claire/annotations/models.py + contract.ts
+' --------------------------------------------------------------------------
+package "PERSISTANT (DB + contrat API) — INCHANGÉ par B" #E8F5E9 {
+
+  class Annotation <<persisté>> {
+    +id : UUID
+    +projectSlug : str
+    +documentId : UUID
+    +annotatorId : UUID
+    +status : AnnotationStatus
+    +source : AnnotationSource
+    --
+    INV-4 : unique (projet, document, annotateur)
+  }
+
+  class Clause <<persisté>> {
+    +id : UUID
+    +annotationId : UUID
+    +anchorIndex : int   ' = anchor_sentence.index (UNITÉ = LA PHRASE)
+    +theme : str         ' FK Theme.code
+    +legalNature : str?  ' FK, nullable
+    +evidenceSpan : str
+    +rationale : str
+    +certainty : 0..3?   ' INV-6
+    +order : int
+    +clientOpId : str    ' idempotence autosave (chantier C)
+    --
+    INV-2 : unique (annotation, anchor_sentence)
+    => UNE Clause = UNE phrase. PAS de end_index.
+  }
+
+  class Sentence <<persisté>> {
+    +id : UUID
+    +documentId : UUID
+    +index : int
+    +text : str
+  }
+
+  Annotation "1" *-- "0..*" Clause : clauses\n(par phrase)
+  Clause "*" --> "1" Sentence : anchor_sentence\n(PROTECT)
+
+  note bottom of Clause
+    Aucun champ ajouté par B.
+    Pas de end_index, pas de block_id.
+    IAA (projects/iaa.py::_theme_vector)
+    lit theme PAR PHRASE -> cohen_kappa.
+  end note
+}
+
+' --------------------------------------------------------------------------
+' (2) DÉRIVÉ — vues calculées côté frontend, JAMAIS persistées
+'     Source : lib/runs.ts (existant) + lib/blocks.ts (nouveau, pur)
+' --------------------------------------------------------------------------
+package "DÉRIVÉ (frontend, calculé — JAMAIS persisté)" #E3F2FD {
+
+  class DraftClause <<store / éphémère>> {
+    +localId : str        ' id local tant que non persisté
+    +serverId : str?      ' = Clause.id une fois sauvegardé
+    +anchorIndex : int
+    +theme : str
+    +legalNature : str?
+    +evidenceSpan : str
+    +rationale : str
+    +certainty : 0..3?
+    +seededFrom : str?    ' provenance LLM (orthogonale au bloc)
+    --
+    miroir éditable de Clause (store workspace.ts)
+  }
+
+  class Run <<dérivé / pur>> {
+    +start : int
+    +end : int            ' perSentence => end === start
+    +theme : str?         ' null = run neutre (phrase non annotée)
+    +localId : str?
+    --
+    computeRuns(drafts, n, {perSentence:true})
+  }
+
+  class Block <<DÉRIVÉ / VUE — jamais stocké>> {
+    +start : int
+    +end : int            ' end >= start ; size 1 = "phrase"
+    +theme : str          ' thème commun (contigu, homogène)
+    +localIds : str[]     ' une entrée par phrase couverte (ordonné)
+    +size : int           ' end - start + 1
+    --
+    deriveBlocks(runs) : Block[]
+    identité = (start, theme) AU RENDU
+    B-DEF : intervalle MAXIMAL contigu de
+    clauses de MÊME thème (rupture d'index
+    OU de thème => nouveau bloc)
+  }
+
+  DraftClause "0..*" ..> "0..*" Run : computeRuns\n(perSentence, C4)
+  Run "1..*" ..> "0..1" Block : deriveBlocks\n(agrège contigus\nde même thème)
+}
+
+' --------------------------------------------------------------------------
+' (3) Pont persistant <-> dérivé (sync, sans nouvelle entité)
+' --------------------------------------------------------------------------
+Clause "0..1" <..> "0..1" DraftClause : autosave par ancre\n(planClauseSync : clé=anchorIndex)\ncreate / patch / delete
+
+note as N_DERIVED
+  **Le BLOC est une PROJECTION, pas une donnée.**
+  • Fusion (merge) : 2 blocs de même thème adjacents
+    -> 1 seul, par simple re-dérivation (aucune écriture propre).
+  • Division (split) : override d'une phrase interne change
+    UNE Clause -> les sous-blocs sont re-dérivés.
+  • Annoter "par bloc" == annoter "phrase par phrase"
+    au stockage -> IAA (kappa par phrase) identique (B-IAA-1).
+end note
+N_DERIVED .. Block
+
+legend right
+  | Stéréotype | Sens |
+  | <<persisté>> | table DB + exposé au contrat API (camelCase) |
+  | <<store / éphémère>> | état d'édition Zustand (workspace.ts), non persisté |
+  | <<dérivé / pur>> | calculé par fonction pure, jamais stocké |
+  | <<DÉRIVÉ / VUE>> | **le BLOC** : projection au rendu, pas d'objet |
+endlegend
+
+@enduml

@@ -403,3 +403,110 @@ describe("workspace store — toggleBoundary (C3)", () => {
     expect(useWorkspaceStore.getState().draftClauses).toHaveLength(1);
   });
 });
+
+// ── applyBlockOp : lots atomiques (L1, Feature B) ─────────────────────────────
+describe("workspace store — applyBlockOp (L1)", () => {
+  beforeEach(() => {
+    useWorkspaceStore.getState().reset();
+    // baseClauses = clause @0 META.
+    useWorkspaceStore
+      .getState()
+      .init({ annotationId: "a1", nSentences: 10, clauses: baseClauses });
+  });
+
+  it("annotateRange crée une clause par phrase de la plage", () => {
+    useWorkspaceStore
+      .getState()
+      .applyBlockOp({ kind: "annotateRange", anchors: [2, 3, 4], theme: "TERMINATION" });
+    const inRange = useWorkspaceStore
+      .getState()
+      .draftClauses.filter((c) => [2, 3, 4].includes(c.anchorIndex));
+    expect(inRange).toHaveLength(3);
+    expect(inRange.every((c) => c.theme === "TERMINATION")).toBe(true);
+  });
+
+  it("un lot = UN SEUL snapshot d'undo (annule toute la plage d'un coup)", () => {
+    const before = useWorkspaceStore.getState().draftClauses.length; // 1
+    useWorkspaceStore
+      .getState()
+      .applyBlockOp({ kind: "annotateRange", anchors: [2, 3, 4, 5], theme: "TERMINATION" });
+    expect(useWorkspaceStore.getState().draftClauses).toHaveLength(before + 4);
+    useWorkspaceStore.getState().undo();
+    expect(useWorkspaceStore.getState().draftClauses).toHaveLength(before);
+  });
+
+  it("journalise UNE seule entrée block.* par lot", () => {
+    useWorkspaceStore.getState().clearActionLog();
+    useWorkspaceStore
+      .getState()
+      .applyBlockOp({ kind: "annotateRange", anchors: [2, 3, 4], theme: "META" });
+    const log = useWorkspaceStore.getState().actionLog;
+    expect(log).toHaveLength(1);
+    expect(log[0]!.kind).toBe("block.annotateRange");
+  });
+
+  it("clearBlock retire toutes les clauses de la plage (désannotation)", () => {
+    useWorkspaceStore
+      .getState()
+      .applyBlockOp({ kind: "annotateRange", anchors: [2, 3, 4], theme: "META" });
+    useWorkspaceStore.getState().applyBlockOp({ kind: "clearBlock", anchors: [2, 3, 4] });
+    const d = useWorkspaceStore.getState().draftClauses;
+    expect(d.some((c) => [2, 3, 4].includes(c.anchorIndex))).toBe(false);
+  });
+
+  it("idempotent : ré-appliquer le même thème ne pousse pas de snapshot", () => {
+    useWorkspaceStore
+      .getState()
+      .applyBlockOp({ kind: "annotateRange", anchors: [2, 3], theme: "META" });
+    const undoLen = useWorkspaceStore.getState().undoStack.length;
+    useWorkspaceStore
+      .getState()
+      .applyBlockOp({ kind: "annotateRange", anchors: [2, 3], theme: "META" });
+    expect(useWorkspaceStore.getState().undoStack.length).toBe(undoLen);
+  });
+
+  it("ignore les ancres hors bornes [0, nSentences)", () => {
+    useWorkspaceStore
+      .getState()
+      .applyBlockOp({ kind: "annotateRange", anchors: [8, 9, 10, 99], theme: "META" });
+    const d = useWorkspaceStore.getState().draftClauses;
+    expect(d.find((c) => c.anchorIndex === 10)).toBeUndefined();
+    expect(d.find((c) => c.anchorIndex === 99)).toBeUndefined();
+    expect(d.find((c) => c.anchorIndex === 9)?.theme).toBe("META");
+  });
+
+  it("no-op en lecture seule (R1)", () => {
+    useWorkspaceStore.getState().reset();
+    useWorkspaceStore
+      .getState()
+      .init({ annotationId: "a2", nSentences: 10, clauses: baseClauses, readOnly: true });
+    useWorkspaceStore
+      .getState()
+      .applyBlockOp({ kind: "annotateRange", anchors: [2, 3], theme: "META" });
+    expect(useWorkspaceStore.getState().draftClauses).toHaveLength(1);
+  });
+
+  it("équivalence bloc ↔ phrases (B-IAA-1) : même état stocké", () => {
+    useWorkspaceStore
+      .getState()
+      .applyBlockOp({ kind: "annotateRange", anchors: [5, 6, 7], theme: "TERMINATION" });
+    const viaBlock = useWorkspaceStore
+      .getState()
+      .draftClauses.map((c) => ({ a: c.anchorIndex, t: c.theme }))
+      .sort((x, y) => x.a - y.a);
+
+    useWorkspaceStore.getState().reset();
+    useWorkspaceStore
+      .getState()
+      .init({ annotationId: "a1", nSentences: 10, clauses: baseClauses });
+    useWorkspaceStore.getState().setBoundary(5, "TERMINATION");
+    useWorkspaceStore.getState().setBoundary(6, "TERMINATION");
+    useWorkspaceStore.getState().setBoundary(7, "TERMINATION");
+    const viaSentences = useWorkspaceStore
+      .getState()
+      .draftClauses.map((c) => ({ a: c.anchorIndex, t: c.theme }))
+      .sort((x, y) => x.a - y.a);
+
+    expect(viaBlock).toEqual(viaSentences);
+  });
+});

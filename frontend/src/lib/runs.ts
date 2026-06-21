@@ -128,6 +128,26 @@ export function runThemeAt(runs: Run[], index: number): string | null {
   return runAt(runs, index)?.theme ?? null;
 }
 
+/** Segment de réglette (Feature A) : une portion de document d'un modèle, un thème. */
+export interface GutterSegment {
+  /** Phrase de début (porte le marqueur de frontière). */
+  startSentence: number;
+  /** Dernière phrase couverte (inclus). */
+  endSentence: number;
+  themeCode: string;
+}
+
+/**
+ * Projette des runs (forward-fill, spans LLM) en segments de réglette (Feature A).
+ * Exclut les runs neutres ; segments triés/contigus/non chevauchants par construction
+ * (sortie de `computeRuns`). Pur → testable.
+ */
+export function segmentsFromRuns(runs: Run[]): GutterSegment[] {
+  return runs
+    .filter((r) => r.theme != null && r.localId != null)
+    .map((r) => ({ startSentence: r.start, endSentence: r.end, themeCode: r.theme as string }));
+}
+
 /**
  * Thème proposé par un juge LLM pour la phrase `index`, déduit des clauses fantômes.
  * On reconstruit les runs des fantômes du juge puis on lit le thème couvrant l'index.

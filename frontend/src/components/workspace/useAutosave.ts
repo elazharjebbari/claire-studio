@@ -16,6 +16,7 @@ import { useEffect, useRef } from "react";
 import { useWorkspaceStore } from "@/store/workspace";
 import { useAutosaveStore } from "@/store/autosave";
 import { addClause, deleteClause, patchClause } from "@/lib/api/endpoints";
+import { ApiError } from "@/lib/api/client";
 import {
   draftsToPersisted,
   isEmptyPlan,
@@ -56,6 +57,9 @@ export function useAutosave(annotationId: string | null) {
   const timer = useRef<ReturnType<typeof setTimeout> | null>(null);
   const syncing = useRef(false);
   const runRef = useRef<() => void>(() => {});
+  // L0 — erreur TERMINALE (401/403) : on cesse tout réessai pour cette annotation
+  // (évite la tempête réseau). Réarmé à chaque changement d'annotation.
+  const terminal = useRef(false);
 
   // Snapshot de référence pris une fois le store chargé avec les clauses serveur de
   // CETTE annotation — sinon on partirait de [] et tout paraîtrait « à créer ».
@@ -69,12 +73,19 @@ export function useAutosave(annotationId: string | null) {
         useWorkspaceStore.getState().draftClauses,
       );
       initedFor.current = annotationId;
+      terminal.current = false; // nouvelle annotation → on réarme l'autosave.
     }
   }, [annotationId, storeAnnId, drafts]);
 
   // Routine de synchro recréée à chaque rendu (capture fraîche), appelée via ref.
   runRef.current = async () => {
-    if (!annotationId || initedFor.current !== annotationId || syncing.current) return;
+    if (
+      !annotationId ||
+      initedFor.current !== annotationId ||
+      syncing.current ||
+      terminal.current
+    )
+      return;
     if (typeof navigator !== "undefined" && navigator.onLine === false) {
       setSaveState("offline");
       const onOnline = () => {
@@ -133,25 +144,36 @@ export function useAutosave(annotationId: string | null) {
       }
       markSaved();
       markClean();
-    } catch {
-      setSaveState("error");
+    } catch (e) {
+      // L0 — 401/403 = TERMINAL : session expirée ou annotation non possédée. On
+      // cesse tout réessai (sinon tempête réseau, cf. bug 403). 500/réseau restent
+      // réessayables via la convergence ci-dessous.
+      if (e instanceof ApiError && (e.status === 401 || e.status === 403)) {
+        terminal.current = true;
+        setSaveState("unauthorized");
+      } else {
+        setSaveState("error");
+      }
     } finally {
       syncing.current = false;
-      // Convergence : si des modifications sont arrivées pendant la synchro.
-      const remaining = planClauseSync(
-        useWorkspaceStore.getState().draftClauses,
-        persistedRef.current,
-      );
-      if (!isEmptyPlan(remaining)) {
-        if (timer.current) clearTimeout(timer.current);
-        timer.current = setTimeout(() => runRef.current(), DEBOUNCE_MS);
+      // Convergence : si des modifications sont arrivées pendant la synchro — sauf en
+      // état terminal, où l'on ne replanifie jamais.
+      if (!terminal.current) {
+        const remaining = planClauseSync(
+          useWorkspaceStore.getState().draftClauses,
+          persistedRef.current,
+        );
+        if (!isEmptyPlan(remaining)) {
+          if (timer.current) clearTimeout(timer.current);
+          timer.current = setTimeout(() => runRef.current(), DEBOUNCE_MS);
+        }
       }
     }
   };
 
   // Débounce : programme une synchro à chaque changement de brouillon « à sauver ».
   useEffect(() => {
-    if (!annotationId || initedFor.current !== annotationId) return;
+    if (!annotationId || initedFor.current !== annotationId || terminal.current) return;
     if (isEmptyPlan(planClauseSync(drafts, persistedRef.current))) return;
     if (timer.current) clearTimeout(timer.current);
     timer.current = setTimeout(() => runRef.current(), DEBOUNCE_MS);

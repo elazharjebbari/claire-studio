@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { computeRuns, runAt, runThemeAt, type RunAnchor } from "@/lib/runs";
+import { computeRuns, runAt, runThemeAt, segmentsFromRuns, type RunAnchor } from "@/lib/runs";
 
 describe("computeRuns", () => {
   it("préfixe neutre quand la 1re ancre n'est pas en 0", () => {
@@ -107,5 +107,25 @@ describe("runAt / runThemeAt", () => {
     const withPrefix = computeRuns([{ anchorIndex: 2, theme: "X", localId: "a" }], 4);
     expect(runThemeAt(withPrefix, 0)).toBeNull();
     expect(runThemeAt(withPrefix, 2)).toBe("X");
+  });
+});
+
+describe("segmentsFromRuns (réglette Feature A)", () => {
+  it("projette les runs porteurs de thème en segments (exclut les neutres)", () => {
+    const runs = computeRuns(
+      [
+        { anchorIndex: 2, theme: "META", localId: "a" },
+        { anchorIndex: 5, theme: "TERMINATION", localId: "b" },
+      ],
+      8,
+    ); // forward-fill : [0,1] neutre, [2,4] META, [5,7] TERMINATION
+    expect(segmentsFromRuns(runs)).toEqual([
+      { startSentence: 2, endSentence: 4, themeCode: "META" },
+      { startSentence: 5, endSentence: 7, themeCode: "TERMINATION" },
+    ]);
+  });
+
+  it("aucun thème → aucun segment", () => {
+    expect(segmentsFromRuns(computeRuns([], 5))).toEqual([]);
   });
 });

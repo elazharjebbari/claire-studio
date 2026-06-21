@@ -1,0 +1,123 @@
+================================================================================
+ FEATURE A — RÉGLETTE MULTI-PISTES VERTICALE — WIREFRAMES ASCII
+================================================================================
+Légende des glyphes
+  ◷  marqueur de frontière (DÉBUT de segment d'un modèle)  ← forme = info (A8)
+  │  filet de séparation de piste (1px, faible opacité)
+  ░  cellule "corps de segment" teintée (catégorie ON)     ← couleur = redondante
+  ·  cellule neutre (catégorie OFF / hors segment)
+  C  = Claude   Cx = Codex   M = Mistral (futur)
+  ▸  phrase focalisée  ★  abréviation de catégorie (ex. MOD, TER, META)
+
+Note : le gutter vit À DROITE, HORS de la colonne max-w-reading
+       (il n'ampute jamais la largeur de lecture — A5).
+
+
+================================================================================
+ ÉTAT 1 — Catégories OFF (défaut)  ·  Claude + Codex visibles
+================================================================================
+  document-controls (sticky) : [☑ Frontières] [Source▾] [Attribution] [Comparer] [FR▾]
+ ┌──────────────────────────────────────────────────────────┐   ┌───────────┐
+ │                                                          │   │  pistes ▾ │
+ │  10  These Terms constitute the entire agreement …        │   │  C │Cx │  │  ← en-têtes
+ │  11  We may update or modify the Service at any time …     │   ├──┼──┼──┤
+ │ ▸12  The provider may modify these terms without notice.   │   │◷ │· │  │  ← C coupe en 12
+ │  13  Continued use constitutes acceptance of changes.      │   │· │◷ │  │  ← Cx coupe en 13
+ │  14  Users remain responsible for reviewing updates.       │   │· │· │  │
+ │  15  Accounts may be suspended for policy violations.      │   │◷ │◷ │  │  ← accord (même ligne)
+ │  16  We disclaim all warranties to the extent permitted.   │   │· │· │  │
+ │  17  Liability is limited to the fees paid, if any.        │   │◷ │· │  │
+ │  …                                                        │   │· │· │  │
+ └──────────────────────────────────────────────────────────┘   └──┴──┴──┘
+   colonne de lecture (≈70ch, max-w-reading)                    gutter ≈ 52px
+
+ Lecture : 2 colonnes de ◷ alignées. Phrase 15 = ◷ sur LES DEUX pistes → accord
+ immédiat. 12 (C seul) et 13 (Cx seul) → divergence visible par décalage vertical.
+
+
+================================================================================
+ ÉTAT 2 — Catégories ON  ·  teinte + abréviation par segment (A3)
+================================================================================
+                                                                ┌───────────┐
+                                                                │  pistes ▾ │
+   …                                                            │  C │Cx │  │
+ ▸12  The provider may modify these terms without notice.       │◷★│░ │  │  C: ★=MOD (teinté)
+ │     ↳ (FR) Le prestataire peut modifier ces conditions…      │░ │░ │  │  ← cellule = HAUTEUR
+ │         [ligne FR sous la phrase → cellule plus haute]       │░ │◷★│  │  Cx: ★=MOD démarre en 13
+  13  Continued use constitutes acceptance of changes.          │░ │░ │  │
+  14  Users remain responsible for reviewing updates.           │░ │░ │  │
+  15  Accounts may be suspended for policy violations.          │◷★│◷★│  │  C/Cx: ★=TER (accord)
+  16  We disclaim all warranties to the extent permitted.       │░ │░ │  │
+  17  Liability is limited to the fees paid, if any.            │◷★│░ │  │  C: ★=LIM
+                                                                └──┴──┴──┘
+ • ★ (abréviation) + ◷ (forme) + teinte ░ = info TRIPLEMENT redondante → daltonisme OK.
+ • Teinte = getThemeToken(themeCode).color à cell.categoryOpacity ; ★ contrasté
+   via readableTextColor() → AA garanti quelle que soit la couleur.
+ • La ligne FR (P9) augmente la hauteur de phrase 12 → la cellule de réglette
+   s'aligne sur la LIGNE ENTIÈRE (phrase + traduction), pas seulement le VO (A1).
+
+
+================================================================================
+ ÉTAT 3 — TOOLTIP au survol / focus d'une cellule de début (A6)
+================================================================================
+                                                                ┌───────────┐
+                                                                │  C │Cx │  │
+  15  Accounts may be suspended for policy violations.          │◷ │◷ │  │
+                                                  ╭─────────────────────────╮
+                                                  │ Claude                  │  ← modèle
+                                                  │ Résiliation (TER)       │  ← catégorie + abr.
+                                                  │ phrases 15–17           │  ← plage start..end
+                                                  ╰─────────────────────────╯
+                                                       ▲ role="tooltip", ~120ms
+                                                         ouvrable AUSSI au focus clavier
+
+ Clic (ou Entrée/Espace) sur la cellule → focusSentence(15) :
+   scrollIntoView({block:"nearest"}) + surlignage bg-accent/10 de la phrase 15.
+
+
+================================================================================
+ ÉTAT 4 — 3 modèles (Mistral ajouté, A7)  ·  aucune refonte de layout
+================================================================================
+                                                                ┌──────────────┐
+                                                                │  pistes ▾    │
+                                                                │  C │Cx │ M │ │  ← +1 colonne
+                                                                ├──┼──┼──┼─────┤
+ ▸12  The provider may modify these terms without notice.       │◷ │· │◷ │   │  C & M coupent en 12
+  13  Continued use constitutes acceptance of changes.          │· │◷ │· │   │  Cx seul en 13
+  14  Users remain responsible for reviewing updates.           │· │· │· │   │
+  15  Accounts may be suspended for policy violations.          │◷ │◷ │◷ │   │  consensus 3/3
+  …                                                            │· │· │· │   │
+                                                                └──┴──┴──┴───┘
+ grille CSS repeat(N, track) → ajouter un modèle = 1 entrée dans models[].
+ Mistral sans données ⇒ piste GRISÉE + en-tête barré (absence ≠ masquage).
+
+
+================================================================================
+ ÉTAT 5 — Légende / toggles du gutter (repliable, en-tête de la réglette)
+================================================================================
+  ┌────────────────────────────┐
+  │  Pistes                ▾   │
+  │  ────────────────────────  │
+  │  [☑] Claude    C           │
+  │  [☑] Codex     Cx          │
+  │  [☐] Mistral   M  (vide)   │  ← désactivé : pas de données pour ce doc
+  │  ────────────────────────  │
+  │  [☐] Catégories            │  ← gutterShowCategory (OFF par défaut)
+  │  Tout · Aucun              │  ← réglage rapide des pistes
+  └────────────────────────────┘
+  • Toggle GLOBAL = case "Frontières" de document-controls (showBoundaries).
+  • Toggles PAR MODÈLE + Catégories vivent ICI ; persistés (localStorage pactiva.gutter.v1).
+
+
+================================================================================
+ ÉTAT 6 — Repli sous xl (petits écrans) — la lecture prime (A5)
+================================================================================
+  document-controls : … [▥ pistes]                ← mini-déclencheur
+ ┌──────────────────────────────────────────────────────────┐
+ │  12  The provider may modify these terms without notice.   │   (gutter masqué)
+ │  13  Continued use constitutes acceptance of changes.      │
+ │  …                                                        │
+ └──────────────────────────────────────────────────────────┘
+  Clic [▥ pistes] → ouvre la réglette en superposition (drawer) à droite,
+  OU bascule l'affichage selon la largeur. Aucune perte de largeur de lecture.
+================================================================================

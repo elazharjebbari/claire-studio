@@ -1,0 +1,252 @@
+# =============================================================================
+# Feature A — Contrat de DONNÉES (front) de la réglette multi-pistes verticale
+# =============================================================================
+# Décision arrêtée (A-choix.md) : gutter à droite, une piste par modèle, aligné
+# aux phrases, togglable global + par modèle, catégorie optionnelle.
+#
+# RÈGLE D'OR (audit §6, A-specification §0/§8.3) :
+#   AUCUN nouvel endpoint backend, AUCUNE migration de schéma. La réglette est une
+#   PROJECTION VISUELLE de données DÉJÀ chargées et DÉJÀ calculées par DocumentPanel.
+#   Tout ce qui suit est un modèle de données *front* (mémoïsé), dérivé des runs LLM.
+#
+# Wire format API : camelCase (djangorestframework-camel-case). Les types front
+# (contract.ts) sont donc en camelCase : PreClause.themeCode / .anchorIndex, etc.
+# Référence : api-contrat.yaml (04-architecture) — section "FEATURE A".
+# =============================================================================
+
+meta:
+  feature: "A — Réglette multi-pistes verticale (frontières par modèle)"
+  consumedBy: "frontend/src/components/workspace/ModelBoundaryRail.tsx"
+  derivedFrom:
+    - "frontend/src/lib/runs.ts::computeRuns (forward-fill, identique aux runs LLM existants)"
+    - "frontend/src/lib/api/hooks.ts::useLlmAgreement (claudePre / codexPre [+ mistralPre futur])"
+    - "frontend/src/lib/tokens.ts::getThemeToken / readableTextColor (couleurs de catégorie)"
+  noNewEndpoint: true
+  noMigration: true
+  noExtraRecompute: true   # réutilise les mémos claudeRuns/codexRuns de DocumentPanel
+
+# -----------------------------------------------------------------------------
+# 1. SOURCE EXISTANTE (rappel, NON modifiée) — d'où viennent les frontières
+# -----------------------------------------------------------------------------
+# Le backend expose déjà, par juge, des PreClause span-based. La liste des
+# préannotations d'un document inclut chaque juge importé (claude, codex, demain
+# mistral) : aucun champ ni endpoint nouveau (cf. api-contrat.yaml /preannotations).
+source:
+  endpoint: "GET /api/v1/preannotations?project={slug}&document={externalId}[&version=]"
+  statut: existant
+  hook: "usePreAnnotations(projectSlug, documentId, version) → Paginated<PreAnnotation>"
+  preAnnotation:            # === type EXISTANT contract.ts::PreAnnotation (extrait) ===
+    judge: "claude | codex | other | (futur) mistral"   # contract.ts::Judge (TextChoices backend)
+    schemaVersion: string
+    clauses: "PreClause[]"
+  preClause:                # === type EXISTANT contract.ts::PreClause ===
+    anchorIndex: int        # index de la phrase de DÉBUT de segment (start_id)
+    themeCode: string       # code du schéma fermé (clé de getThemeToken)
+    evidenceSpan: "string?"
+    rationale: "string?"
+  note: >
+    PreClause N'A PAS de borne de fin : un segment court de son anchorIndex jusqu'à
+    (anchor suivant − 1), borné à n−1. C'est EXACTEMENT le forward-fill de
+    computeRuns(drafts, n) (mode par défaut, sans perSentence). La réglette ne
+    réinvente rien : elle relit ces mêmes Run.
+
+# -----------------------------------------------------------------------------
+# 2. MODÈLE DE DONNÉES FRONT (ce que ModelBoundaryRail consomme) — DÉRIVÉ, en mémoire
+# -----------------------------------------------------------------------------
+frontModel:
+
+  # 2.1 — Un SEGMENT de réglette = un Run LLM "porteur de thème", reprojeté.
+  #       startSentence/endSentence sortent directement de Run.start / Run.end.
+  GutterSegment:
+    startSentence: int       # = Run.start  (phrase de début, porte le marqueur ◷)
+    endSentence: int         # = Run.end    (dernière phrase couverte, inclusif)
+    themeCode: string        # = Run.theme  (jamais null : runs neutres exclus)
+    # Champs DÉRIVÉS (pas stockés) — calculés au rendu, pour info :
+    derived:
+      color: "getThemeToken(themeCode).color"            # teinte de catégorie (si ON)
+      abbr: "abbrFromThemeCode(themeCode)  // 2–3 lettres, ex. MODIFICATION_OF_TERMS → MOD"
+      label: "getThemeToken(themeCode).label"            # libellé complet (tooltip)
+      textColor: "readableTextColor(color)"              # contraste AA de l'abréviation
+      rangeLabel: "`phrases ${startSentence}–${endSentence}`"   # tooltip ligne 3
+
+  # 2.2 — Une PISTE = un modèle + ses segments + son état de présence.
+  GutterModel:
+    id: string               # identifiant juge : "claude" | "codex" | "mistral" | …
+    label: string            # libellé affiché : "Claude" | "Codex" | "Mistral"
+    initial: string          # en-tête compact : "C" | "Cx" | "M" (aria-label = label)
+    segments: "GutterSegment[]"
+    hasData: bool            # false ⇒ piste GRISÉE (absence ≠ masquage, spéc §4)
+    identityColor: "string?" # couleur d'IDENTITÉ de piste (en-tête), ≠ catégorie
+                             # = gutter.track.identity[i] (A-design-tokens.json)
+
+  # 2.3 — Métriques d'ALIGNEMENT (mesurées, non issues de l'API).
+  #       Garantit que chaque cellule fait la hauteur RÉELLE de sa ligne de phrase
+  #       (la traduction FR per-phrase agrandit la ligne — spéc §3 A1, §6).
+  RowMetrics:
+    tops: "int[]"            # rowTops[i]   = offset Y du haut de la ligne phrase i
+    heights: "int[]"         # rowHeights[i]= hauteur réelle de la ligne phrase i
+    source: "1 seul ResizeObserver sur le conteneur de lecture (pas 1/phrase)"
+    recomputeWhen: [displayLang, translatedSentences, resize]
+
+  # 2.4 — Props du composant (toutes dérivées de l'existant ; cf. spéc §8.1).
+  ModelBoundaryRailProps:
+    models: "GutterModel[]"  # ordonné ; filtré par gutterModels (cf. §4)
+    n: int                   # = nSentences (store)
+    rowMetrics: RowMetrics
+    focused: int             # = focusedSentence (store)
+    showCategory: bool       # = gutterShowCategory (store)
+    onJump: "(sentenceIndex: number) => void"   # = focusSentence (réutilise onJump du ComparePanel)
+
+# -----------------------------------------------------------------------------
+# 3. DÉRIVATION (pur, testable) — runs LLM  →  modèle front
+# -----------------------------------------------------------------------------
+# Aucune nouvelle source : on part des MÊMES runs que DocumentPanel calcule déjà
+# (claudeRuns / codexRuns), eux-mêmes mémoïsés. La réglette ajoute seulement un
+# filtre + map trivial (helper pur, vitest).
+derivation:
+
+  step1_runsByModel:
+    desc: "Runs forward-fill par juge — DÉJÀ présents dans DocumentPanel."
+    code: |
+      // EXISTANT (DocumentPanel.tsx) — ne pas dupliquer, remonter via props/hook :
+      const claudeRuns = useMemo(() => computeRuns(judgeAnchors(llm.claudePre?.clauses), n), [llm.claudePre, n]);
+      const codexRuns  = useMemo(() => computeRuns(judgeAnchors(llm.codexPre?.clauses),  n), [llm.codexPre,  n]);
+      // FUTUR Mistral (A7) — même forme, zéro refonte :
+      // const mistralRuns = useMemo(() => computeRuns(judgeAnchors(llm.mistralPre?.clauses), n), [llm.mistralPre, n]);
+
+  step2_segmentsFromRuns:
+    desc: "Helper PUR (peut vivre dans runs.ts) : Run[] → GutterSegment[]. Filtre les runs neutres."
+    code: |
+      export function segmentsFromRuns(runs: Run[]): GutterSegment[] {
+        return runs
+          .filter((r) => r.theme != null)
+          .map((r) => ({ startSentence: r.start, endSentence: r.end, themeCode: r.theme as string }));
+      }
+    invariants:
+      - "Les runs neutres (theme === null) sont EXCLUS (pas de segment 'vide')."
+      - "Segments triés par startSentence croissant (computeRuns trie déjà les ancres)."
+      - "Non chevauchants et contigus par construction (sortie de computeRuns)."
+      - "Un marqueur ◷ ⇔ une cellule où run.start === sentenceIndex (début de segment)."
+
+  step3_models:
+    desc: "Assemblage ORDONNÉ des pistes + filtre de visibilité (gutterModels)."
+    code: |
+      const models = useMemo<GutterModel[]>(() => ([
+        { id:"claude",  label:"Claude",  initial:"C",  segments: segmentsFromRuns(claudeRuns), hasData: !!llm.claudePre?.clauses?.length },
+        { id:"codex",   label:"Codex",   initial:"Cx", segments: segmentsFromRuns(codexRuns),  hasData: !!llm.codexPre?.clauses?.length  },
+        // { id:"mistral", label:"Mistral", initial:"M", segments: segmentsFromRuns(mistralRuns), hasData: !!llm.mistralPre?.clauses?.length }, // A7
+      ].filter((m) => gutterModels[m.id] !== false)),
+      [claudeRuns, codexRuns, llm, gutterModels]);
+
+  step4_cellState:
+    desc: "État d'une cellule (piste m, phrase i) — pur, dérivé du run couvrant i."
+    rules:
+      - "i hors de tout segment  → NEUTRE (track.neutralFill)"
+      - "segment.startSentence === i  → FRONTIÈRE (marqueur ◷ ; + abréviation si showCategory)"
+      - "segment.startSentence < i <= segment.endSentence  → CORPS (teinte si showCategory, sinon neutre)"
+    note: "Lookup O(1) via runAt(runs, i) si besoin du segment au survol/clic."
+
+# -----------------------------------------------------------------------------
+# 4. ÉTAT D'AFFICHAGE (store Zustand workspace.ts) — AJOUTS MINIMAUX
+# -----------------------------------------------------------------------------
+# Même pattern EXACT que les toggles existants (showBoundaries, showGhostClaude…).
+# Lecture seule : aucun couplage avec draftClauses / autosave (audit §5).
+store:
+  reused:                    # === états/actions DÉJÀ présents, réutilisés tels quels ===
+    showBoundaries: "bool   // toggle MAÎTRE de la réglette (case 'Frontières'). défaut: true"
+    toggleBoundaries: "() => void"
+    focusSentence: "(index:number) => void   // = onJump (clic-centrer)"
+    focusedSentence: "int"
+    nSentences: "int"
+  added:                     # === AJOUTS (2 états + 2 actions) ===
+    gutterModels:
+      type: "Record<string, boolean>"
+      default: "{ claude: true, codex: true }   // mistral: true ajouté avec la piste (A7)"
+      semantics: "false ⇒ piste masquée. Absent/true ⇒ visible. Filtre step3_models."
+    gutterShowCategory:
+      type: bool
+      default: false         # A5 : on ne surcharge pas par défaut (structure pure)
+    toggleGutterModel: "(id: string) => void"
+    toggleGutterCategory: "() => void"
+  persistence:
+    where: "localStorage"
+    key: "pactiva.gutter.v1"
+    fields: [gutterModels, gutterShowCategory]
+    scope: "préférence d'affichage par session/poste — JAMAIS serveur."
+
+# -----------------------------------------------------------------------------
+# 5. INTERACTIONS (contrat comportemental) — survol & clic
+# -----------------------------------------------------------------------------
+interactions:
+  hoverOrFocusCell:          # A6 / A8
+    trigger: "pointerenter OU focus clavier d'une cellule de DÉBUT de segment"
+    delayMs: 120             # = gutter.motion.tooltipDelay
+    emits:
+      tooltip:
+        role: "tooltip"
+        line1: "{model.label}"                         # ex. 'Claude'
+        line2: "{getThemeToken(seg.themeCode).label} ({abbr})"  # ex. 'Résiliation (TER)'
+        line3: "phrases {seg.startSentence}–{seg.endSentence}"
+    reducedMotion: "pas d'animation d'apparition si prefers-reduced-motion"
+  clickCell:                 # A6
+    trigger: "clic / Entrée / Espace sur la cellule (ou son marqueur)"
+    action: "onJump(seg.startSentence)  // = focusSentence → scrollIntoView + surlignage bg-accent/10"
+    sideEffect: "AUCUN (lecture seule : pas de création/édition de clause depuis la réglette)"
+  hitTargetMinPx: 24         # = gutter.track.minHitTarget (tactile / a11y)
+
+# -----------------------------------------------------------------------------
+# 6. EXTENSION MISTRAL / N MODÈLES (A7) — checklist de DONNÉES
+# -----------------------------------------------------------------------------
+extension:
+  mistral:
+    backend:
+      - "imports/models.py::Judge += MISTRAL = 'mistral', 'Mistral'  (TextChoices)"
+      - "loaders.py normalise déjà segments start_id+theme → payload Mistral passe sans code spécifique"
+    api:
+      - "AUCUN endpoint nouveau : /preannotations liste déjà tous les juges importés du document"
+      - "useLlmAgreement expose mistralPre = results.find(p => p.judge === 'mistral')  (même forme que claudePre)"
+    front:
+      - "mistralRuns = computeRuns(judgeAnchors(llm.mistralPre?.clauses), n)  (mémoïsé)"
+      - "1 entrée de plus dans models[] (id/label/initial/segments/hasData)"
+      - "grille CSS repeat(N, track) — AUCUN changement de layout"
+      - "identityColor = gutter.track.identity[2] ; au-delà de la palette → initiale seule"
+  nModels:
+    softMax: 5               # au-delà : mode condensé (track.widthDense) puis orienter vers `compare` pairé
+    invariant: "le contrat ne change pas avec N : models[] est une simple liste ordonnée"
+
+# -----------------------------------------------------------------------------
+# 7. EXEMPLE CONCRET (instance du modèle front, pour fixtures de test / MSW)
+# -----------------------------------------------------------------------------
+# Document de n=18 phrases ; Claude et Codex divergent en 12/13, s'accordent en 15.
+# (Cohérent avec A-wireframes.txt.) Ces objets sont DÉRIVÉS des PreClause MSW.
+example:
+  n: 18
+  models:
+    - id: claude
+      label: Claude
+      initial: C
+      hasData: true
+      identityColor: "#94A3B8"
+      segments:
+        - { startSentence: 12, endSentence: 14, themeCode: MODIFICATION_OF_TERMS }   # ◷ en 12 (MOD)
+        - { startSentence: 15, endSentence: 16, themeCode: TERMINATION }             # ◷ en 15 (TER)
+        - { startSentence: 17, endSentence: 17, themeCode: LIMITATION_OF_LIABILITY } # ◷ en 17 (LIM)
+    - id: codex
+      label: Codex
+      initial: Cx
+      hasData: true
+      identityColor: "#A78BFA"
+      segments:
+        - { startSentence: 13, endSentence: 14, themeCode: MODIFICATION_OF_TERMS }   # ◷ en 13 (MOD)
+        - { startSentence: 15, endSentence: 17, themeCode: TERMINATION }             # ◷ en 15 (TER) → accord ligne 15
+    - id: mistral          # piste sans données pour CE doc → grisée (absence ≠ masquage)
+      label: Mistral
+      initial: M
+      hasData: false
+      identityColor: "#5EEAD4"
+      segments: []
+  expectedTooltipAt:
+    cell: { model: claude, sentence: 15 }
+    line1: "Claude"
+    line2: "Résiliation (TER)"
+    line3: "phrases 15–16"

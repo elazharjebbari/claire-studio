@@ -1,0 +1,113 @@
+@startuml composants
+title Composants frontend — Features A (réglette) & B (phrase/bloc)
+
+skinparam shadowing false
+skinparam defaultFontName "Inter, sans-serif"
+skinparam componentStyle rectangle
+skinparam component {
+  BackgroundColor #FFFFFF
+  BorderColor #0C447C
+  ArrowColor #0C447C
+}
+skinparam package {
+  BackgroundColor #F7F9FC
+  BorderColor #B7C2D4
+}
+skinparam legendBackgroundColor #EEF2F8
+skinparam legendBorderColor #0C447C
+
+legend top
+  <b>Légende</b>
+  | <back:#FFFFFF> existant </back> | composant déjà en place |
+  | <back:#FCEFD6> NOUVEAU </back> | ajout requis par A ou B |
+endlegend
+
+package "Composants workspace" {
+  [DocumentPanel.tsx] as DP
+  [SentenceMenu.tsx] as SM
+  [SelectionToolbar.tsx] as STB
+  [InspectorPanel.tsx] as INSP
+  [ComparePanel.tsx] as CP
+  [BoundaryEvidence.tsx] as BE
+
+  component "ModelBoundaryRail.tsx\n(réglette Feature A)" as RAIL #FCEFD6
+  component "BlockHandlesLayer.tsx\n(poignées de bloc, B4)" as BHL #FCEFD6
+}
+
+package "Hooks d'interaction" {
+  [useBlockDragSelect.ts\n(right-drag, P8)] as UBD
+  [useLongPress.ts] as ULP
+  [useShortcuts.ts] as USH
+  [useAutosave.ts] as UAS
+  component "useRangeAnnotate.ts\n(glisser gauche, B2)" as URA #FCEFD6
+}
+
+package "Logique pure (lib)" {
+  [lib/runs.ts\n(computeRuns, runAt,\nclauseRangeBetween)] as RUNS
+  [lib/tokens.ts\n(getThemeToken,\nreadableTextColor)] as TOK
+  [lib/autosave.ts\n(planClauseSync)] as PLAN
+  component "lib/blocks.ts\n(deriveBlocks, blockAt)" as BLK #FCEFD6
+  component "lib/runs.ts::segmentsFromRuns\n(helper rail, optionnel)" as SEG #FCEFD6
+}
+
+package "État & données" {
+  database "store/workspace.ts\n(draftClauses, sélection,\ngutterModels, applyBlockOp*)" as STORE
+  [React Query\n(useLlmAgreement)] as RQ
+}
+
+cloud "Backend DRF (/api/v1)\nClause / PreClause" as API
+
+' ── DocumentPanel : orchestrateur ──
+DP --> RUNS : computeRuns(perSentence) [humain]
+DP --> RUNS : computeRuns(forward-fill) [juges]
+DP --> BLK  : deriveBlocks(humanRuns)
+DP --> RAIL : props {models, rowMetrics, onJump}
+DP --> CP
+DP --> SM
+DP --> STB
+DP --> BHL
+DP --> TOK
+DP ..> RQ : claudePre / codexPre (+mistralPre)
+
+' ── Feature A : réglette ──
+RAIL --> RUNS : segments via runs des juges
+RAIL --> SEG  : segmentsFromRuns(runs)
+RAIL --> TOK  : getThemeToken(code).color\nreadableTextColor (AA)
+RAIL --> STORE : focusSentence (clic = centrer)\ngutterModels / gutterShowCategory
+RAIL ..> RQ : (données dérivées, pas de nouvel endpoint)
+
+' ── Feature B : phrase / bloc ──
+BLK --> RUNS : consomme Run[]
+BHL --> BLK  : blockAt(blocks, i)
+BHL --> STORE : applyBlockOp(extend/shrink)
+URA --> STORE : selectRange → applyBlockOp(annotateRange)
+DP --> URA
+SM --> STORE : toggleBoundary (override B3 / désannoter B6)
+STB --> STORE : applyBlockOp(annotateRange / clearBlock)
+INSP --> STORE : updateDraft / setCertainty
+
+' ── Hooks existants ──
+SM <-- ULP : long-press / clic-droit
+DP --> UBD : right-drag (sélection multi-blocs)
+USH --> STORE : undo / redo
+DP --> USH
+
+' ── Persistance ──
+STORE --> UAS : abonnement draftClauses
+UAS --> PLAN : diff par ancre
+UAS --> API : POST/PATCH/DELETE clauses (idempotent)
+PLAN ..> STORE : (lecture des drafts)
+
+note bottom of STORE
+  * applyBlockOp = SEUL ajout requis au store par B :
+    1 pushUndo + 1 set() + 1 actionLog pour tout le lot.
+  gutterModels / gutterShowCategory = ajouts pour A
+  (mêmes patterns que showBoundaries / showGhost*).
+end note
+
+note bottom of API
+  Réutilise add_clause + ClauseViewSet (PATCH/DELETE).
+  Aucun endpoint nouveau ; aucune migration.
+end note
+
+@enduml

@@ -8,7 +8,18 @@
 
 import { create } from "zustand";
 
-export type SaveState = "idle" | "saving" | "saved" | "offline" | "error";
+/**
+ * États d'enregistrement. `unauthorized` est TERMINAL (L0) : 401/403 = session
+ * expirée ou annotation non possédée — on N'EFFECTUE PAS de réessai (sinon tempête
+ * réseau, cf. bug 403). `error` reste réessayable (transitoire : 500/réseau).
+ */
+export type SaveState =
+  | "idle"
+  | "saving"
+  | "saved"
+  | "offline"
+  | "error"
+  | "unauthorized";
 
 interface AutosaveState {
   saveState: SaveState;

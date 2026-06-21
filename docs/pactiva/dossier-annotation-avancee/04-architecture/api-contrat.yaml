@@ -1,0 +1,355 @@
+openapi: 3.1.0
+info:
+  title: Pactiva — Contrat API (Features A & B)
+  version: "1.0.0"
+  description: >
+    Contrat des endpoints concernés par la réglette multi-pistes (A) et l'annotation
+    hybride phrase/bloc (B). RÈGLE D'OR : A & B sont livrables avec ZÉRO endpoint
+    nouveau OBLIGATOIRE et ZÉRO migration. Chaque opération est marquée x-statut :
+    "existant" (réutilisé tel quel) ou "proposé" (ajout MINEUR, OPTIONNEL, différable).
+    A relit des préannotations LLM ; B écrit via les endpoints clause existants.
+    Wire format camelCase (djangorestframework-camel-case) ; corps de requête écrits ici
+    en snake_case = ce que le serializer attend après dé-camelisation. Auth : Bearer JWT.
+
+servers:
+  - url: /api/v1
+    description: Préfixe monté par config/api_urls.py (DefaultRouter trailing_slash=False)
+
+security:
+  - bearerAuth: []
+
+tags:
+  - name: preannotations
+    description: Sources LLM (Feature A) — LECTURE seule, dérivée des PreClause existantes.
+  - name: clauses
+    description: Écriture par phrase (Feature B) — réutilisée telle quelle pour les blocs.
+  - name: annotations
+    description: Conteneur d'annotation (propriétaire) + action de création de clause.
+
+paths:
+
+  # ─────────────────────────────────────────────────────────────────────────
+  # FEATURE A — sources des pistes (réglette). AUCUN endpoint nouveau.
+  # ─────────────────────────────────────────────────────────────────────────
+
+  /preannotations:
+    get:
+      tags: [preannotations]
+      operationId: listPreAnnotations
+      x-statut: existant
+      x-feature: A
+      x-impl: backend/claire/imports/views.py::PreAnnotationViewSet (IsAdminRole)
+      summary: Liste les préannotations LLM (une piste = un juge), filtrable.
+      description: >
+        La réglette dérive ses pistes des PreClause de chaque juge. Aucune création
+        ni champ nouveau. Pour Mistral : aucun changement ici — il apparaît dès qu'il
+        est importé (judge=mistral, après ajout du membre Judge.MISTRAL).
+      parameters:
+        - { name: project,  in: query, schema: { type: string }, description: "slug ou pk" }
+        - { name: document, in: query, schema: { type: string }, description: "external_id ou pk" }
+        - { name: judge,    in: query, schema: { $ref: '#/components/schemas/Judge' } }
+        - { name: version,  in: query, schema: { type: string }, description: "schema_version, ex. v9.2" }
+      responses:
+        "200":
+          description: Page de préannotations.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedPreAnnotation'
+
+  /documents/{documentId}/annotation-versions:
+    get:
+      tags: [preannotations]
+      operationId: getAnnotationVersions
+      x-statut: existant
+      x-feature: A
+      x-impl: backend/claire/corpora/views.py::DocumentViewSet.annotation_versions
+      summary: Versions LLM disponibles pour un document (sélecteur de version du rail).
+      parameters:
+        - { name: documentId, in: path, required: true, schema: { type: string } }
+      responses:
+        "200":
+          description: Liste des versions + lignes (version, judge, nClauses).
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AnnotationVersionsResponse'
+
+  /projects/{slug}/preannotations/import:
+    post:
+      tags: [preannotations]
+      operationId: importPreAnnotations
+      x-statut: existant
+      x-feature: A
+      x-impl: backend/claire/projects/views.py::ProjectViewSet.import_preannotations (IsAdminRole)
+      summary: Importe/réimporte une préannotation LLM (idempotent par schema_version).
+      description: >
+        Agnostique au juge : un payload Mistral au format v9.2/v9.4 passe sans code
+        spécifique (loaders normalisent start_id/anchor_id → anchor_index). Admin only.
+      parameters:
+        - { name: slug, in: path, required: true, schema: { type: string } }
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PreAnnotationImport'
+      responses:
+        "201": { description: Préannotation(s) ingérée(s). }
+
+  # ─────────────────────────────────────────────────────────────────────────
+  # FEATURE B — écriture par phrase (les "blocs" se stockent en clauses-phrase).
+  # AUCUN champ end_index / block_id. AUCUN objet bloc.
+  # ─────────────────────────────────────────────────────────────────────────
+
+  /annotations/{annotationId}/clauses:
+    post:
+      tags: [clauses]
+      operationId: addClause
+      x-statut: existant
+      x-feature: B
+      x-impl: backend/claire/annotations/views.py::AnnotationViewSet.add_clause (IsAnnotationOwner)
+      summary: Crée UNE clause (= une phrase). Réutilisé pour chaque phrase d'un bloc.
+      description: >
+        Un geste "annoter une plage de p phrases" devient p appels (séquencés par
+        useAutosave après débounce). INV-2 vérifié (une clause-start par phrase).
+        Idempotent via client_op_id (= localId front) : un retry renvoie la clause
+        existante (200) au lieu de dupliquer.
+      parameters:
+        - { name: annotationId, in: path, required: true, schema: { type: string } }
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ClauseCreate'
+      responses:
+        "201": { description: Clause créée., content: { application/json: { schema: { $ref: '#/components/schemas/Clause' } } } }
+        "200": { description: Idempotence — clause déjà créée pour ce client_op_id., content: { application/json: { schema: { $ref: '#/components/schemas/Clause' } } } }
+        "403": { description: Non-propriétaire (IsAnnotationOwner) — R1 opposable serveur. }
+        "409": { description: "Conflict — une clause démarre déjà sur cette phrase (INV-2)." }
+
+  /clauses/{clauseId}:
+    patch:
+      tags: [clauses]
+      operationId: patchClause
+      x-statut: existant
+      x-feature: B
+      x-impl: backend/claire/annotations/views.py::ClauseViewSet.partial_update (IsAnnotationOwner)
+      summary: Modifie une clause (re-thématisation d'une phrase d'un bloc → split dérivé).
+      parameters:
+        - { name: clauseId, in: path, required: true, schema: { type: string } }
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ClausePatch'
+      responses:
+        "200": { description: Clause modifiée., content: { application/json: { schema: { $ref: '#/components/schemas/Clause' } } } }
+        "403": { description: Non-propriétaire. }
+        "409": { description: "Conflict — INV-2 sur la nouvelle ancre." }
+    delete:
+      tags: [clauses]
+      operationId: deleteClause
+      x-statut: existant
+      x-feature: B
+      x-impl: backend/claire/annotations/views.py::ClauseViewSet.destroy (IsAnnotationOwner)
+      summary: Supprime une clause (désannoter une phrase / réduire ou vider un bloc).
+      parameters:
+        - { name: clauseId, in: path, required: true, schema: { type: string } }
+      responses:
+        "204": { description: Supprimée. }
+        "403": { description: Non-propriétaire. }
+
+  /annotations/{annotationId}/iaa-vector:
+    get:
+      tags: [annotations]
+      operationId: getThemeVector
+      x-statut: proposé
+      x-optionnel: true
+      x-feature: B
+      x-justification: >
+        NON requis pour A ni B. Pratique pour un test d'innocuité IAA côté front
+        (vérifier que "plage via bloc" == "N clics phrase" donne le même vecteur).
+        N'écrit rien ; expose _theme_vector déjà calculé par projects/iaa.py.
+      summary: "[PROPOSÉ] Vecteur de thèmes par phrase (debug/équivalence IAA)."
+      parameters:
+        - { name: annotationId, in: path, required: true, schema: { type: string } }
+      responses:
+        "200":
+          description: Vecteur (None = phrase non annotée).
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  nSentences: { type: integer }
+                  themes:
+                    type: array
+                    items: { type: [string, "null"] }
+
+  /annotations/{annotationId}/clauses/batch:
+    post:
+      tags: [clauses]
+      operationId: addClausesBatch
+      x-statut: proposé
+      x-optionnel: true
+      x-feature: B
+      x-justification: >
+        NON requis : le débounce + l'idempotence absorbent déjà un lot de plage. À
+        n'introduire QUE si un bench montre un goulot réseau sur de très grandes plages.
+        Mêmes contrôles que add_clause en boucle serveur (INV-2, IsAnnotationOwner,
+        client_op_id par item) — ZÉRO migration, ZÉRO permission nouvelle.
+      summary: "[PROPOSÉ] Crée/maj plusieurs clauses en un appel (perf grandes plages)."
+      parameters:
+        - { name: annotationId, in: path, required: true, schema: { type: string } }
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [items]
+              properties:
+                items:
+                  type: array
+                  items: { $ref: '#/components/schemas/ClauseCreate' }
+      responses:
+        "200":
+          description: Résultat par item (créé / existant / conflit).
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  results:
+                    type: array
+                    items: { $ref: '#/components/schemas/Clause' }
+
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+
+  schemas:
+
+    Judge:
+      type: string
+      description: "TextChoices (imports/models.py). +mistral = additif (1 membre, sans migration structurelle)."
+      enum: [claude, codex, other, mistral]
+
+    Certainty:
+      type: [integer, "null"]
+      enum: [0, 1, 2, 3, null]
+
+    # ── Feature B : clause par phrase (camelCase en sortie ; corps en snake_case) ──
+    Clause:
+      type: object
+      description: "Sortie ClauseSerializer.to_representation (camelCasée sur le fil)."
+      properties:
+        id: { type: string }
+        annotationId: { type: string }
+        anchorIndex: { type: integer, description: "DÉRIVÉ de anchor_sentence.index — pas un champ modèle." }
+        theme: { type: string, description: "code de thème" }
+        legalNature: { type: [string, "null"] }
+        evidenceSpan: { type: string }
+        rationale: { type: string }
+        certainty: { $ref: '#/components/schemas/Certainty' }
+        order: { type: integer }
+        seededFrom: { type: [string, "null"] }
+      required: [id, annotationId, anchorIndex, theme, order]
+
+    ClauseCreate:
+      type: object
+      required: [anchor_index, theme]
+      properties:
+        anchor_index: { type: integer }
+        theme: { type: string, description: "code (résolu en Theme par le serializer)" }
+        legal_nature: { type: [string, "null"] }
+        evidence_span: { type: string, default: "" }
+        rationale: { type: string, default: "" }
+        certainty: { $ref: '#/components/schemas/Certainty' }
+        client_op_id:
+          type: string
+          description: "= localId front. Idempotence : un retry renvoie la clause existante (200)."
+
+    ClausePatch:
+      type: object
+      properties:
+        theme: { type: string }
+        legal_nature: { type: [string, "null"] }
+        evidence_span: { type: string }
+        rationale: { type: string }
+        certainty: { $ref: '#/components/schemas/Certainty' }
+
+    # ── Feature A : sources LLM ──
+    PreClause:
+      type: object
+      properties:
+        anchorIndex: { type: integer }
+        themeCode: { type: string }
+        evidenceSpan: { type: string }
+        rationale: { type: string }
+      required: [anchorIndex, themeCode]
+
+    PreAnnotation:
+      type: object
+      properties:
+        id: { type: string }
+        projectSlug: { type: string }
+        documentId: { type: string }
+        judge: { $ref: '#/components/schemas/Judge' }
+        schemaVersion: { type: string }
+        mapped: { type: boolean }
+        importedAt: { type: string, format: date-time }
+        clauses:
+          type: array
+          items: { $ref: '#/components/schemas/PreClause' }
+        rationaleGlobal: { type: [string, "null"] }
+        estimatedNBlocks: { type: [integer, "null"] }
+      required: [id, judge, schemaVersion, clauses]
+
+    PaginatedPreAnnotation:
+      type: object
+      properties:
+        count: { type: integer }
+        next: { type: [string, "null"] }
+        previous: { type: [string, "null"] }
+        results:
+          type: array
+          items: { $ref: '#/components/schemas/PreAnnotation' }
+
+    AnnotationVersionsResponse:
+      type: object
+      properties:
+        versions:
+          type: array
+          items: { type: string }
+        count: { type: integer }
+        results:
+          type: array
+          items:
+            type: object
+            properties:
+              version: { type: string }
+              judge: { $ref: '#/components/schemas/Judge' }
+              nClauses: { type: integer }
+
+    PreAnnotationImport:
+      type: object
+      description: "Soit un objet unique, soit un lot sous 'items'."
+      properties:
+        document: { type: string, description: "external_id" }
+        judge: { $ref: '#/components/schemas/Judge' }
+        raw: { type: object, description: "payload brut v9.2/v9.4 (loaders normalisent)" }
+        items:
+          type: array
+          items:
+            type: object
+            properties:
+              document: { type: string }
+              judge: { $ref: '#/components/schemas/Judge' }
+              raw: { type: object }
