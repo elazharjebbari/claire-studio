@@ -78,7 +78,9 @@ class AssignmentSerializer(serializers.ModelSerializer):
 
 class ProjectMembershipSerializer(serializers.ModelSerializer):
     user_id = serializers.PrimaryKeyRelatedField(source="user", read_only=True)
+    username = serializers.CharField(source="user.username", read_only=True)
+    display_name = serializers.CharField(source="user.display_name", read_only=True)
 
     class Meta:
         model = ProjectMembership
-        fields = ["id", "user_id", "role", "joined_at"]
+        fields = ["id", "user_id", "username", "display_name", "role", "joined_at"]

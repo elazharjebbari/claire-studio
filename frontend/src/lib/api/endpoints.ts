@@ -7,8 +7,10 @@ import { apiFetch, tokenStore } from "./client";
 import type {
   Annotation,
   ActivityEvent,
+  AnnotatorProgress,
   Assignment,
   AuthTokens,
+  ProjectMember,
   Clause,
   Comment,
   Corpus,
@@ -168,6 +170,62 @@ export function listAssignments(slug: string): Promise<Paginated<Assignment>> {
 
 export function getProjectProgress(slug: string): Promise<ProjectProgress> {
   return apiFetch<ProjectProgress>(`/projects/${slug}/progress`);
+}
+
+// ── Gestion de campagne (admin) : assignations & membres ───────────────────────
+
+export function createAssignment(
+  slug: string,
+  document: string,
+  assignee: string,
+): Promise<Assignment> {
+  return apiFetch<Assignment>(`/projects/${slug}/assignments`, {
+    method: "POST",
+    body: { document, assignee },
+  });
+}
+
+export function deleteAssignment(slug: string, assignmentId: string): Promise<void> {
+  return apiFetch<void>(`/projects/${slug}/assignments/${assignmentId}`, {
+    method: "DELETE",
+  });
+}
+
+export function bulkAssign(
+  slug: string,
+  payload: { documents?: string[] | "all"; assignees?: string[]; overlap?: number },
+): Promise<{ created: number; requested: number }> {
+  return apiFetch(`/projects/${slug}/assignments/bulk`, {
+    method: "POST",
+    body: payload,
+  });
+}
+
+export function listMembers(slug: string): Promise<Paginated<ProjectMember>> {
+  return apiFetch<Paginated<ProjectMember>>(`/projects/${slug}/members`);
+}
+
+export function addMember(
+  slug: string,
+  user: string,
+  role?: string,
+): Promise<ProjectMember> {
+  return apiFetch<ProjectMember>(`/projects/${slug}/members`, {
+    method: "POST",
+    body: { user, role },
+  });
+}
+
+export function removeMember(slug: string, userId: string): Promise<void> {
+  return apiFetch<void>(`/projects/${slug}/members/${userId}`, { method: "DELETE" });
+}
+
+export function getAnnotatorsProgress(
+  slug: string,
+): Promise<Paginated<AnnotatorProgress>> {
+  return apiFetch<Paginated<AnnotatorProgress>>(
+    `/projects/${slug}/annotators-progress`,
+  );
 }
 
 // ── Annotations & clauses ─────────────────────────────────────────────────────

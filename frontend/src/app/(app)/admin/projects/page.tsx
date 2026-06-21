@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import Link from "next/link";
 import { useProjects } from "@/lib/api/hooks";
 import { setProjectVisibility } from "@/lib/api/endpoints";
 import { AdminScaffold } from "@/components/admin/AdminTable";
@@ -30,7 +31,14 @@ export default function AdminProjects() {
       description="Corpus + LabelScheme + membres. Publication des résultats en lecture seule publique."
       columns={["Nom", "Corpus", "Schéma", "Statut", "Publication"]}
       rows={(data?.results ?? []).map((p) => [
-        p.name,
+        <Link
+          key="n"
+          href={`/admin/projects/${p.slug}`}
+          data-testid={`campaign-${p.slug}`}
+          className="font-medium text-accent hover:underline"
+        >
+          {p.name}
+        </Link>,
         p.corpusSlug,
         p.schemeSlug,
         <StatusPill key="s" status={p.status} />,

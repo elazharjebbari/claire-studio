@@ -6,6 +6,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import {
   Home,
+  ListChecks,
   LayoutDashboard,
   FileText,
   FolderKanban,
@@ -39,7 +40,10 @@ interface NavItem {
 // Plus de slug en dur (H2) : les liens propres au projet n'apparaissent que si un
 // projet courant est résolu ; sinon la nav reste générique (projets, comparer…).
 function projectNav(slug: string | undefined): NavItem[] {
-  const items: NavItem[] = [{ href: "/home", label: "Accueil", icon: Home }];
+  const items: NavItem[] = [
+    { href: "/home", label: "Accueil", icon: Home },
+    { href: "/work", label: "Mes annotations", icon: ListChecks },
+  ];
   if (slug) {
     items.push({ href: `/projects/${slug}`, label: "Tableau de bord", icon: LayoutDashboard });
     items.push({ href: `/projects/${slug}/docs`, label: "Documents", icon: FileText });

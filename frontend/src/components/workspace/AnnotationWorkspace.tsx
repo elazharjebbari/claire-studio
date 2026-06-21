@@ -7,7 +7,8 @@
  */
 
 import { useCallback, useEffect, useRef, useState } from "react";
-import { useAnnotation, useDocument, useProject, useScheme } from "@/lib/api/hooks";
+import { Pencil, Eye } from "lucide-react";
+import { useAnnotation, useDocument, useProject, useScheme, useMe } from "@/lib/api/hooks";
 import { useWorkspaceStore } from "@/store/workspace";
 import { setRuntimeThemes } from "@/lib/tokens";
 import { ResizablePanels } from "./ResizablePanels";
@@ -27,6 +28,9 @@ export function AnnotationWorkspace({ annotationId }: { annotationId: string }) 
   // corpus chargé, quel qu'il soit.
   const { data: project } = useProject(annotation?.projectSlug);
   const { data: scheme } = useScheme(project?.schemeSlug);
+  const { data: me } = useMe();
+  // Désambiguïsation (plan §P7) : MA session (édition) vs annotation d'autrui (lecture).
+  const isMine = !me || !annotation || String(annotation.annotatorId) === String(me.id);
 
   const init = useWorkspaceStore((s) => s.init);
   const reset = useWorkspaceStore((s) => s.reset);
@@ -94,6 +98,22 @@ export function AnnotationWorkspace({ annotationId }: { annotationId: string }) 
         onToggleHistory={() => setShowHistory((v) => !v)}
         onToggleComments={() => setShowComments((v) => !v)}
       />
+      {isMine ? (
+        <div
+          data-testid="session-banner"
+          className="flex h-7 shrink-0 items-center gap-1.5 border-b border-line bg-accent/10 px-3 text-xs font-medium text-ink"
+        >
+          <Pencil size={13} aria-hidden className="text-accent" /> Ma session — édition
+        </div>
+      ) : (
+        <div
+          data-testid="session-banner"
+          className="flex h-7 shrink-0 items-center gap-1.5 border-b border-line bg-warning/10 px-3 text-xs font-medium text-ink"
+        >
+          <Eye size={13} aria-hidden className="text-warning" /> Lecture seule — annotation
+          d'un autre annotateur (non modifiable)
+        </div>
+      )}
       <div className="flex min-h-0 flex-1">
         <div className="min-w-0 flex-1">
         <ResizablePanels

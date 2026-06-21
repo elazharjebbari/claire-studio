@@ -1,3 +1,5 @@
+from django.contrib.auth import get_user_model
+from django.db import transaction
 from django.shortcuts import get_object_or_404
 from rest_framework import status, viewsets
 from rest_framework.decorators import action
@@ -9,8 +11,18 @@ from claire.common.pagination import results_envelope
 from claire.common.permissions import IsAdminRole
 
 from .iaa import project_iaa, project_iaa_detail
-from .models import Project, ProjectVisibility
-from .serializers import AssignmentSerializer, ProjectSerializer
+from .models import (
+    Assignment,
+    MembershipRole,
+    Project,
+    ProjectMembership,
+    ProjectVisibility,
+)
+from .serializers import (
+    AssignmentSerializer,
+    ProjectMembershipSerializer,
+    ProjectSerializer,
+)
 
 
 class ProjectViewSet(viewsets.ModelViewSet):
@@ -32,9 +44,29 @@ class ProjectViewSet(viewsets.ModelViewSet):
         # Members see their projects.
         return qs.filter(memberships__user=user).distinct()
 
-    @action(detail=True, methods=["get"])
+    @action(detail=True, methods=["get", "post"])
     def assignments(self, request, slug=None):
         project = self.get_object()
+        if request.method == "POST":
+            if not request.user.is_admin_role:
+                return Response(
+                    {"detail": "Réservé aux administrateurs."},
+                    status=status.HTTP_403_FORBIDDEN,
+                )
+            from claire.corpora.models import Document
+
+            User = get_user_model()
+            document = get_object_or_404(
+                Document, external_id=request.data.get("document"), corpus=project.corpus
+            )
+            assignee = get_object_or_404(User, pk=request.data.get("assignee"))
+            obj, created = Assignment.objects.get_or_create(
+                project=project, document=document, assignee=assignee
+            )
+            return Response(
+                AssignmentSerializer(obj, context={"request": request}).data,
+                status=status.HTTP_201_CREATED if created else status.HTTP_200_OK,
+            )
         qs = project.assignments.select_related(
             "project", "document", "document__corpus", "assignee"
         )
@@ -42,6 +74,155 @@ class ProjectViewSet(viewsets.ModelViewSet):
             qs = qs.filter(assignee=request.user)
         ser = AssignmentSerializer(qs, many=True, context={"request": request})
         return Response(results_envelope(ser.data))
+
+    @action(
+        detail=True, methods=["delete"],
+        url_path=r"assignments/(?P<assignment_id>\d+)",
+        permission_classes=[IsAdminRole],
+    )
+    def delete_assignment(self, request, slug=None, assignment_id=None):
+        project = self.get_object()
+        get_object_or_404(project.assignments, pk=assignment_id).delete()
+        return Response(status=status.HTTP_204_NO_CONTENT)
+
+    @action(
+        detail=True, methods=["post"],
+        url_path="assignments/bulk", permission_classes=[IsAdminRole],
+    )
+    def assignments_bulk(self, request, slug=None):
+        """Assignation en masse. Corps :
+        - {documents: [external_id]|"all", assignees: [user_id]} → produit cartésien
+        - {documents: [...]|"all", overlap: k} → k annotateurs/doc (round-robin équilibré)
+        """
+        from claire.corpora.models import Document
+
+        User = get_user_model()
+        project = self.get_object()
+        docs_param = request.data.get("documents")
+        if docs_param in (None, "all", "*"):
+            docs = list(project.corpus.documents.all().order_by("external_id"))
+        else:
+            docs = list(
+                Document.objects.filter(corpus=project.corpus, external_id__in=docs_param)
+            )
+        assignees_ids = request.data.get("assignees")
+        overlap = request.data.get("overlap")
+        if assignees_ids:
+            assignees = list(User.objects.filter(pk__in=assignees_ids))
+            pairs = [(d, a) for d in docs for a in assignees]
+        elif overlap:
+            members = [
+                m.user
+                for m in project.memberships.filter(role=MembershipRole.ANNOTATOR)
+                .select_related("user")
+                .order_by("user_id")
+            ] or [
+                m.user
+                for m in project.memberships.select_related("user").order_by("user_id")
+            ]
+            if not members:
+                return Response(
+                    {"detail": "Aucun membre annotateur."},
+                    status=status.HTTP_400_BAD_REQUEST,
+                )
+            k = max(1, min(int(overlap), len(members)))
+            pairs = [
+                (d, members[(i + j) % len(members)])
+                for i, d in enumerate(docs)
+                for j in range(k)
+            ]
+        else:
+            return Response(
+                {"detail": "Fournir 'assignees' ou 'overlap'."},
+                status=status.HTTP_400_BAD_REQUEST,
+            )
+        created = 0
+        with transaction.atomic():
+            for d, a in pairs:
+                _, c = Assignment.objects.get_or_create(
+                    project=project, document=d, assignee=a
+                )
+                created += int(c)
+        return Response(
+            {"created": created, "requested": len(pairs)},
+            status=status.HTTP_201_CREATED,
+        )
+
+    @action(detail=True, methods=["get", "post"])
+    def members(self, request, slug=None):
+        project = self.get_object()
+        if request.method == "POST":
+            if not request.user.is_admin_role:
+                return Response(
+                    {"detail": "Réservé aux administrateurs."},
+                    status=status.HTTP_403_FORBIDDEN,
+                )
+            User = get_user_model()
+            ident = (
+                request.data.get("user")
+                or request.data.get("username")
+                or request.data.get("user_id")
+            )
+            user = User.objects.filter(username=ident).first()
+            if user is None and str(ident).isdigit():
+                user = User.objects.filter(pk=int(ident)).first()
+            if user is None:
+                return Response(
+                    {"detail": "Utilisateur introuvable."},
+                    status=status.HTTP_404_NOT_FOUND,
+                )
+            role = request.data.get("role", MembershipRole.ANNOTATOR)
+            m, created = ProjectMembership.objects.get_or_create(
+                project=project, user=user, defaults={"role": role}
+            )
+            if not created and m.role != role:
+                m.role = role
+                m.save(update_fields=["role"])
+            return Response(
+                ProjectMembershipSerializer(m).data,
+                status=status.HTTP_201_CREATED if created else status.HTTP_200_OK,
+            )
+        qs = project.memberships.select_related("user").order_by("user__username")
+        return Response(
+            results_envelope(ProjectMembershipSerializer(qs, many=True).data)
+        )
+
+    @action(
+        detail=True, methods=["delete"],
+        url_path=r"members/(?P<user_id>\d+)", permission_classes=[IsAdminRole],
+    )
+    def delete_member(self, request, slug=None, user_id=None):
+        project = self.get_object()
+        get_object_or_404(project.memberships, user_id=user_id).delete()
+        return Response(status=status.HTTP_204_NO_CONTENT)
+
+    @action(
+        detail=True, methods=["get"],
+        url_path="annotators-progress", permission_classes=[IsAdminRole],
+    )
+    def annotators_progress(self, request, slug=None):
+        """Avancement par annotateur (supervision admin) — assigné / démarré / soumis."""
+        project = self.get_object()
+        submitted = ["submitted", "in_review", "approved"]
+        rows = []
+        for m in project.memberships.select_related("user").order_by("user__username"):
+            u = m.user
+            assigned = project.assignments.filter(assignee=u).count()
+            anns = project.annotations.filter(annotator=u)
+            done = anns.filter(status__in=submitted).count()
+            rows.append(
+                {
+                    "user_id": u.id,
+                    "username": u.username,
+                    "display_name": u.display_name,
+                    "role": m.role,
+                    "assigned": assigned,
+                    "started": anns.count(),
+                    "submitted": done,
+                    "pct": round(100 * done / assigned) if assigned else 0,
+                }
+            )
+        return Response(results_envelope(rows))
 
     @action(detail=True, methods=["get"])
     def progress(self, request, slug=None):

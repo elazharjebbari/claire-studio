@@ -212,6 +212,28 @@ export interface Assignment {
   dueAt?: string;
 }
 
+/** Membre d'une campagne (gestion admin). */
+export interface ProjectMember {
+  id: string;
+  userId: string;
+  username: string;
+  displayName: string;
+  role: "annotator" | "reviewer" | "lead";
+  joinedAt?: string;
+}
+
+/** Avancement d'un annotateur sur une campagne (supervision admin). */
+export interface AnnotatorProgress {
+  userId: string;
+  username: string;
+  displayName: string;
+  role: string;
+  assigned: number;
+  started: number;
+  submitted: number;
+  pct: number;
+}
+
 export interface Clause {
   id: string;
   annotationId: string;

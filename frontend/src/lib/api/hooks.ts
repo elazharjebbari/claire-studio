@@ -31,6 +31,9 @@ export const qk = {
   project: (slug: string) => ["projects", slug] as const,
   assignments: (slug: string) => ["projects", slug, "assignments"] as const,
   progress: (slug: string) => ["projects", slug, "progress"] as const,
+  members: (slug: string) => ["projects", slug, "members"] as const,
+  annotatorsProgress: (slug: string) =>
+    ["projects", slug, "annotators-progress"] as const,
   annotation: (id: string) => ["annotations", id] as const,
   versions: (id: string) => ["annotations", id, "versions"] as const,
   versionDiff: (id: string, to: number, against?: number) =>
@@ -145,6 +148,22 @@ export function useProjectProgress(slug: string | undefined) {
   return useQuery({
     queryKey: qk.progress(slug ?? ""),
     queryFn: () => api.getProjectProgress(slug!),
+    enabled: Boolean(slug),
+  });
+}
+
+export function useMembers(slug: string | undefined) {
+  return useQuery({
+    queryKey: qk.members(slug ?? ""),
+    queryFn: () => api.listMembers(slug!),
+    enabled: Boolean(slug),
+  });
+}
+
+export function useAnnotatorsProgress(slug: string | undefined) {
+  return useQuery({
+    queryKey: qk.annotatorsProgress(slug ?? ""),
+    queryFn: () => api.getAnnotatorsProgress(slug!),
     enabled: Boolean(slug),
   });
 }
