@@ -29,7 +29,8 @@ export default function WorkQueue() {
   const [error, setError] = useState<string | null>(null);
 
   const mine = (assignments?.results ?? []).filter(
-    (a) => !me || a.assigneeId === String(me.id),
+    // L'API peut sérialiser les PK en nombre ; comparer en chaînes des deux côtés.
+    (a) => !me || String(a.assigneeId) === String(me.id),
   );
   const groups: Array<{ key: string; label: string; items: Assignment[] }> = [
     { key: "doing", label: "En cours", items: mine.filter((a) => DOING.includes(a.status)) },
