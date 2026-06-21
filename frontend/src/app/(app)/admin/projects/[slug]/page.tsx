@@ -92,7 +92,7 @@ function AssignTab({
   corpusSlug: string | undefined;
   qc: ReturnType<typeof useQueryClient>;
 }) {
-  const { data: docs } = useCorpusDocuments(corpusSlug ?? "");
+  const { data: docs } = useCorpusDocuments(corpusSlug ?? "", 500);
   const { data: members } = useMembers(slug);
   const { data: assignments } = useAssignments(slug);
   const [busy, setBusy] = useState<string | null>(null);

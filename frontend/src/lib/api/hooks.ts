@@ -64,10 +64,12 @@ export function useCorpora() {
   return useQuery({ queryKey: qk.corpora, queryFn: api.listCorpora });
 }
 
-export function useCorpusDocuments(slug: string) {
+export function useCorpusDocuments(slug: string, pageSize?: number) {
   return useQuery({
-    queryKey: qk.corpusDocs(slug),
-    queryFn: () => api.listCorpusDocuments(slug),
+    queryKey: pageSize
+      ? [...qk.corpusDocs(slug), "ps", pageSize]
+      : qk.corpusDocs(slug),
+    queryFn: () => api.listCorpusDocuments(slug, pageSize),
     enabled: Boolean(slug),
   });
 }

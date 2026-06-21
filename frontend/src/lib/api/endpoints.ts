@@ -104,8 +104,12 @@ export function listCorpora(): Promise<Paginated<Corpus>> {
   return apiFetch<Paginated<Corpus>>("/corpora");
 }
 
-export function listCorpusDocuments(slug: string): Promise<Paginated<DocumentSummary>> {
-  return apiFetch<Paginated<DocumentSummary>>(`/corpora/${slug}/documents`);
+export function listCorpusDocuments(
+  slug: string,
+  pageSize?: number,
+): Promise<Paginated<DocumentSummary>> {
+  const qs = pageSize ? `?page_size=${pageSize}` : "";
+  return apiFetch<Paginated<DocumentSummary>>(`/corpora/${slug}/documents${qs}`);
 }
 
 export function getDocument(id: string): Promise<DocumentDetail> {
