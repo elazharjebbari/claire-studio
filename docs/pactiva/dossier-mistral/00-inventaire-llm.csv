@@ -1,0 +1,75 @@
+couche,fichier,symbole,hardcoded,action,risque
+backend,backend/claire/imports/models.py:12,Judge(TextChoices),"non — CLAUDE/CODEX/MISTRAL/OTHER déjà présents",verifier,faible
+backend,backend/claire/imports/models.py:19,PreAnnotation,"judge dans clé unicité (proj,doc,judge,version)",aucune,faible
+backend,backend/claire/imports/models.py:45,PreClause,"non (anchor_index/theme_code/evidence_span/rationale)",aucune,faible
+backend,backend/claire/imports/migrations/0002_alter_preannotation_judge.py,AlterField judge,"non — migration enum déjà présente",appliquer-via-migrate,faible
+backend,backend/claire/imports/migrations/0001_initial.py:21,choices initiaux,"oui (sans mistral) — historique",ne-pas-editer,faible
+backend,backend/claire/imports/loaders.py:82,normalize_v92,"non — ne lit jamais judge (segments start_id+theme)",aucune,faible
+backend,backend/claire/imports/loaders.py:55,normalize_v94,non,aucune,faible
+backend,backend/claire/imports/loaders.py:22,detect_schema_version,non,aucune,faible
+backend,backend/claire/imports/theme_mapping.py:32,normalize_theme_code,"non (alias de thèmes, pas de juges)",aucune,faible
+backend,backend/claire/imports/services.py:26,ingest_preannotation,"non — idempotent, judge=paramètre",aucune,faible
+backend,backend/claire/imports/serializers.py:14,PreClauseSerializer.get_theme_code,"non — themeCode normalisé en sortie",aucune,faible
+backend,backend/claire/imports/serializers.py:29,PreAnnotationSerializer,"non — judge exposé verbatim",aucune,faible
+backend,backend/claire/imports/views.py:10,PreAnnotationViewSet,"non — filterset_fields=[judge], ?project/?document/?version",aucune,faible
+backend,backend/config/api_urls.py:50,register preannotations,non,aucune,faible
+backend,backend/claire/projects/views.py:290,import_preannotations(action),"non — item[judge]",aucune,faible
+backend,backend/claire/annotations/views.py:112,AnnotationViewSet.create seed,"non — seed=preannotation:<judge> (split :)",aucune,moyen
+backend,backend/claire/corpora/views.py:58,annotation_versions,"non — groupe par judge",aucune,faible
+backend,backend/claire/imports/management/commands/import_preannotations.py:36,--judges default,"non — défaut claude,codex,mistral déjà à jour",verifier,faible
+backend,backend/claire/imports/management/commands/import_preannotations.py:46,--dir default,"chemin data/preannotations (pas settings.PREANNOTATIONS_DIR)",aligner-cosmetique,faible
+backend,backend/claire/imports/management/commands/import_preannotations.py:58,boucle judge/fichier,"non — <root>/<judge>/<ext_id>_<judge>.json",aucune,faible
+backend,backend/claire/corpora/management/commands/feed_db.py:285,_load_preannotations,"oui — liste [(CLAUDE),(CODEX)]",ajouter-mistral,moyen
+backend,backend/claire/corpora/management/commands/feed_db.py:324,_seed_annotations,"oui — Judge.CLAUDE/CODEX",optionnel,faible
+backend,backend/claire/corpora/management/commands/seed_demo.py:226,_load_preannotations sources,"oui — [(CLAUDE),(CODEX)]",optionnel-demo,faible
+backend,backend/fixtures/preannotations_fallback.json,fixture fallback,"oui — claude/codex seulement",optionnel-demo,faible
+backend,backend/claire/imports/management/commands/import_annotations_archive.py:28,FOLDER_RE,"oui — regex (claude|codex|gemini), gemini->other",ajouter-mistral,moyen
+backend,backend/config/settings/base.py:53,PREANNOTATIONS_DIR,"non (juge)",aucune,faible
+backend,.gitignore:51,/data/preannotations/,"— données non versionnées",aucune-rsync,faible
+backend,deploy/push-preannotations.sh,script rsync+import,"défaut projet campagne-pactiva",aucune-mistral-suit,faible
+backend,deploy/deploy-claire.sh:54,script deploy,"— migrate applique 0002",aucune,faible
+backend,backend/tests/test_correctifs.py:12,test_import_preannotations_command,"oui — sous-dir claude/ uniquement",ajouter-cas-mistral,faible
+backend,backend/tests/test_loaders.py,tests loaders/theme,"judge=claude en dur (pas d'exclusivité)",aucune,faible
+backend,backend/tests/test_feed_db.py:69,assert juges seedés,"{claude,codex} <= (sous-ensemble)",aucune,faible
+frontend,frontend/src/types/contract.ts:25,Judge,"oui — claude|codex|other (manque mistral)",ajouter-mistral,faible
+frontend,frontend/src/types/contract.ts:286,PreClause,non,aucune,faible
+frontend,frontend/src/types/contract.ts:293,PreAnnotation,"non — clé judge",aucune,faible
+frontend,frontend/src/lib/llmJudges.ts,JUDGES/JudgeId/judgeLabel/judgeColor,"— fichier à créer (SoT)",creer,faible
+frontend,frontend/src/lib/api/hooks.ts:268,useLlmAgreement,"oui — find(judge===claude|codex), claudePre/codexPre/byIndex",generaliser-preByJudge-garder-compat,eleve
+frontend,frontend/src/lib/llmAgreement.ts:27,AgreementResult/agreement,"pairwise — claudeByIndex/codexByIndex",garder-pairwise-reutiliser-helpers,moyen
+frontend,frontend/src/lib/divergence.ts:23,isDivergent/divergence*,"params claude/codexByIndex (pairwise)",renommer-a-b-cosmetique,faible
+frontend,frontend/src/lib/runs.ts:199,judgeThemeAt,"non — judge:string",aucune,faible
+frontend,frontend/src/store/workspace.ts:16,LlmSource,"oui — human|claude|codex|compare",elargir-human|JudgeId|compare,moyen
+frontend,frontend/src/store/workspace.ts:19,PrefillJudge,"oui — claude|codex|null",elargir-JudgeId|null,faible
+frontend,frontend/src/store/workspace.ts:53,DraftClause.resolvedFrom,"oui — claude|codex|null",elargir-JudgeId|null,faible
+frontend,frontend/src/store/workspace.ts:81,showGhostClaude/showGhostCodex,"oui — 2 booléens",remplacer-ghostJudges[],moyen
+frontend,frontend/src/store/workspace.ts:177,toggleGhost,"oui — branche claude/codex",reecrire-toggleGhostJudge,moyen
+frontend,frontend/src/store/workspace.ts:162,resolveDivergence,"oui — judge:claude|codex",elargir-JudgeId,faible
+frontend,frontend/src/store/ui.ts:20,gutterModels/toggleGutterModel,"non — Record<string,boolean>",aucune-deja-data-driven,faible
+frontend,frontend/src/components/workspace/DocumentPanel.tsx:194,gutterAllModels,"oui — 2 entrées + hex inline #94A3B8/#A78BFA",generaliser-JUDGES.map,eleve
+frontend,frontend/src/components/workspace/DocumentPanel.tsx:102,lecture showGhostClaude/Codex,"oui",lire-ghostJudges,moyen
+frontend,frontend/src/components/workspace/DocumentPanel.tsx:135,claude/codexDetailByAnchor+Runs,"oui — nommés claude/codex",deriver-de-preByJudge,moyen
+frontend,frontend/src/components/workspace/DocumentPanel.tsx:221,source/projection/computeBadge,"oui — ternaires claude/codex (compare pairwise)",lookup-generique-compare-hors-lot,moyen
+frontend,frontend/src/components/workspace/DocumentPanel.tsx:240,adoptAtFocus/raccourcis/voyant,"oui — judge:claude|codex",elargir-JudgeId-judgeLabel,moyen
+frontend,frontend/src/components/workspace/SentenceMenu.tsx:180,JudgeBlock x2,"oui — 2 blocs + judge===claude?Claude:Codex",generaliser-details-record-map,moyen
+frontend,frontend/src/components/workspace/WorkspaceToolbar.tsx:147,PREFILL_OPTIONS,"oui — [null,claude,codex]",generer-depuis-JUDGES,faible
+frontend,frontend/src/components/workspace/WorkspaceToolbar.tsx:280,dialogue prefill,"oui — ternaire claude/codex",judgeLabel,faible
+frontend,frontend/src/components/workspace/LlmSourceSwitch.tsx:19,OPTIONS,"oui — [human,claude,codex,compare]",generer-human+JUDGES+compare,faible
+frontend,frontend/src/components/workspace/ComparePanel.tsx:35,agreementSegments/rails,"oui — labels+props claude/codex (pairwise)",hors-lot-data-driver-labels,faible
+frontend,frontend/src/components/workspace/ModelBoundaryRail.tsx:23,GutterModel/strip/legend,"non — models:GutterModel[] (N-modèles)",aucune-deja-N,faible
+frontend,frontend/src/components/workspace/BoundaryEvidence.tsx:20,preuves frontières,"oui — props claude/codex detail",generaliser-suit-DocumentPanel,faible
+frontend,frontend/src/components/workspace/InspectorJudgeCompare.tsx:17,comparateur inspecteur,"oui — pairwise",hors-lot,faible
+frontend,frontend/src/components/workspace/TocPanel.tsx:93,sommaire fantômes,"oui — libellés+ids claude/codex",iterer-JUDGES,faible
+frontend,frontend/src/components/workspace/useDivergenceShortcuts.ts:7,onAdoptClaude/onAdoptCodex,"oui — callbacks binaires touches 1/2",generique-onAdopt-touches-1..N,moyen
+frontend,frontend/src/app/(app)/compare/page.tsx:24,page compare,"oui — find(judge===claude)+libellés (pairwise)",hors-lot,faible
+frontend,frontend/src/app/(app)/admin/preannotations/page.tsx:18,Badge judge,"non — rend tout juge",aucune,faible
+frontend,frontend/src/lib/tour/workspaceTour.ts:143,sélecteur visite,"oui — toggle-ghost-claude",aligner-si-testid-change,faible
+frontend,frontend/src/app/page.tsx:147,landing marketing,"non — texte Mistral/EuroLLM",aucune,faible
+frontend,frontend/src/mocks/fixtures.ts:272,FIXTURE_PREANNOTATIONS,"oui — 2 entrées claude/codex",ajouter-fixture-mistral,faible
+frontend,frontend/src/mocks/handlers.ts:438,handlers preannotations/import/versions,"non — itère la fixture",aucune,faible
+frontend,frontend/tests/modelBoundaryRail.test.tsx,test réglette,"claude+codex",ajouter-cas-3-pistes,faible
+frontend,frontend/tests/workspaceStore.test.ts,test store,"claude/codex (seed/resolvedFrom)",ajouter-cas-mistral,faible
+frontend,frontend/tests/divergence.test.ts,test divergence,"arrays claude/codex (pairwise)",aucune,faible
+frontend,frontend/tests/workspaceTour.test.ts:41,test visite,"toggle-ghost-claude",aligner-si-testid-change,faible
+frontend,frontend/e2e/prefill.spec.ts,e2e prefill+ghost,"prefill-claude/toggle-ghost-claude",ajouter-spec-mistral,faible
+frontend,frontend/e2e/llm-compare.spec.ts,e2e divergence/compare/boundary,"testids claude/codex (pairwise)",conserver-verifier-non-regression,moyen

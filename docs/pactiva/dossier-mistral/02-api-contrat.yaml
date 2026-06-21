@@ -1,0 +1,182 @@
+# =============================================================================
+# 02 — Contrat d'API : intégration Mistral (3e juge LLM)
+# =============================================================================
+# RÈGLE D'OR : Mistral n'ajoute AUCUN endpoint et AUCUN changement de schéma HTTP.
+# Tous les endpoints ci-dessous EXISTENT déjà et sont AGNOSTIQUES au juge ; ils
+# acceptent/renvoient "mistral" exactement comme "claude"/"codex".
+#
+# Wire format : camelCase (djangorestframework-camel-case). Auth : JWT (sauf /health).
+# "statut: existant"  = présent dans le code, réutilisé tel quel.
+# "statut: proposé"   = ajout PROPOSÉ — UNIQUEMENT côté front (types/SoT), JAMAIS HTTP.
+# Références code = chemin:ligne.
+# =============================================================================
+
+meta:
+  feature: "Mistral — 3e juge LLM"
+  baseUrl: "/api/v1"
+  wireCase: camelCase
+  auth: "JWT (Authorization: Bearer …) sauf /health"
+  invariants:
+    - "Aucun endpoint nouveau pour Mistral."
+    - "Aucune migration de schéma au-delà de Judge.MISTRAL (déjà migré, 0002)."
+    - "themeCode est NORMALISÉ en sortie (PreClauseSerializer.get_theme_code)."
+    - "Idempotence garantie par la clé (project, document, judge, schemaVersion)."
+
+# -----------------------------------------------------------------------------
+# Types de données (wire) — INCHANGÉS, sauf l'enum Judge côté front
+# -----------------------------------------------------------------------------
+types:
+
+  Judge:
+    statut: existant            # backend déjà MISTRAL ; FRONT à élargir
+    backend: "backend/claire/imports/models.py:12-16  → {claude, codex, mistral, other}"
+    frontActuel: "frontend/src/types/contract.ts:25  → 'claude' | 'codex' | 'other'"
+    frontProposé: "'claude' | 'codex' | 'mistral' | 'other'"   # PROPOSÉ (front-only)
+
+  PreClause:
+    statut: existant
+    ref: "frontend/src/types/contract.ts:286-291 ; backend serializers.py:14-26"
+    fields:
+      anchorIndex: int          # = PreClause.anchor_index (= start_id v9.2)
+      themeCode: string         # NORMALISÉ en sortie (vocab fermé)
+      evidenceSpan: "string?"
+      rationale: "string?"
+
+  PreAnnotation:
+    statut: existant
+    ref: "frontend/src/types/contract.ts:293-306 ; backend serializers.py:29-59"
+    fields:
+      id: string
+      projectSlug: string
+      documentId: string
+      judge: Judge              # "mistral" supporté sans changement
+      schemaVersion: string     # ex. "v9.2" (Mistral) / "v9.4" (Claude)
+      clauses: "PreClause[]"
+      importedAt: string
+      mapped: bool
+      rationaleGlobal: "string? | null"
+      estimatedNBlocks: "int? | null"
+
+# -----------------------------------------------------------------------------
+# Endpoints (tous EXISTANTS) — comportement vis-à-vis de Mistral
+# -----------------------------------------------------------------------------
+endpoints:
+
+  listPreannotations:
+    statut: existant
+    ref: "backend/claire/imports/views.py:10-41 ; route api_urls.py:50"
+    method: GET
+    path: /api/v1/preannotations
+    permission: "IsAdminRole"
+    query:
+      project: "slug ou pk (filtre)"
+      document: "pk ou external_id (filtre)"
+      version: "→ schema_version (filtre)"
+      judge: "claude | codex | mistral | other (filterset_fields=['judge'])"
+    response200:
+      shape: "Paginated<PreAnnotation> (ou liste selon paginator global)"
+      exempleMistral:
+        results:
+          - id: "pa_9f2a"
+            projectSlug: "campagne-pactiva"
+            documentId: "doc-fitbit"
+            judge: "mistral"
+            schemaVersion: "v9.2"
+            mapped: true
+            importedAt: "2026-06-21T18:00:00Z"
+            rationaleGlobal: "Découpage thématique du TOS Fitbit."
+            estimatedNBlocks: 12
+            clauses:
+              - { anchorIndex: 0,  themeCode: "META",                  evidenceSpan: "accepting the terms of service", rationale: "Marqueur de titre/introduction" }
+              - { anchorIndex: 15, themeCode: "TERMINATION",           evidenceSpan: "we may terminate…",              rationale: "Résiliation par le service" }
+              - { anchorIndex: 17, themeCode: "LIMITATION_LIABILITY",  evidenceSpan: "to the maximum extent…",         rationale: "Limitation de responsabilité" }
+    casAbsence:
+      desc: "Document SANS Mistral (28/50 docs)."
+      requete: "GET /api/v1/preannotations?project=campagne-pactiva&document=<doc>&judge=mistral"
+      response200: { results: [] }     # liste vide → front rend piste GRISÉE (≠ erreur)
+    frontHook: "useLlmAgreement → preByJudge.mistral = results.find(p => p.judge === 'mistral')"
+
+  importPreannotation:
+    statut: existant
+    ref: "backend/claire/projects/views.py:290-311"
+    method: POST
+    path: /api/v1/projects/{slug}/preannotations/import
+    permission: "IsAdminRole"
+    requestBody:
+      items:
+        - document: "doc-fitbit"
+          judge: "mistral"               # accepté verbatim (pas d'enum HTTP côté action)
+          raw: "<JSON v9.2 brut (document_plan.segments[*])>"
+    response201:
+      desc: "ingest_preannotation idempotent ; re-POST identique = mise à jour, pas de doublon."
+    note: "En PROD on passe surtout par la COMMANDE (cf. import_preannotations) ; cet endpoint reste dispo."
+
+  annotationVersions:
+    statut: existant
+    ref: "backend/claire/corpora/views.py:58-79"
+    method: GET
+    path: /api/v1/documents/{id}/annotation-versions
+    response200:
+      - { version: "v9.4", judge: "claude",  nClauses: 17 }
+      - { version: "v9.2", judge: "codex",   nClauses: 10 }
+      - { version: "v9.2", judge: "mistral", nClauses: 12 }   # apparaît dès l'import
+    frontUsage: "alimente le sélecteur de version (llm-version-select) — Mistral listé automatiquement"
+
+  seedAnnotationFromPreannotation:
+    statut: existant
+    ref: "backend/claire/annotations/views.py:112-143"
+    method: POST
+    path: /api/v1/annotations
+    requestBody:
+      seed: "preannotation:mistral"      # split sur ':' → judge='mistral'
+      document: "doc-fitbit"
+      project: "campagne-pactiva"
+    response201:
+      desc: "Crée une annotation seedée (source=preannotation_seed) à partir des clauses Mistral."
+
+  health:
+    statut: existant
+    ref: "backend/config/api_urls.py:84-104"
+    method: GET
+    path: /api/v1/health
+    auth: "aucune"
+    response200: { status: "ok" }        # utilisé par deploy-claire.sh (rollback si != 200)
+
+# -----------------------------------------------------------------------------
+# Surfaces FRONT proposées (PROPOSÉ — pas d'impact HTTP)
+# -----------------------------------------------------------------------------
+frontProposé:
+  fichierSoT:
+    statut: proposé
+    path: "frontend/src/lib/llmJudges.ts"
+    exporte: "JUDGES[], JudgeId, judgeLabel(), judgeColor(), judgeInitial()"
+  hook:
+    statut: proposé
+    path: "frontend/src/lib/api/hooks.ts::useLlmAgreement"
+    ajoute: "preByJudge: Record<JudgeId, PreAnnotation|undefined>, byIndexByJudge: Record<JudgeId,(string|null)[]>"
+    garde: "claudePre, codexPre, claudeByIndex, codexByIndex, agreementPct, kappa, support (compat)"
+  store:
+    statut: proposé
+    path: "frontend/src/store/workspace.ts"
+    remplace: "showGhostClaude/showGhostCodex → ghostJudges: string[] ; toggleGhost → toggleGhostJudge(id)"
+    elargit: "LlmSource = 'human' | JudgeId | 'compare' ; PrefillJudge = JudgeId | null ; resolvedFrom = JudgeId | null"
+  msw:
+    statut: proposé
+    path: "frontend/src/mocks/fixtures.ts"
+    ajoute: "FIXTURE_PREANNOTATION_MISTRAL (3e entrée judge:'mistral', schemaVersion:'v9.2')"
+    handlersInchangés: "frontend/src/mocks/handlers.ts (itère déjà la fixture array)"
+
+# -----------------------------------------------------------------------------
+# Commande d'import (CLI) — contrat opérationnel (cf. 06-runbook.md)
+# -----------------------------------------------------------------------------
+cli:
+  importPreannotations:
+    statut: existant
+    ref: "backend/claire/imports/management/commands/import_preannotations.py"
+    cmd: "manage.py import_preannotations --project <slug> --judges claude,codex,mistral [--dir <root>]"
+    defaults:
+      judges: "claude,codex,mistral"   # déjà à jour (ligne 36)
+      dir: "<repo>/data/preannotations"
+    layoutAttendu: "<dir>/mistral/<external_id>_mistral.json"
+    idempotent: true
+    sortie: "imported / missing / errors (missing = docs du corpus sans fichier mistral)"

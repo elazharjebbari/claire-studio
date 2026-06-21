@@ -1,0 +1,101 @@
+@startuml 02-composants
+title Mistral (3e juge) — Carte des composants (impact & data-flow)
+
+skinparam shadowing false
+skinparam componentStyle rectangle
+skinparam linetype ortho
+
+legend top
+  Vert  = AJOUTER (nouveau)        Orange = GÉNÉRALISER (data-driven)
+  Bleu  = AGNOSTIQUE / inchangé    Gris   = GELÉ (compare pairwise, hors lot)
+endlegend
+
+package "Données (gitignoré, rsync)" {
+  [data/preannotations/mistral/\n<ext_id>_mistral.json (22)] as MData #LightBlue
+}
+
+package "Backend (agnostique au juge)" {
+  [Judge.MISTRAL\n(models.py:15)] as JudgeEnum #LightBlue
+  [normalize_v92\n(loaders.py)] as Loader #LightBlue
+  [ingest_preannotation\n(services.py, idempotent)] as Ingest #LightBlue
+  [import_preannotations\n(--judges ...,mistral)] as Cmd #LightBlue
+  [PreAnnotationViewSet\nGET /preannotations] as View #LightBlue
+  [PreClauseSerializer\n(themeCode normalisé)] as Ser #LightBlue
+  [feed_db / seed_demo\n(en dur claude/codex)] as Seeders #Orange
+}
+
+package "Frontend — Source unique" {
+  [lib/llmJudges.ts\nJUDGES[] / JudgeId / helpers] as SoT #LightGreen
+  [types/contract.ts\nJudge += 'mistral'] as Contract #Orange
+}
+
+package "Frontend — Données / logique" {
+  [useLlmAgreement\n+ preByJudge / byIndexByJudge] as Hook #Orange
+  [llmAgreement.ts\nthemeByIndex / cohenKappa (réutilisés)\nagreement() = pairwise] as Agree #LightBlue
+  [divergence.ts (pairwise)] as Div #LightGray
+  [store/workspace.ts\nghostJudges[] / LlmSource élargi] as WStore #Orange
+  [store/ui.ts\ngutterModels: Record (déjà N)] as UiStore #LightBlue
+}
+
+package "Frontend — UI atelier" {
+  [DocumentPanel.tsx\ngutterAllModels = JUDGES.map] as Panel #Orange
+  [ModelBoundaryRail.tsx\nmodels[] (DÉJÀ N-modèles)] as Rail #LightBlue
+  [SentenceMenu.tsx\nJudgeBlock x N (map)] as Menu #Orange
+  [WorkspaceToolbar.tsx\nPREFILL_OPTIONS depuis JUDGES] as Toolbar #Orange
+  [LlmSourceSwitch.tsx\nOPTIONS depuis JUDGES] as Switch #Orange
+  [ComparePanel.tsx /\nInspectorJudgeCompare.tsx] as Compare #LightGray
+}
+
+package "Frontend — Mocks / tests" {
+  [mocks/fixtures.ts\nFIXTURE_PREANNOTATION_MISTRAL] as Fixture #LightGreen
+  [mocks/handlers.ts (inchangé)] as Handlers #LightBlue
+}
+
+' ── Flux données backend ──
+MData --> Cmd
+Cmd --> Ingest
+Ingest --> Loader
+Ingest --> JudgeEnum
+View --> Ser
+Cmd ..> View : peuple la DB lue par
+Seeders ..> JudgeEnum : (optionnel) seed local
+
+' ── API -> front ──
+View --> Hook : GET /preannotations (camelCase)
+Fixture ..> Handlers : alimente en mode mock
+Handlers --> Hook
+
+' ── SoT au centre ──
+SoT --> Contract
+SoT --> Hook
+SoT --> Panel
+SoT --> Menu
+SoT --> Toolbar
+SoT --> Switch
+
+' ── Hook -> UI ──
+Hook --> Panel
+Hook ..> Agree : pairwise (compat)
+Panel --> Rail
+Panel --> WStore
+Panel --> UiStore
+Menu --> WStore
+Toolbar --> WStore
+Switch --> WStore
+
+' ── Zone gelée ──
+Agree ..> Compare
+Div ..> Compare
+
+note bottom of Rail
+  Aucun changement structurel :
+  rend N pistes via models[].
+  Mistral = 1 entrée de plus.
+end note
+
+note bottom of Compare
+  GELÉ : reste pairwise claude-vs-codex.
+  N-way = feature séparée (hors lot).
+end note
+
+@enduml

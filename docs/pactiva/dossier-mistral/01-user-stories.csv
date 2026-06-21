@@ -1,0 +1,23 @@
+id,persona,en_tant_que,je_veux,afin_de,priorite,criteres_acceptation,lot
+US-01,annotateur,annotatrice juridique,voir une 3e piste Mistral dans la réglette,comparer les frontières des 3 modèles d'un coup d'œil,Must,"réglette affiche C/Cx/M alignées aux phrases; segments Mistral dérivés des runs",L2
+US-02,annotateur,annotatrice juridique,voir la piste Mistral grisée quand le doc n'a pas d'avis Mistral,ne pas croire à un bug,Must,"piste M grisée + en-tête barré + tooltip 'aucune donnée Mistral' (absence != masquage)",L2
+US-03,annotateur,annotatrice juridique,survoler une cellule Mistral et lire un tooltip,connaître le thème et la plage de phrases,Must,"tooltip 3 lignes: 'Mistral' | '<thème> (<abbr>)' | 'phrases a-b'",L2
+US-04,annotateur,annotatrice juridique,activer/masquer la piste Mistral via la légende,réduire la charge visuelle si besoin,Should,"toggleGutterModel('mistral') masque/affiche; persiste en localStorage",L2
+US-05,annotateur,annotatrice juridique,pré-remplir mon annotation depuis Mistral,gagner du temps puis corriger,Must,"option 'Mistral' dans le prefill; clauses Mistral seedent le brouillon; provenance preannotation:mistral",L3
+US-06,annotateur,annotatrice juridique,afficher le fantôme Mistral,voir les propositions Mistral en filigrane sans les adopter,Must,"ghostJudges contient 'mistral'; cellules fantômes rendues; toggle réversible",L3
+US-07,annotateur,annotatrice juridique,voir l'avis Mistral dans le menu par phrase,décider phrase par phrase,Must,"JudgeBlock Mistral (puce/rationale/evidence) + bouton adopter Mistral",L3
+US-08,annotateur,annotatrice juridique,adopter la proposition Mistral d'une phrase,résoudre une divergence en faveur de Mistral,Should,"resolveDivergence(anchor,'mistral',theme); voyant 'resolu Mistral'",L3
+US-09,annotateur,annotatrice juridique,sélectionner Mistral comme source du document,lire le document tel que découpé par Mistral,Should,"LlmSourceSwitch propose 'Mistral'; runs = mistralRuns",L3
+US-10,annotateur,annotatrice juridique,une couleur d'identité Mistral lisible en daltonisme,distinguer Mistral des thèmes et des autres juges,Must,"identityColor #5EEAD4; info portée aussi par la lettre 'M' (pas couleur seule)",L1
+US-11,lead,lead annotation,importer les 22 JSON Mistral de façon idempotente,obtenir des pré-annotations sans doublon,Must,"import_preannotations --judges ...,mistral cree N preannotations; re-run = 0 doublon",L0
+US-12,lead,lead annotation,que GET /preannotations renvoie Mistral,alimenter le front sans endpoint nouveau,Must,"?judge=mistral renvoie la pré-annotation; camelCase; themeCode normalisé",L0
+US-13,lead,lead annotation,ajouter un futur juge en éditant un seul fichier,éviter un refactor transverse à chaque modèle,Must,"ajout d'une entrée dans lib/llmJudges.ts suffit pour réglette/prefill/switch/menu",L1
+US-14,lead,lead annotation,une suite de tests qui prouve la non-régression claude/codex,livrer sans casser l'existant,Must,"vitest + playwright verts avant/après; E2E llm-compare inchangé",L4
+US-15,lead,lead annotation,des tests dédiés Mistral,verrouiller le comportement du 3e juge,Must,"pytest import mistral idempotent; vitest réglette 3 pistes + ghostJudges; e2e prefill-mistral",L4
+US-16,lead,lead annotation,seeder Mistral en local (feed_db),disposer de Mistral en dev,Should,"feed_db charge data/preannotations/mistral/*; juge mistral présent en base locale",L0
+US-17,lead,lead annotation,que l'import archive reconnaisse mistral,intégrer Mistral aussi via l'archive multi-versions,Could,"FOLDER_RE matche v9_2_session3_mistral; judge=mistral (pas other)",L0
+US-18,ops,lead tech/ops,que la migration s'applique seule au deploy,ne pas faire d'étape manuelle de schéma,Must,"deploy-claire.sh exécute migrate; 0002 appliquée; health 200",L5
+US-19,ops,lead tech/ops,pousser les données Mistral par rsync,livrer les fichiers gitignorés en prod,Must,"push-preannotations.sh rsync data/preannotations/ -> VPS puis import prod",L5
+US-20,ops,lead tech/ops,un smoke prod rapide,vérifier 3 pistes + prefill Mistral + pas de tempête,Must,"smoke: réglette 3 pistes, prefill Mistral, aucun 400, autosave sans boucle",L5
+US-21,ops,lead tech/ops,un rollback automatique si health != 200,protéger la prod,Must,"deploy-claire.sh reset --hard PREV_SHA + rebuild si health KO",L5
+US-22,annotateur,annotatrice juridique,que compare reste inchangé,ne pas perdre mon flux claude-vs-codex actuel,Must,"mode compare toujours pairwise; aucune régression des testids compare-claude/codex",L4

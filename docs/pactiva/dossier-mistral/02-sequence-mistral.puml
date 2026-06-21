@@ -1,0 +1,69 @@
+@startuml 02-sequence-mistral
+title Mistral (3e juge) — Import -> DB -> API -> Réglette / Prefill
+
+skinparam shadowing false
+skinparam sequenceMessageAlign center
+
+actor "Lead / Ops" as Ops
+participant "import_preannotations\n(commande)" as Cmd
+participant "ingest_preannotation\n(services.py)" as Ingest
+participant "loaders.py\n(normalize_v92)" as Loader
+database "DB\nPreAnnotation / PreClause" as DB
+participant "PreAnnotationViewSet\nGET /preannotations" as API
+actor "Annotateur" as User
+participant "useLlmAgreement\n(hooks.ts)" as Hook
+participant "DocumentPanel\ngutterAllModels" as Panel
+participant "ModelBoundaryRail\n(N-modèles)" as Rail
+participant "WorkspaceToolbar\nPREFILL_OPTIONS" as Toolbar
+
+== Phase 1 — Import (idempotent, hors-ligne) ==
+Ops -> Cmd : manage.py import_preannotations\n--project <slug> --judges claude,codex,mistral
+loop pour chaque doc du corpus (50)
+  Cmd -> Cmd : path = <dir>/mistral/<ext_id>_mistral.json
+  alt fichier présent (22 docs)
+    Cmd -> Ingest : ingest_preannotation(doc, "mistral", raw)
+    Ingest -> Loader : detect_schema_version(raw) => "v9.2"
+    Loader -> Loader : normalize_v92(raw)\nsegments(start_id,theme,...) -> pivot
+    Loader --> Ingest : [{anchor_index, theme, evidence_span, rationale, order}]
+    Ingest -> DB : get_or_create PreAnnotation\n(proj,doc,judge="mistral",ver="v9.2")
+    Ingest -> DB : delete+recreate PreClause[*]  (idempotent)
+  else fichier absent (28 docs)
+    Cmd -> Cmd : missing += 1  (aucun écrit)
+  end
+end
+Cmd --> Ops : imported=22 / missing=28 / errors=0
+
+== Phase 2 — Lecture (atelier) ==
+User -> Panel : ouvre un document
+Panel -> Hook : useLlmAgreement(documentId, projectSlug)
+Hook -> API : GET /preannotations?project=&document=
+API -> DB : filter (project, document)  [select_related/prefetch]
+DB --> API : PreAnnotation[claude, codex, (mistral?)]
+API --> Hook : JSON camelCase\n(themeCode NORMALISÉ par serializer)
+Hook -> Hook : preByJudge = {claude, codex, mistral}\n(find p.judge === id, depuis JUDGES)
+Hook --> Panel : preByJudge, byIndexByJudge (+ compat claudePre/codexPre)
+
+Panel -> Panel : runsByJudge[id] = computeRuns(judgeAnchors(preByJudge[id]?.clauses), n)
+Panel -> Panel : gutterAllModels = JUDGES.map(...)  (id/label/initial/identityColor)
+Panel -> Rail : models = gutterVisibleModels (3 pistes)
+
+alt Mistral présent pour ce doc
+  Rail -> User : piste M active (segments alignés aux phrases)
+else Mistral absent
+  Rail -> User : piste M GRISÉE + en-tête barré\n(absence != masquage)
+end
+
+== Phase 3 — Prefill / Fantôme Mistral ==
+User -> Toolbar : choisit prefill "Mistral"\n(PREFILL_OPTIONS générées depuis JUDGES)
+Toolbar -> Hook : preByJudge.mistral.clauses
+Toolbar -> Panel : seedFromPreAnnotation(judge="mistral")\nprovenance = "preannotation:mistral"
+User -> Panel : active fantôme Mistral
+Panel -> Panel : ghostJudges.includes("mistral") ? rendu filigrane
+Panel -> User : propositions Mistral en filigrane
+
+note over Rail, Panel
+  ModelBoundaryRail et store/ui.gutterModels sont DÉJÀ data-driven :
+  aucun changement structurel. Mistral entre par la SoT (lib/llmJudges.ts).
+end note
+
+@enduml
