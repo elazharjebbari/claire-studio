@@ -16,6 +16,11 @@ export interface ThemePaletteProps {
   themeCodes?: string[];
   autoFocus?: boolean;
   /**
+   * Disposition : `list` (par défaut, défilable) ou `grid` (2 colonnes, SANS scroll —
+   * toutes les catégories visibles d'un coup, pour le menu clic-droit, D4).
+   */
+  layout?: "list" | "grid";
+  /**
    * Ref impérative : `.current` est câblé sur une fonction qui focalise le champ
    * de recherche. Permet à un parent (touche `B`, ouverture inspecteur) de donner
    * le focus à la palette sans la remonter.
@@ -23,7 +28,15 @@ export interface ThemePaletteProps {
   focusRef?: React.MutableRefObject<(() => void) | null>;
 }
 
-export function ThemePalette({ value, onChange, themeCodes, autoFocus, focusRef }: ThemePaletteProps) {
+export function ThemePalette({
+  value,
+  onChange,
+  themeCodes,
+  autoFocus,
+  layout = "list",
+  focusRef,
+}: ThemePaletteProps) {
+  const grid = layout === "grid";
   const [query, setQuery] = useState("");
   const [activeIdx, setActiveIdx] = useState(0);
   const inputRef = useRef<HTMLInputElement>(null);
@@ -79,7 +92,11 @@ export function ThemePalette({ value, onChange, themeCodes, autoFocus, focusRef 
       <ul
         role="listbox"
         aria-label="Thèmes de clause"
-        className="max-h-64 overflow-auto rounded-md border border-line"
+        className={cn(
+          "rounded-md border border-line",
+          // grid : 2 colonnes, AUCUN scroll (toutes les catégories visibles, D4).
+          grid ? "grid grid-cols-2 gap-0.5 p-0.5" : "max-h-64 overflow-auto",
+        )}
       >
         {options.map((t, i) => {
           const selected = value === t.code;
@@ -100,6 +117,7 @@ export function ThemePalette({ value, onChange, themeCodes, autoFocus, focusRef 
               onMouseEnter={() => setActiveIdx(i)}
               className={cn(
                 "flex w-full cursor-pointer items-center gap-2 px-2 py-1.5 text-left text-sm transition-colors",
+                grid ? "rounded" : "",
                 i === activeIdx ? "bg-panel-muted" : "hover:bg-panel-muted/60",
                 selected ? "font-semibold" : "",
               )}
@@ -110,7 +128,8 @@ export function ThemePalette({ value, onChange, themeCodes, autoFocus, focusRef 
                 style={{ backgroundColor: t.color }}
               />
               <span className="flex-1 truncate text-ink">{t.label}</span>
-              <span className="font-mono text-[10px] text-ink-muted">{t.code}</span>
+              {/* Code masqué en grille (gain de place pour 2 colonnes sans scroll, D4). */}
+              {!grid && <span className="font-mono text-[10px] text-ink-muted">{t.code}</span>}
               {selected && <span aria-hidden>✓</span>}
             </li>
           );

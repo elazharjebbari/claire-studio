@@ -118,7 +118,7 @@ export function SentenceMenu({
       aria-label={`Annoter la phrase ${sentenceIndex}`}
       tabIndex={-1}
       data-testid="sentence-menu"
-      className="fixed z-50 max-h-[88vh] w-72 overflow-auto rounded-lg border border-line bg-elevated p-3 text-sm text-ink shadow-xl outline-none"
+      className="fixed z-50 max-h-[88vh] w-80 overflow-auto rounded-lg border border-line bg-elevated p-3 text-sm text-ink shadow-xl outline-none"
       style={anchoredStyle}
     >
       <div className="mb-2 flex items-center justify-between">
@@ -140,13 +140,13 @@ export function SentenceMenu({
         <h3 className="text-[11px] font-semibold uppercase text-ink-muted">
           Annoter… {coveringDraft ? "(re-cliquer le thème = retirer)" : "(choisir un thème)"}
         </h3>
-        <div className="max-h-40 overflow-auto">
-          <ThemePalette
-            value={coveringDraft?.theme ?? null}
-            onChange={handleSetTheme}
-            autoFocus={false}
-          />
-        </div>
+        {/* D4 — grille 2 colonnes SANS scroll : toutes les catégories visibles. */}
+        <ThemePalette
+          value={coveringDraft?.theme ?? null}
+          onChange={handleSetTheme}
+          autoFocus={false}
+          layout="grid"
+        />
         <CertaintyPicker
           size="sm"
           value={coveringDraft?.certainty ?? null}

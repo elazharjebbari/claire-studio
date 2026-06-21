@@ -27,7 +27,14 @@ import { useEffect, useMemo, useRef, useState } from "react";
 import type { PreClause, ReferenceLabel, Sentence } from "@/types/contract";
 import { useWorkspaceStore } from "@/store/workspace";
 import { getThemeToken } from "@/lib/tokens";
-import { computeRuns, runAt, segmentsFromRuns, type Run } from "@/lib/runs";
+import {
+  computeRuns,
+  runAt,
+  segmentsFromRuns,
+  nextBoundaryFrom,
+  conflictZones,
+  type Run,
+} from "@/lib/runs";
 import { deriveBlocks, blockAt } from "@/lib/blocks";
 import { ModelBoundaryStrip, ModelBoundaryLegend, type GutterModel } from "./ModelBoundaryRail";
 import { useUiStore } from "@/store/ui";
@@ -45,7 +52,7 @@ import { SentenceMenu, type JudgeDetail } from "./SentenceMenu";
 import { SelectionToolbar } from "./SelectionToolbar";
 import { LangSwitch } from "./LangSwitch";
 import { LlmSourceSwitch } from "./LlmSourceSwitch";
-import { Eye, Users, Columns2, Ghost } from "lucide-react";
+import { Eye, Users, Columns2, Ghost, TextSelect } from "lucide-react";
 import { CollabBar } from "./CollabBar";
 import { DivergenceNav } from "./DivergenceNav";
 import { ComparePanel } from "./ComparePanel";
@@ -148,15 +155,20 @@ export function DocumentPanel({
     () => new Map(drafts.map((d) => [d.anchorIndex, d])),
     [drafts],
   );
-  const ghostByIndex = useMemo(
-    () =>
-      new Map(
-        ghosts
-          .filter((g) => (g.judge === "claude" ? showGhostClaude : showGhostCodex))
-          .map((g) => [g.anchorIndex, g]),
-      ),
-    [ghosts, showGhostClaude, showGhostCodex],
-  );
+  // D5 — regroupement PAR INDEX (tableau) : si Claude ET Codex proposent une frontière
+  // à la même phrase, on les conserve TOUS (l'ancienne Map clée par index n'en gardait
+  // qu'un, le dernier). Chaque juge visible est rendu comme un badge distinct.
+  const ghostByIndex = useMemo(() => {
+    const m = new Map<number, Array<{ judge: string; theme: string }>>();
+    for (const g of ghosts) {
+      const on = g.judge === "claude" ? showGhostClaude : showGhostCodex;
+      if (!on) continue;
+      const arr = m.get(g.anchorIndex) ?? [];
+      arr.push({ judge: g.judge, theme: g.theme });
+      m.set(g.anchorIndex, arr);
+    }
+    return m;
+  }, [ghosts, showGhostClaude, showGhostCodex]);
 
   // Runs de la source ACTIVE (Q3). En `human` → clauses humaines ; en `claude`/`codex`
   // → segmentation du juge ; en `compare` → on s'appuie sur la projection par phrase.
@@ -190,6 +202,22 @@ export function DocumentPanel({
     () => gutterAllModels.filter((m) => m.hasData && gutterVisibility[m.id] !== false),
     [gutterAllModels, gutterVisibility],
   );
+  // D3 — frontières « tous modèles confondus » : débuts de blocs HUMAINS + débuts de
+  // segments des modèles LLM VISIBLES. Sert à sélectionner jusqu'à la frontière suivante.
+  const boundaryStarts = useMemo(() => {
+    const set = new Set<number>();
+    for (const b of blocks) set.add(b.start);
+    for (const m of gutterVisibleModels) for (const seg of m.segments) set.add(seg.startSentence);
+    return Array.from(set);
+  }, [blocks, gutterVisibleModels]);
+  // D6c — zones de conflit (modèles visibles divergents) → index de 1re phrase par phrase.
+  const conflictStartByIndex = useMemo(() => {
+    const m = new Map<number, number>();
+    for (const z of conflictZones(gutterVisibleModels, n)) {
+      for (let i = z.start; i <= z.end; i += 1) m.set(i, z.start);
+    }
+    return m;
+  }, [gutterVisibleModels, n]);
   const runs =
     llmSource === "claude" ? claudeRuns : llmSource === "codex" ? codexRuns : humanRuns;
   const isCompare = llmSource === "compare";
@@ -349,6 +377,15 @@ export function DocumentPanel({
               <span className="inline-flex items-center gap-1.5"><Columns2 size={14} aria-hidden /> Comparer</span>
             </button>
           )}
+          <button
+            type="button"
+            data-testid="select-to-boundary"
+            onClick={() => selectRange(focused, nextBoundaryFrom(boundaryStarts, focused, n) - 1)}
+            title="Sélectionner de la phrase courante jusqu'à la frontière suivante (tous modèles confondus)"
+            className="inline-flex items-center gap-1.5 rounded-md border border-line px-2 py-1 text-ink-muted hover:bg-panel-muted hover:text-ink"
+          >
+            <TextSelect size={14} aria-hidden /> Jusqu'à la frontière
+          </button>
           {gutterAllModels.some((m) => m.hasData) && (
             <ModelBoundaryLegend models={gutterAllModels} />
           )}
@@ -392,7 +429,7 @@ export function DocumentPanel({
         {sentences.map((s) => {
           const isFocused = s.index === focused;
           const anchor = anchorByIndex.get(s.index);
-          const ghost = ghostByIndex.get(s.index);
+          const ghostList = ghostByIndex.get(s.index);
           const mark: UnfairnessMark | undefined = showUnfairness
             ? unfairIndex.get(s.index)
             : undefined;
@@ -541,7 +578,7 @@ export function DocumentPanel({
                 isSelected={isSelected}
                 hasAnchor={Boolean(anchor)}
                 compareState={isCompare ? (compareAgree ? "agree" : bothPresent ? "disagree" : null) : null}
-                ghost={ghost}
+                ghosts={ghostList}
                 mark={mark}
                 runColor={runColor}
                 showDashedTop={showDashedTop}
@@ -565,8 +602,10 @@ export function DocumentPanel({
                     return;
                   }
                   // Q2 : clic SIMPLE = focus + sélection mono, JAMAIS de création de
-                  // clause. Si la phrase a une clause humaine, on la sélectionne pour
-                  // l'inspecteur ; sinon l'inspecteur proposera de choisir un thème.
+                  // clause. D2 — il RÉINITIALISE d'abord la multi-sélection (phrases +
+                  // blocs) pour que Cmd/Ctrl+clic et Maj+clic repartent d'un état propre.
+                  clearSelection();
+                  clearClauseSelection();
                   focusSentence(s.index);
                   if (anchor) selectClause(anchor.localId);
                   else selectClause(null);
@@ -604,6 +643,7 @@ export function DocumentPanel({
                   models={gutterVisibleModels}
                   showCategory={gutterShowCategory}
                   onJump={focusSentence}
+                  conflictStart={conflictStartByIndex.get(s.index)}
                 />
               )}
             </div>
@@ -784,7 +824,7 @@ function SentenceRow({
   isSelected,
   hasAnchor,
   compareState,
-  ghost,
+  ghosts,
   mark,
   runColor,
   showDashedTop,
@@ -805,7 +845,7 @@ function SentenceRow({
   hasAnchor: boolean;
   /** En mode comparaison : accord ('agree')/divergence ('disagree') de la phrase. */
   compareState: "agree" | "disagree" | null;
-  ghost: { judge: string; theme: string } | undefined;
+  ghosts: Array<{ judge: string; theme: string }> | undefined;
   mark: UnfairnessMark | undefined;
   runColor: string | undefined;
   showDashedTop: boolean;
@@ -865,7 +905,7 @@ function SentenceRow({
         "relative -mx-2 cursor-pointer rounded-md px-2 py-1 transition-colors",
         isFocused ? "bg-accent/10 ring-1 ring-accent/40" : "hover:bg-panel/40",
         isSelected ? "ring-1 ring-accent/70 bg-accent/5" : "",
-        ghost && !hasAnchor ? "outline-dashed outline-1 outline-ink-muted/40" : "",
+        ghosts?.length && !hasAnchor ? "outline-dashed outline-1 outline-ink-muted/40" : "",
       )}
       style={{
         // Rail gauche coloré par le thème du run (P2) — canal visuel distinct de
@@ -899,15 +939,16 @@ function SentenceRow({
           VO
         </span>
       )}
-      {ghost && (
+      {ghosts?.map((g) => (
         <span
-          data-testid={`ghost-${ghost.judge}-${s.index}`}
-          title={`Frontière proposée par ${ghost.judge} (non retenue) : ${ghost.theme}`}
+          key={g.judge}
+          data-testid={`ghost-${g.judge}-${s.index}`}
+          title={`Frontière proposée par ${g.judge} (non retenue) : ${g.theme}`}
           className="ml-2 inline-flex items-center gap-1 rounded border border-dashed border-ink-muted/50 bg-panel-muted/60 px-1 font-mono text-[9px] text-ink-muted"
         >
-          <Ghost size={10} aria-hidden /> {ghost.judge}:{ghost.theme}
+          <Ghost size={10} aria-hidden /> {g.judge}:{g.theme}
         </span>
-      )}
+      ))}
     </div>
   );
 }

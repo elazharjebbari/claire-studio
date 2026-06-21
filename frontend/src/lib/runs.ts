@@ -128,6 +128,19 @@ export function runThemeAt(runs: Run[], index: number): string | null {
   return runAt(runs, index)?.theme ?? null;
 }
 
+/**
+ * Prochaine frontière strictement après `from` parmi un ensemble de débuts de segment
+ * (D3, « sélectionner jusqu'à la frontière suivante, tous modèles confondus »). Renvoie
+ * `n` (fin du document) si aucune frontière au-delà. Pur → testable.
+ */
+export function nextBoundaryFrom(starts: number[], from: number, n: number): number {
+  let best = n;
+  for (const s of starts) {
+    if (s > from && s < best) best = s;
+  }
+  return best;
+}
+
 /** Segment de réglette (Feature A) : une portion de document d'un modèle, un thème. */
 export interface GutterSegment {
   /** Phrase de début (porte le marqueur de frontière). */
@@ -146,6 +159,37 @@ export function segmentsFromRuns(runs: Run[]): GutterSegment[] {
   return runs
     .filter((r) => r.theme != null && r.localId != null)
     .map((r) => ({ startSentence: r.start, endSentence: r.end, themeCode: r.theme as string }));
+}
+
+/**
+ * Zones de CONFLIT entre modèles (D6) : intervalles de phrases où au moins deux modèles
+ * (parmi ceux passés) couvrent la phrase avec des thèmes DIFFÉRENTS. Sert à signaler et
+ * rendre clickable la zone (→ 1re phrase du conflit). Pur → testable.
+ */
+export function conflictZones(
+  models: Array<{ segments: GutterSegment[] }>,
+  n: number,
+): Array<{ start: number; end: number }> {
+  const themeAt = (segs: GutterSegment[], i: number): string | null => {
+    const s = segs.find((x) => i >= x.startSentence && i <= x.endSentence);
+    return s ? s.themeCode : null;
+  };
+  const zones: Array<{ start: number; end: number }> = [];
+  let cur: { start: number; end: number } | null = null;
+  for (let i = 0; i < n; i += 1) {
+    const themes = models.map((m) => themeAt(m.segments, i)).filter((t): t is string => t != null);
+    const conflict = new Set(themes).size >= 2; // ≥ 2 thèmes distincts présents
+    if (conflict) {
+      if (cur) cur.end = i;
+      else {
+        cur = { start: i, end: i };
+        zones.push(cur);
+      }
+    } else {
+      cur = null;
+    }
+  }
+  return zones;
 }
 
 /**

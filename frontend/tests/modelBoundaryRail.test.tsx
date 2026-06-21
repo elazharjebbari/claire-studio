@@ -55,6 +55,21 @@ describe("ModelBoundaryStrip (Feature A)", () => {
     expect(screen.queryByTestId("gutter-boundary-claude-6")).toBeNull();
     expect((screen.getByTestId("gutter-cell-claude-6") as HTMLButtonElement).disabled).toBe(false);
   });
+
+  it("colonne conflit (D6c) : clic → 1re phrase de la zone de conflit", () => {
+    const onJump = vi.fn();
+    render(
+      <ModelBoundaryStrip
+        sentenceIndex={4}
+        models={models}
+        showCategory={false}
+        onJump={onJump}
+        conflictStart={2}
+      />,
+    );
+    fireEvent.click(screen.getByTestId("gutter-conflict-4"));
+    expect(onJump).toHaveBeenCalledWith(2);
+  });
 });
 
 describe("ModelBoundaryLegend (Feature A)", () => {

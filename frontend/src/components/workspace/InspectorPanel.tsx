@@ -93,7 +93,16 @@ export function InspectorPanel({
         <ThemePalette
           value={draft.theme}
           themeCodes={themeCodes}
-          onChange={(code) => updateDraft(draft.localId, { theme: code })}
+          onChange={(code) => {
+            // D1 — toggle : re-cliquer le thème DÉJÀ posé désannote la phrase ; sinon
+            // re-thématise. Cohérent avec le toggle du menu clic-droit (C3).
+            if (code === draft.theme) {
+              removeBoundary(draft.anchorIndex);
+              selectClause(null);
+            } else {
+              updateDraft(draft.localId, { theme: code });
+            }
+          }}
           focusRef={themeFocusRef}
         />
       </Field>

@@ -42,19 +42,43 @@ export function ModelBoundaryStrip({
   models,
   showCategory,
   onJump,
+  conflictStart,
 }: {
   sentenceIndex: number;
   models: GutterModel[];
   showCategory: boolean;
   onJump: (i: number) => void;
+  /** Si la phrase est dans une zone de CONFLIT inter-modèles : index de sa 1re phrase. */
+  conflictStart?: number;
 }) {
-  if (models.length === 0) return null;
+  if (models.length === 0 && conflictStart == null) return null;
   return (
     <div
       role="row"
       data-testid={`model-gutter-row-${sentenceIndex}`}
       className="pointer-events-auto absolute bottom-0 right-1 top-0 flex items-stretch gap-px"
     >
+      {/* Colonne CONFLIT (D6c) : ambre, clickable → 1re phrase de la zone de conflit. */}
+      {conflictStart != null && (
+        <button
+          type="button"
+          data-testid={`gutter-conflict-${sentenceIndex}`}
+          title={`Conflit entre modèles — aller à la 1re phrase du conflit (${conflictStart})`}
+          aria-label={`Conflit entre modèles, début phrase ${conflictStart}`}
+          onClick={() => onJump(conflictStart)}
+          className="relative w-2.5 cursor-pointer rounded-[1px]"
+          style={{ backgroundColor: "#FBBF2440" }}
+        >
+          {conflictStart === sentenceIndex && (
+            <span
+              aria-hidden
+              data-testid={`gutter-conflict-start-${sentenceIndex}`}
+              className="absolute inset-x-0 top-0 h-[3px] rounded-t-[1px]"
+              style={{ backgroundColor: "#F59E0B" }}
+            />
+          )}
+        </button>
+      )}
       {models.map((m) => {
         const seg = m.hasData ? segAt(m.segments, sentenceIndex) : undefined;
         const isStart = seg != null && seg.startSentence === sentenceIndex;

@@ -1,5 +1,13 @@
 import { describe, expect, it } from "vitest";
-import { computeRuns, runAt, runThemeAt, segmentsFromRuns, type RunAnchor } from "@/lib/runs";
+import {
+  computeRuns,
+  runAt,
+  runThemeAt,
+  segmentsFromRuns,
+  nextBoundaryFrom,
+  conflictZones,
+  type RunAnchor,
+} from "@/lib/runs";
 
 describe("computeRuns", () => {
   it("préfixe neutre quand la 1re ancre n'est pas en 0", () => {
@@ -127,5 +135,34 @@ describe("segmentsFromRuns (réglette Feature A)", () => {
 
   it("aucun thème → aucun segment", () => {
     expect(segmentsFromRuns(computeRuns([], 5))).toEqual([]);
+  });
+});
+
+describe("nextBoundaryFrom (D3 — frontière suivante)", () => {
+  it("renvoie la prochaine frontière strictement après `from`", () => {
+    expect(nextBoundaryFrom([0, 5, 10], 2, 20)).toBe(5);
+    expect(nextBoundaryFrom([0, 5, 10], 5, 20)).toBe(10);
+  });
+  it("renvoie n si aucune frontière au-delà", () => {
+    expect(nextBoundaryFrom([0, 5], 5, 20)).toBe(20);
+    expect(nextBoundaryFrom([], 3, 20)).toBe(20);
+  });
+});
+
+describe("conflictZones (D6 — conflits inter-modèles)", () => {
+  const m = (segs: Array<{ startSentence: number; endSentence: number; themeCode: string }>) => ({
+    segments: segs,
+  });
+  it("détecte la zone où deux modèles divergent de thème", () => {
+    const A = m([{ startSentence: 0, endSentence: 4, themeCode: "META" }]);
+    const B = m([{ startSentence: 2, endSentence: 6, themeCode: "TERMINATION" }]);
+    // chevauchement 2..4 avec thèmes différents
+    expect(conflictZones([A, B], 8)).toEqual([{ start: 2, end: 4 }]);
+  });
+  it("pas de conflit si même thème, ou un seul modèle couvre", () => {
+    const A = m([{ startSentence: 0, endSentence: 4, themeCode: "META" }]);
+    const B = m([{ startSentence: 0, endSentence: 4, themeCode: "META" }]);
+    expect(conflictZones([A, B], 8)).toEqual([]);
+    expect(conflictZones([A], 8)).toEqual([]);
   });
 });
