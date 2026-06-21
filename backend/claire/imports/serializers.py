@@ -8,12 +8,22 @@
 from rest_framework import serializers
 
 from .models import PreAnnotation, PreClause
+from .theme_mapping import normalize_theme_code
 
 
 class PreClauseSerializer(serializers.ModelSerializer):
+    # Code de thème NORMALISÉ vers le schéma fermé en sortie : les pré-annotations LLM
+    # emploient parfois des codes legacy (THIRD_PARTY, PAYMENT_BILLING, LIABILITY_LIMITATION,
+    # INDEMNIFICATION…) absents du schéma. Sans normalisation, le pré-remplissage crée des
+    # clauses rejetées (400 « Theme not in scheme »). La BD conserve le code brut (audit).
+    theme_code = serializers.SerializerMethodField()
+
     class Meta:
         model = PreClause
         fields = ["anchor_index", "theme_code", "evidence_span", "rationale"]
+
+    def get_theme_code(self, obj) -> str:
+        return normalize_theme_code(obj.theme_code)
 
 
 class PreAnnotationSerializer(serializers.ModelSerializer):

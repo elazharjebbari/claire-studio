@@ -597,50 +597,59 @@ export const useWorkspaceStore = create<WorkspaceState>((set, get) => ({
   replacePrefill: (clauses, judge) =>
     set((s) => {
       if (s.readOnly) return {};
-      // 1) On retire UNIQUEMENT les clauses issues d'un pré-remplissage antérieur
-      //    (seededFrom = "preannotation:*"), en PRÉSERVANT l'humain (seededFrom nul)
-      //    et les arbitrages (resolvedFrom).
-      const human = s.draftClauses.filter(
-        (c) => !(c.seededFrom?.startsWith("preannotation:") && !c.resolvedFrom),
-      );
-      const humanAnchors = new Set(human.map((c) => c.anchorIndex));
-      // 2) Dépliage PAR PHRASE (C4) : chaque segment LLM [start, nextStart−1] devient
-      //    des clauses PAR PHRASE (l'adoption couvre tout le segment, mais reste
-      //    éditable/désannotable phrase à phrase). Jamais par-dessus l'humain.
+      // « Aucun » : retire les clauses issues d'un pré-remplissage (préserve l'humain
+      // et les arbitrages resolvedFrom). Annulable.
+      if (judge == null) {
+        const kept = s.draftClauses.filter(
+          (c) => !(c.seededFrom?.startsWith("preannotation:") && !c.resolvedFrom),
+        );
+        if (kept.length === s.draftClauses.length) return { prefilledJudge: null };
+        return {
+          draftClauses: kept,
+          prefilledJudge: null,
+          dirty: true,
+          undoStack: pushUndo(s.undoStack, s.draftClauses),
+          redoStack: [],
+          actionLog: appendLog(s.actionLog, {
+            kind: "prefill.clear",
+            label: "Pré-remplissage retiré",
+          }),
+        };
+      }
+      // ÉCRASEMENT (demande utilisateur) : la segmentation du juge REMPLACE toute
+      // l'annotation courante (humaine COMPRISE), dépliée PAR PHRASE et éditable
+      // ensuite. Action ANNULABLE (un seul snapshot undo) — la confirmation explicite
+      // est gérée par l'UI (WorkspaceToolbar) avant l'appel.
+      const segs = clauses.slice().sort((a, b) => a.anchor_index - b.anchor_index);
       const seeded: DraftClause[] = [];
-      if (judge != null) {
-        const segs = clauses.slice().sort((a, b) => a.anchor_index - b.anchor_index);
-        for (let k = 0; k < segs.length; k += 1) {
-          const seg = segs[k]!;
-          const end = (segs[k + 1]?.anchor_index ?? s.nSentences) - 1;
-          for (let idx = seg.anchor_index; idx <= end && idx < s.nSentences; idx += 1) {
-            if (idx < 0 || humanAnchors.has(idx)) continue;
-            seeded.push({
-              localId: nextLocalId(),
-              anchorIndex: idx,
-              theme: seg.theme,
-              legalNature: seg.legal_nature ?? null,
-              evidenceSpan: seg.evidence_span ?? "",
-              rationale: seg.rationale ?? "",
-              certainty: seg.certainty ?? null,
-              seededFrom: `preannotation:${judge}`,
-              resolvedFrom: null,
-            });
-          }
+      for (let k = 0; k < segs.length; k += 1) {
+        const seg = segs[k]!;
+        const end = (segs[k + 1]?.anchor_index ?? s.nSentences) - 1;
+        for (let idx = seg.anchor_index; idx <= end && idx < s.nSentences; idx += 1) {
+          if (idx < 0) continue;
+          seeded.push({
+            localId: nextLocalId(),
+            anchorIndex: idx,
+            theme: seg.theme,
+            legalNature: seg.legal_nature ?? null,
+            evidenceSpan: seg.evidence_span ?? "",
+            rationale: seg.rationale ?? "",
+            certainty: seg.certainty ?? null,
+            seededFrom: `preannotation:${judge}`,
+            resolvedFrom: null,
+          });
         }
       }
       return {
-        draftClauses: sortDrafts([...human, ...seeded]),
+        draftClauses: sortDrafts(seeded),
         prefilledJudge: judge,
+        selectedClauseId: seeded[0]?.localId ?? null,
         dirty: true,
         undoStack: pushUndo(s.undoStack, s.draftClauses),
         redoStack: [],
         actionLog: appendLog(s.actionLog, {
-          kind: judge == null ? "prefill.clear" : "prefill.switch",
-          label:
-            judge == null
-              ? "Pré-remplissage effacé"
-              : `Pré-rempli depuis ${judge} (${seeded.length} clauses)`,
+          kind: "prefill.overwrite",
+          label: `Annotation remplacée par ${judge} (${seeded.length} phrases)`,
         }),
       };
     }),

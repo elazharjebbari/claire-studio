@@ -223,28 +223,37 @@ describe("workspace store", () => {
     certainty: 0 as const,
   });
 
-  it("replacePrefill bascule de juge sans écraser l'annotation humaine (point 0a)", () => {
-    // anchor 0 = clause humaine (baseClauses, seededFrom null).
-    useWorkspaceStore.getState().replacePrefill([pivot(5, "X"), pivot(0, "ZZ")], "claude");
-    let drafts = useWorkspaceStore.getState().draftClauses;
-    // anchor 0 humain préservé (pas écrasé par le seed), anchor 5 seedé Claude.
-    expect(drafts.find((c) => c.anchorIndex === 0)?.theme).toBe("META");
-    expect(drafts.find((c) => c.anchorIndex === 5)?.seededFrom).toBe("preannotation:claude");
+  it("replacePrefill ÉCRASE l'annotation (humaine comprise), dépliée par phrase, annulable", () => {
+    // baseClauses : clause humaine @0 META (nSentences = 10).
+    const before = useWorkspaceStore
+      .getState()
+      .draftClauses.map((c) => ({ a: c.anchorIndex, t: c.theme }));
+
+    // Prefill Claude : segments [0..4]=ZZ, [5..9]=X → dépliés PAR PHRASE.
+    useWorkspaceStore.getState().replacePrefill([pivot(0, "ZZ"), pivot(5, "X")], "claude");
+    const drafts = useWorkspaceStore.getState().draftClauses;
+    // @0 est ÉCRASÉ (ZZ seedé Claude) — l'humain META a disparu.
+    expect(drafts.find((c) => c.anchorIndex === 0)?.theme).toBe("ZZ");
+    expect(drafts.every((c) => c.seededFrom === "preannotation:claude")).toBe(true);
+    expect(drafts).toHaveLength(10); // 0..9 dépliés par phrase
     expect(useWorkspaceStore.getState().prefilledJudge).toBe("claude");
 
-    // Bascule vers Codex : le seed Claude @5 disparaît, le seed Codex @7 apparaît.
-    useWorkspaceStore.getState().replacePrefill([pivot(7, "Y")], "codex");
-    drafts = useWorkspaceStore.getState().draftClauses;
-    expect(drafts.find((c) => c.anchorIndex === 5)).toBeUndefined();
-    expect(drafts.find((c) => c.anchorIndex === 7)?.seededFrom).toBe("preannotation:codex");
-    expect(drafts.find((c) => c.anchorIndex === 0)?.theme).toBe("META"); // humain intact
-    expect(useWorkspaceStore.getState().prefilledJudge).toBe("codex");
+    // ANNULABLE : undo restaure l'état humain initial.
+    useWorkspaceStore.getState().undo();
+    const restored = useWorkspaceStore
+      .getState()
+      .draftClauses.map((c) => ({ a: c.anchorIndex, t: c.theme }));
+    expect(restored).toEqual(before);
+  });
 
-    // Effacer le pré-remplissage : ne reste que l'humain.
-    useWorkspaceStore.getState().replacePrefill([], null);
-    drafts = useWorkspaceStore.getState().draftClauses;
+  it("replacePrefill(null) retire les clauses seedées et préserve l'humain", () => {
+    // Humain @0 (META) + seed Claude @5.
+    useWorkspaceStore.getState().setBoundary(5, "X");
+    // Marque @5 comme seedé via un prefill puis on en garde l'humain @0.
+    useWorkspaceStore.getState().replacePrefill([pivot(5, "X")], "claude"); // écrase tout par seed
+    useWorkspaceStore.getState().replacePrefill([], null); // retire le seed
+    const drafts = useWorkspaceStore.getState().draftClauses;
     expect(drafts.every((c) => !c.seededFrom?.startsWith("preannotation:"))).toBe(true);
-    expect(drafts.find((c) => c.anchorIndex === 0)?.theme).toBe("META");
     expect(useWorkspaceStore.getState().prefilledJudge).toBeNull();
   });
 

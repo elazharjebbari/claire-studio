@@ -56,8 +56,11 @@ export function WorkspaceToolbar({
   const [snapshotMsg, setSnapshotMsg] = useState<string | null>(null);
   const [submitOpen, setSubmitOpen] = useState(false);
   const [submitting, setSubmitting] = useState(false);
+  // Juge en attente de CONFIRMATION d'écrasement (le pré-remplissage remplace tout).
+  const [pendingPrefill, setPendingPrefill] = useState<Exclude<PrefillJudge, null> | null>(null);
 
-  // Pré-remplissage commutable (point 0a) : remplace proprement les clauses seedées.
+  // Pré-remplissage : applique la segmentation du juge (ÉCRASE l'annotation courante)
+  // ou retire le pré-remplissage (judge = null).
   function setPrefill(judge: PrefillJudge) {
     if (judge == null) {
       replacePrefill([], null);
@@ -66,6 +69,17 @@ export function WorkspaceToolbar({
     const pre = preClaude?.results.find((p) => p.judge === judge);
     if (!pre) return;
     replacePrefill(preClausesToPivot(pre.clauses), judge);
+  }
+
+  // Demande de pré-remplissage : confirme l'ÉCRASEMENT si des annotations existent
+  // (sinon applique directement). « Aucun » s'applique sans confirmation.
+  function requestPrefill(judge: PrefillJudge) {
+    if (judge == null) {
+      setPrefill(null);
+      return;
+    }
+    if (draftClauses.length > 0) setPendingPrefill(judge);
+    else setPrefill(judge);
   }
 
   const stats = useMemo(() => {
@@ -161,7 +175,7 @@ export function WorkspaceToolbar({
               aria-checked={active}
               data-testid={opt.testid}
               disabled={readOnly}
-              onClick={() => setPrefill(opt.value)}
+              onClick={() => requestPrefill(opt.value)}
               className={
                 "rounded px-2 py-1 text-xs font-medium transition-colors disabled:cursor-not-allowed disabled:opacity-40 " +
                 (active
@@ -251,6 +265,51 @@ export function WorkspaceToolbar({
           onCancel={() => setSubmitOpen(false)}
           onConfirm={confirmSubmit}
         />
+      )}
+
+      {/* Confirmation d'ÉCRASEMENT par pré-remplissage (annulable ⌘Z). */}
+      {pendingPrefill && (
+        <div
+          className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-4"
+          role="dialog"
+          aria-modal="true"
+          data-testid="prefill-confirm"
+        >
+          <div className="w-full max-w-md rounded-lg border border-line bg-elevated p-5 shadow-xl">
+            <h2 className="font-display text-lg font-semibold text-ink">
+              Remplacer l'annotation par {pendingPrefill === "claude" ? "Claude" : "Codex"} ?
+            </h2>
+            <p className="mt-2 text-sm text-ink-muted">
+              Le pré-remplissage applique la segmentation de{" "}
+              <strong className="text-ink">
+                {pendingPrefill === "claude" ? "Claude" : "Codex"}
+              </strong>{" "}
+              et <strong className="text-warning">écrase TOUTES vos annotations actuelles</strong>{" "}
+              (y compris les annotations humaines). Vous pourrez ensuite les modifier, et{" "}
+              <strong className="text-ink">annuler</strong> ce remplacement (⌘Z ou l'historique).
+            </p>
+            <div className="mt-4 flex justify-end gap-2">
+              <Button
+                variant="outline"
+                data-testid="prefill-cancel"
+                onClick={() => setPendingPrefill(null)}
+              >
+                Annuler
+              </Button>
+              <Button
+                variant="primary"
+                data-testid="prefill-confirm-ok"
+                onClick={() => {
+                  const j = pendingPrefill;
+                  setPendingPrefill(null);
+                  setPrefill(j);
+                }}
+              >
+                Remplacer
+              </Button>
+            </div>
+          </div>
+        </div>
       )}
     </div>
   );

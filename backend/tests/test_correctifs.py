@@ -47,6 +47,32 @@ def test_import_preannotations_command(tmp_path, project, document_with_sentence
     )
 
 
+def test_preclause_serializer_normalizes_theme(project, document_with_sentences):
+    """Le pré-remplissage lit les PreClause via l'API : les codes LEGACY doivent être
+    normalisés vers le schéma (sinon 400 « Theme not in scheme » au pré-remplissage)."""
+    from claire.imports.serializers import PreAnnotationSerializer
+    from claire.imports.services import ingest_preannotation
+
+    raw = {
+        "doc": document_with_sentences.external_id,
+        "judge": "claude",
+        "version": "v9.2",
+        "document_plan": {
+            "segments": [
+                {"start_id": 0, "theme": "THIRD_PARTY", "rationale": "", "evidence_span": ""},
+                {"start_id": 1, "theme": "LIABILITY_LIMITATION", "rationale": "", "evidence_span": ""},
+            ]
+        },
+    }
+    pre = ingest_preannotation(
+        project=project, document=document_with_sentences, judge="claude", raw=raw
+    )
+    codes = [c["theme_code"] for c in PreAnnotationSerializer(pre).data["clauses"]]
+    assert "THIRD_PARTY_SERVICES" in codes  # THIRD_PARTY → canonique
+    assert "LIMITATION_LIABILITY" in codes  # LIABILITY_LIMITATION → canonique
+    assert "THIRD_PARTY" not in codes and "LIABILITY_LIMITATION" not in codes
+
+
 # ── C4 — IAA par phrase (pas de forward-fill) ───────────────────────────────────
 def test_theme_vector_is_per_sentence(
     project, document_with_sentences, scheme_with_themes, annotator
