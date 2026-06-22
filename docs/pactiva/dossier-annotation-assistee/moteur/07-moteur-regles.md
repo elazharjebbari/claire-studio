@@ -11,10 +11,16 @@ Aucune dépendance réseau/DOM. La spec `07-regles-routage.yaml` en est l'**uniq
 3. compter l'accord frontière (is_block_start) : support = nb de true ; type = hard si 3/3
    (ou trigger numérotation/titre) sinon soft si majorité
 4. router (arbre §1 du protocole) → level, action, labelMode
-5. appliquer les pré-résolutions :
-   - override anti-refuge (majorité précise + 1 refuge) → impose le précis (C2), trace override
-   - cluster → multi-label (couple ∈ clusters) → garder les deux (C3)
-   - refuge jamais en secondaire
+5. appliquer les pré-résolutions, dans CET ordre (priorité substantielle, ordre-indépendant) :
+   - **cluster → multi-label** (un dissident ∈ couple de cluster avec la majorité, tous deux
+     non-refuges) → garder les deux (C3). **Le cluster PRIME sur l'override** (testé sur tous
+     les dissidents, pas seulement celui de tête → correct en K≥4).
+   - **majorité-refuge → C5** : si la majorité est elle-même un refuge (κ très bas), ce n'est
+     pas une majorité fiable à « vérifier » → arbitrage (jamais un refuge primaire « verify »).
+   - **override anti-refuge** : majorité PRÉCISE et **tous** les dissidents sont des refuges →
+     impose le précis (C2), trace override réversible.
+   - sinon → C4 (vérifier le minoritaire). **refuge jamais en secondaire** ; refuge primaire
+     autorisé seulement en C1/C2 unanime.
 6. choisir le primaire : préséance → majorité → priorité
 7. construire l'explication {context, decision, logic} à partir de la branche empruntée
 8. renvoyer TriageResult
@@ -35,16 +41,18 @@ function triageEngine(themeVotes, boundaryVotes, R): TriageResult {
     return mono(lvl, lvl==='C1'?'batch_accept':'confirm', sole(counts), boundary,
       explainUnanimous(themes, lvl, boundary));
   }
-  // — majorité 2/3 —
+  // — majorité stricte (>moitié) — ordre : cluster > refuge-majorité > override > C4 —
   if (hasMajority(counts)) {
-    const maj = majorityLabel(counts), dis = dissidentLabel(counts);
-    if (R.refuges.includes(dis))                       // override anti-refuge
-      return mono('C2','confirm', maj, boundary,
-        explainOverride(maj, dis), {kind:'refuge_to_precis', from: dis, to: maj});
-    if (isCluster(maj, dis, R))                         // cluster → multi
-      return multi('C3','validate_set', primaryOf([maj,dis],counts,R), boundary,
-        explainCluster(maj, dis, R));
-    return mono('C4','verify', maj, boundary, explainMajority(maj, dis));
+    const maj = majorityLabel(counts);
+    const nonMaj = ranked.filter(x => x.label !== maj);
+    const partner = nonMaj.find(x => !isRefuge(maj) && !isRefuge(x.label) && isCluster(maj, x.label, R));
+    if (partner)                                        // cluster (tous dissidents) → multi
+      return multi('C3','validate_set', primaryOf([maj, partner.label], counts, R), boundary, ...);
+    if (isRefuge(maj))                                  // majorité = refuge → arbitrage
+      return open('C5','arbitrate', candidates, boundary, ...);
+    if (nonMaj.length && nonMaj.every(x => isRefuge(x.label)))  // tous dissidents refuges
+      return mono('C2','confirm', maj, boundary, ..., {kind:'refuge_to_precis', from: dissidentTop, to: maj});
+    return mono('C4','verify', maj, boundary, ...);     // dissident précis non-clusterisé
   }
   // — éclaté 1/1/1 —
   const clusterPair = firstClusterPair(themes, R);      // un couple présent, sans refuge
@@ -63,7 +71,9 @@ Le secondaire = l'autre membre du cluster. **Jamais** un refuge en secondaire.
 
 ## 4. Frontière dure/molle
 - `support` = nb de juges avec `is_block_start = true`.
-- `hard` si 3/3 **ou** déclencheur structurel (numérotation/titre — heuristique lexicale).
+- `hard` si 3/3 **ou** déclencheur structurel. ⚠️ Le moteur **pur** n'a pas le texte : la
+  promotion 2/3→dure par numérotation/titre est fournie par la couche appelante via
+  `opts.structuralHardTrigger` (défaut faux) — détection lexicale en amont, hors moteur.
 - `soft` si majorité (2/3) d'origine thématique → la carte propose **Fusionner / Scinder**.
 - Un glissement de sujet intra-clause **ne crée pas** de frontière → multi-label.
 

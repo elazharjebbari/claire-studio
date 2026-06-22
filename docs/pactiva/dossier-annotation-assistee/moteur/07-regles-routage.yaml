@@ -94,9 +94,19 @@ explanations:
   C3: { context: "{votes}", decision: "multi : {primary} (primaire) + {secondary} (secondaire)", logic: "couple de cluster {a}↔{b} = chevauchement juridique réel ; primaire par {primary_rule}." }
   C4: { context: "{votes}", decision: "{primary} (majorité 2/3)", logic: "majorité hors refuge/cluster : vérifier le candidat minoritaire {minority} avant d'accepter." }
   C5: { context: "{votes}", decision: "aucune présélection", logic: "votes éclatés (refuge/bruit) : votre jugement fait foi ; choisir 1, créer un multi, ou marquer indécidable." }
+  C5_refuge_majority: { context: "{votes}", decision: "aucune présélection", logic: "la majorité est un refuge ({maj}, κ={kappa}), peu fiable → arbitrage humain plutôt qu'acceptation." }
+
+# ── Ordre des pré-résolutions en branche MAJORITÉ (priorité substantielle) ──
+# 1. cluster (testé sur TOUS les dissidents, ordre-indépendant ; prime sur l'override)
+# 2. majorité-refuge -> C5 (un refuge majoritaire n'est pas une majorité fiable à "vérifier")
+# 3. override anti-refuge (majorité précise ET tous les dissidents sont des refuges)
+# 4. sinon -> C4 (vérifier le minoritaire)
+# Refuge primaire autorisé UNIQUEMENT en C1/C2 (unanime). Refuge jamais secondaire.
 
 # ── Seuils ──
 thresholds:
   min_judges: 2           # < 2 juges => pas de triage (carte masquée)
-  unanimous: "all_equal"  # 3/3
-  majority: "strict_plurality_with_single_dissident"  # 2/3
+  unanimous: "all_equal"
+  majority: "strict_majority"   # support * 2 > total (généralisé K>=2)
+  # frontière dure = support == total OU structural_hard_trigger (fourni en amont :
+  # le moteur pur n'a pas le texte ; détection numérotation/titre déléguée à l'appelant).
