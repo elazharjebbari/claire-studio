@@ -14,7 +14,10 @@ import { useEffect, useRef } from "react";
 import { Button } from "@/components/ui/primitives";
 import { MOCKS_ENABLED } from "@/lib/env";
 
-const TOUR_SEEN_KEY = "claire.tourSeen";
+// Versionné : incrémenter le suffixe quand la visite est refondue → les utilisateurs
+// existants la revoient automatiquement UNE fois après la mise à jour.
+// v2 (2026-06-22) : refonte N-way + blocs récents (minimap, sélection, nature, etc.).
+const TOUR_SEEN_KEY = "claire.tourSeen.v2";
 
 async function launchTour(): Promise<void> {
   const mod = await import("@/lib/tour/workspaceTour");

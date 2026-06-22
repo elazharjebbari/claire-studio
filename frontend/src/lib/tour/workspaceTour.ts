@@ -1,17 +1,23 @@
 /**
  * Visite guidée du workspace d'annotation (driver.js, MIT).
  *
- * Les étapes ciblent des sélecteurs RÉELS existants (data-testid + rôles ARIA).
+ * Les étapes ciblent des sélecteurs RÉELS existants (data-testid + rôles ARIA),
+ * regroupées en 6 sections pédagogiques (champ `section`, préfixé au titre).
  * Au lancement, on filtre dynamiquement les étapes dont l'élément cible est
- * absent du DOM (ex. le fil de commentaires n'existe que si une clause est
- * sélectionnée), pour que la visite reste cohérente quel que soit l'état.
+ * absent du DOM (ex. l'inspecteur, les commentaires ou l'œil de frontière
+ * n'existent qu'avec une clause/frontière sélectionnée), pour que la visite
+ * reste cohérente quel que soit l'état.
+ *
+ * Vocabulaire N-way : l'atelier compare l'annotation humaine à PLUSIEURS juges
+ * LLM (Claude, Codex, Mistral…), pas seulement deux.
  */
 
 import { driver, type Config, type DriveStep } from "driver.js";
 import "driver.js/dist/driver.css";
 
-/** Étape de visite : sélecteur CSS obligatoire + popover (titre + description). */
+/** Étape de visite : section + sélecteur CSS obligatoire + popover (titre + description). */
 export interface TourStep {
+  section: string;
   element: string;
   title: string;
   description: string;
@@ -19,155 +25,227 @@ export interface TourStep {
 
 /** Définition ordonnée des étapes de la visite guidée du workspace. */
 export const WORKSPACE_TOUR_STEPS: TourStep[] = [
+  // ── A. Vue d'ensemble ───────────────────────────────────────────────────
   {
+    section: "Vue d'ensemble",
     element: '[data-testid="annotation-workspace"]',
     title: "L'atelier d'annotation",
     description:
-      "Voici l'atelier d'annotation. Trois panneaux pour découper le document en clauses, leur attribuer un thème, et comparer votre travail aux LLM.",
+      "Trois panneaux : le plan (gauche), le document (centre), l'inspecteur (droite). On découpe le document en clauses, on leur attribue un thème, et on compare son travail à celui des juges LLM.",
   },
   {
+    section: "Vue d'ensemble",
     element: '[aria-label="Plan du document"]',
     title: "Le plan",
     description:
-      "Le plan liste les clauses du document (thèmes colorés), la progression et les bascules d'overlays. Cliquez une clause pour y sauter.",
+      "Liste les clauses du document (thèmes colorés), la progression et les bascules d'overlays. Cliquez une clause pour y sauter.",
   },
   {
+    section: "Vue d'ensemble",
+    element: '[data-testid="document-minimap"]',
+    title: "Minimap & position",
+    description:
+      "Vue miniature du document : votre position de lecture, la densité des clauses et des divergences. Cliquez ou glissez pour naviguer rapidement.",
+  },
+
+  // ── B. Lire le document ─────────────────────────────────────────────────
+  {
+    section: "Lire",
     element: '[aria-label="Document"]',
     title: "Le document",
     description:
-      "Le document en lecture. Cliquez une phrase ou appuyez sur la touche B pour poser une frontière de clause sur la phrase focalisée.",
+      "Le texte en lecture. Cliquez une phrase, ou appuyez sur la touche B pour poser une frontière de clause sur la phrase focalisée.",
   },
   {
+    section: "Lire",
     element: '[data-testid="sentence-0"]',
     title: "Une phrase",
     description:
-      "Chaque phrase est indexée et cliquable. Naviguez au clavier avec j (suivant) et k (précédent).",
+      "Chaque phrase est indexée et cliquable. Au clavier : j (suivante), k (précédente).",
   },
   {
-    element: '[data-testid="boundary-toggle"]',
-    title: "Frontières",
+    section: "Lire",
+    element: '[data-testid="reading-controls"]',
+    title: "Confort de lecture",
     description:
-      "Activez ou masquez les frontières de clause (rail coloré + pointillés). Un repère visuel discret, indépendant du surlignage d'injustice.",
+      "Ajustez la taille du texte (A− / A+) et la largeur de lecture. N'affecte que l'affichage — vos données ne changent pas.",
   },
   {
+    section: "Lire",
     element: '[data-testid="lang-switch"]',
     title: "Modes de langue",
     description:
-      "Basculez l'affichage entre VO (original), Bilingue (VO + FR) et FR (traduction). Toutes les interactions opèrent sur l'index de phrase, quel que soit le mode.",
+      "Basculez VO (original) · Bilingue (VO + FR) · FR (traduction). Toutes les interactions opèrent sur l'index de phrase, quel que soit le mode.",
   },
+
+  // ── C. Annoter ──────────────────────────────────────────────────────────
   {
-    element: '[data-testid="llm-version-select"]',
-    title: "Version des annotations LLM",
+    section: "Annoter",
+    element: '[data-testid="boundary-toggle"]',
+    title: "Frontières de clause",
     description:
-      "Choisissez la version d'annotation LLM à comparer (v9, v9.1, v9.2, v9.3…). Le changement est instantané et n'affecte QUE l'overlay LLM : vos clauses humaines ne bougent pas. « Auto » sélectionne la version la plus riche.",
+      "Affichez ou masquez les frontières (rail coloré + pointillés). Repère visuel discret, indépendant de l'overlay d'injustice.",
   },
   {
-    element: '[data-testid="llm-source-switch"]',
-    title: "Source affichée : humain, Claude, Codex, comparaison",
+    section: "Annoter",
+    element: '[data-testid="selection-tools"]',
+    title: "Outils de sélection",
     description:
-      "Affichez votre annotation, celle d'un juge, ou le mode Comparaison qui superpose l'accord par phrase (vert = accord, ambre = divergence) et active la navigation des désaccords.",
+      "Sélectionnez plusieurs blocs (segment, jusqu'à la frontière, tout), puis annotez, désannotez ou traduisez la sélection en une fois. Le compteur indique le nombre de blocs sélectionnés.",
   },
   {
-    element: '[data-testid="divergence-nav"]',
-    title: "Naviguer les divergences",
-    description:
-      "En mode comparaison, sautez de désaccord en désaccord avec les flèches ou les touches n (suivant) / p (précédent). Le compteur indique votre position.",
-  },
-  {
-    element: '[data-testid="toggle-compare-panel"]',
-    title: "Panneau comparatif (touche g)",
-    description:
-      "Ouvrez la vue côte à côte des blocs de Claude et de Codex : couleurs = thèmes, bande centrale = accord (vert) / divergence (ambre) / partiel. Cliquez un bloc pour y sauter.",
-  },
-  {
-    element: '[data-testid="sentence-0"]',
-    title: "Sélection multi-blocs",
-    description:
-      "Maintenez le clic-droit et glissez sur plusieurs phrases pour sélectionner une plage de blocs (clauses), puis annotez-les ensemble. Un clic-droit immobile ouvre le menu de la phrase.",
-  },
-  {
-    element: '[data-testid^="boundary-peek-"]',
-    title: "Aperçu des preuves à la frontière (touche e)",
-    description:
-      "Sur une frontière de clause, l'icône 👁 ouvre un aperçu compact des preuves (evidence span) et du raisonnement (rationale) de Claude et de Codex — onglet « Comparer » pour les voir en regard. Vous pouvez adopter une proposition directement depuis cet aperçu.",
-  },
-  {
-    element: '[data-testid="inspector"]',
-    title: "L'inspecteur",
-    description:
-      "L'inspecteur détaille la clause sélectionnée : thème, nature juridique, certitude, evidence span, justification et commentaires.",
-  },
-  {
+    section: "Annoter",
     element: '[data-testid="theme-palette"]',
     title: "Attribuer un thème",
     description:
       "Choisissez un thème dans la palette (vocabulaire fermé). Raccourci : touche T pour cibler la recherche de thème.",
   },
   {
+    section: "Annoter",
+    element: '[data-testid="legal-nature"]',
+    title: "Nature juridique",
+    description:
+      "Renseignez la nature juridique de la clause (obligation, droit, définition, sanction…), consultable et comparable aux propositions des juges LLM.",
+  },
+  {
+    section: "Annoter",
     element: '[data-testid="certainty-picker"]',
     title: "La certitude",
     description:
       "Notez votre confiance sur l'échelle 0–3. Au clavier : touches 0, 1, 2 ou 3 sur la clause sélectionnée.",
   },
   {
-    element: '[data-testid="document-switcher"]',
-    title: "Changer de document",
+    section: "Annoter",
+    element: '[data-testid="inspector"]',
+    title: "L'inspecteur",
     description:
-      "Recherchez un document (autocomplétion) et naviguez d'un contrat à l'autre. Un voyant « ● brouillon » signale les modifications non enregistrées.",
+      "Détaille la clause sélectionnée : thème, nature juridique, certitude, evidence span, justification (rationale) et commentaires.",
   },
   {
+    section: "Annoter",
+    element: '[data-testid="validation-meter"]',
+    title: "Validation & progression",
+    description:
+      "La jauge indique la part de clauses validées de votre session. Validez une clause pour la marquer comme finalisée.",
+  },
+
+  // ── D. Comparer aux juges LLM (N-way) ───────────────────────────────────
+  {
+    section: "Comparer aux juges",
+    element: '[data-testid="llm-version-select"]',
+    title: "Version des annotations LLM",
+    description:
+      "Choisissez la version comparée (v9, v9.1, v9.2…). Instantané, et n'affecte QUE l'overlay LLM : vos clauses humaines ne bougent pas. « Auto » prend la version la plus riche.",
+  },
+  {
+    section: "Comparer aux juges",
+    element: '[data-testid="llm-source-switch"]',
+    title: "Source affichée",
+    description:
+      "Affichez votre annotation, celle d'un juge (Claude, Codex, Mistral…), ou le mode Comparaison qui superpose l'accord par phrase (vert = accord, ambre = divergence) et active la navigation des désaccords.",
+  },
+  {
+    section: "Comparer aux juges",
     element: '[data-testid="prefill-switch"]',
-    title: "Pré-remplir depuis un LLM (commutable)",
+    title: "Pré-remplir depuis un juge",
     description:
-      "Chargez les ancres et thèmes proposés par Claude ou Codex comme brouillon éditable, et basculez entre les deux : vos clauses humaines sont préservées. « Aucun » retire le pré-remplissage.",
+      "Chargez les frontières et thèmes proposés par un juge comme brouillon éditable, et basculez d'un juge à l'autre : vos clauses humaines sont préservées. « Aucun » retire le pré-remplissage.",
   },
   {
-    element: '[data-testid="toggle-history"]',
-    title: "Historique des actions",
+    section: "Comparer aux juges",
+    element: '[data-testid^="boundary-peek-"]',
+    title: "Œil de frontière (touche e)",
     description:
-      "Ouvrez le journal de vos actions (création, thème, certitude, arbitrage…). Cliquez une entrée pour revenir sur la phrase concernée. Socle de l'annulation/rétablissement à venir.",
+      "Sur une frontière de clause, l'icône 👁 ouvre les preuves (evidence span) et le raisonnement (rationale) de chaque juge — onglets dynamiques pour les comparer. Vous pouvez adopter une proposition directement depuis l'aperçu.",
   },
   {
+    section: "Comparer aux juges",
     element: '[data-testid="inspector-source-compare"]',
-    title: "Comparer la source (Vous / Claude / Codex)",
+    title: "Comparer la source (par clause)",
     description:
-      "Sous l'evidence span et le rationale, comparez votre annotation à celle de Claude ou Codex pour la clause sélectionnée, et reprenez leur proposition en un clic.",
+      "Sous l'evidence span et le rationale, comparez votre annotation à celle de chaque juge pour la clause sélectionnée, et reprenez une proposition en un clic.",
   },
   {
+    section: "Comparer aux juges",
+    element: '[data-testid="toggle-compare-panel"]',
+    title: "Panneau comparatif (touche g)",
+    description:
+      "Vue côte à côte des découpages des juges : couleurs = thèmes, bande centrale = accord (vert) / divergence (ambre) / partiel. Cliquez un bloc pour y sauter.",
+  },
+  {
+    section: "Comparer aux juges",
+    element: '[data-testid="divergence-nav"]',
+    title: "Naviguer les divergences (n/p)",
+    description:
+      "En mode comparaison, sautez de désaccord en désaccord avec les flèches ou les touches n (suivant) / p (précédent). Le compteur indique votre position.",
+  },
+
+  // ── E. Overlays ─────────────────────────────────────────────────────────
+  {
+    section: "Overlays",
     element: '[data-testid="toggle-unfairness"]',
     title: "Overlay d'injustice CLAUDETTE",
     description:
       "Surlignez les phrases marquées injustes par CLAUDETTE, avec leur catégorie et leur niveau, pour repérer les zones sensibles.",
   },
   {
+    section: "Overlays",
     element: '[data-testid="toggle-ghost-claude"]',
     title: "Fantômes de comparaison",
     description:
-      "Affichez en pointillés les frontières proposées par un LLM mais non encore retenues. Comparaison seulement : votre annotation n'est pas modifiée.",
+      "Affichez en pointillés les frontières proposées par un juge mais non encore retenues (un fantôme par juge). Comparaison seulement : votre annotation n'est pas modifiée.",
   },
   {
-    element: '[data-testid="comment-thread"]',
-    title: "Commentaires",
+    section: "Overlays",
+    element: '[data-testid="gutter-toggle-category"]',
+    title: "Gouttière des catégories",
     description:
-      "Justifiez un choix ou dialoguez avec les relecteurs. Raccourci : touche C sur la clause sélectionnée.",
+      "Affichez à gauche du document une bande continue par catégorie de thème, avec les ruptures entre clauses voisines, pour lire la structure d'un coup d'œil.",
+  },
+
+  // ── F. Collaborer & versionner ──────────────────────────────────────────
+  {
+    section: "Collaborer & versionner",
+    element: '[data-testid="toggle-comments"]',
+    title: "Commentaires (touche c)",
+    description:
+      "Justifiez un choix ou dialoguez avec les relecteurs sur une clause. Raccourci : touche C sur la clause sélectionnée.",
   },
   {
+    section: "Collaborer & versionner",
+    element: '[data-testid="toggle-history"]',
+    title: "Historique · annuler / rétablir",
+    description:
+      "Ouvrez le journal de vos actions (création, thème, certitude, arbitrage…) ; cliquez une entrée pour revenir sur la phrase concernée. Annulez/rétablissez avec ⌘Z / ⌘Y (boutons dédiés dans la barre).",
+  },
+  {
+    section: "Collaborer & versionner",
+    element: '[data-testid="document-switcher"]',
+    title: "Changer de document",
+    description:
+      "Recherchez un document (autocomplétion) et passez d'un contrat à l'autre. Un voyant « ● brouillon » signale des modifications non enregistrées.",
+  },
+  {
+    section: "Collaborer & versionner",
     element: '[data-testid="snapshot-btn"]',
     title: "Snapshot",
     description:
-      "Capturez un instantané de votre annotation (versionné). Raccourci : ⌘S, même en cours de saisie.",
+      "Capturez un instantané versionné de votre annotation. Raccourci : ⌘S, même en cours de saisie.",
   },
   {
+    section: "Collaborer & versionner",
     element: '[data-testid="submit-btn"]',
     title: "Soumettre",
-    description:
-      "Une fois prêt, soumettez l'annotation pour relecture.",
+    description: "Une fois prêt, soumettez l'annotation pour relecture.",
   },
+
+  // ── Fin ─────────────────────────────────────────────────────────────────
   {
+    section: "Fin",
     element: '[data-testid="annotation-workspace"]',
     title: "C'est tout !",
     description:
-      "Raccourcis clés : j/k phrase · n/p divergence · 1/2 adopter Claude/Codex · e aperçu frontière · g panneau comparatif · B frontière · T thème · C commentaire · 0–3 certitude · ⌘S snapshot · ⌘K palette. Le détail est dans le centre d'aide (« ? » dans la barre du haut).",
+      "Raccourcis clés : j/k phrase · n/p divergence · b frontière · t thème · c commentaire · e œil de frontière · g panneau comparatif · 0–3 certitude · ⌘S snapshot · ⌘Z/⌘Y annuler/rétablir. Le détail complet est dans le centre d'aide (« ? » dans la barre du haut).",
   },
 ];
 
@@ -177,19 +255,25 @@ function stepElementExists(step: TourStep): boolean {
   return document.querySelector(step.element) !== null;
 }
 
-/** Convertit une TourStep en DriveStep driver.js. */
+/** Convertit une TourStep en DriveStep driver.js (titre préfixé par la section). */
 function toDriveStep(step: TourStep): DriveStep {
+  const title =
+    step.section && step.section !== "Fin"
+      ? `${step.section} · ${step.title}`
+      : step.title;
   return {
     element: step.element,
-    popover: { title: step.title, description: step.description },
+    popover: { title, description: step.description },
   };
 }
 
-/** Configuration de base de driver.js (boutons FR, progression, clavier actif). */
+/** Configuration de base de driver.js (boutons FR, progression, défilement doux). */
 export function tourConfig(steps: TourStep[]): Config {
   return {
     showProgress: true,
     allowKeyboardControl: true,
+    smoothScroll: true,
+    stagePadding: 6,
     progressText: "{{current}} / {{total}}",
     nextBtnText: "Suivant",
     prevBtnText: "Précédent",
