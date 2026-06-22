@@ -12,6 +12,7 @@ import { NaturePicker } from "@/components/ui/NaturePicker";
 import { RationaleHover } from "@/components/workspace/RationaleHover";
 import { SelectionTools } from "@/components/workspace/SelectionTools";
 import { DocumentMinimap } from "@/components/workspace/DocumentMinimap";
+import { BoundaryEvidence } from "@/components/workspace/BoundaryEvidence";
 import { useWorkspaceStore } from "@/store/workspace";
 import type { LegalNature } from "@/types/contract";
 
@@ -175,5 +176,47 @@ describe("DocumentMinimap (axe 5)", () => {
     );
     fireEvent.click(screen.getByTestId("document-minimap").firstChild as Element);
     expect(onJumpFraction).toHaveBeenCalled();
+  });
+});
+
+describe("BoundaryEvidence N-way (œil de frontière, Mistral inclus)", () => {
+  const det = (theme: string, nature: string | null) => ({
+    anchorIndex: 4,
+    endIndex: 6,
+    theme,
+    rationale: `rationale ${theme}`,
+    evidence: "evidence",
+    legalNature: nature,
+  });
+  it("rend un onglet par juge présent + Comparer + la nature LLM", () => {
+    const judges = [
+      { id: "claude", label: "Claude", detail: det("TERMINATION", "OBLIGATION") },
+      { id: "mistral", label: "Mistral", detail: det("ACCEPTABLE_USE", "PROHIBITION") },
+      { id: "codex", label: "Codex", detail: null },
+    ];
+    render(<BoundaryEvidence x={10} y={10} judges={judges} onClose={() => {}} />);
+    expect(screen.getByTestId("boundary-tab-claude")).toBeInTheDocument();
+    expect(screen.getByTestId("boundary-tab-mistral")).toBeInTheDocument();
+    expect(screen.getByTestId("boundary-tab-compare")).toBeInTheDocument();
+    // Codex sans proposition → pas d'onglet.
+    expect(screen.queryByTestId("boundary-tab-codex")).toBeNull();
+    // Nature LLM visible sur la carte du juge actif (claude).
+    expect(screen.getByTestId("boundary-card-claude")).toHaveTextContent("OBLIGATION");
+  });
+  it("adopter Mistral appelle resolveDivergenceRange sur tout le segment", () => {
+    useWorkspaceStore.getState().reset();
+    useWorkspaceStore.getState().init({ annotationId: "a", nSentences: 10, clauses: [] });
+    const judges = [
+      { id: "claude", label: "Claude", detail: det("TERMINATION", null) },
+      { id: "mistral", label: "Mistral", detail: det("ACCEPTABLE_USE", "PROHIBITION") },
+    ];
+    render(<BoundaryEvidence x={0} y={0} judges={judges} onClose={() => {}} />);
+    fireEvent.click(screen.getByTestId("boundary-tab-mistral"));
+    fireEvent.click(screen.getByTestId("boundary-adopt-mistral"));
+    const d = useWorkspaceStore.getState().draftClauses;
+    // Segment 4..6 adopté depuis Mistral → 3 clauses resolvedFrom=mistral.
+    const adopted = d.filter((c) => c.resolvedFrom === "mistral");
+    expect(adopted.length).toBe(3);
+    expect(adopted.every((c) => c.theme === "ACCEPTABLE_USE")).toBe(true);
   });
 });

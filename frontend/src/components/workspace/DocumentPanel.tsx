@@ -361,13 +361,19 @@ export function DocumentPanel({
     onToggleCompare: toggleComparePanel,
   });
 
-  // Détails des juges à la frontière en cours d'aperçu (P5).
-  const boundaryClaude = boundaryPop
-    ? detailAt(claudeDetailByAnchor, claudeRuns, boundaryPop.index)
-    : null;
-  const boundaryCodex = boundaryPop
-    ? detailAt(codexDetailByAnchor, codexRuns, boundaryPop.index)
-    : null;
+  // Détails N-WAY des juges à la frontière en cours d'aperçu (P5) — tous les modèles
+  // configurés (Claude/Codex/Mistral…), pas seulement deux.
+  const boundaryJudges = boundaryPop
+    ? LLM_JUDGES.map((j) => ({
+        id: j.id,
+        label: j.label,
+        detail: detailAt(
+          detailMapByJudge[j.id] ?? EMPTY_DETAIL,
+          runsByJudge[j.id] ?? EMPTY_RUNS,
+          boundaryPop.index,
+        ),
+      }))
+    : [];
 
   // Traductions FR (P5) — Map index→texte.
   const { byIndex: translations } = useDocumentTranslations(documentId);
@@ -441,7 +447,11 @@ export function DocumentPanel({
           className="sticky top-0 z-20 -mx-2 mb-4 flex flex-wrap items-center gap-3 border-b border-line/40 bg-reading/90 px-2 py-2 text-sm backdrop-blur supports-[backdrop-filter]:bg-reading/75"
         >
           <CollabBar projectSlug={projectSlug} />
-          <div className="flex flex-1 flex-wrap items-center justify-end gap-3">
+          {/* Barre STABLE (axe 4) : alignement à GAUCHE + ordre fixe → les contrôles ne
+              « changent plus de côté » quand un élément conditionnel apparaît/disparaît
+              (l'ancien justify-end re-tassait tout à droite). La zone Lecture/Langue est
+              poussée à droite comme un BLOC (ml-auto) et reste groupée au repli. */}
+          <div className="flex flex-1 flex-wrap items-center gap-x-2.5 gap-y-2">
           {/* P3 : sélecteur de version TOUJOURS visible dès qu'il existe des versions,
               indépendamment de la source. Le switch n'affecte QUE l'overlay LLM
               (clé react-query) ; les clauses humaines ne sont jamais touchées. */}
@@ -528,6 +538,10 @@ export function DocumentPanel({
           {gutterAllModels.some((m) => m.hasData) && (
             <ModelBoundaryLegend models={gutterAllModels} />
           )}
+          {/* Zone DROITE STABLE : confort de lecture + langue, ancrée à droite (ml-auto),
+              groupée comme un bloc (ne se disperse pas, ne change pas de côté). */}
+          <div className="ml-auto inline-flex flex-wrap items-center gap-2.5">
+          <span aria-hidden className="hidden h-5 w-px self-center bg-line/60 sm:block" />
           {/* Confort de lecture (point f) : zoom du texte + lignes élargies. */}
           <div
             data-testid="reading-controls"
@@ -573,6 +587,7 @@ export function DocumentPanel({
             </button>
           </div>
           <LangSwitch />
+          </div>
           </div>
           {/* Comparaison N-WAY (axe 7) : bandeau + navigation des divergences, placés
               DANS la barre sticky (largeur pleine → sa propre ligne) afin de rester
@@ -989,8 +1004,7 @@ export function DocumentPanel({
         <BoundaryEvidence
           x={boundaryPop.x}
           y={boundaryPop.y}
-          claudeDetail={boundaryClaude}
-          codexDetail={boundaryCodex}
+          judges={boundaryJudges}
           onClose={() => setBoundaryPop(null)}
         />
       )}
