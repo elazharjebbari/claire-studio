@@ -11,12 +11,74 @@ import logging
 
 from django.db import transaction
 
+from rest_framework import serializers as drf_serializers
+
 from claire.audit.services import record_event
 from claire.common.exceptions import Conflict
+from claire.schemes.models import Theme
 
-from .models import Annotation, AnnotationStatus, AnnotationVersion, Clause
+from .models import (
+    Annotation,
+    AnnotationStatus,
+    AnnotationVersion,
+    Clause,
+    ClauseRole,
+    ClauseTheme,
+    validate_clause_theme_set,
+)
 
 logger = logging.getLogger("claire.annotations")
+
+
+@transaction.atomic
+def set_clause_theme_tags(clause: Clause, themes_input: list[dict], scheme) -> list[ClauseTheme]:
+    """Remplace l'ensemble multi-label d'une clause et synchronise le miroir scalaire.
+
+    themes_input = [{"label": code, "role": "primary"|"secondary", "support"?: int}, ...].
+    Valide les invariants (exactement un primary ; refuge jamais secondary), persiste les
+    ClauseTheme et met à jour `clause.theme` (= primaire) pour la rétro-compatibilité.
+    Lève serializers.ValidationError (→ 422) si invalide.
+    """
+    if not themes_input:
+        raise drf_serializers.ValidationError({"themes": "au moins un thème requis."})
+
+    tags: list[ClauseTheme] = []
+    for i, t in enumerate(themes_input):
+        code = (t or {}).get("label")
+        role = (t or {}).get("role")
+        if role not in (ClauseRole.PRIMARY, ClauseRole.SECONDARY):
+            raise drf_serializers.ValidationError({"themes": f"rôle invalide: {role!r}"})
+        try:
+            theme = scheme.themes.get(code=code)
+        except Theme.DoesNotExist:
+            raise drf_serializers.ValidationError(
+                {"themes": f"thème '{code}' absent du scheme {scheme.slug}."}
+            )
+        tags.append(ClauseTheme(
+            clause=clause, theme=theme, role=role,
+            support=int(t.get("support") or 0), order=i,
+        ))
+
+    try:
+        validate_clause_theme_set(tags)
+    except Exception as exc:  # ValidationError Django → 422 DRF
+        raise drf_serializers.ValidationError({"themes": str(exc)})
+
+    clause.theme_tags.all().delete()
+    ClauseTheme.objects.bulk_create(tags)
+    primary = next(t for t in tags if t.role == ClauseRole.PRIMARY)
+    if clause.theme_id != primary.theme_id:
+        clause.theme = primary.theme
+        clause.save(update_fields=["theme"])
+    return tags
+
+
+def ensure_primary_tag(clause: Clause) -> None:
+    """Garantit qu'une clause mono porte 1 ClauseTheme primary (= son thème scalaire)."""
+    if not clause.theme_tags.exists():
+        ClauseTheme.objects.create(
+            clause=clause, theme=clause.theme, role=ClauseRole.PRIMARY, support=0, order=0
+        )
 
 # Allowed transitions (see dossier/03_data_model/state_machines.puml).
 ALLOWED_TRANSITIONS: dict[str, set[str]] = {

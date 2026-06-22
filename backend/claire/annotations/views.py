@@ -18,7 +18,18 @@ from claire.common.permissions import (
 from claire.imports.models import PreAnnotation
 from claire.imports.services import seed_annotation_from_preannotation
 
-from .models import Annotation, AnnotationStatus, Clause
+from django.db import transaction
+
+from claire.corpora.models import Sentence
+from claire.schemes.models import Theme
+
+from .models import (
+    Annotation,
+    AnnotationStatus,
+    BoundaryType,
+    Clause,
+    ClauseRole,
+)
 from .serializers import (
     AnnotationDetailSerializer,
     AnnotationListSerializer,
@@ -29,8 +40,30 @@ from .serializers import (
 from .services import (
     create_version,
     diff_versions,
+    ensure_primary_tag,
+    set_clause_theme_tags,
     transition_status,
 )
+
+
+def _apply_boundary_and_level(clause, data) -> list[str]:
+    """Applique boundary {type, support} et triageLevel depuis une charge (camel/snake).
+    Retourne la liste des champs modifiés (pour save(update_fields=...))."""
+    changed: list[str] = []
+    boundary = data.get("boundary")
+    if isinstance(boundary, dict):
+        btype = boundary.get("type")
+        if btype in (BoundaryType.HARD, BoundaryType.SOFT):
+            clause.boundary_type = btype
+            changed.append("boundary_type")
+        if boundary.get("support") is not None:
+            clause.boundary_support = int(boundary["support"])
+            changed.append("boundary_support")
+    level = data.get("triage_level", data.get("triageLevel"))
+    if level is not None:
+        clause.triage_level = str(level)[:2]
+        changed.append("triage_level")
+    return changed
 
 logger = logging.getLogger("claire.annotations")
 
@@ -178,6 +211,14 @@ class AnnotationViewSet(viewsets.ModelViewSet):
         ser = ClauseSerializer(data=request.data)
         ser.is_valid(raise_exception=True)
         attrs = ser._resolve(annotation, dict(ser.validated_data))
+        # `theme` scalaire absent mais `themes` fourni → dériver du primaire (ergonomie).
+        themes_in = request.data.get("themes")
+        if "theme" not in attrs and isinstance(themes_in, list) and themes_in:
+            prim = next((t for t in themes_in if t.get("role") == "primary"), themes_in[0])
+            try:
+                attrs["theme"] = annotation.project.scheme.themes.get(code=prim.get("label"))
+            except Theme.DoesNotExist:
+                pass
         if "anchor_sentence" not in attrs or "theme" not in attrs:
             return Response(
                 {"detail": "anchorIndex and theme are required."},
@@ -188,12 +229,87 @@ class AnnotationViewSet(viewsets.ModelViewSet):
         ).exists():
             raise Conflict("A clause already starts on this sentence (INV-2).")
         attrs.setdefault("order", annotation.clauses.count())
-        clause = Clause.objects.create(
-            annotation=annotation, client_op_id=client_op_id, **attrs
-        )
+        with transaction.atomic():
+            clause = Clause.objects.create(
+                annotation=annotation, client_op_id=client_op_id, **attrs
+            )
+            changed = _apply_boundary_and_level(clause, request.data)
+            if changed:
+                clause.save(update_fields=changed)
+            # Multi-label : si `themes` fourni, on pose le set ; sinon tag primaire mono.
+            themes = request.data.get("themes")
+            if isinstance(themes, list) and themes:
+                set_clause_theme_tags(clause, themes, annotation.project.scheme)
+            else:
+                ensure_primary_tag(clause)
         return Response(
             ClauseSerializer(clause).data, status=status.HTTP_201_CREATED
         )
+
+    @action(detail=True, methods=["post"], url_path="clauses/batch")
+    def add_clauses_batch(self, request, pk=None):
+        """Acceptation par lot (C1) : crée N clauses en une transaction.
+
+        Idempotent (clientOpId rejoué → clause existante). Les conflits INV-2 (phrase
+        déjà annotée) sont rapportés par item SANS abandonner le lot. Corps :
+        ``{"clauses": [{anchorIndex, themes|theme, boundary?, triageLevel?, clientOpId?}]}``.
+        """
+        annotation = self.get_object()
+        scheme = annotation.project.scheme
+        document = annotation.document
+        items = request.data.get("clauses") or []
+        created, conflicts = [], []
+
+        def primary_code(item):
+            themes = item.get("themes")
+            if isinstance(themes, list) and themes:
+                prim = next((t for t in themes if t.get("role") == "primary"), themes[0])
+                return prim.get("label")
+            return item.get("theme")
+
+        with transaction.atomic():
+            order0 = annotation.clauses.count()
+            for idx, item in enumerate(items):
+                op = str(item.get("client_op_id") or item.get("clientOpId") or "").strip()
+                if op:
+                    existing = annotation.clauses.filter(client_op_id=op).first()
+                    if existing is not None:
+                        created.append(ClauseSerializer(existing).data)
+                        continue
+                anchor_index = item.get("anchor_index", item.get("anchorIndex"))
+                code = primary_code(item)
+                if anchor_index is None or not code:
+                    conflicts.append({"anchorIndex": anchor_index, "reason": "anchorIndex et theme requis"})
+                    continue
+                try:
+                    sentence = document.sentences.get(index=anchor_index)
+                except Sentence.DoesNotExist:
+                    conflicts.append({"anchorIndex": anchor_index, "reason": "phrase inexistante"})
+                    continue
+                try:
+                    theme = scheme.themes.get(code=code)
+                except Theme.DoesNotExist:
+                    conflicts.append({"anchorIndex": anchor_index, "reason": f"thème '{code}' hors scheme"})
+                    continue
+                if annotation.clauses.filter(anchor_sentence=sentence).exists():
+                    conflicts.append({"anchorIndex": anchor_index, "reason": "déjà annotée (INV-2)"})
+                    continue
+                clause = Clause.objects.create(
+                    annotation=annotation, anchor_sentence=sentence, theme=theme,
+                    order=order0 + idx, client_op_id=op,
+                )
+                ch = _apply_boundary_and_level(clause, item)
+                if ch:
+                    clause.save(update_fields=ch)
+                themes = item.get("themes")
+                if isinstance(themes, list) and themes:
+                    set_clause_theme_tags(clause, themes, scheme)
+                else:
+                    ensure_primary_tag(clause)
+                created.append(ClauseSerializer(clause).data)
+
+        http = status.HTTP_201_CREATED if created else status.HTTP_409_CONFLICT
+        return Response({"created": created, "conflicts": conflicts}, status=http)
 
     # --- versions ---------------------------------------------------------
     @action(detail=True, methods=["get", "post"])
@@ -390,7 +506,7 @@ class ClauseViewSet(viewsets.ModelViewSet):
     serializer_class = ClauseSerializer
     # Édition d'une clause réservée au propriétaire de l'annotation (R1).
     permission_classes = [IsAnnotationOwner]
-    http_method_names = ["get", "patch", "delete"]
+    http_method_names = ["get", "patch", "delete", "post"]  # post : swap-primary, boundary
 
     def get_queryset(self):
         # Indépendance (ADR-001) : un non‑privilégié ne lit/édite que les clauses de
@@ -417,7 +533,65 @@ class ClauseViewSet(viewsets.ModelViewSet):
             anchor_sentence=new_anchor
         ).exists():
             raise Conflict("Another clause already starts on this sentence (INV-2).")
-        for field, value in attrs.items():
-            setattr(clause, field, value)
-        clause.save()
+        with transaction.atomic():
+            for field, value in attrs.items():
+                setattr(clause, field, value)
+            _apply_boundary_and_level(clause, request.data)
+            clause.save()
+            # Multi-label : `themes` remplace le set ; sinon, garder le miroir scalaire cohérent.
+            themes = request.data.get("themes")
+            if isinstance(themes, list) and themes:
+                set_clause_theme_tags(clause, themes, clause.annotation.project.scheme)
+            elif attrs.get("theme") is not None:
+                # le thème scalaire a changé → resynchroniser le tag primaire.
+                set_clause_theme_tags(
+                    clause, [{"label": clause.theme.code, "role": "primary"}],
+                    clause.annotation.project.scheme,
+                )
+            else:
+                ensure_primary_tag(clause)
+        return Response(ClauseSerializer(clause).data)
+
+    @action(detail=True, methods=["post"], url_path="swap-primary")
+    def swap_primary(self, request, pk=None):
+        """Permute primaire/secondaire en un geste. Corps : ``{"label": <code>}``."""
+        clause = self.get_object()
+        target = request.data.get("label")
+        tags = list(clause.theme_tags.select_related("theme").all())
+        cur_primary = next((t for t in tags if t.role == ClauseRole.PRIMARY), None)
+        new_primary = next((t for t in tags if t.theme.code == target), None)
+        if new_primary is None:
+            raise Conflict(f"thème '{target}' absent de cette clause.")
+        if cur_primary is not None and cur_primary.theme.code == target:
+            return Response(ClauseSerializer(clause).data)  # déjà primaire, no-op
+        # target → primaire ; l'ancien primaire → secondaire ; les autres inchangés.
+        payload = []
+        for t in tags:
+            if t.theme.code == target:
+                role = "primary"
+            elif cur_primary is not None and t.pk == cur_primary.pk:
+                role = "secondary"
+            else:
+                role = t.role
+            payload.append({"label": t.theme.code, "role": role, "support": t.support})
+        set_clause_theme_tags(clause, payload, clause.annotation.project.scheme)
+        return Response(ClauseSerializer(clause).data)
+
+    @action(detail=True, methods=["post"])
+    def boundary(self, request, pk=None):
+        """Figer la frontière dure/molle. Corps : ``{"op": "set_hard"|"set_soft", "validatedBy"?}``.
+        (merge/scission = DELETE/POST clause via les endpoints existants.)"""
+        clause = self.get_object()
+        op = request.data.get("op")
+        if op == "set_hard":
+            clause.boundary_type = BoundaryType.HARD
+        elif op == "set_soft":
+            clause.boundary_type = BoundaryType.SOFT
+        else:
+            raise Conflict("op invalide (attendu : set_hard | set_soft).")
+        fields = ["boundary_type"]
+        if request.data.get("validatedBy") or request.data.get("validated_by"):
+            clause.validated = True
+            fields.append("validated")
+        clause.save(update_fields=fields)
         return Response(ClauseSerializer(clause).data)
