@@ -289,12 +289,32 @@ export interface ProjectDocument {
   sessionsSummary?: { assigned: number; started: number; submitted: number };
 }
 
+/** Rôle d'un thème dans une clause multi-label (protocole confiance graduée). */
+export type ClauseRole = "primary" | "secondary";
+/** Force de la frontière d'ouverture (protocole : dure 3/3 vs molle 2/3). */
+export type BoundaryKind = "hard" | "soft";
+/** Niveau de triage dérivé de l'accord inter-juges (ORTHOGONAL à la certitude 0–3). */
+export type TriageLevel = "C1" | "C2" | "C3" | "C4" | "C5";
+/** Étiquette de thème (multi-label) : 1 primaire + N secondaires. */
+export interface ThemeTag {
+  label: string;
+  role: ClauseRole;
+  support?: number;
+}
+
 export interface Clause {
   id: string;
   annotationId: string;
   /** Index de la phrase ancre (CONTRACT §4 : anchor_index). */
   anchorIndex: number;
+  /** Thème PRIMAIRE (miroir scalaire, rétro-compatible). Voir aussi `themes`. */
   theme: string;
+  /** Multi-label (additif) : 1 primaire + N secondaires. Absent ⇒ mono = [{theme, primary}]. */
+  themes?: ThemeTag[];
+  /** Frontière d'ouverture (additif). */
+  boundary?: { type: BoundaryKind; support: number };
+  /** Niveau de triage C1–C5 (additif, dérivé). */
+  triageLevel?: TriageLevel | null;
   legalNature?: string | null;
   evidenceSpan?: string;
   rationale?: string;
@@ -305,6 +325,11 @@ export interface Clause {
   validated?: boolean;
   /** Provenance optionnelle si la clause vient d'une pré-annotation. */
   seededFrom?: string | null;
+}
+
+/** Thème primaire d'une clause (multi-label si présent, sinon le scalaire `theme`). */
+export function primaryThemeOf(c: Pick<Clause, "theme" | "themes">): string {
+  return c.themes?.find((t) => t.role === "primary")?.label ?? c.theme;
 }
 
 export interface Annotation {
