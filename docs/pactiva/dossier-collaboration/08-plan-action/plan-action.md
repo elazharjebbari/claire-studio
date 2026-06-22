@@ -67,8 +67,10 @@
 | P1 | Export **asynchrone** (job PENDING + poll) + prefetch clauses + streaming jsonl — nécessite une file (Celery/RQ) | `export-synchronous-in-request` |
 | P2 | Tokens sémantiques (StatusPill/SaveIndicator) — retrait des ~86 couleurs Tailwind en dur | `hardcoded-tailwind-state-colors` |
 | P2 | Format **huggingface** réel (ou le retirer de l'UI) | `silent-format-fallback` |
-| P3 | Hygiène prod : désactiver/supprimer comptes démo `@claire.local` + projet démo (**sur validation explicite**) | (audit prod) |
 | P3 | `Assignment.status` synchronisé avec le statut de l'`Annotation` | `assignment-no-name` |
+
+### Fait hors code (opérations prod)
+- ✅ **Hygiène prod (2026-06-22, sur validation)** : suppression transactionnelle (avec backup JSON `0600` sur le VPS) des 4 comptes démo `@claire.local` (dont le superuser `admin`), du projet démo `claudette-gold-v1` (cascade annotations/assign/membres/pré-annotations) et des `ActivityEvent` associés. Après : seuls les 3 comptes réels subsistent, superuser unique `elazhar.jebbari`, `campagne-pactiva` intacte. Piège noté : `ActivityEvent.actor` est en `PROTECT` (purger avant suppression d'un user).
 
 ## Migrations
 
