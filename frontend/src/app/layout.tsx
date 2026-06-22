@@ -32,6 +32,19 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       className={`dark ${inter.variable} ${outfit.variable}`}
       suppressHydrationWarning
     >
+      <head>
+        {/*
+          Anti-FOUC (a11y/charte) : applique le thème PERSISTÉ avant le premier paint.
+          Le défaut est sombre (classe `dark` ci-dessus) ; si l'utilisateur a choisi
+          « clair » (store zustand `claire.ui`), on bascule la classe AVANT le rendu —
+          sinon un flash sombre précédait l'application du thème en useEffect.
+        */}
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `try{var s=localStorage.getItem('claire.ui');var t=s&&JSON.parse(s).state&&JSON.parse(s).state.theme;if(t==='light'){var r=document.documentElement;r.classList.remove('dark');r.classList.add('light');r.style.colorScheme='light';}}catch(e){}`,
+          }}
+        />
+      </head>
       <body>
         <Providers>{children}</Providers>
       </body>

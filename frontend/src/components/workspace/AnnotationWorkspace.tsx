@@ -12,6 +12,7 @@ import { useAnnotation, useDocument, useProject, useScheme, useMe } from "@/lib/
 import { useWorkspaceStore } from "@/store/workspace";
 import { useUiStore } from "@/store/ui";
 import { setRuntimeThemes } from "@/lib/tokens";
+import { llmJudgeLabel } from "@/lib/llmJudges";
 import { ResizablePanels } from "./ResizablePanels";
 import { TocPanel } from "./TocPanel";
 import { DocumentPanel } from "./DocumentPanel";
@@ -38,6 +39,11 @@ export function AnnotationWorkspace({ annotationId }: { annotationId: string }) 
 
   const init = useWorkspaceStore((s) => s.init);
   const reset = useWorkspaceStore((s) => s.reset);
+  // Source de segmentation affichée (collaboration) : « human » = MA session
+  // éditable ; un juge LLM = vue LECTURE (la collaboration aide, ne fait pas
+  // référence) ; « compare » = superposition. Sert la bannière de contexte ci-dessous.
+  const llmSource = useWorkspaceStore((s) => s.llmSource);
+  const isJudgeView = isMine && llmSource !== "human" && llmSource !== "compare";
   const setCurrentProject = useUiStore((s) => s.setCurrentProject);
   // Point f : repli de l'inspecteur (droite) pour gagner de l'espace, persisté.
   const inspectorOpen = useUiStore((s) => s.inspectorOpen);
@@ -130,6 +136,17 @@ export function AnnotationWorkspace({ annotationId }: { annotationId: string }) 
         >
           <Eye size={13} aria-hidden className="text-warning" /> Lecture seule — annotation
           d'un autre annotateur (non modifiable)
+        </div>
+      )}
+      {isJudgeView && (
+        <div
+          data-testid="judge-view-banner"
+          role="status"
+          className="flex h-7 shrink-0 items-center gap-1.5 border-b border-line bg-sky-400/10 px-3 text-xs font-medium text-ink"
+        >
+          <Eye size={13} aria-hidden className="text-sky-300" /> Vue lecture —
+          segmentation {llmJudgeLabel(llmSource)} (aide ; ne fait pas référence). Repassez
+          sur « Humain » pour éditer votre annotation.
         </div>
       )}
       <div className="flex min-h-0 flex-1">

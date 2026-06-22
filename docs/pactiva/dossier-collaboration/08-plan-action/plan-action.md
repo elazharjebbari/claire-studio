@@ -54,15 +54,15 @@
 | 19 | a11y : `@media (prefers-reduced-motion: reduce)` | `frontend/src/app/globals.css` | ✅ |
 | 20 | Fix var CSS inexistante `--surface-line` → `--surface-border` | `DocumentPanel.tsx`, `ModelBoundaryRail.tsx` | ✅ |
 | 21 | Handler MSW `/documents` enrichi (`sessions[]`/`sessionsSummary`) pour la démo/e2e | `frontend/src/mocks/handlers.ts` | ✅ |
+| 22 | Bannière « Vue lecture » quand la source affichée est un juge LLM | `frontend/src/components/workspace/AnnotationWorkspace.tsx` | ✅ |
+| 23 | Script thème **anti-FOUC** (bloquant, avant le 1er paint) | `frontend/src/app/layout.tsx` | ✅ |
 
 ## Lot 4c — Reste planifié 🔜 (priorisé)
 
 | Priorité | Action | Origine (audit) |
 |---|---|---|
-| P1 | Bannière « lecture seule » quand la source affichée est un juge LLM (DocumentPanel) | `judge-view-no-readonly` |
 | P1 | Export **asynchrone** (job PENDING + poll) + prefetch clauses + streaming jsonl | `export-synchronous-in-request` |
 | P2 | Tokens sémantiques (StatusPill/SaveIndicator) — retrait des ~86 couleurs Tailwind en dur | `hardcoded-tailwind-state-colors` |
-| P2 | Script thème anti-FOUC (bloquant, avant 1er paint) | `theme-fouc-no-blocking-script` |
 | P2 | Implémenter réellement conll/xml/huggingface (ou les retirer de l'UI) | `silent-format-fallback` |
 | P3 | Hygiène prod : désactiver/supprimer comptes démo `@claire.local` + projet démo (sur validation) | (audit prod) |
 | P3 | `Assignment.status` synchronisé avec le statut de l'`Annotation` | `assignment-no-name` |
