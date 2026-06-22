@@ -1,0 +1,27 @@
+id,phase,acteurs,operations,invariant_vise,resultat_attendu,niveau,test
+S01,setup,admin,créer membres + assignations (3 annot × 50 docs),INV-DOC-UNIQUE,assignations créées sans doublon de document,integ,test_sessions_documents
+S02,ouverture,annotateur,POST /annotations (x2 même doc),INV-4 / INV-IDEM,même id renvoyé, 1 seule Annotation,integ,test_open_session_idempotent
+S03,annotation,annotateur,add clause (ancre/thème),INV-LOSS,clause persistée + relue fidèlement,integ,test_no_data_loss_full_fidelity
+S04,annotation,annotateur,add 2 clauses même ancre,INV-2,2e → 409,integ,test_duplicate_anchor_conflict
+S05,annotation,annotateur,add clause + retry même clientOpId,INV-IDEM,2e → 200, pas de doublon,integ,test_idempotent_clause_retry
+S06,annotation,annotateur,retag / désannoter / valider,INV-LOSS,état relu == attendu,integ,test_no_data_loss_full_fidelity
+S07,etancheite,annot A + annot B,B add/patch/delete/submit sur session de A,INV-OWN,403/404, session de A intacte,integ,test_cross_session_write_denied
+S08,etancheite,annot A + annot B,B GET liste / annotation / clause de A,INV-READ,liste sans A, GET 403/404,integ,test_cross_session_read_isolation
+S09,collaboration,reviewer,commenter la session de A,INV-COLLAB,clauses de A inchangées (compte + contenu),integ,test_comment_does_not_corrupt_clauses
+S10,collaboration,non-membre,GET /comments,INV-COMMENT-ISO,ne voit pas les commentaires hors projet,integ,test_security_m9 / battery
+S11,soumission,annotateur,submit,INV-VER / INV-FSM,statut submitted + AnnotationVersion immuable,integ,test_submit_creates_version_and_fsm
+S12,soumission,annotateur,transition illégale (ex. approved direct),INV-FSM,409,integ,test_correctifs / battery
+S13,supervision,admin,GET /projects/{slug}/documents,INV-DOC-UNIQUE,1 ligne/doc + sessions[] (matrice),integ,test_documents_dedup_and_admin_matrix
+S14,analytics,admin,GET annotators-progress / progress,INV-STATS,assigned/started/submitted == vérité DB,integ,test_iaa_and_stats_multi_annotator
+S15,analytics,3 annotateurs,soumissions divergentes → IAA,INV-IAA,κ pairwise calculable, C(3,2)=3 paires,integ,test_iaa_and_stats_multi_annotator
+S16,analytics,-,κ de Cohen (séries générées),INV-IAA,κ∈[-1,1], identité→1, symétrique,property,test_kappa_* (hypothesis 700 ex.)
+S17,campagne,3 annotateurs,~140 opérations aléatoires/​seed × 12 seeds,INV-LOSS/READ/IDEM/2/4,réconciliation OK à CHAQUE pas,property,test_campaign_simulation (~1700 ops)
+S18,export,admin,POST export (async),INV-EXPORT,202 non bloquant → done, records attribués,integ,test_export_async
+S19,export,admin,export d'un scope vide / format de repli,INV-EXPORT,manifeste tracé, failed persiste, retry,integ,test_export_async
+S20,export,admin,download avant done,INV-EXPORT,404 (gated),integ,test_download_requires_done
+S21,client,annotateur,reset entre 2 sessions,INV-READ (front),aucune fuite d'état entre sessions,unit,multiSessionStore.test
+S22,client,annotateur,readOnly = consultation session d'autrui,INV-OWN (front),tous les mutateurs no-op,unit,multiSessionStore.test
+S23,e2e,annotateur,workspace bannière + sélecteur,INV-DOC-UNIQUE,bannière session + 0 doublon,e2e,multi-annotation.spec
+S24,e2e,admin,matrice suivi des sessions,INV-STATS,matrice document×annotateur + œil lecture seule,e2e,multi-annotation.spec
+S25,chaos,annotateur,ancres hors bornes / thèmes random,INV-2/LOSS,rejet propre, pas de corruption,property,test_campaign_simulation
+S26,chaos,3 annotateurs,interleaving create/delete/submit,INV-LOSS,pas de perte ni de doublon, INV-4 final,property,test_campaign_simulation
