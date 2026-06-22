@@ -296,9 +296,9 @@ EMAIL_USE_TLS = env.bool("EMAIL_USE_TLS", default=True)
 EMAIL_USE_SSL = env.bool("EMAIL_USE_SSL", default=False)
 EMAIL_TIMEOUT = env.int("EMAIL_TIMEOUT", default=10)
 DEFAULT_FROM_EMAIL = env(
-    "DEFAULT_FROM_EMAIL", default="Pactiva <noreply@pactiva.legal>"
+    "DEFAULT_FROM_EMAIL", default="Pactiva <no-reply@pactiva.legal>"
 )
-SERVER_EMAIL = env("SERVER_EMAIL", default="noreply@pactiva.legal")
+SERVER_EMAIL = env("SERVER_EMAIL", default="no-reply@pactiva.legal")
 FRONTEND_BASE_URL = env("FRONTEND_BASE_URL", default="http://localhost:3001")
 # Durée de validité des liens signés (vérif e-mail / reset), en secondes.
 EMAIL_TOKEN_MAX_AGE = env.int("EMAIL_TOKEN_MAX_AGE", default=60 * 60 * 24)

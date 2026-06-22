@@ -1,0 +1,22 @@
+priorite,type,nom,valeur,source,note
+REQUIS,MX,pactiva.legal,10 mail.lumiereacademy.com.,fixe,hote mail mutualise existant
+REQUIS,TXT,pactiva.legal,v=spf1 mx -all,fixe,SPF — ne PAS publier v=spf1 seul
+REQUIS,TXT,<sel-ed>._domainkey.pactiva.legal,"v=DKIM1; k=ed25519; h=sha256; p=<cle>",etape-02,sel-ed=v1-ed25519-AAAAMMJJ
+REQUIS,TXT,<sel-rsa>._domainkey.pactiva.legal,"v=DKIM1; k=rsa; h=sha256; p=<cle-longue>",etape-02,scinder en chaines 255c si besoin
+REQUIS,TXT,_dmarc.pactiva.legal,"v=DMARC1; p=quarantine; rua=mailto:info@pactiva.legal; adkim=s; aspf=r",override-manuel,NE PAS recopier la ligne _dmarc du dnsZoneFile (p=reject) ; passer p=reject apres 48-72h
+RECOMMANDE,TXT,_smtp._tls.pactiva.legal,"v=TLSRPTv1; rua=mailto:info@pactiva.legal",fixe,rapports TLS (autonome)
+OMETTRE-INERTE,CNAME,mta-sts.pactiva.legal,mail.lumiereacademy.com.,—,MTA-STS non servi (cert self-signed OLS) — omettre sauf policy https valide
+OMETTRE-INERTE,TXT,_mta-sts.pactiva.legal,"v=STSv1; id=<id>",—,idem ; publier seulement si mta-sts.txt servi avec cert couvrant mta-sts.pactiva.legal
+OPTIONNEL,SRV,_imaps._tcp.pactiva.legal,0 1 993 mail.lumiereacademy.com.,fixe,autodiscovery IMAP
+OPTIONNEL,SRV,_submissions._tcp.pactiva.legal,0 1 465 mail.lumiereacademy.com.,fixe,autodiscovery SMTP submissions
+OPTIONNEL,SRV,_pop3s._tcp.pactiva.legal,0 1 995 mail.lumiereacademy.com.,fixe,
+OPTIONNEL,SRV,_jmap._tcp.pactiva.legal,0 1 443 mail.lumiereacademy.com.,fixe,
+OPTIONNEL,SRV,_caldavs._tcp.pactiva.legal,0 1 443 mail.lumiereacademy.com.,fixe,
+OPTIONNEL,SRV,_carddavs._tcp.pactiva.legal,0 1 443 mail.lumiereacademy.com.,fixe,
+OPTIONNEL,CNAME,autoconfig.pactiva.legal,mail.lumiereacademy.com.,fixe,autoconfig Thunderbird
+OPTIONNEL,CNAME,autodiscover.pactiva.legal,mail.lumiereacademy.com.,fixe,autodiscover Outlook
+OPTIONNEL,CNAME,ua-auto-config.pactiva.legal,mail.lumiereacademy.com.,fixe,
+OPTIONNEL,TXT,_ua-auto-config.pactiva.legal,"v=UAAC1; a=sha256; d=<hash>",etape-02,
+VOIE-B,A,webmail.pactiva.legal,46.202.128.168,fixe,uniquement si webmail brande (voir 04)
+NE-PAS-PUBLIER,A,mail.pactiva.legal,—,—,MX pointe sur mail.lumiereacademy.com
+NE-PAS-PUBLIER,TLSA,*._tcp.mail.pactiva.legal,—,—,DANE appartient a mail.lumiereacademy.com
