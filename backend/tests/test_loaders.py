@@ -82,6 +82,26 @@ def test_normalize_v92_extracts_legal_nature_from_annotations():
     assert clauses[1]["legal_nature"] == "PROHIBITION"  # ancre = phrase 2
 
 
+def test_normalize_v92_rebuilds_segments_from_annotations_when_plan_empty():
+    """Repli (ex. Instagram) : segments vides → reconstruits depuis annotations[]
+    (is_block_start), avec thème/rationale/evidence/nature fidèles."""
+    raw = {
+        "document_plan": {"segments": []},
+        "annotations": [
+            {"id": 0, "theme": "META", "is_block_start": True, "rationale": "titre",
+             "rationale_codes": {"evidence_span": "effective on"}, "legal_nature": "META"},
+            {"id": 1, "theme": "META", "is_block_start": False, "legal_nature": "META"},
+            {"id": 2, "theme": "ACCEPTABLE_USE", "is_block_start": True, "rationale": "usage",
+             "rationale_codes": {"evidence_span": "by using"}, "legal_nature": "OBLIGATION"},
+        ],
+    }
+    clauses = normalize_v92(raw)
+    assert [c["anchor_index"] for c in clauses] == [0, 2]
+    assert clauses[0]["theme"] == "META" and clauses[0]["evidence_span"] == "effective on"
+    assert clauses[1]["theme"] == "ACCEPTABLE_USE"
+    assert clauses[1]["legal_nature"] == "OBLIGATION"  # nature de l'ancre 2
+
+
 def test_normalize_v92_maps_start_id_and_span():
     clauses = normalize_v92(V92)
     assert clauses[0]["anchor_index"] == 0

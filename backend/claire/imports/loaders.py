@@ -100,13 +100,56 @@ def _nature_by_index(raw: dict) -> dict[int, str]:
     return out
 
 
+def _segments_from_annotations(annotations) -> list[dict]:
+    """Repli : reconstruit les segments (vue BLOCS) depuis `annotations[]` (vue PHRASE)
+    quand `document_plan.segments` est vide. Un segment commence à chaque
+    `is_block_start` ; à défaut de marqueurs, on coupe à chaque changement de thème.
+    Données Mistral FIDÈLES (réassemblage, pas de fabrication) — complète un doc dont
+    le plan de blocs n'a pas été émis (ex. Instagram). evidence/rationale de l'ancre."""
+    if not isinstance(annotations, list):
+        return []
+    rows = [
+        a for a in annotations
+        if isinstance(a, dict) and "id" in a and a.get("theme")
+    ]
+    if not rows:
+        return []
+    try:
+        rows.sort(key=lambda a: int(a["id"]))
+    except (TypeError, ValueError):
+        return []
+    has_markers = any(a.get("is_block_start") for a in rows)
+    out: list[dict] = []
+    prev_theme = None
+    for a in rows:
+        is_start = a.get("is_block_start") if has_markers else (a.get("theme") != prev_theme)
+        if is_start:
+            rc = a.get("rationale_codes") if isinstance(a.get("rationale_codes"), dict) else {}
+            out.append(
+                {
+                    "start_id": int(a["id"]),
+                    "theme": a.get("theme", ""),
+                    "rationale": a.get("rationale", "") or "",
+                    "evidence_span": (rc.get("evidence_span") or a.get("evidence_span") or ""),
+                }
+            )
+        prev_theme = a.get("theme")
+    return out
+
+
 def normalize_v92(raw: dict) -> list[dict]:
-    """v9.2 document_plan.segments[] -> pivot clauses (+ legal_nature de l'ancre)."""
+    """v9.2 document_plan.segments[] -> pivot clauses (+ legal_nature de l'ancre).
+
+    Repli robuste : si le plan de blocs est vide mais que `annotations[]` est présent,
+    on reconstruit les segments depuis la vue par phrase (cf. _segments_from_annotations).
+    """
     segments = raw.get("document_plan", {}).get("segments", [])
     if not isinstance(segments, list):
         raise PreAnnotationFormatError(
             "v9.2 'document_plan.segments' must be a list."
         )
+    if not segments:
+        segments = _segments_from_annotations(raw.get("annotations"))
     nature = _nature_by_index(raw)
     out: list[dict] = []
     for i, s in enumerate(segments):
