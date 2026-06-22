@@ -48,6 +48,10 @@ const MODULES: Array<{ title: string; body: string; status: "available" | "soon"
   },
 ];
 
+// Adresse de contact publique. Pilotée par l'env (variable de build Next),
+// défaut = la boîte mail de contact Pactiva. Voir aussi le .env e-mail du backend.
+const CONTACT_EMAIL = process.env.NEXT_PUBLIC_CONTACT_EMAIL || "info@pactiva.legal";
+
 export default function HomePage() {
   return (
     <main className="theme-light min-h-screen bg-bg text-ink">
@@ -257,6 +261,16 @@ export default function HomePage() {
               Accéder au système d'annotation
             </Link>
           </div>
+          <p className="mt-6 text-sm text-ink-muted">
+            Une question ? Écrivez-nous à{" "}
+            <a
+              href={`mailto:${CONTACT_EMAIL}`}
+              data-testid="contact-email"
+              className="font-medium text-accent hover:underline"
+            >
+              {CONTACT_EMAIL}
+            </a>
+          </p>
         </div>
       </section>
 
@@ -271,6 +285,14 @@ export default function HomePage() {
             <p className="text-xs text-ink-muted">
               Une solution développée en collaboration avec des docteurs en droit.
             </p>
+            <p className="mt-2 text-xs">
+              <a
+                href={`mailto:${CONTACT_EMAIL}`}
+                className="text-ink-muted hover:text-ink"
+              >
+                {CONTACT_EMAIL}
+              </a>
+            </p>
           </div>
           <nav className="flex items-center gap-4 text-sm text-ink-muted">
             <Link href="/public" className="hover:text-ink">
@@ -279,6 +301,9 @@ export default function HomePage() {
             <Link href="/home" className="hover:text-ink">
               Système d'annotation
             </Link>
+            <a href={`mailto:${CONTACT_EMAIL}`} className="hover:text-ink">
+              Contact
+            </a>
             <Link href="/login" className="hover:text-ink">
               Se connecter
             </Link>
