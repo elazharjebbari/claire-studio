@@ -10,6 +10,9 @@ import { render, screen, fireEvent, cleanup } from "@testing-library/react";
 import { agreementNway } from "@/lib/llmAgreement";
 import { NaturePicker } from "@/components/ui/NaturePicker";
 import { RationaleHover } from "@/components/workspace/RationaleHover";
+import { SelectionTools } from "@/components/workspace/SelectionTools";
+import { DocumentMinimap } from "@/components/workspace/DocumentMinimap";
+import { useWorkspaceStore } from "@/store/workspace";
 import type { LegalNature } from "@/types/contract";
 
 afterEach(() => cleanup());
@@ -84,5 +87,93 @@ describe("RationaleHover (axe 1)", () => {
       <RationaleHover x={0} y={0} humanTheme={null} humanRationale={null} humanEvidence={null} judges={[]} />,
     );
     expect(container.querySelector('[data-testid="rationale-hover"]')).toBeNull();
+  });
+});
+
+describe("store.setSelection (axe 4 — sélection arbitraire)", () => {
+  it("déduplique, trie et borne à [0, nSentences)", () => {
+    const st = useWorkspaceStore.getState();
+    st.reset();
+    st.init({ annotationId: "a", nSentences: 5, clauses: [] });
+    useWorkspaceStore.getState().setSelection([3, 1, 1, 9, -2, 4]);
+    expect(useWorkspaceStore.getState().selectedSentences).toEqual([1, 3, 4]);
+  });
+});
+
+describe("SelectionTools (axe 4)", () => {
+  const cbs = {
+    onToBoundary: () => {},
+    onCurrentSegment: () => {},
+    onWholeTheme: () => {},
+    onAll: () => {},
+    onClear: () => {},
+  };
+  it("rend les actions de sélection ; compteur/effacer cachés si rien de sélectionné", () => {
+    render(<SelectionTools selectedCount={0} {...cbs} />);
+    expect(screen.getByTestId("select-to-boundary")).toBeInTheDocument();
+    expect(screen.getByTestId("select-segment")).toBeInTheDocument();
+    expect(screen.getByTestId("select-theme")).toBeInTheDocument();
+    expect(screen.getByTestId("select-all")).toBeInTheDocument();
+    expect(screen.queryByTestId("selection-count")).toBeNull();
+    expect(screen.queryByTestId("selection-clear")).toBeNull();
+  });
+  it("affiche le compteur + effacer quand des phrases sont sélectionnées", () => {
+    const onClear = vi.fn();
+    render(<SelectionTools selectedCount={7} {...cbs} onClear={onClear} />);
+    expect(screen.getByTestId("selection-count")).toHaveTextContent("7");
+    fireEvent.click(screen.getByTestId("selection-clear"));
+    expect(onClear).toHaveBeenCalled();
+  });
+  it("clic sur « Segment » appelle le bon callback", () => {
+    const onCurrentSegment = vi.fn();
+    render(<SelectionTools selectedCount={0} {...cbs} onCurrentSegment={onCurrentSegment} />);
+    fireEvent.click(screen.getByTestId("select-segment"));
+    expect(onCurrentSegment).toHaveBeenCalled();
+  });
+});
+
+describe("DocumentMinimap (axe 5)", () => {
+  const colors = ["#06B6D4", undefined, "#F59E0B", "#A78BFA"];
+  it("affiche l'indicateur de viewport quand ça défile", () => {
+    render(
+      <DocumentMinimap
+        sentenceColors={colors}
+        scrollPct={0.5}
+        viewportPct={0.3}
+        hasScroll
+        focused={2}
+        onJumpFraction={() => {}}
+      />,
+    );
+    expect(screen.getByTestId("document-minimap")).toBeInTheDocument();
+    expect(screen.getByTestId("minimap-viewport")).toBeInTheDocument();
+  });
+  it("dégrade sans indicateur de viewport si rien ne défile", () => {
+    render(
+      <DocumentMinimap
+        sentenceColors={colors}
+        scrollPct={0}
+        viewportPct={1}
+        hasScroll={false}
+        focused={0}
+        onJumpFraction={() => {}}
+      />,
+    );
+    expect(screen.queryByTestId("minimap-viewport")).toBeNull();
+  });
+  it("clic sur le rail saute à une fraction du document", () => {
+    const onJumpFraction = vi.fn();
+    render(
+      <DocumentMinimap
+        sentenceColors={colors}
+        scrollPct={0}
+        viewportPct={1}
+        hasScroll={false}
+        focused={0}
+        onJumpFraction={onJumpFraction}
+      />,
+    );
+    fireEvent.click(screen.getByTestId("document-minimap").firstChild as Element);
+    expect(onJumpFraction).toHaveBeenCalled();
   });
 });

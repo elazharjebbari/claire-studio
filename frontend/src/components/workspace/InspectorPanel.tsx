@@ -10,6 +10,7 @@
  * crée la clause à cet index (pas de thème par défaut — création explicite).
  */
 
+import { MessageSquare } from "lucide-react";
 import { useWorkspaceStore, selectSelectedDraft } from "@/store/workspace";
 import type { LegalNature } from "@/types/contract";
 import { ThemePalette } from "@/components/ui/ThemePalette";
@@ -39,10 +40,13 @@ export function InspectorPanel({
   const draft = useWorkspaceStore(selectSelectedDraft);
   const updateDraft = useWorkspaceStore((s) => s.updateDraft);
   const setCertainty = useWorkspaceStore((s) => s.setCertainty);
+  const setValidated = useWorkspaceStore((s) => s.setValidated);
   const removeBoundary = useWorkspaceStore((s) => s.removeBoundary);
   const selectClause = useWorkspaceStore((s) => s.selectClause);
   const focusedSentence = useWorkspaceStore((s) => s.focusedSentence);
   const setBoundary = useWorkspaceStore((s) => s.setBoundary);
+  const natureLabel = (code: string | null | undefined) =>
+    code ? legalNatures.find((ln) => ln.code === code)?.label ?? code : null;
 
   // État « aucune clause sur la phrase focalisée » → proposer la création (Q2).
   if (!draft) {
@@ -66,19 +70,49 @@ export function InspectorPanel({
 
   return (
     <div className="flex flex-col gap-4 p-4" data-testid="inspector">
-      <div className="flex items-center justify-between">
-        <ClauseChip themeCode={draft.theme} anchorIndex={draft.anchorIndex} selected />
-        <button
-          type="button"
-          data-testid="delete-clause"
-          onClick={() => {
-            removeBoundary(draft.anchorIndex);
-            selectClause(null);
-          }}
-          className="text-xs text-red-400 hover:underline"
-        >
-          Supprimer
-        </button>
+      {/* En-tête (axe 3a) : identité de la clause + nature + VALIDER + supprimer,
+          toujours visibles en haut de l'inspecteur. */}
+      <div className="flex flex-wrap items-center justify-between gap-2">
+        <div className="flex items-center gap-1.5">
+          <ClauseChip themeCode={draft.theme} anchorIndex={draft.anchorIndex} selected />
+          {draft.legalNature && (
+            <span
+              data-testid="nature-badge"
+              title={`Nature juridique : ${natureLabel(draft.legalNature)}`}
+              className="rounded border border-line px-1.5 py-0.5 text-[10px] font-medium text-ink-muted"
+            >
+              {natureLabel(draft.legalNature)}
+            </span>
+          )}
+        </div>
+        <div className="flex items-center gap-2">
+          {/* Validation explicite (point d) — accessible aussi depuis l'inspecteur. */}
+          <button
+            type="button"
+            data-testid="inspector-validate"
+            aria-pressed={draft.validated ?? false}
+            onClick={() => setValidated(draft.localId, !(draft.validated ?? false))}
+            className={
+              "rounded-md border px-2 py-0.5 text-xs font-medium transition-colors " +
+              ((draft.validated ?? false)
+                ? "border-emerald-400/60 bg-emerald-400/10 text-emerald-300"
+                : "border-amber-400/50 bg-amber-400/10 text-amber-200 hover:bg-amber-400/20")
+            }
+          >
+            {(draft.validated ?? false) ? "✓ Validée" : "◷ Valider"}
+          </button>
+          <button
+            type="button"
+            data-testid="delete-clause"
+            onClick={() => {
+              removeBoundary(draft.anchorIndex);
+              selectClause(null);
+            }}
+            className="text-xs text-red-400 hover:underline"
+          >
+            Supprimer
+          </button>
+        </div>
       </div>
 
       {draft.seededFrom && (
@@ -91,9 +125,12 @@ export function InspectorPanel({
       )}
 
       <Field label="Thème (vocab fermé)">
+        {/* Axe 3a : tous les thèmes visibles (grille) + info-bulle explicative au survol. */}
         <ThemePalette
           value={draft.theme}
           themeCodes={themeCodes}
+          layout="grid"
+          describeOnHover
           onChange={(code) => {
             // D1 — toggle : re-cliquer le thème DÉJÀ posé désannote la phrase ; sinon
             // re-thématise. Cohérent avec le toggle du menu clic-droit (C3).
@@ -160,9 +197,11 @@ export function InspectorPanel({
         humanRationale={draft.rationale}
       />
 
-      <div>
-        <h3 className="mb-1 text-xs font-semibold uppercase tracking-wide text-ink-muted">
-          Commentaires
+      {/* Axe 3d : commentaires rendus VISIBLES (section encadrée, pas un bas de page
+          discret) — la collaboration est un citoyen de 1re classe de l'inspecteur. */}
+      <div className="rounded-md border border-line bg-panel-muted/30 p-2" data-testid="inspector-comments">
+        <h3 className="mb-1.5 flex items-center gap-1.5 text-xs font-semibold uppercase tracking-wide text-ink-muted">
+          <MessageSquare size={13} aria-hidden /> Commentaires &amp; discussion
         </h3>
         <CommentThread annotationId={annotationId} clauseId={draft.serverId} />
       </div>

@@ -62,6 +62,8 @@ import { CollabBar } from "./CollabBar";
 import { DivergenceNav } from "./DivergenceNav";
 import { ComparePanel } from "./ComparePanel";
 import { RationaleHover, type HoverJudge } from "./RationaleHover";
+import { SelectionTools } from "./SelectionTools";
+import { DocumentMinimap, useScrollViewport } from "./DocumentMinimap";
 import { agreementNway } from "@/lib/llmAgreement";
 import { BoundaryEvidence } from "./BoundaryEvidence";
 import { useDivergenceShortcuts } from "./useDivergenceShortcuts";
@@ -125,6 +127,7 @@ export function DocumentPanel({
   const toggleReadingWide = useUiStore((s) => s.toggleReadingWide);
   const selectedSentences = useWorkspaceStore((s) => s.selectedSentences);
   const selectRange = useWorkspaceStore((s) => s.selectRange);
+  const setSelection = useWorkspaceStore((s) => s.setSelection);
   const toggleSelected = useWorkspaceStore((s) => s.toggleSelected);
   const setSelectedClauses = useWorkspaceStore((s) => s.setSelectedClauses);
   const clearClauseSelection = useWorkspaceStore((s) => s.clearClauseSelection);
@@ -402,9 +405,30 @@ export function DocumentPanel({
     focusedRef.current?.scrollIntoView?.({ block: "nearest", behavior: "smooth" });
   }, [focused]);
 
+  // Minimap (axe 5) : suivi du viewport + couleur de thème par phrase + saut au clic.
+  const panelRef = useRef<HTMLDivElement>(null);
+  const viewport = useScrollViewport(panelRef);
+  const sentenceColors = useMemo(
+    () =>
+      Array.from({ length: n }, (_, i) => {
+        const r = runAt(runs, i);
+        return r ? getThemeToken(r.theme).color : undefined;
+      }),
+    [runs, n],
+  );
+  const jumpToFraction = (f: number) => {
+    const idx = Math.min(n - 1, Math.max(0, Math.round(f * Math.max(0, n - 1))));
+    focusSentence(idx);
+    if (typeof document !== "undefined") {
+      document
+        .querySelector(`[data-testid="sentence-${idx}"]`)
+        ?.scrollIntoView?.({ block: "center", behavior: "smooth" });
+    }
+  };
+
   return (
     <>
-      <div className="flex justify-center gap-4 px-6 py-8">
+      <div ref={panelRef} className="flex justify-center gap-4 px-6 py-8">
        <div
         className={
           "w-full font-reading leading-reading text-ink " +
@@ -481,15 +505,26 @@ export function DocumentPanel({
               <span className="inline-flex items-center gap-1.5"><Columns2 size={14} aria-hidden /> Comparer</span>
             </button>
           )}
-          <button
-            type="button"
-            data-testid="select-to-boundary"
-            onClick={() => selectRange(focused, nextBoundaryFrom(boundaryStarts, focused, n) - 1)}
-            title="Sélectionner de la phrase courante jusqu'à la frontière suivante (tous modèles confondus)"
-            className="inline-flex items-center gap-1.5 rounded-md border border-line px-2 py-1 text-ink-muted hover:bg-panel-muted hover:text-ink"
-          >
-            <TextSelect size={14} aria-hidden /> Jusqu'à la frontière
-          </button>
+          {/* Axe 4 — section SÉLECTIONS MULTIPLES regroupée (jusqu'à frontière, segment
+              courant, tout le thème, tout le document) + compteur + effacer. */}
+          <SelectionTools
+            selectedCount={selectedSentences.length}
+            onToBoundary={() => selectRange(focused, nextBoundaryFrom(boundaryStarts, focused, n) - 1)}
+            onCurrentSegment={() => {
+              const r = runAt(runs, focused);
+              if (r) selectRange(r.start, r.end);
+            }}
+            onWholeTheme={() => {
+              const t = runThemeAt(runs, focused);
+              if (t != null) {
+                setSelection(
+                  Array.from({ length: n }, (_, i) => i).filter((i) => runThemeAt(runs, i) === t),
+                );
+              }
+            }}
+            onAll={() => selectRange(0, Math.max(0, n - 1))}
+            onClear={clearSelection}
+          />
           {gutterAllModels.some((m) => m.hasData) && (
             <ModelBoundaryLegend models={gutterAllModels} />
           )}
@@ -886,6 +921,16 @@ export function DocumentPanel({
           {blockDrag.tip.count > 1 ? "s" : ""}
         </div>
       )}
+
+      {/* Minimap de position (axe 5) — rail fixe à droite (écrans larges). */}
+      <DocumentMinimap
+        sentenceColors={sentenceColors}
+        scrollPct={viewport.scrollPct}
+        viewportPct={viewport.viewportPct}
+        hasScroll={viewport.hasScroll}
+        focused={focused}
+        onJumpFraction={jumpToFraction}
+      />
 
       {/* Aperçu PASSIF du rationale au survol (axe 1) — masqué si un menu/popover
           d'édition est ouvert (évite l'empilement). Contenu = clause humaine + LLM. */}

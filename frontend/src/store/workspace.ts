@@ -202,6 +202,10 @@ interface WorkspaceState {
   toggleBoundaries: () => void;
   selectRange: (from: number, to: number) => void;
   toggleSelected: (index: number) => void;
+  /** Sélection ARBITRAIRE (axe 4) : remplace la sélection par cet ensemble d'index
+   *  (dédupliqués, triés, bornés à [0, nSentences)). Sert aux sélections « tout le
+   *  thème courant » non contiguës. */
+  setSelection: (indices: number[]) => void;
   clearSelection: () => void;
   /** Sélection multi-blocs (P8) : remplace la liste des clauses sélectionnées. */
   setSelectedClauses: (ids: string[]) => void;
@@ -813,6 +817,15 @@ export const useWorkspaceStore = create<WorkspaceState>((set, get) => ({
       const next = has
         ? s.selectedSentences.filter((i) => i !== index)
         : [...s.selectedSentences, index].sort((a, b) => a - b);
+      return { selectedSentences: next };
+    }),
+
+  setSelection: (indices) =>
+    set((s) => {
+      const max = Math.max(0, s.nSentences - 1);
+      const next = Array.from(
+        new Set(indices.filter((i) => Number.isInteger(i) && i >= 0 && i <= max)),
+      ).sort((a, b) => a - b);
       return { selectedSentences: next };
     }),
 
