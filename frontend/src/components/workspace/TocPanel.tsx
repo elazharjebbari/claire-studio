@@ -5,7 +5,7 @@
  * sauts rapides, et toggles d'overlays (injustice, fantôme LLM). navigation.md §3.
  */
 
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { ClauseChip } from "@/components/ui/ClauseChip";
 import { ThemePalette } from "@/components/ui/ThemePalette";
 import { useWorkspaceStore } from "@/store/workspace";
@@ -25,22 +25,36 @@ export function TocPanel({ docTitle }: { docTitle: string }) {
   const validateClauses = useWorkspaceStore((s) => s.validateClauses);
   const readOnly = useWorkspaceStore((s) => s.readOnly);
   const [menu, setMenu] = useState<{ x: number; y: number } | null>(null);
+  const menuRef = useRef<HTMLDivElement>(null);
 
+  // Fermeture du menu : clic EN DEHORS (check `contains`) ou Échap. Un blanket
+  // `mousedown → close` fermait le menu sur le mousedown d'une tuile, la démontant
+  // AVANT le click → onChange jamais appelé (la catégorie ne s'appliquait pas).
   useEffect(() => {
     if (!menu) return;
-    const close = () => setMenu(null);
-    document.addEventListener("mousedown", close);
-    document.addEventListener("keydown", close);
+    const onDown = (e: MouseEvent) => {
+      if (menuRef.current && !menuRef.current.contains(e.target as Node)) setMenu(null);
+    };
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === "Escape") setMenu(null);
+    };
+    document.addEventListener("mousedown", onDown);
+    document.addEventListener("keydown", onKey);
     return () => {
-      document.removeEventListener("mousedown", close);
-      document.removeEventListener("keydown", close);
+      document.removeEventListener("mousedown", onDown);
+      document.removeEventListener("keydown", onKey);
     };
   }, [menu]);
 
-  // Anchors des clauses actuellement sélectionnées (lot) → cible des actions.
-  const selectedAnchors = drafts
-    .filter((d) => selectedClauseIds.includes(d.localId))
-    .map((d) => d.anchorIndex);
+  // Anchors des clauses sélectionnées, LU FRAIS depuis le store au moment de l'action
+  // (évite toute fermeture sur état périmé du closure de rendu).
+  function selectedAnchorsNow(): number[] {
+    const ids = useWorkspaceStore.getState().selectedClauseIds;
+    return useWorkspaceStore
+      .getState()
+      .draftClauses.filter((d) => ids.includes(d.localId))
+      .map((d) => d.anchorIndex);
+  }
 
   function onChipClick(e: React.MouseEvent, localId: string, anchorIndex: number) {
     if (e.metaKey || e.ctrlKey) {
@@ -66,8 +80,10 @@ export function TocPanel({ docTitle }: { docTitle: string }) {
   }
 
   function annotateSelection(theme: string) {
-    if (selectedAnchors.length > 0) applyBlockOp({ kind: "annotateRange", anchors: selectedAnchors, theme });
+    const anchors = selectedAnchorsNow();
+    if (anchors.length > 0) applyBlockOp({ kind: "annotateRange", anchors, theme });
     setMenu(null);
+    clearClauseSelection();
   }
 
   const showUnfairness = useWorkspaceStore((s) => s.showUnfairness);
@@ -220,9 +236,9 @@ export function TocPanel({ docTitle }: { docTitle: string }) {
       {/* Menu contextuel (clic-droit) : annoter / valider TOUTE la sélection en lot. */}
       {menu && (
         <div
+          ref={menuRef}
           role="menu"
           data-testid="toc-clause-menu"
-          onMouseDown={(e) => e.stopPropagation()}
           className="fixed z-50 w-72 rounded-lg border border-line bg-elevated p-3 text-sm shadow-xl"
           style={{ top: Math.min(menu.y, (typeof window !== "undefined" ? window.innerHeight : 800) - 360), left: Math.min(menu.x, (typeof window !== "undefined" ? window.innerWidth : 1200) - 300) }}
         >
@@ -245,7 +261,7 @@ export function TocPanel({ docTitle }: { docTitle: string }) {
               type="button"
               data-testid="toc-menu-validate"
               onClick={() => {
-                validateClauses(selectedClauseIds, true);
+                validateClauses(useWorkspaceStore.getState().selectedClauseIds, true);
                 setMenu(null);
                 clearClauseSelection();
               }}
@@ -257,7 +273,8 @@ export function TocPanel({ docTitle }: { docTitle: string }) {
               type="button"
               data-testid="toc-menu-desannotate"
               onClick={() => {
-                if (selectedAnchors.length > 0) applyBlockOp({ kind: "clearBlock", anchors: selectedAnchors });
+                const anchors = selectedAnchorsNow();
+                if (anchors.length > 0) applyBlockOp({ kind: "clearBlock", anchors });
                 setMenu(null);
                 clearClauseSelection();
               }}

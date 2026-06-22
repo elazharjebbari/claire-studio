@@ -62,8 +62,10 @@ export function ClauseChip({
         {
           // La couleur de thème est réservée aux éléments non textuels (fond léger,
           // bordure, pastille) ; le texte reste en `text-ink` pour garantir AA 4.5:1.
-          backgroundColor: `rgba(${rgb}, ${ghost ? 0.08 : 0.18})`,
-          borderColor: `rgba(${rgb}, ${selected ? 0.9 : 0.45})`,
+          // hexToRgbChannels renvoie des canaux ESPACÉS → syntaxe moderne rgb(R G B / A)
+          // (rgba(R G B, A) serait invalide et la déclaration serait ignorée).
+          backgroundColor: `rgb(${rgb} / ${ghost ? 0.08 : 0.18})`,
+          borderColor: `rgb(${rgb} / ${selected ? 0.9 : 0.45})`,
           "--tw-ring-color": token.color,
         } as React.CSSProperties
       }
