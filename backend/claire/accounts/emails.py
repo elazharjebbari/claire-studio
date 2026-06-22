@@ -26,7 +26,7 @@ def _frontend_link(path: str, query: dict[str, str]) -> str:
 def send_verification_email(user) -> None:
     link = _frontend_link("/verify-email", {"token": make_email_verify_token(user)})
     send_mail(
-        subject="Vérifiez votre adresse e-mail — CLAIRE Studio",
+        subject="Vérifiez votre adresse e-mail — Pactiva",
         message=(
             f"Bonjour {user.display_name or user.username},\n\n"
             f"Confirmez votre adresse e-mail en ouvrant ce lien :\n{link}\n\n"
@@ -43,7 +43,7 @@ def send_password_reset_email(user) -> None:
     uidb64, token = make_password_reset_pair(user)
     link = _frontend_link("/reset-password", {"uid": uidb64, "token": token})
     send_mail(
-        subject="Réinitialisation de votre mot de passe — CLAIRE Studio",
+        subject="Réinitialisation de votre mot de passe — Pactiva",
         message=(
             f"Bonjour {user.display_name or user.username},\n\n"
             f"Pour choisir un nouveau mot de passe, ouvrez ce lien :\n{link}\n\n"

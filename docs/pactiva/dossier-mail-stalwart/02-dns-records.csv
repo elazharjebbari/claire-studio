@@ -1,0 +1,10 @@
+type,nom,valeur,priorite,note
+A,pactiva.legal,46.202.128.168,,existe déjà (site)
+A,mail.pactiva.legal,46.202.128.168,,bannière/admin Stalwart + endpoint mail
+A,webmail.pactiva.legal,46.202.128.168,,UI webmail Stalwart
+MX,pactiva.legal,mail.lumiereacademy.com.,10,hôte mutualisé (rDNS du VPS) ; OU mail.pactiva.legal. si bannière dédiée
+TXT,pactiva.legal,"v=spf1 ip4:46.202.128.168 mx -all",,SPF — NE PAS publier v=spf1 seul (piège femiglow)
+TXT,<selecteur-rsa>._domainkey.pactiva.legal,"v=DKIM1; k=rsa; p=<clé publique RSA fournie par Stalwart>",,DKIM RSA-2048 (généré au Lot 1.2)
+TXT,<selecteur-ed25519>._domainkey.pactiva.legal,"v=DKIM1; k=ed25519; p=<clé publique Ed25519 fournie par Stalwart>",,DKIM Ed25519
+TXT,_dmarc.pactiva.legal,"v=DMARC1; p=quarantine; rua=mailto:postmaster@pactiva.legal; adkim=s; aspf=r",,DMARC — passer p=reject après observation propre
+PTR,46.202.128.168,mail.lumiereacademy.com.,,rDNS existant (chez l'hébergeur) — HELO sortant aligné dessus
