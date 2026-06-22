@@ -50,6 +50,10 @@ class PreClause(models.Model):
     theme_code = models.CharField(max_length=60)
     evidence_span = models.TextField(blank=True)
     rationale = models.TextField(blank=True)
+    # Nature juridique proposée par le juge (vocab LLM, ex. OBLIGATION/PROHIBITION/
+    # RIGHT_GRANT…), dérivée par phrase dans `annotations[]` du JSON v9.2. Sert la
+    # CONSULTATION LLM de la nature (axe 2/3b) — informatif, jamais appliqué d'office.
+    legal_nature = models.CharField(max_length=40, blank=True, default="")
     order = models.PositiveIntegerField(default=0)
 
     class Meta:

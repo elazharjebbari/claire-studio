@@ -33,6 +33,8 @@ export interface JudgeDetail {
   theme: string;
   rationale: string | null;
   evidence: string | null;
+  /** Nature juridique proposée par le juge (vocab LLM) — consultation, axe 2/3b. */
+  legalNature: string | null;
 }
 
 /** Un juge LLM affiché dans le menu : id (claude/codex/mistral…), libellé, détail. */
@@ -281,6 +283,14 @@ function JudgeBlock({
           <span className="text-ink-muted">—</span>
         )}
       </div>
+      {detail?.legalNature && (
+        <div className="mt-1 text-[10px] text-ink-muted">
+          Nature :{" "}
+          <span className="rounded bg-panel-muted px-1 font-medium uppercase text-ink">
+            {detail.legalNature}
+          </span>
+        </div>
+      )}
       {detail && (
         <div className="mt-1.5 flex items-center gap-2">
           <button

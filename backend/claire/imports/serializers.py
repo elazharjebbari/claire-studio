@@ -20,7 +20,10 @@ class PreClauseSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = PreClause
-        fields = ["anchor_index", "theme_code", "evidence_span", "rationale"]
+        # `legal_nature` : nature juridique proposée par le juge (consultation LLM, axe 2/3b).
+        fields = [
+            "anchor_index", "theme_code", "evidence_span", "rationale", "legal_nature",
+        ]
 
     def get_theme_code(self, obj) -> str:
         return normalize_theme_code(obj.theme_code)

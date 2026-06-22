@@ -318,6 +318,8 @@ export interface PreClause {
   themeCode: string;
   evidenceSpan?: string;
   rationale?: string;
+  /** Nature juridique proposée par le juge (vocab LLM) — consultation, axe 2/3b. */
+  legalNature?: string;
 }
 
 export interface PreAnnotation {

@@ -353,7 +353,7 @@ def test_preannotations_shape(admin_client):
     if item["clauses"]:
         _assert_keys(
             item["clauses"][0],
-            {"anchorIndex", "themeCode", "evidenceSpan", "rationale"},
+            {"anchorIndex", "themeCode", "evidenceSpan", "rationale", "legalNature"},
             where="PreClause",
         )
 

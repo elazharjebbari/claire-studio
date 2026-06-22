@@ -21,6 +21,8 @@ export interface HoverJudge {
   theme: string;
   rationale: string | null;
   evidence: string | null;
+  /** Nature juridique proposée par le juge (vocab LLM). */
+  legalNature?: string | null;
 }
 
 export interface RationaleHoverProps {
@@ -96,6 +98,11 @@ export function RationaleHover({
                     />
                     <span className="font-medium text-ink">{j.label}</span>
                     <span className="text-ink">· {token.label}</span>
+                    {j.legalNature && (
+                      <span className="rounded bg-panel-muted px-1 text-[9px] uppercase text-ink-muted">
+                        {j.legalNature}
+                      </span>
+                    )}
                   </span>
                   {j.rationale && <p className="ml-3.5 mt-0.5">{trunc(j.rationale, 140)}</p>}
                 </div>

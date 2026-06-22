@@ -59,6 +59,7 @@ def ingest_preannotation(
                 theme_code=c["theme"],
                 evidence_span=c["evidence_span"],
                 rationale=c["rationale"],
+                legal_nature=c.get("legal_nature", ""),
                 order=c["order"],
             )
             for c in pivot

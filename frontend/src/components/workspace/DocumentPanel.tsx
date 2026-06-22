@@ -939,14 +939,20 @@ export function DocumentPanel({
         !boundaryPop &&
         (() => {
           const a = anchorByIndex.get(hover.index);
-          const hj: HoverJudge[] = LLM_JUDGES.map((j) => {
+          const hj: HoverJudge[] = LLM_JUDGES.map((j): HoverJudge | null => {
             const d = detailAt(
               detailMapByJudge[j.id] ?? EMPTY_DETAIL,
               runsByJudge[j.id] ?? EMPTY_RUNS,
               hover.index,
             );
             return d
-              ? { label: j.label, theme: d.theme, rationale: d.rationale, evidence: d.evidence }
+              ? {
+                  label: j.label,
+                  theme: d.theme,
+                  rationale: d.rationale,
+                  evidence: d.evidence,
+                  legalNature: d.legalNature,
+                }
               : null;
           }).filter((x): x is HoverJudge => x !== null);
           return (
@@ -1015,6 +1021,7 @@ function buildJudgeDetailMap(clauses: PreClause[] | undefined): Map<number, Judg
       theme: c.themeCode,
       rationale: c.rationale ?? null,
       evidence: c.evidenceSpan ?? null,
+      legalNature: c.legalNature ?? null,
     });
   }
   return map;
@@ -1040,6 +1047,7 @@ function detailAt(
     theme: base?.theme ?? run.theme,
     rationale: base?.rationale ?? null,
     evidence: base?.evidence ?? null,
+    legalNature: base?.legalNature ?? null,
   };
 }
 

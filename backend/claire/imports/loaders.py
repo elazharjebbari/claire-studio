@@ -73,34 +73,58 @@ def normalize_v94(raw: dict) -> list[dict]:
                 # (ex. v9.3 `macro`) ignorés ici mais conservés dans `raw`.
                 "evidence_span": c.get("open_span") or c.get("evidence_span", ""),
                 "rationale": c.get("rationale", ""),
+                "legal_nature": c.get("legal_nature", ""),
                 "order": i,
             }
         )
     return out
 
 
+def _nature_by_index(raw: dict) -> dict[int, str]:
+    """Nature juridique PAR PHRASE depuis `annotations[]` (v9.2), si présent.
+
+    Le LLM dérive une `legal_nature` par phrase (clé `id`) dans un tableau parallèle
+    aux segments. On l'indexe pour l'attacher au segment dont c'est la phrase d'ancre.
+    Tolérant : absent / malformé → dict vide (la nature LLM reste optionnelle).
+    """
+    annotations = raw.get("annotations")
+    out: dict[int, str] = {}
+    if isinstance(annotations, list):
+        for a in annotations:
+            if not isinstance(a, dict) or "id" not in a:
+                continue
+            try:
+                out[int(a["id"])] = str(a.get("legal_nature") or "")
+            except (TypeError, ValueError):
+                continue
+    return out
+
+
 def normalize_v92(raw: dict) -> list[dict]:
-    """v9.2 document_plan.segments[] -> pivot clauses."""
+    """v9.2 document_plan.segments[] -> pivot clauses (+ legal_nature de l'ancre)."""
     segments = raw.get("document_plan", {}).get("segments", [])
     if not isinstance(segments, list):
         raise PreAnnotationFormatError(
             "v9.2 'document_plan.segments' must be a list."
         )
+    nature = _nature_by_index(raw)
     out: list[dict] = []
     for i, s in enumerate(segments):
         if not isinstance(s, dict):
             raise PreAnnotationFormatError(
                 f"v9.2 segment #{i} must be an object, got {type(s).__name__}."
             )
+        anchor = _coerce_anchor(
+            s.get("start_id"), where="v9.2 document_plan.segments", position=i,
+        )
         out.append(
             {
-                "anchor_index": _coerce_anchor(
-                    s.get("start_id"), where="v9.2 document_plan.segments",
-                    position=i,
-                ),
+                "anchor_index": anchor,
                 "theme": s.get("theme", ""),
                 "evidence_span": s.get("evidence_span", ""),
                 "rationale": s.get("rationale", ""),
+                # Nature juridique LLM de la phrase d'ancre (consultation, axe 2/3b).
+                "legal_nature": nature.get(anchor, ""),
                 "order": i,
             }
         )

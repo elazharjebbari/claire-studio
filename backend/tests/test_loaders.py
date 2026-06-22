@@ -55,10 +55,31 @@ def test_normalize_v94_maps_anchor_and_span():
     clauses = normalize_v94(V94)
     assert clauses[0] == {
         "anchor_index": 0, "theme": "META", "evidence_span": "posted",
-        "rationale": "", "order": 0,
+        "rationale": "", "legal_nature": "", "order": 0,
     }
     assert clauses[1]["anchor_index"] == 3
     assert clauses[1]["evidence_span"] == "svc"
+
+
+def test_normalize_v92_extracts_legal_nature_from_annotations():
+    """La nature juridique LLM (par phrase dans annotations[]) est attachée au segment
+    dont c'est la phrase d'ancre (consultation LLM, axe 2/3b)."""
+    raw = {
+        "document_plan": {
+            "segments": [
+                {"start_id": 0, "theme": "META"},
+                {"start_id": 2, "theme": "ACCEPTABLE_USE"},
+            ]
+        },
+        "annotations": [
+            {"id": 0, "legal_nature": "META"},
+            {"id": 1, "legal_nature": "OBLIGATION"},
+            {"id": 2, "legal_nature": "PROHIBITION"},
+        ],
+    }
+    clauses = normalize_v92(raw)
+    assert clauses[0]["legal_nature"] == "META"
+    assert clauses[1]["legal_nature"] == "PROHIBITION"  # ancre = phrase 2
 
 
 def test_normalize_v92_maps_start_id_and_span():
