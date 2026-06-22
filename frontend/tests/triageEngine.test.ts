@@ -1,6 +1,7 @@
 import { describe, expect, it } from "vitest";
 import { triageEngine, RULES } from "@/lib/triage";
 import type { BoundaryVotes, ThemeVotes } from "@/lib/triage";
+import golden from "@/lib/triage/golden.cases.json";
 
 /** Helpers — 3 juges (claude, codex, mistral), codes APP canoniques. */
 const tv = (c: string, x: string, m: string): ThemeVotes => ({ claude: c, codex: x, mistral: m });
@@ -268,3 +269,41 @@ describe("triageEngine — invariants (balayage exhaustif 3 juges, frontière du
     expect(noCluster.level).toBe("C5");
   });
 });
+
+describe("triageEngine — golden set PARTAGÉ (contrat de parité front/back)", () => {
+  it("rulesVersion du golden == RULES.version", () => {
+    expect((golden as { rulesVersion: string }).rulesVersion).toBe(RULES.version);
+  });
+  for (const c of (golden as { cases: GoldenCase[] }).cases) {
+    it(`${c.id}`, () => {
+      const r = triageEngine(c.votes as ThemeVotes, c.boundary as BoundaryVotes, RULES)!;
+      expect(r).not.toBeNull();
+      expect(r.level).toBe(c.expect.level);
+      expect(r.action).toBe(c.expect.action);
+      expect(r.labelMode).toBe(c.expect.labelMode);
+      expect(r.needsHuman).toBe(c.expect.needsHuman);
+      expect(r.boundary.type).toBe(c.expect.boundaryType);
+      const primary = r.labels.find((l) => l.role === "primary")?.label ?? null;
+      const secondary = r.labels.find((l) => l.role === "secondary")?.label ?? null;
+      expect(primary).toBe(c.expect.primary);
+      expect(secondary).toBe(c.expect.secondary);
+      if (c.expect.override) {
+        expect(r.override?.from).toBe(c.expect.override.from);
+        expect(r.override?.to).toBe(c.expect.override.to);
+      } else {
+        expect(r.override).toBeUndefined();
+      }
+    });
+  }
+});
+
+interface GoldenCase {
+  id: string;
+  votes: Record<string, string>;
+  boundary: Record<string, boolean>;
+  expect: {
+    level: string; action: string; labelMode: string; needsHuman: boolean;
+    boundaryType: string; primary: string | null; secondary: string | null;
+    override: { from: string; to: string } | null;
+  };
+}
