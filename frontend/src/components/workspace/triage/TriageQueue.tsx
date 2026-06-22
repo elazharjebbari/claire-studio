@@ -3,14 +3,16 @@
 /**
  * TriageQueue — conteneur du mode File de triage.
  *
- * Branche le moteur réactif (`useTriage`) sur les données live des juges et persiste
- * chaque décision via l'API (addClause multi-label / batch C1), puis avance. Le moteur,
- * le backend multi-label et l'écriture sont déjà livrés ; ce composant orchestre l'UX.
+ * Branche le moteur réactif (`useTriage`) sur les données live des juges et applique
+ * chaque décision au STORE (`applyTriageDecision`/`applyTriageBatch`) — comme toute autre
+ * édition. L'autosave persiste ensuite (create/update multi-label) : l'UI (rail, badge,
+ * plan, barres, inspecteur) se met donc à jour INSTANTANÉMENT, sans re-init destructif ni
+ * race. La file est aussi sensible à la SÉLECTION du document (simple : focus ↔ carte
+ * courante ; multiple : « accepter la sélection »).
  */
 
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 
-import { useAddClause, useBatchAcceptClauses } from "@/lib/api/hooks";
 import { useTriage } from "@/lib/triage/useTriage";
 import type { TriageLevel, TriageResult } from "@/lib/triage";
 import type { ThemeTag } from "@/types/contract";
@@ -30,11 +32,15 @@ export interface TriageQueueProps {
   onClose: () => void;
 }
 
-export function TriageQueue({ annotationId, documentId, projectSlug, onClose }: TriageQueueProps) {
+export function TriageQueue({ documentId, projectSlug, onClose }: TriageQueueProps) {
   const llmVersion = useWorkspaceStore((s) => s.llmVersion);
+  const applyTriageDecision = useWorkspaceStore((s) => s.applyTriageDecision);
+  const applyTriageBatch = useWorkspaceStore((s) => s.applyTriageBatch);
+  const focusedSentence = useWorkspaceStore((s) => s.focusedSentence);
+  const focusSentence = useWorkspaceStore((s) => s.focusSentence);
+  const selectedSentences = useWorkspaceStore((s) => s.selectedSentences);
+
   const triage = useTriage(documentId, projectSlug, llmVersion);
-  const addClause = useAddClause(annotationId);
-  const batch = useBatchAcceptClauses(annotationId);
   const [pos, setPos] = useState(0);
   const [done, setDone] = useState<Set<number>>(new Set());
 
@@ -47,6 +53,15 @@ export function TriageQueue({ annotationId, documentId, projectSlug, onClose }: 
     [triage.items],
   );
 
+  // Index inverse n° de phrase → rang dans la file (pour la synchro document → file).
+  const posByIndex = useMemo(() => {
+    const m = new Map<number, number>();
+    items.forEach((r, i) => m.set(r.index, i));
+    return m;
+  }, [items]);
+
+  const selectedSet = useMemo(() => new Set(selectedSentences), [selectedSentences]);
+
   const markDone = (idx: number) =>
     setDone((d) => {
       const n = new Set(d);
@@ -54,25 +69,36 @@ export function TriageQueue({ annotationId, documentId, projectSlug, onClose }: 
       return n;
     });
 
+  const markManyDone = (idxs: number[]) =>
+    setDone((d) => {
+      const n = new Set(d);
+      idxs.forEach((i) => n.add(i));
+      return n;
+    });
+
+  // Navigation explicite : positionne la file ET focalise la phrase dans le document
+  // (DocumentPanel scrolle vers `focused`). `lastPushedFocus` marque NOTRE push pour que
+  // l'effet document→file ne le renvoie pas (anti-boucle).
+  const lastPushedFocus = useRef<number | null>(null);
+  const goToPos = (p: number) => {
+    const clamped = Math.min(Math.max(0, p), Math.max(0, items.length - 1));
+    setPos(clamped);
+    const idx = items[clamped]?.index;
+    if (idx != null && idx !== focusedSentence) {
+      lastPushedFocus.current = idx;
+      focusSentence(idx);
+    }
+  };
+
   const persist = (row: QueueRow, themes: ThemeTag[]) => {
-    const primary = themes.find((t) => t.role === "primary")?.label ?? themes[0]?.label ?? "";
-    addClause.mutate(
-      {
-        anchorIndex: row.index,
-        theme: primary,
-        themes,
-        boundary: row.result.boundary,
-        triageLevel: row.result.level,
-        validated: true,
-        clientOpId: `triage-${row.index}`,
-      },
-      {
-        onSuccess: () => {
-          markDone(row.index);
-          setPos((p) => Math.min(items.length - 1, p + 1));
-        },
-      },
-    );
+    applyTriageDecision({
+      anchorIndex: row.index,
+      themes,
+      boundary: row.result.boundary,
+      triageLevel: row.result.level,
+    });
+    markDone(row.index);
+    goToPos(pos + 1);
   };
 
   const onSwap = (row: QueueRow, secondary: string) => {
@@ -96,28 +122,34 @@ export function TriageQueue({ annotationId, documentId, projectSlug, onClose }: 
     if (from) persist(row, [{ label: from, role: "primary", support: 0 }]);
   };
 
-  const onBatchAcceptC1 = () => {
-    const c1 = items.filter((r) => r.result.level === "C1" && !done.has(r.index));
-    if (!c1.length) return;
-    batch.mutate(
-      c1.map((r) => ({
+  // Lot : C1 (or) ou la SÉLECTION de l'annotateur. Jamais C5 (arbitrage, non auto-acceptable).
+  const acceptBatch = (rows: QueueRow[]) => {
+    const todo = rows.filter((r) => !done.has(r.index) && r.result.level !== "C5");
+    if (!todo.length) return;
+    applyTriageBatch(
+      todo.map((r) => ({
         anchorIndex: r.index,
-        theme: labelsOf(r.result)[0]!.label,
         themes: labelsOf(r.result),
         boundary: r.result.boundary,
-        triageLevel: "C1",
-        clientOpId: `triage-${r.index}`,
+        triageLevel: r.result.level,
       })),
-      {
-        onSuccess: () =>
-          setDone((d) => {
-            const n = new Set(d);
-            c1.forEach((r) => n.add(r.index));
-            return n;
-          }),
-      },
     );
+    markManyDone(todo.map((r) => r.index));
   };
+
+  const onBatchAcceptC1 = () => acceptBatch(items.filter((r) => r.result.level === "C1"));
+  const onBatchAcceptSelection = () =>
+    acceptBatch(items.filter((r) => selectedSet.has(r.index)));
+
+  // ── Synchro SIMPLE : document → file. Quand l'annotateur clique/focalise une phrase
+  // dans le document, la file se positionne sur la carte correspondante. On ignore les
+  // changements de focus que la file a elle-même provoqués (lastPushedFocus) → anti-boucle.
+  useEffect(() => {
+    if (focusedSentence === lastPushedFocus.current) return;
+    const p = posByIndex.get(focusedSentence);
+    if (p != null && p !== pos) setPos(p);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [focusedSentence, posByIndex]);
 
   if (!triage.ready) {
     return (
@@ -134,6 +166,9 @@ export function TriageQueue({ annotationId, documentId, projectSlug, onClose }: 
   }
 
   const c1Count = items.filter((r) => r.result.level === "C1" && !done.has(r.index)).length;
+  const selectedCount = items.filter(
+    (r) => selectedSet.has(r.index) && !done.has(r.index) && r.result.level !== "C5",
+  ).length;
 
   return (
     <TriageQueueView
@@ -142,13 +177,15 @@ export function TriageQueue({ annotationId, documentId, projectSlug, onClose }: 
       pos={Math.min(pos, Math.max(0, items.length - 1))}
       done={done}
       c1Count={c1Count}
-      onPos={setPos}
+      selectedCount={selectedCount}
+      onPos={goToPos}
       onAccept={(row) => persist(row, labelsOf(row.result))}
       onSwap={onSwap}
       onRemoveSecondary={onRemoveSecondary}
       onChoose={onChoose}
       onUndoOverride={onUndoOverride}
       onBatchAcceptC1={onBatchAcceptC1}
+      onBatchAcceptSelection={onBatchAcceptSelection}
       onClose={onClose}
     />
   );

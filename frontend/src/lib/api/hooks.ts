@@ -344,8 +344,14 @@ export function useActivity(project?: string) {
 export function useAddClause(annotationId: string) {
   const qc = useQueryClient();
   return useMutation({
-    mutationFn: (clause: Partial<Clause> & { anchorIndex: number; theme: string; clientOpId?: string }) =>
-      api.addClause(annotationId, clause),
+    mutationFn: (
+      clause: Partial<Clause> & {
+        anchorIndex: number;
+        theme: string;
+        clientOpId?: string;
+        upsert?: boolean;
+      },
+    ) => api.addClause(annotationId, clause),
     onSuccess: () => qc.invalidateQueries({ queryKey: qk.annotation(annotationId) }),
   });
 }
@@ -371,7 +377,8 @@ export function useDeleteClause(annotationId: string) {
 export function useBatchAcceptClauses(annotationId: string) {
   const qc = useQueryClient();
   return useMutation({
-    mutationFn: (clauses: api.BatchClauseInput[]) => api.batchAcceptClauses(annotationId, clauses),
+    mutationFn: ({ clauses, upsert }: { clauses: api.BatchClauseInput[]; upsert?: boolean }) =>
+      api.batchAcceptClauses(annotationId, clauses, { upsert }),
     onSuccess: () => qc.invalidateQueries({ queryKey: qk.annotation(annotationId) }),
   });
 }

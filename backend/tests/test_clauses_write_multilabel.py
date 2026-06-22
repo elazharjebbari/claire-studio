@@ -117,6 +117,66 @@ def test_swap_primary(annotation, annotator, auth):
     assert _roles(body) == {("META", "primary"), ("TERMINATION", "secondary")}
 
 
+def test_add_clause_conflict_without_upsert(annotation, annotator, auth):
+    """Sans `upsert`, réannoter une phrase déjà couverte reste un 409 (INV-2)."""
+    c = auth(annotator)
+    c.post(f"/api/v1/annotations/{annotation.id}/clauses",
+           {"anchorIndex": 0, "theme": "META"}, format="json")
+    r = c.post(f"/api/v1/annotations/{annotation.id}/clauses",
+               {"anchorIndex": 0, "theme": "TERMINATION"}, format="json")
+    assert r.status_code == 409, r.content
+    assert annotation.clauses.filter(anchor_sentence__index=0).count() == 1
+
+
+def test_add_clause_upsert_updates_existing(annotation, annotator, auth):
+    """Acceptation de triage : `upsert` MET À JOUR la clause existante (200), pas de 409,
+    pas de doublon ; le set multi-label, la frontière, le niveau et validated sont posés."""
+    c = auth(annotator)
+    r0 = c.post(f"/api/v1/annotations/{annotation.id}/clauses",
+                {"anchorIndex": 0, "theme": "META"}, format="json")
+    cid = r0.json()["id"]
+    r = c.post(
+        f"/api/v1/annotations/{annotation.id}/clauses",
+        {"anchorIndex": 0, "theme": "TERMINATION", "upsert": True, "validated": True,
+         "triageLevel": "C2", "boundary": {"type": "soft", "support": 2},
+         "themes": [
+             {"label": "TERMINATION", "role": "primary"},
+             {"label": "META", "role": "secondary"},
+         ]},
+        format="json",
+    )
+    assert r.status_code == 200, r.content
+    body = r.json()
+    assert body["id"] == cid  # MÊME clause, mise à jour (INV-2 préservé)
+    assert annotation.clauses.filter(anchor_sentence__index=0).count() == 1
+    assert body["theme"] == "TERMINATION"
+    assert _roles(body) == {("TERMINATION", "primary"), ("META", "secondary")}
+    assert body["boundary"] == {"type": "soft", "support": 2}
+    assert body["triageLevel"] == "C2"
+    assert body["validated"] is True
+
+
+def test_batch_upsert_updates_existing(annotation, annotator, auth):
+    """Lot C1 avec `upsert` : la phrase déjà annotée est mise à jour (aucun conflit)."""
+    c = auth(annotator)
+    c.post(f"/api/v1/annotations/{annotation.id}/clauses",
+           {"anchorIndex": 0, "theme": "META"}, format="json")
+    payload = {"upsert": True, "clauses": [
+        {"anchorIndex": 0, "theme": "TERMINATION", "validated": True,
+         "boundary": {"type": "hard", "support": 3}},  # déjà annotée → upsert
+        {"anchorIndex": 3, "theme": "TERMINATION"},      # nouvelle
+    ]}
+    r = c.post(f"/api/v1/annotations/{annotation.id}/clauses/batch", payload, format="json")
+    assert r.status_code == 201, r.content
+    body = r.json()
+    assert len(body["created"]) == 2 and not body["conflicts"]
+    a0 = annotation.clauses.get(anchor_sentence__index=0)
+    assert a0.theme.code == "TERMINATION" and a0.validated is True
+    assert a0.boundary_support == 3
+    # pas de doublon : 2 clauses au total (anchor 0 mise à jour + anchor 3 créée).
+    assert annotation.clauses.count() == 2
+
+
 def test_boundary_set_soft_then_hard(annotation, annotator, auth):
     c = auth(annotator)
     r = c.post(f"/api/v1/annotations/{annotation.id}/clauses",

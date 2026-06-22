@@ -12,6 +12,7 @@
  */
 
 import type { DraftClause } from "@/store/workspace";
+import type { BoundaryKind, ThemeTag, TriageLevel } from "@/types/contract";
 
 export interface PersistedClause {
   anchorIndex: number;
@@ -22,6 +23,24 @@ export interface PersistedClause {
   rationale: string;
   certainty: number | null;
   validated: boolean;
+  // Multi-label / frontière / niveau (additif) : suivis pour que l'acceptation d'une
+  // suggestion de triage déclenche bien une synchro (create/update) vers le serveur.
+  themes?: ThemeTag[];
+  boundary?: { type: BoundaryKind; support: number };
+  triageLevel?: TriageLevel | null;
+}
+
+/** Clé canonique d'un ensemble multi-label (indépendante de l'ordre). */
+function themesKey(themes?: ThemeTag[]): string {
+  if (!themes || themes.length === 0) return "";
+  return themes
+    .map((t) => `${t.label}:${t.role}:${t.support ?? 0}`)
+    .sort()
+    .join("|");
+}
+
+function boundaryKey(b?: { type: string; support: number }): string {
+  return b ? `${b.type}:${b.support}` : "";
 }
 
 export interface ClauseSyncPlan {
@@ -37,7 +56,10 @@ function sameFields(d: DraftClause, p: PersistedClause): boolean {
     (d.evidenceSpan ?? "") === p.evidenceSpan &&
     (d.rationale ?? "") === p.rationale &&
     (d.certainty ?? null) === p.certainty &&
-    (d.validated ?? false) === p.validated
+    (d.validated ?? false) === p.validated &&
+    themesKey(d.themes) === themesKey(p.themes) &&
+    boundaryKey(d.boundary) === boundaryKey(p.boundary) &&
+    (d.triageLevel ?? null) === (p.triageLevel ?? null)
   );
 }
 
@@ -85,5 +107,8 @@ export function draftsToPersisted(drafts: DraftClause[]): PersistedClause[] {
       rationale: d.rationale ?? "",
       certainty: d.certainty ?? null,
       validated: d.validated ?? false,
+      themes: d.themes,
+      boundary: d.boundary,
+      triageLevel: d.triageLevel ?? null,
     }));
 }

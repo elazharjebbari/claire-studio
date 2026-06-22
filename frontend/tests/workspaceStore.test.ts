@@ -519,3 +519,65 @@ describe("workspace store — applyBlockOp (L1)", () => {
     expect(viaBlock).toEqual(viaSentences);
   });
 });
+
+describe("applyTriageDecision / applyTriageBatch (acceptation de suggestions)", () => {
+  const prim = { label: "TERMINATION", role: "primary" as const, support: 3 };
+  const sec = { label: "META", role: "secondary" as const, support: 1 };
+
+  beforeEach(() => {
+    useWorkspaceStore.getState().reset();
+    useWorkspaceStore
+      .getState()
+      .init({ annotationId: "ann-1", nSentences: 10, clauses: baseClauses });
+  });
+
+  it("crée une clause multi-label VALIDÉE, focalise la phrase et marque dirty", () => {
+    useWorkspaceStore.getState().applyTriageDecision({
+      anchorIndex: 4, themes: [prim, sec],
+      boundary: { type: "soft", support: 2 }, triageLevel: "C3",
+    });
+    const s = useWorkspaceStore.getState();
+    const c = s.draftClauses.find((d) => d.anchorIndex === 4)!;
+    expect(c.theme).toBe("TERMINATION"); // miroir du primaire
+    expect(c.themes).toHaveLength(2);
+    expect(c.boundary).toEqual({ type: "soft", support: 2 });
+    expect(c.triageLevel).toBe("C3");
+    expect(c.validated).toBe(true);
+    expect(s.focusedSentence).toBe(4);
+    expect(s.selectedClauseId).toBe(c.localId);
+    expect(s.dirty).toBe(true);
+  });
+
+  it("upsert : sur une ancre DÉJÀ annotée (seed), met à jour SANS doublon", () => {
+    // baseClauses a une clause @0 (id c1, theme META). On accepte une décision @0.
+    useWorkspaceStore.getState().applyTriageDecision({
+      anchorIndex: 0, themes: [prim, sec], triageLevel: "C2",
+    });
+    const at0 = useWorkspaceStore.getState().draftClauses.filter((d) => d.anchorIndex === 0);
+    expect(at0).toHaveLength(1); // pas de doublon
+    expect(at0[0]!.serverId).toBe("c1"); // conserve l'id serveur → autosave fera un PATCH
+    expect(at0[0]!.theme).toBe("TERMINATION");
+    expect(at0[0]!.themes).toHaveLength(2);
+    expect(at0[0]!.validated).toBe(true);
+  });
+
+  it("applyTriageBatch applique N décisions en UN snapshot d'undo", () => {
+    useWorkspaceStore.getState().applyTriageBatch([
+      { anchorIndex: 2, themes: [prim], triageLevel: "C1" },
+      { anchorIndex: 3, themes: [prim], triageLevel: "C1" },
+    ]);
+    const s = useWorkspaceStore.getState();
+    expect(s.draftClauses.filter((d) => d.validated && d.triageLevel === "C1")).toHaveLength(2);
+    // un seul undo défait tout le lot.
+    useWorkspaceStore.getState().undo();
+    expect(useWorkspaceStore.getState().draftClauses.some((d) => d.anchorIndex === 2)).toBe(false);
+    expect(useWorkspaceStore.getState().draftClauses.some((d) => d.anchorIndex === 3)).toBe(false);
+  });
+
+  it("readOnly : applyTriageDecision est un no-op", () => {
+    useWorkspaceStore.getState().reset();
+    useWorkspaceStore.getState().init({ annotationId: "ann-1", nSentences: 10, clauses: [], readOnly: true });
+    useWorkspaceStore.getState().applyTriageDecision({ anchorIndex: 1, themes: [prim] });
+    expect(useWorkspaceStore.getState().draftClauses).toHaveLength(0);
+  });
+});

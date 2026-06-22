@@ -5,7 +5,8 @@
  *
  * Liste les phrases triables (ordonnées par niveau C1→C5 puis index), met en avant la
  * suggestion COURANTE (SuggestionCard), et offre les gestes clavier-first :
- *   Entrée = action primaire · j/↓ suivant · k/↑ précédent · A = accepter tout C1.
+ *   Entrée = action primaire · j/↓ suivant · k/↑ précédent · A = accepter tout C1 ·
+ *   S = accepter la sélection de phrases du document.
  * Pure : items + position + callbacks injectés ; aucune dépendance réseau (testable RTL).
  */
 
@@ -25,6 +26,8 @@ export interface TriageQueueViewProps {
   pos: number; // position courante dans items
   done: Set<number>; // index de phrases déjà traitées
   c1Count: number;
+  /** Nb de phrases SÉLECTIONNÉES dans le document, triables et non traitées (hors C5). */
+  selectedCount: number;
   onPos: (pos: number) => void;
   onAccept: (row: QueueRow) => void;
   onSwap: (row: QueueRow, label: string) => void;
@@ -32,13 +35,15 @@ export interface TriageQueueViewProps {
   onChoose: (row: QueueRow, label: string) => void;
   onUndoOverride: (row: QueueRow) => void;
   onBatchAcceptC1: () => void;
+  onBatchAcceptSelection: () => void;
   onClose: () => void;
 }
 
 const ORDER: TriageLevel[] = ["C1", "C2", "C3", "C4", "C5"];
 
 export function TriageQueueView(props: TriageQueueViewProps) {
-  const { items, summary, pos, done, c1Count, onPos, onAccept, onBatchAcceptC1, onClose } = props;
+  const { items, summary, pos, done, c1Count, selectedCount, onPos, onAccept,
+    onBatchAcceptC1, onBatchAcceptSelection, onClose } = props;
   const current = items[pos];
 
   const move = useCallback(
@@ -55,10 +60,11 @@ export function TriageQueueView(props: TriageQueueViewProps) {
       else if (e.key === "k" || e.key === "ArrowUp") { e.preventDefault(); move(-1); }
       else if (e.key === "Enter" && current && current.result.level !== "C5") { e.preventDefault(); onAccept(current); }
       else if ((e.key === "a" || e.key === "A") && c1Count > 0) { e.preventDefault(); onBatchAcceptC1(); }
+      else if ((e.key === "s" || e.key === "S") && selectedCount > 0) { e.preventDefault(); onBatchAcceptSelection(); }
     };
     window.addEventListener("keydown", onKey);
     return () => window.removeEventListener("keydown", onKey);
-  }, [current, move, onAccept, onBatchAcceptC1, onClose, c1Count]);
+  }, [current, move, onAccept, onBatchAcceptC1, onBatchAcceptSelection, onClose, c1Count, selectedCount]);
 
   return (
     <aside
@@ -81,11 +87,22 @@ export function TriageQueueView(props: TriageQueueViewProps) {
             {lvl} {summary[lvl]}
           </span>
         ))}
-        {c1Count > 0 && (
-          <button type="button" data-testid="triage-batch-c1" onClick={onBatchAcceptC1}
-            className="ml-auto rounded-md bg-accent px-2 py-0.5 text-[11px] font-medium text-accent-fg hover:brightness-110">
-            ✓ Accepter tout C1 ({c1Count})
-          </button>
+        {(c1Count > 0 || selectedCount > 0) && (
+          <span className="ml-auto flex items-center gap-1.5">
+            {selectedCount > 0 && (
+              <button type="button" data-testid="triage-batch-selection" onClick={onBatchAcceptSelection}
+                title="Accepter les phrases sélectionnées dans le document (S)"
+                className="rounded-md border border-accent/60 px-2 py-0.5 text-[11px] font-medium text-accent hover:bg-accent/10">
+                ✓ Accepter la sélection ({selectedCount})
+              </button>
+            )}
+            {c1Count > 0 && (
+              <button type="button" data-testid="triage-batch-c1" onClick={onBatchAcceptC1}
+                className="rounded-md bg-accent px-2 py-0.5 text-[11px] font-medium text-accent-fg hover:brightness-110">
+                ✓ Accepter tout C1 ({c1Count})
+              </button>
+            )}
+          </span>
         )}
       </div>
 

@@ -258,6 +258,21 @@ export const handlers = [
   }),
   http.post(`${BASE}/annotations/:id/clauses`, async ({ request }) => {
     const body = (await request.json()) as Record<string, unknown>;
+    const ai = (body.anchor_index ?? body.anchorIndex) as number;
+    const existing = annotation.clauses.find((c) => c.anchorIndex === ai);
+    // Upsert par ancre (cf. backend) : si la phrase est déjà annotée et `upsert`, on MET
+    // À JOUR la clause existante (200) au lieu de dupliquer / 409 (INV-2).
+    if (existing && body.upsert) {
+      const merged = { ...buildMockClause(body), id: existing.id, order: existing.order };
+      annotation = {
+        ...annotation,
+        clauses: annotation.clauses.map((c) => (c.id === existing.id ? merged : c)),
+      };
+      return HttpResponse.json(merged, { status: 200 });
+    }
+    if (existing) {
+      return HttpResponse.json({ detail: "A clause already starts on this sentence (INV-2)." }, { status: 409 });
+    }
     const clause = buildMockClause(body);
     annotation = {
       ...annotation,
@@ -267,13 +282,20 @@ export const handlers = [
   }),
   // Triage : acceptation par lot (C1) — transactionnelle + conflits INV-2 rapportés.
   http.post(`${BASE}/annotations/:id/clauses/batch`, async ({ request }) => {
-    const body = (await request.json()) as { clauses: Record<string, unknown>[] };
+    const body = (await request.json()) as { clauses: Record<string, unknown>[]; upsert?: boolean };
     const created: Clause[] = [];
     const conflicts: { anchorIndex: number; reason: string }[] = [];
     for (const item of body.clauses ?? []) {
       const ai = (item.anchor_index ?? item.anchorIndex) as number;
-      if (annotation.clauses.some((c) => c.anchorIndex === ai)) {
+      const existing = annotation.clauses.find((c) => c.anchorIndex === ai);
+      if (existing && !body.upsert) {
         conflicts.push({ anchorIndex: ai, reason: "déjà annotée (INV-2)" });
+        continue;
+      }
+      if (existing) {
+        const merged = { ...buildMockClause(item), id: existing.id, order: existing.order };
+        annotation = { ...annotation, clauses: annotation.clauses.map((c) => (c.id === existing.id ? merged : c)) };
+        created.push(merged);
         continue;
       }
       const clause = buildMockClause(item);
@@ -322,6 +344,11 @@ export const handlers = [
               evidenceSpan: (patch.evidence_span as string) ?? c.evidenceSpan,
               rationale: (patch.rationale as string) ?? c.rationale,
               certainty: (patch.certainty as Clause["certainty"]) ?? c.certainty,
+              // Multi-label / frontière / niveau / validation (triage) : propagés s'ils sont fournis.
+              themes: (patch.themes as Clause["themes"]) ?? c.themes,
+              boundary: (patch.boundary as Clause["boundary"]) ?? c.boundary,
+              triageLevel: ((patch.triage_level ?? patch.triageLevel) as Clause["triageLevel"]) ?? c.triageLevel,
+              validated: patch.validated !== undefined ? (patch.validated as boolean) : c.validated,
             }
           : c,
       ),

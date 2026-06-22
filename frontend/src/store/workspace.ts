@@ -10,7 +10,14 @@
  */
 
 import { create } from "zustand";
-import type { Certainty, Clause, PivotClause } from "@/types/contract";
+import type {
+  BoundaryKind,
+  Certainty,
+  Clause,
+  PivotClause,
+  ThemeTag,
+  TriageLevel,
+} from "@/types/contract";
 
 /** Source affichée dans le DocumentPanel (Q3).
  *  "human" | "compare" | id de juge (claude/codex/mistral…, cf. LLM_JUDGES). */
@@ -59,6 +66,15 @@ export interface DraftClause {
    * pré-remplissage non confirmé reste false : il aide mais ne fait jamais référence.
    */
   validated?: boolean;
+  /**
+   * Multi-label (protocole C1–C5) : ensemble de thèmes (1 primaire + N secondaires).
+   * Le scalaire `theme` reste le miroir du primaire. Absent ⇒ mono = [{theme, primary}].
+   */
+  themes?: ThemeTag[];
+  /** Frontière d'ouverture (dure/molle) + support inter-juges (additif). */
+  boundary?: { type: BoundaryKind; support: number };
+  /** Niveau de triage C1–C5 (orthogonal à la certitude 0–3). */
+  triageLevel?: TriageLevel | null;
 }
 
 /**
@@ -72,6 +88,15 @@ export interface BlockOp {
   anchors: number[];
   /** Thème à poser (requis pour annotateRange/extend ; ignoré pour shrink/clearBlock). */
   theme?: string;
+}
+
+/** Décision de triage acceptée pour une phrase (annotation assistée C1–C5). */
+export interface TriageDecision {
+  anchorIndex: number;
+  /** Ensemble multi-label : exactement 1 primaire + N secondaires. */
+  themes: ThemeTag[];
+  boundary?: { type: BoundaryKind; support: number };
+  triageLevel?: TriageLevel;
 }
 
 interface WorkspaceState {
@@ -149,6 +174,16 @@ interface WorkspaceState {
    * créée par accident. Si une ancre existe déjà à cet index, on la sélectionne.
    */
   setBoundary: (anchorIndex: number, theme: string) => void;
+  /**
+   * Acceptation d'une suggestion de triage (annotation assistée C1–C5). Upsert de la
+   * clause à l'ancre : pose l'ensemble MULTI-LABEL (primaire + secondaires), la frontière
+   * (dure/molle) et le niveau, et marque `validated`. Crée si absente, met à jour sinon
+   * (une phrase déjà seedée d'un LLM → simple update, donc PAS de 409). Un seul snapshot
+   * d'undo, sélectionne la clause et focalise la phrase. No-op en lecture seule (R1).
+   * `applyTriageBatch` applique N décisions en UNE transaction d'undo (lot C1/sélection).
+   */
+  applyTriageDecision: (params: TriageDecision) => void;
+  applyTriageBatch: (decisions: TriageDecision[]) => void;
   /**
    * Toggle d'annotation (C3) : depuis le menu d'une phrase. Aucune clause → crée
    * (thème) ; clause de thème DIFFÉRENT → re-thématise ; clause de MÊME thème →
@@ -284,11 +319,66 @@ function fromClause(c: Clause): DraftClause {
     seededFrom: c.seededFrom ?? null,
     resolvedFrom: null,
     validated: c.validated ?? false,
+    // Multi-label / frontière / niveau (additif) : préservés à l'aller-retour serveur
+    // → le rendu document (rail, badge, plan, inspecteur) garde le multi-label après accept.
+    themes: c.themes,
+    boundary: c.boundary,
+    triageLevel: c.triageLevel ?? null,
   };
 }
 
 function sortDrafts(d: DraftClause[]): DraftClause[] {
   return d.slice().sort((a, b) => a.anchorIndex - b.anchorIndex);
+}
+
+/** Thème primaire d'un ensemble multi-label (repli sur le 1ᵉʳ si aucun rôle primary). */
+function primaryOf(themes: ThemeTag[]): string {
+  return themes.find((t) => t.role === "primary")?.label ?? themes[0]?.label ?? "";
+}
+
+/**
+ * Applique UNE décision de triage à un tableau de drafts (PUR, sans set/undo) : upsert
+ * par ancre. Retourne le nouveau tableau + le localId de la clause touchée. Si l'ancre
+ * existe (ex. seed LLM), c'est une mise à jour en place — l'autosave la persiste en PATCH
+ * (donc pas de 409). Sinon création d'un draft validé.
+ */
+function upsertDecision(
+  drafts: DraftClause[],
+  d: TriageDecision,
+): { drafts: DraftClause[]; localId: string } {
+  const primary = primaryOf(d.themes);
+  const existing = drafts.find((c) => c.anchorIndex === d.anchorIndex);
+  if (existing) {
+    return {
+      drafts: drafts.map((c) =>
+        c.localId === existing.localId
+          ? {
+              ...c,
+              theme: primary,
+              themes: d.themes,
+              boundary: d.boundary ?? c.boundary,
+              triageLevel: d.triageLevel ?? c.triageLevel ?? null,
+              validated: true,
+            }
+          : c,
+      ),
+      localId: existing.localId,
+    };
+  }
+  const draft: DraftClause = {
+    localId: nextLocalId(),
+    anchorIndex: d.anchorIndex,
+    theme: primary,
+    legalNature: null,
+    evidenceSpan: "",
+    rationale: "",
+    certainty: null,
+    validated: true,
+    themes: d.themes,
+    boundary: d.boundary,
+    triageLevel: d.triageLevel ?? null,
+  };
+  return { drafts: sortDrafts([...drafts, draft]), localId: draft.localId };
 }
 
 export const useWorkspaceStore = create<WorkspaceState>((set, get) => ({
@@ -406,6 +496,51 @@ export const useWorkspaceStore = create<WorkspaceState>((set, get) => ({
           label: `Clause ${theme} créée @${anchorIndex}`,
           anchorIndex,
           localId: draft.localId,
+        }),
+      };
+    }),
+
+  applyTriageDecision: (params) =>
+    set((s) => {
+      if (s.readOnly) return {};
+      if (!params.themes.length) return {};
+      const { drafts, localId } = upsertDecision(s.draftClauses, params);
+      const primary = primaryOf(params.themes);
+      return {
+        draftClauses: drafts,
+        selectedClauseId: localId,
+        focusedSentence: Math.max(
+          0,
+          Math.min(params.anchorIndex, Math.max(0, s.nSentences - 1)),
+        ),
+        dirty: true,
+        undoStack: pushUndo(s.undoStack, s.draftClauses),
+        redoStack: [],
+        actionLog: appendLog(s.actionLog, {
+          kind: "triage.accept",
+          label: `Triage ${params.triageLevel ?? ""} → ${primary} @${params.anchorIndex}`.trim(),
+          anchorIndex: params.anchorIndex,
+          localId,
+        }),
+      };
+    }),
+
+  applyTriageBatch: (decisions) =>
+    set((s) => {
+      if (s.readOnly) return {};
+      const valid = decisions.filter((d) => d.themes.length);
+      if (!valid.length) return {};
+      let drafts = s.draftClauses;
+      for (const d of valid) drafts = upsertDecision(drafts, d).drafts;
+      return {
+        draftClauses: drafts,
+        dirty: true,
+        // UN seul snapshot d'undo pour tout le lot.
+        undoStack: pushUndo(s.undoStack, s.draftClauses),
+        redoStack: [],
+        actionLog: appendLog(s.actionLog, {
+          kind: "triage.batch",
+          label: `Triage : ${valid.length} clause${valid.length > 1 ? "s" : ""} acceptée${valid.length > 1 ? "s" : ""}`,
         }),
       };
     }),

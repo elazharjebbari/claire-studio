@@ -224,15 +224,33 @@ class AnnotationViewSet(viewsets.ModelViewSet):
                 {"detail": "anchorIndex and theme are required."},
                 status=status.HTTP_400_BAD_REQUEST,
             )
-        if annotation.clauses.filter(
+        existing = annotation.clauses.filter(
             anchor_sentence=attrs["anchor_sentence"]
-        ).exists():
+        ).first()
+        # UPSERT (chantier triage) : accepter une suggestion sur une phrase DÉJÀ annotée
+        # (annotation seedée d'un LLM → chaque phrase a déjà une clause) ne doit PAS
+        # échouer en 409 ; c'est une MAJ de la clause existante avec la décision retenue.
+        # Opt-in via `upsert:true` pour préserver INV-2 en annotation manuelle (sinon 409).
+        upsert = bool(request.data.get("upsert"))
+        if existing is not None and not upsert:
             raise Conflict("A clause already starts on this sentence (INV-2).")
-        attrs.setdefault("order", annotation.clauses.count())
         with transaction.atomic():
-            clause = Clause.objects.create(
-                annotation=annotation, client_op_id=client_op_id, **attrs
-            )
+            if existing is not None:
+                clause = existing
+                for field in (
+                    "theme", "legal_nature", "evidence_span",
+                    "rationale", "certainty", "validated",
+                ):
+                    if field in attrs:
+                        setattr(clause, field, attrs[field])
+                if client_op_id:
+                    clause.client_op_id = client_op_id
+                clause.save()
+            else:
+                attrs.setdefault("order", annotation.clauses.count())
+                clause = Clause.objects.create(
+                    annotation=annotation, client_op_id=client_op_id, **attrs
+                )
             changed = _apply_boundary_and_level(clause, request.data)
             if changed:
                 clause.save(update_fields=changed)
@@ -242,9 +260,8 @@ class AnnotationViewSet(viewsets.ModelViewSet):
                 set_clause_theme_tags(clause, themes, annotation.project.scheme)
             else:
                 ensure_primary_tag(clause)
-        return Response(
-            ClauseSerializer(clause).data, status=status.HTTP_201_CREATED
-        )
+        code = status.HTTP_200_OK if existing is not None else status.HTTP_201_CREATED
+        return Response(ClauseSerializer(clause).data, status=code)
 
     @action(detail=True, methods=["post"], url_path="clauses/batch")
     def add_clauses_batch(self, request, pk=None):
@@ -258,6 +275,9 @@ class AnnotationViewSet(viewsets.ModelViewSet):
         scheme = annotation.project.scheme
         document = annotation.document
         items = request.data.get("clauses") or []
+        # Upsert par lot (cf. add_clause) : si demandé, une phrase déjà annotée est MISE
+        # À JOUR au lieu d'être rapportée en conflit — l'acceptation C1 reste idempotente.
+        upsert = bool(request.data.get("upsert"))
         created, conflicts = [], []
 
         def primary_code(item):
@@ -291,13 +311,29 @@ class AnnotationViewSet(viewsets.ModelViewSet):
                 except Theme.DoesNotExist:
                     conflicts.append({"anchorIndex": anchor_index, "reason": f"thème '{code}' hors scheme"})
                     continue
-                if annotation.clauses.filter(anchor_sentence=sentence).exists():
+                existing_at_anchor = annotation.clauses.filter(
+                    anchor_sentence=sentence
+                ).first()
+                if existing_at_anchor is not None and not upsert:
                     conflicts.append({"anchorIndex": anchor_index, "reason": "déjà annotée (INV-2)"})
                     continue
-                clause = Clause.objects.create(
-                    annotation=annotation, anchor_sentence=sentence, theme=theme,
-                    order=order0 + idx, client_op_id=op,
-                )
+                if existing_at_anchor is not None:
+                    clause = existing_at_anchor
+                    clause.theme = theme
+                    fields = ["theme"]
+                    if item.get("validated") is not None:
+                        clause.validated = bool(item.get("validated"))
+                        fields.append("validated")
+                    if op:
+                        clause.client_op_id = op
+                        fields.append("client_op_id")
+                    clause.save(update_fields=fields)
+                else:
+                    clause = Clause.objects.create(
+                        annotation=annotation, anchor_sentence=sentence, theme=theme,
+                        order=order0 + idx, client_op_id=op,
+                        validated=bool(item.get("validated") or False),
+                    )
                 ch = _apply_boundary_and_level(clause, item)
                 if ch:
                     clause.save(update_fields=ch)

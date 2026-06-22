@@ -55,4 +55,40 @@ test.describe("File de triage — carte de suggestion & gestes", () => {
       await expect(batch).toBeHidden();
     }
   });
+
+  test("accepter met à jour le document IMMÉDIATEMENT (via le store)", async ({ page }: { page: Page }) => {
+    await page.goto("/annotate/ann-1");
+    await page.getByTestId("toggle-triage").click();
+    await expect(page.getByTestId("triage-queue")).toBeVisible();
+
+    // Compteur de clauses validées AVANT (plan latéral, piloté par le store).
+    const validated = page.getByTestId("toc-validated");
+    const before = (await validated.textContent().catch(() => "")) ?? "";
+
+    const accept = page.getByTestId("suggestion-accept");
+    if (await accept.isVisible().catch(() => false)) {
+      await accept.click();
+      // Marque « traité » dans la file ET maj du document sans rechargement.
+      await expect(page.getByTestId("triage-done")).toBeVisible();
+      await expect(validated).not.toHaveText(before);
+    }
+  });
+
+  test("sélection multiple → bouton « Accepter la sélection »", async ({ page }: { page: Page }) => {
+    await page.goto("/annotate/ann-1");
+    await page.getByTestId("toggle-triage").click();
+    await expect(page.getByTestId("triage-queue")).toBeVisible();
+
+    // Sélectionne deux phrases dans le document (Cmd/Ctrl+clic = toggle additif).
+    const rows = page.locator("[data-sentence-index]");
+    await rows.nth(0).click();
+    await rows.nth(2).click({ modifiers: ["ControlOrMeta"] });
+
+    const selBtn = page.getByTestId("triage-batch-selection");
+    if (await selBtn.isVisible().catch(() => false)) {
+      await expect(selBtn).toContainText("Accepter la sélection");
+      await selBtn.click();
+      await expect(selBtn).toBeHidden(); // sélection consommée
+    }
+  });
 });

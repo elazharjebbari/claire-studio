@@ -58,6 +58,9 @@ function fromClause(c: Clause): PersistedClause {
     rationale: c.rationale ?? "",
     certainty: c.certainty ?? null,
     validated: c.validated ?? false,
+    themes: c.themes,
+    boundary: c.boundary,
+    triageLevel: c.triageLevel ?? null,
   };
 }
 
@@ -150,6 +153,10 @@ export function useAutosave(annotationId: string | null) {
           rationale: d.rationale,
           certainty: d.certainty,
           validated: d.validated ?? false,
+          // Multi-label / frontière / niveau (triage) — envoyés seulement si présents.
+          ...(d.themes ? { themes: d.themes } : {}),
+          ...(d.boundary ? { boundary: d.boundary } : {}),
+          ...(d.triageLevel ? { triageLevel: d.triageLevel } : {}),
           clientOpId: d.localId,
         });
         upsert(persistedRef.current, fromClause(created));
@@ -162,6 +169,9 @@ export function useAutosave(annotationId: string | null) {
           rationale: u.draft.rationale,
           certainty: u.draft.certainty,
           validated: u.draft.validated ?? false,
+          ...(u.draft.themes ? { themes: u.draft.themes } : {}),
+          ...(u.draft.boundary ? { boundary: u.draft.boundary } : {}),
+          ...(u.draft.triageLevel ? { triageLevel: u.draft.triageLevel } : {}),
         });
         upsert(persistedRef.current, {
           anchorIndex: u.draft.anchorIndex,
@@ -172,6 +182,9 @@ export function useAutosave(annotationId: string | null) {
           rationale: u.draft.rationale ?? "",
           certainty: u.draft.certainty ?? null,
           validated: u.draft.validated ?? false,
+          themes: u.draft.themes,
+          boundary: u.draft.boundary,
+          triageLevel: u.draft.triageLevel ?? null,
         });
       }
       for (const id of plan.deletes) {

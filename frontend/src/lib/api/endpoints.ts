@@ -291,7 +291,14 @@ export function submitAnnotation(id: string): Promise<Annotation> {
 
 export function addClause(
   annotationId: string,
-  clause: Partial<Clause> & { anchorIndex: number; theme: string; clientOpId?: string },
+  clause: Partial<Clause> & {
+    anchorIndex: number;
+    theme: string;
+    clientOpId?: string;
+    /** Upsert par ancre : si une clause existe déjà à cette phrase (seed LLM…), la
+     *  MET À JOUR au lieu d'échouer en 409. Utilisé par l'acceptation de triage. */
+    upsert?: boolean;
+  },
 ): Promise<Clause> {
   const body: Record<string, unknown> = {
     anchor_index: clause.anchorIndex,
@@ -308,6 +315,7 @@ export function addClause(
   if (clause.themes !== undefined) body.themes = clause.themes;
   if (clause.boundary !== undefined) body.boundary = clause.boundary;
   if (clause.triageLevel !== undefined) body.triage_level = clause.triageLevel;
+  if (clause.upsert) body.upsert = true;
   return apiFetch<Clause>(`/annotations/${annotationId}/clauses`, { method: "POST", body });
 }
 
@@ -335,15 +343,18 @@ export interface BatchClauseInput {
   boundary?: { type: string; support: number };
   triageLevel?: string;
   clientOpId?: string;
+  validated?: boolean;
 }
 
 export function batchAcceptClauses(
   annotationId: string,
   clauses: BatchClauseInput[],
+  opts?: { upsert?: boolean },
 ): Promise<{ created: Clause[]; conflicts: { anchorIndex: number; reason: string }[] }> {
   return apiFetch(`/annotations/${annotationId}/clauses/batch`, {
     method: "POST",
     body: {
+      upsert: opts?.upsert ? true : undefined,
       clauses: clauses.map((c) => ({
         anchor_index: c.anchorIndex,
         theme: c.theme,
@@ -351,6 +362,7 @@ export function batchAcceptClauses(
         boundary: c.boundary,
         triage_level: c.triageLevel,
         client_op_id: c.clientOpId,
+        validated: c.validated,
       })),
     },
   });

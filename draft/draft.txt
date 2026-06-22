@@ -1,4 +1,29 @@
-cd backend
-rm -f db.sqlite3 db.sqlite3-wal db.sqlite3-shm
-make feed-all
-make run
+{
+  "mcpServers": {
+    "hostinger-hosting": {
+      "command": "npx",
+      "args": ["--package=hostinger-api-mcp@latest", "hostinger-hosting-mcp"],
+      "env": { "HOSTINGER_API_TOKEN": "TrekxxTIrlW7n7v9UI56mLEBKKnO0fO2TBYR9Ko644e03120" }
+    },
+    "hostinger-domains": {
+      "command": "npx",
+      "args": ["--package=hostinger-api-mcp@latest", "hostinger-domains-mcp"],
+      "env": { "HOSTINGER_API_TOKEN": "TrekxxTIrlW7n7v9UI56mLEBKKnO0fO2TBYR9Ko644e03120" }
+    },
+    "hostinger-dns": {
+      "command": "npx",
+      "args": ["--package=hostinger-api-mcp@latest", "hostinger-dns-mcp"],
+      "env": { "HOSTINGER_API_TOKEN": "TrekxxTIrlW7n7v9UI56mLEBKKnO0fO2TBYR9Ko644e03120" }
+    },
+    "hostinger-reach": {
+      "command": "npx",
+      "args": ["--package=hostinger-api-mcp@latest", "hostinger-reach-mcp"],
+      "env": { "HOSTINGER_API_TOKEN": "TrekxxTIrlW7n7v9UI56mLEBKKnO0fO2TBYR9Ko644e03120" }
+    },
+    "hostinger-vps": {
+      "command": "npx",
+      "args": ["--package=hostinger-api-mcp@latest", "hostinger-vps-mcp"],
+      "env": { "HOSTINGER_API_TOKEN": "TrekxxTIrlW7n7v9UI56mLEBKKnO0fO2TBYR9Ko644e03120" }
+    }
+  }
+}
