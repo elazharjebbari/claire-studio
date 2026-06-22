@@ -8,7 +8,12 @@
  * - `REAL_MODE` : le frontend parle à l'API Django réelle (JWT requis).
  */
 
-export const MOCKS_ENABLED = process.env.NEXT_PUBLIC_ENABLE_MOCKS === "true";
+// Garde de sécurité : les mocks MSW ne peuvent JAMAIS être actifs dans un build de
+// production, même si la variable d'env est laissée à "true" par erreur (évite
+// d'exposer des données fictives type « Bruno » en prod).
+export const MOCKS_ENABLED =
+  process.env.NEXT_PUBLIC_ENABLE_MOCKS === "true" &&
+  process.env.NODE_ENV !== "production";
 
 /** Vrai quand on parle à un vrai backend (JWT requis). Inverse du mode mock. */
 export const REAL_MODE = !MOCKS_ENABLED;

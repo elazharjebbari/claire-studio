@@ -38,6 +38,18 @@ def _selected_annotations(job: ExportJob):
     documents = scope.get("documents")
     if documents:
         qs = qs.filter(document__external_id__in=documents)
+    # Scope par annotateur (ADR‑001 §F) : restreint l'export à certaines sessions
+    # (utile pour exporter la session d'un annotateur précis, ou comparer). Accepte
+    # des usernames OU des pk — comme le reste du contrat (cf. annotations/views).
+    annotators = scope.get("annotators")
+    if annotators:
+        from django.db.models import Q
+
+        q = Q()
+        for a in annotators:
+            a = str(a)
+            q |= Q(annotator__pk=a) if a.isdigit() else Q(annotator__username=a)
+        qs = qs.filter(q)
     return qs.order_by("document__external_id", "annotator__username")
 
 
@@ -49,22 +61,71 @@ def _write_jsonl(path: Path, records: list[dict]) -> None:
 
 def _write_csv(path: Path, records: list[dict]) -> None:
     fieldnames = [
-        "doc", "project", "annotator", "schema", "status",
+        "doc", "project", "annotator", "schema", "status", "source",
         "global_certainty", "anchor_index", "theme", "legal_nature",
-        "evidence_span", "rationale", "certainty",
+        "evidence_span", "rationale", "certainty", "validated", "order",
     ]
     with path.open("w", encoding="utf-8", newline="") as fh:
-        writer = csv.DictWriter(fh, fieldnames=fieldnames)
+        # extrasaction='ignore' : robustesse si build_snapshot gagne d'autres champs.
+        writer = csv.DictWriter(fh, fieldnames=fieldnames, extrasaction="ignore")
         writer.writeheader()
         for rec in records:
             base = {k: rec.get(k) for k in (
-                "doc", "project", "annotator", "schema", "status",
+                "doc", "project", "annotator", "schema", "status", "source",
                 "global_certainty",
             )}
             for clause in rec["clauses"]:
                 row = dict(base)
                 row.update(clause)
                 writer.writerow(row)
+
+
+def _write_md(path: Path, records: list[dict]) -> None:
+    """Markdown lisible : un bloc par session (annotateur×document) + clauses."""
+    lines: list[str] = ["# Export d'annotations\n"]
+    for rec in records:
+        lines.append(
+            f"## {rec['doc']} — {rec['annotator']} "
+            f"({rec['status']}, schéma {rec['schema']})\n"
+        )
+        if not rec["clauses"]:
+            lines.append("_(aucune clause)_\n")
+            continue
+        lines.append("| phrase | thème | nature | certitude | justification |")
+        lines.append("|---|---|---|---|---|")
+        for c in rec["clauses"]:
+            rationale = (c.get("rationale") or "").replace("\n", " ").replace("|", "\\|")
+            lines.append(
+                f"| {c['anchor_index']} | {c['theme']} | "
+                f"{c.get('legal_nature') or '—'} | {c.get('certainty') if c.get('certainty') is not None else '—'} | "
+                f"{rationale} |"
+            )
+        lines.append("")
+    path.write_text("\n".join(lines), encoding="utf-8")
+
+
+def _write_iaa_matrix(path: Path, project) -> None:
+    """CSV de concordance : κ de Cohen pairwise par document (recherche/qualité)."""
+    from claire.projects.iaa import project_iaa
+
+    data = project_iaa(project)
+    with path.open("w", encoding="utf-8", newline="") as fh:
+        writer = csv.writer(fh)
+        writer.writerow(["document", "annotator_a", "annotator_b", "kappa", "n_sentences"])
+        for p in data["pairs"]:
+            writer.writerow(
+                [p["document"], p["annotator_a"], p["annotator_b"], p["kappa"], p["n_sentences"]]
+            )
+
+
+# Formats réellement implémentés ; tout autre format déclaré retombe sur jsonl
+# (le format pivot documenté, CONTRACT §4) — repli TRACÉ dans le manifeste.
+_IMPLEMENTED_FORMATS = {
+    ExportFormat.JSONL,
+    ExportFormat.CSV,
+    ExportFormat.MD,
+    "iaa_matrix",
+}
 
 
 @transaction.atomic
@@ -78,22 +139,43 @@ def run_export(job: ExportJob) -> ExportJob:
         out_dir = Path(settings.EXPORTS_DIR)
         out_dir.mkdir(parents=True, exist_ok=True)
         stamp = dt.datetime.utcnow().strftime("%Y%m%dT%H%M%S")
-        fname = f"export_{job.project.slug}_{job.id}_{stamp}.{job.format}"
+
+        # Format effectif : un format non implémenté retombe sur jsonl, et on TRACE
+        # ce repli dans le manifeste (jamais de troncature/repli silencieux, ADR‑001 §F).
+        requested = job.format
+        warnings: list[str] = []
+        if requested in _IMPLEMENTED_FORMATS:
+            effective = requested
+        else:
+            effective = ExportFormat.JSONL
+            warnings.append(
+                f"format '{requested}' non implémenté → repli sur jsonl (pivot CONTRACT §4)"
+            )
+
+        ext = "csv" if effective in (ExportFormat.CSV, "iaa_matrix") else (
+            "md" if effective == ExportFormat.MD else "jsonl"
+        )
+        fname = f"export_{job.project.slug}_{job.id}_{stamp}.{ext}"
         path = out_dir / fname
 
-        if job.format == ExportFormat.CSV:
+        if effective == ExportFormat.CSV:
             _write_csv(path, records)
+        elif effective == ExportFormat.MD:
+            _write_md(path, records)
+        elif effective == "iaa_matrix":
+            _write_iaa_matrix(path, job.project)
         else:
-            # jsonl default (and any other declared format falls back to jsonl
-            # pivot, which is the documented explanatory format, CONTRACT §4).
             _write_jsonl(path, records)
 
         manifest = {
             "project": job.project.slug,
-            "format": job.format,
+            "format_requested": requested,
+            "format_effective": effective,
+            "warnings": warnings,
             "scope": job.scope,
             "n_annotations": len(records),
             "n_clauses": sum(len(r["clauses"]) for r in records),
+            "annotators": sorted({r["annotator"] for r in records}),
             "schema": job.project.scheme.slug,
             "generated_at": stamp,
             "pivot_format": "CONTRACT §4 clause exchange format",

@@ -13,6 +13,7 @@ class ExportFormat(models.TextChoices):
     XML = "xml", "XML"
     MD = "md", "Markdown"
     HUGGINGFACE = "huggingface", "HuggingFace"
+    IAA_MATRIX = "iaa_matrix", "Matrice de concordance (IAA)"
 
 
 class ExportStatus(models.TextChoices):

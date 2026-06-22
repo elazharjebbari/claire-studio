@@ -173,6 +173,21 @@ export function listAssignments(slug: string): Promise<Paginated<Assignment>> {
   return apiFetch<Paginated<Assignment>>(`/projects/${slug}/assignments`);
 }
 
+/**
+ * Documents du projet — **une entrée PAR document** (ADR-001, anti-duplication).
+ * Source de vérité document-centrée : `mySession` (ma session) + (admin/lead)
+ * `sessions[]`/`sessionsSummary`. `mine=true` force la vue annotateur.
+ */
+export function listProjectDocuments(
+  slug: string,
+  opts?: { mine?: boolean },
+): Promise<Paginated<import("@/types/contract").ProjectDocument>> {
+  const qs = opts?.mine ? "?mine=1" : "";
+  return apiFetch<Paginated<import("@/types/contract").ProjectDocument>>(
+    `/projects/${slug}/documents${qs}`,
+  );
+}
+
 export function getProjectProgress(slug: string): Promise<ProjectProgress> {
   return apiFetch<ProjectProgress>(`/projects/${slug}/progress`);
 }

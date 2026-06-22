@@ -1,22 +1,53 @@
 "use client";
 
-/** Tableau de bord projet — progression, mes assignations, IAA, activité (F4). */
+/** Tableau de bord projet — Ma session, progression, IAA, activité (F4 / ADR-001). */
 
 import Link from "next/link";
-import { useEffect } from "react";
-import { useAssignments, useProject, useProjectProgress, useActivity } from "@/lib/api/hooks";
+import { useEffect, useState } from "react";
+import { useRouter } from "next/navigation";
+import {
+  useProjectDocuments,
+  useProject,
+  useProjectProgress,
+  useActivity,
+  useMe,
+} from "@/lib/api/hooks";
+import { createAnnotation } from "@/lib/api/endpoints";
+import { isAdminRole } from "@/lib/roles";
 import { Panel, Button, StatusPill } from "@/components/ui/primitives";
 import { IaaDashboard } from "@/components/projects/IaaDashboard";
 import { useUiStore } from "@/store/ui";
 
 export default function ProjectDashboard({ params }: { params: { slug: string } }) {
+  const router = useRouter();
   const { data: project } = useProject(params.slug);
   const { data: progress } = useProjectProgress(params.slug);
-  const { data: assignments } = useAssignments(params.slug);
+  const { data: me } = useMe();
+  // Mes documents (1 entrée/document) — JAMAIS l'union des assignations (anti-doublon).
+  const { data: docs } = useProjectDocuments(params.slug, { mine: true });
   const { data: activity } = useActivity(params.slug);
   const setProject = useUiStore((s) => s.setCurrentProject);
+  const isAdmin = isAdminRole(me?.role);
+  const [opening, setOpening] = useState<string | null>(null);
 
   useEffect(() => setProject(params.slug), [params.slug, setProject]);
+
+  // Ma session = mes documents assignés (ou déjà commencés). Chacun annote seul.
+  const mine = (docs?.results ?? []).filter(
+    (d) => d.mySession?.assigned || (d.mySession?.status && d.mySession.status !== "unstarted"),
+  );
+
+  async function open(externalId: string) {
+    if (opening) return;
+    setOpening(externalId);
+    try {
+      // Ouvre TOUJOURS MA session (idempotent), jamais celle d'un autre.
+      const ann = await createAnnotation({ project: params.slug, document: externalId });
+      router.push(`/annotate/${ann.id}`);
+    } finally {
+      setOpening(null);
+    }
+  }
 
   return (
     <div className="mx-auto max-w-5xl px-6 py-8">
@@ -26,6 +57,18 @@ export default function ProjectDashboard({ params }: { params: { slug: string } 
           <Button variant="outline">Voir les documents</Button>
         </Link>
       </div>
+
+      {isAdmin && (
+        <p className="mt-3 rounded-md border border-line bg-panel-muted px-3 py-2 text-xs text-ink-muted">
+          Vous êtes administrateur. La <strong className="text-ink">supervision</strong>{" "}
+          (matrice document × annotateur, avancement, accès en lecture aux sessions) est
+          dans la{" "}
+          <Link href="/admin/projects" className="text-accent hover:underline">
+            Console admin → Campagnes
+          </Link>
+          . Ci-dessous : <strong className="text-ink">votre propre</strong> session d'annotation.
+        </p>
+      )}
 
       <div className="mt-4 grid gap-4 md:grid-cols-4">
         {[
@@ -43,21 +86,34 @@ export default function ProjectDashboard({ params }: { params: { slug: string } 
 
       <div className="mt-6 grid gap-4 md:grid-cols-2">
         <Panel className="p-4">
-          <h2 className="mb-2 font-semibold text-ink">Mes assignations</h2>
+          <h2 className="mb-1 font-semibold text-ink">Ma session</h2>
+          <p className="mb-2 text-xs text-ink-muted">
+            Vos documents à annoter, sur <strong className="text-ink">votre</strong> session
+            personnelle (1 ligne par document).
+          </p>
           <ul className="flex flex-col gap-2">
-            {(assignments?.results ?? []).map((a) => (
-              <li key={a.id} className="flex items-center justify-between text-sm">
-                <span className="text-ink">{a.document.title}</span>
+            {mine.map((d) => (
+              <li key={d.document.id} className="flex items-center justify-between text-sm">
+                <span className="truncate text-ink">{d.document.title}</span>
                 <div className="flex items-center gap-2">
-                  <StatusPill status={a.status} />
-                  {a.annotationId && (
-                    <Link href={`/annotate/${a.annotationId}`} className="text-accent hover:underline">
-                      Annoter →
-                    </Link>
-                  )}
+                  <StatusPill status={d.mySession?.status ?? "unstarted"} />
+                  <button
+                    type="button"
+                    disabled={opening === d.document.externalId}
+                    onClick={() => open(d.document.externalId)}
+                    data-testid={`open-${d.document.externalId}`}
+                    className="text-accent hover:underline disabled:opacity-50"
+                  >
+                    {opening === d.document.externalId ? "Ouverture…" : "Annoter →"}
+                  </button>
                 </div>
               </li>
             ))}
+            {mine.length === 0 && (
+              <li className="text-sm text-ink-muted">
+                Rien ne vous est encore assigné sur cette campagne.
+              </li>
+            )}
           </ul>
         </Panel>
 

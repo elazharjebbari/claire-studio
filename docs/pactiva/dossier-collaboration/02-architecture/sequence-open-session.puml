@@ -1,0 +1,40 @@
+@startuml open-session
+title Ouverture d'une session — annotateur (Ma session) vs admin (Lecture seule)
+
+actor "Annotateur\n(jc.lamirel)" as Anno
+actor "Admin / Lead\n(elazhar.jebbari)" as Admin
+participant "Frontend\n(useProjectDocuments)" as FE
+participant "API\nGET /projects/{slug}/documents" as DOCS
+participant "API\nPOST /annotations" as CREATE
+participant "Workspace\n(AnnotationWorkspace)" as WS
+database "DB" as DB
+
+== Annotateur ouvre SA session ==
+Anno -> FE : ouvre la campagne
+FE -> DOCS : GET documents (mine=true)
+DOCS -> DB : documents distincts + mySession
+DB --> DOCS : 50 docs, 1 ligne/doc
+DOCS --> FE : results[{document, mySession}]
+note right of FE : Aucune duplication : 1 ligne / document
+Anno -> FE : clic « Annoter » sur doc D
+FE -> CREATE : createAnnotation(project, document=D.externalId)
+CREATE -> DB : get_or_create(project,D,annotator=jc.lamirel)
+DB --> CREATE : Annotation #A (créée ou existante)
+CREATE --> FE : {id:A, annotatorId:jc.lamirel}
+FE -> WS : /annotate/A
+WS -> WS : isMine = (A.annotatorId == me) → TRUE
+note right of WS : Bannière accent « Ma session — édition »\nautosave actif, store readOnly=false
+
+== Admin supervise (lecture seule) ==
+Admin -> FE : ouvre la campagne (admin)
+FE -> DOCS : GET documents
+DOCS -> DB : documents + sessions[] (rollup par annotateur)
+DB --> DOCS : 50 docs × {sessions de chaque annotateur}
+DOCS --> FE : results[{document, mySession, sessions[], sessionsSummary}]
+note right of FE : Matrice document × annotateur\n(avancement, statuts)
+Admin -> FE : clic « œil » sur la session de zahra (doc D)
+FE -> WS : /annotate/{idSessionZahra}
+WS -> WS : isMine = FALSE
+note right of WS : Bannière warning « Lecture seule »\nautosave coupé, écriture refusée (IsAnnotationOwner)
+
+@enduml

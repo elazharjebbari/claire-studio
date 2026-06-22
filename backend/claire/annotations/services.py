@@ -57,6 +57,10 @@ def build_snapshot(annotation: Annotation) -> dict:
         "annotator": annotation.annotator.username,
         "schema": annotation.project.scheme.slug,
         "status": annotation.status,
+        # `source` distingue une annotation humaine d'un seed LLM ; `updated_at`
+        # horodate la session — sans eux l'export perdait cette information (audit).
+        "source": annotation.source,
+        "updated_at": annotation.updated_at.isoformat() if annotation.updated_at else None,
         "global_certainty": annotation.global_certainty,
         "clauses": [
             {
@@ -66,6 +70,11 @@ def build_snapshot(annotation: Annotation) -> dict:
                 "evidence_span": c.evidence_span,
                 "rationale": c.rationale,
                 "certainty": c.certainty,
+                # `validated` : seule une clause validée fait référence (point d) ;
+                # `order` : ordre de saisie. Indispensables pour distinguer le gold
+                # humain validé d'un seed non retravaillé à l'export.
+                "validated": c.validated,
+                "order": c.order,
             }
             for c in clauses
         ],

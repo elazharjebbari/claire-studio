@@ -1,0 +1,133 @@
+@startuml pactiva-sessions-collaboration
+title Pactiva — Modèle de données : Sessions d'annotation vs Collaboration
+
+skinparam linetype ortho
+skinparam classAttributeIconSize 0
+
+package "Identité & Campagne" {
+  class User {
+    +id : PK
+    username : unique
+    email : unique
+    role : annotator|reviewer|admin|owner
+    display_name
+    --
+    is_admin_role() : bool
+  }
+  class Project <<campagne>> {
+    +id : PK
+    slug : unique
+    name
+    status : active|paused|closed
+    visibility : private|public
+  }
+  class ProjectMembership {
+    role : annotator|reviewer|lead
+  }
+  class Corpus { slug : unique }
+  class Document {
+    external_id
+    title
+    n_sentences
+    --
+    UNIQUE(corpus, external_id)
+  }
+  class Assignment <<intention de travail>> {
+    status : pending|in_progress|done
+    --
+    UNIQUE(project, document, assignee)
+  }
+}
+
+package "VRAIE SESSION D'ANNOTATION (référence)" #E8F5E9 {
+  class Annotation <<SESSION>> {
+    +id : PK
+    status : draft|submitted|in_review|approved|rejected|archived
+    global_certainty : 0..3
+    source : human|preannotation_seed
+    --
+    **UNIQUE(project, document, annotator)**  // INV-4 = 1 session / annotateur / doc
+  }
+  class Clause {
+    anchor_sentence
+    theme
+    legal_nature
+    certainty : 0..3
+    validated : bool          // seule une clause validée fait référence
+    client_op_id              // idempotence
+    --
+    UNIQUE(annotation, anchor_sentence) // INV-2
+  }
+  class AnnotationVersion <<immuable>> {
+    number
+    snapshot : JSON
+    author
+  }
+}
+
+package "COLLABORATION (aide — jamais une référence)" #FFF3E0 {
+  class Comment {
+    body
+    scope : document|clause|sentence
+    resolved : bool
+  }
+  class Review {
+    score : 1..5
+    decision : approve|request_changes|reject
+  }
+  class ShareLink {
+    token
+    role_granted
+    expires_at / max_uses / revoked
+  }
+  class PreAnnotation <<LLM>> {
+    judge : claude|codex|mistral
+    schema_version
+  }
+  note bottom of PreAnnotation
+    Les pré-annotations et la comparaison N-way
+    AIDENT l'annotateur mais ne comptent JAMAIS
+    comme référence (INV-COLLAB).
+  end note
+}
+
+' --- relations campagne ---
+User "1" -- "*" ProjectMembership
+Project "1" -- "*" ProjectMembership
+Project "1" --> "1" Corpus
+Corpus "1" -- "*" Document
+Project "1" -- "*" Assignment
+Document "1" -- "*" Assignment
+User "1" -- "*" Assignment : assignee
+
+' --- session ---
+Project "1" -- "*" Annotation
+Document "1" -- "*" Annotation
+User "1" -- "*" Annotation : annotator (PROPRIÉTAIRE)
+Annotation "1" -- "*" Clause
+Annotation "1" -- "*" AnnotationVersion
+
+' --- collaboration ---
+Annotation "1" -- "*" Comment
+Annotation "1" -- "*" Review
+Project "1" -- "*" ShareLink
+Project "1" -- "*" PreAnnotation
+Document "1" -- "*" PreAnnotation
+
+note as N1
+  IAA (concordance) = κ de Cohen PAIRWISE entre les
+  Annotation **submitted** de plusieurs annotateurs
+  sur le MÊME document (projects/iaa.py).
+  → exige >= 2 sessions soumises par document.
+end note
+N1 .. Annotation
+
+note as N2
+  Écriture du CONTENU de la session : OWNER-ONLY.
+  Même admin/reviewer NE peut PAS éditer la session
+  d'un autre (IsAnnotationOwner) → intégrité IAA.
+  Admin = lecture seule (supervision).
+end note
+N2 .. Clause
+
+@enduml

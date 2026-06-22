@@ -1,0 +1,997 @@
+{
+  "counts": {
+    "total": 55,
+    "blocker": 9,
+    "major": 29,
+    "minor": 11,
+    "confirmedMajors": 37,
+    "refuted": 1
+  },
+  "findings": [
+    {
+      "dimension": "backend-datamodel",
+      "id": "dup-assignments-source-of-truth",
+      "title": "La duplication vient de la présentation : Assignment (1 ligne/(doc×annotateur)) sert de source pour une liste de DOCUMENTS",
+      "severity": "blocker",
+      "area": "data-model",
+      "files": [
+        "backend/claire/projects/views.py:70-76",
+        "backend/claire/projects/models.py:88-112",
+        "backend/claire/projects/serializers.py:55-76"
+      ],
+      "evidence": "GET assignments fait `qs = project.assignments...` puis ne filtre `assignee=request.user` QUE si non-admin (views.py:73-74). Assignment est unique par (project, document, assignee) (models.py:107-110). Pour un admin sur campagne-pactiva, le seed crée 3 Assignment/doc (seed_team.py:131-143 : `len(docs) × len(members)`), donc l'endpoint renvoie n_docs×3 lignes. Le frontend les mappe comme des documents → chaque document apparaît 3 fois. Le modèle est correct ; c'est l'usage d'Assignment comme liste de documents qui est faux.",
+      "recommendation": "Ne pas exposer Assignment comme liste de documents. Soit (a) un endpoint `documents` distinct (liste dédupliquée par document, source = corpus.documents) que le sélecteur de workspace consomme ; soit (b) pour l'admin, agréger côté API en une ligne par document avec la liste des assignés/statuts (matrice doc×annotateur). Garder Assignment pour le détail par annotateur uniquement.",
+      "verdict": {
+        "finding_id": "dup-assignments-source-of-truth",
+        "confirmed": true,
+        "confidence": "high",
+        "note": "CONFIRMÉ. Le code prouve le finding sur tous les points cités.\n\nBackend (cause racine) :\n- views.py:70-76 — GET assignments : `qs = project.assignments.select_related(...)` puis `if not request.user.is_admin_role: qs = qs.filter(assignee=request.user)` (l.73-74). Donc pour un admin AUCUN filtre n'est appliqué ; toutes les assignations sont sérialisées 1-par-ligne via `results_envelope(ser.data)` (l.76).\n- models.py:105-112 — `UniqueConstraint(fields=[\"project\",\"document\",\"assignee\"], name=\"uniq_assignment_project_doc_assignee\")` (l.107-110) : 1 Assignment par (doc × annotateur). Le modèle est correct.\n- serializers.py:55-76 — chaque Assignment sérialise une ligne contenant le `document` complet (DocumentListSerializer, l.59) + `assignee_id` (l.60). Le même document apparaît donc dans N lignes (1 par assignee), chacune portant le payload document entier.\n- seed_team.py:131-143 — boucle imbriquée `for doc ... for user,_ in members` (l.134-138) → `len(docs) × len(members)` (commentaire l.141-142 : « {len(docs)} doc(s) × {len(members)} membre(s) »). 3 membres → 3 Assignment/doc.\n- accounts/models.py:34-35 — `is_admin_role` = role in {ADMIN,OWNER} or is_superuser ; confirme que l'admin contourne le filtre assignee.\n\nFrontend (symptôme visible) :\n- projects/[slug]/page.tsx:48-60 — `(assignments?.results ?? []).map((a) => <li key={a.id}>...{a.document.title}...)` : mappe 1 ligne PAR assignment, keyé par a.id, sans dédup par document → l'admin voit chaque titre 3×. La duplication est donc bien réelle et visible sur la page campagne. Idem home/page.tsx:19, admin/projects/[slug]/page.tsx:112, work/page.tsx:31 qui itèrent tous `assignments.results`.\n\nNuance (n'invalide pas le finding) : le sélecteur de documents du workspace docs/page.tsx:13,19-26 itère en réalité sur `docs.results` (vrais documents du corpus) et n'utilise les assignations que pour construire un Map `byDoc` keyé par `a.document.id` (l.19-24). Un Map dédoublonne par clé → CETTE page précise n'affiche PAS de doublon visible, mais écrase silencieusement les données des 3 annotateurs en une seule (last-write-wins), problème connexe distinct. La formulation « sélecteur de documents du workspace » est donc légèrement imprécise pour docs/page.tsx, mais la preuve sur la page campagne tient pleinement et la cause racine (Assignment utilisé comme source de vérité d'une liste de DOCUMENTS) est exactement celle décrite."
+      }
+    },
+    {
+      "dimension": "backend-datamodel",
+      "id": "no-session-vs-collab-distinction",
+      "title": "Aucune entité/champ ne distingue 'session individuelle' (A) de 'collaboration' (B)",
+      "severity": "major",
+      "area": "data-model",
+      "files": [
+        "backend/claire/annotations/models.py:35-76",
+        "backend/claire/collaboration/models.py:1-121"
+      ],
+      "evidence": "Annotation porte project/document/annotator/status/global_certainty/source mais AUCUN champ 'mode' ou 'is_collaborative' / visibilité (annotations/models.py:35-57). La séparation A/B visée (session perso vs espace d'échange) n'est portée que par la convention d'usage des apps (annotations vs collaboration) et par les permissions de vue, pas par le modèle. Rien n'empêche une session individuelle d'être traitée/affichée comme objet partagé.",
+      "recommendation": "Rendre la frontière explicite : soit un champ `mode`/`workspace_kind` sur Annotation, soit un invariant documenté 'Annotation = session privée d'un annotateur ; toute mise en commun passe par collaboration.* (Comment/Review) ou par des vues d'agrégation read-only'. À défaut d'un nouveau champ, formaliser l'invariant et l'appliquer dans les serializers/permissions pour qu'une session individuelle ne soit jamais éditable/altérable via le flux collaboration.",
+      "verdict": {
+        "finding_id": "no-session-vs-collab-distinction",
+        "confirmed": true,
+        "confidence": "high",
+        "note": "CONFIRMÉ par lecture directe du code. Annotation (backend/claire/annotations/models.py:35-57) ne porte QUE : project (l.36-38), document (l.39-41), annotator (l.42-45), status (l.46-49), global_certainty (l.50-53), source (l.54-57). AUCUN champ 'mode', 'is_collaborative', 'visibility', 'is_shared' ou équivalent. - status n'expose que des états de workflow (draft/submitted/in_review/approved/rejected/archived, l.21-27) -> sans rapport avec session(A) vs collaboration(B). - source ne distingue que HUMAN vs PREANNOTATION_SEED (l.30-32) -> c'est l'origine du contenu, pas le mode d'usage. - La contrainte unique (project, document, annotator) (l.62-65) prouve qu'une Annotation EST par construction la session d'UN annotateur, mais c'est une clé d'identité, pas un qualificatif de mode : rien n'empêche qu'une session individuelle soit exposée/traitée comme objet partagé. Côté collaboration/models.py:1-121, Comment (l.14-41 -> annotation FK l.15-17), Review (l.50-76 -> annotation FK l.51-53) et ShareLink (l.84-120 -> project FK l.91-93) sont une couche posée PAR-DESSUS des Annotation/Clause/Project existants, sans aucun marqueur réciproque sur Annotation. NUANCE (n'infirme pas le finding) : la couche B est tout de même matérialisée par des entités dédiées distinctes (Comment/Review/ShareLink) ; la distinction A/B n'est donc pas totalement absente du schéma global, mais elle n'est PAS portée par un champ de l'entité Annotation. La séparation 'session perso vs espace d'échange' repose donc bien uniquement sur la convention d'appartenance aux apps + permissions de vue, comme l'affirme le finding."
+      }
+    },
+    {
+      "dimension": "backend-datamodel",
+      "id": "missing-doc-annotator-matrix-entity",
+      "title": "Pas d'entité/vue 'matrice document × annotateur' pour la supervision — recalculs ad hoc et N+1",
+      "severity": "major",
+      "area": "data-model",
+      "files": [
+        "backend/claire/projects/views.py:199-225",
+        "backend/claire/projects/serializers.py:72-76"
+      ],
+      "evidence": "annotators_progress (views.py:203-225) reconstruit l'avancement en bouclant sur les memberships avec plusieurs requêtes par membre (assignments.filter(...).count(), annotations.filter(...).count/done). AssignmentSerializer.get_annotation_id (serializers.py:72-76) refait une requête par assignment pour relier Assignment↔Annotation. Il n'existe pas de jointure/vue unique exprimant l'état (assigné / démarré / soumis / approuvé) par cellule doc×annotateur ; la supervision est dérivée par agrégations dispersées et coûteuses.",
+      "recommendation": "Introduire une vue/serializer 'matrice' unique (par document : liste des annotateurs assignés + statut de leur Annotation, dérivé en une requête annotée) consommée par la page campagne et la supervision admin. Évite la duplication d'affichage ET les recalculs ; donne à l'admin la vue doc×annotateur sans dupliquer les documents.",
+      "verdict": {
+        "finding_id": "missing-doc-annotator-matrix-entity",
+        "confirmed": true,
+        "confidence": "high",
+        "note": "CONFIRMÉ par lecture ligne par ligne du code réel.\n\n1) Pas d'entité/vue \"matrice doc×annotateur\". Modèle de données (projects/models.py): Assignment (l.88-115) porte (project, document, assignee, status[pending/in_progress/done], due_at) avec UniqueConstraint sur (project, document, assignee) (l.106-111). Annotation (annotations/models.py l.35-44) porte (project, document, annotator, status). Vérification adversariale: aucune FK/OneToOne ne relie Annotation à Assignment (grep sur annotations/models.py: les seules FK d'Annotation sont project, document, annotator; aucune mention 'assignment'). Il n'existe donc AUCUNE jointure/vue exprimant l'état combiné (assigné/démarré/soumis/approuvé) par cellule doc×annotateur; le lien Assignment↔Annotation est purement implicite via le triplet (project, document, annotator/assignee).\n\n2) Recalcul ad hoc + N+1 dans annotators_progress (projects/views.py l.203-225): boucle Python `for m in project.memberships...` (l.208) et, PAR membre, exécute des requêtes séparées: `project.assignments.filter(assignee=u).count()` (l.210), `project.annotations.filter(annotator=u)` puis `.filter(status__in=submitted).count()` (l.211-212) et `anns.count()` (l.220). Soit ~3 requêtes agrégées par membre → croît linéairement avec le nombre d'annotateurs (N+1 classique), au lieu d'un seul GROUP BY. La pagination/jointure n'est pas utilisée; pas de prefetch des compteurs.\n\n3) AssignmentSerializer.get_annotation_id (projects/serializers.py l.72-76): SerializerMethodField qui refait `obj.project.annotations.filter(document=obj.document, annotator=obj.assignee).first()` pour CHAQUE assignment sérialisé → 1 requête supplémentaire par ligne du listing d'assignments (N+1). C'est précisément la conséquence de l'absence de relation directe Assignment↔Annotation: la liaison est reconstruite par filtre à chaque sérialisation.\n\nAucun mécanisme contredisant la preuve (pas de vue SQL, pas d'annotate/GROUP BY, pas de FK directe). Le filtrage par rôle (IsAdminRole sur l.201) ne change rien au coût: il restreint l'accès, pas le pattern de requêtes. La preuve avancée est exacte; lignes citées (views.py:199-225, serializers.py:72-76) correspondent exactement au code lu."
+      }
+    },
+    {
+      "dimension": "backend-datamodel",
+      "id": "assignment-status-not-synced",
+      "title": "Assignment.status et Annotation.status sont deux sources de vérité non synchronisées",
+      "severity": "major",
+      "area": "data-model",
+      "files": [
+        "backend/claire/projects/models.py:99-102",
+        "backend/claire/annotations/models.py:46-49",
+        "backend/claire/annotations/services.py:99-130"
+      ],
+      "evidence": "Assignment a son propre status (pending/in_progress/done, models.py:82-102) tandis qu'Annotation a un cycle de vie riche piloté par transition_status (draft→submitted→in_review→approved..., services.py:22-37). Rien ne propage le statut d'Annotation vers l'Assignment correspondant : un annotateur peut avoir soumis son Annotation alors que l'Assignment reste 'pending'. La supervision admin (annotators_progress) ignore d'ailleurs Assignment.status et recompte via Annotation (views.py:206-222), confirmant que Assignment.status est redondant/dérivable.",
+      "recommendation": "Choisir une source de vérité unique pour l'avancement : soit dériver l'état d'une cellule du statut de l'Annotation (et déprécier/recalculer Assignment.status), soit synchroniser Assignment.status dans transition_status. Documenter que l'avancement = statut Annotation, Assignment ne portant que l'allocation (qui doit annoter quoi).",
+      "verdict": {
+        "finding_id": "assignment-status-not-synced",
+        "confirmed": false,
+        "confidence": "high",
+        "note": "INFIRMÉ. Le coeur du finding — « Rien ne propage le statut d'Annotation vers l'Assignment correspondant : un annotateur peut avoir soumis son Annotation alors que l'Assignment reste pending » — est faux dans le code réel.\n\nIl existe un mécanisme de synchronisation dédié : backend/claire/projects/signals.py (titre du module : « Synchronisation Assignment.status ↔ état de l'Annotation (raffinement R2) »).\n- recompute_assignment_status (signals.py:23-53) DÉRIVE Assignment.status de l'état réel : done si annotation.status ∈ {submitted, in_review, approved} (l.41-42), in_progress si au moins une Clause existe (l.46-47), pending sinon (l.48-49) ; n'écrit le champ que s'il change (l.51-53).\n- Trois receivers couvrent tous les chemins d'écriture : post_save sur Annotation (l.56-58), post_save sur Clause (l.61-63), post_delete sur Clause (l.66-75). Le commentaire d'en-tête revendique explicitement couvrir « TOUS les chemins d'écriture (création, autosave de clauses, soumission, transitions de revue), y compris ceux qui ne passent pas par les vues » (l.6-7).\n- Branchement effectif : backend/claire/projects/apps.py:9-11, ready() fait `from . import signals`, ce qui enregistre les receivers au démarrage.\n\nVérification de la chaîne sur le scénario précis du finding : transition_status(annotation, 'submitted', actor) (services.py:99-130) exécute annotation.save(update_fields=[\"status\", \"updated_at\"]) (l.115) → déclenche le post_save Annotation (signals.py:56-58) → recompute_assignment_status → comme 'submitted' ∈ _SUBMITTED (signals.py:20,41), l'Assignment passe à DONE. Donc l'Assignment NE reste PAS pending après soumission : le scénario d'incohérence allégué est impossible.\n\nLes FAITS cités sont exacts mais ne soutiennent pas la conclusion :\n- Assignment a bien son propre status pending/in_progress/done (projects/models.py:82-102) — confirmé.\n- Annotation a un cycle de vie riche piloté par transition_status (annotations/models.py:21-49 ; services.py:22-37) — confirmé.\n- annotators_progress (views.py:203-225) recompte effectivement via Annotation (l.210-212 : assigned=assignments.count, started=anns.count, submitted=anns.filter(status__in=['submitted','in_review','approved']).count) et n'utilise PAS Assignment.status — confirmé. Mais cela ne « confirme » pas l'absence de synchro : ça montre seulement que la supervision lit directement la source dérivée. Assignment.status est utilisé ailleurs (file de travail « Mes annotations », cf. docstring signals.py:3-4), pas dans cette vue.\n\nConclusion : il n'y a PAS deux sources de vérité non synchronisées. Assignment.status est une projection dérivée et activement synchronisée d'Annotation/Clause via signaux. L'argument « status redondant/dérivable » est correct en tant que tel (c'est précisément ce qu'implémente le module signals), mais l'affirmation centrale « non synchronisées » est contredite par le code. Finding infirmé."
+      }
+    },
+    {
+      "dimension": "backend-datamodel",
+      "id": "annotation-id-derived-per-row",
+      "title": "Lien Assignment→Annotation recalculé ligne par ligne (couplage implicite, N+1)",
+      "severity": "minor",
+      "area": "perf",
+      "files": [
+        "backend/claire/projects/serializers.py:72-76"
+      ],
+      "evidence": "get_annotation_id fait `obj.project.annotations.filter(document=obj.document, annotator=obj.assignee).first()` pour chaque assignment sérialisé (serializers.py:72-76). Sur la liste admin (n_docs×3) cela génère une requête par ligne. Le lien Assignment↔Annotation n'est qu'implicite via le triplet (project, document, assignee/annotator) — il n'y a pas de FK directe, donc tout consommateur doit refaire la jointure.",
+      "recommendation": "Précharger le lien via une annotation de queryset (Subquery / prefetch sur (document, annotator)) dans la vue assignments, ou exposer le lien dans la vue matrice. Ne pas ajouter de FK Assignment→Annotation (Annotation peut exister sans Assignment et vice-versa) mais documenter la clé de jointure (project, document, user).",
+      "verdict": null
+    },
+    {
+      "dimension": "backend-datamodel",
+      "id": "annotation-without-assignment-allowed",
+      "title": "Une Annotation peut être créée sans Assignment correspondant — pas d'invariant d'allocation",
+      "severity": "minor",
+      "area": "data-model",
+      "files": [
+        "backend/claire/annotations/views.py:112-143",
+        "backend/claire/projects/models.py:88-98"
+      ],
+      "evidence": "AnnotationViewSet.create fait get_or_create(project, document, annotator=request.user) (views.py:139-141) sans vérifier qu'un Assignment (project, document, assignee=user) existe. Un membre peut donc démarrer une session sur un document qui ne lui est pas assigné (sous réserve d'appartenance projet). Inversement le seed/bulk crée des Assignment sans Annotation. Les deux entités vivent indépendamment, ce qui complique la lecture 'qui devait annoter quoi vs qui a annoté'.",
+      "recommendation": "Décider la règle métier : soit autoriser explicitement l'auto-allocation (documenter que l'Assignment n'est qu'indicatif), soit exiger un Assignment préalable à la création d'Annotation. Dans tous les cas, exposer dans la matrice les Annotations 'orphelines' (sans Assignment) pour que l'admin garde une vision exacte de l'avancement.",
+      "verdict": null
+    },
+    {
+      "dimension": "backend-datamodel",
+      "id": "preclause-theme-code-not-fk",
+      "title": "PreClause.theme_code est une chaîne libre, non reliée au scheme (FK)",
+      "severity": "minor",
+      "area": "data-model",
+      "files": [
+        "backend/claire/imports/models.py:45-59",
+        "backend/claire/schemes/models.py:25-45"
+      ],
+      "evidence": "PreClause stocke theme_code en CharField libre et anchor_index en entier (imports/models.py:49-50), sans FK vers Theme ni vers Sentence. C'est volontaire (pré-annotation brute, append-only) mais signifie qu'un code de thème LLM peut ne correspondre à aucun Theme du scheme du projet (INV-3 ne s'applique qu'aux Clause humaines via FK, annotations/models.py:86). Aucune contrainte ne signale un theme_code hors-scheme au moment du seed.",
+      "recommendation": "Conserver le stockage brut (raison append-only) mais valider/mapper explicitement theme_code→Theme au moment de seed_annotation_from_preannotation (rejeter ou marquer les codes inconnus), et exposer le champ `mapped` (imports/models.py:30) pour tracer les pré-annotations non mappables. Évite de seeder des Clause incohérentes avec le scheme.",
+      "verdict": null
+    },
+    {
+      "dimension": "backend-datamodel",
+      "id": "comment-review-no-project-fk",
+      "title": "Comment/Review n'ont pas de FK projet direct — l'isolation passe par Annotation",
+      "severity": "info",
+      "area": "data-model",
+      "files": [
+        "backend/claire/collaboration/models.py:14-76",
+        "backend/claire/annotations/views.py:291-305"
+      ],
+      "evidence": "Comment et Review ne référencent que l'Annotation (collaboration/models.py:15-17, 51-53), pas le Project. L'isolation projet pour la collaboration dépend donc entièrement de la portée de l'Annotation parente (les endpoints comments/reviews sont des @action sur AnnotationViewSet, views.py:291-382). C'est cohérent mais signifie que toute requête transverse 'tous les commentaires du projet' doit joindre via annotation__project.",
+      "recommendation": "Acceptable tel quel pour la séparation A/B (la collaboration est bien rattachée à la session via l'Annotation). Si des vues projet-larges de collaboration émergent, ajouter un index/jointure documentée annotation__project plutôt qu'une FK redondante.",
+      "verdict": null
+    },
+    {
+      "dimension": "backend-api-perms",
+      "id": "assignments-admin-returns-all",
+      "title": "GET /projects/{slug}/assignments renvoie n_docs × n_annotateurs lignes pour un admin (source du bug de duplication)",
+      "severity": "major",
+      "area": "backend",
+      "files": [
+        "backend/claire/projects/views.py:70-76",
+        "backend/claire/projects/serializers.py:55-76"
+      ],
+      "evidence": "L'action assignments fait `qs = project.assignments...` puis `if not request.user.is_admin_role: qs = qs.filter(assignee=request.user)` (views.py:73-74). Pour l'admin elazhar, le filtre n'est PAS appliqué : avec seed_team --assign (3 Assignment/doc), l'endpoint renvoie 1 ligne par (document × annotateur). AssignmentSerializer expose 1 item/Assignment. Le frontend qui mappe sur results affiche donc chaque document 3 fois. C'est exactement le diagnostic préliminaire, confirmé côté backend.",
+      "recommendation": "Distinguer deux besoins : (1) une vue « documents distincts du projet » pour le sélecteur de workspace et la page campagne (voir finding no-distinct-documents-endpoint) ; (2) garder l'endpoint assignments brut pour la matrice d'affectation admin, mais documenter qu'il est 1 ligne/Assignment et ne PAS l'utiliser comme source de la liste de documents. Optionnellement ajouter ?group_by=document ou ?distinct=1 renvoyant 1 ligne/document avec les annotateurs imbriqués.",
+      "verdict": {
+        "finding_id": "assignments-admin-returns-all",
+        "confirmed": true,
+        "confidence": "high",
+        "note": "Confirmé par le code réel. backend/claire/projects/views.py:70-72 : qs = project.assignments.select_related(...) récupère TOUTES les assignations du projet (1 ligne par objet Assignment). views.py:73-74 : `if not request.user.is_admin_role: qs = qs.filter(assignee=request.user)` — le filtre par annotateur n'est appliqué QUE pour les non-admins ; pour un admin le queryset reste complet. backend/claire/accounts/models.py:33-35 : is_admin_role renvoie True pour role ADMIN/OWNER ou is_superuser, donc elazhar (owner/superuser) saute bien le filtre. views.py:75-76 sérialise via AssignmentSerializer(many=True) puis results_envelope → 1 item par Assignment dans `results`. serializers.py:55-76 : AssignmentSerializer est un ModelSerializer sur Assignment, sans aucun regroupement/distinct par document. Conséquence : avec seed_team --assign (3 Assignment/doc), un admin reçoit n_docs × n_annotateurs lignes et chaque document apparaît 3 fois. Aucun mécanisme (distinct, dédoublonnage, pagination, regroupement) ne contredit la preuve. Le diagnostic préliminaire est exactement validé côté backend."
+      }
+    },
+    {
+      "dimension": "backend-api-perms",
+      "id": "no-distinct-documents-endpoint",
+      "title": "Aucun endpoint « documents distincts d'un projet » orienté workspace",
+      "severity": "major",
+      "area": "backend",
+      "files": [
+        "backend/claire/projects/views.py:47-76",
+        "backend/claire/corpora/views.py:24-32",
+        "backend/claire/projects/views.py:322-386"
+      ],
+      "evidence": "Il n'existe pas de GET /projects/{slug}/documents. Les documents distincts ne sont accessibles que via : (a) corpus.documents (CorpusViewSet.documents, corpora/views.py:24-32) réservé IsAdminRole et non lié à la notion de projet/avancement ; (b) insights (projects/views.py:351-368) qui renvoie 1 ligne/document mais avec un seul `rep = d_anns[0]` arbitraire (pas le découpage par session), orienté analytics et non sélection de workspace. Le frontend n'a donc pas de source naturelle « 1 ligne/document » et retombe sur assignments (d'où la duplication).",
+      "recommendation": "Ajouter GET /projects/{slug}/documents renvoyant les documents distincts du corpus avec, par document, l'état des sessions de l'utilisateur courant (mon annotation : statut/annotationId) et, pour l'admin, l'agrégat des annotateurs (nb assignés, nb soumis). C'est la brique manquante pour séparer proprement « liste de documents » (A) de « sessions » et « affectations ».",
+      "verdict": {
+        "finding_id": "no-distinct-documents-endpoint",
+        "confirmed": true,
+        "confidence": "high",
+        "note": "CONFIRME. Verification complete du code reel + routage.\n\n1) Aucun endpoint GET /projects/{slug}/documents. La liste exhaustive des @action de ProjectViewSet (projects/views.py) est : assignments (l.47), delete_assignment (l.78), assignments_bulk (l.88), members (l.151), delete_member (l.190), annotators_progress (l.199), progress (l.227), iaa (l.271), import_preannotations (l.290), translations (l.314), insights (l.323), insights_document (l.388), share_links (l.450), revoke_share_link (l.490), exports (l.505). Aucune action \"documents\". Le routeur (config/api_urls.py:47) enregistre ProjectViewSet sous \"projects\" sans route nested supplementaire -> /projects/{slug}/documents n'est pas route.\n\n2) corpus.documents (corpora/views.py:24-32) : reserve IsAdminRole (CorpusViewSet.permission_classes = [IsAdminRole], corpora/views.py:21, confirme) et keye sur le corpus (qs = corpus.documents.all(), l.27), sans notion de projet/assignation/avancement. Confirme.\n\n3) insights (projects/views.py:351-368) : rend bien 1 ligne/document (boucle for d in docs, l.352, documents.append l.355) MAIS via un representant arbitraire — l.353-354 : d_anns = [a for a in anns if a.document_id == d.id] ; rep = d_anns[0] if d_anns else None. Une seule annotation prise au hasard, pas de decoupage par session/annotateur. Documente \"exploration des annotations humaines (point 5)\" -> analytics, pas selection de workspace. Confirme.\n\n4) Corollaire verifie : progress (projects/views.py:227-269) ne renvoie que des compteurs agreges (total_documents, annotated_documents, ...), aucune liste par document -> ne peut servir de source workspace. La seule liste projet-scopee 1-ligne-par-(doc x annotateur) est assignments (l.70-76), et pour un admin le filtre assignee=request.user n'est PAS applique (condition `if not request.user.is_admin_role:` l.73), d'ou n_docs x n_annotateurs = duplication. Le frontend retombe donc bien sur assignments faute d'endpoint \"documents distincts\".\n\nAucun mecanisme de role ni route alternative ne contredit la preuve."
+      }
+    },
+    {
+      "dimension": "backend-api-perms",
+      "id": "annotator-sees-others-sessions",
+      "title": "Un annotateur membre peut lire les sessions complètes (clauses, rationale, certitude) des autres annotateurs",
+      "severity": "major",
+      "area": "security",
+      "files": [
+        "backend/claire/annotations/views.py:69-110",
+        "backend/claire/annotations/views.py:385-400",
+        "backend/claire/common/permissions.py:73-87"
+      ],
+      "evidence": "AnnotationViewSet.get_queryset isole par PROJET seulement : `qs.filter(Q(project__memberships__user=user) | Q(annotator=user))` (views.py:90-92). Tout membre du projet (jc.lamirel) peut donc faire GET /annotations?project=campagne-pactiva&annotator=zahra.boulaich puis GET /annotations/{id} et lire les clauses/rationale de zahra : IsAnnotationOwner autorise toutes les SAFE_METHODS (permissions.py:77-78). Idem GET /clauses/{id} (ClauseViewSet, views.py:393, http GET autorisé). Pour une plateforme d'IAA, voir l'annotation d'un pair AVANT/PENDANT sa propre session contamine l'indépendance des annotateurs (biais d'ancrage) et fausse les concordances.",
+      "recommendation": "Décider explicitement la politique de visibilité inter-annotateurs. Pour préserver l'indépendance : restreindre la lecture du CONTENU d'une session (clauses) à son auteur + admin/reviewer, et/ou n'exposer les annotations d'autrui qu'une fois la session courante soumise (gate sur status). Réserver la comparaison N-way (zone de collaboration B) à un endpoint dédié contrôlé, plutôt que de laisser la lecture brute ouverte à tout membre.",
+      "verdict": {
+        "finding_id": "annotator-sees-others-sessions",
+        "confirmed": true,
+        "confidence": "high",
+        "note": "CONFIRMÉ par le code réel. (1) AnnotationViewSet.get_queryset (backend/claire/annotations/views.py:69-110) isole uniquement par PROJET, pas par annotateur : pour un user non-admin/non-reviewer, lignes 86-92 appliquent `qs.filter(Q(project__memberships__user=user) | Q(annotator=user))`. jc.lamirel a role=\"annotator\" + membership ANNOTATOR sur campagne-pactiva (seed_team.py:47-48) → is_admin_role=False (accounts/models.py:33-35, role doit être admin/owner) et role!=\"reviewer\", donc il NE bénéficie PAS de la dérogation et tombe dans le filtre projet, qui le laisse voir TOUTES les annotations du projet, y compris celles de zahra. Le filtre `?annotator=zahra.boulaich` (views.py:105-109) ne fait que restreindre, il n'ajoute aucune protection. (2) GET /annotations/{id} (détail) : permission_classes=[IsAnnotationOwnerOrReviewer] (views.py:42) dont has_object_permission retourne True pour toute SAFE_METHOD (permissions.py:52-53) ; le serializer détail est AnnotationDetailSerializer (views.py:62-67) qui expose clauses/rationale/certitude. → lecture complète de la session d'un pair confirmée. (3) GET /clauses/{id} : ClauseViewSet (views.py:385-400) autorise GET (ligne 394) sous IsAnnotationOwner (ligne 393) dont has_object_permission retourne True pour SAFE_METHODS (permissions.py:76-78). PIRE que le finding : ClauseViewSet n'a AUCUN get_queryset (vérifié : seul AnnotationViewSet en a un, views.py:69) → zéro isolation projet sur les clauses, donc N'IMPORTE QUEL utilisateur authentifié (même non-membre du projet) peut lire n'importe quelle clause de la base par son id. Conséquence IAA confirmée : un annotateur peut consulter la session d'un pair avant/pendant la sienne → biais d'ancrage, indépendance des annotateurs compromise."
+      }
+    },
+    {
+      "dimension": "backend-api-perms",
+      "id": "comments-no-project-isolation",
+      "title": "CommentViewSet expose TOUS les commentaires de la plateforme à tout utilisateur authentifié",
+      "severity": "major",
+      "area": "security",
+      "files": [
+        "backend/claire/collaboration/views.py:10-23"
+      ],
+      "evidence": "CommentViewSet a `queryset = Comment.objects.all()` et `permission_classes = [IsAuthenticated]` sans aucun get_queryset (views.py:13-16). GET /comments?... (et GET /comments/{id}) renvoie donc les commentaires de TOUS les projets/annotations, sans vérifier l'appartenance projet. Pire : http_method_names autorise patch/delete et il n'y a aucune object-permission → un utilisateur authentifié pourrait modifier/supprimer le commentaire d'un autre (resolve est aussi ouvert, views.py:18-23). Rupture de l'isolation projet (security.md A01) sur la zone de collaboration.",
+      "recommendation": "Ajouter get_queryset filtrant par appartenance projet de l'annotation liée (Q(annotation__project__memberships__user=user) ou admin), et une object-permission auteur/admin pour patch/delete/resolve. Idéalement restreindre la lecture des commentaires d'une session aux participants concernés.",
+      "verdict": {
+        "finding_id": "comments-no-project-isolation",
+        "confirmed": true,
+        "confidence": "high",
+        "note": "CONFIRMÉ. Code réel relu ligne par ligne.\n\nbackend/claire/collaboration/views.py:10-23 — CommentViewSet(viewsets.ModelViewSet) :\n- ligne 13: queryset = Comment.objects.select_related(\"author\", \"annotation\") — non filtré (NB: la preuve disait Comment.objects.all(), le code utilise .select_related, mais c'est strictement équivalent en portée : aucun filtrage, tous les commentaires de la plateforme).\n- ligne 15: permission_classes = [IsAuthenticated] — seule garde.\n- ligne 16: http_method_names = [\"get\",\"post\",\"patch\",\"delete\"].\n- AUCUN get_queryset, AUCUNE object-permission (pas de get_permissions/has_object_permission), action resolve (l.18-23) appelle self.get_object() sur le même queryset non scopé puis save() sans vérif d'appartenance.\n\nEnregistré et donc réellement exposé : config/api_urls.py:51 router.register(\"comments\", CommentViewSet, basename=\"comment\") sur le DefaultRouter (l.43). Routes live : GET /comments (list), GET /comments/{id}, PATCH /comments/{id}, DELETE /comments/{id}, POST /comments/{id}/resolve.\n\nVérifié l'absence de mécanisme contradictoire :\n- config/settings/base.py:195-197 DEFAULT_PERMISSION_CLASSES = IsAuthenticated (la vue ne durcit rien).\n- base.py:200-204 DEFAULT_FILTER_BACKENDS = DjangoFilterBackend/OrderingFilter/SearchFilter : aucun ne scope par utilisateur, et le ViewSet ne déclare ni filterset_fields ni search_fields → aucun filtrage implicite.\n- collaboration/models.py:14-41 : Comment n'a PAS de FK directe vers Project ; le seul lien projet passe par annotation→document. Aucune isolation projet n'est même tentée.\n\nConséquences exactes confirmées : tout utilisateur authentifié (ex. un annotateur d'un autre projet) peut lister/lire (GET), modifier (PATCH le body), supprimer (DELETE) et resolve n'importe quel commentaire de n'importe quel projet/annotation. Rupture d'isolation projet + IDOR (modification/suppression du commentaire d'autrui). Gravité major/security justifiée.\n\nContraste de durcissement présent ailleurs : l'endpoint imbriqué annotations/views.py:290-304 (GET annotation.comments) passe par IsAnnotationOwnerOrReviewer (cf. annotations/views.py:53, common/permissions.py:68), ce qui montre que l'accès direct /comments est bien le chemin non protégé."
+      }
+    },
+    {
+      "dimension": "backend-api-perms",
+      "id": "activity-no-project-isolation",
+      "title": "ActivityEventViewSet expose le journal d'activité global à tout utilisateur authentifié",
+      "severity": "minor",
+      "area": "security",
+      "files": [
+        "backend/claire/audit/views.py:9-36"
+      ],
+      "evidence": "ActivityEventViewSet : `queryset = ActivityEvent.objects.all()` + `IsAuthenticated`, et get_queryset ne filtre que sur les query params ?actor/?project (audit/views.py:18-36). Sans paramètre, ou avec un projet où l'utilisateur n'est pas membre, n'importe quel authentifié peut lire les événements (qui a fait quoi, quand) de toute la plateforme. Pas d'isolation par appartenance.",
+      "recommendation": "Filtrer par défaut sur les projets dont l'utilisateur est membre (sauf admin/reviewer), et ignorer/borner ?project aux projets autorisés.",
+      "verdict": null
+    },
+    {
+      "dimension": "backend-api-perms",
+      "id": "admin-only-reads-actually-open",
+      "title": "Plusieurs lectures « réservées admin » sont en réalité ouvertes à tout authentifié (IsAdminRole laisse passer SAFE_METHODS)",
+      "severity": "minor",
+      "area": "security",
+      "files": [
+        "backend/claire/common/permissions.py:19-27",
+        "backend/claire/corpora/views.py:21",
+        "backend/claire/corpora/views.py:41",
+        "backend/claire/schemes/views.py:13",
+        "backend/claire/translations/views.py:17",
+        "backend/claire/imports/views.py:17",
+        "backend/claire/exports/views.py:14"
+      ],
+      "evidence": "IsAdminRole.has_permission renvoie True pour toute SAFE_METHOD dès que l'utilisateur est authentifié (permissions.py:22-24). Donc CorpusViewSet, DocumentViewSet, LabelSchemeViewSet, TranslationSetViewSet, PreAnnotationViewSet, ExportJobViewSet — tous annotés `permission_classes=[IsAdminRole]` — autorisent en fait GET à n'importe quel annotateur, sans contrôle d'appartenance projet. Un annotateur peut lire tout le corpus (DocumentViewSet, /documents/{id}/sentences), tous les schemes, toutes les pré-annotations LLM (juges) et la liste des ExportJob de tous les projets.",
+      "recommendation": "Si l'intention est réellement « admin only » pour ces ressources, utiliser une permission stricte (admin pour toutes les méthodes) ou filtrer get_queryset par appartenance. Sinon, documenter clairement que IsAdminRole = « écriture admin, lecture authentifiée » et confirmer que l'exposition lecture (corpus brut, pré-annotations, jobs d'export d'autres projets) est voulue.",
+      "verdict": null
+    },
+    {
+      "dimension": "backend-api-perms",
+      "id": "preannotation-import-no-judge-validation",
+      "title": "import_preannotations / seed accepte un identifiant de juge arbitraire sans validation",
+      "severity": "info",
+      "area": "backend",
+      "files": [
+        "backend/claire/projects/views.py:290-311",
+        "backend/claire/annotations/views.py:126-136"
+      ],
+      "evidence": "POST /projects/{slug}/preannotations/import lit `item['judge']` tel quel (views.py:307) et le seed d'annotation ouvre PreAnnotation(project, document, judge=seed.split(':')[1]) (annotations/views.py:128-131). Aucune contrainte n'empêche un juge nommé comme un annotateur humain, ce qui peut brouiller la frontière « session humaine » (A) vs « pré-annotation LLM » : une Annotation seedée depuis une pré-annotation devient la session de request.user (seed_annotation_from_preannotation), bien identifiée, mais l'origine LLM n'est tracée que par champ `source`.",
+      "recommendation": "Valider/normaliser l'ensemble des juges autorisés (liste fermée), et s'assurer que l'UI distingue toujours visuellement une session humaine d'une session seedée LLM via Annotation.source. Vérifier côté IAA que les sessions `source=llm` ne sont pas mélangées aux sessions humaines dans les concordances.",
+      "verdict": null
+    },
+    {
+      "dimension": "backend-api-perms",
+      "id": "assignment-status-not-derived",
+      "title": "Le statut d'avancement renvoyé par assignments/annotators-progress n'est pas toujours dérivé de la session réelle",
+      "severity": "info",
+      "area": "data-model",
+      "files": [
+        "backend/claire/projects/serializers.py:63-76",
+        "backend/claire/projects/views.py:203-225"
+      ],
+      "evidence": "AssignmentSerializer expose `status` (champ de l'Assignment) et résout annotation_id via une requête séparée par ligne (serializers.py:72-76 → N+1 sur la liste assignments). Le statut métier réel d'une session vit sur Annotation.status, pas sur Assignment.status. annotators_progress lui dérive correctement (started=anns.count(), submitted via status__in, views.py:210-222) mais fait 2 requêtes count par membre dans une boucle Python.",
+      "recommendation": "Aligner la source de vérité de l'avancement sur Annotation.status, précharger annotation_id dans le queryset (annotate/Prefetch) pour éviter le N+1 du serializer, et envisager une agrégation SQL unique pour annotators_progress.",
+      "verdict": null
+    },
+    {
+      "dimension": "backend-exports",
+      "id": "silent-format-fallback",
+      "title": "4 formats sur 6 (conll, xml, md, huggingface) retombent silencieusement en JSONL avec une extension trompeuse",
+      "severity": "blocker",
+      "area": "export",
+      "files": [
+        "backend/claire/exports/services.py:84-89",
+        "backend/claire/exports/services.py:81",
+        "backend/claire/exports/models.py:9-15",
+        "frontend/src/app/(app)/admin/exports/page.tsx:11-18",
+        "backend/tests/test_export.py:25-54"
+      ],
+      "evidence": "services.py:84-89 ne teste que 'if job.format == ExportFormat.CSV: _write_csv else: _write_jsonl'. Le commentaire l'assume: 'any other declared format falls back to jsonl pivot'. Le nom de fichier garde l'extension demandee (fname=...{stamp}.{job.format}, ligne 81): un export huggingface produit un fichier .huggingface contenant en realite du JSONL. L'UI propose 6 formats avec descriptions distinctes mensongeres (exports/page.tsx:14-17). Aucun test ne couvre ces 4 formats.",
+      "recommendation": "Implementer reellement conll/xml/md/huggingface, ou a minima rejeter (400) les formats non implementes au lieu d'un fallback silencieux et ne lister que les formats disponibles. Corriger aussi le manifeste qui reflete le format demande, pas produit (services.py:93).",
+      "verdict": {
+        "finding_id": "silent-format-fallback",
+        "confirmed": true,
+        "confidence": "high",
+        "note": "CONFIRMÉ sur chaque point, lu ligne par ligne.\n\n1) Fallback silencieux — services.py:84-89 : la seule branche réelle est `if job.format == ExportFormat.CSV: _write_csv(...) else: _write_jsonl(...)`. Le commentaire 87-88 l'avoue explicitement : « jsonl default (and any other declared format falls back to jsonl pivot…) ». Donc conll, xml, md, huggingface tombent tous dans `_write_jsonl`. Seuls `_write_jsonl` (44) et `_write_csv` (50) existent comme writers.\n\n2) Extension trompeuse — services.py:81 : `fname = f\"export_{job.project.slug}_{job.id}_{stamp}.{job.format}\"`. L'extension est la chaîne brute du format. Un job huggingface produit un fichier `....huggingface` contenant du JSONL ; idem `.xml`, `.md`, `.conll`. Le manifest (services.py:91-93) écrit aussi `\"format\": job.format` (= huggingface) alors que le contenu est JSONL → métadonnée mensongère elle aussi.\n\n3) 6 formats déclarés — models.py:9-15 : JSONL, CSV, CONLL, XML, MD, HUGGINGFACE. 4 sur 6 (conll/xml/md/huggingface) sans implémentation = exactement les 4 du finding.\n\n4) UI mensongère — frontend/.../admin/exports/page.tsx:11-18 : les 6 formats sont proposés avec des descriptions distinctes et fausses pour les 4 non implémentés : conll « Annotation par token (NER-like) » (14), xml « Format aligné CLAUDETTE d'origine » (15), md « Rapport lisible, explicatif » (16), huggingface « Dataset prêt pour le hub » (17). Aucun de ces formats n'est réellement produit.\n\n5) Aucune validation côté API qui contredirait la preuve — projects/views.py:505-521 (action `exports`) : `format=request.data.get(\"format\", \"jsonl\")` (514) passé tel quel à `ExportJob.objects.create` puis `run_export(job)` (518), sans aucune vérification de format. Le serializer (exports/serializers.py) met `format` en champ libre (ModelSerializer, pas de validation de valeur supportée). Le ViewSet exports (exports/views.py) est ReadOnly. Rien ne normalise ni ne rejette les 4 formats.\n\n6) Couverture de tests — tests/test_export.py:25-54 ne couvre que test_jsonl_export (25) et test_csv_export (43) ; test_export_scope_filters_statuses (56) teste le scope, toujours en JSONL. Aucun test ne touche conll/xml/md/huggingface. Confirmé.\n\nVerdict : finding exact sur tous les points, y compris l'absence de garde-fou côté vue/serializer qui aurait pu l'infirmer. C'est bien un blocker export : l'admin reçoit un fichier à extension HuggingFace/XML/Markdown/CoNLL dont le contenu est en réalité du JSONL, sans aucun avertissement."
+      }
+    },
+    {
+      "dimension": "backend-exports",
+      "id": "snapshot-drops-validated-source",
+      "title": "build_snapshot omet validated, source, order — l'export ne distingue pas une annotation humaine validee d'un seed LLM",
+      "severity": "major",
+      "area": "export",
+      "files": [
+        "backend/claire/annotations/services.py:54-72",
+        "backend/claire/annotations/models.py:54-57",
+        "backend/claire/annotations/models.py:99-107",
+        "backend/claire/exports/services.py:76"
+      ],
+      "evidence": "build_snapshot (services.py:61-71) n'emet par clause que anchor_index, theme, legal_nature, evidence_span, rationale, certainty. Absents: Clause.validated (models.py:103 'seule une clause validated=True compte pour la soumission'), Clause.order (models.py:99), client_op_id. Au niveau annotation: Annotation.source (human vs preannotation_seed, models.py:54-57) et timestamps absents. Une annotation seedee LLM (source=preannotation_seed) est indistinguable d'une session humaine, et on ignore quelles clauses sont validees.",
+      "recommendation": "Ajouter dans build_snapshot ou un serialiseur d'export dedie: annotation.source, timestamps, et par clause validated et order. Exclure/marquer les annotations source=preannotation_seed non retravaillees. Attention build_snapshot sert aussi aux AnnotationVersion immuables (services.py:85).",
+      "verdict": {
+        "finding_id": "snapshot-drops-validated-source",
+        "confirmed": true,
+        "confidence": "high",
+        "note": "Confirme ligne par ligne, le code reel prouve le finding.\n\n1) build_snapshot (annotations/services.py:47-72) : par clause (lignes 62-69) il n'emet QUE anchor_index, theme, legal_nature, evidence_span, rationale, certainty. Sont absents : Clause.validated (models.py:103), Clause.order (models.py:99), Clause.client_op_id (models.py:107). Au niveau annotation (services.py:54-60) il emet doc/project/annotator/schema/status/global_certainty ; absents : Annotation.source (models.py:54-57, choices HUMAN vs PREANNOTATION_SEED a models.py:30-32) et les timestamps (TimeStampedModel).\n\n2) Le commentaire metier a models.py:100-103 etablit que validated est le marqueur or : « seule une clause validated=True compte pour la soumission complete » et « Les pre-annotations ne valent JAMAIS reference ». Ce champ est pourtant absent de l'export -> impossible de distinguer une clause validee d'une clause non validee dans le snapshot.\n\n3) Cote export (exports/services.py:76) : records = [build_snapshot(a) ...]. Le CSV (fieldnames services.py:51-55) et le manifest (services.py:91-105) n'ajoutent NI validated NI source NI order NI client_op_id. grep sur claire/exports/ : aucune autre serialisation, aucun filtrage par validated/source. Donc aucun mecanisme ne contredit la preuve.\n\nNuance (ne sauve pas le finding) : _selected_annotations (services.py:32-37) filtre par STATUT d'annotation (submitted/in_review/approved), pas par source. Une annotation source=preannotation_seed passee a l'un de ces statuts entre dans l'export et devient indistinguable d'une session humaine (pas de champ source), et ses clauses non validees sont exportees sans drapeau validated. Le finding est donc reel et de severite major sur l'integrite de l'export/IAA."
+      }
+    },
+    {
+      "dimension": "backend-exports",
+      "id": "no-download-endpoint",
+      "title": "Aucun endpoint de telechargement de l'artefact — artifact_path est un chemin filesystem serveur non expose",
+      "severity": "blocker",
+      "area": "export",
+      "files": [
+        "backend/claire/exports/services.py:78-82",
+        "backend/claire/exports/services.py:106",
+        "backend/claire/exports/views.py:9-14",
+        "frontend/src/app/(app)/admin/exports/page.tsx:86"
+      ],
+      "evidence": "run_export ecrit dans settings.EXPORTS_DIR et stocke le chemin absolu serveur dans job.artifact_path (services.py:106). ExportJobViewSet est ReadOnlyModelViewSet sans action download (views.py:9-14): il ne renvoie que les metadonnees JSON. L'UI affiche litteralement le chemin serveur (exports/page.tsx:86) sans lien. Aucune occurrence de FileResponse/download dans exports/. Export inaccessible via l'application — necessite un acces SSH.",
+      "recommendation": "Ajouter une action download (FileResponse Content-Disposition ou redirection vers stockage signe) sur ExportJobViewSet protegee par IsAdminRole, et un bouton Telecharger dans l'UI. Confiner le path a EXPORTS_DIR (anti path traversal).",
+      "verdict": {
+        "finding_id": "no-download-endpoint",
+        "confirmed": true,
+        "confidence": "high",
+        "note": "CONFIRME. Le code prouve qu'aucun endpoint applicatif ne permet de telecharger l'artefact d'export ; seul un acces SSH/filesystem au serveur le rend.\n\nPreuves verifiees ligne par ligne :\n- backend/claire/exports/services.py:78-82 : run_export ecrit dans `out_dir = Path(settings.EXPORTS_DIR)` puis `path = out_dir / fname` (nom `export_{slug}_{id}_{stamp}.{format}`). EXPORTS_DIR par defaut = `BASE_DIR/var/exports` (config/settings/base.py:65), un repertoire serveur HORS STATIC/MEDIA.\n- services.py:106 : `job.artifact_path = str(path)` -> chemin absolu serveur persiste, sauve l.109. Le fichier n'est jamais renvoye au client.\n- backend/claire/exports/views.py:9-14 : `ExportJobViewSet(viewsets.ReadOnlyModelViewSet)`, permission IsAdminRole, AUCUN `@action`, aucune methode `download`. Il n'expose que list/retrieve renvoyant le serializer JSON.\n- backend/claire/exports/serializers.py:6-18 : `artifact_path` expose comme simple chaine (string), `read_only`. Aucun FileField, aucune URL signee.\n- Grep exhaustif sur tout backend/claire/exports/ : 0 occurrence de FileResponse / HttpResponse / StreamingHttpResponse / download / sendfile / X-Accel / @action. Le seul autre point d'entree, l'action POST projects/views.py:504-521, ne fait que creer le job, appeler run_export et renvoyer du JSON (ExportJobSerializer) — aucun streaming de fichier.\n- config/urls.py (entier) + base.py : EXPORTS_DIR n'est JAMAIS monte en static/media (seul STATIC_URL='static/' existe, pointant ailleurs). Donc le chemin filesystem n'est pas servable via HTTP.\n- frontend/src/app/(app)/admin/exports/page.tsx:86 : affiche litteralement `Artefact : {job.artifactPath}` en texte brut, sans <a>/href/lien de telechargement. Le type contract.ts:585-594 ne porte qu'`artifactPath?: string`, jamais une URL telechargeable.\n\nAucun filtrage par role ni mecanisme alternatif ne contredit la preuve : l'artefact est inaccessible via l'application, recuperable uniquement par acces direct au filesystem serveur (SSH). Severite blocker/export justifiee."
+      }
+    },
+    {
+      "dimension": "backend-exports",
+      "id": "no-iaa-export-artifact",
+      "title": "Pas de format d'export dedie a la concordance/matrice IAA — l'IAA n'est qu'un endpoint de lecture",
+      "severity": "major",
+      "area": "export",
+      "files": [
+        "backend/claire/projects/views.py:271-287",
+        "backend/claire/projects/iaa.py:55-97",
+        "backend/claire/exports/models.py:9-15"
+      ],
+      "evidence": "La matrice IAA paire-a-paire (annotator_a, annotator_b, kappa, par document) est calculee par project_iaa (iaa.py:55-97) et exposee seulement via GET /projects/{slug}/iaa. Le docstring l'admet: 'l'export CSV est fait cote client a partir de ce tableau' (views.py:277). Aucun ExportFormat n'est destine a la concordance (models.py:9-15 sont tous des dumps d'annotations). Manque un export archivable de la matrice IAA et un export aligne-par-phrase multi-annotateurs.",
+      "recommendation": "Ajouter un ExportFormat iaa_matrix (CSV/JSON kappa + per_theme + boundary) produit par run_export, ou un export aligned-by-sentence groupant tous les annotateurs d'un document (une colonne theme par annotateur par phrase), exploitable pour Cohen/Fleiss kappa et trace comme artefact versionne.",
+      "verdict": {
+        "finding_id": "no-iaa-export-artifact",
+        "confirmed": true,
+        "confidence": "high",
+        "note": "CONFIRMÉ. Le code prouve les trois branches de la preuve.\n\n1) La matrice IAA paire-à-paire n'est qu'un calcul en mémoire exposé en lecture. backend/claire/projects/iaa.py:55-80 (pairwise_kappa_for_document) construit exactement les lignes {document, annotator_a, annotator_b, kappa, n_sentences} (l.71-79) ; project_iaa (l.83-97) les agrège en {mean_kappa, pairs} (l.97). Cette matrice n'est servie QUE par l'action iaa de views.py:271-287 sous forme de Response JSON ({mean_kappa, pairs, detail}). Le docstring l.276-277 admet littéralement « l'export CSV est fait côté client à partir de ce tableau » — donc aucun artefact serveur archivable.\n\n2) Aucun ExportFormat ne cible la concordance. exports/models.py:9-15 = JSONL, CSV, CONLL, XML, MD, HUGGINGFACE. exports/services.py:26-41 (_selected_annotations) + l.76 (records = [build_snapshot(a) for a in _selected_annotations(job)]) prouvent que CHAQUE export est un dump par Annotation (= par annotateur). Les fieldnames CSV (services.py:51-55 : doc/annotator/anchor_index/theme/...) sont des lignes clause-par-annotateur, jamais une matrice annotateur×annotateur ni un format aligné-par-phrase multi-annotateurs. exports/views.py:9-14 n'expose qu'un ReadOnlyModelViewSet GET (status/manifest) — pas d'action IAA.\n\n3) Vérification exhaustive : grep iaa|kappa|concord|matrix|aligned sur tout le module exports/ → 0 résultat. Les SEULS consommateurs d'IAA/kappa sont des endpoints de lecture dans projects/views.py (action iaa l.271-287, stats progress l.256-267, widget public l.543-555).\n\nConclusion : il manque bien (a) un export archivable de la matrice IAA et (b) un export aligné-par-phrase multi-annotateurs. Le finding est exact, sans mécanisme contradictoire (le filtrage par rôle ne change rien : l'objet n'existe pas). Sévérité major/export justifiée."
+      }
+    },
+    {
+      "dimension": "backend-exports",
+      "id": "export-synchronous-in-request",
+      "title": "Export 100% synchrone dans la requete HTTP malgre le modele job — pas de robustesse gros volumes",
+      "severity": "major",
+      "area": "perf",
+      "files": [
+        "backend/claire/projects/views.py:512-521",
+        "backend/claire/exports/services.py:70-89",
+        "backend/claire/exports/models.py:18-23"
+      ],
+      "evidence": "POST /projects/{slug}/exports cree le job PUIS appelle run_export(job) en ligne (views.py:518) avant de repondre 201. Le statut PENDING (models.py:19) n'est jamais utilise comme file d'attente. L'iteration [build_snapshot(a) for a in qs] (services.py:76) materialise toute la liste records en memoire avec sous-requetes clauses par annotation (select_related sans prefetch, services.py:28-30). Sur 50 docs x 3 annotateurs x N clauses, l'export bloque le worker HTTP avec risque de timeout.",
+      "recommendation": "Deporter run_export vers une tache async (Celery/RQ), repondre le job PENDING immediatement, front poll GET /exports/{id}. Prefetch des clauses dans _selected_annotations. Streamer l'ecriture jsonl plutot que materialiser records.",
+      "verdict": {
+        "finding_id": "export-synchronous-in-request",
+        "confirmed": true,
+        "confidence": "high",
+        "note": "CONFIRMÉ sur tous les points. (1) Export synchrone dans la requête HTTP : projects/views.py:512-521 — l'action `exports` crée le job (512-517) puis appelle `run_export(job)` EN LIGNE à la ligne 518, AVANT de répondre 201 (519-521). Aucun retour anticipé, le client attend la fin de l'export. (2) Pas de file d'attente : ExportStatus.PENDING (exports/models.py:19) est le défaut du champ (models.py:32-33) mais n'est jamais consommé comme gate — `run_export` le passe immédiatement à RUNNING (services.py:72-73). Grep sur exports/ + views.py : AUCUN celery/shared_task/delay/apply_async/threading/Thread. `run_export` est l'unique chemin d'exécution (seul appelant = views.py:518). Le modèle job existe mais sert juste de trace/résultat, pas de découplage asynchrone. (3) Matérialisation mémoire complète : services.py:76 `records = [build_snapshot(a) for a in _selected_annotations(job)]` — list comprehension qui charge tout en RAM. (4) N+1 au niveau annotation : `_selected_annotations` (services.py:27-30) fait `select_related(\"document\",\"annotator\",\"project\",\"project__scheme\")` SANS `prefetch_related(\"clauses\")`. Puis build_snapshot (annotations/services.py:49-53) déclenche une requête clauses fraîche PAR annotation (`annotation.clauses.select_related(...)`). Donc N annotations = N+1 requêtes clauses. Précision : à l'intérieur d'une annotation, le select_related sur anchor_sentence/theme/legal_nature évite un N+1 par clause — le N+1 est bien au niveau annotation, exactement comme énoncé. (5) Aggravant non cité mais réel : tout tourne dans `@transaction.atomic` (services.py:70), donc une transaction DB longue est maintenue ouverte pendant que le worker HTTP est bloqué → risque de timeout/épuisement de connexions sur gros volume (50 docs × 3 annotateurs × N clauses). La preuve avancée est exacte."
+      }
+    },
+    {
+      "dimension": "backend-exports",
+      "id": "atomic-wraps-disk-io",
+      "title": "@transaction.atomic enveloppe l'I/O disque; le re-raise rollback le save FAILED et laisse un artefact orphelin",
+      "severity": "minor",
+      "area": "backend",
+      "files": [
+        "backend/claire/exports/services.py:70-119"
+      ],
+      "evidence": "run_export est decore @transaction.atomic (services.py:70) alors que l'ecriture fichier n'est pas transactionnelle. Le bloc except (services.py:114-119) met FAILED, save, puis raise — ce raise propage hors du atomic et rollback aussi le save FAILED (ligne 117): le job peut rester RUNNING en base. Un fichier partiellement ecrit n'est pas nettoye.",
+      "recommendation": "Sortir l'I/O disque du atomic; n'envelopper que les writes DB. Faire le save(FAILED) hors atomic pour qu'il survive au rollback, supprimer le fichier partiel (unlink missing_ok=True), envisager ecriture atomique (temp + rename).",
+      "verdict": null
+    },
+    {
+      "dimension": "backend-exports",
+      "id": "manifest-and-scope-traceability",
+      "title": "Scope par defaut gold raisonnable mais scope.statuses non valide et manifeste sans ventilation par annotateur/statut",
+      "severity": "info",
+      "area": "export",
+      "files": [
+        "backend/claire/exports/services.py:33-41",
+        "backend/claire/exports/services.py:91-105",
+        "backend/claire/annotations/models.py:21-27"
+      ],
+      "evidence": "_selected_annotations prend par defaut status in [submitted, in_review, approved] (services.py:36-37), coherent pour un gold. Mais scope.statuses arbitraire (services.py:32-34) permet d'exporter draft/rejected/archived sans garde-fou. Le manifeste (services.py:91-105) donne n_annotations/n_clauses globaux sans ventilation par statut ni par annotateur.",
+      "recommendation": "Valider/whitelister les statuts acceptes dans scope (refuser archived), enrichir le manifeste avec une ventilation par statut et par annotateur pour audit et reproductibilite.",
+      "verdict": null
+    },
+    {
+      "dimension": "frontend-workspace",
+      "id": "switcher-duplicate-rows-admin",
+      "title": "DocumentSwitcher liste n_docs x n_annotateurs entrees pour admin",
+      "severity": "blocker",
+      "area": "frontend",
+      "files": [
+        "frontend/src/components/workspace/DocumentSwitcher.tsx:38-58",
+        "backend/claire/projects/views.py:70-76"
+      ],
+      "evidence": "filtered.map rend une entree par Assignment; views.py filtre assignee=user seulement pour non-admin.",
+      "recommendation": "Filtrer sur assigneeId=me.id via useMe.",
+      "verdict": {
+        "finding_id": "switcher-duplicate-rows-admin",
+        "confirmed": true,
+        "confidence": "high",
+        "note": "Confirmé ligne par ligne. BACKEND — backend/claire/projects/views.py:70-76 : la queryset part de `project.assignments.select_related(...)` (l.70-72, TOUTES les assignations du projet) et n'applique le filtre `qs.filter(assignee=request.user)` que si `not request.user.is_admin_role` (l.73-74). `is_admin_role` (backend/claire/accounts/models.py:33-35) renvoie true pour ADMIN/OWNER/superuser → AUCUN filtre pour l'admin. `results_envelope(ser.data)` (l.76) sérialise une entrée par Assignment via AssignmentSerializer (serializers.py:55-76), sans dédup par document : chaque ligne porte `document` complet + `assignee_id` + `annotation_id`. Donc un admin reçoit n_docs × n_annotateurs entrées (3 Assignment/doc avec le seed --assign). FRONTEND — frontend/src/components/workspace/DocumentSwitcher.tsx:38-39 lit `data.results` en `rows` sans dédup ; l.49-58 `filtered` ne fait que filtrer par recherche (pas de dédup) ; l.143 `filtered.map((r, i) => ...)` rend un `<li key={r.id}>` par Assignment, `key={r.id}` étant l'id d'Assignment (pas de document) → le même document apparaît une fois par annotateur. La preuve avancée est exacte. Aucun mécanisme de rôle ou de dédup ne contredit le finding ; au contraire, l.41 `rows.find((r) => r.document.id === currentDocumentId)` renvoie la PREMIÈRE assignation correspondante (potentiellement celle d'un autre annotateur), ce qui aggrave le problème côté admin."
+      }
+    },
+    {
+      "dimension": "frontend-workspace",
+      "id": "switcher-wrong-session-on-nav",
+      "title": "Navigation ouvre la session d un autre annotateur",
+      "severity": "blocker",
+      "area": "ux",
+      "files": [
+        "frontend/src/components/workspace/DocumentSwitcher.tsx:41-73"
+      ],
+      "evidence": "annotation_id par document+assignee; isMine false donc lecture seule.",
+      "recommendation": "Resoudre via document+me.id.",
+      "verdict": {
+        "finding_id": "switcher-wrong-session-on-nav",
+        "confirmed": true,
+        "confidence": "high",
+        "note": "CONFIRMÉ pour un admin/lead. Chaîne vérifiée ligne par ligne :\n\n1. DocumentSwitcher.tsx:38-39 — source = `useAssignments(projectSlug).data.results` (rows = 1 item par Assignment).\n2. DocumentSwitcher.tsx:68-73, 130, 153 — `go(annotationId)` fait `router.push(`/annotate/${annotationId}`)` en utilisant `r.annotationId` de la ligne cliquée, sans aucun filtre sur l'annotateur courant.\n3. Endpoint : endpoints.ts:172-174 `listAssignments` → `GET /projects/{slug}/assignments`. Côté backend projects/views.py:70-76 : `qs = project.assignments...` ; le filtre `qs.filter(assignee=request.user)` n'est appliqué QUE `if not request.user.is_admin_role` (lignes 73-74). Donc un admin reçoit TOUTES les assignations = n_docs × n_annotateurs.\n4. Le champ `annotation_id` de chaque ligne est résolu dans projects/serializers.py:72-76 par `obj.project.annotations.filter(document=obj.document, annotator=obj.assignee).first()` → c'est l'annotation de l'ASSIGNEE de la ligne, PAS celle de l'utilisateur connecté.\n5. Conséquence à l'ouverture : AnnotationWorkspace.tsx:37 `isMine = !!me && !!annotation && String(annotation.annotatorId) === String(me.id)` ; ligne 58 `init({ ..., readOnly: !isMine })` et ligne 86 `useAutosave(isMine ? ... : null)`. Si l'admin clique une entrée correspondant à zahra/jc, `annotatorId !== me.id` → `isMine=false` → workspace en LECTURE SEULE (édition désactivée, pas d'autosave). C'est bien « la navigation ouvre la session d'un autre annotateur en lecture seule ».\n\nNuance de sévérité : le mécanisme `readOnly` empêche toute corruption de la session d'autrui (pas un risque d'intégrité). Le bug est UX : (a) le switcher liste plusieurs entrées par document pour un admin (même titre × N annotateurs, distinguées seulement par le badge de statut) et (b) cliquer une de ces entrées ouvre la session d'un autre en lecture seule de façon opaque, sans indication claire que ce n'est pas « ma » session. Le switcher ne filtre jamais sur `me.id` ni n'utilise `assignee_id`/`my_session`, alors qu'un endpoint document-centré dédié existe déjà (views.py:227-330, `/documents` avec `my_session`) et serait la source correcte. Pour un annotateur non-admin, le filtre backend (views.py:73-74) limite déjà aux propres assignations, donc le problème ne se manifeste que pour admin/lead — mais c'est exactement le rôle décrit dans le contexte (elazhar = owner/superuser/LEAD). Finding réel et reproductible."
+      }
+    },
+    {
+      "dimension": "frontend-workspace",
+      "id": "switcher-duplicate-testid",
+      "title": "data-testid options non unique",
+      "severity": "major",
+      "area": "test",
+      "files": [
+        "frontend/src/components/workspace/DocumentSwitcher.tsx:151"
+      ],
+      "evidence": "data-testid base sur document.id donc repete.",
+      "recommendation": "Baser testid sur annotationId.",
+      "verdict": {
+        "finding_id": "switcher-duplicate-testid",
+        "confirmed": true,
+        "confidence": "high",
+        "note": "CONFIRME. frontend/src/components/workspace/DocumentSwitcher.tsx:151 → data-testid={`document-option-${r.document.id}`} utilise document.id et non l'id unique de l'assignment. Preuve de duplication : (1) ligne 39 `const rows = data?.results ?? []` vient directement de useAssignments sans dédup ; (2) le hook useAssignments (src/lib/api/hooks.ts:142-148) retourne api.listAssignments(slug) brut, aucun filtrage par rôle ni dédup côté front ; (3) ligne 146 `<li key={r.id}>` utilise r.id (id d'Assignment, unique) — ce qui prouve que rows = 1 item/Assignment, donc plusieurs lignes partagent le MÊME r.document.id quand un document est assigné à plusieurs annotateurs ; (4) ligne 144 `r.document.id === currentDocumentId` confirme que document.id se répète. Dans le scénario admin documenté (seed --assign = 3 Assignment/doc, endpoint renvoie tout pour admin), on obtient N éléments DOM avec un data-testid identique `document-option-<même-id>` → testid non unique, casse getByTestId. Le même défaut existe ligne 164 (`doc-translated-${r.document.id}`). Le dev avait r.id sous la main (utilisé en key l.146) mais a choisi document.id pour le testid. Réserve factuelle : pour un annotateur non-admin (filtre assignee=user → 1 assignment/doc) ou un seed sans --assign, il n'y a pas de collision ; le bug ne se manifeste que sur le chemin admin multi-annotateurs, qui est précisément le scénario du bug central rapporté. Finding valide en major/test."
+      }
+    },
+    {
+      "dimension": "frontend-campaign",
+      "id": "admin-assignments-overfetch-duplication",
+      "title": "Backend: assignments renvoie n_docs x n_annotateurs pour un admin",
+      "severity": "blocker",
+      "area": "backend",
+      "files": [
+        "backend/claire/projects/views.py:73-74",
+        "backend/claire/projects/serializers.py:72-74"
+      ],
+      "evidence": "Filtre assignee=user seulement si non-admin ; admin recoit tout, consomme 1:1 par 5 ecrans. get_annotation_id resout par document+assignee.",
+      "recommendation": "Vue mes-assignations filtrant assignee=user meme admin, distincte de la vue admin (scope ou 2 endpoints).",
+      "verdict": {
+        "finding_id": "admin-assignments-overfetch-duplication",
+        "confirmed": true,
+        "confidence": "high",
+        "note": "CONFIRME. Le code prouve le finding ligne par ligne.\n\nBACKEND - filtrage par rôle absent pour les admins (views.py:70-76):\n- L.70-72 : qs = project.assignments.select_related(...) — base = TOUTES les assignations du projet.\n- L.73-74 : `if not request.user.is_admin_role: qs = qs.filter(assignee=request.user)` — le filtre par annotateur ne s'applique QUE si l'utilisateur n'est PAS admin. Un admin reçoit donc l'intégralité des Assignment du projet, sans dédup.\n- is_admin_role (accounts/models.py:34-35) : role ∈ {ADMIN, OWNER} ou is_superuser. elazhar.jebbari (owner/superuser) tombe dedans → reçoit tout.\n- Étant donné l'invariant métier (unique (project, document, assignee), seed --assign crée 3 Assignment/doc = 1 par annotateur), un admin reçoit bien n_docs × n_annotateurs lignes (3× pour 3 membres), une ligne par couple (document × annotateur).\n- L.75-76 : sérialisation many=True puis results_envelope → renvoie chaque ligne brute, aucune agrégation/distinct par document.\n\nSERIALIZER - résolution 1:1 par (document, assignee) confirmée (serializers.py:63, 72-76):\n- annotation_id = SerializerMethodField (L.63).\n- get_annotation_id (L.72-75) : `obj.project.annotations.filter(document=obj.document, annotator=obj.assignee).first()` — résout l'annotation par document + assignee. Chaque ligne d'Assignment pointe donc vers la session d'un annotateur précis : confirme que les lignes ne sont pas fusionnables côté backend sans perdre l'info annotateur.\n\nFRONTEND - consommation 1:1 sans dédup, sur plusieurs écrans (corrobore la duplication visible) :\n- Page campagne projects/[slug]/page.tsx:48 : `(assignments?.results ?? []).map((a) => ...)` avec key={a.id} → 1 <li> par Assignment, donc chaque document apparaît 3× pour un admin.\n- DocumentSwitcher.tsx:38-39 puis 49-58 : `rows = data?.results`, le sélecteur liste/filtre directement `rows` (1 entrée par Assignment) → doublons dans le sélecteur de documents du workspace. Le commentaire L.7 confirme que la source est assignments→document.\n- Autres consommateurs 1:1 : home/page.tsx:19, docs/page.tsx:20 (construit une Map par a.document mais en itérant les résultats bruts), admin/projects/[slug]/page.tsx:112.\n- Seul work/page.tsx:31-34 atténue côté annotateur via `.filter(a => String(a.assigneeId) === String(me.id))`, MAIS pour un admin me.id ne correspond à aucun assignee → la file « mine » serait vide ; ce filtre ne dédoublonne pas non plus par document.\n\nAucun mécanisme (distinct, group-by, filtre par rôle côté admin) ne contredit la preuve. Le filtrage par rôle existe mais joue dans le sens INVERSE : il exempte précisément l'admin du filtre, causant l'overfetch. Finding réel, blocker backend."
+      }
+    },
+    {
+      "dimension": "frontend-campaign",
+      "id": "dashboard-home-duplique",
+      "title": "Dashboard/Home: Mes assignations affiche les assignations de tous pour un admin",
+      "severity": "blocker",
+      "area": "frontend",
+      "files": [
+        "frontend/src/app/(app)/projects/SLUG/page.tsx:48-60",
+        "frontend/src/app/(app)/home/page.tsx:35-47"
+      ],
+      "evidence": "Map sur assignments.results sans filtre ; Annoter (54/41) utilise a.annotationId = session d'un autre annotateur.",
+      "recommendation": "Filtrer sur assigneeId=me.id et ouvrir MA session via createAnnotation.",
+      "verdict": {
+        "finding_id": "dashboard-home-duplique",
+        "confirmed": true,
+        "confidence": "high",
+        "note": "Confirmé par le code réel sur toute la chaîne. (1) Frontend projects/[slug]/page.tsx:15 charge useAssignments(params.slug) puis page.tsx:48 fait `(assignments?.results ?? []).map((a) => ...)` sous le titre « Mes assignations » (l.46) SANS aucun filtre par rôle/propriétaire ; le lien « Annoter → » (l.53-57) pointe vers `/annotate/${a.annotationId}`. (2) Frontend home/page.tsx:18-19 fait `assignmentList = assignments?.results ?? []` puis l.35-44 le map sans filtre, bouton « Annoter » → `/annotate/${a.annotationId}` (l.40-44). (3) Le hook hooks.ts:142-148 appelle simplement api.listAssignments(slug) sans filtrage client : le front rend exactement la réponse serveur. (4) Backend projects/views.py:70-76 : qs = project.assignments(.select_related ...) et n'applique `qs.filter(assignee=request.user)` QUE `if not request.user.is_admin_role` (l.73-74). Donc un admin reçoit TOUTES les assignations = n_docs × n_annotateurs (3 lignes/doc avec le seed). is_admin_role (accounts/models.py:33-35) = role in {ADMIN, OWNER} or is_superuser → elazhar concerné. (5) serializers.py:72-76 get_annotation_id résout l'annotation par `annotator=obj.assignee`, donc annotationId = la session de l'assignee de la ligne. Pour un admin qui voit les lignes des autres, « Annoter » ouvre /annotate/<session d'un autre annotateur>. Aucun mécanisme ne contredit la preuve : la déduplication n'existe que pour un annotateur simple (filtre assignee=request.user). Nuance : le bug ne se manifeste que pour les utilisateurs admin, ce qui correspond au périmètre du finding."
+      }
+    },
+    {
+      "dimension": "frontend-campaign",
+      "id": "docs-switcher-work",
+      "title": "docs page (Map ecrasante), DocumentSwitcher (doublons combobox), work (over-fetch)",
+      "severity": "major",
+      "area": "frontend",
+      "files": [
+        "frontend/src/app/(app)/projects/SLUG/docs/page.tsx:19-24",
+        "frontend/src/components/workspace/DocumentSwitcher.tsx:38-58",
+        "frontend/src/app/(app)/work/page.tsx:31-34"
+      ],
+      "evidence": "byDoc=new Map garde la derniere paire (statut/lien errones pour admin) ; Switcher rows sans filtre (doc 3 fois) ; work filtre me.id correct mais over-fetch et test !me affiche tout au chargement.",
+      "recommendation": "Filtrer docs et Switcher sur useMe ; pour work eviter le test !me.",
+      "verdict": {
+        "finding_id": "docs-switcher-work",
+        "confirmed": true,
+        "confidence": "high",
+        "note": "CONFIRME sur les 3 points. Cause racine vérifiée backend: projects/views.py:73-74 — `if not request.user.is_admin_role: qs = qs.filter(assignee=request.user)`. Donc pour un admin AUCUN filtre → l'endpoint renvoie TOUTES les assignations (n_docs × n_annotateurs, 3/doc avec la seed). useAssignments (hooks.ts:142-148) ne refiltre pas. AssignmentSerializer.get_annotation_id (serializers.py:72-76) résout l'annotation par `annotator=obj.assignee`, donc chacune des 3 lignes d'un même doc porte un annotationId ET un status DIFFÉRENTS (session propre à chaque annotateur).\n\n(1) docs/page.tsx:19-24 — CONFIRME. `byDoc = new Map((assignments?.results ?? []).map((a) => [a.document.id, {annotationId, status}]))` : un Map construit depuis des entrées [clé,valeur] dédoublonne par clé en gardant la DERNIÈRE occurrence. Pour l'admin, 3 lignes/doc → le Map ne conserve que l'annotationId+status du dernier annotateur. La pastille (ligne 75 `assigned?.status`) et le lien « Annoter → » (lignes 76-82, `href=/annotate/${assigned.annotationId}`) pointent donc vers la session d'un AUTRE annotateur et un statut erroné. Note: la liste affichée (`documents` ligne 26) vient de useCorpusDocuments, donc pas de doublon visuel de lignes ici — mais statut/lien faux pour admin. Preuve exacte.\n\n(2) DocumentSwitcher.tsx:38-58 — CONFIRME. `rows = data?.results ?? []` (l.39) sans dédup ni filtre par rôle/doc ; `filtered` (l.49-58) ne filtre que sur la requête de recherche. Le rendu `filtered.map((r,i) => <li key={r.id}>` (l.143-146) clé sur l'id d'ASSIGNATION (`r.id`), pas l'id de document → pour l'admin, le même document apparaît 3 fois dans le combobox, chaque entrée allant vers une session différente (go(r.annotationId), l.153).\n\n(3) work/page.tsx:31-34 — CONFIRME (nuancé, exactement comme énoncé). Le filtre est CORRECT: `(a) => !me || String(a.assigneeId) === String(me.id)` (assigneeId existe bien, contract.ts:230). Mais deux défauts réels: (a) over-fetch — l'API a renvoyé toutes les assignations pour l'admin puis filtrage côté client ; (b) le court-circuit `!me` : tant que useMe est en cours (me undefined), `!me` est vrai → TOUTES les assignations passent (3× doublons) et s'affichent à l'écran au chargement jusqu'à résolution de me. Conforme à la preuve avancée."
+      }
+    },
+    {
+      "dimension": "frontend-campaign",
+      "id": "assignment-no-name",
+      "title": "Contrat Assignment sans nom d'annotateur => doublons indesambiguables",
+      "severity": "major",
+      "area": "data-model",
+      "files": [
+        "frontend/src/types/contract.ts:226-234"
+      ],
+      "evidence": "assigneeId sans assigneeName ; impossible de distinguer la ligne de zahra de celle de jc dans les vues 1:N.",
+      "recommendation": "Ajouter assigneeName/assigneeUsername ; separer MON annotationId de celui de l'assignee.",
+      "verdict": {
+        "finding_id": "assignment-no-name",
+        "confirmed": true,
+        "confidence": "high",
+        "note": "CONFIRMÉ. frontend/src/types/contract.ts:226-234 — l'interface Assignment expose uniquement assigneeId: string (ligne 230), un PK brut, sans aucun champ assigneeName/username/displayName. Côté backend, claire/projects/serializers.py:55-70 confirme la cause racine : AssignmentSerializer ne sérialise que assignee_id (PrimaryKeyRelatedField, ligne 60-62) — aucun nom n'est jamais renvoyé dans le payload assignments. La preuve « impossible de distinguer la ligne de zahra de celle de jc dans les vues 1:N » est vérifiée sur les deux vues qui mappent à plat sur assignments.results : (1) campagne projects/[slug]/page.tsx:48-60 affiche par ligne UNIQUEMENT a.document.title + statut + lien (key={a.id}), donc pour un admin recevant N assignations/doc, le même titre apparaît N fois sans étiquette d'annotateur ; (2) DocumentSwitcher.tsx:143-161 mappe filtered et n'affiche que r.document.title/externalId, idem aucun annotateur. Ces vues n'ont aucun champ nom disponible ET ne joignent pas non plus sur members. NUANCE (non infirmante) : la vue admin/projects/[slug]/page.tsx N'EST PAS touchée — elle pivote en grille document×annotateur et tire les noms de colonnes de la liste séparée members (ProjectMember.displayName/username, lignes 181-185), en joignant par clé `${document.id}|${assigneeId}` (ligne 113). Donc le défaut data-model est bien réel (Assignment non auto-descriptif), mais son impact d'ambiguïté se limite aux listes 1:N à plat (page campagne + DocumentSwitcher), pas à toutes les vues. Sévérité major plausible ; la portée n'est pas universelle."
+      }
+    },
+    {
+      "dimension": "frontend-campaign",
+      "id": "nav-supervision-matrix-topbar",
+      "title": "Nav sans separation des espaces; supervision non liee au dashboard; matrice sans statut; TopBar auto-select",
+      "severity": "major",
+      "area": "ux",
+      "files": [
+        "frontend/src/components/shell/Sidebar.tsx:42-68",
+        "frontend/src/app/(app)/projects/SLUG/page.tsx:21-87",
+        "frontend/src/app/(app)/admin/projects/SLUG/page.tsx:88-270",
+        "frontend/src/components/shell/TopBar.tsx:30-34"
+      ],
+      "evidence": "Sidebar melange MA session/documents/Comparer sans groupes. Dashboard sans useAnnotatorsProgress ni lien vers la matrice (AssignTab 88-222) / avancement (ProgressTab 225-270). Cellule matrice (196-204) sans statut. TopBar selectionne projects.results[0] pour un admin (views.py:42-43).",
+      "recommendation": "Grouper la nav (Corpus, MA session, Supervision, Collaboration) ; lier la supervision au dashboard ; statut par cellule ; pas d'auto-select arbitraire pour admin.",
+      "verdict": {
+        "finding_id": "nav-supervision-matrix-topbar",
+        "confirmed": true,
+        "confidence": "high",
+        "note": "Confirmé sur les 4 sous-points, code relu ligne par ligne.\n\n(1) Sidebar sans separation des espaces — Sidebar.tsx:42-56 : projectNav() construit un unique tableau `items` plat mêlant la session perso (\"Mes annotations\" L45, \"Documents\" L49), la collaboration (\"Comparer\" L53), et la navigation generale (\"Mes projets\" L51, \"Projets publies\" L52, \"Preferences\" L54), sans aucun groupe ni separateur. Seul le bloc Administration (L128-139) est isole, gate par isAdmin (L79). Donc aucune separation session-d-annotation vs collaboration. Confirme.\n\n(2) Dashboard non lie a la supervision — projects/[slug]/page.tsx : l'import L7 charge useAssignments/useProject/useProjectProgress/useActivity mais PAS useAnnotatorsProgress. Le panneau \"Mes assignations\" (L46-62) mappe directement assignments?.results (L48). Or pour un admin, GET assignments ne filtre PAS par assignee (projects/views.py:73-74 : `if not request.user.is_admin_role: qs = qs.filter(assignee=...)`), donc l'admin voit TOUTES les assignations de tous les annotateurs sous le libelle errone \"Mes assignations\" (+ docs dupliques). Aucun lien vers /admin/projects/{slug} ni vers la matrice/ProgressTab. Les outils de supervision (AssignTab matrice L88-222, ProgressTab L225-270) vivent uniquement dans la page admin separee. Confirme.\n\n(3) Cellule de matrice sans statut — admin/projects/[slug]/page.tsx:110-116 le `map` ne stocke que l'assignmentId (`m.set(... a.id)`), jamais a.status. La cellule L196-204 affiche une simple checkbox dont l'etat vient de `assigned = map.has(key)` (L194) : assigne / non-assigne uniquement, sans statut d'annotation (brouillon/demarre/soumis) par cellule. Nuance : ProgressTab L225-270 affiche bien des agregats de statut par annotateur (assigned/started/submitted), mais la matrice elle-meme ne porte aucun statut par cellule. Sous-point confirme tel que formule (cellule matrice 196-204).\n\n(4) TopBar auto-select — TopBar.tsx:30-34 : useEffect fait `setProject(projects.results[0]!.slug)` des qu'aucun projet courant. Pour un admin, useProjects/get_queryset (projects/views.py:42-43 : `if user.is_admin_role: return qs`) renvoie TOUS les projets, donc le premier projet (ordre arbitraire) est auto-selectionne y compris pour l'admin, sans choix explicite. Confirme.\n\nAucun mecanisme de filtrage par role ne contredit la preuve ; au contraire le code backend (views.py:42-43 et 73-74) renforce les points (2) et (4)."
+      }
+    },
+    {
+      "dimension": "frontend-collab-ux",
+      "id": "judge-view-no-readonly",
+      "title": "Source juge sans signal lecture seule; menu actif ecrit dans ma session",
+      "severity": "major",
+      "area": "ux",
+      "files": [
+        "frontend/src/components/workspace/DocumentPanel.tsx:1081",
+        "frontend/src/components/workspace/DocumentPanel.tsx:865",
+        "frontend/src/components/workspace/LlmSourceSwitch.tsx:22-30"
+      ],
+      "evidence": "onContextMenu non garde par llmSource (1081); menu sur humanRuns (865) en vue juge (253-257). On annote sa session en croyant editer la vue.",
+      "recommendation": "Bandeau lecture seule si source non humaine; bloquer/confirmer le menu.",
+      "verdict": {
+        "finding_id": "judge-view-no-readonly",
+        "confirmed": true,
+        "confidence": "high",
+        "note": "CONFIRME. Le code prouve le finding ligne par ligne.\n\n1) DocumentPanel.tsx:1081 onContextMenu — ne garde QUE shouldSuppressContextMenu() (suppression d'un drag de blocs), jamais llmSource. Idem onOpenMenu={(x,y)=>setMenu({index:s.index,x,y})} a la ligne 798 (SentenceRow). Le menu s'ouvre donc dans n'importe quelle source, y compris vue juge.\n\n2) DocumentPanel.tsx:865 runs={humanRuns} — le SentenceMenu recoit TOUJOURS les runs HUMAINS, meme en vue juge. La section (a) « Annoter… » cible donc la clause humaine couvrante (SentenceMenu.tsx:80 coveringRun = runAt(runs, idx)), pas la segmentation du juge affichee.\n\n3) DocumentPanel.tsx:253-257 : llmSource juge ne change QUE la variable `runs` de RENDU (runsByJudge[llmSource]); computeBadge (953-997) et runColor ne changent que le visuel. Aucun signal lecture-seule, aucun disabled, aucun lock n'est rendu en vue juge (grep readOnly/disabled dans DocumentPanel = rien sur le menu).\n\n4) Les actions du menu ecrivent dans la session humaine (draftClauses) : SentenceMenu.tsx:119 toggleBoundary, :172 setValidated, :163 setCertainty, :216 resolveDivergenceRange.\n\n5) PREUVE DECISIVE de l'absence de garde : dans store/workspace.ts toutes ces mutations sont gardees par s.readOnly (411, 420, 491, 541, 609, 635, 655…), JAMAIS par llmSource. setLlmSource (838) fait `set({ llmSource: source })` et ne touche jamais readOnly. readOnly est fixe a l'init (316-320) et reste false pour sa propre session. Donc en passant en vue juge (llmSource='claude'), readOnly reste false → toggleBoundary (409-415) execute setBoundary et ecrit bien dans draftClauses (la session humaine).\n\nConclusion : un menu ACTIF en vue juge, dont l'en-tete « (choisir un theme) » (SentenceMenu.tsx:149) ne distingue pas la session humaine de la vue juge affichee, alors que le commentaire DocumentPanel.tsx:21 qualifie la vue juge de « lecture seule ». Cette lecture-seule n'est que visuelle (rail/puce) ; l'utilisateur peut annoter sa propre session en croyant editer/annoter la vue du juge. Le filtrage par role (readOnly) ne contredit pas la preuve : il est orthogonal a llmSource. Severite UX justifiee.\n\nNuance mineure : « major » est defendable mais l'impact reel est attenue par le fait que l'action reste reversible (undo, pushUndo a chaque mutation) et qu'aucune corruption de la session juge n'a lieu (les juges sont des donnees pre-annotees read-only cote runsByJudge). Le finding sur la confusion UX et l'ecriture silencieuse dans la session reste neanmoins correct."
+      }
+    },
+    {
+      "dimension": "frontend-collab-ux",
+      "id": "collab-not-grouped",
+      "title": "Collaboration non regroupee ni nommee comme espace distinct",
+      "severity": "major",
+      "area": "ux",
+      "files": [
+        "frontend/src/components/workspace/DocumentPanel.tsx:388-392",
+        "frontend/src/components/workspace/CollabBar.tsx:66-76"
+      ],
+      "evidence": "CollabBar noyee dans les controles document (392); Commentaires ailleurs (toolbar 228-236); Inviter ne dit pas qu'on invite d'autres personnes.",
+      "recommendation": "Regrouper presence+invitation+commentaires sous Collaboration distinct de Mon annotation.",
+      "verdict": {
+        "finding_id": "collab-not-grouped",
+        "confirmed": true,
+        "confidence": "high",
+        "note": "CONFIRMÉ (le coeur du finding est prouvé par le code réel ; une sous-preuve est inexacte).\n\n1) CollabBar noyée dans les contrôles document — CONFIRMÉ. DocumentPanel.tsx:388-392 : <CollabBar projectSlug={projectSlug} /> (l.392) est le PREMIER enfant du <div data-testid=\"document-controls\"> (l.388-390), une barre sticky qui mélange tous les contrôles document/LLM : sélecteur Version (397-413), toggle Frontières (415-423), LlmSourceSwitch (424), Attribution (425-439), Comparer (440-456), Jusqu'à la frontière (457-465), ModelBoundaryLegend (466-468), reading-controls zoom (469-512), LangSwitch (513). Aucun titre/section « Collaboration », aucun regroupement. CollabBar elle-même (CollabBar.tsx:33-82) est un simple flex items-center gap-2 sans panneau ni intitulé, volontairement « NON envahissante / discrète » (docstring l.4-8) et renvoie null en solo (l.31). => présence + Inviter sont fondus dans les contrôles document, pas un espace nommé distinct.\n\n2) Commentaires ailleurs — CONFIRMÉ. Le bouton « Commentaires » n'est PAS dans CollabBar mais dans un autre composant, WorkspaceToolbar.tsx:228-236 (data-testid=\\\"toggle-comments\\\", l.230 ; titre l.232), entouré de Historique (218-226) et Inspecteur (238-252). Les deux affordances de collaboration (présence/Inviter vs Commentaires) sont donc éclatées sur DEUX barres de deux composants différents, jamais regroupées.\n\n3) « Inviter ne dit pas qu'on invite d'autres personnes » — INEXACT / partiellement infirmé. Le libellé visible est bien court (« Inviter », CollabBar.tsx:74) MAIS le title est explicite : « Inviter un collaborateur (lien de partage) » (l.71), et le dialogue est sans ambiguïté (ShareLinkDialog.tsx:36 aria-label « Inviter un collaborateur », l.40 titre « Inviter à collaborer », l.41-43 texte « inviter un collaborateur… rejoint le projet »). Donc l'intention est communiquée via tooltip + dialogue ; cette sous-preuve est faible/incorrecte, mais non porteuse pour le finding.\n\nBilan : finding majeur UX confirmé (collaboration non regroupée ni nommée comme espace distinct ; présence/Inviter mêlés aux contrôles document l.388-392, Commentaires isolés ailleurs l.228-236). Seule la 3e sous-preuve est à corriger."
+      }
+    },
+    {
+      "dimension": "frontend-collab-ux",
+      "id": "shared-grammar",
+      "title": "Meme grammaire radiogroup pour voir/ecraser/comparer/commenter",
+      "severity": "major",
+      "area": "design",
+      "files": [
+        "frontend/src/components/workspace/LlmSourceSwitch.tsx:71",
+        "frontend/src/components/workspace/WorkspaceToolbar.tsx:208",
+        "frontend/src/components/workspace/CommentsPanel.tsx:189"
+      ],
+      "evidence": "Meme classe active bg-accent/15 ring-accent/40 (LlmSourceSwitch:71, prefill:208, InspectorJudgeCompare:83, scopes:189) pour des effets opposes: voir, ecraser, comparer, commenter.",
+      "recommendation": "Distinguer visuellement ecriture-sur-session vs visualisation/collaboration.",
+      "verdict": {
+        "finding_id": "shared-grammar",
+        "confirmed": true,
+        "confidence": "high",
+        "note": "CONFIRMÉ ligne par ligne. Les quatre contrôles utilisent la même grammaire segmentée (role=\"radiogroup\" + role=\"radio\") avec exactement la même classe d'état actif, pour des effets sémantiquement distincts dont un destructif :\n\n1) LlmSourceSwitch.tsx:46-73 — role=\"radiogroup\" aria-label=\"Source de segmentation\" ; actif L71 `bg-accent/15 text-ink shadow-sm ring-1 ring-accent/40`. Effet = VOIR (setLlmSource L66, choix de la source de segmentation affichée). Non destructif.\n\n2) WorkspaceToolbar.tsx:185-216 (prefill) — role=\"radiogroup\" aria-label=\"Pré-remplir depuis un juge LLM\" ; actif L207-208 `bg-accent/15 text-ink ring-1 ring-accent/40`. Effet = ÉCRASER : onClick L204 appelle requestPrefill(opt.value), action d'écriture qui pré-remplit/écrase l'annotation humaine depuis un juge LLM. C'est l'action destructive — pourtant visuellement identique aux trois autres.\n\n3) InspectorJudgeCompare.tsx:64-90 — role=\"radiogroup\" aria-label=\"Source evidence/rationale\", en-tête littéral \"Comparer la source\" (L68) ; actif L82-83 `bg-accent/15 text-ink ring-1 ring-accent/40`. Effet = COMPARER (setSource L79, lecture seule evidence/rationale humain vs Claude/Codex). Non destructif.\n\n4) CommentsPanel.tsx:176-195 (scopes) — role=\"radiogroup\" aria-label=\"Portée du commentaire\" ; actif L188-189 `bg-accent/15 text-ink ring-1 ring-accent/40`. Effet = COMMENTER (setScope L185, portée du commentaire). Non destructif.\n\nLa preuve avancée (même classe `bg-accent/15 ring-accent/40` pour voir/écraser/comparer/commenter aux lignes citées) est exacte : tous les numéros de ligne correspondent. Un grep confirme en outre le même motif ailleurs (BoundaryEvidence.tsx:142, DocumentPanel.tsx:507 reading-wide, LangSwitch.tsx:66), ce qui renforce le caractère générique et indifférencié de la grammaire. Aucun filtrage par rôle ni autre mécanisme ne distingue ces affordances. Enjeu réel (design/major) : une action d'écriture/écrasement (prefill) partage l'apparence exacte d'actions de simple lecture/sélection, sans signal visuel de danger ni différenciation."
+      }
+    },
+    {
+      "dimension": "frontend-collab-ux",
+      "id": "adopt-no-confirm",
+      "title": "Reprendre et arbitrages de divergence ecrivent sans confirmation",
+      "severity": "minor",
+      "area": "ux",
+      "files": [
+        "frontend/src/components/workspace/InspectorJudgeCompare.tsx:110-123",
+        "frontend/src/components/workspace/DocumentPanel.tsx:313-321"
+      ],
+      "evidence": "Reprendre=updateDraft; adoption clavier=resolveDivergenceRange (validated=true) dans zones comparer, sans confirmation contrairement au pre-remplissage.",
+      "recommendation": "Retour visuel + annulation, ou sortir ces actions des zones nommees comparer.",
+      "verdict": null
+    },
+    {
+      "dimension": "frontend-collab-ux",
+      "id": "help-vs-session-naming",
+      "title": "Aide LLM vs vraie session jamais nommees a l'ecran",
+      "severity": "minor",
+      "area": "ux",
+      "files": [
+        "frontend/src/components/workspace/DocumentPanel.tsx:697-714",
+        "frontend/src/components/workspace/WorkspaceToolbar.tsx:190",
+        "frontend/src/store/workspace.ts:55-61"
+      ],
+      "evidence": "Semantique aide vs reference seulement en commentaires de code (workspace.ts:55-61) et pastilles sans legende (697-714). Label Pre-remplir muet (190).",
+      "recommendation": "Legende persistante des pastilles + reformuler Pre-remplir en Pre-remplir (aide, a valider).",
+      "verdict": null
+    },
+    {
+      "dimension": "frontend-collab-ux",
+      "id": "compare-redundancy",
+      "title": "Deux comparaisons (/compare humain-vs-claude et ComparePanel N-way) sans lien clair",
+      "severity": "info",
+      "area": "ux",
+      "files": [
+        "frontend/src/app/(app)/compare/page.tsx:46-77",
+        "frontend/src/components/workspace/ComparePanel.tsx:6-13"
+      ],
+      "evidence": "/compare=humain vs claude par ancre (page.tsx:48); ComparePanel=2-3 juges entre eux sans humain (6-13). Meme mot Comparer.",
+      "recommendation": "Distinguer Comparer les modeles entre eux vs Comparer ma session au modele.",
+      "verdict": null
+    },
+    {
+      "dimension": "frontend-collab-ux",
+      "id": "comment-author-raw",
+      "title": "CommentThread (inspecteur) affiche l'id brut de l'auteur",
+      "severity": "minor",
+      "area": "ux",
+      "files": [
+        "frontend/src/components/workspace/CommentThread.tsx:35",
+        "frontend/src/components/workspace/CommentsPanel.tsx:143-154"
+      ],
+      "evidence": "CommentThread affiche c.authorId brut (35) sans nom ni couleur; CommentsPanel resout nom+couleur via useContributors (143-151).",
+      "recommendation": "Unifier l'affichage d'auteur via useContributors entre les deux composants.",
+      "verdict": null
+    },
+    {
+      "dimension": "frontend-collab-ux",
+      "id": "presence-flag-silent",
+      "title": "Presence/invitation disparait totalement quand le flag presence est off",
+      "severity": "info",
+      "area": "ux",
+      "files": [
+        "frontend/src/components/workspace/CollabBar.tsx:31",
+        "frontend/src/lib/collab/useLivePresence.ts:28-37"
+      ],
+      "evidence": "CollabBar retourne null si presenceEnabled faux (31); aucune entree collaboration hors commentaires. Espace collaboration invisible plutot que degrade.",
+      "recommendation": "Garder un point d'entree Collaboration coherent meme sans presence temps reel.",
+      "verdict": null
+    },
+    {
+      "dimension": "design-a11y",
+      "id": "hardcoded-tailwind-state-colors",
+      "title": "~86 couleurs Tailwind en dur contournent les tokens semantiques",
+      "severity": "major",
+      "area": "design",
+      "files": [
+        "frontend/src/components/ui/primitives.tsx:79-82",
+        "frontend/src/components/workspace/WorkspaceToolbar.tsx:383-392"
+      ],
+      "evidence": "amber/emerald/red-400 ; tokens success/warning/danger/info (globals.css:24-27,54-57) utilises 8x ; identiques clair/sombre, perte AA en clair.",
+      "recommendation": "Tokens semantiques centralises (StatusPill/SaveIndicator).",
+      "verdict": {
+        "finding_id": "hardcoded-tailwind-state-colors",
+        "confirmed": true,
+        "confidence": "high",
+        "note": "Confirmé ligne par ligne. (1) primitives.tsx:79-81 — StatusPill code en dur `border-amber-500/50 text-amber-400` (in_review), `border-emerald-500/50 text-emerald-400` (approved), `border-red-500/50 text-red-400` (rejected). (2) WorkspaceToolbar.tsx:383-392 — SaveIndicator code en dur `text-amber-400` (saving/offline/retrying/idle), `text-emerald-400` (saved), `text-red-400` (error/unauthorized). (3) Les tokens sémantiques existent bien : globals.css:24-27 (variante sombre --sem-success/warning/danger/info) ET globals.css:54-57 (variante claire, valeurs plus foncées pour l'AA : ex --sem-warning 224 161 0 en sombre vs 154 103 0 en clair), mappés en utilitaires success/warning/danger/info dans tailwind.config.ts. (4) Sous-utilisation confirmée : seulement 8 occurrences de text/bg/border-{success|warning|danger|info} dans tout src/*.tsx|ts (admin/projects/[slug]/page.tsx, work/page.tsx, AnnotationWorkspace.tsx, WorkspaceToolbar.tsx). (5) Perte AA en clair confirmée : les nuances codées en dur (-400/-500) n'ont AUCUN override `dark:`/light — elles s'affichent à l'identique dans les deux thèmes, alors que les tokens disposent justement d'une valeur claire dédiée plus foncée pour respecter l'AA. Réserve mineure : le décompte réel est de 135 couleurs Tailwind d'état en dur dans src (regex text|bg|border|ring|from|to|via|fill|stroke sur amber/emerald/red/green/etc.), donc le « ~86 » est conservateur — le finding sous-estime plutôt qu'il n'exagère. Aucun mécanisme (rôle, thème) ne contredit la preuve."
+      }
+    },
+    {
+      "dimension": "design-a11y",
+      "id": "surface-line-css-var-typo",
+      "title": "Var CSS inexistante --surface-line (token: --surface-border)",
+      "severity": "major",
+      "area": "frontend",
+      "files": [
+        "frontend/src/components/workspace/ModelBoundaryRail.tsx:108",
+        "frontend/src/components/workspace/DocumentPanel.tsx:662"
+      ],
+      "evidence": "rgb(var(--surface-line)) invalide; globals.css definit --surface-border (16/47); fond transparent au lieu de la teinte (rail, jauge de validation).",
+      "recommendation": "Remplacer par --surface-border ou la classe Tailwind line.",
+      "verdict": {
+        "finding_id": "surface-line-css-var-typo",
+        "confirmed": true,
+        "confidence": "high",
+        "note": "Finding confirmé. ModelBoundaryRail.tsx:108 utilise bien `: \"rgb(var(--surface-line))\"` comme backgroundColor d'un segment de rail quand il n'y a pas de tint (branche du ternaire, ligne 105-109, dans le style du bouton). DocumentPanel.tsx:662 utilise bien `: \"rgb(var(--surface-line))\"` comme backgroundColor de l'état `uncovered` (non annoté) de la jauge de validation (style de la barre lignes 656-664, opacity 0.35 si uncovered). Vérif des tokens : globals.css definit `--surface-border` uniquement (ligne 16 thème sombre `38 48 63`, ligne 47 thème clair `216 224 236`, et usage ligne 82 scrollbar-color). Un grep exhaustif sur tout frontend/src (css/ts/tsx/js/json, hors node_modules) ne trouve AUCUNE définition de `--surface-line` : la variable n'apparaît qu'aux deux sites d'usage cités, jamais déclarée. La liste complète des tokens surface (globals.css 12-21 et 43-52) ne contient pas `--surface-line`. Conséquence prouvée : `var(--surface-line)` est indéfinie → `rgb(var(--surface-line))` est une valeur CSS invalide → le backgroundColor est ignoré (fond transparent) au lieu de la teinte de bordure voulue, ce qui dégrade le rendu du rail (cas sans tint) et de l'état non-annoté de la jauge de validation. Aucun mécanisme (Tailwind config, fallback, autre fichier) ne contredit la preuve. Correctif : remplacer `--surface-line` par `--surface-border` aux deux lignes."
+      }
+    },
+    {
+      "dimension": "design-a11y",
+      "id": "theme-fouc-no-blocking-script",
+      "title": "FOUC du theme (html=dark fige, applique en useEffect)",
+      "severity": "major",
+      "area": "ux",
+      "files": [
+        "frontend/src/app/layout.tsx:30-34",
+        "frontend/src/app/providers.tsx:41-49",
+        "frontend/src/store/ui.ts:69-73"
+      ],
+      "evidence": "html=dark en dur; theme persiste localStorage applique au montage (useApplyTheme); un user en clair voit un flash sombre; pas de script bloquant avant peinture.",
+      "recommendation": "Script inline bloquant appliquant light/dark avant le premier paint.",
+      "verdict": {
+        "finding_id": "theme-fouc-no-blocking-script",
+        "confirmed": true,
+        "confidence": "high",
+        "note": "Finding confirmé par lecture ligne par ligne des trois fichiers. (1) layout.tsx:30-34 — le <html> rendu côté serveur porte className={`dark ...`} en DUR (la classe \"dark\" est toujours émise), avec suppressHydrationWarning ; aucun script inline bloquant dans le <head> ne lit localStorage pour fixer le thème avant peinture (le <head> est par défaut, seul <body> enveloppe <Providers>). (2) ui.ts:42-84 — le store zustand est persisté (middleware persist, name=\"claire.ui\" l.70) et partialize inclut theme (l.72) ; défaut theme=\"dark\" (l.45) ; donc un utilisateur ayant choisi \"light\" a sa préférence persistée en localStorage. (3) providers.tsx:41-49 — useApplyTheme lit theme du store et applique remove/add de la classe sur document.documentElement DANS un useEffect (l.43-48, deps [theme]) + colorScheme ; ce code ne s'exécute donc qu'APRÈS montage/hydratation, jamais avant la première peinture. Conclusion : pour un utilisateur en thème clair, le HTML initial est sombre (class=\"dark\") et n'est corrigé que lorsque l'effet s'exécute post-hydratation → flash sombre (FOUC) réel et non mitigé par un script pré-peinture. Le useEffect (Providers est appelé via useApplyTheme l.122) surcharge bien la classe ensuite, donc html n'est pas figé en permanence ; mais la preuve centrale du finding (FOUC, absence de script bloquant) est exacte. Sévérité major/ux raisonnable."
+      }
+    },
+    {
+      "dimension": "design-a11y",
+      "id": "no-prefers-reduced-motion",
+      "title": "prefers-reduced-motion ignore partout (charte 9, a11y 8)",
+      "severity": "major",
+      "area": "ux",
+      "files": [
+        "frontend/src/app/globals.css:1-106",
+        "frontend/tailwind.config.ts:59-67"
+      ],
+      "evidence": "0 occurrence dans frontend/src; keyframe fade-in, transitions omnipresentes, scrollIntoView smooth; charte 9 et a11y 8 l'imposent.",
+      "recommendation": "@media (prefers-reduced-motion: reduce): durees ~0, scroll auto.",
+      "verdict": {
+        "finding_id": "no-prefers-reduced-motion",
+        "confirmed": true,
+        "confidence": "high",
+        "note": "CONFIRMÉ. Vérification ligne par ligne des deux fichiers + greps exhaustifs.\n\n1) globals.css (lu intégralement, 1-106) : AUCUN bloc `@media (prefers-reduced-motion: reduce)`. On y trouve bien de la motion non conditionnée : `-webkit-font-smoothing` (l.69, sans rapport), transitions implicites via Tailwind, et la charte a11y est par ailleurs prise au sérieux (focus-visible l.73-77, skip-link l.86-98) — ce qui rend l'absence de reduced-motion d'autant plus une omission.\n\n2) tailwind.config.ts (lu, 1-73) : keyframe `fade-in` défini l.59-64 (opacity 0→1 + translateY) et `animation: \"fade-in 120ms ease-out\"` l.65-67. La config n'expose donc une animation que sans aucune désactivation par reduced-motion.\n\n3) Greps (excl. node_modules) : `prefers-reduced-motion` = 0 occurrence dans tout le frontend (.css/.ts/.tsx) — confirmé par PRM=0 et par deux greps arbre-entier renvoyant vide (exit non-zéro = aucun match). Aucune variante Tailwind `motion-reduce`/`motion-safe` non plus.\n\n4) Motion réelle présente : `transition` = 33 lignes dans src (tsx/css) ; `scrollIntoView({ block:\"nearest\", behavior:\"smooth\" })` à frontend/src/components/workspace/DocumentPanel.tsx:375 (défensif via `?.` mais bien en dur \"smooth\", non conditionné).\n\nNUANCE (n'infirme pas) : l'animation utilitaire `animate-fade-in` n'est référencée NULLE PART dans src/ (FADE=0) — le keyframe `fade-in` est déclaré mais non appliqué dans les composants. La preuve « keyframe fade-in » surévalue donc légèrement (déclaré ≠ utilisé). Mais le cœur tient : 0 prise en charge de prefers-reduced-motion alors que des transitions omniprésentes (33) et un scroll smooth en dur existent. Sévérité major/ux justifiée."
+      }
+    },
+    {
+      "dimension": "design-a11y",
+      "id": "save-indicator-no-live-region",
+      "title": "Autosave sans role=status/aria-live (echec silencieux SR)",
+      "severity": "major",
+      "area": "ux",
+      "files": [
+        "frontend/src/components/workspace/WorkspaceToolbar.tsx:380-410"
+      ],
+      "evidence": "SaveIndicator affiche echec reseau/session expiree dans un span sans role=status ni aria-live; dossier a11y 7 l'exige; 4 fichiers seulement utilisent aria-live.",
+      "recommendation": "role=status aria-live=polite aria-atomic; annonces pose/undo/redo.",
+      "verdict": {
+        "finding_id": "save-indicator-no-live-region",
+        "confirmed": true,
+        "confidence": "high",
+        "note": "CONFIRMÉ. WorkspaceToolbar.tsx:379-415 — le composant SaveIndicator rend tous ses états via un seul <span> (lignes 397-401) qui ne porte QUE data-testid, data-state et className. Aucun role=\"status\", aucun aria-live, aucun aria-atomic. Les textes incluent des échecs critiques : \"✗ échec d'enregistrement\" (error, ligne 387) et \"✗ non enregistré — session expirée ou lecture seule\" (unauthorized, ligne 389). Le store autosave (src/store/autosave.ts:18-23) confirme que ces états — dont unauthorized (terminal, 401/403) et error (abandon après MAX tentatives / 4xx) — sont de vrais états d'échec affichés uniquement par ce span. Le composant est monté à WorkspaceToolbar.tsx:181 à l'intérieur d'un <div> de barre d'outils simple (ligne 177, \"flex flex-wrap items-center gap-3 border-b...\") qui ne fournit AUCUNE live region parente. Un lecteur d'écran ne sera donc pas notifié des changements d'état (échec réseau, session expirée) = échec silencieux. PRÉCISION sur la preuve avancée : la preuve dit \"4 fichiers seulement utilisent aria-live\" ; en réalité un seul fichier du repo utilise role=\"status\"/aria-live (DocumentPanel.tsx, lignes 521 et 851) et ces deux occurrences n'ont aucun rapport avec l'autosave. Le finding est donc renforcé, pas affaibli. Le bouton \"Réessayer\" (lignes 404-411) n'est rendu que pour error et n'apporte aucune annonce SR."
+      }
+    },
+    {
+      "dimension": "tests",
+      "id": "no-test-assignments-dedup-cardinality",
+      "title": "Aucun test sur la cardinalité de GET /assignments (bug de duplication non couvert)",
+      "severity": "blocker",
+      "area": "test",
+      "files": [
+        "backend/claire/projects/views.py:70",
+        "backend/tests/test_api_contract_shapes.py:137",
+        "backend/tests/test_permissions.py:1"
+      ],
+      "evidence": "views.py:70-76 renvoie project.assignments (TOUTES) pour un admin, filtré sur assignee=request.user seulement si non-admin → admin reçoit n_docs × n_annotateurs lignes. test_api_contract_shapes.py:137 test_assignments_shape vérifie uniquement les CLÉS de la réponse (_assert_keys) et est décoré @requires_data (skip sans corpus réel). Aucun test n'asserte le NOMBRE de lignes renvoyées ni l'absence de doublons par document. Aucun test ne distingue le cas admin (toutes les assignations) du cas annotateur (les siennes).",
+      "recommendation": "Ajouter dans test_permissions.py (ou un nouveau test_assignments.py) : un test qui crée 1 doc + 3 annotateurs (3 Assignment) et asserte (a) annotateur → 1 ligne (la sienne), (b) admin → comportement attendu après refonte (soit dédupliqué par document, soit endpoint dédié d'avancement). Test sans @requires_data, sur fixtures factory-boy, pour qu'il s'exécute toujours.",
+      "verdict": {
+        "finding_id": "no-test-assignments-dedup-cardinality",
+        "confirmed": true,
+        "confidence": "high",
+        "note": "Confirmé. (1) backend/claire/projects/views.py:70-76 : le GET assignments fait qs = project.assignments.select_related(...) puis ne filtre qs.filter(assignee=request.user) QUE si `not request.user.is_admin_role` (l.73-74). L'admin reçoit donc toutes les assignations = n_docs × n_annotateurs (3 Assignment/doc avec le seed), aucune dédup par document. (2) backend/tests/test_api_contract_shapes.py:136-159 : test_assignments_shape est décoré @requires_data (l.136 ; defini l.28-30 = skipif(not _HAS_DATA) → skip sans corpus réel sous settings.CLAUDETTE_DIR). Le test ne vérifie que des clés via _assert_keys (l.143-145 pour l'enveloppe paginée, l.150-159 pour Assignment/document) + assert isinstance(items, list) (l.147). Aucune assertion sur le NOMBRE de lignes ni sur l'unicité par document, et aucune distinction admin (toutes) vs annotateur (les siennes). (3) backend/tests/test_permissions.py:1-97 : tests de rôles/permissions (scheme l.18-31, édition annotation l.34-46, clause+submit l.49-67, review l.70-96) — ne touche jamais l'endpoint /assignments ni sa cardinalité. (4) grep dépôt-wide : seule référence à l'endpoint /assignments = test_assignments_shape (l.137-139) ; aucun test n'asserte cardinalité/dédup/distinction admin-annotateur. Le bug de duplication n'est donc couvert par aucun test."
+      }
+    },
+    {
+      "dimension": "tests",
+      "id": "frontend-pages-untested",
+      "title": "Les pages consommant assignments (home, docs, DocumentSwitcher) ne sont testées par rien",
+      "severity": "blocker",
+      "area": "test",
+      "files": [
+        "frontend/src/app/(app)/home/page.tsx:18",
+        "frontend/src/app/(app)/projects/[slug]/docs/page.tsx:19",
+        "frontend/src/components/workspace/DocumentSwitcher.tsx:39",
+        "frontend/vitest.config.ts:21"
+      ],
+      "evidence": "Aucun fichier de tests/ ne rend HomePage, ProjectDocs ni DocumentSwitcher (grep FIXTURE_ASSIGNMENTS/DocumentSwitcher/home/page dans tests/ = 0 résultat). docs/page.tsx:19-24 construit un Map keyé par a.document.id : en présence de doublons (admin) il écrase et garde le DERNIER annotationId (session d'un autre annotateur). DocumentSwitcher.tsx:39 mappe data.results sans dédup → N copies dans la liste. vitest.config.ts:21 limite même la couverture à src/lib/src/store/src/components/ui, excluant src/app/** et le reste de src/components.",
+      "recommendation": "Ajouter tests/documentList.test.tsx : rendre ProjectDocs et DocumentSwitcher avec une fixture admin où le même document apparaît 3× (3 assignees) et asserter (a) chaque document n'apparaît qu'UNE fois dans le switcher, (b) l'annotationId résolu est bien celui de l'utilisateur courant, pas un écrasement non déterministe. Étendre coverage.include à src/app et src/components.",
+      "verdict": {
+        "finding_id": "frontend-pages-untested",
+        "confirmed": true,
+        "confidence": "high",
+        "note": "CONFIRMÉ ligne par ligne. (1) Absence de tests : grep dans tests/ pour DocumentSwitcher, HomePage|home/page, ProjectDocs|docs/page et FIXTURE_ASSIGNMENTS = 0 résultat ; aucun des 30 fichiers tests/*.test.* n'importe ni ne rend ces 3 surfaces. Les seules références à /home sont des e2e/a11y.spec.ts:16 et e2e/help.spec.ts:34,40 en simple page.goto('/home') (overlay a11y/aide), qui n'assertent rien sur la dédup ni le contenu des listes — et e2e est exclu du suite unitaire (vitest.config.ts:18 exclude e2e/**). (2) docs/page.tsx:19-24 : new Map((assignments?.results ?? []).map((a) => [a.document.id, {annotationId, status}])) — un Map construit depuis des paires [clé,valeur] conserve la DERNIÈRE valeur sur clé dupliquée, donc en présence de doublons admin le byDoc.get(d.id) renvoie l'annotationId/status du dernier annotateur de results, exactement comme avancé. (3) DocumentSwitcher.tsx:39 : rows = data?.results ?? [] mappé tel quel (lignes 143-183, key={r.id} = id d'Assignment unique) sans dédup par document → N entrées visibles par document. home/page.tsx:18-19,35 : même schéma (assignmentList = assignments?.results ?? [], map ligne 35, key={a.id}) → N copies. (4) vitest.config.ts:19-22 : coverage.include limité à src/lib/**, src/store/**, src/components/ui/** — exclut bien src/app/** et src/components/workspace/**. (5) Pré-condition backend vérifiée : claire/projects/views.py:73-74 ne filtre qs.filter(assignee=request.user) que si NOT request.user.is_admin_role → l'admin reçoit toutes les assignations (n_docs × n_annotateurs), donc des document.id dupliqués dans results sont réels. Aucun mécanisme de filtrage par rôle ou de dédup côté frontend ne contredit la preuve."
+      }
+    },
+    {
+      "dimension": "tests",
+      "id": "msw-fixture-single-annotator",
+      "title": "La fixture MSW ne modélise qu'un seul annotateur → scénario multi-annotateur intestable côté front",
+      "severity": "major",
+      "area": "test",
+      "files": [
+        "frontend/src/mocks/fixtures.ts:199",
+        "frontend/src/mocks/handlers.ts:124"
+      ],
+      "evidence": "FIXTURE_ASSIGNMENTS (fixtures.ts:199-247) contient 3 assignations toutes assigneeId=u-alice, 3 documents distincts, aucun document partagé entre annotateurs. handlers.ts:124 renvoie cette liste telle quelle pour tout slug. Aucune fixture ne reproduit le cas « admin voit 1 doc × 3 annotateurs ». Les e2e tournent en mode mock (playwright.config.ts:25 NEXT_PUBLIC_ENABLE_MOCKS=true) donc même un e2e sur /projects/.../docs ne verrait jamais la duplication.",
+      "recommendation": "Ajouter une fixture FIXTURE_ASSIGNMENTS_ADMIN (même document assigné à alice/bruno/zahra) et un handler conditionnel (ex. ?as=admin) ; brancher un e2e qui ouvre le switcher en contexte admin et asserte l'unicité des documents. Sinon les tests verts donnent une fausse assurance que la duplication n'existe pas.",
+      "verdict": {
+        "finding_id": "msw-fixture-single-annotator",
+        "confirmed": true,
+        "confidence": "high",
+        "note": "CONFIRMÉ. Code relu ligne par ligne.\n\n1) fixtures.ts:199-247 — FIXTURE_ASSIGNMENTS contient exactement 3 assignations, chacune sur un document DISTINCT (doc-fitbit l.204, doc-instagram l.220, doc-booking l.236) et toutes avec assigneeId=\"u-alice\" (l.212, l.228, l.244). Aucun document n'est partagé entre plusieurs annotateurs. grep confirme que les seuls assigneeId du dossier mocks sont \"u-alice\" (fixtures.ts:212/228/244) ; aucun u-bruno/u-camille/u-jc/u-zahra n'apparaît comme assigneeId.\n\n2) handlers.ts:124-126 — le handler GET /projects/:slug/assignments renvoie page(FIXTURE_ASSIGNMENTS) tel quel, sans aucun filtrage par slug, rôle ou assignee (les params ne sont même pas lus). grep \"/assignments\" ne trouve qu'UN seul handler (l.124), donc rien ne le surcharge. La liste est donc identique quel que soit l'utilisateur/rôle simulé : le cas « admin voit 1 doc × N annotateurs » est structurellement irréproductible en mock.\n\n3) playwright.config.ts:25 — webServer.env = { NEXT_PUBLIC_ENABLE_MOCKS: \"true\" }, donc toute la suite e2e tourne sur ces fixtures MSW. Un e2e sur /projects/.../docs verrait donc 3 documents distincts (jamais de duplication). admin.spec.ts (chantier G séparation admin/annotateur) n'exerce pas le scénario de duplication multi-annotateur (aucune occurrence assignment/annotator/duplicat/bruno/camille dedans).\n\nRéfutation du contre-argument potentiel : FIXTURE_CONTRIBUTORS (fixtures.ts:371-373) contient bien u-bruno et u-camille, MAIS c'est une liste de présence/attribution pour la collaboration (commentaire l.370 « Contributeurs (membres + couleurs d'identité) »), totalement déconnectée de FIXTURE_ASSIGNMENTS. Elle ne crée aucune assignation multi-annotateur et ne contredit donc pas le finding.\n\nConclusion : la fixture ne modélise qu'un seul annotateur (u-alice) sur des documents disjoints ; le scénario multi-annotateur / la duplication admin sont intestables côté front en mode mock. Finding valide (major/test)."
+      }
+    },
+    {
+      "dimension": "tests",
+      "id": "no-iaa-frontend-and-thin-backend",
+      "title": "IAA/concordance : couverture backend minimale (kappa parfait/total) et zéro test bout-en-bout sur l'endpoint progress",
+      "severity": "major",
+      "area": "test",
+      "files": [
+        "backend/tests/test_iaa.py:34",
+        "backend/tests/test_api_contract_shapes.py:108",
+        "backend/claire/projects/views.py:250"
+      ],
+      "evidence": "test_iaa.py:34 test_project_iaa_with_two_annotators ne couvre QUE le cas d'accord parfait (kappa==1.0) ; pas de cas désaccord partiel multi-annotateurs, pas de >2 annotateurs, pas de segmentations de longueurs différentes au niveau projet. L'endpoint /progress (views.py:250, expose iaa/iaaDetail/myAssigned/myDone) n'est testé QUE pour sa shape dans test_api_contract_shapes.py:108 (skippé sans données réelles). Aucun test n'asserte les valeurs de myAssigned/myDone par annotateur ni d'iaaDetail.perTheme calculé.",
+      "recommendation": "Étendre test_iaa.py avec un cas 3 annotateurs en désaccord partiel (mean_kappa strictement entre 0 et 1, len(pairs)==3) et un cas perTheme. Ajouter un test sans @requires_data sur /progress (fixtures factory-boy) vérifiant myAssigned/myDone par utilisateur et la structure iaaDetail.",
+      "verdict": {
+        "finding_id": "no-iaa-frontend-and-thin-backend",
+        "confirmed": true,
+        "confidence": "high",
+        "note": "CONFIRMÉ sur le fond (couverture minimale + zéro test bout-en-bout du /progress), mais une preuve avancée est factuellement INEXACTE et doit être corrigée.\n\nCE QUI EST VRAI :\n1) /progress JAMAIS testé en valeurs. Seul test = test_api_contract_shapes.py:108 test_project_detail_and_progress_shape, gardé par @requires_data (skip si CLAUDETTE absent, voir lignes 27-30, 79/107) et ne fait que _assert_keys (lignes 115-133). Aucune assertion sur les valeurs de myAssigned/myDone, ni sur iaaDetail.perTheme. Grep confirme : myAssigned/myDone/iaaDetail n'apparaissent QUE dans ce fichier de shape (skippé).\n2) Endpoint annotators-progress (views.py:203-225, expose assigned/started/submitted/pct par annotateur) = ZÉRO test (aucune occurrence dans tests/).\n3) perTheme : la logique project_iaa_detail (iaa.py:100-188) calcule per_theme (one-vs-rest par code de thème, lignes 150-181) mais AUCUN test n'asserte une valeur de perTheme. test_refinements.py:192 n'asserte que detail[\"globalKappa\"]==1.0.\n4) Pas de cas >2 annotateurs ni segmentations de longueurs différentes au niveau projet.\n5) Côté unitaire cohen_kappa : accord parfait (l.10), désaccord total (l.15), partiel (l.22), longueurs inégales lève ValueError (l.29) — donc le bloc unitaire est correctement couvert (à noter, le finding ne le conteste pas mais ne le mentionne pas).\n\nCE QUI EST FAUX dans la preuve :\n- L'affirmation « pas de cas désaccord partiel multi-annotateurs ... au niveau projet » est CONTREDITE par test_correctifs.py:123 test_iaa_per_sentence_penalises_gap_disagreement : 2 annotateurs, désaccord réel (TERM@2 vs None), appelle project_iaa(project) et asserte mean_kappa is not None ET mean_kappa < 1.0 (lignes 153-156). C'est bien un cas projet multi-annotateurs en désaccord partiel.\n- test_iaa.py:34 ne teste effectivement QUE kappa==1.0 (l.63) ; mais il n'est pas le seul test projet : il faut aussi compter test_correctifs.py:123 et test_refinements.py:161 (endpoint /iaa testé en vrai, status 200, meanKappa, pairs[], detail.globalKappa — lignes 181-192).\n\nCONCLUSION : finding confirmé (sévérité juste : couverture mince, /progress et annotators-progress non testés en valeurs, perTheme non assertée), MAIS reformuler — supprimer la mention « pas de cas désaccord partiel multi-annotateurs au niveau projet » (faux, cf test_correctifs.py:123) et préciser que l'endpoint /iaa (vs /progress) EST testé bout-en-bout sur l'accord parfait (test_refinements.py:161-192)."
+      }
+    },
+    {
+      "dimension": "tests",
+      "id": "no-export-per-annotator",
+      "title": "Export par-annotateur non testé (seul l'export agrégé l'est)",
+      "severity": "major",
+      "area": "test",
+      "files": [
+        "backend/tests/test_export.py:25",
+        "backend/tests/test_export.py:56"
+      ],
+      "evidence": "test_export.py couvre JSONL, CSV et le filtre de statut (scope), mais toujours avec UNE seule annotation. Aucun test ne vérifie l'export quand plusieurs annotateurs ont annoté le MÊME document (séparation des sessions dans l'artefact, n_annotations>1, regroupement/colonne annotator). Le manifest n'est testé que pour n_annotations==1 ou ==0.",
+      "recommendation": "Ajouter test_export_multi_annotateurs : 2 annotations submitted sur le même document par 2 annotateurs → asserter que l'artefact contient 2 enregistrements distincts attribués (champ annotator/annotatorId présent), manifest n_annotations==2, et que l'export par-annotateur (si filtre prévu par la refonte) isole correctement chaque session.",
+      "verdict": {
+        "finding_id": "no-export-per-annotator",
+        "confirmed": true,
+        "confidence": "high",
+        "note": "CONFIRME. test_export.py est le SEUL fichier de test couvrant les exports (grep: aucun autre test ne reference run_export/ExportJob). Il contient exactement 3 tests : test_jsonl_export (l.25), test_csv_export (l.43), test_export_scope_filters_statuses (l.56). Les 3 utilisent la fixture `annotation` (conftest.py:141-144) qui cree UNE seule Annotation pour UN seul annotateur ; aucun ne cree une 2e annotation par un autre annotateur sur le MEME document. Les assertions du manifest sur n_annotations valent uniquement ==1 (l.39) ou ==0 (l.71) ; jamais >1. Le test JSONL verifie meme `len(lines) == 1` (l.35) et lit `rec[\"clauses\"][0]` d'un unique record, ce qui exclut de facto le cas multi-annotateurs. Le test CSV (l.43-53) n'asserte que la presence de l'en-tete `anchor_index` et de `META` ; il ne verifie NI la colonne `annotator` NI la separation des lignes par annotateur, alors meme que le service ecrit bien une colonne `annotator` (services.py:51-67) et trie par annotator__username (services.py:41). Le chemin de code multi-annotateurs existe donc reellement (build_snapshot par Annotation, _selected_annotations order_by document/annotator) mais reste totalement non teste : la separation des sessions dans l'artefact, n_annotations>1, et le regroupement/colonne annotator ne sont jamais valides. Nuance mineure : la preuve cite l.25 et l.56, mais la lacune touche aussi le test CSV (l.43) ; cela renforce le finding au lieu de l'affaiblir."
+      }
+    },
+    {
+      "dimension": "tests",
+      "id": "session-isolation-only-at-api",
+      "title": "Isolation des sessions testée seulement en lecture/écriture API, pas dans l'UI ni dans l'agrégation admin",
+      "severity": "major",
+      "area": "test",
+      "files": [
+        "backend/tests/test_permissions.py:34",
+        "backend/tests/test_security_m9.py:72",
+        "frontend/tests/workspaceStore.test.ts:1"
+      ],
+      "evidence": "test_permissions.py:34 et test_security_m9.py:72 vérifient bien qu'un annotateur extérieur ne peut ni lire ni patcher l'annotation d'un autre (403/404). MAIS workspaceStore.test.ts initialise toujours une seule annotation (annotationId 'ann-1') ; aucun test ne vérifie qu'un annotateur ouvrant /annotate/<id> charge SA session et pas celle d'un autre quand le switcher pointe vers un annotationId écrasé (cf finding docs/page). Aucun test ne couvre le cas où un admin navigue vers la session d'un annotateur en lecture seule (supervision) sans pouvoir l'éditer.",
+      "recommendation": "Ajouter (back) un test qu'un admin GET l'annotation d'un annotateur (lecture supervision OK) mais qu'un PATCH/clause par l'admin sur une session qui n'est pas la sienne est refusé OU explicitement permis selon la règle métier retenue. Ajouter (front) un test que le routage du switcher mène à l'annotationId de l'utilisateur courant.",
+      "verdict": {
+        "finding_id": "session-isolation-only-at-api",
+        "confirmed": true,
+        "confidence": "high",
+        "note": "CONFIRMÉ avec une nuance sur la preuve. Côté API, l'isolation est bien testée (lecture+écriture) : test_permissions.py:34-46 (test_annotator_cannot_edit_others_annotation) vérifie qu'un annotateur tiers PATCHant l'annotation d'autrui reçoit 403/404 ; test_security_m9.py:72-102 (test_authz_isolation) vérifie qu'un outsider ne peut ni lire (l.80-81), ni voir la ligne dans la liste (l.84-87), ni écrire (l.90-94). C'est strictement de l'isolation API.\n\nNUANCE (preuve partiellement inexacte) : l'affirmation « workspaceStore.test.ts initialise toujours une seule annotation ann-1 » est fausse au pied de la lettre — il existe un bloc « lecture seule (R1) » (workspaceStore.test.ts:326-374) qui init avec annotationId:\"ann-other\", readOnly:true et vérifie que TOUS les mutateurs (setBoundary, updateDraft/setCertainty/removeBoundary, resolveDivergence/replacePrefill/seedFromPreAnnotation, toggleBoundary, applyBlockOp) sont neutralisés. Le MÉCANISME read-only du store est donc bien couvert.\n\nMAIS le fond du finding tient : la DÉCISION d'identité (qui est en lecture seule) vit dans AnnotationWorkspace.tsx:37 (isMine = !!me && String(annotation.annotatorId) === String(me.id)) et :58 (readOnly: !isMine), branché aussi sur l'autosave (:86, n'écrit que si isMine). Or :\n- grep \"AnnotationWorkspace\" dans frontend/tests/ = AUCUN résultat : ce composant orchestrateur n'est jamais monté/testé.\n- grep \"isMine\" / \"annotatorId...me.id\" dans frontend/tests/ = AUCUN résultat : aucun test ne vérifie que /annotate/<id> charge MA session vs celle d'un autre selon l'identité, ni que readOnly est correctement dérivé de l'identité (ann-other est passé en dur readOnly:true, sans passer par la logique isMine/useMe).\n- Supervision admin en lecture seule : non testée. Le seul test backend avec un admin (test_security_m9.py:220-248, test_no_nplus1_annotations) n'utilise l'admin que pour le budget de requêtes et le count (l.245-248) ; aucun test n'affirme « admin peut LIRE la session d'un annotateur mais ne peut pas l'ÉDITER ». grep admin/superuser+patch/edit/read-only dans les deux fichiers backend cités = aucun cas de ce type.\n\nDonc : isolation testée en lecture/écriture API et au niveau du mécanisme read-only du store, mais le câblage identité→readOnly (isMine, AnnotationWorkspace.tsx:37,58) et le parcours de supervision admin en lecture seule ne sont couverts par aucun test. La seule imprécision de la preuve (ann-1 unique) est mineure ; le trou structurel décrit est réel."
+      }
+    },
+    {
+      "dimension": "tests",
+      "id": "bulk-assign-untested",
+      "title": "L'endpoint assignments/bulk (produit cartésien + overlap round-robin) n'a aucun test",
+      "severity": "major",
+      "area": "test",
+      "files": [
+        "backend/claire/projects/views.py:92",
+        "backend/tests/test_refinements.py:107"
+      ],
+      "evidence": "views.py:92-149 assignments_bulk implémente deux modes (assignees → produit cartésien d.×a. ; overlap=k → round-robin équilibré members[(i+j)%len]) avec get_or_create idempotent. grep 'bulk' dans backend/tests/ = 0 résultat. test_refinements.py:107 ne couvre que la SYNCHRO du statut d'une Assignment unique avec le lifecycle, pas la création en masse ni l'idempotence du bulk.",
+      "recommendation": "Ajouter test_assignments_bulk : (a) mode assignees → n_docs × n_assignees Assignment créés, second appel idempotent (created==0) ; (b) mode overlap=k → exactement k annotateurs par doc, distribution équilibrée ; (c) 403 pour non-admin. Garantit que la base des concordances/IAA repose sur des assignations correctes.",
+      "verdict": {
+        "finding_id": "bulk-assign-untested",
+        "confirmed": true,
+        "confidence": "high",
+        "note": "CONFIRMÉ. backend/claire/projects/views.py:88-149 — l'action `assignments_bulk` (décorateur @action url_path=\"assignments/bulk\", permission IsAdminRole, ligne 88-92) implémente bien deux modes : (1) `assignees` → produit cartésien `pairs = [(d, a) for d in docs for a in assignees]` (ligne 112) ; (2) `overlap=k` → round-robin équilibré sur les membres ANNOTATOR `members[(i + j) % len(members)]` avec k borné `max(1, min(int(overlap), len(members)))` (lignes 113-133). La création est idempotente via `Assignment.objects.get_or_create(project, document, assignee)` dans un `transaction.atomic()` (lignes 140-145), retournant `{created, requested}`. AUCUN test ne couvre ce chemin : `grep -rn 'bulk' tests/` renvoie exit 1 (0 résultat) ; idem pour `assignments_bulk`, `assignments/bulk`, `overlap`, `assignees`, `cartesian`/`cartésien`, `round-robin` (tous 0 résultat). test_refinements.py:107-131 (test_assignment_status_syncs_with_annotation_lifecycle) crée UNE seule Assignment via `Assignment.objects.create(...)` (ligne 112) et n'assert que la synchro du statut du lifecycle (PENDING→IN_PROGRESS→DONE) — jamais la création en masse, le produit cartésien, la distribution round-robin, ni l'idempotence du bulk. Le seul autre test touchant /assignments (test_api_contract_shapes.py:139) est un GET sur la liste paginée, pas le POST bulk. Les occurrences de get_or_create/idempotence trouvées (conftest, test_clause_idempotency, test_loaders, test_correctifs, test_feed_db, test_multiversion) concernent des sous-systèmes sans rapport (écritures de clause, commandes d'import). Le filtrage par rôle (IsAdminRole) n'invalide pas le finding : il est orthogonal à l'absence de test. L'endpoint n'est défini qu'à views.py:90/92, jamais sollicité par un test."
+      }
+    },
+    {
+      "dimension": "tests",
+      "id": "tests-skip-silently-no-data",
+      "title": "Tests back critiques skippés silencieusement sans le corpus réel → faux vert",
+      "severity": "major",
+      "area": "test",
+      "files": [
+        "backend/tests/test_api_contract_shapes.py:27",
+        "backend/tests/test_insights_collab.py:32",
+        "backend/tests/test_multiversion.py:20"
+      ],
+      "evidence": "test_api_contract_shapes.py:27-30 _HAS_DATA = (CLAUDETTE_DIR/Sentences).is_dir() ; requires_data skip TOUS les tests de contrat (me/projects/assignments/annotations/...) si le corpus n'est pas présent. test_insights_collab et test_multiversion font appel à feed_db/import_annotations_archive qui dépendent de données réelles (test_multiversion:20 requires_archive). En CI sans dataset, ces suites passent en 'skipped' et le run reste vert alors que les contrats ne sont pas vérifiés.",
+      "recommendation": "Construire un mini-corpus de fixtures factory-boy (2 docs, 5 phrases, 1 scheme) pour exécuter les assertions de shape SANS @requires_data, et réserver @requires_data uniquement aux vérifications spécifiques au vrai dataset. Faire échouer la CI si le taux de skip dépasse un seuil, ou marquer ces skips comme xfail visibles.",
+      "verdict": {
+        "finding_id": "tests-skip-silently-no-data",
+        "confirmed": true,
+        "confidence": "high",
+        "note": "CONFIRMÉ pour l'essentiel, avec une nuance factuelle sur un des 3 fichiers cités.\n\nPREUVE VÉRIFIÉE LIGNE PAR LIGNE :\n\n1) test_api_contract_shapes.py — CONFIRMÉ intégralement. Ligne 27 : `_HAS_DATA = (Path(settings.CLAUDETTE_DIR) / \"Sentences\").is_dir()`. Lignes 28-30 : `requires_data = pytest.mark.skipif(not _HAS_DATA, reason=\"real CLAUDETTE data not present...\")`. J'ai vérifié que CE skip décore les 15 tests de contrat (grep `@requires_data` lignes 79,90,107,136,165,180,204,231,245,270,300,337,362,376) : test_me_shape, test_projects_list_shape, test_project_detail_and_progress_shape, test_assignments_shape, test_annotations_list_and_detail_shape, etc. Donc sans corpus → les 15 contrats passent en `skipped`.\n\n2) test_multiversion.py — CONFIRMÉ. Ligne 20 : `_HAS_ARCHIVE = (Path(settings.DATA_DIR) / \"annotations_archive\").is_dir()`. Lignes 21-23 : `requires_archive = skipif(not _HAS_ARCHIVE)`. Ligne 26 : `@requires_archive` sur test_archive_import_multiversion → skip silencieux sans l'archive.\n\n3) MÉCANISME CI = corpus ABSENT en CI (cœur du finding) :\n- config/settings/base.py:50-51 : CLAUDETTE_DIR par défaut = DATA_DIR/\"claudette_tos\" ; ligne 48 DATA_DIR = REPO_ROOT/\"data\".\n- .gitignore:51 `/data/claudette_tos/` et :52 `/data/preannotations/` → corpus NON versionné. `git ls-files | grep claudette_tos/Sentences|annotations_archive` = vide (aucun fichier de données suivi).\n- .github/workflows/ci.yml job `backend-test` (lignes 44-85) : exécute UNIQUEMENT `make setup && make migrate` (l.75) puis `make test` (l.78). Makefile `test:` = `pytest -q` (l.27-28). AUCUNE étape ne télécharge/génère le corpus → en CI, CLAUDETTE_DIR/Sentences et DATA_DIR/annotations_archive n'existent pas → _HAS_DATA=False, _HAS_ARCHIVE=False → suites skippées, run vert. pytest.ini/pyproject n'ont pas de `--strict-markers`/fail-on-skip. Contrats API NON vérifiés en CI = faux vert. Confirmé.\n\nNUANCE (honnêteté adversariale) sur le 3e fichier cité, test_insights_collab.py:32 :\n- La ligne 32 est `def test_insights_and_collab_endpoints(admin_user):` qui appelle `call_command(\"feed_db\", \"--max-docs\", \"3\", \"--seed-human\")` à la ligne 33 SANS aucun décorateur skipif (vérifié : pas de @requires_* sur cette fonction). Ce test n'est donc PAS skippé silencieusement : sans corpus il ÉCHOUERAIT/ERREUR (feed_db lirait un répertoire vide). Le test_config_flags_no_auth (l.25-29) ne dépend d'aucune donnée. Donc l'affirmation \"ces suites passent en skipped\" est INEXACTE pour test_insights_collab.py précisément.\n\nVERDICT : le risque structurel (corpus jamais fourni en CI → tests de contrat critiques skippés en silence, run vert) est RÉEL et prouvé pour test_api_contract_shapes.py (15 tests) et test_multiversion.py. Le finding tient. Seule réserve : la citation test_insights_collab.py:32 illustre l'inverse (test non gardé qui planterait plutôt que de skip) — détail à corriger, mais qui ne disculpe pas le problème central."
+      }
+    },
+    {
+      "dimension": "tests",
+      "id": "no-regression-test-duplication",
+      "title": "Aucun test de non-régression dédié au symptôme de duplication observé en prod",
+      "severity": "major",
+      "area": "test",
+      "files": [
+        "frontend/e2e/admin.spec.ts:9",
+        "frontend/e2e/document-ux.spec.ts:1",
+        "backend/tests/test_permissions.py:1"
+      ],
+      "evidence": "admin.spec.ts ne teste que l'accès à la console et la nav (garde de rôle). document-ux.spec.ts (lu) ne couvre pas la liste de documents dédupliquée. Aucun test (ni e2e ni unit ni back) ne capture explicitement « un document n'apparaît qu'une fois par utilisateur dans la page campagne / le switcher ». Le bug pourra donc réapparaître après refonte sans détection.",
+      "recommendation": "Créer un test de non-régression nommé explicitement (ex. e2e/no-duplicate-documents.spec.ts + backend test_assignments_no_duplicate_for_admin) ancré sur le scénario seed_team --assign (1 doc × 3 annotateurs). C'est le garde-fou direct du bug central.",
+      "verdict": {
+        "finding_id": "no-regression-test-duplication",
+        "confirmed": true,
+        "confidence": "high",
+        "note": "CONFIRMÉ. Les trois fichiers cités ne couvrent pas le symptôme de duplication, et un balayage exhaustif des suites e2e/unit/back ne révèle aucun test équivalent.\n\n- frontend/e2e/admin.spec.ts:9-18 : test unique de garde de rôle (admin atteint /admin, voit admin-nav, pas de admin-forbidden, navigue vers /admin/users). Aucune assertion sur une liste de documents ni sur la dédup.\n\n- frontend/e2e/document-ux.spec.ts:1-57 : couvre seulement l'ergonomie du DocumentPanel (toggle frontières l.18-28, menu clic-droit l.30-38, Shift+clic multi-sélection l.40-45, modes Bilingue/FR l.47-56). Les seules assertions toHaveCount (l.24, l.37) portent sur l'overlay pointillé et le menu de phrase, jamais sur le switcher/la liste de documents. Aucune couverture de dédup.\n\n- backend/tests/test_permissions.py:1-97 : tests rôle/permission et cycle de vie d'annotation (création de scheme l.18-31, isolation inter-annotateur l.34-46, ajout/soumission de clause l.49-67, review l.70-96). Rien ne touche au listing des assignments ni à l'unicité document×utilisateur.\n\nVérification adverse décisive — le seul test qui aurait pu contredire le finding est backend/tests/test_api_contract_shapes.py:137 test_assignments_shape : il appelle GET /projects/claudette-gold-v1/assignments en admin (l.138-140) mais ne valide QUE la FORME de la réponse via _assert_keys (clés de l'enveloppe paginée l.143-145, clés de l'Assignment l.150-155, clés de DocumentSummary l.156-161). Il fait if items: et n'inspecte que items[0] (l.146-161). Il n'assert jamais sur le count, l'unicité par utilisateur, ni qu'un document n'apparaît qu'une fois. Le commentaire l.141-142 reconnaît même que le frontend consomme cela via assignments.results.map — soit exactement le mapping 1 item/Assignment qui cause la duplication — sans s'en prémunir.\n\nLes autres hits grep (test_invariants INV-1/INV-4 sur l'unicité de Sentence.index et du triplet annotation, test_clause_idempotency/test_loaders sur la dédup d'ancres/clauses, test_accounts email, test_feed_db idempotence de re-seed) concernent des invariants back distincts, pas le symptôme UI « un document n'apparaît qu'une fois par utilisateur dans la page campagne / le switcher ». Les références /home (a11y.spec.ts:16, help.spec.ts:34-40) sont des tests a11y/aide.\n\nConclusion : aucun test (e2e, unit front, ou back) ne capture explicitement la dédup des documents côté utilisateur. Le bug pourra réapparaître après refonte sans détection. Le finding est majeur et exact."
+      }
+    },
+    {
+      "dimension": "tests",
+      "id": "coverage-scope-too-narrow",
+      "title": "Le périmètre de couverture exclut app router, workspace et l'essentiel des composants",
+      "severity": "minor",
+      "area": "test",
+      "files": [
+        "frontend/vitest.config.ts:19"
+      ],
+      "evidence": "vitest.config.ts:19-22 coverage.include = ['src/lib/**','src/store/**','src/components/ui/**']. Toute la couche src/app/** (pages, routage, consommation des assignments) et src/components/workspace/** (sauf ce qui est importé par des tests pures comme ComparePanel.agreementSegments) est hors métrique → la couverture rapportée surestime la robustesse réelle.",
+      "recommendation": "Étendre coverage.include à 'src/app/**' et 'src/components/**', avec des seuils (lines/branches) sur les modules à risque (pages assignments, DocumentSwitcher). Permet de rendre visible le trou de couverture des pages.",
+      "verdict": null
+    },
+    {
+      "dimension": "tests",
+      "id": "no-ws-presence-multiuser-test-front",
+      "title": "Présence/collaboration temps réel multi-utilisateur peu couverte côté front",
+      "severity": "minor",
+      "area": "test",
+      "files": [
+        "frontend/tests/collabWs.test.ts:1",
+        "frontend/tests/collabClient.test.ts:1",
+        "backend/tests/test_presence_ws.py:1"
+      ],
+      "evidence": "collabWs.test.ts (72 l) et collabClient.test.ts (22 l) testent le client WS de façon unitaire ; test_presence_ws.py couvre la couche back (InMemory). Mais aucun test ne vérifie le scénario clé de la refonte : plusieurs annotateurs présents sur le même document SANS jamais partager/écraser une session d'annotation (frontière A vs B). La distinction collaboration vs session n'est pas assertée.",
+      "recommendation": "Ajouter un test (front simulé ou back WS) : deux utilisateurs présents sur le même document émettent présence/commentaires (collaboration) sans que cela modifie les draftClauses de l'autre (session). Verrouille l'invariant A≠B visé par la refonte.",
+      "verdict": null
+    }
+  ]
+}

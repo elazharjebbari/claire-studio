@@ -76,20 +76,19 @@ class AnnotationViewSet(viewsets.ModelViewSet):
         qs = qs.annotate(n_clauses_agg=Count("clauses", distinct=True)).order_by(
             "-updated_at"
         )
-        # Project isolation (A01 / security.md §2): non-privileged users only
-        # see annotations of projects they belong to (or that they authored).
-        # Admins/owners and reviewers (cross-project quality role) keep full
-        # reach.
-        from django.db.models import Q
-
+        # Indépendance des sessions (ADR-001, INV-ISO) : un annotateur non privilégié
+        # ne voit QUE SES propres sessions — jamais le contenu (clauses, rationale,
+        # certitude) des sessions d'autrui, pour ne pas biaiser son annotation ni
+        # contaminer l'accord inter-annotateurs (IAA). La supervision (lecture des
+        # sessions d'autrui) reste réservée aux admins/owners et reviewers (rôle
+        # qualité transverse). La collaboration passe par les commentaires et la
+        # comparaison humain↔LLM, jamais par la lecture directe du brouillon d'un pair.
         user = self.request.user
         if not (
             getattr(user, "is_admin_role", False)
             or getattr(user, "role", None) == "reviewer"
         ):
-            qs = qs.filter(
-                Q(project__memberships__user=user) | Q(annotator=user)
-            ).distinct()
+            qs = qs.filter(annotator=user)
         # support ?project=<slug|pk>, ?document=<external_id|pk>,
         # ?annotator=<username|pk> (frontend sends the human keys).
         project = self.request.query_params.get("project")
@@ -389,9 +388,18 @@ class ClauseViewSet(viewsets.ModelViewSet):
         "annotation", "annotation__project__scheme", "theme", "anchor_sentence"
     )
     serializer_class = ClauseSerializer
-    # Édition d'une clause réservée au propriétaire de l'annotation (R1) ; GET ouvert.
+    # Édition d'une clause réservée au propriétaire de l'annotation (R1).
     permission_classes = [IsAnnotationOwner]
     http_method_names = ["get", "patch", "delete"]
+
+    def get_queryset(self):
+        # Indépendance (ADR-001) : un non‑privilégié ne lit/édite que les clauses de
+        # SES sessions ; admin/reviewer gardent la portée (supervision/qualité).
+        qs = super().get_queryset()
+        user = self.request.user
+        if getattr(user, "is_admin_role", False) or getattr(user, "role", None) == "reviewer":
+            return qs
+        return qs.filter(annotation__annotator=user)
 
     def get_object(self):
         obj = super().get_object()

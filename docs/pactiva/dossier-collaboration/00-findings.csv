@@ -1,0 +1,13 @@
+id,zone,constat,severite,cause_racine,correctif,lot
+F1,frontend/DocumentSwitcher,Chaque document affiché 3x (1 ligne/annotateur),haute,assignments non filtre par me.id,Filtrer assigneeId==me.id + dedup par document,Lot1
+F2,frontend/projects-dashboard,Mes assignations affichees en triple,haute,idem F1,Filtrer par me.id,Lot1
+F3,frontend/projects-docs,Map last-write-wins ecrase 2 annotateurs sur 3,moyenne,liste assignments melangee,Reduire sur l'assignation de me.id,Lot1
+F4,frontend/ouverture-session,Lien pousse assignment.annotationId d'autrui,haute,pas de creation via createAnnotation,Ouvrir via createAnnotation(project,document) comme /work,Lot1
+F5,frontend/admin-users,Table codee en dur 'moi + Bruno',moyenne,page statique non branchee,Brancher /projects members ou retirer la page,Lot1
+F6,frontend/env,Mocks activables en prod (risque),moyenne,pas de garde NODE_ENV,Forcer mocks off si production,Lot1
+F7,backend/iaa,per_theme/boundary double-comptent si N>=3,moyenne,concatenation des paires,Moyenner les kappas par paire,Lot2
+F8,backend/export,Pas de scope par annotateur,basse,scope ne gere que statuses/documents,Ajouter scope annotator,Lot2
+F9,backend/export,conll/xml/md/huggingface retombent sur jsonl,basse,formats non implementes,Implementer ou masquer dans l'UI,Lot2
+F10,prod/hygiene,Comptes demo @claire.local (admin superuser),moyenne,seed_demo en prod,Desactiver/supprimer apres validation,Lot2
+F11,prod/donnees,jc.lamirel & zahra 0 annotation,info,onboarding non demarre,Fournir acces + verifier flux,Lot1
+F12,frontend/admin,Pas de table claire 'sessions par annotateur' avec acces discret,moyenne,supervision dispersee,Vue sessions par annotateur + liens lecture,Lot2

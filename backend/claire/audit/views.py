@@ -33,4 +33,26 @@ class ActivityEventViewSet(viewsets.ReadOnlyModelViewSet):
                 target_type="annotations.annotation",
                 target_id__in=[str(i) for i in ann_ids],
             )
+        # Isolation projet (sécurité, audit M9) : un utilisateur non privilégié ne voit
+        # que les événements de SES projets (annotations) ou ses propres actions — sans
+        # ce filtre, /activity exposait toute l'activité de la plateforme.
+        from django.db.models import Q
+
+        user = self.request.user
+        if not (
+            getattr(user, "is_admin_role", False)
+            or getattr(user, "role", None) == "reviewer"
+        ):
+            from claire.annotations.models import Annotation
+
+            my_ann_ids = [
+                str(i)
+                for i in Annotation.objects.filter(
+                    project__memberships__user=user
+                ).values_list("id", flat=True)
+            ]
+            qs = qs.filter(
+                Q(actor=user)
+                | Q(target_type="annotations.annotation", target_id__in=my_ann_ids)
+            ).distinct()
         return qs

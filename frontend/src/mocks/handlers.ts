@@ -124,6 +124,29 @@ export const handlers = [
   http.get(`${BASE}/projects/:slug/assignments`, () =>
     HttpResponse.json(page(FIXTURE_ASSIGNMENTS)),
   ),
+  // ADR-001 : ressource document-centrée (1 entrée PAR document, jamais dupliquée).
+  // Dérivée des assignations de l'utilisateur démo (FIXTURE_USER), dédupliquée par doc.
+  http.get(`${BASE}/projects/:slug/documents`, () => {
+    const seen = new Set<string>();
+    const results = FIXTURE_ASSIGNMENTS.filter((a) => {
+      if (seen.has(a.document.id)) return false;
+      seen.add(a.document.id);
+      return true;
+    }).map((a) => ({
+      document: a.document,
+      mySession: {
+        annotatorId: FIXTURE_USER.id,
+        username: FIXTURE_USER.username,
+        displayName: FIXTURE_USER.displayName ?? FIXTURE_USER.username,
+        color: "#06B6D4",
+        assigned: true,
+        status: a.status,
+        annotationId: a.annotationId ?? null,
+        nClauses: 0,
+      },
+    }));
+    return HttpResponse.json(page(results));
+  }),
   http.get(`${BASE}/projects/:slug/progress`, () => HttpResponse.json(FIXTURE_PROGRESS)),
 
   // Publication publique (chantier F) — lecture seule.

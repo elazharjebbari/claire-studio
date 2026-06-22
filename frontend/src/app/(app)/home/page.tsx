@@ -3,20 +3,39 @@
 /** Accueil applicatif (/home) — reprise rapide du travail (navigation.md §1, §5). */
 
 import Link from "next/link";
-import { useAssignments, useProjects } from "@/lib/api/hooks";
+import { useState } from "react";
+import { useRouter } from "next/navigation";
+import { useProjectDocuments, useProjects } from "@/lib/api/hooks";
 import { useCurrentProjectSlug } from "@/lib/useCurrentProject";
+import { createAnnotation } from "@/lib/api/endpoints";
 import { Panel, Button, StatusPill } from "@/components/ui/primitives";
 
 export default function HomePage() {
+  const router = useRouter();
   const { data: projects } = useProjects();
   // Défensif : une réponse inattendue (liste nue, erreur, champ manquant) ne doit
   // jamais white-screener l'accueil.
   const projectList = projects?.results ?? [];
   // Projet « courant » résolu sans slug en dur (H2) : store UI → 1er projet API.
-  // Sans projet visible, l'accueil dégrade (assignations vides, query désactivée).
   const currentSlug = useCurrentProjectSlug();
-  const { data: assignments } = useAssignments(currentSlug);
-  const assignmentList = assignments?.results ?? [];
+  // ADR-001 : « Reprendre le travail » = MES documents (1 ligne/document), jamais
+  // l'union des assignations (qui affichait tout pour un admin).
+  const { data: docs } = useProjectDocuments(currentSlug, { mine: true });
+  const mine = (docs?.results ?? []).filter(
+    (d) => d.mySession?.assigned || (d.mySession?.status && d.mySession.status !== "unstarted"),
+  );
+  const [opening, setOpening] = useState<string | null>(null);
+
+  async function open(externalId: string) {
+    if (!currentSlug || opening) return;
+    setOpening(externalId);
+    try {
+      const ann = await createAnnotation({ project: currentSlug, document: externalId });
+      router.push(`/annotate/${ann.id}`);
+    } finally {
+      setOpening(null);
+    }
+  }
 
   return (
     <div className="mx-auto max-w-4xl px-6 py-10">
@@ -31,21 +50,24 @@ export default function HomePage() {
       <div className="mt-8 grid gap-4 sm:grid-cols-2">
         <Panel className="p-4">
           <h2 className="font-semibold text-ink">Reprendre le travail</h2>
+          <p className="mt-0.5 text-xs text-ink-muted">Votre session personnelle (1 ligne par document).</p>
           <ul className="mt-3 flex flex-col gap-2">
-            {assignmentList.map((a) => (
-              <li key={a.id} className="flex items-center justify-between">
-                <span className="text-sm text-ink">{a.document.title}</span>
+            {mine.map((d) => (
+              <li key={d.document.id} className="flex items-center justify-between">
+                <span className="text-sm text-ink">{d.document.title}</span>
                 <div className="flex items-center gap-2">
-                  <StatusPill status={a.status} />
-                  {a.annotationId && (
-                    <Link href={`/annotate/${a.annotationId}`}>
-                      <Button variant="primary">Annoter</Button>
-                    </Link>
-                  )}
+                  <StatusPill status={d.mySession?.status ?? "unstarted"} />
+                  <Button
+                    variant="primary"
+                    disabled={opening === d.document.externalId}
+                    onClick={() => open(d.document.externalId)}
+                  >
+                    {opening === d.document.externalId ? "Ouverture…" : "Annoter"}
+                  </Button>
                 </div>
               </li>
             ))}
-            {assignmentList.length === 0 && (
+            {mine.length === 0 && (
               <li className="text-sm text-ink-muted">Aucune assignation pour l’instant.</li>
             )}
           </ul>

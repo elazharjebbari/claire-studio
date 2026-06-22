@@ -1,0 +1,91 @@
+@startuml collaboration-data-model
+title Modele de donnees & isolation par annotateur (Pactiva)
+
+entity Project {
+  * id
+  slug
+  scheme
+}
+entity Document {
+  * id
+  external_id
+  --
+  unique(corpus, external_id)
+}
+entity ProjectMembership {
+  * id
+  role : annotator|reviewer|lead
+  --
+  unique(project, user)
+}
+entity Assignment {
+  * id
+  status : pending|in_progress|done
+  --
+  unique(project, document, assignee)
+}
+entity Annotation {
+  * id
+  status : draft|submitted|in_review|approved
+  --
+  unique(project, document, annotator)  <<INV-4: isolation>>
+}
+entity Clause {
+  * id
+  anchor_sentence
+  theme
+  validated
+  --
+  unique(annotation, anchor_sentence)  <<INV-2>>
+}
+entity AnnotationVersion {
+  * id
+  snapshot (immuable)
+}
+
+Project ||--o{ ProjectMembership
+Project ||--o{ Assignment
+Project ||--o{ Annotation
+Document ||--o{ Assignment
+Document ||--o{ Annotation
+Annotation ||--o{ Clause
+Annotation ||--o{ AnnotationVersion
+
+note right of Annotation
+  1 Annotation par (projet, document, annotateur).
+  3 annotateurs => jusqu'a 3 Annotations / document,
+  100% independantes (cle = annotator).
+end note
+@enduml
+
+@startuml open-session-flow
+title Flux correct d'ouverture de SA session (a generaliser)
+actor Annotateur
+Annotateur -> Front : clic sur un document
+Front -> API : POST /annotations {project, document=external_id}
+API -> DB : get_or_create(project, document, annotator=request.user)
+DB --> API : MON Annotation (creee ou existante)
+API --> Front : annotation.id
+Front -> Front : router.push(/annotate/{id})
+note right
+  Garantit qu'on ouvre TOUJOURS sa propre session,
+  jamais assignment.annotationId d'un autre.
+  Pattern present dans /work, a appliquer au
+  DocumentSwitcher + dashboard.
+end note
+@enduml
+
+@startuml supervision
+title Supervision admin (lecture seule) vs session solo
+actor Admin as adm
+actor "Annotateur B" as b
+adm -> API : GET /projects/{slug}/annotators-progress (IsAdminRole)
+API --> adm : avancement des 3 (assigned/started/submitted/pct)
+adm -> API : GET annotation de B (SAFE method autorisee)
+API --> adm : lecture seule (isMine=false -> bandeau + readOnly)
+b -> API : PATCH ses clauses (IsAnnotationOwner)
+note bottom
+  Admin LIT tout, n'ECRIT jamais le contenu d'autrui
+  (preserve l'independance => IAA non biaise).
+end note
+@enduml

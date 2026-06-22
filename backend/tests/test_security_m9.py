@@ -93,13 +93,25 @@ def test_authz_isolation(auth, annotation, scheme_with_themes):
     )
     assert patch.status_code in (403, 404)
 
-    # Once made a project member, the user can at least read it.
+    # Indépendance des sessions (ADR-001, INV-ISO) : MÊME devenu membre du projet,
+    # un annotateur ne peut PAS lire le CONTENU de la session d'un PAIR (cela
+    # biaiserait son annotation et contaminerait l'IAA). La collaboration passe par
+    # les commentaires / la comparaison humain↔LLM, jamais par la lecture du brouillon
+    # d'autrui. Seuls admin/reviewer (rôle qualité transverse) supervisent.
     ProjectMembership.objects.create(
         project=annotation.project, user=outsider, role="annotator"
     )
     cache.clear()
-    member_read = auth(outsider).get(f"/api/v1/annotations/{annotation.id}")
-    assert member_read.status_code == 200
+    peer_read = auth(outsider).get(f"/api/v1/annotations/{annotation.id}")
+    assert peer_read.status_code in (403, 404)
+
+    # En revanche, un ADMIN supervise : il peut LIRE (pas éditer) la session d'autrui.
+    from tests.conftest import UserFactory
+
+    supervisor = UserFactory(username="supervisor", role="admin", is_superuser=True)
+    cache.clear()
+    admin_read = auth(supervisor).get(f"/api/v1/annotations/{annotation.id}")
+    assert admin_read.status_code == 200
 
 
 # ------------------------------------------------------------- 3. jwt rotation

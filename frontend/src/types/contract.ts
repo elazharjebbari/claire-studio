@@ -255,6 +255,33 @@ export interface AnnotatorProgress {
   pct: number;
 }
 
+/**
+ * Session d'annotation (= l'Annotation d'un annotateur sur un document) — ADR-001.
+ * Une « session » est le travail isolé d'UN annotateur ; elle lui appartient.
+ */
+export interface SessionRollup {
+  annotatorId: string;
+  username: string;
+  displayName: string;
+  color: string;
+  assigned: boolean;
+  status: AnnotationStatus | "unstarted";
+  annotationId?: string | null;
+  nClauses: number;
+}
+
+/**
+ * Document d'un projet, vu côté présentation : **une entrée par document** (jamais
+ * dupliqué, INV-DOC-UNIQUE). `mySession` = ma session sur ce document ; `sessions`
+ * + `sessionsSummary` = matrice document × annotateur, réservés admin/lead.
+ */
+export interface ProjectDocument {
+  document: DocumentSummary;
+  mySession: SessionRollup | null;
+  sessions?: SessionRollup[];
+  sessionsSummary?: { assigned: number; started: number; submitted: number };
+}
+
 export interface Clause {
   id: string;
   annotationId: string;

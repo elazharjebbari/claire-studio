@@ -1,0 +1,63 @@
+================================================================================
+PACTIVA — WIREFRAMES (texte) : Sessions vs Collaboration
+================================================================================
+Légende :  [accent] = MA session (éditable)   [warn] = lecture seule
+           {collab} = aide/collaboration (jamais une référence)
+
+--------------------------------------------------------------------------------
+(1) PAGE CAMPAGNE — vue ANNOTATEUR  (/projects/campagne-pactiva)
+--------------------------------------------------------------------------------
++----------------------------------------------------------------------------+
+| Campagne d'annotation Pactiva                         [Voir les documents]  |
+| corpus claudette-tos · schéma claudette                                     |
++----------------------------------------------------------------------------+
+| Ma progression : 12/50 documents · 3 soumis · κ —                          |
++----------------------------------------------------------------------------+
+| [accent] MA SESSION — mes documents                                         |
+|   • 9gag .......................... [brouillon]   [Annoter →]               |
+|   • Airbnb ........................ [à faire]      [Annoter →]               |
+|   • Amazon ....................... [soumis]        [Revoir →]               |
+|   (1 ligne PAR document — jamais en double)                                 |
++----------------------------------------------------------------------------+
+| {collab}  Comparer / discuter sert l'accord (IAA), pas la référence.        |
++----------------------------------------------------------------------------+
+
+--------------------------------------------------------------------------------
+(2) PAGE CAMPAGNE — vue ADMIN / LEAD (supervision)
+--------------------------------------------------------------------------------
++----------------------------------------------------------------------------+
+| Campagne Pactiva — SUPERVISION                  [Gérer la campagne (console)]|
++----------------------------------------------------------------------------+
+| Avancement :  elazhar 1/50 · jc.lamirel 0/50 · zahra 0/50                   |
++----------------------------------------------------------------------------+
+| MATRICE DOCUMENT × ANNOTATEUR (1 ligne par document)                        |
+|                       elazhar     jc.lamirel    zahra                       |
+|   9gag               [draft 👁]    [— 👁]        [— 👁]                      |
+|   Airbnb             [— 👁]        [draft 👁]    [submitted 👁]              |
+|   Amazon             [submitted👁] [— 👁]        [draft 👁]                  |
+|   ...                                                                       |
+|   👁 = ouvrir la session en LECTURE SEULE (supervision)                     |
++----------------------------------------------------------------------------+
+| [accent] Pour annoter MOI-MÊME : onglet « Mes annotations » (/work).        |
++----------------------------------------------------------------------------+
+
+--------------------------------------------------------------------------------
+(3) SÉLECTEUR DE DOCUMENTS (workspace) — DocumentSwitcher
+--------------------------------------------------------------------------------
+            +-------------------------------------------+
+  [9gag ▾]  | 🔎 Rechercher un document…                |
+            +-------------------------------------------+
+            | › 9gag                      FR   [brouillon]|   <- 1 seule entrée/doc
+            |   Airbnb                    FR   [à faire]  |
+            |   Amazon                         [soumis]   |
+            +-------------------------------------------+
+   (AVANT : 9gag, 9gag, 9gag, Airbnb, Airbnb… — corrigé)
+
+--------------------------------------------------------------------------------
+(4) WORKSPACE — bannières de session (déjà en place, généralisées)
+--------------------------------------------------------------------------------
+ MA SESSION :   [accent]✎ Ma session — édition ........... (autosave actif)
+ SUPERVISION :  [warn] 👁 Lecture seule — annotation d'un autre annotateur
+ COLLAB :       {collab} Commentaires · Présence · Comparer N-way (panneaux latéraux)
+
+================================================================================

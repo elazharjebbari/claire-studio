@@ -224,6 +224,111 @@ class ProjectViewSet(viewsets.ModelViewSet):
             )
         return Response(results_envelope(rows))
 
+    @action(detail=True, methods=["get"], url_path="documents")
+    def documents(self, request, slug=None):
+        """Documents du projet — **une ligne PAR document** (jamais dupliqué, ADR‑001).
+
+        Ressource document‑centrée qui remplace l'usage de ``/assignments`` pour
+        bâtir les listes de documents (la duplication ×N venait de l'affichage
+        d'assignations, 1 ligne par couple document×annotateur).
+
+        Chaque entrée porte :
+        - ``document`` : le résumé du document ;
+        - ``my_session`` : MA session sur ce document (l'``Annotation`` de
+          l'utilisateur courant), avec statut/avancement — ``None`` si anonyme ;
+        - ``sessions`` + ``sessions_summary`` : matrice document × annotateur
+          (avancement de chaque membre) — **réservés admin/lead** (supervision),
+          omis sinon. ``?mine=1`` force la vue annotateur même pour un admin.
+        """
+        from django.db.models import Count
+
+        from claire.annotations.models import Annotation
+        from claire.common.identity import display_name, user_color
+        from claire.translations.models import Translation
+
+        project = self.get_object()
+        user = request.user
+        is_lead = project.memberships.filter(
+            user=user, role=MembershipRole.LEAD
+        ).exists()
+        is_supervisor = bool(getattr(user, "is_admin_role", False)) or is_lead
+        mine_only = request.query_params.get("mine") in ("1", "true", "True")
+        expose_sessions = is_supervisor and not mine_only
+
+        documents = list(project.corpus.documents.all().order_by("external_id"))
+
+        # Index (document_id, assignee_id) -> True : présence d'assignation.
+        assign_idx = {
+            (a["document_id"], a["assignee_id"])
+            for a in project.assignments.values("document_id", "assignee_id")
+        }
+        # Index (document_id, annotator_id) -> annotation (id, status, n_clauses).
+        ann_idx = {
+            (an["document_id"], an["annotator_id"]): an
+            for an in Annotation.objects.filter(project=project)
+            .annotate(n_clauses=Count("clauses", distinct=True))
+            .values("id", "document_id", "annotator_id", "status", "n_clauses")
+        }
+        # Une seule requête pour le voyant « traduction disponible » (évite le N+1).
+        translated_ids = set(
+            Translation.objects.filter(document__in=documents)
+            .values_list("document_id", flat=True)
+            .distinct()
+        )
+        # Membres qui ANNOTENT (annotator + lead). Le reviewer ne tient pas de session.
+        session_members = [
+            m.user
+            for m in project.memberships.select_related("user")
+            .filter(role__in=[MembershipRole.ANNOTATOR, MembershipRole.LEAD])
+            .order_by("user__username")
+        ]
+        submitted = {"submitted", "in_review", "approved"}
+
+        def session_for(doc, member):
+            an = ann_idx.get((doc.id, member.id))
+            return {
+                "annotator_id": member.id,
+                "username": member.username,
+                "display_name": display_name(member),
+                "color": user_color(member.id),
+                "assigned": (doc.id, member.id) in assign_idx,
+                "status": an["status"] if an else "unstarted",
+                "annotation_id": an["id"] if an else None,
+                "n_clauses": an["n_clauses"] if an else 0,
+            }
+
+        def doc_summary(doc):
+            return {
+                "id": doc.id,
+                "external_id": doc.external_id,
+                "title": doc.title,
+                "language": doc.language,
+                "n_sentences": doc.n_sentences,
+                "has_translation": doc.id in translated_ids,
+            }
+
+        results = []
+        for doc in documents:
+            row = {
+                "document": doc_summary(doc),
+                "my_session": (
+                    session_for(doc, user)
+                    if getattr(user, "is_authenticated", False)
+                    else None
+                ),
+            }
+            if expose_sessions:
+                sessions = [session_for(doc, m) for m in session_members]
+                row["sessions"] = sessions
+                row["sessions_summary"] = {
+                    "assigned": sum(1 for s in sessions if s["assigned"]),
+                    "started": sum(1 for s in sessions if s["status"] != "unstarted"),
+                    "submitted": sum(1 for s in sessions if s["status"] in submitted),
+                }
+            results.append(row)
+
+        return Response(results_envelope(results))
+
     @action(detail=True, methods=["get"])
     def progress(self, request, slug=None):
         """Return the ProjectProgress shape (CONTRACT)."""

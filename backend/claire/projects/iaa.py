@@ -113,9 +113,13 @@ def project_iaa_detail(project) -> dict | None:
         ).distinct()
     )
 
-    theme_obs: dict[str, list[tuple]] = defaultdict(list)
-    boundary_a: list[bool] = []
-    boundary_b: list[bool] = []
+    # Correction N≥3 (ADR‑001 §E) : on calcule κ PAR PAIRE puis on MOYENNE. L'ancienne
+    # version concaténait les observations de toutes les paires (chaque phrase comptée
+    # une fois par paire) → double‑comptage dès 3 annotateurs. Moyenner les κ par paire
+    # donne une mesure non biaisée et cohérente avec `global_kappa`/`pairs`.
+    theme_kappas: dict[str, list[float]] = defaultdict(list)
+    theme_support: dict[str, int] = defaultdict(int)
+    boundary_kappas: list[float] = []
     global_pairs: list[float] = []
     pair_count = 0
 
@@ -143,40 +147,34 @@ def project_iaa_detail(project) -> dict | None:
                 v1, v2 = vectors[ids[i]], vectors[ids[j]]
                 global_pairs.append(cohen_kappa(v1, v2))
                 pair_count += 1
-                for idx in range(n):
-                    theme_obs[v1[idx] or "__none__"]  # touch for support
-                    boundary_a.append(idx in starts[ids[i]])
-                    boundary_b.append(idx in starts[ids[j]])
-                # Per-theme one-vs-rest agreement, keyed on theme code.
+                # Frontières (segmentation) : κ par paire sur le vecteur "début de
+                # clause à l'index ?" (booléen par phrase), moyenné ensuite.
+                b1 = [idx in starts[ids[i]] for idx in range(n)]
+                b2 = [idx in starts[ids[j]] for idx in range(n)]
+                boundary_kappas.append(cohen_kappa(b1, b2))
+                # Par thème (one‑vs‑rest) : κ par paire + support, moyenné ensuite.
                 for code in set(v for v in v1 + v2 if v):
                     a_lab = [c == code for c in v1]
                     b_lab = [c == code for c in v2]
-                    theme_obs[code].append((a_lab, b_lab))
+                    theme_kappas[code].append(cohen_kappa(a_lab, b_lab))
+                    theme_support[code] += sum(a_lab) + sum(b_lab)
 
     if pair_count == 0:
         return None
 
     global_kappa = round(sum(global_pairs) / len(global_pairs), 4)
-    boundary_kappa = round(cohen_kappa(boundary_a, boundary_b), 4)
+    boundary_kappa = round(sum(boundary_kappas) / len(boundary_kappas), 4)
 
     per_theme = []
-    for code, observations in sorted(theme_obs.items()):
-        if code == "__none__":
+    for code, kappas in sorted(theme_kappas.items()):
+        if not kappas:
             continue
-        flat_a: list = []
-        flat_b: list = []
-        for a_lab, b_lab in observations:
-            flat_a.extend(a_lab)
-            flat_b.extend(b_lab)
-        if not flat_a:
-            continue
-        support = sum(1 for x in flat_a if x) + sum(1 for x in flat_b if x)
         per_theme.append(
             {
                 "code": code,
                 "label": themes.get(code, code),
-                "kappa": round(cohen_kappa(flat_a, flat_b), 4),
-                "support": support,
+                "kappa": round(sum(kappas) / len(kappas), 4),
+                "support": theme_support[code],
             }
         )
 

@@ -1,0 +1,138 @@
+openapi: 3.0.3
+info:
+  title: Pactiva — Contrat d'API (delta Sessions vs Collaboration)
+  version: "1.0.0"
+  description: >
+    Delta d'API pour la refonte « sessions d'annotation vs collaboration ».
+    Couvre la nouvelle ressource document-centrée (supprime la duplication),
+    le scope d'export par annotateur et l'export de concordance. Le reste du
+    contrat (annotations, clauses, comments, iaa, members, assignments) est
+    inchangé.
+
+paths:
+  /projects/{slug}/documents:
+    get:
+      summary: Documents du projet (1 ligne PAR document — jamais dupliqué)
+      description: >
+        Source de vérité document-centrée. Remplace l'usage de /assignments
+        pour bâtir les listes de documents. `mySession` = ma session sur ce
+        document. `sessions[]` + `sessionsSummary` ne sont renvoyés qu'aux
+        admin/lead (supervision).
+      parameters:
+        - { name: slug, in: path, required: true, schema: { type: string } }
+        - name: mine
+          in: query
+          required: false
+          schema: { type: boolean }
+          description: si true, n'inclut pas sessions[] même pour un admin (vue annotateur).
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  count: { type: integer }
+                  results:
+                    type: array
+                    items: { $ref: "#/components/schemas/ProjectDocument" }
+        "403": { description: non membre du projet }
+
+  /projects/{slug}/exports:
+    post:
+      summary: Créer un export (ajout du scope par annotateur)
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                format:
+                  type: string
+                  enum: [jsonl, csv, conll, xml, md, huggingface, iaa_matrix]
+                scope:
+                  type: object
+                  properties:
+                    statuses:
+                      type: array
+                      items: { type: string }
+                    documents:
+                      type: array
+                      items: { type: string }
+                    annotators:
+                      type: array
+                      items: { type: string }
+                      description: usernames OU pks ; restreint l'export à ces sessions.
+      responses:
+        "201":
+          description: Job créé (exécuté en synchrone)
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/ExportJob" }
+
+components:
+  schemas:
+    DocumentSummary:
+      type: object
+      properties:
+        id: { type: string }
+        externalId: { type: string }
+        title: { type: string }
+        nSentences: { type: integer }
+        language: { type: string }
+        hasTranslation: { type: boolean }
+
+    SessionRollup:
+      type: object
+      description: Une session (= l'Annotation d'un annotateur sur ce document).
+      properties:
+        annotatorId: { type: string }
+        username: { type: string }
+        displayName: { type: string }
+        color: { type: string }
+        assigned: { type: boolean }
+        status:
+          type: string
+          enum: [unstarted, draft, submitted, in_review, approved, rejected]
+        annotationId: { type: string, nullable: true }
+        nClauses: { type: integer }
+
+    ProjectDocument:
+      type: object
+      properties:
+        document: { $ref: "#/components/schemas/DocumentSummary" }
+        mySession:
+          allOf: [{ $ref: "#/components/schemas/SessionRollup" }]
+          nullable: true
+          description: ma session (null si je ne suis pas membre annotateur).
+        sessions:
+          type: array
+          description: admin/lead uniquement ; sinon omis.
+          items: { $ref: "#/components/schemas/SessionRollup" }
+        sessionsSummary:
+          type: object
+          description: admin/lead uniquement.
+          properties:
+            assigned: { type: integer }
+            started: { type: integer }
+            submitted: { type: integer }
+
+    ExportJob:
+      type: object
+      properties:
+        id: { type: string }
+        project: { type: string }
+        format: { type: string }
+        scope: { type: object }
+        status: { type: string, enum: [pending, running, done, failed] }
+        artifactPath: { type: string }
+        manifest:
+          type: object
+          properties:
+            format_requested: { type: string }
+            format_effective: { type: string }
+            warnings:
+              type: array
+              items: { type: string }
+              description: ex. "format conll non implémenté → repli jsonl".

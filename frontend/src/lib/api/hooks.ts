@@ -30,6 +30,8 @@ export const qk = {
   projects: ["projects"] as const,
   project: (slug: string) => ["projects", slug] as const,
   assignments: (slug: string) => ["projects", slug, "assignments"] as const,
+  projectDocuments: (slug: string, mine: boolean) =>
+    ["projects", slug, "documents", mine ? "mine" : "all"] as const,
   progress: (slug: string) => ["projects", slug, "progress"] as const,
   iaa: (slug: string) => ["projects", slug, "iaa"] as const,
   members: (slug: string) => ["projects", slug, "members"] as const,
@@ -143,6 +145,33 @@ export function useAssignments(slug: string | undefined) {
   return useQuery({
     queryKey: qk.assignments(slug ?? ""),
     queryFn: () => api.listAssignments(slug!),
+    enabled: Boolean(slug),
+  });
+}
+
+/**
+ * Documents du projet — **une entrée par document** (ADR-001). Remplace l'usage de
+ * `useAssignments` pour bâtir les listes : supprime la duplication ×N par construction.
+ * Dédup défensive (au cas où une couche héritée renverrait des doublons).
+ */
+export function useProjectDocuments(
+  slug: string | undefined,
+  opts?: { mine?: boolean },
+) {
+  const mine = !!opts?.mine;
+  return useQuery({
+    queryKey: qk.projectDocuments(slug ?? "", mine),
+    queryFn: async () => {
+      const res = await api.listProjectDocuments(slug!, { mine });
+      const seen = new Set<string>();
+      const results = (res.results ?? []).filter((row) => {
+        const id = String(row.document.id);
+        if (seen.has(id)) return false;
+        seen.add(id);
+        return true;
+      });
+      return { ...res, results };
+    },
     enabled: Boolean(slug),
   });
 }

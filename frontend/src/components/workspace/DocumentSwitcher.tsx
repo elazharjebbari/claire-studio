@@ -1,13 +1,15 @@
 "use client";
 
 /**
- * DocumentSwitcher (point 0b) — barre de navigation entre documents du projet.
+ * DocumentSwitcher (ADR-001) — navigation entre LES DOCUMENTS DE MA SESSION.
  *
- * - Combobox avec **recherche autocomplétée** (titre / identifiant) sur les documents
- *   assignés du projet (source : assignments → document + annotationId + statut).
- * - **Voyant « brouillon non enregistré »** sur le document courant si le store est
- *   `dirty`, et badge de statut (draft/submitted/validated) par entrée.
- * - Sélection → navigation vers l'annotation du document choisi.
+ * - Source : `useProjectDocuments(slug, {mine:true})` → **une entrée par document**
+ *   (jamais dupliqué, contrairement à l'ancienne dérivation des assignations qui
+ *   affichait 1 ligne par couple document×annotateur).
+ * - Ouverture : `createAnnotation({project, document})` → ouvre **TOUJOURS MA**
+ *   session (get_or_create idempotent), jamais celle d'un autre annotateur.
+ * - **Voyant « brouillon non enregistré »** sur le document courant si `dirty`, et
+ *   badge de statut par entrée (à faire / brouillon / soumis / validé).
  *
  * Accessible : combobox ARIA, navigation clavier (↑/↓/Entrée/Échap), fermeture au clic
  * extérieur. Pour la recherche globale avancée, ⌘K reste disponible.
@@ -16,13 +18,16 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
 import { Languages } from "lucide-react";
-import { useAssignments } from "@/lib/api/hooks";
+import { useProjectDocuments } from "@/lib/api/hooks";
+import { createAnnotation } from "@/lib/api/endpoints";
 import { useWorkspaceStore } from "@/store/workspace";
 
 const STATUS_LABEL: Record<string, string> = {
   unstarted: "à faire",
   draft: "brouillon",
   submitted: "soumis",
+  in_review: "en revue",
+  approved: "validé",
   validated: "validé",
 };
 
@@ -35,21 +40,23 @@ export function DocumentSwitcher({
 }) {
   const router = useRouter();
   const dirty = useWorkspaceStore((s) => s.dirty);
-  const { data } = useAssignments(projectSlug);
+  // Mes documents (1 entrée/document) — jamais l'union des assignations.
+  const { data } = useProjectDocuments(projectSlug, { mine: true });
   const rows = useMemo(() => data?.results ?? [], [data]);
 
-  const current = rows.find((r) => r.document.id === currentDocumentId);
+  const current = rows.find((r) => String(r.document.id) === String(currentDocumentId));
   const currentTitle = current?.document.title ?? "Document";
 
   const [open, setOpen] = useState(false);
   const [query, setQuery] = useState("");
   const [active, setActive] = useState(0);
+  const [opening, setOpening] = useState(false);
   const boxRef = useRef<HTMLDivElement>(null);
 
   const filtered = useMemo(() => {
     const q = query.trim().toLowerCase();
     if (!q) return rows;
-    // Coercition String : en mode réel, document.id (pk Django) est NUMÉRIQUE →
+    // Coercition String : document.id (pk Django) est NUMÉRIQUE en mode réel →
     // .toLowerCase() planterait. On normalise tous les champs en chaîne.
     const has = (v: unknown) => String(v ?? "").toLowerCase().includes(q);
     return rows.filter(
@@ -65,11 +72,18 @@ export function DocumentSwitcher({
     return () => document.removeEventListener("mousedown", onDown);
   }, []);
 
-  function go(annotationId?: string) {
-    if (!annotationId) return;
-    setOpen(false);
-    setQuery("");
-    router.push(`/annotate/${annotationId}`);
+  async function go(externalId?: string) {
+    if (!externalId || opening) return;
+    setOpening(true);
+    try {
+      // Ouvre/retrouve TOUJOURS MA session pour ce document (idempotent, INV-4).
+      const ann = await createAnnotation({ project: projectSlug, document: externalId });
+      setOpen(false);
+      setQuery("");
+      router.push(`/annotate/${ann.id}`);
+    } finally {
+      setOpening(false);
+    }
   }
 
   return (
@@ -107,7 +121,7 @@ export function DocumentSwitcher({
       {open && (
         <div
           role="listbox"
-          aria-label="Documents du projet"
+          aria-label="Documents de ma session"
           className="absolute left-0 z-50 mt-1 w-80 rounded-lg border border-line bg-elevated p-2 shadow-xl"
         >
           <input
@@ -127,7 +141,7 @@ export function DocumentSwitcher({
                 setActive((a) => Math.max(a - 1, 0));
               } else if (e.key === "Enter") {
                 e.preventDefault();
-                go(filtered[active]?.annotationId);
+                go(filtered[active]?.document.externalId);
               } else if (e.key === "Escape") {
                 setOpen(false);
               }
@@ -141,16 +155,17 @@ export function DocumentSwitcher({
               <li className="px-2 py-1.5 text-xs text-ink-muted">Aucun document.</li>
             )}
             {filtered.map((r, i) => {
-              const isCurrent = r.document.id === currentDocumentId;
+              const isCurrent = String(r.document.id) === String(currentDocumentId);
+              const status = r.mySession?.status ?? "unstarted";
               return (
-                <li key={r.id}>
+                <li key={r.document.id}>
                   <button
                     type="button"
                     role="option"
                     aria-selected={i === active}
                     data-testid={`document-option-${r.document.id}`}
                     onMouseEnter={() => setActive(i)}
-                    onClick={() => go(r.annotationId)}
+                    onClick={() => go(r.document.externalId)}
                     className={
                       "flex w-full items-center justify-between gap-2 rounded-md px-2 py-1.5 text-left text-sm " +
                       (i === active ? "bg-accent/10" : "hover:bg-panel-muted")
@@ -175,7 +190,7 @@ export function DocumentSwitcher({
                       )}
                     </span>
                     <span className="shrink-0 rounded bg-panel-muted px-1 text-[9px] uppercase text-ink-muted">
-                      {STATUS_LABEL[r.status] ?? r.status}
+                      {STATUS_LABEL[status] ?? status}
                     </span>
                   </button>
                 </li>
