@@ -1,0 +1,23 @@
+@startuml export-async-fsm
+title Export en tâche de fond — machine à états
+
+[*] --> pending : POST /projects/{slug}/exports (202)
+pending --> running : worker démarre (run_export_async)
+running --> done : artefact écrit + manifeste
+running --> failed : exception (I/O, scope, format…)
+pending --> failed : timeout (jamais démarré, self-heal à la lecture)
+running --> failed : timeout (> EXPORT_TIMEOUT, self-heal)
+failed --> pending : POST /exports/{id}/retry
+done --> pending : retry / re-export (même job ou nouveau)
+done --> [*] : artefact téléchargé (GET /exports/{id}/download)
+
+note right of running
+  Statut écrit HORS transaction de lecture
+  (un rollback ne doit jamais effacer `failed`).
+  close_old_connections() au début du thread.
+end note
+note bottom of failed
+  manifest.error = message lisible (taxonomie).
+  L'UI propose « Relancer ».
+end note
+@enduml

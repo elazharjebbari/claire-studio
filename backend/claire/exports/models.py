@@ -34,6 +34,9 @@ class ExportJob(models.Model):
     )
     artifact_path = models.CharField(max_length=600, blank=True)
     manifest = models.JSONField(default=dict, blank=True)
+    # Message d'erreur lisible si status=failed (export en tâche de fond). Persiste
+    # même après rollback de la transaction de lecture (cf. services.run_export).
+    error = models.TextField(blank=True, default="")
     requested_by = models.ForeignKey(
         settings.AUTH_USER_MODEL, on_delete=models.PROTECT,
         related_name="export_jobs",

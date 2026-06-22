@@ -7,3 +7,6 @@ DATABASES = {"default": {"ENGINE": "django.db.backends.sqlite3", "NAME": ":memor
 PASSWORD_HASHERS = ["django.contrib.auth.hashers.MD5PasswordHasher"]
 # E-mails capturés en mémoire (django.core.mail.outbox) pour les assertions de test.
 EMAIL_BACKEND = "django.core.mail.backends.locmem.EmailBackend"
+# Export EN TÂCHE DE FOND exécuté en SYNCHRONE en test (déterministe, pas de thread
+# → pas de verrou SQLite). En prod, run_export_async lance un thread daemon.
+EXPORTS_RUN_INLINE = True

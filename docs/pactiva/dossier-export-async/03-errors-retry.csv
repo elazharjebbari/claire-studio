@@ -1,0 +1,8 @@
+code,cas,detection,message_utilisateur,action,relançable
+EMPTY_SCOPE,Aucune annotation dans le scope (statuts/annotateurs/documents),n_annotations==0 à la fin,"Aucune annotation ne correspond au filtre. Élargissez le scope (statuts, annotateurs).",ajuster le scope,oui
+FORMAT_FALLBACK,Format non implémenté (huggingface) → repli jsonl,manifest.warnings non vide,"Format '{x}' non disponible : export produit en JSONL (repli).",aucune (info),non
+IO_ERROR,Écriture disque impossible (quota/permissions),exception OSError,"Échec d'écriture de l'artefact sur le serveur. Réessayez ; si persistant, contactez l'admin.",relancer,oui
+TIMEOUT,Job running au-delà de EXPORT_TIMEOUT (zombie),self-heal à la lecture,"L'export a expiré (interruption serveur probable). Relancez-le.",relancer,oui
+INTERNAL,Exception inattendue dans run_export,except générique → failed,"Erreur interne pendant l'export. Relancez ; le détail est journalisé.",relancer,oui
+NOT_DONE_DOWNLOAD,Téléchargement demandé avant 'done',GET /download status!=done,"L'export n'est pas encore prêt.",attendre,non
+ARTIFACT_MISSING,Artefact supprimé/déplacé,fichier absent à /download,"Artefact introuvable (peut-être purgé). Relancez l'export.",relancer,oui

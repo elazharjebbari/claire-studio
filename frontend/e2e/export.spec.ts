@@ -1,34 +1,30 @@
 import { test, expect } from "@playwright/test";
 
 /**
- * F5 — Export multi-format. Choisir un format, lancer, vérifier l'artefact + le
- * manifeste. Itère sur plusieurs formats explicatifs. S'appuie sur MSW.
+ * F5 — Export EN TÂCHE DE FOND. Choisir un format, lancer (non bloquant), voir
+ * l'historique avec les statuts, télécharger un export prêt, relancer un échec.
+ * S'appuie sur MSW.
  */
 
-test.describe("Export (F5)", () => {
+test.describe("Export en tâche de fond (F5)", () => {
   test.beforeEach(async ({ page }) => {
     await page.goto("/admin/exports");
     await expect(page.getByRole("heading", { name: "Exports" })).toBeVisible();
   });
 
-  test("lance un export JSONL et affiche l'artefact + manifeste", async ({ page }) => {
+  test("lance un export et affiche l'historique avec statuts", async ({ page }) => {
     await page.getByTestId("format-jsonl").check();
     await page.getByTestId("run-export").click();
-    const result = page.getByTestId("export-result");
-    await expect(result).toContainText("jsonl");
-    await expect(result).toContainText("/exports/");
-    await expect(result).toContainText("done");
-    // Le manifeste JSON est affiché.
-    await expect(result).toContainText("documents");
+    // Historique visible : un job prêt (Télécharger) + un échoué (Relancer).
+    await expect(page.getByTestId("export-history")).toBeVisible();
+    await expect(page.getByTestId("export-status-done")).toBeVisible();
+    await expect(page.getByTestId("download-exp-1")).toBeVisible();
+    await expect(page.getByTestId("retry-exp-2")).toBeVisible();
   });
 
-  test("propose et exporte plusieurs formats explicatifs", async ({ page }) => {
-    for (const fmt of ["csv", "conll", "xml", "md", "huggingface"]) {
+  test("propose plusieurs formats explicatifs", async ({ page }) => {
+    for (const fmt of ["csv", "conll", "xml", "md", "iaa_matrix"]) {
       await expect(page.getByTestId(`format-${fmt}`)).toBeVisible();
     }
-    // Exporte au format CoNLL et vérifie le reflet dans le résultat.
-    await page.getByTestId("format-conll").check();
-    await page.getByTestId("run-export").click();
-    await expect(page.getByTestId("export-result")).toContainText("conll");
   });
 });

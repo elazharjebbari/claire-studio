@@ -179,13 +179,18 @@ _IMPLEMENTED_FORMATS = {
 }
 
 
-@transaction.atomic
 def run_export(job: ExportJob) -> ExportJob:
+    """Exécute l'export (idempotent). Les transitions de statut sont écrites en
+    AUTOCOMMIT (pas de `@transaction.atomic` global) : un échec doit laisser le job en
+    `failed` PERSISTÉ — l'ancien décorateur annulait ce statut au rollback. Seule la
+    LECTURE des annotations est enveloppée dans une transaction (snapshot cohérent)."""
     job.status = ExportStatus.RUNNING
-    job.save(update_fields=["status"])
+    job.error = ""
+    job.save(update_fields=["status", "error"])
 
     try:
-        records = [build_snapshot(a) for a in _selected_annotations(job)]
+        with transaction.atomic():
+            records = [build_snapshot(a) for a in _selected_annotations(job)]
 
         out_dir = Path(settings.EXPORTS_DIR)
         out_dir.mkdir(parents=True, exist_ok=True)
@@ -254,9 +259,43 @@ def run_export(job: ExportJob) -> ExportJob:
             job.id, job.format, len(records), path,
         )
     except Exception as exc:  # pragma: no cover - defensive
+        # Statut écrit en autocommit (hors transaction de lecture) → PERSISTE.
         job.status = ExportStatus.FAILED
+        job.error = str(exc)[:2000]
         job.manifest = {"error": str(exc)}
-        job.save(update_fields=["status", "manifest"])
+        job.save(update_fields=["status", "error", "manifest"])
         logger.exception("export_failed job=%s", job.id)
-        raise
     return job
+
+
+def run_export_async(job_id: int) -> None:
+    """Lance l'export EN TÂCHE DE FOND (thread daemon) — non bloquant pour la requête.
+
+    `settings.EXPORTS_RUN_INLINE` (vrai en test) exécute en SYNCHRONE pour des tests
+    déterministes (et évite les verrous SQLite liés au threading). En prod, un thread
+    daemon exécute `run_export` avec une connexion DB propre (close_old_connections au
+    début, connection.close à la fin). v2 : remplacer ce corps par `task.delay(job_id)`.
+    """
+    from django.db import close_old_connections, connection
+
+    def _work() -> None:
+        close_old_connections()
+        try:
+            job = ExportJob.objects.get(pk=job_id)
+            run_export(job)
+        except ExportJob.DoesNotExist:
+            logger.warning("export_async_missing job=%s", job_id)
+        except Exception:  # noqa: BLE001 — filet : marque failed même si run_export échoue tôt
+            logger.exception("export_async_crash job=%s", job_id)
+            ExportJob.objects.filter(
+                pk=job_id, status__in=[ExportStatus.PENDING, ExportStatus.RUNNING]
+            ).update(status=ExportStatus.FAILED, error="Échec inattendu de la tâche d'export.")
+        finally:
+            connection.close()
+
+    if getattr(settings, "EXPORTS_RUN_INLINE", False):
+        _work()
+        return
+    import threading
+
+    threading.Thread(target=_work, name=f"export-{job_id}", daemon=True).start()

@@ -512,3 +512,43 @@ export function useSyncTranslationSet() {
     onSuccess: () => qc.invalidateQueries({ queryKey: qk.translationSets }),
   });
 }
+
+// ── Exports en tâche de fond (F5) ──────────────────────────────────────────────
+
+/** Historique des jobs d'export d'un projet (récents d'abord). */
+export function useProjectExports(slug: string | undefined) {
+  return useQuery({
+    queryKey: ["projects", slug ?? "", "exports"],
+    queryFn: () => api.listProjectExports(slug!),
+    enabled: Boolean(slug),
+  });
+}
+
+/**
+ * Suit UN job d'export avec POLLING ADAPTATIF : on interroge toutes les 1,5 s tant
+ * que le job est `pending`/`running`, puis on STOPPE net dès `done`/`failed` (zéro
+ * polling superflu).
+ */
+export function useExportJob(id: string | undefined, enabled = true) {
+  return useQuery({
+    queryKey: ["exports", id ?? ""],
+    queryFn: () => api.getExport(id!),
+    enabled: Boolean(id) && enabled,
+    refetchInterval: (query) => {
+      const s = (query.state.data as import("@/types/contract").ExportJob | undefined)?.status;
+      return s === "done" || s === "failed" ? false : 1500;
+    },
+  });
+}
+
+/** Relance un job d'export (réinitialise + re-exécute en tâche de fond). */
+export function useRetryExport(slug?: string) {
+  const qc = useQueryClient();
+  return useMutation({
+    mutationFn: (id: string) => api.retryExport(id),
+    onSuccess: (job) => {
+      qc.invalidateQueries({ queryKey: ["exports", job.id] });
+      if (slug) qc.invalidateQueries({ queryKey: ["projects", slug, "exports"] });
+    },
+  });
+}

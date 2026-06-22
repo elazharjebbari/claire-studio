@@ -26,7 +26,14 @@ export type Judge = "claude" | "codex" | "other";
 
 export type ReviewDecision = "approve" | "request_changes" | "reject";
 
-export type ExportFormat = "jsonl" | "csv" | "conll" | "xml" | "md" | "huggingface";
+export type ExportFormat =
+  | "jsonl"
+  | "csv"
+  | "conll"
+  | "xml"
+  | "md"
+  | "huggingface"
+  | "iaa_matrix";
 
 /** Catégories d'injustice CLAUDETTE (ReferenceLabel). */
 export type UnfairnessCategory =
@@ -618,6 +625,8 @@ export interface ExportJob {
   status: "pending" | "running" | "done" | "failed";
   artifactPath?: string;
   manifest?: Record<string, unknown>;
+  /** Message d'erreur lisible si status === "failed" (export en tâche de fond). */
+  error?: string;
   requestedById: string;
   createdAt: string;
 }

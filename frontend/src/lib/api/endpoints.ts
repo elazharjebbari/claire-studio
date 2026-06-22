@@ -3,7 +3,7 @@
  * Les hooks react-query (src/lib/api/hooks.ts) s'appuient dessus.
  */
 
-import { apiFetch, tokenStore } from "./client";
+import { apiFetch, tokenStore, API_BASE } from "./client";
 import type {
   Annotation,
   ActivityEvent,
@@ -540,6 +540,37 @@ export function createExport(
 
 export function getExport(id: string): Promise<ExportJob> {
   return apiFetch<ExportJob>(`/exports/${id}`);
+}
+
+/** Historique des jobs d'export du projet (récents d'abord). */
+export function listProjectExports(slug: string): Promise<Paginated<ExportJob>> {
+  return apiFetch<Paginated<ExportJob>>(`/projects/${slug}/exports`);
+}
+
+/** Relance un job (réinitialise + re-exécute en tâche de fond). Idempotent. */
+export function retryExport(id: string): Promise<ExportJob> {
+  return apiFetch<ExportJob>(`/exports/${id}/retry`, { method: "POST", body: {} });
+}
+
+/**
+ * Télécharge l'artefact d'un export terminé. Le endpoint exige l'auth JWT (Bearer),
+ * impossible via un simple lien <a> : on fait un fetch authentifié → blob → save.
+ */
+export async function downloadExport(id: string, filename: string): Promise<void> {
+  const access = tokenStore.getAccess();
+  const res = await fetch(`${API_BASE}/exports/${id}/download`, {
+    headers: access ? { Authorization: `Bearer ${access}` } : {},
+  });
+  if (!res.ok) throw new Error("Téléchargement impossible (export pas prêt ?).");
+  const blob = await res.blob();
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement("a");
+  a.href = url;
+  a.download = filename;
+  document.body.appendChild(a);
+  a.click();
+  a.remove();
+  URL.revokeObjectURL(url);
 }
 
 // ── Activité / audit (F4) ──────────────────────────────────────────────────────

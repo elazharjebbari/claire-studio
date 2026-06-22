@@ -13,6 +13,6 @@ class ExportJobSerializer(serializers.ModelSerializer):
         model = ExportJob
         fields = [
             "id", "project", "format", "scope", "status", "artifact_path",
-            "manifest", "requested_by", "created_at",
+            "manifest", "error", "requested_by", "created_at",
         ]
-        read_only_fields = ["status", "artifact_path", "manifest"]
+        read_only_fields = ["status", "artifact_path", "manifest", "error"]

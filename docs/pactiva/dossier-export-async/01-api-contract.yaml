@@ -1,0 +1,76 @@
+openapi: 3.0.3
+info:
+  title: Pactiva — Export asynchrone (delta API)
+  version: "1.0.0"
+paths:
+  /projects/{slug}/exports:
+    get:
+      summary: Historique des jobs d'export du projet (récents d'abord)
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  count: { type: integer }
+                  results: { type: array, items: { $ref: "#/components/schemas/ExportJob" } }
+    post:
+      summary: Lancer un export EN TÂCHE DE FOND (non bloquant)
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                format: { type: string, enum: [jsonl, csv, conll, xml, md, huggingface, iaa_matrix] }
+                scope:
+                  type: object
+                  properties:
+                    statuses: { type: array, items: { type: string } }
+                    documents: { type: array, items: { type: string } }
+                    annotators: { type: array, items: { type: string } }
+      responses:
+        "202":
+          description: Job créé (pending) — l'exécution se poursuit en arrière-plan.
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/ExportJob" }
+  /exports/{id}:
+    get:
+      summary: État courant d'un job (self-heal des jobs périmés en `failed`)
+      responses:
+        "200":
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/ExportJob" }
+  /exports/{id}/download:
+    get:
+      summary: Télécharge l'artefact (FileResponse, confiné EXPORTS_DIR) — `done` requis
+      responses:
+        "200": { description: fichier }
+        "404": { description: pas d'artefact / introuvable / non `done` }
+  /exports/{id}/retry:
+    post:
+      summary: Réinitialise (pending) et relance le job (admin) — idempotent
+      responses:
+        "202":
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/ExportJob" }
+components:
+  schemas:
+    ExportJob:
+      type: object
+      properties:
+        id: { type: string }
+        project: { type: string }
+        format: { type: string }
+        scope: { type: object }
+        status: { type: string, enum: [pending, running, done, failed] }
+        manifest:
+          type: object
+          description: à `done` = métadonnées (n_annotations, format_effective, warnings…) ; à `failed` = { error }.
+        error: { type: string, nullable: true, description: message lisible si `failed`. }
+        createdAt: { type: string }
+        # artifactPath n'est PAS exposé (chemin serveur) — usage via /download.

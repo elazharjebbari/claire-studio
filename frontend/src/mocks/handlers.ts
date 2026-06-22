@@ -501,23 +501,58 @@ export const handlers = [
     return HttpResponse.json({ versions, count: results.length, results });
   }),
 
-  // Exports (F5)
+  // Exports (F5) — EN TÂCHE DE FOND. POST → 202 (pending) ; GET liste = historique.
+  http.get(`${BASE}/projects/:slug/exports`, ({ params }) =>
+    HttpResponse.json(
+      page([
+        {
+          id: "exp-1",
+          projectSlug: String(params.slug),
+          format: "jsonl",
+          status: "done",
+          requestedById: FIXTURE_USER.id,
+          createdAt: new Date().toISOString(),
+          manifest: { n_annotations: 12 },
+        },
+        {
+          id: "exp-2",
+          projectSlug: String(params.slug),
+          format: "csv",
+          status: "failed",
+          error: "Aucune annotation ne correspond au filtre.",
+          requestedById: FIXTURE_USER.id,
+          createdAt: new Date().toISOString(),
+        },
+      ]),
+    ),
+  ),
   http.post(`${BASE}/projects/:slug/exports`, async ({ params, request }) => {
     const body = (await request.json()) as { format: string };
     return HttpResponse.json(
       {
-        id: "exp-1",
+        id: "exp-new",
         projectSlug: String(params.slug),
         format: body.format,
-        status: "done",
-        artifactPath: `/exports/exp-1.${body.format}`,
+        status: "pending",
         requestedById: FIXTURE_USER.id,
         createdAt: new Date().toISOString(),
-        manifest: { documents: 12, clauses: 134 },
       },
-      { status: 201 },
+      { status: 202 },
     );
   }),
+  http.post(`${BASE}/exports/:id/retry`, ({ params }) =>
+    HttpResponse.json(
+      {
+        id: String(params.id),
+        projectSlug: "claudette-gold-v1",
+        format: "csv",
+        status: "pending",
+        requestedById: FIXTURE_USER.id,
+        createdAt: new Date().toISOString(),
+      },
+      { status: 202 },
+    ),
+  ),
   http.get(`${BASE}/exports/:id`, ({ params }) =>
     HttpResponse.json({
       id: String(params.id),

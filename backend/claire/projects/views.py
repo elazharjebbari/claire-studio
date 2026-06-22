@@ -606,24 +606,30 @@ class ProjectViewSet(viewsets.ModelViewSet):
         link.save(update_fields=["revoked"])
         return Response(ShareLinkSerializer(link, context={"request": request}).data)
 
-    # --- exports (feature 5) ----------------------------------------------
-    @action(detail=True, methods=["post"], permission_classes=[IsAdminRole])
+    # --- exports (feature 5) : EN TÂCHE DE FOND -----------------------------
+    @action(detail=True, methods=["get", "post"], permission_classes=[IsAdminRole])
     def exports(self, request, slug=None):
+        """GET = historique des jobs récents ; POST = lance un export EN TÂCHE DE FOND
+        (202, non bloquant). L'UI suit ensuite le statut via GET /exports/{id}."""
         from claire.exports.models import ExportJob
         from claire.exports.serializers import ExportJobSerializer
-        from claire.exports.services import run_export
+        from claire.exports.services import run_export_async
 
         project = self.get_object()
-        job = ExportJob.objects.create(
-            project=project,
-            format=request.data.get("format", "jsonl"),
-            scope=request.data.get("scope", {}),
-            requested_by=request.user,
-        )
-        run_export(job)
-        return Response(
-            ExportJobSerializer(job).data, status=status.HTTP_201_CREATED
-        )
+        if request.method == "POST":
+            job = ExportJob.objects.create(
+                project=project,
+                format=request.data.get("format", "jsonl"),
+                scope=request.data.get("scope", {}),
+                requested_by=request.user,
+            )
+            run_export_async(job.id)  # thread daemon (ou inline en test) — ne bloque pas
+            job.refresh_from_db()
+            return Response(
+                ExportJobSerializer(job).data, status=status.HTTP_202_ACCEPTED
+            )
+        qs = project.export_jobs.select_related("requested_by")[:50]
+        return Response(results_envelope(ExportJobSerializer(qs, many=True).data))
 
 
 # --- Publication publique (chantier F) ---------------------------------------
