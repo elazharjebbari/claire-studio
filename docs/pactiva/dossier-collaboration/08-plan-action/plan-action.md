@@ -45,14 +45,24 @@
 > d'abord** (un pair ne lit pas la session d'un autre ; admin/reviewer supervisent).
 > Alternative « visibilité après soumission » notée pour arbitrage produit.
 
-## Lot 4 — Planifié 🔜 (priorisé, hors périmètre de cette itération)
+## Lot 4a/4b — Supervision & a11y ✅ (FAIT dans cette itération)
+
+| # | Action | Fichiers | Statut |
+|---|---|---|---|
+| 17 | Onglet **« Suivi des sessions »** : matrice document × annotateur + icône **œil** ouvrant chaque session en **lecture seule** (supervision) | `frontend/src/app/(app)/admin/projects/[slug]/page.tsx` (SessionsTab) | ✅ |
+| 18 | a11y : `role=status`/`aria-live` sur l'indicateur d'autosave | `frontend/src/components/workspace/WorkspaceToolbar.tsx` | ✅ |
+| 19 | a11y : `@media (prefers-reduced-motion: reduce)` | `frontend/src/app/globals.css` | ✅ |
+| 20 | Fix var CSS inexistante `--surface-line` → `--surface-border` | `DocumentPanel.tsx`, `ModelBoundaryRail.tsx` | ✅ |
+| 21 | Handler MSW `/documents` enrichi (`sessions[]`/`sessionsSummary`) pour la démo/e2e | `frontend/src/mocks/handlers.ts` | ✅ |
+
+## Lot 4c — Reste planifié 🔜 (priorisé)
 
 | Priorité | Action | Origine (audit) |
 |---|---|---|
-| P1 | UI « bouton œil » lecture seule sur la matrice admin + bannière source LLM lecture seule | `judge-view-no-readonly`, `nav-supervision-matrix-topbar` |
+| P1 | Bannière « lecture seule » quand la source affichée est un juge LLM (DocumentPanel) | `judge-view-no-readonly` |
 | P1 | Export **asynchrone** (job PENDING + poll) + prefetch clauses + streaming jsonl | `export-synchronous-in-request` |
-| P2 | Tokens sémantiques (StatusPill/SaveIndicator) — retrait des ~86 couleurs en dur ; var CSS `--surface-border` | `hardcoded-tailwind-state-colors`, `surface-line-css-var-typo` |
-| P2 | a11y : script thème anti-FOUC, `prefers-reduced-motion`, `aria-live` autosave | `theme-fouc`, `no-prefers-reduced-motion`, `save-indicator-no-live-region` |
+| P2 | Tokens sémantiques (StatusPill/SaveIndicator) — retrait des ~86 couleurs Tailwind en dur | `hardcoded-tailwind-state-colors` |
+| P2 | Script thème anti-FOUC (bloquant, avant 1er paint) | `theme-fouc-no-blocking-script` |
 | P2 | Implémenter réellement conll/xml/huggingface (ou les retirer de l'UI) | `silent-format-fallback` |
 | P3 | Hygiène prod : désactiver/supprimer comptes démo `@claire.local` + projet démo (sur validation) | (audit prod) |
 | P3 | `Assignment.status` synchronisé avec le statut de l'`Annotation` | `assignment-no-name` |

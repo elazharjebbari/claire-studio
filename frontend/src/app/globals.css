@@ -103,3 +103,19 @@ body {
   padding: 0 1px;
   box-decoration-break: clone;
 }
+
+/*
+ * Accessibilité (charte §9, a11y §8) : respecte la préférence système « mouvement
+ * réduit » — neutralise transitions/animations et rend le défilement instantané pour
+ * les utilisateurs sensibles au mouvement (vestibulaire). Préserve l'opacité finale.
+ */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+    scroll-behavior: auto !important;
+  }
+}

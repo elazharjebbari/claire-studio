@@ -105,7 +105,7 @@ export function ModelBoundaryStrip({
               backgroundColor: seg
                 ? tint
                   ? `${tint}40`
-                  : "rgb(var(--surface-line))"
+                  : "rgb(var(--surface-border))"
                 : "transparent",
             }}
           >

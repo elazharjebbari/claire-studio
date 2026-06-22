@@ -8,7 +8,7 @@
 
 import { useMemo, useState } from "react";
 import Link from "next/link";
-import { Download } from "lucide-react";
+import { Download, Eye } from "lucide-react";
 import { useQueryClient } from "@tanstack/react-query";
 import * as api from "@/lib/api/endpoints";
 import {
@@ -17,13 +17,14 @@ import {
   useCorpusDocuments,
   useMembers,
   useAssignments,
+  useProjectDocuments,
   useAnnotatorsProgress,
   useProjectIaa,
 } from "@/lib/api/hooks";
-import { Panel, Button, Badge } from "@/components/ui/primitives";
+import { Panel, Button, Badge, StatusPill } from "@/components/ui/primitives";
 import type { IaaPair } from "@/types/contract";
 
-type Tab = "assign" | "progress" | "iaa" | "members" | "publish";
+type Tab = "assign" | "sessions" | "progress" | "iaa" | "members" | "publish";
 
 export default function CampaignDetail({ params }: { params: { slug: string } }) {
   const slug = params.slug;
@@ -33,6 +34,7 @@ export default function CampaignDetail({ params }: { params: { slug: string } })
 
   const tabs: Array<{ id: Tab; label: string }> = [
     { id: "assign", label: "Assignations" },
+    { id: "sessions", label: "Suivi des sessions" },
     { id: "progress", label: "Avancement" },
     { id: "iaa", label: "Accord (IAA)" },
     { id: "members", label: "Membres" },
@@ -75,6 +77,7 @@ export default function CampaignDetail({ params }: { params: { slug: string } })
 
       <div className="mt-5">
         {tab === "assign" && <AssignTab slug={slug} corpusSlug={project?.corpusSlug} qc={qc} />}
+        {tab === "sessions" && <SessionsTab slug={slug} />}
         {tab === "progress" && <ProgressTab slug={slug} />}
         {tab === "iaa" && <IaaTab slug={slug} />}
         {tab === "members" && <MembersTab slug={slug} qc={qc} />}
@@ -211,6 +214,113 @@ function AssignTab({
               <tr>
                 <td colSpan={annotators.length + 1} className="px-3 py-6 text-center text-ink-muted">
                   Aucun document dans le corpus.
+                </td>
+              </tr>
+            )}
+          </tbody>
+        </table>
+      </Panel>
+    </div>
+  );
+}
+
+// ── Suivi des sessions : matrice document × annotateur + lecture seule ─────────
+// Supervision (ADR-001) : l'admin voit l'état de la session de CHAQUE annotateur sur
+// CHAQUE document, et peut OUVRIR une session en LECTURE SEULE (icône œil → workspace
+// avec bannière « Lecture seule », écriture refusée par IsAnnotationOwner). Source :
+// GET /projects/{slug}/documents (sessions[] réservé admin/lead), 1 ligne par document.
+function SessionsTab({ slug }: { slug: string }) {
+  const { data, isLoading } = useProjectDocuments(slug);
+  const rows = useMemo(() => data?.results ?? [], [data]);
+
+  // Colonnes = annotateurs (union des sessions, robuste si un doc diffère).
+  const annotators = useMemo(() => {
+    const seen = new Map<string, { id: string; name: string }>();
+    for (const r of rows) {
+      for (const s of r.sessions ?? []) {
+        if (!seen.has(String(s.annotatorId))) {
+          seen.set(String(s.annotatorId), {
+            id: String(s.annotatorId),
+            name: s.displayName || s.username,
+          });
+        }
+      }
+    }
+    return Array.from(seen.values());
+  }, [rows]);
+
+  if (!isLoading && annotators.length === 0) {
+    return (
+      <p className="text-sm text-ink-muted">
+        Aucune session à suivre : ajoutez des annotateurs (onglet « Membres ») et
+        assignez-leur des documents (onglet « Assignations »).
+      </p>
+    );
+  }
+
+  return (
+    <div>
+      <p className="mb-3 text-sm text-ink-muted">
+        État de la <strong className="text-ink">session de chaque annotateur</strong> par
+        document (chacun annote seul). L'icône{" "}
+        <Eye size={12} aria-hidden className="inline" /> ouvre une session en{" "}
+        <strong className="text-ink">lecture seule</strong> (supervision — non modifiable).
+      </p>
+      <Panel className="overflow-auto">
+        <table className="w-full border-collapse text-sm" data-testid="sessions-matrix">
+          <thead>
+            <tr className="border-b border-line">
+              <th className="sticky left-0 bg-panel px-3 py-2 text-left font-medium text-ink">
+                Document
+              </th>
+              {annotators.map((a) => (
+                <th key={a.id} className="px-3 py-2 text-center font-medium text-ink-muted">
+                  {a.name}
+                </th>
+              ))}
+            </tr>
+          </thead>
+          <tbody>
+            {rows.map((r) => {
+              const byAnnotator = new Map(
+                (r.sessions ?? []).map((s) => [String(s.annotatorId), s]),
+              );
+              return (
+                <tr key={r.document.id} className="border-b border-line/60">
+                  <td className="sticky left-0 bg-panel px-3 py-2 text-ink">
+                    {r.document.title}
+                  </td>
+                  {annotators.map((a) => {
+                    const s = byAnnotator.get(a.id);
+                    const status = s?.status ?? "unstarted";
+                    return (
+                      <td key={a.id} className="px-3 py-2 text-center">
+                        <div className="flex items-center justify-center gap-1.5">
+                          <StatusPill status={status} />
+                          {s?.annotationId ? (
+                            <Link
+                              href={`/annotate/${s.annotationId}`}
+                              title={`Ouvrir la session de ${a.name} en lecture seule`}
+                              aria-label={`Ouvrir la session de ${a.name} sur ${r.document.title} en lecture seule`}
+                              data-testid={`session-view-${r.document.id}-${a.id}`}
+                              className="text-ink-muted hover:text-accent"
+                            >
+                              <Eye size={14} aria-hidden />
+                            </Link>
+                          ) : (
+                            <span className="inline-block w-[14px]" aria-hidden />
+                          )}
+                        </div>
+                      </td>
+                    );
+                  })}
+                </tr>
+              );
+            })}
+            {rows.length === 0 && (
+              <tr>
+                <td colSpan={annotators.length + 1} className="px-3 py-6 text-center text-ink-muted">
+                  Aucun document.
                 </td>
               </tr>
             )}

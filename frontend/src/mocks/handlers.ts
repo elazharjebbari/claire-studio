@@ -126,15 +126,16 @@ export const handlers = [
   ),
   // ADR-001 : ressource document-centrée (1 entrée PAR document, jamais dupliquée).
   // Dérivée des assignations de l'utilisateur démo (FIXTURE_USER), dédupliquée par doc.
-  http.get(`${BASE}/projects/:slug/documents`, () => {
+  // `?mine=1` → vue annotateur (mySession seul) ; sinon → matrice admin (sessions[]).
+  http.get(`${BASE}/projects/:slug/documents`, ({ request }) => {
+    const mine = new URL(request.url).searchParams.get("mine");
     const seen = new Set<string>();
     const results = FIXTURE_ASSIGNMENTS.filter((a) => {
       if (seen.has(a.document.id)) return false;
       seen.add(a.document.id);
       return true;
-    }).map((a) => ({
-      document: a.document,
-      mySession: {
+    }).map((a) => {
+      const mySession = {
         annotatorId: FIXTURE_USER.id,
         username: FIXTURE_USER.username,
         displayName: FIXTURE_USER.displayName ?? FIXTURE_USER.username,
@@ -143,8 +144,25 @@ export const handlers = [
         status: a.status,
         annotationId: a.annotationId ?? null,
         nClauses: 0,
-      },
-    }));
+      };
+      if (mine === "1") return { document: a.document, mySession };
+      // Matrice admin : la session de l'utilisateur démo + 2 annotateurs simulés.
+      const sessions = [
+        mySession,
+        { annotatorId: "u-bruno", username: "bruno", displayName: "Bruno", color: "#F59E0B", assigned: true, status: "unstarted", annotationId: null, nClauses: 0 },
+        { annotatorId: "u-zahra", username: "zahra", displayName: "Zahra", color: "#A78BFA", assigned: true, status: "submitted", annotationId: "ann-z", nClauses: 4 },
+      ];
+      return {
+        document: a.document,
+        mySession,
+        sessions,
+        sessionsSummary: {
+          assigned: 3,
+          started: sessions.filter((s) => s.status !== "unstarted").length,
+          submitted: sessions.filter((s) => ["submitted", "in_review", "approved"].includes(s.status)).length,
+        },
+      };
+    });
     return HttpResponse.json(page(results));
   }),
   http.get(`${BASE}/projects/:slug/progress`, () => HttpResponse.json(FIXTURE_PROGRESS)),

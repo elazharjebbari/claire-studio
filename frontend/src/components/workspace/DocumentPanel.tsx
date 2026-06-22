@@ -659,7 +659,7 @@ export function DocumentPanel({
                       ? "#34D399"
                       : vStatus === "pending"
                         ? "#FBBF24"
-                        : "rgb(var(--surface-line))",
+                        : "rgb(var(--surface-border))",
                   opacity: vStatus === "uncovered" ? 0.35 : 0.85,
                 }}
               />

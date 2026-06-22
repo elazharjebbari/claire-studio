@@ -397,6 +397,11 @@ function SaveIndicator({ dirty }: { dirty: boolean }) {
     <span
       data-testid="save-indicator"
       data-state={saveState}
+      // a11y : région live polie — les lecteurs d'écran annoncent les changements
+      // d'état d'enregistrement (enregistrement / enregistré / échec) sans voler le focus.
+      role="status"
+      aria-live="polite"
+      aria-atomic="true"
       className={`flex items-center gap-1.5 text-[11px] ${v.cls}`}
     >
       {v.text}
