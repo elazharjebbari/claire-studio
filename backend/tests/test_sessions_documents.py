@@ -133,22 +133,55 @@ def test_export_scope_annotators(auth, admin_user, project, scheme_with_themes, 
     assert job.manifest["annotators"] == [annotators[0].username]
 
 
-def test_export_format_fallback_traced(annotation, scheme_with_themes, admin_user, settings, tmp_path):
-    settings.EXPORTS_DIR = tmp_path
+def _seed_one(annotation, scheme):
     Clause.objects.create(
         annotation=annotation, anchor_sentence=annotation.document.sentences.get(index=0),
-        theme=scheme_with_themes.themes_map["META"],
+        theme=scheme.themes_map["META"], validated=True,
     )
     annotation.status = AnnotationStatus.SUBMITTED
     annotation.save()
+
+
+def test_export_format_fallback_traced(annotation, scheme_with_themes, admin_user, settings, tmp_path):
+    settings.EXPORTS_DIR = tmp_path
+    _seed_one(annotation, scheme_with_themes)
+    # huggingface : non implémenté → repli TRACÉ (jamais silencieux), jamais 404.
+    job = ExportJob.objects.create(
+        project=annotation.project, format=ExportFormat.HUGGINGFACE, requested_by=admin_user,
+    )
+    run_export(job)
+    assert job.manifest["format_requested"] == "huggingface"
+    assert job.manifest["format_effective"] == "jsonl"
+    assert any("huggingface" in w for w in job.manifest["warnings"])
+
+
+def test_export_conll(annotation, scheme_with_themes, admin_user, settings, tmp_path):
+    settings.EXPORTS_DIR = tmp_path
+    _seed_one(annotation, scheme_with_themes)
     job = ExportJob.objects.create(
         project=annotation.project, format=ExportFormat.CONLL, requested_by=admin_user,
     )
     run_export(job)
-    # Repli TRACÉ, jamais silencieux.
-    assert job.manifest["format_requested"] == "conll"
-    assert job.manifest["format_effective"] == "jsonl"
-    assert any("conll" in w for w in job.manifest["warnings"])
+    assert job.manifest["format_effective"] == "conll"
+    assert job.manifest["warnings"] == []
+    content = Path(job.artifact_path).read_text()
+    assert job.artifact_path.endswith(".conll")
+    assert "# annotator =" in content
+    assert "\tMETA\t" in content  # colonne thème (TAB)
+
+
+def test_export_xml(annotation, scheme_with_themes, admin_user, settings, tmp_path):
+    settings.EXPORTS_DIR = tmp_path
+    _seed_one(annotation, scheme_with_themes)
+    job = ExportJob.objects.create(
+        project=annotation.project, format=ExportFormat.XML, requested_by=admin_user,
+    )
+    run_export(job)
+    assert job.manifest["format_effective"] == "xml"
+    content = Path(job.artifact_path).read_text()
+    assert job.artifact_path.endswith(".xml")
+    assert content.startswith("<?xml")
+    assert "<clause" in content and 'theme="META"' in content
 
 
 def test_export_iaa_matrix(auth, admin_user, project, scheme_with_themes, settings, tmp_path):

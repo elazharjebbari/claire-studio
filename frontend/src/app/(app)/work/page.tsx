@@ -1,53 +1,63 @@
 "use client";
 
 /**
- * « Mes annotations » — file de travail de l'annotateur (plan §F3).
- * Accès **robuste et fiable** au document à annoter : le bouton n'ouvre pas un id
- * d'annotation pré-câblé (fragile) mais appelle `createAnnotation` (get_or_create
- * INV-4, idempotent) qui garantit/retrouve MA session puis redirige. Gère erreurs
- * réseau (réessai) sans perte ni double création.
+ * « Mes annotations » — file de travail de l'annotateur (ADR-001).
+ * Source : `useProjectDocuments({mine})` → MES documents (1 ligne/document), groupés
+ * par le statut de MA session (`mySession.status`, reflet réel de l'annotation) — et
+ * non plus par `assignment.status` (qui ne se mettait jamais à jour après soumission).
+ * Ouverture **robuste** via `createAnnotation` (get_or_create INV-4) : garantit/retrouve
+ * MA session puis redirige, sans perte ni double création.
  */
 
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import { useRouter } from "next/navigation";
-import { useMe, useAssignments } from "@/lib/api/hooks";
+import { useProjectDocuments } from "@/lib/api/hooks";
 import { useCurrentProjectSlug } from "@/lib/useCurrentProject";
 import { createAnnotation } from "@/lib/api/endpoints";
 import { Panel, Button, StatusPill } from "@/components/ui/primitives";
-import type { Assignment } from "@/types/contract";
+import type { ProjectDocument } from "@/types/contract";
 
-const TODO = ["pending", "unstarted", "unassigned", ""];
 const DOING = ["in_progress", "draft"];
 const DONE = ["done", "submitted", "in_review", "approved"];
 
 export default function WorkQueue() {
   const slug = useCurrentProjectSlug();
-  const { data: me } = useMe();
-  const { data: assignments, isLoading } = useAssignments(slug);
+  const { data: docs, isLoading } = useProjectDocuments(slug, { mine: true });
   const router = useRouter();
   const [opening, setOpening] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
 
-  const mine = (assignments?.results ?? []).filter(
-    // L'API peut sérialiser les PK en nombre ; comparer en chaînes des deux côtés.
-    (a) => !me || String(a.assigneeId) === String(me.id),
+  // Mes documents = ceux qui me sont assignés (ou déjà commencés).
+  const mine = useMemo(
+    () =>
+      (docs?.results ?? []).filter(
+        (d) =>
+          d.mySession?.assigned ||
+          (d.mySession?.status && d.mySession.status !== "unstarted"),
+      ),
+    [docs],
   );
-  const groups: Array<{ key: string; label: string; items: Assignment[] }> = [
-    { key: "doing", label: "En cours", items: mine.filter((a) => DOING.includes(a.status)) },
-    { key: "todo", label: "À faire", items: mine.filter((a) => TODO.includes(a.status)) },
-    { key: "done", label: "Terminé", items: mine.filter((a) => DONE.includes(a.status)) },
+  const statusOf = (d: ProjectDocument) => d.mySession?.status ?? "unstarted";
+  const groups: Array<{ key: string; label: string; items: ProjectDocument[] }> = [
+    { key: "doing", label: "En cours", items: mine.filter((d) => DOING.includes(statusOf(d))) },
+    {
+      key: "todo",
+      label: "À faire",
+      items: mine.filter((d) => !DOING.includes(statusOf(d)) && !DONE.includes(statusOf(d))),
+    },
+    { key: "done", label: "Terminé", items: mine.filter((d) => DONE.includes(statusOf(d))) },
   ];
 
-  async function open(a: Assignment) {
+  async function open(d: ProjectDocument) {
     if (!slug) return;
-    setOpening(a.id);
+    setOpening(d.document.externalId);
     setError(null);
     try {
       // INV-4 : garantit/retrouve MA session pour ce document, puis ouvre.
-      const ann = await createAnnotation({ project: slug, document: a.document.externalId });
+      const ann = await createAnnotation({ project: slug, document: d.document.externalId });
       router.push(`/annotate/${ann.id}`);
     } catch {
-      setError(`Impossible d'ouvrir « ${a.document.title} ». Vérifiez votre connexion et réessayez.`);
+      setError(`Impossible d'ouvrir « ${d.document.title} ». Vérifiez votre connexion et réessayez.`);
       setOpening(null);
     }
   }
@@ -88,27 +98,27 @@ export default function WorkQueue() {
                   {g.label} · {g.items.length}
                 </h2>
                 <Panel className="divide-y divide-line">
-                  {g.items.map((a) => (
-                    <div key={a.id} className="flex items-center justify-between px-4 py-3">
+                  {g.items.map((d) => (
+                    <div key={d.document.id} className="flex items-center justify-between px-4 py-3">
                       <div className="min-w-0">
-                        <div className="truncate font-medium text-ink">{a.document.title}</div>
+                        <div className="truncate font-medium text-ink">{d.document.title}</div>
                         <div className="text-xs text-ink-muted">
-                          {a.document.nSentences} phrases · {a.document.language ?? "—"}
+                          {d.document.nSentences} phrases · {d.document.language ?? "—"}
                         </div>
                       </div>
                       <div className="flex shrink-0 items-center gap-3">
-                        <StatusPill status={a.status} />
+                        <StatusPill status={statusOf(d)} />
                         <Button
                           variant="primary"
-                          disabled={opening === a.id}
-                          onClick={() => open(a)}
-                          data-testid={`open-${a.document.externalId}`}
+                          disabled={opening === d.document.externalId}
+                          onClick={() => open(d)}
+                          data-testid={`open-${d.document.externalId}`}
                         >
-                          {opening === a.id
+                          {opening === d.document.externalId
                             ? "Ouverture…"
                             : g.key === "done"
                               ? "Revoir"
-                              : a.annotationId
+                              : DOING.includes(statusOf(d))
                                 ? "Reprendre"
                                 : "Annoter"}
                         </Button>

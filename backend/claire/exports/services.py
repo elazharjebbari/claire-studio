@@ -118,12 +118,63 @@ def _write_iaa_matrix(path: Path, project) -> None:
             )
 
 
+def _write_conll(path: Path, records: list[dict]) -> None:
+    """CoNLL-like (colonnes TAB) au niveau phrase : un bloc par session.
+
+    En-tête commentée `# doc / annotator / status` puis, par clause, une ligne
+    `anchor_index<TAB>theme<TAB>legal_nature<TAB>certainty<TAB>validated`. Bloc séparé
+    par une ligne vide (convention CoNLL). Exploitable pour l'entraînement de modèles
+    de segmentation par thème.
+    """
+    lines: list[str] = []
+    for rec in records:
+        lines.append(f"# doc = {rec['doc']}")
+        lines.append(f"# annotator = {rec['annotator']}")
+        lines.append(f"# status = {rec['status']}")
+        for c in rec["clauses"]:
+            cert = "_" if c.get("certainty") is None else str(c["certainty"])
+            lines.append(
+                f"{c['anchor_index']}\t{c['theme']}\t{c.get('legal_nature') or '_'}"
+                f"\t{cert}\t{'1' if c.get('validated') else '0'}"
+            )
+        lines.append("")  # séparateur de bloc
+    path.write_text("\n".join(lines), encoding="utf-8")
+
+
+def _write_xml(path: Path, records: list[dict]) -> None:
+    """XML structuré (échappé) : <export><annotation …><clause …>rationale</clause>…."""
+    from xml.sax.saxutils import escape, quoteattr
+
+    out: list[str] = ['<?xml version="1.0" encoding="UTF-8"?>', "<export>"]
+    for rec in records:
+        out.append(
+            f"  <annotation doc={quoteattr(str(rec['doc']))} "
+            f"annotator={quoteattr(str(rec['annotator']))} "
+            f"status={quoteattr(str(rec['status']))} "
+            f"source={quoteattr(str(rec.get('source') or ''))}>"
+        )
+        for c in rec["clauses"]:
+            out.append(
+                f"    <clause anchor_index={quoteattr(str(c['anchor_index']))} "
+                f"theme={quoteattr(str(c['theme']))} "
+                f"legal_nature={quoteattr(str(c.get('legal_nature') or ''))} "
+                f"certainty={quoteattr('' if c.get('certainty') is None else str(c['certainty']))} "
+                f"validated={quoteattr('true' if c.get('validated') else 'false')}>"
+                f"{escape(c.get('rationale') or '')}</clause>"
+            )
+        out.append("  </annotation>")
+    out.append("</export>")
+    path.write_text("\n".join(out), encoding="utf-8")
+
+
 # Formats réellement implémentés ; tout autre format déclaré retombe sur jsonl
 # (le format pivot documenté, CONTRACT §4) — repli TRACÉ dans le manifeste.
 _IMPLEMENTED_FORMATS = {
     ExportFormat.JSONL,
     ExportFormat.CSV,
     ExportFormat.MD,
+    ExportFormat.CONLL,
+    ExportFormat.XML,
     "iaa_matrix",
 }
 
@@ -152,9 +203,14 @@ def run_export(job: ExportJob) -> ExportJob:
                 f"format '{requested}' non implémenté → repli sur jsonl (pivot CONTRACT §4)"
             )
 
-        ext = "csv" if effective in (ExportFormat.CSV, "iaa_matrix") else (
-            "md" if effective == ExportFormat.MD else "jsonl"
-        )
+        ext_by_format = {
+            ExportFormat.CSV: "csv",
+            "iaa_matrix": "csv",
+            ExportFormat.MD: "md",
+            ExportFormat.CONLL: "conll",
+            ExportFormat.XML: "xml",
+        }
+        ext = ext_by_format.get(effective, "jsonl")
         fname = f"export_{job.project.slug}_{job.id}_{stamp}.{ext}"
         path = out_dir / fname
 
@@ -162,6 +218,10 @@ def run_export(job: ExportJob) -> ExportJob:
             _write_csv(path, records)
         elif effective == ExportFormat.MD:
             _write_md(path, records)
+        elif effective == ExportFormat.CONLL:
+            _write_conll(path, records)
+        elif effective == ExportFormat.XML:
+            _write_xml(path, records)
         elif effective == "iaa_matrix":
             _write_iaa_matrix(path, job.project)
         else:

@@ -56,15 +56,17 @@
 | 21 | Handler MSW `/documents` enrichi (`sessions[]`/`sessionsSummary`) pour la démo/e2e | `frontend/src/mocks/handlers.ts` | ✅ |
 | 22 | Bannière « Vue lecture » quand la source affichée est un juge LLM | `frontend/src/components/workspace/AnnotationWorkspace.tsx` | ✅ |
 | 23 | Script thème **anti-FOUC** (bloquant, avant le 1er paint) | `frontend/src/app/layout.tsx` | ✅ |
+| 24 | File de travail `/work` migrée sur `useProjectDocuments` (statut = `mySession`, fin du regroupement erroné sur `assignment.status`) | `frontend/src/app/(app)/work/page.tsx` | ✅ |
+| 25 | Formats d'export **conll** + **xml** réellement implémentés (huggingface reste un repli jsonl TRACÉ) | `backend/claire/exports/services.py` | ✅ |
 
 ## Lot 4c — Reste planifié 🔜 (priorisé)
 
 | Priorité | Action | Origine (audit) |
 |---|---|---|
-| P1 | Export **asynchrone** (job PENDING + poll) + prefetch clauses + streaming jsonl | `export-synchronous-in-request` |
+| P1 | Export **asynchrone** (job PENDING + poll) + prefetch clauses + streaming jsonl — nécessite une file (Celery/RQ) | `export-synchronous-in-request` |
 | P2 | Tokens sémantiques (StatusPill/SaveIndicator) — retrait des ~86 couleurs Tailwind en dur | `hardcoded-tailwind-state-colors` |
-| P2 | Implémenter réellement conll/xml/huggingface (ou les retirer de l'UI) | `silent-format-fallback` |
-| P3 | Hygiène prod : désactiver/supprimer comptes démo `@claire.local` + projet démo (sur validation) | (audit prod) |
+| P2 | Format **huggingface** réel (ou le retirer de l'UI) | `silent-format-fallback` |
+| P3 | Hygiène prod : désactiver/supprimer comptes démo `@claire.local` + projet démo (**sur validation explicite**) | (audit prod) |
 | P3 | `Assignment.status` synchronisé avec le statut de l'`Annotation` | `assignment-no-name` |
 
 ## Migrations
