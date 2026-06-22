@@ -43,12 +43,31 @@ class ClauseSerializer(serializers.ModelSerializer):
         ]
 
     def to_representation(self, instance):
-        """Expose contract field names: anchorIndex, theme, legalNature."""
+        """Expose contract field names: anchorIndex, theme, themes[], boundary, ...
+
+        Rétro-compatible : `theme` (scalaire) reste le thème PRIMAIRE. `themes` (liste
+        multi-label) provient de `theme_tags` ; à défaut (clause sans tag, transitoire),
+        repli sur le primaire scalaire.
+        """
+        tags = list(instance.theme_tags.all())
+        if tags:
+            themes = [
+                {"label": t.theme.code, "role": t.role, "support": t.support}
+                for t in tags
+            ]
+        else:  # repli mono (clause non encore taguée)
+            themes = [{"label": instance.theme.code, "role": "primary", "support": 0}]
         return {
             "id": instance.id,
             "annotation_id": instance.annotation_id,
             "anchor_index": instance.anchor_sentence.index,
-            "theme": instance.theme.code,
+            "theme": instance.theme.code,  # miroir du primaire (legacy)
+            "themes": themes,
+            "boundary": {
+                "type": instance.boundary_type,
+                "support": instance.boundary_support,
+            },
+            "triage_level": instance.triage_level or None,
             "legal_nature": (
                 instance.legal_nature.code if instance.legal_nature else None
             ),

@@ -288,13 +288,18 @@ def test_annotations_list_and_detail_shape(admin_client):
     clause = detail["clauses"][0]
     _assert_keys(
         clause,
-        {"id", "annotationId", "anchorIndex", "theme", "legalNature",
-         "evidenceSpan", "rationale", "certainty", "order", "validated"},
+        {"id", "annotationId", "anchorIndex", "theme", "themes", "boundary",
+         "triageLevel", "legalNature", "evidenceSpan", "rationale", "certainty",
+         "order", "validated"},
         where="Clause",
     )
     assert isinstance(clause["anchorIndex"], int)
     assert isinstance(clause["theme"], str)
     assert "evidenceSpan" in clause
+    # Multi-label additif : themes[] non vide avec exactement un primaire ; boundary typé.
+    assert isinstance(clause["themes"], list) and clause["themes"]
+    assert sum(1 for t in clause["themes"] if t["role"] == "primary") == 1
+    assert clause["boundary"]["type"] in ("hard", "soft")
 
 
 @requires_data

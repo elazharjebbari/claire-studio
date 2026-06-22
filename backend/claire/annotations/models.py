@@ -32,6 +32,20 @@ class AnnotationSource(models.TextChoices):
     PREANNOTATION_SEED = "preannotation_seed", "Pre-annotation seed"
 
 
+class BoundaryType(models.TextChoices):
+    HARD = "hard", "Frontière dure"
+    SOFT = "soft", "Frontière molle"
+
+
+class ClauseRole(models.TextChoices):
+    PRIMARY = "primary", "Primaire"
+    SECONDARY = "secondary", "Secondaire"
+
+
+# Thèmes-refuges (protocole multi-label) : jamais en étiquette secondaire.
+REFUGE_CODES = {"PREAMBLE_SCOPE", "MISC_BOILERPLATE"}
+
+
 class Annotation(TimeStampedModel):
     project = models.ForeignKey(
         Project, on_delete=models.CASCADE, related_name="annotations"
@@ -105,6 +119,15 @@ class Clause(models.Model):
     # Un même op réémis (retry réseau) ne crée pas de doublon. Vide = pas
     # d'idempotence (écritures serveur / héritées).
     client_op_id = models.CharField(max_length=64, blank=True, default="")
+    # Multi-label / frontières non rigides (protocole confiance graduée). Additifs et
+    # rétro-compatibles : `theme` (FK scalaire) reste le MIROIR du thème primaire ; la
+    # vérité multi-label vit dans `theme_tags` (ClauseTheme). `triage_level` (C1–C5) est
+    # DÉRIVÉ de l'accord inter-juges et ORTHOGONAL à `certainty` (0–3, subjective).
+    boundary_type = models.CharField(
+        max_length=4, choices=BoundaryType.choices, default=BoundaryType.HARD
+    )
+    boundary_support = models.PositiveSmallIntegerField(default=1)
+    triage_level = models.CharField(max_length=2, blank=True, default="")
 
     class Meta:
         constraints = [
@@ -131,6 +154,59 @@ class Clause(models.Model):
 
     def __str__(self) -> str:  # pragma: no cover
         return f"clause#{self.pk}:{self.theme_id}@{self.anchor_sentence_id}"
+
+
+class ClauseTheme(models.Model):
+    """Étiquette de thème portée par une clause (multi-label natif).
+
+    Une clause mono-label a exactement 1 ClauseTheme (role=primary), strictement
+    équivalent au format legacy. Le multi-label ajoute des secondaires (jamais un refuge).
+    Invariants (validés par `validate_clause_theme_set`) : exactement un primary ;
+    aucun refuge en secondary.
+    """
+
+    clause = models.ForeignKey(
+        Clause, on_delete=models.CASCADE, related_name="theme_tags"
+    )
+    theme = models.ForeignKey(
+        Theme, on_delete=models.PROTECT, related_name="clause_tags"
+    )
+    role = models.CharField(max_length=9, choices=ClauseRole.choices)
+    # Nombre de juges ayant proposé ce thème (provenance / explication). 0 = saisie humaine.
+    support = models.PositiveSmallIntegerField(default=0)
+    order = models.PositiveSmallIntegerField(default=0)
+
+    class Meta:
+        constraints = [
+            models.UniqueConstraint(
+                fields=["clause", "theme"], name="uniq_clause_theme"
+            ),
+        ]
+        ordering = ["clause", "order"]
+
+    def __str__(self) -> str:  # pragma: no cover
+        return f"tag#{self.pk}:{self.theme_id}/{self.role}"
+
+
+def validate_clause_theme_set(tags) -> None:
+    """Valide les invariants multi-label d'un ensemble de ClauseTheme.
+
+    `tags` = itérable de ClauseTheme (ou objets ayant .role et .theme.code).
+    Lève ``django.core.exceptions.ValidationError`` si violé.
+    """
+    from django.core.exceptions import ValidationError
+
+    tags = list(tags)
+    if not tags:
+        raise ValidationError("une clause doit porter au moins un thème.")
+    primaries = [t for t in tags if t.role == ClauseRole.PRIMARY]
+    if len(primaries) != 1:
+        raise ValidationError("exactement un thème primaire est requis.")
+    for t in tags:
+        if t.role == ClauseRole.SECONDARY and t.theme.code in REFUGE_CODES:
+            raise ValidationError(
+                f"un refuge ({t.theme.code}) ne peut pas être secondaire."
+            )
 
 
 class AnnotationVersion(models.Model):
