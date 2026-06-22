@@ -11,7 +11,6 @@ import { agreementNway } from "@/lib/llmAgreement";
 import { NaturePicker } from "@/components/ui/NaturePicker";
 import { RationaleHover } from "@/components/workspace/RationaleHover";
 import { SelectionTools } from "@/components/workspace/SelectionTools";
-import { DocumentMinimap } from "@/components/workspace/DocumentMinimap";
 import { BoundaryEvidence } from "@/components/workspace/BoundaryEvidence";
 import { useWorkspaceStore } from "@/store/workspace";
 import type { LegalNature } from "@/types/contract";
@@ -130,52 +129,6 @@ describe("SelectionTools (axe 4)", () => {
     render(<SelectionTools selectedCount={0} {...cbs} onCurrentSegment={onCurrentSegment} />);
     fireEvent.click(screen.getByTestId("select-segment"));
     expect(onCurrentSegment).toHaveBeenCalled();
-  });
-});
-
-describe("DocumentMinimap (axe 5)", () => {
-  const colors = ["#06B6D4", undefined, "#F59E0B", "#A78BFA"];
-  it("affiche l'indicateur de viewport quand ça défile", () => {
-    render(
-      <DocumentMinimap
-        sentenceColors={colors}
-        scrollPct={0.5}
-        viewportPct={0.3}
-        hasScroll
-        focused={2}
-        onJumpFraction={() => {}}
-      />,
-    );
-    expect(screen.getByTestId("document-minimap")).toBeInTheDocument();
-    expect(screen.getByTestId("minimap-viewport")).toBeInTheDocument();
-  });
-  it("dégrade sans indicateur de viewport si rien ne défile", () => {
-    render(
-      <DocumentMinimap
-        sentenceColors={colors}
-        scrollPct={0}
-        viewportPct={1}
-        hasScroll={false}
-        focused={0}
-        onJumpFraction={() => {}}
-      />,
-    );
-    expect(screen.queryByTestId("minimap-viewport")).toBeNull();
-  });
-  it("clic sur le rail saute à une fraction du document", () => {
-    const onJumpFraction = vi.fn();
-    render(
-      <DocumentMinimap
-        sentenceColors={colors}
-        scrollPct={0}
-        viewportPct={1}
-        hasScroll={false}
-        focused={0}
-        onJumpFraction={onJumpFraction}
-      />,
-    );
-    fireEvent.click(screen.getByTestId("document-minimap").firstChild as Element);
-    expect(onJumpFraction).toHaveBeenCalled();
   });
 });
 

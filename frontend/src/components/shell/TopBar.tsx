@@ -7,7 +7,7 @@
 
 import { useEffect } from "react";
 import Link from "next/link";
-import { BookOpen, HelpCircle, Sun, Moon, ShieldCheck } from "lucide-react";
+import { BookOpen, Sun, Moon, ShieldCheck } from "lucide-react";
 import { useUiStore } from "@/store/ui";
 import { useMe, useProjects } from "@/lib/api/hooks";
 import { isAdminRole } from "@/lib/roles";
@@ -84,15 +84,6 @@ export function TopBar() {
           className="flex items-center gap-1.5 rounded-md border border-line bg-panel px-2.5 py-1 text-sm text-ink hover:bg-panel-muted"
         >
           <BookOpen size={15} aria-hidden /> Documentation
-        </Link>
-        <Link
-          href="/help"
-          data-testid="help-link"
-          aria-label="Centre d'aide"
-          title="Centre d'aide"
-          className="flex h-7 w-7 items-center justify-center rounded-md border border-line bg-panel text-ink hover:bg-panel-muted"
-        >
-          <HelpCircle size={16} aria-hidden />
         </Link>
         <ActivityBell />
         <button

@@ -3,18 +3,20 @@
 /**
  * InspectorJudgeCompare — sous l'evidence span + rationale, permet de COMPARER la
  * proposition de chaque source pour la clause sélectionnée : « Vous » (annotation
- * humaine courante), « Claude », « Codex ». Pour un juge, affiche son evidence span
- * et son rationale (lecture seule) + un bouton « Reprendre » qui recopie ces valeurs
- * dans votre annotation (arbitrage rapide). Données via useLlmAgreement (version
- * courante). N annotateurs humains : prévu via /contributors (étape suivante).
+ * humaine courante) + chaque juge LLM présent (Claude, Codex, Mistral…). Pour un
+ * juge, affiche son evidence span et son rationale (lecture seule) + un bouton
+ * « Reprendre » qui recopie ces valeurs dans votre annotation (arbitrage rapide).
+ * Données via useLlmAgreement (version courante) — source N-modèles (`preByJudge`).
  */
 
 import { useState } from "react";
 import { useWorkspaceStore } from "@/store/workspace";
 import { useLlmAgreement } from "@/lib/api/hooks";
+import { LLM_JUDGES } from "@/lib/llmJudges";
 import type { PreClause } from "@/types/contract";
 
-type Source = "human" | "claude" | "codex";
+/** "human" ou un identifiant de juge LLM (claude/codex/mistral/…). */
+type Source = string;
 
 /** Clause du juge couvrant l'ancre : dernière clause d'ancre <= anchorIndex. */
 function coveringClause(clauses: PreClause[] | undefined, anchorIndex: number): PreClause | null {
@@ -48,16 +50,20 @@ export function InspectorJudgeCompare({
   const llm = useLlmAgreement(documentId, projectSlug, llmVersion);
   const [source, setSource] = useState<Source>("human");
 
-  const claude = coveringClause(llm.claudePre?.clauses, anchorIndex);
-  const codex = coveringClause(llm.codexPre?.clauses, anchorIndex);
+  // Clause couvrante par juge (claude/codex/mistral/…), via la source N-modèles.
+  const clauseFor = (judgeId: string) =>
+    coveringClause(llm.preByJudge?.[judgeId]?.clauses, anchorIndex);
 
   const OPTIONS: { value: Source; label: string; enabled: boolean }[] = [
     { value: "human", label: "Vous", enabled: true },
-    { value: "claude", label: "Claude", enabled: Boolean(claude) },
-    { value: "codex", label: "Codex", enabled: Boolean(codex) },
+    ...LLM_JUDGES.map((j) => ({
+      value: j.id,
+      label: j.label,
+      enabled: Boolean(clauseFor(j.id)),
+    })),
   ];
 
-  const judge = source === "claude" ? claude : source === "codex" ? codex : null;
+  const judge = source === "human" ? null : clauseFor(source);
   const evidence = source === "human" ? humanEvidence : judge?.evidenceSpan ?? "";
   const rationale = source === "human" ? humanRationale : judge?.rationale ?? "";
 
@@ -93,7 +99,7 @@ export function InspectorJudgeCompare({
       {source === "human" ? (
         <p className="text-[11px] text-ink-muted">
           Votre evidence span et votre rationale sont éditables ci-dessus. Choisissez
-          Claude ou Codex pour comparer et reprendre leur proposition.
+          un juge (Claude, Codex, Mistral…) pour comparer et reprendre sa proposition.
         </p>
       ) : (
         <div className="flex flex-col gap-1.5 text-xs" data-testid="inspector-source-content">

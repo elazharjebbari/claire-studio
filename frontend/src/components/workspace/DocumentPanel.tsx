@@ -63,7 +63,6 @@ import { DivergenceNav } from "./DivergenceNav";
 import { ComparePanel } from "./ComparePanel";
 import { RationaleHover, type HoverJudge } from "./RationaleHover";
 import { SelectionTools } from "./SelectionTools";
-import { DocumentMinimap, useScrollViewport } from "./DocumentMinimap";
 import { agreementNway } from "@/lib/llmAgreement";
 import { BoundaryEvidence } from "./BoundaryEvidence";
 import { useDivergenceShortcuts } from "./useDivergenceShortcuts";
@@ -411,26 +410,8 @@ export function DocumentPanel({
     focusedRef.current?.scrollIntoView?.({ block: "nearest", behavior: "smooth" });
   }, [focused]);
 
-  // Minimap (axe 5) : suivi du viewport + couleur de thème par phrase + saut au clic.
+  // Conteneur du document (référence pour la mise en page et le défilement).
   const panelRef = useRef<HTMLDivElement>(null);
-  const viewport = useScrollViewport(panelRef);
-  const sentenceColors = useMemo(
-    () =>
-      Array.from({ length: n }, (_, i) => {
-        const r = runAt(runs, i);
-        return r ? getThemeToken(r.theme).color : undefined;
-      }),
-    [runs, n],
-  );
-  const jumpToFraction = (f: number) => {
-    const idx = Math.min(n - 1, Math.max(0, Math.round(f * Math.max(0, n - 1))));
-    focusSentence(idx);
-    if (typeof document !== "undefined") {
-      document
-        .querySelector(`[data-testid="sentence-${idx}"]`)
-        ?.scrollIntoView?.({ block: "center", behavior: "smooth" });
-    }
-  };
 
   return (
     <>
@@ -936,16 +917,6 @@ export function DocumentPanel({
           {blockDrag.tip.count > 1 ? "s" : ""}
         </div>
       )}
-
-      {/* Minimap de position (axe 5) — rail fixe à droite (écrans larges). */}
-      <DocumentMinimap
-        sentenceColors={sentenceColors}
-        scrollPct={viewport.scrollPct}
-        viewportPct={viewport.viewportPct}
-        hasScroll={viewport.hasScroll}
-        focused={focused}
-        onJumpFraction={jumpToFraction}
-      />
 
       {/* Aperçu PASSIF du rationale au survol (axe 1) — masqué si un menu/popover
           d'édition est ouvert (évite l'empilement). Contenu = clause humaine + LLM. */}

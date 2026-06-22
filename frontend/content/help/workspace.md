@@ -34,9 +34,6 @@ Cliquer une phrase déjà ancrée sélectionne sa clause dans l'inspecteur.
 
 Plusieurs aides visuelles facilitent la navigation dans les longs documents :
 
-- **Minimap & position** — une vue miniature du document (à droite) montre votre
-  position de lecture, la densité des clauses et des divergences ; cliquez ou
-  glissez dessus pour sauter à un endroit.
 - **Confort de lecture** — ajustez la **taille du texte** (A− / A+) et la **largeur**
   de la colonne de lecture. Ces réglages n'affectent que l'affichage, jamais vos
   données.

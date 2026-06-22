@@ -40,13 +40,6 @@ export const WORKSPACE_TOUR_STEPS: TourStep[] = [
     description:
       "Liste les clauses du document (thèmes colorés), la progression et les bascules d'overlays. Cliquez une clause pour y sauter.",
   },
-  {
-    section: "Vue d'ensemble",
-    element: '[data-testid="document-minimap"]',
-    title: "Minimap & position",
-    description:
-      "Vue miniature du document : votre position de lecture, la densité des clauses et des divergences. Cliquez ou glissez pour naviguer rapidement.",
-  },
 
   // ── B. Lire le document ─────────────────────────────────────────────────
   {
@@ -245,7 +238,7 @@ export const WORKSPACE_TOUR_STEPS: TourStep[] = [
     element: '[data-testid="annotation-workspace"]',
     title: "C'est tout !",
     description:
-      "Raccourcis clés : j/k phrase · n/p divergence · 1/2 adopter Claude/Codex (en comparaison) · e œil de frontière · g panneau comparatif · b frontière · t thème · c commentaire · 0–3 certitude · ⌘S snapshot · ⌘Z/⌘Y annuler/rétablir. Le détail complet est dans le centre d'aide (« ? » dans la barre du haut).",
+      "Raccourcis clés : j/k phrase · n/p divergence · 1/2 adopter Claude/Codex (en comparaison) · e œil de frontière · g panneau comparatif · b frontière · t thème · c commentaire · 0–3 certitude · ⌘S snapshot · ⌘Z/⌘Y annuler/rétablir. Le détail complet est dans le centre d'aide (« Documentation » dans la barre du haut).",
   },
 ];
 

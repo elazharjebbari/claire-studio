@@ -55,7 +55,6 @@ describe("Configuration de la visite guidée du workspace", () => {
       '[data-testid="snapshot-btn"]',
       '[data-testid="submit-btn"]',
       // Blocs récents désormais couverts par la visite refondue (N-way + UI à jour)
-      '[data-testid="document-minimap"]',
       '[data-testid="selection-tools"]',
       '[data-testid="legal-nature"]',
       '[data-testid="reading-controls"]',
