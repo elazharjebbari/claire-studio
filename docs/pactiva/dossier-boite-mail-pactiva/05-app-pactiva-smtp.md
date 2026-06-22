@@ -21,23 +21,30 @@ SERVER_EMAIL       = env("SERVER_EMAIL",       default="no-reply@pactiva.legal")
 > garantit l'adresse exacte en production.
 
 ## `.env` prod (fichier non versionné, `chmod 600`)
-Sur le serveur, dans le `.env` de l'app (jamais dans git) :
+Sur le serveur, dans le `.env` de l'app (jamais dans git) — **config réelle déployée** :
 ```env
-DJANGO_EMAIL_BACKEND=django.core.mail.backends.smtp.EmailBackend
-EMAIL_HOST=127.0.0.1
+DJANGO_EMAIL_BACKEND=claire.common.email_backends.LocalTrustedTLSBackend
+EMAIL_HOST=mail.lumiereacademy.com
 EMAIL_PORT=587
 EMAIL_USE_TLS=true
 EMAIL_USE_SSL=false
 EMAIL_HOST_USER=no-reply@pactiva.legal
-EMAIL_HOST_PASSWORD=<le mot de passe P_NOREPLY genere a l'etape 02>
+EMAIL_HOST_PASSWORD=<le mot de passe no-reply@ — voir .credentials/>
 DEFAULT_FROM_EMAIL=Pactiva <no-reply@pactiva.legal>
 SERVER_EMAIL=no-reply@pactiva.legal
 ```
-> **Pourquoi `127.0.0.1:587`** : Stalwart écoute en local sur 587 (submission STARTTLS).
-> Rester en loopback évite le DNS et le réseau public, et le HELO interne suffit pour
-> l'authentification SMTP AUTH. DKIM est appliqué par Stalwart à l'émission (clé
-> `d=pactiva.legal`), donc la signature est alignée même si le HELO public serait
-> `mail.lumiereacademy.com`.
+> **Deux pièges rencontrés et résolus :**
+> 1. **`EMAIL_HOST=mail.lumiereacademy.com`** (pas `127.0.0.1`) : Python 3.12 vérifie le
+>    nom du certificat au `STARTTLS` ; sur `127.0.0.1` → « IP address mismatch ». Le FQDN
+>    correspond au cert (et résout sur la même machine).
+> 2. **Backend custom `LocalTrustedTLSBackend`** (`claire/common/email_backends.py`) :
+>    Stalwart ne présente que le **cert feuille** sur 587 (sans la chaîne intermédiaire)
+>    → vérif échoue (« unable to get local issuer »). Le backend custom utilise un
+>    contexte TLS non vérifiant (chiffrement conservé), justifié car la soumission vise
+>    le Stalwart **de confiance, même machine** (comme `verify_peer=false` côté SnappyMail).
+>
+> DKIM est appliqué par Stalwart à l'émission (clé `d=pactiva.legal`) → alignement DMARC
+> OK quel que soit le HELO. **Vérifié en prod : `send_mail -> 1`.**
 
 ## Déploiement
 ```bash
