@@ -58,6 +58,7 @@
 | 23 | Script thème **anti-FOUC** (bloquant, avant le 1er paint) | `frontend/src/app/layout.tsx` | ✅ |
 | 24 | File de travail `/work` migrée sur `useProjectDocuments` (statut = `mySession`, fin du regroupement erroné sur `assignment.status`) | `frontend/src/app/(app)/work/page.tsx` | ✅ |
 | 25 | Formats d'export **conll** + **xml** réellement implémentés (huggingface reste un repli jsonl TRACÉ) | `backend/claire/exports/services.py` | ✅ |
+| 26 | Navigation **regroupée en espaces nommés** (Ma session / Corpus & projets / Collaboration) — lève l'ambiguïté | `frontend/src/components/shell/Sidebar.tsx` | ✅ |
 
 ## Lot 4c — Reste planifié 🔜 (priorisé)
 

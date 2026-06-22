@@ -37,22 +37,32 @@ interface NavItem {
   icon: LucideIcon;
 }
 
-// Plus de slug en dur (H2) : les liens propres au projet n'apparaissent que si un
-// projet courant est résolu ; sinon la nav reste générique (projets, comparer…).
-function projectNav(slug: string | undefined): NavItem[] {
-  const items: NavItem[] = [
-    { href: "/home", label: "Accueil", icon: Home },
-    { href: "/work", label: "Mes annotations", icon: ListChecks },
-  ];
+interface NavGroup {
+  label?: string;
+  items: NavItem[];
+}
+
+// Espaces de navigation NOMMÉS (ADR-001 : lever l'ambiguïté) — on distingue
+// « Ma session » (où j'annote, mon travail) de « Collaboration » (comparer/échanger)
+// et de « Corpus & projets ». Plus de slug en dur (H2) : les liens propres au projet
+// n'apparaissent que si un projet courant est résolu.
+function navGroups(slug: string | undefined): NavGroup[] {
+  const session: NavItem[] = [{ href: "/work", label: "Mes annotations", icon: ListChecks }];
   if (slug) {
-    items.push({ href: `/projects/${slug}`, label: "Tableau de bord", icon: LayoutDashboard });
-    items.push({ href: `/projects/${slug}/docs`, label: "Documents", icon: FileText });
+    session.push({ href: `/projects/${slug}`, label: "Tableau de bord", icon: LayoutDashboard });
   }
-  items.push({ href: `/projects`, label: "Mes projets", icon: FolderKanban });
-  items.push({ href: `/public`, label: "Projets publiés", icon: Globe });
-  items.push({ href: `/compare`, label: "Comparer", icon: GitCompareArrows });
-  items.push({ href: `/settings`, label: "Préférences", icon: Settings2 });
-  return items;
+  const corpus: NavItem[] = [];
+  if (slug) corpus.push({ href: `/projects/${slug}/docs`, label: "Documents", icon: FileText });
+  corpus.push({ href: `/projects`, label: "Mes projets", icon: FolderKanban });
+  corpus.push({ href: `/public`, label: "Projets publiés", icon: Globe });
+
+  return [
+    { items: [{ href: "/home", label: "Accueil", icon: Home }] },
+    { label: "Ma session", items: session },
+    { label: "Corpus & projets", items: corpus },
+    { label: "Collaboration", items: [{ href: `/compare`, label: "Comparer", icon: GitCompareArrows }] },
+    { items: [{ href: `/settings`, label: "Préférences", icon: Settings2 }] },
+  ];
 }
 
 const ADMIN_NAV: NavItem[] = [
@@ -72,7 +82,7 @@ export function Sidebar() {
   const toggle = useUiStore((s) => s.toggleSidebar);
   const project = useCurrentProjectSlug();
   const pathname = usePathname();
-  const items = projectNav(project);
+  const groups = navGroups(project);
   // Séparation admin / annotateur (chantier G) : la section Administration n'est
   // visible que pour les rôles admin/owner ; l'annotateur garde un espace focalisé.
   const { data: me } = useMe();
@@ -123,7 +133,20 @@ export function Sidebar() {
         </button>
       </div>
 
-      <ul className="flex flex-col gap-0.5 px-2">{items.map((it) => renderItem(it))}</ul>
+      <div className="flex flex-col gap-2 px-2">
+        {groups.map((g, gi) =>
+          g.items.length === 0 ? null : (
+            <div key={g.label ?? `g${gi}`}>
+              {g.label && !collapsed && (
+                <p className="px-2.5 pb-0.5 text-[10px] font-semibold uppercase tracking-wide text-ink-muted">
+                  {g.label}
+                </p>
+              )}
+              <ul className="flex flex-col gap-0.5">{g.items.map((it) => renderItem(it))}</ul>
+            </div>
+          ),
+        )}
+      </div>
 
       {isAdmin && (
         <div className="mt-auto border-t border-line px-2 py-2" data-testid="admin-nav">
