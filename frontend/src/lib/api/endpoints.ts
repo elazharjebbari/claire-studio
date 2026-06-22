@@ -293,33 +293,81 @@ export function addClause(
   annotationId: string,
   clause: Partial<Clause> & { anchorIndex: number; theme: string; clientOpId?: string },
 ): Promise<Clause> {
-  return apiFetch<Clause>(`/annotations/${annotationId}/clauses`, {
+  const body: Record<string, unknown> = {
+    anchor_index: clause.anchorIndex,
+    theme: clause.theme,
+    legal_nature: clause.legalNature ?? null,
+    evidence_span: clause.evidenceSpan ?? "",
+    rationale: clause.rationale ?? "",
+    certainty: clause.certainty ?? null,
+    validated: clause.validated ?? false,
+    // Idempotence (chantier C) : un retry portant le même op ne duplique pas.
+    client_op_id: clause.clientOpId,
+  };
+  // Multi-label / frontière / niveau (additif, triage) : seulement si fournis.
+  if (clause.themes !== undefined) body.themes = clause.themes;
+  if (clause.boundary !== undefined) body.boundary = clause.boundary;
+  if (clause.triageLevel !== undefined) body.triage_level = clause.triageLevel;
+  return apiFetch<Clause>(`/annotations/${annotationId}/clauses`, { method: "POST", body });
+}
+
+export function patchClause(id: string, patch: Partial<Clause>): Promise<Clause> {
+  const body: Record<string, unknown> = {
+    theme: patch.theme,
+    legal_nature: patch.legalNature,
+    evidence_span: patch.evidenceSpan,
+    rationale: patch.rationale,
+    certainty: patch.certainty,
+    validated: patch.validated,
+  };
+  // Multi-label / frontière / niveau (additif) : envoyés seulement si fournis.
+  if (patch.themes !== undefined) body.themes = patch.themes;
+  if (patch.boundary !== undefined) body.boundary = patch.boundary;
+  if (patch.triageLevel !== undefined) body.triage_level = patch.triageLevel;
+  return apiFetch<Clause>(`/clauses/${id}`, { method: "PATCH", body });
+}
+
+/** Item d'acceptation par lot (C1) — anchorIndex + thème primaire (+ multi/frontière/niveau). */
+export interface BatchClauseInput {
+  anchorIndex: number;
+  theme: string;
+  themes?: { label: string; role: string; support?: number }[];
+  boundary?: { type: string; support: number };
+  triageLevel?: string;
+  clientOpId?: string;
+}
+
+export function batchAcceptClauses(
+  annotationId: string,
+  clauses: BatchClauseInput[],
+): Promise<{ created: Clause[]; conflicts: { anchorIndex: number; reason: string }[] }> {
+  return apiFetch(`/annotations/${annotationId}/clauses/batch`, {
     method: "POST",
     body: {
-      anchor_index: clause.anchorIndex,
-      theme: clause.theme,
-      legal_nature: clause.legalNature ?? null,
-      evidence_span: clause.evidenceSpan ?? "",
-      rationale: clause.rationale ?? "",
-      certainty: clause.certainty ?? null,
-      validated: clause.validated ?? false,
-      // Idempotence (chantier C) : un retry portant le même op ne duplique pas.
-      client_op_id: clause.clientOpId,
+      clauses: clauses.map((c) => ({
+        anchor_index: c.anchorIndex,
+        theme: c.theme,
+        themes: c.themes,
+        boundary: c.boundary,
+        triage_level: c.triageLevel,
+        client_op_id: c.clientOpId,
+      })),
     },
   });
 }
 
-export function patchClause(id: string, patch: Partial<Clause>): Promise<Clause> {
-  return apiFetch<Clause>(`/clauses/${id}`, {
-    method: "PATCH",
-    body: {
-      theme: patch.theme,
-      legal_nature: patch.legalNature,
-      evidence_span: patch.evidenceSpan,
-      rationale: patch.rationale,
-      certainty: patch.certainty,
-      validated: patch.validated,
-    },
+export function swapClausePrimary(id: string, label: string): Promise<Clause> {
+  return apiFetch<Clause>(`/clauses/${id}/swap-primary`, { method: "POST", body: { label } });
+}
+
+export function setClauseBoundary(
+  id: string,
+  op: "set_hard" | "set_soft",
+  validatedBy?: string,
+): Promise<Clause> {
+  return apiFetch<Clause>(`/clauses/${id}/boundary`, {
+    method: "POST",
+    body: { op, validated_by: validatedBy },
   });
 }
 

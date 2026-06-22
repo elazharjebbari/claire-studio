@@ -19,7 +19,8 @@ import {
   usePatchAnnotation,
   usePreAnnotations,
 } from "@/lib/api/hooks";
-import { History, MessageSquare, Layers, BarChart3, PanelRight } from "lucide-react";
+import { History, MessageSquare, Layers, BarChart3, PanelRight, ListChecks } from "lucide-react";
+import { TRIAGE_ENABLED } from "@/lib/env";
 import { preClausesToPivot } from "@/lib/pivot";
 import { LLM_JUDGES } from "@/lib/llmJudges";
 import { WorkspaceTourButton } from "./WorkspaceTourButton";
@@ -34,6 +35,7 @@ export function WorkspaceToolbar({
   onSnapshotRef,
   onToggleHistory,
   onToggleComments,
+  onToggleTriage,
 }: {
   annotationId: string;
   projectSlug: string;
@@ -41,6 +43,7 @@ export function WorkspaceToolbar({
   onSnapshotRef?: (fn: () => void) => void;
   onToggleHistory?: () => void;
   onToggleComments?: () => void;
+  onToggleTriage?: () => void;
 }) {
   const { data: annotation } = useAnnotation(annotationId);
   const { data: preClaude } = usePreAnnotations(projectSlug, documentId);
@@ -234,6 +237,18 @@ export function WorkspaceToolbar({
       >
         <MessageSquare size={14} aria-hidden /> Commentaires
       </button>
+
+      {TRIAGE_ENABLED && onToggleTriage && (
+        <button
+          type="button"
+          data-testid="toggle-triage"
+          onClick={onToggleTriage}
+          title="File de triage — suggestions d'annotation par niveau de confiance (C1–C5)"
+          className="inline-flex items-center gap-1.5 rounded-md border border-line px-2 py-1 text-xs text-ink-muted hover:bg-panel-muted"
+        >
+          <ListChecks size={14} aria-hidden /> File de triage
+        </button>
+      )}
 
       <button
         type="button"

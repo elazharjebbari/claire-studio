@@ -20,6 +20,8 @@ import { InspectorPanel } from "./InspectorPanel";
 import { WorkspaceToolbar } from "./WorkspaceToolbar";
 import { HistoryPanel } from "./HistoryPanel";
 import { CommentsPanel } from "./CommentsPanel";
+import { TriageQueue } from "./triage/TriageQueue";
+import { TRIAGE_ENABLED } from "@/lib/env";
 import { useWorkspaceShortcuts } from "./useShortcuts";
 import { useAutosave } from "./useAutosave";
 
@@ -52,6 +54,7 @@ export function AnnotationWorkspace({ annotationId }: { annotationId: string }) 
   const registerSnapshot = useCallback((fn: () => void) => setSnapshotFn(() => fn), []);
   const [showHistory, setShowHistory] = useState(false);
   const [showComments, setShowComments] = useState(false);
+  const [showTriage, setShowTriage] = useState(false);
 
   // Initialise le store local dès que l'annotation + le document sont chargés.
   useEffect(() => {
@@ -121,6 +124,7 @@ export function AnnotationWorkspace({ annotationId }: { annotationId: string }) 
         onSnapshotRef={registerSnapshot}
         onToggleHistory={() => setShowHistory((v) => !v)}
         onToggleComments={() => setShowComments((v) => !v)}
+        onToggleTriage={isMine ? () => setShowTriage((v) => !v) : undefined}
       />
       {isMine ? (
         <div
@@ -184,6 +188,14 @@ export function AnnotationWorkspace({ annotationId }: { annotationId: string }) 
           />
         )}
         {showHistory && <HistoryPanel onClose={() => setShowHistory(false)} />}
+        {TRIAGE_ENABLED && isMine && showTriage && (
+          <TriageQueue
+            annotationId={annotation.id}
+            documentId={annotation.documentId}
+            projectSlug={annotation.projectSlug}
+            onClose={() => setShowTriage(false)}
+          />
+        )}
       </div>
     </div>
   );

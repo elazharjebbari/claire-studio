@@ -344,7 +344,7 @@ export function useActivity(project?: string) {
 export function useAddClause(annotationId: string) {
   const qc = useQueryClient();
   return useMutation({
-    mutationFn: (clause: Partial<Clause> & { anchorIndex: number; theme: string }) =>
+    mutationFn: (clause: Partial<Clause> & { anchorIndex: number; theme: string; clientOpId?: string }) =>
       api.addClause(annotationId, clause),
     onSuccess: () => qc.invalidateQueries({ queryKey: qk.annotation(annotationId) }),
   });
@@ -363,6 +363,32 @@ export function useDeleteClause(annotationId: string) {
   const qc = useQueryClient();
   return useMutation({
     mutationFn: (id: string) => api.deleteClause(id),
+    onSuccess: () => qc.invalidateQueries({ queryKey: qk.annotation(annotationId) }),
+  });
+}
+
+// ── Triage (annotation assistée multi-label) ──────────────────────────────────
+export function useBatchAcceptClauses(annotationId: string) {
+  const qc = useQueryClient();
+  return useMutation({
+    mutationFn: (clauses: api.BatchClauseInput[]) => api.batchAcceptClauses(annotationId, clauses),
+    onSuccess: () => qc.invalidateQueries({ queryKey: qk.annotation(annotationId) }),
+  });
+}
+
+export function useSwapClausePrimary(annotationId: string) {
+  const qc = useQueryClient();
+  return useMutation({
+    mutationFn: ({ id, label }: { id: string; label: string }) => api.swapClausePrimary(id, label),
+    onSuccess: () => qc.invalidateQueries({ queryKey: qk.annotation(annotationId) }),
+  });
+}
+
+export function useSetClauseBoundary(annotationId: string) {
+  const qc = useQueryClient();
+  return useMutation({
+    mutationFn: ({ id, op, validatedBy }: { id: string; op: "set_hard" | "set_soft"; validatedBy?: string }) =>
+      api.setClauseBoundary(id, op, validatedBy),
     onSuccess: () => qc.invalidateQueries({ queryKey: qk.annotation(annotationId) }),
   });
 }

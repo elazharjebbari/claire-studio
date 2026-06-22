@@ -68,6 +68,28 @@ function page<T>(results: T[]) {
   return { count: results.length, next: null, previous: null, results };
 }
 
+/** Construit une Clause mock depuis un body d'écriture (mono ou multi-label / triage). */
+function buildMockClause(body: Record<string, unknown>): Clause {
+  const theme = (body.theme as string) ?? "";
+  const themes = (body.themes as Clause["themes"]) ?? [{ label: theme, role: "primary" as const }];
+  const boundary = body.boundary as Clause["boundary"];
+  return {
+    id: `cl-${(clauseSeq += 1)}`,
+    annotationId: annotation.id,
+    anchorIndex: (body.anchor_index ?? body.anchorIndex) as number,
+    theme: themes.find((t) => t.role === "primary")?.label ?? theme,
+    themes,
+    boundary: boundary ?? { type: "hard", support: 1 },
+    triageLevel: ((body.triage_level ?? body.triageLevel) as Clause["triageLevel"]) ?? null,
+    legalNature: (body.legal_nature as string | null) ?? null,
+    evidenceSpan: (body.evidence_span as string) ?? "",
+    rationale: (body.rationale as string) ?? "",
+    certainty: (body.certainty as Clause["certainty"]) ?? null,
+    order: annotation.clauses.length,
+    validated: (body.validated as boolean) ?? false,
+  };
+}
+
 export const handlers = [
   // Auth
   http.post(`${BASE}/auth/login`, () =>
@@ -235,30 +257,57 @@ export const handlers = [
     return HttpResponse.json(annotation);
   }),
   http.post(`${BASE}/annotations/:id/clauses`, async ({ request }) => {
-    const body = (await request.json()) as {
-      anchor_index: number;
-      theme: string;
-      legal_nature?: string | null;
-      evidence_span?: string;
-      rationale?: string;
-      certainty?: number | null;
-    };
-    const clause: Clause = {
-      id: `cl-${(clauseSeq += 1)}`,
-      annotationId: annotation.id,
-      anchorIndex: body.anchor_index,
-      theme: body.theme,
-      legalNature: body.legal_nature ?? null,
-      evidenceSpan: body.evidence_span ?? "",
-      rationale: body.rationale ?? "",
-      certainty: (body.certainty as Clause["certainty"]) ?? null,
-      order: annotation.clauses.length,
-    };
+    const body = (await request.json()) as Record<string, unknown>;
+    const clause = buildMockClause(body);
     annotation = {
       ...annotation,
       clauses: [...annotation.clauses, clause].sort((a, b) => a.anchorIndex - b.anchorIndex),
     };
     return HttpResponse.json(clause, { status: 201 });
+  }),
+  // Triage : acceptation par lot (C1) — transactionnelle + conflits INV-2 rapportés.
+  http.post(`${BASE}/annotations/:id/clauses/batch`, async ({ request }) => {
+    const body = (await request.json()) as { clauses: Record<string, unknown>[] };
+    const created: Clause[] = [];
+    const conflicts: { anchorIndex: number; reason: string }[] = [];
+    for (const item of body.clauses ?? []) {
+      const ai = (item.anchor_index ?? item.anchorIndex) as number;
+      if (annotation.clauses.some((c) => c.anchorIndex === ai)) {
+        conflicts.push({ anchorIndex: ai, reason: "déjà annotée (INV-2)" });
+        continue;
+      }
+      const clause = buildMockClause(item);
+      annotation = { ...annotation, clauses: [...annotation.clauses, clause] };
+      created.push(clause);
+    }
+    annotation = { ...annotation, clauses: [...annotation.clauses].sort((a, b) => a.anchorIndex - b.anchorIndex) };
+    return HttpResponse.json({ created, conflicts }, { status: created.length ? 201 : 409 });
+  }),
+  http.post(`${BASE}/clauses/:id/swap-primary`, async ({ params, request }) => {
+    const { label } = (await request.json()) as { label: string };
+    annotation = {
+      ...annotation,
+      clauses: annotation.clauses.map((c) => {
+        if (c.id !== params.id) return c;
+        const themes = (c.themes ?? [{ label: c.theme, role: "primary" as const }]).map((t) => ({
+          ...t, role: t.label === label ? ("primary" as const) : t.role === "primary" ? ("secondary" as const) : t.role,
+        }));
+        return { ...c, theme: label, themes };
+      }),
+    };
+    return HttpResponse.json(annotation.clauses.find((c) => c.id === params.id));
+  }),
+  http.post(`${BASE}/clauses/:id/boundary`, async ({ params, request }) => {
+    const { op } = (await request.json()) as { op: "set_hard" | "set_soft" };
+    annotation = {
+      ...annotation,
+      clauses: annotation.clauses.map((c) =>
+        c.id === params.id
+          ? { ...c, boundary: { type: op === "set_hard" ? "hard" : "soft", support: c.boundary?.support ?? 1 } }
+          : c,
+      ),
+    };
+    return HttpResponse.json(annotation.clauses.find((c) => c.id === params.id));
   }),
   http.patch(`${BASE}/clauses/:id`, async ({ params, request }) => {
     const patch = (await request.json()) as Record<string, unknown>;

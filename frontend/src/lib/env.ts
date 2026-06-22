@@ -37,3 +37,10 @@ export const DEBUG_BAR_ENABLED =
 
 /** Dev runtime (utilisé pour le détail des stacks d'erreur). */
 export const IS_DEV = process.env.NODE_ENV !== "production";
+
+/**
+ * Mode « File de triage » (annotation assistée multi-label). Désactivé par défaut ;
+ * activé via NEXT_PUBLIC_TRIAGE=true. En mode mock (E2E/dev), activé pour les tests.
+ */
+export const TRIAGE_ENABLED =
+  process.env.NEXT_PUBLIC_TRIAGE === "true" || MOCKS_ENABLED;
