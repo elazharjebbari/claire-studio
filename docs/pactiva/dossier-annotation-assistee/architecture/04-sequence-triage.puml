@@ -1,0 +1,51 @@
+@startuml sequence-triage
+title Séquence — du chargement à la validation (file de triage)
+skinparam shadowing false
+actor Annotateur as U
+participant "TriageQueue / SuggestionCard" as UI
+participant "triageEngine (pur)" as E
+participant "store/workspace" as S
+participant "API DRF" as API
+database "Clause + ClauseTheme + audit" as DB
+
+== Chargement ==
+UI -> API : GET preannotations?version (K juges)
+API --> UI : preByJudge (votes thème + is_block_start)
+UI -> E : pour chaque phrase: triageEngine(themeVotes, boundaryVotes, RULES)
+E --> UI : TriageResult{level, labels[], boundary, override?, explanation}
+note right of E : déterministe, sans réseau ;\nexplication = règle appliquée
+
+== C1 — Or (lot) ==
+U -> UI : sélectionne la plage C1, "Accepter le lot"
+UI -> S : batchAccept(range)  (themes=[primary], boundary=hard)
+S -> API : POST /annotations/{id}/clauses:batch  (idempotent client_op_id)
+API -> DB : insert clauses + ClauseTheme(primary) + audit(batch_accept)
+API --> S : 200 clauses créées
+S --> UI : file avance au prochain niveau
+
+== C2 — confirmation 1 clic (avec override anti-refuge) ==
+UI -> U : carte « override refuge→précis (mistral: MISC, κ=0.27) — Annulable »
+U -> UI : Confirmer  (ou Annuler l'override)
+UI -> S : acceptSuggestion(localId)  (audit: refuge_to_precis)
+S -> API : POST clause (theme primary précis) + audit
+API -> DB : clause + audit(auto override + human_confirm)
+
+== C3 — multi-label (valider le set) ==
+UI -> U : primaire ✓ + secondaire ◻ (cluster) + votes
+U -> UI : Valider le set  | Permuter | Retirer 2nd
+UI -> S : validateSet / swapPrimary / removeSecondary
+S -> API : PATCH clause themes[primary,secondary]  (refuge≠secondary vérifié)
+API -> DB : ClauseTheme x2 (primary+secondary) + audit
+
+== C4 — vérifier / C5 — arbitrer ==
+U -> UI : garder majorité | choisir l'autre | (C5) choisir 1 / créer multi / indécidable
+UI -> S : updateDraft(themes) | escalate
+S -> API : PATCH clause (+ flag needs_escalation si indécidable)
+API -> DB : clause + audit(human_decision)
+
+== Frontière molle (transversal) ==
+U -> UI : Fusionner / Scinder (frontière soft)
+UI -> S : mergeClause / splitClause
+S -> API : PATCH boundary(type, validated_by)
+API -> DB : boundary figée (hard après validation)
+@enduml

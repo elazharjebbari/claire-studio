@@ -1,0 +1,74 @@
+MAQUETTES (wireframes ASCII) — annotation assistée
+Légende : ▮ frontière dure · ┄ frontière molle · ● niveau · ✓ primaire · ◻ secondaire
+Pastilles juge : [C]laude [X]codex [M]istral
+
+================================================================================
+1) MODE FILE DE TRIAGE (split view : file à gauche, document ancré à droite)
+================================================================================
+┌ File de triage — Booking.com ───────────────────────┐ ┌ Document (ancré) ───────────┐
+│ Progression  ▓▓▓▓▓▓░░░░  61 / 100      ● par niveau   │ │ 13  these terms ...          │
+│  C1 ▓▓▓ 23   C2 ▓▓ 20   C3 ▓ 15   C4 ▓▓ 26   C5 ▓ 16  │ │ 14  ...                      │
+│──────────────────────────────────────────────────────│ │▶15  our service is made     │
+│  ● C3  multi-label                       [Valider] ⋯  │ │     available for personal  │
+│  « our service is made available for personal and ... »│ │     and non-commercial use  │
+│  contexte : [C]ACCEPTABLE_USE [X]ACCEPTABLE_USE         │ │     only .                   │
+│             [M]LICENSE_IP                              │ │ 16  ...                      │
+│  décision : ✓ LICENSE_IP   ◻ ACCEPTABLE_USE  ▮(3/3)    │ └──────────────────────────────┘
+│  logique  : couple cluster ACCEPTABLE_USE↔LICENSE_IP   │
+│             → chevauchement réel ; primaire = préséance │  Raccourcis : Entrée=valider
+│             LICENSE_IP>ACCEPTABLE_USE                  │  S=permuter  −=retirer 2nd
+│  [✓ Valider le set]  [⇅ Permuter (S)]  [− Retirer (−)] │  J/K=naviguer  Échap=quitter
+└────────────────────────────────────────────────────────┘
+
+================================================================================
+2) CARTE DE SUGGESTION — un format par niveau (compacte, repliable)
+================================================================================
+C1 — Or (repliée, lot) ────────────────────────────────────────────────────────
+┌ ● C1  Or · 3/3 · ▮ ────────────────────────────────── [✓ Accepter le lot (12)] ┐
+│ PREAMBLE_SCOPE                                       (déplier pour détail ⌄)     │
+└─────────────────────────────────────────────────────────────────────────────────┘
+
+C2 — Haute, avec OVERRIDE anti-refuge ──────────────────────────────────────────
+┌ ● C2  Haute ─────────────────────────── [✓ Confirmer]  [↺ Annuler l'override (U)] ┐
+│ contexte : [C]PAYMENT_BILLING [X]PAYMENT_BILLING [M]MISC_BOILERPLATE              │
+│ décision : ✓ PAYMENT_BILLING        ┄ frontière molle (2/3)                      │
+│ logique  : override anti-refuge — MISC est un refuge (κ=0,27) → on impose le      │
+│            précis. Réversible (la valeur d'origine est conservée).               │
+└────────────────────────────────────────────────────────────────────────────────┘
+
+C3 — Multi-label ───────────────────────────────────────────────────────────────
+┌ ● C3  Multi-label ──────── [✓ Valider le set]  [⇅ Permuter]  [− Retirer 2ⁿᵈ] ┐
+│ contexte : [C]ACCEPTABLE_USE [X]ACCEPTABLE_USE [M]LICENSE_IP                    │
+│ décision : ✓ LICENSE_IP (primaire)   ◻ ACCEPTABLE_USE (secondaire)   ▮(3/3)     │
+│ logique  : couple de cluster → deux effets juridiques réels ; primaire imposé    │
+│            par préséance (la PI prime sur l'usage).                              │
+└────────────────────────────────────────────────────────────────────────────────┘
+
+C4 — Majorité à vérifier ───────────────────────────────────────────────────────
+┌ ● C4  Majorité ───────────────── [✓ Garder majorité]  [→ Choisir l'autre (2)] ┐
+│ contexte : [C]DEFINITIONS [X]DEFINITIONS [M]META                               │
+│ décision : ✓ DEFINITIONS (2/3)        autre : META (1/3 — mistral)             │
+│ logique  : majorité hors refuge/cluster — regardez le minoritaire avant         │
+│            d'accepter (possible multi si les deux tiennent).                    │
+└────────────────────────────────────────────────────────────────────────────────┘
+
+C5 — Arbitrage (aucune présélection) ───────────────────────────────────────────
+┌ ● C5  Arbitrage ─────────────────────────── [Choisir 1/2/3]  [+ Créer multi] ┐
+│ contexte : [C]PREAMBLE_SCOPE [X]THIRD_PARTY [M]DEFINITIONS                     │
+│ candidats : ( ) PREAMBLE_SCOPE   ( ) THIRD_PARTY   ( ) DEFINITIONS             │
+│ logique  : votes éclatés (refuge/bruit) — votre jugement fait foi.            │
+│ [⟂ Indécidable / escalader (X)]                                               │
+└────────────────────────────────────────────────────────────────────────────────┘
+
+================================================================================
+3) FRONTIÈRE MOLLE — fusion / scission (transversal)
+================================================================================
+  … clause 3 (TERMINATION) ▮
+  ┄ ┄ ┄  frontière molle (2/3) entre la phrase 17 et 18      [⤢ Fusionner (M)] [�sci Scinder (D)]
+  … clause 4 (TERMINATION) — si fusion : 17–18 rejoignent la clause 3
+
+================================================================================
+4) BANDEAU D'ÉTAT (toujours visible en mode file)
+================================================================================
+  ● niveau courant   |  k/N par niveau  |  ⏱ ~temps restant estimé  |  ● brouillon non sauvegardé
+  [▶ Reprendre]  [⤓ Tout C1 par lot]  [✔ Soumettre quand prêt]

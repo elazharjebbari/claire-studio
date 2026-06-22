@@ -1,0 +1,16 @@
+cas_id,niveau,votes_claude,votes_codex,votes_mistral,frontiere_votes,niveau_attendu,action_attendue,label_mode,primaire_attendu,secondaire_attendu,override_attendu,frontiere_attendue,note
+T01,C1,PREAMBLE_SCOPE,PREAMBLE_SCOPE,PREAMBLE_SCOPE,1|1|1,C1,batch_accept,mono,PREAMBLE_SCOPE,,,hard,unanime thème + frontière (lot)
+T02,C2,DEFINITIONS,DEFINITIONS,DEFINITIONS,1|1|0,C2,confirm,mono,DEFINITIONS,,,soft,unanime thème mais frontière molle 2/3
+T03,C2,FEES_PAYMENT,FEES_PAYMENT,MISC_BOILERPLATE,1|1|1,C2,confirm,mono,FEES_PAYMENT,,refuge_to_precis,hard,override anti-refuge (MISC ecarte)
+T04,C3,ACCEPTABLE_USE,ACCEPTABLE_USE,LICENSE_IP,1|1|1,C3,validate_set,multi,LICENSE_IP,ACCEPTABLE_USE,,hard,cluster + preseance LICENSE_IP>ACCEPTABLE_USE
+T05,C3,USER_CONTENT,LICENSE_IP,LICENSE_IP,1|1|1,C3,validate_set,multi,LICENSE_IP,USER_CONTENT,,hard,cluster + preseance LICENSE_IP>USER_CONTENT (majorite LICENSE_IP coherente)
+T06,C3,FEES_PAYMENT,SUBSCRIPTION_RENEWAL,SUBSCRIPTION_RENEWAL,1|1|1,C3,validate_set,multi,SUBSCRIPTION_RENEWAL,FEES_PAYMENT,,hard,cluster sans preseance -> primaire par majorite
+T07,C4,DEFINITIONS,DEFINITIONS,META,1|1|1,C4,verify,mono,DEFINITIONS,,,hard,majorite hors refuge/cluster (minoritaire META montre)
+T08,C4,TERMINATION,TERMINATION,PRIVACY_DATA,1|1|0,C4,verify,mono,TERMINATION,,,soft,majorite + frontiere molle
+T09,C5,PREAMBLE_SCOPE,THIRD_PARTY,DEFINITIONS,1|1|1,C5,arbitrate,open,,,,hard,eclate refuge/bruit -> 3 candidats aucun preselectionne
+T10,C5,META,GOVERNING_LAW,TERMINATION,1|1|1,C5,arbitrate,open,,,,hard,eclate sans couple cluster
+T11,C3,LICENSE_IP,USER_CONTENT,GOVERNING_LAW,1|1|1,C3,validate_set,multi,LICENSE_IP,USER_CONTENT,,hard,eclate MAIS un couple cluster present (sans refuge) -> multi
+T12,C2,WARRANTY_DISCLAIMER,WARRANTY_DISCLAIMER,PREAMBLE_SCOPE,1|1|1,C2,confirm,mono,WARRANTY_DISCLAIMER,,refuge_to_precis,hard,override anti-refuge (PREAMBLE ecarte)
+T13,degrade,LICENSE_IP,,,1|0|0,,,,,,,,moins de 2 juges -> pas de triage (carte masquee)
+T14,C4,LIMITATION_LIABILITY,LIMITATION_LIABILITY,WARRANTY_DISCLAIMER,1|1|1,C3,validate_set,multi,LIMITATION_LIABILITY,WARRANTY_DISCLAIMER,,hard,majorite MAIS couple cluster {maj,dissident} -> C3 (priorite cluster sur C4)
+T15,C5_indecidable,PREAMBLE_SCOPE,MISC_BOILERPLATE,THIRD_PARTY,1|1|1,C5,arbitrate,open,,,,hard,eclate avec 2 refuges -> arbitrage (option indecidable/escalade)

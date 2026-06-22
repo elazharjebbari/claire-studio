@@ -1,0 +1,45 @@
+@startuml composants-annotation-assistee
+title Annotation assistée — composants (protocole C1–C5 multi-label)
+skinparam componentStyle rectangle
+skinparam shadowing false
+
+package "Spec (source unique)" {
+  artifact "07-regles-routage.yaml\n(refuges, clusters, préséance,\npriorité, theme_aliases)" as YAML
+  artifact "rules.generated.ts" as RTS
+  artifact "rules.py (miroir)" as RPY
+  YAML ..> RTS : build:rules
+  YAML ..> RPY : build:rules
+}
+
+package "Frontend (Next.js)" {
+  [useLlmAgreement\n(preByJudge, agreementNway)] as AGR
+  [runs.ts\n(runs, conflictZones,\nnextBoundary)] as RUNS
+  [triageEngine (PUR)] as ENGINE
+  [store/workspace\n(DraftClause.themes[], boundary,\ntriageLevel; batchAccept…)] as STORE
+  [TriageQueue\n(mode file, clavier)] as QUEUE
+  [SuggestionCard\n(inline: SentenceMenu / Inspector /\nBoundaryEvidence)] as CARD
+  [MultiThemePalette] as PAL
+}
+
+package "Backend (Django/DRF)" {
+  [Annotations API\n add_clause · clauses:batch ·\n validate-set · set-boundary · swap-primary] as API
+  database "Clause (+boundary_type/support,\ntriage_level)\nClauseTheme (role)\naudit[] · provenance" as DB
+  [Service triage (miroir)\n+ consolidation oracle] as SVC
+  [Mesure α MASI / κ / Pk] as IAA
+}
+
+RTS --> ENGINE
+RPY --> SVC
+
+AGR --> ENGINE : votes thème + frontière (K juges)
+RUNS --> ENGINE : frontières / zones de conflit
+ENGINE --> QUEUE : TriageResult (niveau, proposition, explication)
+ENGINE --> CARD : TriageResult
+QUEUE --> STORE : accept / validate_set / arbitrate
+CARD --> STORE : accept / swap / remove2nd / merge-split
+PAL --> CARD
+STORE --> API : POST clauses:batch / PATCH clauses (themes[], boundary)
+API --> DB
+SVC --> DB : oracle consolidé + audit
+DB --> IAA : clauses validées
+@enduml

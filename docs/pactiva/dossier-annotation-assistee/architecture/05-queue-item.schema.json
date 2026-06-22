@@ -1,0 +1,78 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://pactiva.legal/schemas/queue-item.json",
+  "title": "Item de file de triage (sortie du moteur)",
+  "type": "object",
+  "required": ["doc", "id", "text", "judges", "confidenceLevel", "humanAction", "proposal", "needsHuman"],
+  "additionalProperties": false,
+  "properties": {
+    "doc": { "type": "string" },
+    "id": { "type": "integer", "minimum": 0, "description": "index de phrase 0..n-1" },
+    "text": { "type": "string" },
+    "judges": {
+      "type": "object",
+      "minProperties": 2,
+      "additionalProperties": {
+        "type": "object",
+        "required": ["theme", "isBlockStart"],
+        "properties": {
+          "theme": { "type": "string" },
+          "isBlockStart": { "type": "boolean" }
+        }
+      }
+    },
+    "confidenceLevel": { "enum": ["C1", "C2", "C3", "C4", "C5"] },
+    "humanAction": { "enum": ["batch_accept", "confirm", "validate_set", "verify", "arbitrate"] },
+    "disagreementType": { "enum": ["accord", "majorite_autre", "cluster_multilabel", "eclate"] },
+    "proposal": {
+      "type": "object",
+      "required": ["boundary", "labelMode", "labels", "candidates"],
+      "additionalProperties": false,
+      "properties": {
+        "boundary": {
+          "type": "object",
+          "required": ["isStart", "type", "support"],
+          "properties": {
+            "isStart": { "type": "boolean" },
+            "type": { "enum": ["hard", "soft"] },
+            "support": { "type": "integer", "minimum": 1 }
+          }
+        },
+        "labelMode": { "enum": ["mono", "multi", "open"] },
+        "labels": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": ["label", "role", "support"],
+            "properties": {
+              "label": { "type": "string" },
+              "role": { "enum": ["primary", "secondary"] },
+              "support": { "type": "integer", "minimum": 0 }
+            }
+          }
+        },
+        "candidates": { "type": "array", "items": { "type": "string" } },
+        "override": {
+          "type": "object",
+          "properties": {
+            "kind": { "const": "refuge_to_precis" },
+            "from": { "type": "string" },
+            "to": { "type": "string" }
+          }
+        }
+      }
+    },
+    "explanation": {
+      "type": "object",
+      "description": "Déterministe, dérivée de la règle appliquée (pas de LLM).",
+      "required": ["context", "decision", "logic"],
+      "properties": {
+        "context": { "type": "string", "examples": ["claude:ACCEPTABLE_USE · codex:ACCEPTABLE_USE · mistral:LICENSE_IP"] },
+        "decision": { "type": "string", "examples": ["multi-label : LICENSE_IP (primaire) + ACCEPTABLE_USE (secondaire)"] },
+        "logic": { "type": "string", "examples": ["couple de cluster ACCEPTABLE_USE↔LICENSE_IP → chevauchement juridique réel ; primaire par préséance LICENSE_IP>ACCEPTABLE_USE"] }
+      }
+    },
+    "needsHuman": { "type": "boolean" }
+  },
+  "$comment": "label_mode=open (C5) ⇒ labels=[] et candidates à trancher. open ⇒ needsHuman=true. C1 ⇒ needsHuman=false (lot)."
+}

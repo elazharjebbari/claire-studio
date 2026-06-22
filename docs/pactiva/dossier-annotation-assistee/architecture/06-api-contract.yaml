@@ -1,0 +1,140 @@
+openapi: 3.0.3
+info:
+  title: Annotation assistée — extensions API (triage C1–C5 multi-label)
+  version: 0.1.0
+  description: >
+    Extensions additives au contrat existant. Sortie camelCase (bridge DRF). Toutes les
+    écritures sont owner-only (IsAnnotationOwner) et idempotentes via clientOpId.
+    Le triage (niveau + proposition) est calculé CÔTÉ CLIENT depuis les pré-annotations ;
+    ces endpoints persistent les décisions humaines (clauses multi-label + audit).
+tags:
+  - { name: triage, description: file de triage (optionnelle, pré-calcul serveur) }
+  - { name: clauses, description: écriture des clauses multi-label }
+
+paths:
+  /api/v1/projects/{slug}/documents/{docId}/triage:
+    get:
+      tags: [triage]
+      summary: File de triage pré-calculée (option batch back ; sinon calcul client)
+      parameters:
+        - { name: slug, in: path, required: true, schema: { type: string } }
+        - { name: docId, in: path, required: true, schema: { type: string } }
+        - { name: version, in: query, schema: { type: string }, description: version LLM (défaut Auto) }
+      responses:
+        "200":
+          description: items de file (un par phrase)
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  items: { type: array, items: { $ref: "#/components/schemas/QueueItem" } }
+                  summary:
+                    type: object
+                    properties:
+                      C1: { type: integer }
+                      C2: { type: integer }
+                      C3: { type: integer }
+                      C4: { type: integer }
+                      C5: { type: integer }
+
+  /api/v1/annotations/{id}/clauses:batch:
+    post:
+      tags: [clauses]
+      summary: Acceptation par lot (C1) — création transactionnelle de N clauses mono-label
+      parameters: [ { name: id, in: path, required: true, schema: { type: string } } ]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [clauses]
+              properties:
+                clauses:
+                  type: array
+                  items:
+                    type: object
+                    required: [anchorIndex, themes, boundary, clientOpId]
+                    properties:
+                      anchorIndex: { type: integer, minimum: 0 }
+                      themes: { type: array, items: { $ref: "#/components/schemas/ThemeTag" } }
+                      boundary: { $ref: "#/components/schemas/Boundary" }
+                      triageLevel: { type: string, enum: [C1, C2, C3, C4, C5] }
+                      clientOpId: { type: string }
+      responses:
+        "201": { description: clauses créées (atomique ; doublons clientOpId ignorés) }
+        "409": { description: conflit INV-2 sur une phrase déjà annotée (rapport par item) }
+
+  /api/v1/clauses/{clauseId}:
+    patch:
+      tags: [clauses]
+      summary: Mettre à jour une clause (themes multi-label, frontière, niveau)
+      parameters: [ { name: clauseId, in: path, required: true, schema: { type: string } } ]
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                themes: { type: array, items: { $ref: "#/components/schemas/ThemeTag" } }
+                boundary: { $ref: "#/components/schemas/Boundary" }
+                triageLevel: { type: string, enum: [C1, C2, C3, C4, C5] }
+                certainty: { type: integer, minimum: 0, maximum: 3 }
+                audit: { type: array, items: { $ref: "#/components/schemas/AuditEvent" } }
+      responses:
+        "200": { description: clause mise à jour (invariants validés : 1 primaire, refuge≠secondaire) }
+        "422": { description: violation d'invariant multi-label }
+
+  /api/v1/clauses/{clauseId}/swap-primary:
+    post:
+      tags: [clauses]
+      summary: Permuter primaire/secondaire en un geste
+      parameters: [ { name: clauseId, in: path, required: true, schema: { type: string } } ]
+      requestBody:
+        content: { application/json: { schema: { type: object, required: [label], properties: { label: { type: string } } } } }
+      responses: { "200": { description: rôles permutés + audit } }
+
+  /api/v1/clauses/{clauseId}/boundary:
+    post:
+      tags: [clauses]
+      summary: Figer / fusionner / scinder une frontière (molle → dure)
+      parameters: [ { name: clauseId, in: path, required: true, schema: { type: string } } ]
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [op]
+              properties:
+                op: { type: string, enum: [merge, split, set_hard, set_soft] }
+                validatedBy: { type: string }
+      responses: { "200": { description: frontière mise à jour + audit } }
+
+components:
+  schemas:
+    ThemeTag:
+      type: object
+      required: [label, role]
+      properties:
+        label: { type: string }
+        role: { type: string, enum: [primary, secondary] }
+        support: { type: integer, minimum: 0 }
+    Boundary:
+      type: object
+      required: [type, support]
+      properties:
+        type: { type: string, enum: [hard, soft] }
+        support: { type: integer, minimum: 1 }
+        trigger: { type: string }
+    AuditEvent:
+      type: object
+      required: [event]
+      properties:
+        event: { type: string }
+        rule: { type: string }
+        by: { type: string }
+        ts: { type: string, format: date-time }
+    QueueItem:
+      description: cf. architecture/05-queue-item.schema.json (forme identique)
+      type: object

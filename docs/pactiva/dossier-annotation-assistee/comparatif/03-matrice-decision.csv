@@ -1,0 +1,19 @@
+composant,option,force_5,faiblesse_inv_5,pertinence_protocole_5,ux_5,score_pondere,retenu,commentaire
+Moteur,A1 Backend only,4,2,4,2,2.9,non,latence/round-trip non réactif
+Moteur,A2 Frontend pur,4,3,4,5,4.0,non,réactif mais pas d'oracle serveur
+Moteur,A3 Hybride règles-uniques,5,3,5,5,4.6,oui,spec YAML unique + moteur TS + miroir Python (parité testée)
+Multilabel,B1 M2M themes,3,3,4,3,3.3,non,rôle sur liaison plus lourd
+Multilabel,B2 Table enfant ClauseTheme,5,4,5,4,4.6,oui,1 primaire+N secondaires rétro-compatible préserve INV-2
+Multilabel,B3 JSON sur Clause,3,2,3,3,2.8,non,pas de contrainte SQL IAA plus dure
+Niveau,C1 Remplacer 0-3 par C1-C5,3,1,1,2,1.8,non,viole le protocole casse INV-6
+Niveau,C2 Deux axes orthogonaux,5,4,5,5,4.8,oui,triage_level dérivé + certitude 0-3 conservée
+Frontiere,D1 Dérivée seule,3,3,3,3,3.0,non,pas d'audit ni validated_by
+Frontiere,D2 Stockée hard/soft+support,5,4,5,5,4.8,oui,fusion/scission tracées conforme SCHEMA
+Experience,E1 Inline seulement,3,3,3,3,3.0,non,pas d'accélération de masse
+Experience,E2 File dédiée seule,4,3,4,4,3.8,non,désancre du document
+Experience,E3 Hybride file+inline,5,3,5,5,4.6,oui,vitesse de masse + édition ancrée même moteur
+Explication,F1 Templates statiques,2,3,2,2,2.2,non,générique
+Explication,F2 LLM-générée,3,1,2,3,2.2,non,non déterministe coût/latence anti-traçabilité
+Explication,F3 Dérivée de la règle,5,4,5,5,4.8,oui,déterministe traçable instantanée journalisable
+Batch,G1 add_clause unitaires,2,2,2,2,2.0,non,N requêtes non atomique
+Batch,G2 Endpoint batch transactionnel,5,4,5,5,4.8,oui,1 requête atomique idempotente

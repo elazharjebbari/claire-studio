@@ -1,0 +1,102 @@
+# Règles de routage du triage — SOURCE UNIQUE (versionnée).
+# Rendue exécutable : build:rules -> frontend/src/lib/triage/rules.generated.ts ET backend .../triage/rules.py
+# Toute modification = nouvelle version + ré-exécution du triage (cf. PROTOCOLE.md §9).
+version: "1.0.0"
+calibrated_on: "UNFAIR-ToS/CLAUDETTE — 50 docs, 9414 phrases, 3 juges (claude, codex, mistral)"
+
+# ── Refuges (catch-all les moins fiables ; override anti-refuge ; jamais en secondaire) ──
+refuges:
+  - PREAMBLE_SCOPE      # kappa binaire 0.18
+  - MISC_BOILERPLATE    # kappa binaire 0.27
+
+# ── Couples de cluster éligibles au MULTI-LABEL (chevauchement juridique réel) ──
+# Codes au format PROTOCOLE (traduits via theme_aliases vers le scheme app).
+clusters:
+  - [LICENSE_IP, USER_CONTENT]
+  - [ACCEPTABLE_USE, LICENSE_IP]
+  - [ACCEPTABLE_USE, USER_CONTENT]
+  - [PAYMENT_BILLING, SUBSCRIPTION_RENEWAL]
+  - [LIABILITY_LIMITATION, WARRANTY_DISCLAIMER]
+  - [ELIGIBILITY_ACCOUNT, PAYMENT_BILLING]
+  - [ACCEPTABLE_USE, ELIGIBILITY_ACCOUNT]
+
+# ── Préséance (choix du PRIMAIRE, direction documentée) : "A > B" => A primaire ──
+precedence:
+  - { over: LICENSE_IP, under: USER_CONTENT }
+  - { over: LICENSE_IP, under: ACCEPTABLE_USE }
+
+# ── Liste de priorité de repli (du + spécifique au + générique ; refuges en queue) ──
+priority:
+  - DEFINITIONS
+  - DISPUTE_ARBITRATION
+  - GOVERNING_LAW
+  - INDEMNIFICATION
+  - LIABILITY_LIMITATION
+  - WARRANTY_DISCLAIMER
+  - LICENSE_IP
+  - USER_CONTENT
+  - PRIVACY_DATA
+  - SUBSCRIPTION_RENEWAL
+  - PAYMENT_BILLING
+  - ACCEPTABLE_USE
+  - ELIGIBILITY_ACCOUNT
+  - TERMINATION
+  - MODIFICATION_OF_TERMS
+  - THIRD_PARTY
+  - META
+  - PREAMBLE_SCOPE
+  - MISC_BOILERPLATE
+
+# ── Mapping codes PROTOCOLE -> codes scheme de l'app (réconciliation du vocabulaire) ──
+# Gauche = code attendu par le protocole ; droite = code canonique de claire-studio.
+# (À FIGER avec l'équipe données : vérifier chaque correspondance contre theme_mapping.py.)
+theme_aliases:
+  DISPUTE_ARBITRATION:   ARBITRATION_DISPUTES
+  PAYMENT_BILLING:       FEES_PAYMENT
+  LIABILITY_LIMITATION:  LIMITATION_LIABILITY
+  THIRD_PARTY:           THIRD_PARTY_SERVICES
+  SUBSCRIPTION_RENEWAL:  SUBSCRIPTION_RENEWAL   # à créer côté scheme si absent (sinon mapper)
+  INDEMNIFICATION:       INDEMNIFICATION        # idem
+  DEFINITIONS:           DEFINITIONS            # idem
+  # identiques des deux côtés (laissés explicites pour lisibilité) :
+  LICENSE_IP:            LICENSE_IP
+  USER_CONTENT:          USER_CONTENT
+  ACCEPTABLE_USE:        ACCEPTABLE_USE
+  ELIGIBILITY_ACCOUNT:   ELIGIBILITY_ACCOUNT
+  WARRANTY_DISCLAIMER:   WARRANTY_DISCLAIMER
+  GOVERNING_LAW:         GOVERNING_LAW
+  TERMINATION:           TERMINATION
+  PRIVACY_DATA:          PRIVACY_DATA
+  MODIFICATION_OF_TERMS: MODIFICATION_OF_TERMS
+  META:                  META
+  PREAMBLE_SCOPE:        PREAMBLE_SCOPE
+  MISC_BOILERPLATE:      MISC_BOILERPLATE
+
+# ── Fiabilité mesurée (κ binaire) — utilisée DANS l'explication, pas dans le routage ──
+reliability_kappa:
+  DISPUTE_ARBITRATION: 0.73
+  PAYMENT_BILLING: 0.57
+  WARRANTY_DISCLAIMER: 0.48
+  ELIGIBILITY_ACCOUNT: 0.47
+  LICENSE_IP: 0.47
+  USER_CONTENT: 0.45
+  MISC_BOILERPLATE: 0.27
+  META: 0.26
+  SUBSCRIPTION_RENEWAL: 0.28
+  INDEMNIFICATION: 0.24
+  PREAMBLE_SCOPE: 0.18
+
+# ── Gabarits d'explication (déterministes ; {tokens} remplacés par le moteur) ──
+explanations:
+  C1: { context: "{votes}", decision: "{primary} · frontière dure (3/3)", logic: "accord unanime thème + frontière : acceptation par lot." }
+  C2_soft: { context: "{votes}", decision: "{primary} · frontière molle (2/3)", logic: "thème unanime, frontière en majorité : confirmer (fusion/scission possible)." }
+  C2_override: { context: "{votes}", decision: "{primary}", logic: "override anti-refuge : {dissident} est un refuge (κ={kappa}) ; on impose le précis {primary}. Réversible." }
+  C3: { context: "{votes}", decision: "multi : {primary} (primaire) + {secondary} (secondaire)", logic: "couple de cluster {a}↔{b} = chevauchement juridique réel ; primaire par {primary_rule}." }
+  C4: { context: "{votes}", decision: "{primary} (majorité 2/3)", logic: "majorité hors refuge/cluster : vérifier le candidat minoritaire {minority} avant d'accepter." }
+  C5: { context: "{votes}", decision: "aucune présélection", logic: "votes éclatés (refuge/bruit) : votre jugement fait foi ; choisir 1, créer un multi, ou marquer indécidable." }
+
+# ── Seuils ──
+thresholds:
+  min_judges: 2           # < 2 juges => pas de triage (carte masquée)
+  unanimous: "all_equal"  # 3/3
+  majority: "strict_plurality_with_single_dissident"  # 2/3
