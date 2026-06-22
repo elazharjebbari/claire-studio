@@ -52,7 +52,7 @@ clauses à relire en priorité.
 - **Rationale** : **pourquoi** ce thème, en une phrase. Précieux pour la relecture et
   pour trancher les désaccords.
 
-Dans l'inspecteur, sous ces deux champs, un sélecteur **Vous / Claude / Codex** permet
+Dans l'inspecteur, sous ces deux champs, un sélecteur **Vous / juge LLM** (Claude, Codex, Mistral…) permet
 de **comparer** votre evidence/rationale à ceux des juges LLM et de **reprendre** leur
 proposition en un clic.
 
@@ -62,13 +62,13 @@ Affichables/masquables, sans modifier votre annotation :
 
 - **Injustice CLAUDETTE** : surligne les phrases marquées injustes (catégorie +
   niveau) — cf. *Les catégories CLAUDETTE*.
-- **Fantôme LLM (Claude / Codex)** : montre en pointillés les **frontières proposées**
+- **Fantôme LLM (par juge : Claude, Codex, Mistral…)** : montre en pointillés les **frontières proposées**
   par un juge, même là où vous avez déjà annoté → comparaison d'un coup d'œil.
 - **Traduction (FR)** : affiche la traduction sous chaque phrase.
 
 ## Arbitrage & comparaison LLM
 
-En mode **Comparer**, l'atelier superpose les segmentations de Claude et Codex et
+En mode **Comparer**, l'atelier superpose les segmentations des juges LLM et
 met en évidence les **divergences**. Vous naviguez de désaccord en désaccord (`n`/`p`,
 barre sticky, panneau comparatif) et **adoptez** la proposition d'un juge (`1` = Claude,
 `2` = Codex) — un **voyant** marque alors la clause comme arbitrée.

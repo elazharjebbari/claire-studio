@@ -31,7 +31,7 @@ export const HELP_MANIFEST: HelpSection[] = [
   { slug: "modes-langue", title: "Modes de langue & traduction", group: "Annoter" },
   { slug: "themes-vocabulaire", title: "Thèmes & vocabulaire", group: "Annoter" },
   { slug: "preannotations-llm", title: "Pré-annotations LLM", group: "Annoter" },
-  { slug: "comparaison-llm", title: "Comparer & arbitrer (Claude/Codex)", group: "Annoter" },
+  { slug: "comparaison-llm", title: "Comparer & arbitrer (juges LLM)", group: "Annoter" },
   { slug: "injustice-claudette", title: "Injustice CLAUDETTE", group: "Annoter" },
   { slug: "certitude", title: "Certitude", group: "Annoter" },
   { slug: "commentaires", title: "Commentaires", group: "Collaborer" },

@@ -30,6 +30,20 @@ Cliquer une phrase déjà ancrée sélectionne sa clause dans l'inspecteur.
   bascule l'affichage du texte ; l'annotation reste alignée sur l'index de
   phrase (cf. « Modes de langue & traduction »).
 
+## Repères de lecture & d'écran
+
+Plusieurs aides visuelles facilitent la navigation dans les longs documents :
+
+- **Minimap & position** — une vue miniature du document (à droite) montre votre
+  position de lecture, la densité des clauses et des divergences ; cliquez ou
+  glissez dessus pour sauter à un endroit.
+- **Confort de lecture** — ajustez la **taille du texte** (A− / A+) et la **largeur**
+  de la colonne de lecture. Ces réglages n'affectent que l'affichage, jamais vos
+  données.
+- **Gouttière des catégories** — une bande continue, à gauche du texte, code la
+  **catégorie de thème** de chaque clause et matérialise les **ruptures** entre
+  clauses voisines, pour lire la structure d'un coup d'œil. Activable via sa bascule.
+
 ## Attribuer un thème
 
 Une fois une clause sélectionnée, attribuez-lui un thème :

@@ -10,7 +10,7 @@ l'annotation **rapide, cohérente et défendable**.
 2. Frontières  → poser les blocs-clauses (changements de sujet/fonction)
 3. Thèmes      → attribuer UN thème par bloc (vocab fermé)
 4. Enrichir    → certitude (0–3), evidence span, rationale, nature juridique
-5. Comparer    → mode Comparer : arbitrer les divergences Claude/Codex
+5. Comparer    → mode Comparer : arbitrer les divergences entre juges LLM
 6. Soumettre   → version nommée + description ; commentaires si besoin
 ```
 
@@ -38,13 +38,13 @@ micro-blocs est coûteuse et instable entre annotateurs.
 
 - **Injustice CLAUDETTE** (overlay) : repère les zones sensibles (souvent des
   frontières importantes), n'impose pas le thème.
-- **Fantômes LLM** : visualisez les frontières proposées par Claude/Codex pour
+- **Fantômes LLM** : visualisez les frontières proposées par les juges LLM (Claude, Codex, Mistral…) pour
   comparer — votre annotation reste la vôtre.
 - **Mode Comparer + arbitrage** : naviguez les divergences (`n`/`p`), lisez l'evidence
   de chaque juge (touche `e` ou icône à la frontière), puis **adoptez** (`1` Claude /
   `2` Codex) si pertinent. Un voyant marque la clause arbitrée.
 - **Sélecteur de source dans l'inspecteur** : comparez evidence/rationale Vous /
-  Claude / Codex et **reprenez** une formulation en un clic.
+  un juge LLM et **reprenez** une formulation en un clic.
 
 ## Bien régler la certitude
 

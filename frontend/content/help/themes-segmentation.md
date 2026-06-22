@@ -44,7 +44,7 @@ dans l'un d'eux (à défaut : `MISC_BOILERPLATE`).
    c'est souvent le signe qu'il faut **deux blocs** (deux frontières).
 4. En cas de doute entre deux thèmes proches, regardez la **catégorie CLAUDETTE** de la
    zone (overlay) et l'**evidence span** : ils orientent le choix.
-5. Comparez à **Claude/Codex** (mode Comparer, ou sélecteur de source dans
+5. Comparez aux **juges LLM** (Claude, Codex, Mistral… ; mode Comparer, ou sélecteur de source dans
    l'inspecteur) : utile, mais **vous tranchez** — les juges peuvent diverger.
 
 ## Pièges fréquents

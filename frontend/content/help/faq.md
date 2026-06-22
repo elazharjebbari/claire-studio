@@ -15,7 +15,7 @@ disponibles, pour garantir la cohérence. Les schémas se modifient côté admin
 ## Les fantômes LLM modifient-ils mon annotation ?
 
 Non. Les fantômes ne sont qu'un **affichage de comparaison**. Tant que vous ne
-les adoptez pas via « Pré-remplir depuis Claude / Codex », ils n'altèrent rien.
+les adoptez pas via « Pré-remplir depuis un juge (Claude, Codex, Mistral…) », ils n'altèrent rien.
 
 ## Je ne vois pas le fil de commentaires.
 

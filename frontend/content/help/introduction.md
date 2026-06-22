@@ -4,7 +4,7 @@
 pour les conditions générales d'utilisation (*Terms of Service*). Il aide un
 annotateur humain à découper un document en clauses, à leur attribuer un thème
 issu d'un vocabulaire fermé, à noter sa certitude, puis à comparer son travail
-aux pré-annotations de modèles de langage (Claude, Codex).
+aux pré-annotations de modèles de langage (Claude, Codex, Mistral).
 
 ## À quoi ça sert
 

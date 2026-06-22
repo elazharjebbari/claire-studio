@@ -23,7 +23,7 @@ CLAIRE Studio est pensé pour le travail au clavier afin de réduire la fatigue.
 | `⌘S` | Snapshot (instantané), fonctionne même en saisie |
 
 > Hors mode comparaison, `1`–`2` conservent leur rôle de **certitude** : ils
-> n'adoptent une proposition LLM que lorsqu'une divergence est ciblée.
+> n'adoptent une proposition LLM que lorsqu'une divergence est ciblée. Les autres juges (ex. Mistral) s'adoptent via l'œil 👁 « Choisir ».
 
 ## Souris
 

@@ -177,7 +177,7 @@ export const WORKSPACE_TOUR_STEPS: TourStep[] = [
     element: '[data-testid="divergence-nav"]',
     title: "Naviguer les divergences (n/p)",
     description:
-      "En mode comparaison, sautez de désaccord en désaccord avec les flèches ou les touches n (suivant) / p (précédent). Le compteur indique votre position.",
+      "En mode comparaison, sautez de désaccord en désaccord avec les flèches ou les touches n (suivant) / p (précédent). Adoptez une proposition avec 1 (Claude) / 2 (Codex), ou via l'œil 👁 pour n'importe quel juge (dont Mistral). Le compteur indique votre position.",
   },
 
   // ── E. Overlays ─────────────────────────────────────────────────────────
@@ -245,7 +245,7 @@ export const WORKSPACE_TOUR_STEPS: TourStep[] = [
     element: '[data-testid="annotation-workspace"]',
     title: "C'est tout !",
     description:
-      "Raccourcis clés : j/k phrase · n/p divergence · b frontière · t thème · c commentaire · e œil de frontière · g panneau comparatif · 0–3 certitude · ⌘S snapshot · ⌘Z/⌘Y annuler/rétablir. Le détail complet est dans le centre d'aide (« ? » dans la barre du haut).",
+      "Raccourcis clés : j/k phrase · n/p divergence · 1/2 adopter Claude/Codex (en comparaison) · e œil de frontière · g panneau comparatif · b frontière · t thème · c commentaire · 0–3 certitude · ⌘S snapshot · ⌘Z/⌘Y annuler/rétablir. Le détail complet est dans le centre d'aide (« ? » dans la barre du haut).",
   },
 ];
 
