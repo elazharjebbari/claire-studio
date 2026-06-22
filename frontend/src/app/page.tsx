@@ -8,6 +8,7 @@
  */
 
 import Link from "next/link";
+import { Lock } from "lucide-react";
 import { Logo } from "@/components/brand/Logo";
 
 const PILLARS: Array<{ title: string; body: string }> = [
@@ -207,13 +208,22 @@ export default function HomePage() {
                 <h3 className="mt-4 font-display text-lg font-medium text-ink">{m.title}</h3>
                 <p className="mt-2 flex-1 text-sm text-ink-muted">{m.body}</p>
                 {m.status === "available" && m.href ? (
-                  <Link
-                    href={m.href}
-                    data-testid="module-annotation"
-                    className="mt-4 inline-flex items-center gap-1 text-sm font-medium text-accent hover:underline"
-                  >
-                    Accéder au système →
-                  </Link>
+                  <div className="mt-4 flex flex-col gap-1.5">
+                    {/* Mention explicite : le système d'annotation exige une connexion. */}
+                    <span
+                      data-testid="annotation-login-required"
+                      className="inline-flex items-center gap-1 text-xs font-medium text-ink-muted"
+                    >
+                      <Lock size={12} aria-hidden /> Connexion requise — accès réservé aux annotateurs
+                    </span>
+                    <Link
+                      href={m.href}
+                      data-testid="module-annotation"
+                      className="inline-flex items-center gap-1 text-sm font-medium text-accent hover:underline"
+                    >
+                      Se connecter et accéder →
+                    </Link>
+                  </div>
                 ) : (
                   <span className="mt-4 text-sm text-ink-muted">Bientôt disponible</span>
                 )}
