@@ -82,11 +82,17 @@ export function ModelBoundaryStrip({
       {models.map((m) => {
         const seg = m.hasData ? segAt(m.segments, sentenceIndex) : undefined;
         const isStart = seg != null && seg.startSentence === sentenceIndex;
+        const isEnd = seg != null && seg.endSentence === sentenceIndex;
         const token = seg ? getThemeToken(seg.themeCode) : null;
-        const tint = showCategory && token ? token.color : undefined;
+        const tint = token?.color;
         const title = seg
           ? `${m.label} · ${token?.label ?? seg.themeCode} · phrases ${seg.startSentence}–${seg.endSentence}`
           : `${m.label} · —`;
+        // Refonte gutter (axe 6) : la cellule est rendue comme un SEGMENT CONTINU.
+        // - teinte du thème TOUJOURS visible (début ~35 %, milieu/fin ~20 %) → on
+        //   distingue les segments même sans le toggle « Catégories » ;
+        // - arrondi seulement en HAUT du début et en BAS de la fin → barre continue ;
+        // - RUPTURE nette : trait + ombre intérieure au sommet d'un nouveau segment.
         return (
           <button
             key={m.id}
@@ -98,23 +104,29 @@ export function ModelBoundaryStrip({
             aria-label={title}
             onClick={() => seg && onJump(seg.startSentence)}
             className={
-              "relative w-2.5 rounded-[1px] transition-colors " +
-              (seg ? "cursor-pointer" : "cursor-default opacity-30")
+              "relative w-2.5 transition-colors " +
+              (seg ? "cursor-pointer" : "cursor-default opacity-20") +
+              (isStart ? " rounded-t-[2px]" : "") +
+              (isEnd ? " rounded-b-[2px]" : "")
             }
             style={{
               backgroundColor: seg
                 ? tint
-                  ? `${tint}40`
+                  ? `${tint}${isStart ? "59" : "33"}`
                   : "rgb(var(--surface-border))"
                 : "transparent",
+              // Rupture visible : liseré sombre au sommet d'un début de segment
+              // (sauf tout en haut du document).
+              boxShadow:
+                isStart && sentenceIndex > 0 ? "inset 0 2px 0 0 rgba(0,0,0,0.35)" : undefined,
             }}
           >
-            {/* Marqueur de FRONTIÈRE : tick coloré en haut de la 1re phrase du segment. */}
+            {/* Marqueur de FRONTIÈRE : tick coloré (teinte du thème) en début de segment. */}
             {isStart && (
               <span
                 aria-hidden
                 data-testid={`gutter-boundary-${m.id}-${sentenceIndex}`}
-                className="absolute inset-x-0 top-0 h-[3px] rounded-t-[1px]"
+                className="absolute inset-x-0 top-0 h-[2px]"
                 style={{
                   backgroundColor:
                     tint ?? m.identityColor ?? "rgb(var(--surface-accent))",

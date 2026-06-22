@@ -13,6 +13,7 @@
 import { useWorkspaceStore, selectSelectedDraft } from "@/store/workspace";
 import type { LegalNature } from "@/types/contract";
 import { ThemePalette } from "@/components/ui/ThemePalette";
+import { NaturePicker } from "@/components/ui/NaturePicker";
 import { CertaintyPicker } from "@/components/ui/CertaintyPicker";
 import { ClauseChip } from "@/components/ui/ClauseChip";
 import { Field } from "@/components/ui/primitives";
@@ -107,23 +108,17 @@ export function InspectorPanel({
         />
       </Field>
 
-      <Field label="Nature juridique" htmlFor="legal-nature">
-        <select
-          id="legal-nature"
-          data-testid="legal-nature"
-          value={draft.legalNature ?? ""}
-          onChange={(e) =>
-            updateDraft(draft.localId, { legalNature: e.target.value || null })
-          }
-          className="rounded-md border border-line bg-panel-muted px-2 py-1.5 text-sm text-ink"
-        >
-          <option value="">— aucune —</option>
-          {legalNatures.map((ln) => (
-            <option key={ln.code} value={ln.code}>
-              {ln.label}
-            </option>
-          ))}
-        </select>
+      <Field label="Nature juridique">
+        {/* Axe 2 : pastilles cohérentes (toutes visibles) + définition au survol,
+            à la place du <select> natif. data-testid legal-nature conservé pour les tests. */}
+        <div data-testid="legal-nature">
+          <NaturePicker
+            value={draft.legalNature}
+            legalNatures={legalNatures}
+            onChange={(code) => updateDraft(draft.localId, { legalNature: code })}
+            describeOnHover
+          />
+        </div>
       </Field>
 
       <Field label="Certitude (0–3)">

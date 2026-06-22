@@ -61,6 +61,8 @@ import { Eye, Users, Columns2, Ghost, TextSelect } from "lucide-react";
 import { CollabBar } from "./CollabBar";
 import { DivergenceNav } from "./DivergenceNav";
 import { ComparePanel } from "./ComparePanel";
+import { RationaleHover, type HoverJudge } from "./RationaleHover";
+import { agreementNway } from "@/lib/llmAgreement";
 import { BoundaryEvidence } from "./BoundaryEvidence";
 import { useDivergenceShortcuts } from "./useDivergenceShortcuts";
 import {
@@ -290,6 +292,16 @@ export function DocumentPanel({
   );
   // Le panneau comparatif n'a de sens que si ≥ 2 juges sont disponibles avec données.
   const compareDataReady = availableCompareJudges.length >= 2;
+  // Bandeau « Comparer » N-WAY (axe 7) : libellé dynamique des modèles comparés +
+  // % d'accord COMPLET (tous les juges présents d'accord), pas le pairwise Claude/Codex.
+  const compareLabel = useMemo(
+    () => selectedCompareIds.map((id) => llmJudgeLabel(id)).join(" / ") || "modèles",
+    [selectedCompareIds],
+  );
+  const nway = useMemo(
+    () => agreementNway(selectedCompareIds.map((id) => byIndexByJudge[id] ?? []), n),
+    [selectedCompareIds, byIndexByJudge, n],
+  );
 
   // Divergences N-way (P1) : ancres des zones où les modèles SÉLECTIONNÉS divergent
   // (≥ 2 thèmes distincts), pas seulement Claude vs Codex.
@@ -363,6 +375,21 @@ export function DocumentPanel({
   const selectedSet = useMemo(() => new Set(selectedSentences), [selectedSentences]);
 
   const [menu, setMenu] = useState<MenuState | null>(null);
+  // Aperçu PASSIF au survol (axe 1) : index survolé + position. Ouverture différée
+  // (~300 ms = intention, pas simple passage) ; fermeture avec tampon anti-papillotement.
+  const [hover, setHover] = useState<{ index: number; x: number; y: number } | null>(null);
+  const hoverTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const openHover = (index: number, x: number, y: number) => {
+    if (hoverTimer.current) clearTimeout(hoverTimer.current);
+    hoverTimer.current = setTimeout(() => setHover({ index, x, y }), 300);
+  };
+  const closeHover = () => {
+    if (hoverTimer.current) clearTimeout(hoverTimer.current);
+    hoverTimer.current = setTimeout(() => setHover(null), 120);
+  };
+  useEffect(() => () => {
+    if (hoverTimer.current) clearTimeout(hoverTimer.current);
+  }, []);
   // Dernière phrase ayant reçu le focus (point d'ancrage de Shift+clic).
   const lastFocusedRef = useRef(focused);
   useEffect(() => {
@@ -512,40 +539,41 @@ export function DocumentPanel({
           </div>
           <LangSwitch />
           </div>
+          {/* Comparaison N-WAY (axe 7) : bandeau + navigation des divergences, placés
+              DANS la barre sticky (largeur pleine → sa propre ligne) afin de rester
+              TOUJOURS à l'écran pendant le défilement. Plus de pairwise Claude/Codex. */}
+          {isCompare && (
+            <div className="w-full">
+              <div
+                data-testid="compare-banner"
+                role="status"
+                className="flex flex-wrap items-center gap-x-4 gap-y-1 rounded-md border border-line bg-panel-muted/60 px-3 py-1.5 text-sm"
+              >
+                <span className="font-semibold text-ink">Accord {compareLabel}</span>
+                <span data-testid="compare-score" className="text-ink-muted">
+                  <span className="font-mono text-ink">{Math.round(nway.fullAgreementPct)}%</span>{" "}
+                  d&apos;accord complet · {nway.judges} modèles · {nway.support} phrases
+                </span>
+                <span className="ml-auto flex items-center gap-3 text-[11px] text-ink-muted">
+                  <span className="flex items-center gap-1">
+                    <span aria-hidden className="h-2 w-2 rounded-full bg-emerald-400" /> accord
+                  </span>
+                  <span className="flex items-center gap-1">
+                    <span aria-hidden className="h-2 w-2 rounded-full bg-amber-400" /> divergence
+                  </span>
+                </span>
+              </div>
+              <div className="mt-1.5">
+                <DivergenceNav
+                  count={divAnchors.length}
+                  ordinal={divOrdinal}
+                  onPrev={goPrevDivergence}
+                  onNext={goNextDivergence}
+                />
+              </div>
+            </div>
+          )}
         </div>
-
-        {/* Bandeau de score d'accord (Q3) — affiché en mode comparaison. */}
-        {isCompare && (
-          <div
-            data-testid="compare-banner"
-            role="status"
-            className="mb-4 flex flex-wrap items-center gap-x-4 gap-y-1 rounded-md border border-line bg-panel-muted/50 px-3 py-2 text-sm"
-          >
-            <span className="font-semibold text-ink">Accord Claude / Codex</span>
-            <span data-testid="compare-score" className="text-ink-muted">
-              κ&nbsp;<span className="font-mono text-ink">{llm.kappa.toFixed(2)}</span> ·{" "}
-              <span className="font-mono text-ink">{Math.round(llm.agreementPct)}%</span>{" "}
-              concordant ({llm.support} phrases)
-            </span>
-            <span className="ml-auto flex items-center gap-3 text-[11px] text-ink-muted">
-              <span className="flex items-center gap-1">
-                <span aria-hidden className="h-2 w-2 rounded-full bg-emerald-400" /> accord
-              </span>
-              <span className="flex items-center gap-1">
-                <span aria-hidden className="h-2 w-2 rounded-full bg-amber-400" /> divergence
-              </span>
-            </span>
-          </div>
-        )}
-
-        {isCompare && (
-          <DivergenceNav
-            count={divAnchors.length}
-            ordinal={divOrdinal}
-            onPrev={goPrevDivergence}
-            onNext={goNextDivergence}
-          />
-        )}
 
         {sentences.map((s) => {
           const isFocused = s.index === focused;
@@ -796,6 +824,8 @@ export function DocumentPanel({
                   else selectClause(null);
                 }}
                 onOpenMenu={(x, y) => setMenu({ index: s.index, x, y })}
+                onHover={(x, y) => openHover(s.index, x, y)}
+                onHoverEnd={closeHover}
               />
               {/* Ligne FR sous l'original (P5/P9) — uniquement en mode orig/both. */}
               {perSentenceFr && (
@@ -856,6 +886,35 @@ export function DocumentPanel({
           {blockDrag.tip.count > 1 ? "s" : ""}
         </div>
       )}
+
+      {/* Aperçu PASSIF du rationale au survol (axe 1) — masqué si un menu/popover
+          d'édition est ouvert (évite l'empilement). Contenu = clause humaine + LLM. */}
+      {hover &&
+        !menu &&
+        !boundaryPop &&
+        (() => {
+          const a = anchorByIndex.get(hover.index);
+          const hj: HoverJudge[] = LLM_JUDGES.map((j) => {
+            const d = detailAt(
+              detailMapByJudge[j.id] ?? EMPTY_DETAIL,
+              runsByJudge[j.id] ?? EMPTY_RUNS,
+              hover.index,
+            );
+            return d
+              ? { label: j.label, theme: d.theme, rationale: d.rationale, evidence: d.evidence }
+              : null;
+          }).filter((x): x is HoverJudge => x !== null);
+          return (
+            <RationaleHover
+              x={hover.x}
+              y={hover.y}
+              humanTheme={a?.theme ?? null}
+              humanRationale={a?.rationale ?? null}
+              humanEvidence={a?.evidenceSpan ?? null}
+              judges={hj}
+            />
+          );
+        })()}
 
       {menu && (
         <SentenceMenu
@@ -1030,6 +1089,8 @@ function SentenceRow({
   onOpenMenu,
   onBlockPointerDown,
   shouldSuppressContextMenu,
+  onHover,
+  onHoverEnd,
 }: {
   sentence: Sentence;
   isFocused: boolean;
@@ -1053,6 +1114,9 @@ function SentenceRow({
   onOpenMenu: (x: number, y: number) => void;
   onBlockPointerDown: (e: React.PointerEvent) => void;
   shouldSuppressContextMenu: () => boolean;
+  /** Survol SOURIS (axe 1) : aperçu passif du rationale. Tactile non concerné. */
+  onHover: (x: number, y: number) => void;
+  onHoverEnd: () => void;
 }) {
   const longPress = useLongPress((x, y) => onOpenMenu(x, y));
   // Texte affiché : FR en mode `fr` (repli VO), sinon VO. L'index de phrase
@@ -1087,6 +1151,15 @@ function SentenceRow({
         longPress.onContextMenu(e);
       }}
       onClick={onActivate}
+      onPointerEnter={(e) => {
+        // Survol SOURIS uniquement → aperçu passif ; le tactile garde le long-press.
+        if (e.pointerType === "mouse") onHover(e.clientX, e.clientY);
+      }}
+      onPointerLeave={(e) => {
+        // Préserve l'annulation du long-press (longPress.onPointerLeave) PUIS ferme l'aperçu.
+        longPress.onPointerLeave(e);
+        if (e.pointerType === "mouse") onHoverEnd();
+      }}
       onKeyDown={(e) => {
         if (e.key === "Enter" || e.key === " ") {
           e.preventDefault();
