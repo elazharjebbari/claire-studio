@@ -14,6 +14,8 @@ from collections import defaultdict
 from claire.annotations.models import Annotation
 from claire.corpora.models import Document
 
+from .masi import alpha_masi
+
 
 def _theme_vector(annotation: Annotation, n_sentences: int) -> list[str | None]:
     """Per-sentence theme codes (C4) : sentence *i* = theme of the clause anchored
@@ -21,6 +23,29 @@ def _theme_vector(annotation: Annotation, n_sentences: int) -> list[str | None]:
     clauses = annotation.clauses.select_related("anchor_sentence", "theme")
     starts = {c.anchor_sentence.index: c.theme.code for c in clauses}
     return [starts.get(i) for i in range(n_sentences)]
+
+
+def _theme_set_vector(annotation: Annotation, n_sentences: int) -> list[set[str]]:
+    """Per-sentence theme SETS (multi-label, forward-fill) pour α MASI.
+
+    Phrase *i* = ensemble des thèmes (primaire + secondaires via `theme_tags`) de la
+    clause couvrant *i* (dernière ancre <= i). Ensemble vide avant la 1ʳᵉ clause.
+    """
+    clauses = list(
+        annotation.clauses.select_related("anchor_sentence").prefetch_related("theme_tags__theme")
+    )
+    items = sorted(((c.anchor_sentence.index, c) for c in clauses), key=lambda x: x[0])
+    vec: list[set[str]] = []
+    cur: set[str] = set()
+    k = 0
+    for i in range(n_sentences):
+        while k < len(items) and items[k][0] <= i:
+            c = items[k][1]
+            tags = list(c.theme_tags.all())
+            cur = {t.theme.code for t in tags} if tags else {c.theme.code}
+            k += 1
+        vec.append(set(cur))
+    return vec
 
 
 def cohen_kappa(labels_a: list, labels_b: list) -> float:
@@ -122,6 +147,9 @@ def project_iaa_detail(project) -> dict | None:
     boundary_kappas: list[float] = []
     global_pairs: list[float] = []
     pair_count = 0
+    # Unités pour l'α de Krippendorff-MASI (multi-label) : par phrase, la liste des
+    # ENSEMBLES de thèmes des annotateurs (non vides) — agrégée sur tous les documents.
+    masi_units: list[list[set[str]]] = []
 
     themes = {t.code: t.label for t in project.scheme.themes.all()}
 
@@ -135,6 +163,11 @@ def project_iaa_detail(project) -> dict | None:
         if len(anns) < 2:
             continue
         vectors = {a.id: _theme_vector(a, n) for a in anns}
+        set_vectors = {a.id: _theme_set_vector(a, n) for a in anns}
+        for i in range(n):
+            unit = [set_vectors[a.id][i] for a in anns if set_vectors[a.id][i]]
+            if len(unit) >= 2:
+                masi_units.append(unit)
         starts = {
             a.id: set(
                 a.clauses.values_list("anchor_sentence__index", flat=True)
@@ -178,9 +211,13 @@ def project_iaa_detail(project) -> dict | None:
             }
         )
 
+    masi = alpha_masi(masi_units)
+
     return {
         "global_kappa": global_kappa,
         "annotator_pairs": pair_count,
         "boundary_kappa": boundary_kappa,
+        # α Krippendorff-MASI (multi-label) : indicateur tête de gondole du protocole.
+        "alpha_masi": round(masi, 4) if masi is not None else None,
         "per_theme": per_theme,
     }

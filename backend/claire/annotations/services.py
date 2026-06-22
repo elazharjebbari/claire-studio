@@ -111,7 +111,9 @@ def build_snapshot(annotation: Annotation) -> dict:
     clauses = (
         annotation.clauses.select_related(
             "anchor_sentence", "theme", "legal_nature"
-        ).order_by("order", "anchor_sentence__index")
+        )
+        .prefetch_related("theme_tags__theme")
+        .order_by("order", "anchor_sentence__index")
     )
     return {
         "doc": annotation.document.external_id,
@@ -137,6 +139,13 @@ def build_snapshot(annotation: Annotation) -> dict:
                 # humain validé d'un seed non retravaillé à l'export.
                 "validated": c.validated,
                 "order": c.order,
+                # Multi-label / frontière / niveau (additif) — primaire = `theme` (legacy).
+                "themes": [
+                    {"label": t.theme.code, "role": t.role, "support": t.support}
+                    for t in c.theme_tags.all()
+                ] or [{"label": c.theme.code, "role": "primary", "support": 0}],
+                "boundary": {"type": c.boundary_type, "support": c.boundary_support},
+                "triage_level": c.triage_level or None,
             }
             for c in clauses
         ],

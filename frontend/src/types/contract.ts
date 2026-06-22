@@ -192,6 +192,8 @@ export interface IaaDetail {
   annotatorPairs: number;
   /** Accord sur les frontières de clause (segmentation). */
   boundaryKappa: number;
+  /** α de Krippendorff-MASI (accord multi-label) ; null si non calculable. */
+  alphaMasi?: number | null;
   /** κ par thème. */
   perTheme: IaaThemeAgreement[];
 }

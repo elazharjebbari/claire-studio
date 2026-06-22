@@ -122,7 +122,7 @@ def test_project_detail_and_progress_shape(admin_client):
     if prog["iaaDetail"] is not None:
         _assert_keys(
             prog["iaaDetail"],
-            {"globalKappa", "annotatorPairs", "boundaryKappa", "perTheme"},
+            {"globalKappa", "annotatorPairs", "boundaryKappa", "alphaMasi", "perTheme"},
             where="IaaDetail",
         )
         if prog["iaaDetail"]["perTheme"]:
