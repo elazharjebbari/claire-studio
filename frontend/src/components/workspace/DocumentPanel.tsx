@@ -792,7 +792,9 @@ export function DocumentPanel({
               data-sentence-index={s.index}
               className={
                 "group relative " +
-                (quickRailOn ? "pl-16" : "pl-5") +
+                // Respiration entre la piste de validation (à gauche) et le texte (la barre
+                // ne doit pas être collée au bloc) ; gutter élargi en mode actions rapides.
+                (quickRailOn ? "pl-20" : "pl-6") +
                 (showBoundaries && gutterVisibleModels.length > 0 ? " pr-10" : "")
               }
               onDoubleClick={() => {
@@ -859,6 +861,25 @@ export function DocumentPanel({
                     style={{ backgroundColor: badge.color }}
                   />
                   <span className="text-[12px] font-medium text-ink">{badge.label}</span>
+                  {/* Multi-label HUMAIN : thèmes secondaires en chips pointillés (lisible dans
+                      le document, cohérent avec l'inspecteur et le badge +N du plan). */}
+                  {(anchor?.themes ?? [])
+                    .filter((t) => t.role === "secondary")
+                    .map((t) => {
+                      const tok = getThemeToken(t.label);
+                      return (
+                        <span
+                          key={t.label}
+                          data-testid={`badge-secondary-${s.index}-${t.label}`}
+                          title={`Thème secondaire : ${tok.label}`}
+                          className="inline-flex items-center gap-0.5 rounded border border-dashed px-1 text-[9px] font-medium"
+                          style={{ borderColor: tok.color, color: tok.color }}
+                        >
+                          <span aria-hidden>+</span>
+                          {tok.label}
+                        </span>
+                      );
+                    })}
                   {badge.tag && (
                     <span className="rounded bg-panel-muted px-1 font-mono text-[9px] text-ink-muted">
                       {badge.tag}

@@ -27,6 +27,7 @@ Lots livrés dans le code (preuves : tsc clean + suite vitest **316** verte) :
 | L5 | `MultiLabelEditor` (toggle Mono/Multi + secondaires + « +secondaire » hors C3) dans `InspectorPanel` | ✅ | `tests/multiLabelEditor.test.tsx` (3) |
 | L7 | tests d'intégration + e2e | ✅ | vitest 316 ; `e2e/triage.spec.ts` (multi-label) |
 | L8 | revue adversariale + déploiement | ✅ | revue 26 agents/17 findings → 7 correctifs (dont miroir theme↔themes, provenance resolvedFrom, purge triageLevel) ; déployé `8921e45`, health 200 |
+| L9 | améliorations v2 (cf. `07_ameliorations_v2.md`) | ✅ | icônes lucide (ProvenanceMark/MultiLabelEditor/BoundaryEvidence) ; chips secondaires dans le document ; distinction validé/à-valider (accent émeraude vs pointillé) ; padding piste ; multi-label au clic-droit (SentenceMenu) ; refonte arbitrage « Comparer » ; sélection-miroir vérifiée ; tsc clean + vitest vert |
 
 **Différé (⤵️, documenté dans `04_plan_developpement.md`)** : unification de la provenance dans
 l'en-tête du document, indicateur de conflit C4/C5 (clignotement), carte de suggestion en

@@ -11,9 +11,10 @@
  */
 
 import { useState } from "react";
+import { Plus, Tags, X } from "lucide-react";
 
 import { useWorkspaceStore, type DraftClause } from "@/store/workspace";
-import { getThemeToken } from "@/lib/tokens";
+import { getThemeToken, THEMES } from "@/lib/tokens";
 import { RULES } from "@/lib/triage";
 import type { ThemeTag } from "@/types/contract";
 import { ThemePalette } from "@/components/ui/ThemePalette";
@@ -30,8 +31,11 @@ export function MultiLabelEditor({
   themeCodes,
 }: {
   draft: DraftClause;
-  themeCodes: string[];
+  /** Codes de thèmes proposables en secondaire. Repli sur le référentiel global (THEMES)
+   *  quand l'appelant n'a pas le schéma sous la main (ex. menu clic-droit). */
+  themeCodes?: string[];
 }) {
+  const codes = themeCodes ?? THEMES.map((t) => t.code);
   const setClauseThemes = useWorkspaceStore((s) => s.setClauseThemes);
   const readOnly = useWorkspaceStore((s) => s.readOnly);
   const [picking, setPicking] = useState(false);
@@ -60,7 +64,7 @@ export function MultiLabelEditor({
   };
 
   // Palette des secondaires possibles : ni le primaire, ni un refuge, ni un secondaire déjà posé.
-  const available = themeCodes.filter(
+  const available = codes.filter(
     (c) => c !== primary.label && !REFUGES.has(c) && !secondaries.some((s) => s.label === c),
   );
 
@@ -85,7 +89,7 @@ export function MultiLabelEditor({
           }
           style={expanded ? { backgroundColor: "rgb(100 181 246 / 0.12)" } : undefined}
         >
-          <span aria-hidden>{expanded ? "🏷" : "○"}</span>
+          <Tags size={12} aria-hidden />
           {expanded ? "Multi-label" : "Mono"}
         </button>
       </div>
@@ -103,7 +107,7 @@ export function MultiLabelEditor({
                 style={{ borderColor: tok.color, opacity: 0.95 }}
                 title={`Secondaire : ${tok.label}`}
               >
-                <span aria-hidden style={{ color: tok.color }}>+</span>
+                <Plus size={11} aria-hidden style={{ color: tok.color }} />
                 {tok.label}
                 {!readOnly && (
                   <button
@@ -111,9 +115,9 @@ export function MultiLabelEditor({
                     data-testid={`remove-secondary-${t.label}`}
                     aria-label={`Retirer le thème secondaire ${tok.label}`}
                     onClick={() => removeSecondary(t.label)}
-                    className="ml-0.5 rounded text-ink-muted hover:text-red-400"
+                    className="ml-0.5 inline-flex rounded text-ink-muted hover:text-red-400"
                   >
-                    ×
+                    <X size={12} aria-hidden />
                   </button>
                 )}
               </span>
@@ -142,9 +146,9 @@ export function MultiLabelEditor({
               type="button"
               data-testid="add-secondary"
               onClick={() => setPicking(true)}
-              className="rounded-md border border-dashed border-line px-2 py-1 text-[11px] text-ink-muted hover:bg-panel-muted"
+              className="inline-flex items-center gap-1 rounded-md border border-dashed border-line px-2 py-1 text-[11px] text-ink-muted hover:bg-panel-muted"
             >
-              ＋ thème secondaire
+              <Plus size={12} aria-hidden /> thème secondaire
             </button>
           )}
         </div>

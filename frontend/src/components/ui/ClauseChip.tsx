@@ -49,6 +49,9 @@ export function ClauseChip({
   const token = getThemeToken(themeCode);
   const rgb = hexToRgbChannels(token.color);
   const Comp = onClick ? "button" : "span";
+  // État « brouillon / à valider » (≠ validé) : rendu visuellement distinct et NON ambigu —
+  // bordure pointillée + fond plus pâle + libellé atténué, vs validé = plein + accent émeraude.
+  const pending = validated === false;
 
   return (
     <Comp
@@ -65,7 +68,7 @@ export function ClauseChip({
       className={cn(
         "inline-flex items-center gap-1.5 rounded-md border font-medium text-ink transition-colors",
         size === "sm" ? "px-1.5 py-0.5 text-[11px]" : "px-2 py-1 text-xs",
-        ghost ? "border-dashed" : "border-solid",
+        ghost || pending ? "border-dashed" : "border-solid",
         selected ? "ring-2 ring-offset-1 ring-offset-panel" : "",
         onClick ? "cursor-pointer hover:brightness-110" : "",
         className,
@@ -74,18 +77,21 @@ export function ClauseChip({
         {
           // La couleur de thème est réservée aux éléments non textuels (fond léger,
           // bordure, pastille) ; le texte reste en `text-ink` pour garantir AA 4.5:1.
-          // hexToRgbChannels renvoie des canaux ESPACÉS → syntaxe moderne rgb(R G B / A)
-          // (rgba(R G B, A) serait invalide et la déclaration serait ignorée).
-          backgroundColor: `rgb(${rgb} / ${ghost ? 0.08 : 0.18})`,
-          borderColor: `rgb(${rgb} / ${selected ? 0.9 : 0.45})`,
+          // hexToRgbChannels renvoie des canaux ESPACÉS → syntaxe moderne rgb(R G B / A).
+          // Validé = fond plus dense + bordure plus marquée ; à valider = plus pâle (brouillon).
+          backgroundColor: `rgb(${rgb} / ${ghost ? 0.08 : pending ? 0.1 : 0.2})`,
+          borderColor: `rgb(${rgb} / ${selected ? 0.9 : pending ? 0.35 : 0.55})`,
           "--tw-ring-color": token.color,
+          // Accent émeraude à gauche = « validé » (signal fort, position + couleur, AA) ;
+          // absent à l'état brouillon → distinction nette même sans lire le glyphe.
+          boxShadow: validated ? "inset 3px 0 0 #34D399" : undefined,
         } as React.CSSProperties
       }
     >
       <span
         aria-hidden
         className="h-2 w-2 shrink-0 rounded-full"
-        style={{ backgroundColor: token.color }}
+        style={{ backgroundColor: token.color, opacity: pending ? 0.5 : 1 }}
       />
       {validated !== undefined && (
         <ProvenanceMark clause={{ validated, seededFrom, resolvedFrom, triageLevel }} className="shrink-0" />
@@ -93,7 +99,7 @@ export function ClauseChip({
       {anchorIndex !== undefined && (
         <span className="font-mono text-ink">[{anchorIndex}]</span>
       )}
-      <span className="min-w-0 truncate text-ink">{token.label}</span>
+      <span className={cn("min-w-0 truncate", pending ? "text-ink-muted" : "text-ink")}>{token.label}</span>
       {secondaryCount > 0 && (
         <span
           data-testid="multilabel-badge"

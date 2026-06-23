@@ -20,6 +20,7 @@ import { useWorkspaceStore } from "@/store/workspace";
 import { getThemeToken } from "@/lib/tokens";
 import { runAt, type Run } from "@/lib/runs";
 import { ThemePalette } from "@/components/ui/ThemePalette";
+import { MultiLabelEditor } from "./MultiLabelEditor";
 import { CertaintyPicker } from "@/components/ui/CertaintyPicker";
 import { useAnchoredPosition } from "./useAnchoredPosition";
 import type { Certainty } from "@/types/contract";
@@ -182,6 +183,9 @@ export function SentenceMenu({
             {(coveringDraft.validated ?? false) ? "✓ Phrase validée — cliquer pour dévalider" : "◷ Valider cette phrase"}
           </button>
         )}
+        {/* (a-bis) Multi-label DIRECT au clic-droit : ajouter/retirer des thèmes secondaires
+            sur la clause couvrante, sans ouvrir l'inspecteur (ergonomie maximale). */}
+        {coveringDraft && <MultiLabelEditor draft={coveringDraft} />}
       </section>
 
       {/* (b) LLM — propositions de chaque juge configuré (Claude/Codex/Mistral…). */}
