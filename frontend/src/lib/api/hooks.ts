@@ -125,6 +125,22 @@ export function useProject(slug: string | undefined) {
   });
 }
 
+export function useLockProject(slug: string) {
+  const qc = useQueryClient();
+  return useMutation({
+    mutationFn: () => api.lockProject(slug),
+    onSuccess: () => qc.invalidateQueries({ queryKey: qk.project(slug) }),
+  });
+}
+
+export function useUnlockProject(slug: string) {
+  const qc = useQueryClient();
+  return useMutation({
+    mutationFn: () => api.unlockProject(slug),
+    onSuccess: () => qc.invalidateQueries({ queryKey: qk.project(slug) }),
+  });
+}
+
 // Publication publique (chantier F) — lecture seule, sans auth.
 export function usePublicProjects() {
   return useQuery({

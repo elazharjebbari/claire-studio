@@ -35,6 +35,21 @@ test.describe("Verrouillage du document", () => {
     await expect(page.getByTestId("submit-btn")).toBeEnabled();
   });
 
+  test("verrou NIVEAU PROJET : l'admin gèle puis dégèle la campagne", async ({ page }) => {
+    // Console projet → onglet Publication → bascule de verrou de campagne.
+    page.on("dialog", (d) => d.accept()); // confirme le gel (toutes sessions)
+    await page.goto("/admin/projects/claudette-gold-v1");
+    await page.getByTestId("tab-publish").click();
+    const btn = page.getByTestId("toggle-project-lock");
+    await expect(btn).toHaveText(/Verrouiller le projet/);
+    // Verrouiller : le bouton reflète l'état (refetch projet).
+    await btn.click();
+    await expect(btn).toHaveText(/Déverrouiller le projet/);
+    // Déverrouiller (pas de confirmation requise pour lever le gel).
+    await btn.click();
+    await expect(btn).toHaveText(/Verrouiller le projet/);
+  });
+
   test("déverrouillage annulable", async ({ page }) => {
     await page.goto("/annotate/ann-1");
     await expect(page.getByTestId("annotation-workspace")).toBeVisible();

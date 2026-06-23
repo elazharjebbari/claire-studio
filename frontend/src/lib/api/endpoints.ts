@@ -148,6 +148,15 @@ export function getProject(slug: string): Promise<Project> {
   return apiFetch<Project>(`/projects/${slug}`);
 }
 
+/** Admin : verrou NIVEAU PROJET (gèle toutes les sessions de la campagne). */
+export function lockProject(slug: string): Promise<Project> {
+  return apiFetch<Project>(`/projects/${slug}/lock`, { method: "POST" });
+}
+
+export function unlockProject(slug: string): Promise<Project> {
+  return apiFetch<Project>(`/projects/${slug}/unlock`, { method: "POST" });
+}
+
 // ── Publication (chantier F) ───────────────────────────────────────────────────
 
 export function listPublicProjects(): Promise<Paginated<PublicProject>> {

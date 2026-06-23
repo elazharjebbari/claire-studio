@@ -8,7 +8,7 @@
 
 import { useMemo, useState } from "react";
 import Link from "next/link";
-import { Download, Eye } from "lucide-react";
+import { Download, Eye, Lock, LockOpen } from "lucide-react";
 import { useQueryClient } from "@tanstack/react-query";
 import * as api from "@/lib/api/endpoints";
 import {
@@ -612,7 +612,9 @@ function MembersTab({ slug, qc }: { slug: string; qc: ReturnType<typeof useQuery
 function PublishTab({ slug, qc }: { slug: string; qc: ReturnType<typeof useQueryClient> }) {
   const { data: project } = useProject(slug);
   const [busy, setBusy] = useState(false);
+  const [lockBusy, setLockBusy] = useState(false);
   const isPublic = project?.visibility === "public";
+  const isLocked = !!project?.locked;
 
   async function toggle() {
     setBusy(true);
@@ -624,22 +626,69 @@ function PublishTab({ slug, qc }: { slug: string; qc: ReturnType<typeof useQuery
     }
   }
 
+  async function toggleLock() {
+    if (!isLocked && !window.confirm(
+      "Verrouiller le projet gèle l'édition de TOUTES les sessions de la campagne " +
+        "(les annotateurs passent en lecture seule et ne peuvent pas déverrouiller). Continuer ?",
+    )) {
+      return;
+    }
+    setLockBusy(true);
+    try {
+      await (isLocked ? api.unlockProject(slug) : api.lockProject(slug));
+      await qc.invalidateQueries({ queryKey: qk.project(slug) });
+    } finally {
+      setLockBusy(false);
+    }
+  }
+
   return (
-    <Panel className="p-4">
-      <div className="flex items-center justify-between">
-        <div>
-          <div className="font-medium text-ink">
-            Visibilité : {isPublic ? "Publique" : "Privée"}
+    <div className="flex flex-col gap-4">
+      <Panel className="p-4">
+        <div className="flex items-center justify-between">
+          <div>
+            <div className="font-medium text-ink">
+              Visibilité : {isPublic ? "Publique" : "Privée"}
+            </div>
+            <p className="mt-1 text-sm text-ink-muted">
+              Un projet public expose ses agrégats (KPI, distribution de thèmes, IAA) en
+              lecture seule sur la page publique. Aucune donnée d'annotation brute n'est exposée.
+            </p>
           </div>
-          <p className="mt-1 text-sm text-ink-muted">
-            Un projet public expose ses agrégats (KPI, distribution de thèmes, IAA) en
-            lecture seule sur la page publique. Aucune donnée d'annotation brute n'est exposée.
-          </p>
+          <Button variant="outline" disabled={busy} onClick={toggle} data-testid="toggle-visibility">
+            {isPublic ? "Dépublier" : "Publier"}
+          </Button>
         </div>
-        <Button variant="outline" disabled={busy} onClick={toggle} data-testid="toggle-visibility">
-          {isPublic ? "Dépublier" : "Publier"}
-        </Button>
-      </div>
-    </Panel>
+      </Panel>
+
+      <Panel className={"p-4 " + (isLocked ? "ring-1 ring-inset ring-amber-400/40" : "")}>
+        <div className="flex items-center justify-between gap-4">
+          <div>
+            <div className="flex items-center gap-1.5 font-medium text-ink">
+              {isLocked ? (
+                <Lock size={15} aria-hidden className="text-amber-300" />
+              ) : (
+                <LockOpen size={15} aria-hidden className="text-ink-muted" />
+              )}
+              Verrouillage de campagne : {isLocked ? "Verrouillé" : "Déverrouillé"}
+            </div>
+            <p className="mt-1 text-sm text-ink-muted">
+              Le verrou de campagne <strong>gèle toutes les sessions</strong> du projet d'un
+              coup : tous les annotateurs passent en lecture seule et ne peuvent pas
+              déverrouiller leur session (édition et soumission refusées). Réversible à tout
+              moment ; les verrous de session individuels ne sont pas affectés.
+            </p>
+          </div>
+          <Button
+            variant={isLocked ? "primary" : "outline"}
+            disabled={lockBusy}
+            onClick={toggleLock}
+            data-testid="toggle-project-lock"
+          >
+            {isLocked ? "Déverrouiller le projet" : "Verrouiller le projet"}
+          </Button>
+        </div>
+      </Panel>
+    </div>
   );
 }

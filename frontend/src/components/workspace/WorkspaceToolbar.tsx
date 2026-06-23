@@ -48,6 +48,7 @@ export function WorkspaceToolbar({
   locked = false,
   onLock,
   onRequestUnlock,
+  projectLocked = false,
 }: {
   annotationId: string;
   projectSlug: string;
@@ -60,6 +61,8 @@ export function WorkspaceToolbar({
   locked?: boolean;
   onLock?: () => void;
   onRequestUnlock?: () => void;
+  /** Verrou NIVEAU PROJET : non déverrouillable par l'annotateur (admin requis). */
+  projectLocked?: boolean;
 }) {
   const { data: annotation } = useAnnotation(annotationId);
   const { data: preClaude } = usePreAnnotations(projectSlug, documentId);
@@ -369,7 +372,15 @@ export function WorkspaceToolbar({
           {validation.complete ? "✓" : "◷"} {validation.validated}/{validation.total}
         </span>
         {/* Cadenas (point 2) : verrouiller/déverrouiller. Affiché pour le propriétaire. */}
-        {locked && onRequestUnlock ? (
+        {projectLocked ? (
+          <span
+            data-testid="toolbar-project-locked"
+            title="Projet verrouillé par un administrateur — campagne gelée"
+            className="inline-flex items-center gap-1.5 rounded-md border border-slate-400/40 bg-slate-400/10 px-2.5 py-1 text-sm font-medium text-slate-300"
+          >
+            <Lock size={14} aria-hidden /> Projet verrouillé
+          </span>
+        ) : locked && onRequestUnlock ? (
           <button
             type="button"
             data-testid="toolbar-unlock"

@@ -39,6 +39,17 @@ class Project(TimeStampedModel):
         choices=ProjectVisibility.choices,
         default=ProjectVisibility.PRIVATE,
     )
+    # Verrou NIVEAU PROJET (gel de campagne) : posé par un admin, il gèle l'édition de
+    # TOUTES les sessions du projet (override du verrou par-annotation). Un annotateur
+    # ne peut PAS déverrouiller sa session tant que le projet est verrouillé.
+    # NB : déclaré AVANT le champ `settings` ci-dessous, car ce dernier masquerait
+    # l'import `django.conf.settings` (et donc `settings.AUTH_USER_MODEL`) dans le corps.
+    locked = models.BooleanField(default=False)
+    locked_at = models.DateTimeField(null=True, blank=True)
+    locked_by = models.ForeignKey(
+        settings.AUTH_USER_MODEL, on_delete=models.SET_NULL,
+        null=True, blank=True, related_name="+",
+    )
     settings = models.JSONField(default=dict, blank=True)
 
     class Meta:

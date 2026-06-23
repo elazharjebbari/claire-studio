@@ -105,6 +105,27 @@ lecture/commentaires non perturbés. Lecture seule via `readOnly` du store ; aut
 corrigés : déverrouillage des états terminaux, ré-armement autosave au déverrouillage,
 sur-déclenchement du nudge, ré-init destructif sur refetch).
 
+## 12. Verrou NIVEAU PROJET (gel de campagne, admin) — ✅
+Généralisation du verrou : `Project.locked` (+`locked_at`/`locked_by`). Un admin gèle
+**toutes les sessions** d'un projet d'un coup — override prioritaire du verrou de session.
+- Endpoints `POST /projects/{slug}/lock|/unlock` (**admin uniquement**, audités).
+- Intégration : `_assert_not_locked` refuse les écritures de clause si `annotation.project.locked`
+  (423) ; soumission **et** tout changement de statut par l'annotateur refusés (pas de
+  contournement par PATCH `status`) ; **déverrouillage de session impossible** pour
+  l'annotateur tant que le projet est gelé (seul un admin lève le verrou projet).
+  Les verrous de session individuels ne sont pas effacés par le verrou projet.
+- Front : workspace `locked = sessionLocked || projectLocked` ; bandeau dédié
+  « Projet verrouillé par un administrateur » (sans bouton déverrouiller) ; puce
+  `Projet verrouillé` dans la toolbar ; contrôle admin **« Verrouiller le projet »**
+  (onglet Publication de la console projet, avec confirmation). Tests : `test_project_lock.py`
+  (6) + e2e admin (gel/dégel).
+
+## Rafraîchissement e2e
+2 specs `collab-versioning` caduques (fixture `ann-1` enrichie) mises à jour : le
+pré-remplissage passe par la **confirmation d'écrasement** (la session a des clauses) ;
+la soumission teste désormais le **gate de complétude** (bloqué + raison affichée) au lieu
+d'un happy-path impossible sur un doc partiellement validé.
+
 ## Tests & déploiement
 Vitest pur + RTL (ClauseChip provenance/états/`+N`, MultiLabelEditor, validationDisplay) ; suite
 front complète verte ; tsc clean. Déploiement sur `pactiva.legal` (gate + healthcheck + rollback).

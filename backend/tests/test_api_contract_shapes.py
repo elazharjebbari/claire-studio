@@ -97,7 +97,8 @@ def test_projects_list_shape(admin_client):
     _assert_keys(
         proj,
         {"id", "slug", "name", "corpusSlug", "schemeSlug", "guidelines",
-         "status", "visibility", "settings", "myRole"},
+         "status", "visibility", "settings", "myRole",
+         "locked", "lockedAt", "lockedBy"},
         where="Project",
     )
     assert proj["corpusSlug"] == "claudette-tos"

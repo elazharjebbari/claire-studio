@@ -52,11 +52,26 @@ from .services import (
 def _assert_not_locked(annotation) -> None:
     """Refuse toute écriture de contenu sur une annotation VERROUILLÉE (423).
 
-    Verrou posé à la soumission (auto) ou manuellement : tant qu'il tient, on ne crée,
-    modifie ni supprime aucune clause. Le frontend traduit le 423 en avertissement
-    « Document verrouillé — déverrouillez pour modifier »."""
+    Deux verrous possibles : NIVEAU PROJET (gel de campagne posé par un admin, override
+    prioritaire) ou NIVEAU ANNOTATION (soumission auto / verrou manuel). Tant que l'un
+    tient, on ne crée/modifie/supprime aucune clause. Le frontend traduit le 423 en
+    avertissement adapté (« Projet verrouillé » vs « Document verrouillé »)."""
+    if annotation.project.locked:
+        raise Locked(
+            "Projet verrouillé par un administrateur : édition gelée pour toute la "
+            "campagne."
+        )
     if annotation.locked:
         raise Locked("Document verrouillé : déverrouillez-le pour le modifier.")
+
+
+def _assert_project_not_locked(annotation) -> None:
+    """Refuse une soumission tant que le PROJET est verrouillé (campagne gelée)."""
+    if annotation.project.locked:
+        raise Locked(
+            "Projet verrouillé par un administrateur : soumissions gelées pour toute "
+            "la campagne."
+        )
 
 
 def _assert_submittable(annotation) -> None:
@@ -238,6 +253,10 @@ class AnnotationViewSet(viewsets.ModelViewSet):
             annotation.global_certainty = certainty
             annotation.save(update_fields=["global_certainty", "updated_at"])
         if new_status and new_status != annotation.status:
+            # Campagne gelée (verrou projet) → l'annotateur ne change AUCUN statut
+            # (ni soumettre, ni rouvrir). Les transitions de revue passent par d'autres
+            # endpoints (réservés admin/reviewer), non affectés.
+            _assert_project_not_locked(annotation)
             if new_status == AnnotationStatus.SUBMITTED:
                 _assert_submittable(annotation)
             transition_status(annotation, new_status, request.user)
@@ -246,6 +265,8 @@ class AnnotationViewSet(viewsets.ModelViewSet):
     @action(detail=True, methods=["post"])
     def submit(self, request, pk=None):
         annotation = self.get_object()
+        # Campagne gelée (verrou projet) → soumission refusée.
+        _assert_project_not_locked(annotation)
         # Garde anti-soumission VIDE (filet de sécurité serveur ; le front bloque déjà
         # via le gate de validation). Une session sans aucune clause ne fait référence
         # à rien — refuser plutôt que figer un snapshot vide.
@@ -277,6 +298,13 @@ class AnnotationViewSet(viewsets.ModelViewSet):
         leur verrou protège le contenu et seule la machine de revue peut les rouvrir —
         sinon on pourrait éditer un gold approuvé/archivé. Idempotent. Owner + reviewer/admin."""
         annotation = self.get_object()
+        # Verrou PROJET (override) : déverrouillage de session impossible tant que la
+        # campagne est gelée — seul un admin peut lever le verrou projet.
+        if annotation.project.locked:
+            raise Conflict(
+                "Projet verrouillé par un administrateur : déverrouillage de session "
+                "impossible tant que la campagne est gelée."
+            )
         if annotation.status == AnnotationStatus.SUBMITTED:
             # Réouverture : transition_status(draft) lève le verrou (règle d'état) +
             # journalise annotation.draft. On ajoute un événement unlocked explicite.

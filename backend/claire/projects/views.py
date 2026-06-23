@@ -1,12 +1,14 @@
 from django.contrib.auth import get_user_model
 from django.db import transaction
 from django.shortcuts import get_object_or_404
+from django.utils import timezone
 from rest_framework import status, viewsets
 from rest_framework.decorators import action
 from rest_framework.permissions import AllowAny, IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
+from claire.audit.services import record_event
 from claire.common.pagination import results_envelope
 from claire.common.permissions import IsAdminRole
 
@@ -43,6 +45,39 @@ class ProjectViewSet(viewsets.ModelViewSet):
             return qs
         # Members see their projects.
         return qs.filter(memberships__user=user).distinct()
+
+    @action(detail=True, methods=["post"], permission_classes=[IsAdminRole])
+    def lock(self, request, slug=None):
+        """Verrou NIVEAU PROJET (admin) : gèle l'édition de TOUTES les sessions du
+        projet d'un coup. Override du verrou par-annotation ; un annotateur ne peut pas
+        déverrouiller sa session tant que le projet est verrouillé. Idempotent."""
+        project = self.get_object()
+        if not project.locked:
+            project.locked = True
+            project.locked_at = timezone.now()
+            project.locked_by = request.user
+            project.save(update_fields=["locked", "locked_at", "locked_by", "updated_at"])
+            record_event(
+                actor=request.user, verb="project.locked", target=project,
+                payload={"sessions": project.annotations.count()},
+            )
+        return Response(ProjectSerializer(project, context={"request": request}).data)
+
+    @action(detail=True, methods=["post"], permission_classes=[IsAdminRole])
+    def unlock(self, request, slug=None):
+        """Lève le verrou projet (admin). Les verrous par-annotation (soumission)
+        restent inchangés : chaque annotateur redevient libre de gérer SA session.
+        Idempotent."""
+        project = self.get_object()
+        if project.locked:
+            project.locked = False
+            project.locked_at = None
+            project.locked_by = None
+            project.save(update_fields=["locked", "locked_at", "locked_by", "updated_at"])
+            record_event(
+                actor=request.user, verb="project.unlocked", target=project, payload={},
+            )
+        return Response(ProjectSerializer(project, context={"request": request}).data)
 
     @action(detail=True, methods=["get", "post"])
     def assignments(self, request, slug=None):

@@ -58,9 +58,12 @@ export function AnnotationWorkspace({ annotationId }: { annotationId: string }) 
   // considère que ce N'EST PAS ma session → lecture seule, donc aucune écriture sous
   // identité incertaine (évite les 403 d'autosave quand me n'est pas encore chargé).
   const isMine = !!me && !!annotation && String(annotation.annotatorId) === String(me.id);
-  // Verrouillage : édition gelée (soumission auto ou verrou manuel). Réactif via la
-  // requête annotation (invalidée après lock/unlock).
-  const locked = !!annotation?.locked;
+  // Verrouillage : édition gelée. Deux niveaux — SESSION (soumission auto / verrou
+  // manuel, réversible par l'annotateur) et PROJET (gel de campagne posé par un admin,
+  // NON déverrouillable par l'annotateur). Le verrou effectif est l'union des deux.
+  const sessionLocked = !!annotation?.locked;
+  const projectLocked = !!project?.locked;
+  const locked = sessionLocked || projectLocked;
   const lockAnn = useLockAnnotation(annotationId);
   const unlockAnn = useUnlockAnnotation(annotationId);
   const [unlockConfirm, setUnlockConfirm] = useState(false);
@@ -228,7 +231,12 @@ export function AnnotationWorkspace({ annotationId }: { annotationId: string }) 
               }
             : undefined
         }
-        onRequestUnlock={isMine && locked ? () => setUnlockConfirm(true) : undefined}
+        onRequestUnlock={
+          // L'annotateur ne peut déverrouiller QUE sa session ; un verrou PROJET
+          // (campagne gelée) n'est levable que par un admin.
+          isMine && sessionLocked && !projectLocked ? () => setUnlockConfirm(true) : undefined
+        }
+        projectLocked={projectLocked}
       />
       {isMine && locked ? (
         // Bandeau de VERROUILLAGE (point 2) — persistant, élégant, avec déverrouillage.
@@ -243,21 +251,34 @@ export function AnnotationWorkspace({ annotationId }: { annotationId: string }) 
           }
         >
           <Lock size={14} aria-hidden className={lockFlash ? "text-amber-300" : "text-slate-300"} />
-          <span>
-            <strong>Document {annotation.status === "submitted" ? "soumis et " : ""}verrouillé</strong>{" "}
-            — lecture seule.{" "}
-            <span className={lockFlash ? "text-amber-200" : "text-ink-muted"}>
-              Déverrouillez pour {annotation.status === "submitted" ? "reprendre l'annotation" : "modifier"}.
+          {projectLocked ? (
+            // Verrou PROJET : campagne gelée par un admin — non déverrouillable ici.
+            <span>
+              <strong>Projet verrouillé par un administrateur</strong> — édition gelée pour
+              toute la campagne.{" "}
+              <span className={lockFlash ? "text-amber-200" : "text-ink-muted"}>
+                Un administrateur doit lever le verrou pour reprendre l'annotation.
+              </span>
             </span>
-          </span>
-          <button
-            type="button"
-            data-testid="lock-banner-unlock"
-            onClick={() => setUnlockConfirm(true)}
-            className="ml-auto inline-flex items-center gap-1 rounded-md border border-amber-400/50 bg-amber-400/10 px-2 py-0.5 text-xs font-semibold text-amber-200 hover:bg-amber-400/20"
-          >
-            <LockOpen size={13} aria-hidden /> Déverrouiller
-          </button>
+          ) : (
+            <>
+              <span>
+                <strong>Document {annotation.status === "submitted" ? "soumis et " : ""}verrouillé</strong>{" "}
+                — lecture seule.{" "}
+                <span className={lockFlash ? "text-amber-200" : "text-ink-muted"}>
+                  Déverrouillez pour {annotation.status === "submitted" ? "reprendre l'annotation" : "modifier"}.
+                </span>
+              </span>
+              <button
+                type="button"
+                data-testid="lock-banner-unlock"
+                onClick={() => setUnlockConfirm(true)}
+                className="ml-auto inline-flex items-center gap-1 rounded-md border border-amber-400/50 bg-amber-400/10 px-2 py-0.5 text-xs font-semibold text-amber-200 hover:bg-amber-400/20"
+              >
+                <LockOpen size={13} aria-hidden /> Déverrouiller
+              </button>
+            </>
+          )}
         </div>
       ) : isMine ? (
         <div

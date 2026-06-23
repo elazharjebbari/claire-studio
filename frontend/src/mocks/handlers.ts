@@ -52,6 +52,7 @@ let clauseSeq = 100;
 let commentSeq = 100;
 let reviewSeq = 100;
 let translationSeq = 100;
+let projectLocked = false; // verrou NIVEAU PROJET (mutable, mock)
 
 export function resetDb(): void {
   annotation = structuredClone(FIXTURE_ANNOTATION);
@@ -62,6 +63,7 @@ export function resetDb(): void {
   commentSeq = 100;
   reviewSeq = 100;
   translationSeq = 100;
+  projectLocked = false;
 }
 
 function page<T>(results: T[]) {
@@ -165,7 +167,17 @@ export const handlers = [
 
   // Projects
   http.get(`${BASE}/projects`, () => HttpResponse.json(page([FIXTURE_PROJECT]))),
-  http.get(`${BASE}/projects/:slug`, () => HttpResponse.json(FIXTURE_PROJECT)),
+  http.get(`${BASE}/projects/:slug`, () =>
+    HttpResponse.json({ ...FIXTURE_PROJECT, locked: projectLocked }),
+  ),
+  http.post(`${BASE}/projects/:slug/lock`, () => {
+    projectLocked = true;
+    return HttpResponse.json({ ...FIXTURE_PROJECT, locked: true });
+  }),
+  http.post(`${BASE}/projects/:slug/unlock`, () => {
+    projectLocked = false;
+    return HttpResponse.json({ ...FIXTURE_PROJECT, locked: false });
+  }),
   http.get(`${BASE}/projects/:slug/assignments`, () =>
     HttpResponse.json(page(FIXTURE_ASSIGNMENTS)),
   ),

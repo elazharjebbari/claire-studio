@@ -153,6 +153,10 @@ export interface Project {
   visibility?: ProjectVisibility;
   myRole?: "annotator" | "reviewer" | "lead";
   progress?: ProjectProgress;
+  /** Verrou NIVEAU PROJET (gel de campagne, admin) : gèle toutes les sessions. */
+  locked?: boolean;
+  lockedAt?: string | null;
+  lockedBy?: string | null;
 }
 
 /** Projet publié (vue publique lecture seule, chantier F). */

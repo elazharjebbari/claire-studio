@@ -19,12 +19,15 @@ test.describe("Collaboration & versioning — socle (points 0,1,2)", () => {
     await open(page);
     const claude = page.getByTestId("prefill-claude");
     const codex = page.getByTestId("prefill-codex");
+    // La session a déjà des clauses → chaque bascule demande CONFIRMATION d'écrasement.
     await claude.click();
+    await page.getByTestId("prefill-confirm-ok").click();
     await expect(claude).toHaveAttribute("aria-checked", "true");
     await codex.click();
+    await page.getByTestId("prefill-confirm-ok").click();
     await expect(codex).toHaveAttribute("aria-checked", "true");
     await expect(claude).toHaveAttribute("aria-checked", "false");
-    // Retour à "Aucun" possible.
+    // Retour à "Aucun" : appliqué directement (pas d'écrasement à confirmer).
     await page.getByTestId("prefill-none").click();
     await expect(page.getByTestId("prefill-none")).toHaveAttribute("aria-checked", "true");
   });
@@ -53,17 +56,21 @@ test.describe("Collaboration & versioning — socle (points 0,1,2)", () => {
     await expect(page.getByTestId("document-controls")).toBeInViewport();
   });
 
-  test("la soumission est versionnée : nom requis + description (point 2)", async ({ page }) => {
+  test("la soumission : dialog versionné + gate de complétude (points 2, d)", async ({ page }) => {
     await open(page);
     await page.getByTestId("submit-btn").click();
     const dialog = page.getByTestId("submit-dialog");
     await expect(dialog).toBeVisible();
-    // Confirmer désactivé tant que le nom est vide.
-    await expect(page.getByTestId("submit-confirm")).toBeDisabled();
+    // Champs de version présents (nom requis + description).
+    await expect(page.getByTestId("version-name")).toBeVisible();
+    await expect(page.getByTestId("version-description")).toBeVisible();
+    // Cette session n'est PAS entièrement validée → gate actif : confirmer reste
+    // désactivé et la raison du blocage est affichée (garde-fou campagne, point d).
+    await expect(page.getByTestId("submit-block-reason")).toBeVisible();
     await page.getByTestId("version-name").fill("v1 — relecture résiliation");
-    await page.getByTestId("version-description").fill("Clauses de résiliation revues.");
-    await expect(page.getByTestId("submit-confirm")).toBeEnabled();
-    await page.getByTestId("submit-confirm").click();
+    await expect(page.getByTestId("submit-confirm")).toBeDisabled();
+    // Fermeture du dialog.
+    await page.getByTestId("submit-cancel").click();
     await expect(dialog).toBeHidden();
   });
 

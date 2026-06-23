@@ -21,6 +21,7 @@ class ProjectSerializer(serializers.ModelSerializer):
         source="scheme", slug_field="slug", read_only=True
     )
     my_role = serializers.SerializerMethodField()
+    locked_by = serializers.PrimaryKeyRelatedField(read_only=True)
     # Write-only inputs (admin create/clone).
     corpus = serializers.SlugField(write_only=True, required=False)
     scheme = serializers.SlugField(write_only=True, required=False)
@@ -30,6 +31,7 @@ class ProjectSerializer(serializers.ModelSerializer):
         fields = [
             "id", "slug", "name", "corpus_slug", "scheme_slug", "guidelines",
             "status", "visibility", "settings", "my_role", "corpus", "scheme",
+            "locked", "locked_at", "locked_by",
         ]
 
     def get_my_role(self, obj):
