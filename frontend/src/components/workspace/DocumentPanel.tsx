@@ -52,6 +52,9 @@ import {
 import { cn } from "@/lib/cn";
 import { unfairnessStyle, useUnfairnessIndex, type UnfairnessMark } from "./useUnfairness";
 import { useLongPress } from "./useLongPress";
+import { TRIAGE_ENABLED } from "@/lib/env";
+import { useTriage } from "@/lib/triage/useTriage";
+import { TRIAGE_LEVEL_META } from "@/lib/triage";
 import { useBlockDragSelect } from "./useBlockDragSelect";
 import { SentenceMenu, type JudgeDetail } from "./SentenceMenu";
 import { SelectionToolbar } from "./SelectionToolbar";
@@ -116,6 +119,8 @@ export function DocumentPanel({
 
   const showBoundaries = useWorkspaceStore((s) => s.showBoundaries);
   const toggleBoundaries = useWorkspaceStore((s) => s.toggleBoundaries);
+  const showTriageLevels = useWorkspaceStore((s) => s.showTriageLevels);
+  const toggleTriageLevels = useWorkspaceStore((s) => s.toggleTriageLevels);
   // Réglette frontières-modèles (Feature A) — préférences persistées (store UI).
   const gutterShowCategory = useUiStore((s) => s.gutterShowCategory);
   const gutterVisibility = useUiStore((s) => s.gutterModels);
@@ -148,6 +153,10 @@ export function DocumentPanel({
 
   // Accord LLM (Q3) — projection par phrase + score + détails par juge, pour la version choisie.
   const llm = useLlmAgreement(documentId, projectSlug, llmVersion);
+  // Overlay niveau de triage C1–C5 (opt-in) : niveau par phrase dérivé des juges (réutilise
+  // la même donnée que la file). Actif uniquement si le flag triage est ON et l'overlay coché.
+  const triage = useTriage(documentId, projectSlug, llmVersion);
+  const triageOverlayOn = TRIAGE_ENABLED && showTriageLevels && triage.ready;
 
   // Détails (rationale/evidence) par juge, indexés par ancre → menu phrase enrichi.
   // N-modèles : une map par juge configuré (source unique LLM_JUDGES).
@@ -463,6 +472,20 @@ export function DocumentPanel({
             />
             Frontières
           </label>
+          {TRIAGE_ENABLED && (
+            <label
+              className="flex cursor-pointer items-center gap-2 text-ink-muted"
+              title="Afficher le niveau de triage C1–C5 par phrase (pastille / liseré)"
+            >
+              <input
+                type="checkbox"
+                data-testid="triage-levels-toggle"
+                checked={showTriageLevels}
+                onChange={toggleTriageLevels}
+              />
+              Niveaux
+            </label>
+          )}
           <LlmSourceSwitch />
           <button
             type="button"
@@ -664,6 +687,9 @@ export function DocumentPanel({
           });
 
           const isSelected = selectedSet.has(s.index);
+          // Overlay niveau de triage (pastille sur badge / liseré sinon) — code couleur partagé.
+          const triageLevel = triageOverlayOn ? triage.byIndex[s.index]?.level : undefined;
+          const triageColor = triageLevel ? TRIAGE_LEVEL_META[triageLevel].color : undefined;
           const frText = translations.get(s.index);
           // Surcouche per-phrase (P9) — ne s'applique qu'en mode orig/both.
           const perSentenceFr =
@@ -736,6 +762,19 @@ export function DocumentPanel({
                   {badge.tag && (
                     <span className="rounded bg-panel-muted px-1 font-mono text-[9px] text-ink-muted">
                       {badge.tag}
+                    </span>
+                  )}
+                  {/* Pastille niveau de triage C1–C5 (overlay opt-in) — code couleur partagé. */}
+                  {triageLevel && (
+                    <span
+                      data-testid={`triage-level-${s.index}`}
+                      data-level={triageLevel}
+                      title={`Niveau ${triageLevel} · ${TRIAGE_LEVEL_META[triageLevel].label} — ${TRIAGE_LEVEL_META[triageLevel].meaning}`}
+                      className="inline-flex items-center gap-0.5 rounded-full px-1.5 text-[9px] font-semibold"
+                      style={{ backgroundColor: `${triageColor}22`, color: triageColor }}
+                    >
+                      <span aria-hidden className="text-[8px]">{TRIAGE_LEVEL_META[triageLevel].icon}</span>
+                      {triageLevel}
                     </span>
                   )}
                   {/* Attribution (point 3) : dernier annotateur ayant touché cette clause. */}
@@ -821,6 +860,7 @@ export function DocumentPanel({
                 runColor={runColor}
                 showDashedTop={showDashedTop}
                 isRunStart={isRunStart}
+                triageColor={badge ? undefined : triageColor}
                 renderFr={renderFr}
                 frText={frText}
                 missingFr={missingFr}
@@ -1118,6 +1158,7 @@ function SentenceRow({
   runColor,
   showDashedTop,
   isRunStart,
+  triageColor,
   renderFr,
   frText,
   missingFr,
@@ -1141,6 +1182,8 @@ function SentenceRow({
   runColor: string | undefined;
   showDashedTop: boolean;
   isRunStart: boolean;
+  /** Liseré gauche du niveau de triage (overlay), pour les phrases SANS badge. */
+  triageColor: string | undefined;
   /** Mode FR : afficher le texte traduit (repli VO si absent). */
   renderFr: boolean;
   frText: string | undefined;
@@ -1212,8 +1255,13 @@ function SentenceRow({
       )}
       style={{
         // Rail gauche coloré par le thème du run (P2) — canal visuel distinct de
-        // l'overlay injustice. Opacité modérée via box-shadow inset.
-        boxShadow: runColor ? `inset 3px 0 0 ${runColor}80` : undefined,
+        // l'overlay injustice. Opacité modérée via box-shadow inset. À défaut de rail
+        // de thème, un liseré PLUS FIN porte le niveau de triage (overlay opt-in).
+        boxShadow: runColor
+          ? `inset 3px 0 0 ${runColor}80`
+          : triageColor
+            ? `inset 2px 0 0 ${triageColor}aa`
+            : undefined,
         // Frontière de clause : trait pointillé subtil au début du run, togglable.
         borderTop: showDashedTop ? "1px dashed rgb(var(--surface-text-muted) / 0.3)" : undefined,
       }}

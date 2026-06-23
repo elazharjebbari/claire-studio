@@ -101,6 +101,40 @@ describe("TriageQueueView — navigation & gestes", () => {
     expect(screen.getByTestId("triage-empty")).toBeInTheDocument();
   });
 
+  it("compteurs colorés + tooltip méthodologique par niveau", () => {
+    render(<TriageQueueView {...baseProps()} />);
+    const c1 = screen.getByTestId("triage-count-C1");
+    expect(c1).toHaveTextContent("C1 1");
+    expect(c1.getAttribute("title")).toMatch(/Or/);
+  });
+
+  it("bouton « ? » ouvre la modale d'aide listant les 5 niveaux, Échap la ferme", () => {
+    render(<TriageQueueView {...baseProps()} />);
+    expect(screen.queryByTestId("triage-help-modal")).toBeNull();
+    fireEvent.click(screen.getByTestId("triage-help-open"));
+    expect(screen.getByTestId("triage-help-modal")).toBeInTheDocument();
+    for (const lvl of ["C1", "C2", "C3", "C4", "C5"]) {
+      expect(screen.getByTestId(`triage-help-level-${lvl}`)).toBeInTheDocument();
+    }
+    fireEvent.keyDown(document, { key: "Escape" });
+    expect(screen.queryByTestId("triage-help-modal")).toBeNull();
+  });
+
+  it("touche ? ouvre l'aide", () => {
+    render(<TriageQueueView {...baseProps()} />);
+    fireEvent.keyDown(window, { key: "?" });
+    expect(screen.getByTestId("triage-help-modal")).toBeInTheDocument();
+  });
+
+  it("légende repliable : le toggle affiche la signification des niveaux", () => {
+    render(<TriageQueueView {...baseProps()} />);
+    expect(screen.queryByTestId("triage-legend")).toBeNull();
+    fireEvent.click(screen.getByTestId("triage-legend-toggle"));
+    const legend = screen.getByTestId("triage-legend");
+    expect(legend).toHaveTextContent("Multi-label");
+    expect(legend).toHaveTextContent("Arbitrage");
+  });
+
   it("sélection : bouton « Accepter la sélection » + touche S", () => {
     const p = { ...baseProps(), selectedCount: 2 };
     render(<TriageQueueView {...p} />);

@@ -60,6 +60,7 @@ ux/
   08-ux-ergonomie.md               parcours par niveau, principes, accessibilité, raccourcis
   08-maquettes.txt                 wireframes ASCII (file + carte de suggestion par niveau)
   09-design-systeme.md             tokens, couleurs niveau/rôle, composants, micro-interactions
+  14-aide-decision-ui.md           aide à la décision (code couleur, légende, modale, étude overlay document)
 plan/
   10-plan-action.md                lots, séquencement, jalons, dépendances
   11-strategie-tests.md            MSW / Vitest / Playwright / pytest (invariants protocole)

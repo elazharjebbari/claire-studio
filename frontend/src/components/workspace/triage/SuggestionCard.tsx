@@ -11,15 +11,8 @@
  */
 
 import { getThemeToken, readableTextColor } from "@/lib/tokens";
-import type { TriageLevel, TriageResult } from "@/lib/triage";
-
-const LEVEL_META: Record<TriageLevel, { label: string; color: string; icon: string }> = {
-  C1: { label: "Or", color: "#10B981", icon: "●" },
-  C2: { label: "Haute", color: "#84CC16", icon: "◐" },
-  C3: { label: "Multi-label", color: "#8B5CF6", icon: "⧉" },
-  C4: { label: "Majorité", color: "#F59E0B", icon: "◑" },
-  C5: { label: "Arbitrage", color: "#F43F5E", icon: "⚖" },
-};
+import type { TriageResult } from "@/lib/triage";
+import { TRIAGE_LEVEL_META as LEVEL_META } from "@/lib/triage";
 
 function ThemeChip({ label, role }: { label: string; role: "primary" | "secondary" }) {
   const color = getThemeToken(label).color;

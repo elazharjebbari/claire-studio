@@ -574,6 +574,14 @@ describe("applyTriageDecision / applyTriageBatch (acceptation de suggestions)", 
     expect(useWorkspaceStore.getState().draftClauses.some((d) => d.anchorIndex === 3)).toBe(false);
   });
 
+  it("toggleTriageLevels bascule l'overlay (défaut OFF)", () => {
+    expect(useWorkspaceStore.getState().showTriageLevels).toBe(false);
+    useWorkspaceStore.getState().toggleTriageLevels();
+    expect(useWorkspaceStore.getState().showTriageLevels).toBe(true);
+    useWorkspaceStore.getState().toggleTriageLevels();
+    expect(useWorkspaceStore.getState().showTriageLevels).toBe(false);
+  });
+
   it("readOnly : applyTriageDecision est un no-op", () => {
     useWorkspaceStore.getState().reset();
     useWorkspaceStore.getState().init({ annotationId: "ann-1", nSentences: 10, clauses: [], readOnly: true });

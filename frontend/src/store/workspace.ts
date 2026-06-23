@@ -116,6 +116,9 @@ interface WorkspaceState {
   showTranslation: boolean;
   /** Affichage des frontières de clause (rail + pointillés). Défaut ON (P2). */
   showBoundaries: boolean;
+  /** Overlay du niveau de triage C1–C5 dans le document (pastille/liseré). Défaut OFF
+   *  (subtil, opt-in) — code couleur partagé `TRIAGE_LEVEL_META`. */
+  showTriageLevels: boolean;
   /** Multi-sélection de phrases (number[] pour la sérialisation/tests simples). */
   selectedSentences: number[];
   /** Multi-sélection de BLOCS/clauses (localId), via right-drag (P8). */
@@ -235,6 +238,7 @@ interface WorkspaceState {
   toggleTranslation: () => void;
   // Frontières / multi-sélection / traduction (P1).
   toggleBoundaries: () => void;
+  toggleTriageLevels: () => void;
   selectRange: (from: number, to: number) => void;
   toggleSelected: (index: number) => void;
   /** Sélection ARBITRAIRE (axe 4) : remplace la sélection par cet ensemble d'index
@@ -392,6 +396,7 @@ export const useWorkspaceStore = create<WorkspaceState>((set, get) => ({
   ghostJudges: {},
   showTranslation: false,
   showBoundaries: true,
+  showTriageLevels: false,
   selectedSentences: [],
   selectedClauseIds: [],
   displayLang: "orig",
@@ -935,6 +940,7 @@ export const useWorkspaceStore = create<WorkspaceState>((set, get) => ({
   toggleTranslation: () => set((s) => ({ showTranslation: !s.showTranslation })),
 
   toggleBoundaries: () => set((s) => ({ showBoundaries: !s.showBoundaries })),
+  toggleTriageLevels: () => set((s) => ({ showTriageLevels: !s.showTriageLevels })),
 
   selectRange: (from, to) =>
     set((s) => {
