@@ -7,6 +7,7 @@
  */
 
 import { useCallback, useEffect, useRef, useState } from "react";
+import Link from "next/link";
 import { Pencil, Eye } from "lucide-react";
 import { useAnnotation, useDocument, useProject, useScheme, useMe } from "@/lib/api/hooks";
 import { useWorkspaceStore } from "@/store/workspace";
@@ -26,8 +27,18 @@ import { useWorkspaceShortcuts } from "./useShortcuts";
 import { useAutosave } from "./useAutosave";
 
 export function AnnotationWorkspace({ annotationId }: { annotationId: string }) {
-  const { data: annotation, isLoading: loadingAnn } = useAnnotation(annotationId);
-  const { data: doc, isLoading: loadingDoc } = useDocument(annotation?.documentId);
+  const {
+    data: annotation,
+    isLoading: loadingAnn,
+    isError: errorAnn,
+    refetch: refetchAnn,
+  } = useAnnotation(annotationId);
+  const {
+    data: doc,
+    isLoading: loadingDoc,
+    isError: errorDoc,
+    refetch: refetchDoc,
+  } = useDocument(annotation?.documentId);
   // Schéma résolu via le projet (plus de slug en dur, H4) : l'app suit le schéma du
   // corpus chargé, quel qu'il soit.
   const { data: project } = useProject(annotation?.projectSlug);
@@ -103,6 +114,45 @@ export function AnnotationWorkspace({ annotationId }: { annotationId: string }) 
     },
     onSnapshot: () => snapshotFn?.(),
   });
+
+  // Erreur de chargement : NE PAS rester bloqué sur un spinner (symptôme « l'écran
+  // d'annotation ne s'ouvre pas »). On affiche un état actionnable (réessayer / retour).
+  if (errorAnn || (annotation && errorDoc)) {
+    return (
+      <div
+        data-testid="workspace-error"
+        className="flex h-full flex-col items-center justify-center gap-3 px-6 text-center"
+      >
+        <p className="text-sm font-medium text-ink">Impossible d'ouvrir cette annotation.</p>
+        <p className="max-w-md text-xs text-ink-muted">
+          {errorAnn
+            ? "La session d'annotation n'a pas pu être chargée."
+            : "Le document associé n'a pas pu être chargé."}{" "}
+          Vérifiez votre connexion, puis réessayez.
+        </p>
+        <div className="flex items-center gap-2">
+          <button
+            type="button"
+            data-testid="workspace-error-retry"
+            onClick={() => {
+              refetchAnn();
+              refetchDoc();
+            }}
+            className="rounded-md bg-accent px-3 py-1.5 text-xs font-medium text-accent-fg hover:brightness-110"
+          >
+            Réessayer
+          </button>
+          <Link
+            href="/work"
+            data-testid="workspace-error-back"
+            className="rounded-md border border-line px-3 py-1.5 text-xs text-ink hover:bg-panel-muted"
+          >
+            Retour à mes annotations
+          </Link>
+        </div>
+      </div>
+    );
+  }
 
   if (loadingAnn || loadingDoc || !annotation || !doc) {
     return (

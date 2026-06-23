@@ -12,7 +12,7 @@ import { useUiStore } from "@/store/ui";
 import { useMe, useProjects } from "@/lib/api/hooks";
 import { isAdminRole } from "@/lib/roles";
 import { ActivityBell } from "./ActivityBell";
-import { Badge } from "@/components/ui/primitives";
+import { UserMenu } from "./UserMenu";
 
 export function TopBar() {
   const theme = useUiStore((s) => s.theme);
@@ -96,10 +96,7 @@ export function TopBar() {
           {theme === "dark" ? <Sun size={15} aria-hidden /> : <Moon size={15} aria-hidden />}
         </button>
 
-        <div className="flex items-center gap-2 rounded-md border border-line bg-panel px-2 py-1">
-          <span className="text-sm text-ink">{me?.displayName ?? me?.username ?? "—"}</span>
-          {me?.role && <Badge>{me.role}</Badge>}
-        </div>
+        <UserMenu />
       </div>
     </header>
   );

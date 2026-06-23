@@ -14,6 +14,7 @@ import { useRouter } from "next/navigation";
 import { useProjectDocuments } from "@/lib/api/hooks";
 import { useCurrentProjectSlug } from "@/lib/useCurrentProject";
 import { createAnnotation } from "@/lib/api/endpoints";
+import { ApiError } from "@/lib/api/client";
 import { Panel, Button, StatusPill } from "@/components/ui/primitives";
 import type { ProjectDocument } from "@/types/contract";
 
@@ -55,9 +56,17 @@ export default function WorkQueue() {
     try {
       // INV-4 : garantit/retrouve MA session pour ce document, puis ouvre.
       const ann = await createAnnotation({ project: slug, document: d.document.externalId });
+      if (!ann?.id) throw new Error("réponse serveur sans identifiant d'annotation");
       router.push(`/annotate/${ann.id}`);
-    } catch {
-      setError(`Impossible d'ouvrir « ${d.document.title} ». Vérifiez votre connexion et réessayez.`);
+    } catch (e) {
+      // Cause réelle remontée (statut/détail) pour diagnostiquer au lieu d'un message opaque.
+      const detail =
+        e instanceof ApiError
+          ? `HTTP ${e.status}${e.status === 401 || e.status === 403 ? " — accès refusé (reconnectez-vous)" : ""}`
+          : e instanceof Error
+            ? e.message
+            : "erreur inconnue";
+      setError(`Impossible d'ouvrir « ${d.document.title} » (${detail}). Réessayez ; si le problème persiste, signalez-le.`);
       setOpening(null);
     }
   }
