@@ -55,6 +55,7 @@ import { useLongPress } from "./useLongPress";
 import { TRIAGE_ENABLED } from "@/lib/env";
 import { useTriage } from "@/lib/triage/useTriage";
 import { TRIAGE_LEVEL_META } from "@/lib/triage";
+import { QuickActionRail } from "./QuickActionRail";
 import { useBlockDragSelect } from "./useBlockDragSelect";
 import { SentenceMenu, type JudgeDetail } from "./SentenceMenu";
 import { SelectionToolbar } from "./SelectionToolbar";
@@ -77,6 +78,17 @@ import {
 
 // Référence stable pour les juges sans pré-annotation (évite de casser les mémos).
 const EMPTY_RUNS: Run[] = [];
+
+/** Plus proche ancêtre réellement défilable verticalement (pour le « curseur collant »). */
+function scrollParentOf(el: HTMLElement): HTMLElement | null {
+  let p = el.parentElement;
+  while (p) {
+    const oy = getComputedStyle(p).overflowY;
+    if ((oy === "auto" || oy === "scroll") && p.scrollHeight > p.clientHeight) return p;
+    p = p.parentElement;
+  }
+  return null;
+}
 
 interface MenuState {
   index: number;
@@ -121,6 +133,13 @@ export function DocumentPanel({
   const toggleBoundaries = useWorkspaceStore((s) => s.toggleBoundaries);
   const showTriageLevels = useWorkspaceStore((s) => s.showTriageLevels);
   const toggleTriageLevels = useWorkspaceStore((s) => s.toggleTriageLevels);
+  const showQuickActions = useWorkspaceStore((s) => s.showQuickActions);
+  const toggleQuickActions = useWorkspaceStore((s) => s.toggleQuickActions);
+  const setValidated = useWorkspaceStore((s) => s.setValidated);
+  const applyTriageDecision = useWorkspaceStore((s) => s.applyTriageDecision);
+  const readOnly = useWorkspaceStore((s) => s.readOnly);
+  // Rail d'actions rapides actif : opt-in ET session éditable (jamais en lecture seule R1).
+  const quickRailOn = showQuickActions && !readOnly;
   // Réglette frontières-modèles (Feature A) — préférences persistées (store UI).
   const gutterShowCategory = useUiStore((s) => s.gutterShowCategory);
   const gutterVisibility = useUiStore((s) => s.gutterModels);
@@ -414,10 +433,55 @@ export function DocumentPanel({
   }, [focused]);
 
   const focusedRef = useRef<HTMLDivElement>(null);
+  // Curseur collant (rail d'actions rapides) : neutralise le scrollIntoView de focus pour
+  // ce changement-là, car on repositionne nous-mêmes le scroll sous le curseur.
+  const suppressFocusScroll = useRef(false);
   useEffect(() => {
+    if (suppressFocusScroll.current) {
+      suppressFocusScroll.current = false;
+      return;
+    }
     // `scrollIntoView` peut être absent (jsdom, vieux moteurs) → appel optionnel défensif.
     focusedRef.current?.scrollIntoView?.({ block: "nearest", behavior: "smooth" });
   }, [focused]);
+
+  // ── Rail d'actions rapides ────────────────────────────────────────────────────────────
+  // Bouton 1 : valide LA CLAUSE EXISTANTE de la phrase (= le pré-remplissage du modèle
+  // courant lorsqu'il y en a un), puis avance en gardant le bouton suivant SOUS le curseur
+  // (curseur collant) → clics enchaînés sans bouger la souris. On NE crée PAS de clause là
+  // où il n'y en a pas (pas de fragmentation de segment ni d'adoption d'un juge arbitraire) :
+  // le bouton est désactivé en l'absence de clause (cf. quickCanValidate = présence d'ancre).
+  const onQuickValidateAdvance = (index: number, refY: number) => {
+    const anchor = anchorByIndex.get(index);
+    if (!anchor) return;
+    if (!anchor.validated) setValidated(anchor.localId, true);
+    if (index + 1 >= n) return; // dernière phrase : on valide sans avancer
+    // N'arme le drapeau que si le focus va RÉELLEMENT changer (sinon l'effet [focused] ne se
+    // ré-exécute pas et le drapeau resterait coincé → scrollIntoView du prochain focus sauté).
+    if (index + 1 !== focused) {
+      suppressFocusScroll.current = true;
+      focusSentence(index + 1);
+    }
+    // Après rendu : ramène le bouton de la phrase suivante exactement à `refY`.
+    requestAnimationFrame(() => {
+      const nextBtn = document.querySelector<HTMLElement>(`[data-quickaction-validate="${index + 1}"]`);
+      if (!nextBtn) return;
+      const sc = scrollParentOf(nextBtn);
+      const delta = nextBtn.getBoundingClientRect().top - refY;
+      if (!sc || sc === document.scrollingElement) window.scrollBy({ top: delta });
+      else sc.scrollTop += delta;
+    });
+  };
+
+  // Bouton 2 : applique une décision de triage à la phrase (réutilise le store).
+  const onQuickAcceptTriage = (
+    index: number,
+    themes: { label: string; role: "primary" | "secondary"; support?: number }[],
+    boundary: { type: "hard" | "soft"; support: number },
+    level: "C1" | "C2" | "C3" | "C4" | "C5",
+  ) => {
+    applyTriageDecision({ anchorIndex: index, themes, boundary, triageLevel: level });
+  };
 
   // Conteneur du document (référence pour la mise en page et le défilement).
   const panelRef = useRef<HTMLDivElement>(null);
@@ -486,6 +550,18 @@ export function DocumentPanel({
               Niveaux
             </label>
           )}
+          <label
+            className="flex cursor-pointer items-center gap-2 text-ink-muted"
+            title="Boutons par phrase : valider + suivant (curseur collant) et recommandation"
+          >
+            <input
+              type="checkbox"
+              data-testid="quick-actions-toggle"
+              checked={showQuickActions}
+              onChange={toggleQuickActions}
+            />
+            Actions rapides
+          </label>
           <LlmSourceSwitch />
           <button
             type="button"
@@ -701,12 +777,22 @@ export function DocumentPanel({
           const missingFr = renderFr && frText == null;
 
           const vStatus = validationStatuses[s.index] ?? "uncovered";
+          // Rail d'actions rapides (opt-in) : résultat de triage de la phrase + possibilité
+          // de valider (clause existante ou run du juge courant).
+          const quickResult =
+            quickRailOn && TRIAGE_ENABLED && triage.ready
+              ? triage.byIndex[s.index] ?? null
+              : null;
+          // Validable uniquement s'il existe DÉJÀ une clause à cette phrase (le seed du modèle
+          // ou une annotation humaine) — O(1), pas de scan de runs, pas de création parasite.
+          const quickCanValidate = Boolean(anchor);
           return (
             <div
               key={s.id}
               data-sentence-index={s.index}
               className={
-                "group relative pl-5" +
+                "group relative " +
+                (quickRailOn ? "pl-16" : "pl-5") +
                 (showBoundaries && gutterVisibleModels.length > 0 ? " pr-10" : "")
               }
               onDoubleClick={() => {
@@ -720,6 +806,17 @@ export function DocumentPanel({
                 }
               }}
             >
+              {/* Rail d'actions rapides (gouttière gauche, AVANT la piste de validation). */}
+              {quickRailOn && (
+                <QuickActionRail
+                  index={s.index}
+                  active={isFocused}
+                  result={quickResult}
+                  canValidate={quickCanValidate}
+                  onValidateAdvance={onQuickValidateAdvance}
+                  onAcceptTriage={onQuickAcceptTriage}
+                />
+              )}
               {/* Point d — piste de validation (bord gauche) : vert = validé, ambre =
                   annoté non validé, gris = non couvert. Cliquable → focus la phrase. */}
               <button
@@ -737,7 +834,10 @@ export function DocumentPanel({
                 aria-label={`Phrase ${s.index} — ${
                   vStatus === "validated" ? "validée" : vStatus === "pending" ? "à valider" : "non annotée"
                 }`}
-                className="absolute bottom-1 left-1 top-1 w-1 cursor-pointer rounded-full transition-colors"
+                className={
+                  "absolute bottom-1 top-1 w-1 cursor-pointer rounded-full transition-all " +
+                  (quickRailOn ? "left-14" : "left-1")
+                }
                 style={{
                   backgroundColor:
                     vStatus === "validated"

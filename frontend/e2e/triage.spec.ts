@@ -91,4 +91,30 @@ test.describe("File de triage — carte de suggestion & gestes", () => {
       await expect(selBtn).toBeHidden(); // sélection consommée
     }
   });
+
+  test("rail d'actions rapides : activation, valider+suivant, recommandation au survol", async ({ page }: { page: Page }) => {
+    await page.goto("/annotate/ann-1");
+    await expect(page.getByTestId("annotation-workspace")).toBeVisible();
+
+    // Activer le rail (case dans la barre d'overlays du document).
+    await page.getByTestId("quick-actions-toggle").check();
+
+    // Le rail de la phrase focalisée (0) est visible.
+    const validate0 = page.getByTestId("quick-validate-0");
+    await expect(validate0).toBeVisible();
+
+    // Survol du bouton recommandation → carte de suggestion (si triage prêt).
+    const suggest0 = page.getByTestId("quick-suggest-0");
+    if (await suggest0.isVisible().catch(() => false)) {
+      await suggest0.hover();
+      await expect(page.getByTestId("quick-suggest-card-0")).toBeVisible();
+    }
+
+    // Valider + suivant : un clic valide la phrase courante (si une clause existe) et avance.
+    if (await validate0.isEnabled().catch(() => false)) {
+      const validatedBefore = (await page.getByTestId("toc-validated").textContent().catch(() => "")) ?? "";
+      await validate0.click();
+      await expect(page.getByTestId("toc-validated")).not.toHaveText(validatedBefore);
+    }
+  });
 });

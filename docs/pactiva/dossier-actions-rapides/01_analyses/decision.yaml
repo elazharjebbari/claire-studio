@@ -1,0 +1,58 @@
+# Décisions d'architecture — Rail d'actions rapides (gutter gauche)
+# AGENT_DELIVERY adapté : feature dans une app existante (claire-studio / Pactiva),
+# pas un projet standalone. Pas de Vercel/NestJS (hors sujet) → déploiement sur la prod
+# réelle pactiva.legal via le pipeline existant (gate pytest+vitest + healthcheck + rollback).
+
+feature: rail-actions-rapides
+contexte: >
+  Accélérateur d'annotation inline : deux boutons par phrase, dans la gouttière GAUCHE,
+  AVANT la piste de validation colorée. Bouton 1 = valider le modèle de pré-annotation
+  courant + phrase suivante avec "curseur collant" (scroll qui ramène le bouton suivant
+  sous la souris → clics enchaînés). Bouton 2 = recommandation triage (clic = applique la
+  règle du niveau ; hover = carte de suggestion avec choix). Activable/désactivable.
+
+placement:
+  choix: "Rail absolu à gauche (left-1), piste de validation décalée à droite, padding de ligne élargi"
+  alternatives_ecartees:
+    - { option: "Colonne flex avant le texte", raison_rejet: "casse le positionnement absolu existant de la piste de validation et le rail des juges (droite)" }
+    - { option: "Boutons dans le badge de clause", raison_rejet: "absent sur les phrases sans badge ; pas 'à gauche des phrases'" }
+  raisons:
+    - "Respecte la consigne : à gauche, AVANT la barre colorée"
+    - "Opt-in : aucune modification de layout quand le rail est masqué (pl-5 inchangé)"
+    - "Réutilise le positionnement absolu déjà en place"
+
+bouton1_valider_suivant:
+  semantique: "valide la clause existante à la phrase (le seed du modèle courant) ; si aucune clause, adopte le run du juge courant ; puis focus phrase+1"
+  juge_courant: "llmSource si c'est un juge, sinon prefilledJudge, sinon 1er juge présent"
+  curseur_collant:
+    choix: "scroll de l'ancêtre scrollable de Δ = (top du bouton suivant après rendu) − (clientY du clic)"
+    raison: "garde le bouton N+1 exactement sous le curseur → clics continus sans bouger la souris"
+    garde: "drapeau suppressScrollIntoView pour neutraliser le scrollIntoView de focus concurrent"
+  reutilise: "store setValidated / resolveDivergence / focusSentence ; runAt(runsByJudge)"
+
+bouton2_recommandation:
+  mode_clic: "applique la règle du niveau (applyTriageDecision) pour C1–C4 ; mention du niveau dans le title"
+  mode_hover: "popover réutilisant SuggestionCard (chips primaire/secondaire, candidats, swap/retirer/choisir)"
+  c5: "pas d'application directe au clic (arbitrage) → le clic ouvre la carte ; hover idem"
+  code_couleur: "teinte = TRIAGE_LEVEL_META[level].color (le bouton signale le niveau) — source unique partagée"
+  reutilise: "useTriage (byIndex par phrase), TRIAGE_LEVEL_META, SuggestionCard, applyTriageDecision"
+
+activation:
+  store: "showQuickActions (défaut OFF) + toggleQuickActions"
+  ui: "case 'Actions rapides' dans la barre d'overlays du document (à côté de Frontières/Niveaux)"
+  bouton2_visible_si: "TRIAGE_ENABLED && triage.ready (>= 2 juges)"
+
+ergonomie_design:
+  visibilite: "rail visible pour la phrase focalisée + au survol de la ligne (group-hover) ; transition opacité/scale"
+  animation: "micro-scale au survol/active, popover fade+slide, transitions 150ms"
+  a11y: "boutons natifs, aria-label explicite, title mentionnant la règle ; navigable"
+  couleurs: "bouton1 émeraude (validation) ; bouton2 teinté par niveau (émeraude→lime→violet→ambre→rose)"
+
+tests:
+  - "Vitest/RTL : rendu 2 boutons, validate→callback, clic triage→applyTriageDecision, hover→SuggestionCard, C5 n'auto-applique pas"
+  - "Vitest : store toggle showQuickActions"
+  - "Playwright : rail visible sous flag, valider+suivant enchaîné, popover au survol"
+
+deploiement:
+  cible: "pactiva.legal (pas Vercel)"
+  pipeline: "DJANGO_SECRET_KEY=… ./deploy/deploy-claire.sh (gate pytest+vitest, push, pull/build/restart, healthcheck, rollback si !=200)"

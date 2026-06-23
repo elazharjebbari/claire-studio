@@ -582,6 +582,14 @@ describe("applyTriageDecision / applyTriageBatch (acceptation de suggestions)", 
     expect(useWorkspaceStore.getState().showTriageLevels).toBe(false);
   });
 
+  it("toggleQuickActions bascule le rail d'actions rapides (défaut OFF)", () => {
+    expect(useWorkspaceStore.getState().showQuickActions).toBe(false);
+    useWorkspaceStore.getState().toggleQuickActions();
+    expect(useWorkspaceStore.getState().showQuickActions).toBe(true);
+    useWorkspaceStore.getState().toggleQuickActions();
+    expect(useWorkspaceStore.getState().showQuickActions).toBe(false);
+  });
+
   it("readOnly : applyTriageDecision est un no-op", () => {
     useWorkspaceStore.getState().reset();
     useWorkspaceStore.getState().init({ annotationId: "ann-1", nSentences: 10, clauses: [], readOnly: true });
