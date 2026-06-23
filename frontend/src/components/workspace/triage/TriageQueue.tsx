@@ -39,6 +39,7 @@ export function TriageQueue({ documentId, projectSlug, onClose }: TriageQueuePro
   const focusedSentence = useWorkspaceStore((s) => s.focusedSentence);
   const focusSentence = useWorkspaceStore((s) => s.focusSentence);
   const selectedSentences = useWorkspaceStore((s) => s.selectedSentences);
+  const clearSelection = useWorkspaceStore((s) => s.clearSelection);
 
   const triage = useTriage(documentId, projectSlug, llmVersion);
   const [pos, setPos] = useState(0);
@@ -78,8 +79,11 @@ export function TriageQueue({ documentId, projectSlug, onClose }: TriageQueuePro
 
   // Navigation explicite : positionne la file ET focalise la phrase dans le document
   // (DocumentPanel scrolle vers `focused`). `lastPushedFocus` marque NOTRE push pour que
-  // l'effet document→file ne le renvoie pas (anti-boucle).
-  const lastPushedFocus = useRef<number | null>(null);
+  // l'effet document→file ne le renvoie pas (anti-boucle). Initialisé au focus courant
+  // pour que l'OUVERTURE de la file n'écrase pas la position 0 (premier C1) par le focus
+  // par défaut du document ; il est REMIS À null dès que le push est observé, sinon un
+  // re-clic ultérieur sur la même phrase serait ignoré (synchro doc→file perdue).
+  const lastPushedFocus = useRef<number | null>(focusedSentence);
   const goToPos = (p: number) => {
     const clamped = Math.min(Math.max(0, p), Math.max(0, items.length - 1));
     setPos(clamped);
@@ -138,14 +142,23 @@ export function TriageQueue({ documentId, projectSlug, onClose }: TriageQueuePro
   };
 
   const onBatchAcceptC1 = () => acceptBatch(items.filter((r) => r.result.level === "C1"));
-  const onBatchAcceptSelection = () =>
+  const onBatchAcceptSelection = () => {
     acceptBatch(items.filter((r) => selectedSet.has(r.index)));
+    // La sélection est CONSOMMÉE : on la vide pour retirer la surbrillance du document et
+    // éviter qu'un re-tri/changement de version ne reproupose une sélection déjà traitée.
+    clearSelection();
+  };
 
   // ── Synchro SIMPLE : document → file. Quand l'annotateur clique/focalise une phrase
   // dans le document, la file se positionne sur la carte correspondante. On ignore les
   // changements de focus que la file a elle-même provoqués (lastPushedFocus) → anti-boucle.
   useEffect(() => {
-    if (focusedSentence === lastPushedFocus.current) return;
+    if (focusedSentence === lastPushedFocus.current) {
+      // Notre propre push (ou le focus initial) est consommé : on relâche la garde pour
+      // qu'un futur focus sur CETTE MÊME phrase (re-clic dans le document) soit suivi.
+      lastPushedFocus.current = null;
+      return;
+    }
     const p = posByIndex.get(focusedSentence);
     if (p != null && p !== pos) setPos(p);
     // eslint-disable-next-line react-hooks/exhaustive-deps

@@ -90,6 +90,29 @@ function buildMockClause(body: Record<string, unknown>): Clause {
   };
 }
 
+/** Upsert FIDÈLE au backend : MERGE — ne met à jour QUE les champs présents dans le corps,
+ *  conserve les autres (rationale, evidenceSpan, certainty, legalNature…) de l'existant.
+ *  (Le backend add_clause/batch n'écrit que les champs fournis ; un remplacement effacerait
+ *  à tort des champs absents et ferait diverger les tests MSW du serveur réel.) */
+function mergeMockClause(existing: Clause, body: Record<string, unknown>): Clause {
+  const themes = (body.themes as Clause["themes"]) ?? existing.themes;
+  const primary = themes?.find((t) => t.role === "primary")?.label;
+  return {
+    ...existing,
+    theme: primary ?? (body.theme as string) ?? existing.theme,
+    themes,
+    boundary: (body.boundary as Clause["boundary"]) ?? existing.boundary,
+    triageLevel:
+      ((body.triage_level ?? body.triageLevel) as Clause["triageLevel"]) ?? existing.triageLevel,
+    legalNature:
+      body.legal_nature !== undefined ? (body.legal_nature as string | null) : existing.legalNature,
+    evidenceSpan: (body.evidence_span as string) ?? existing.evidenceSpan,
+    rationale: (body.rationale as string) ?? existing.rationale,
+    certainty: body.certainty !== undefined ? (body.certainty as Clause["certainty"]) : existing.certainty,
+    validated: body.validated !== undefined ? (body.validated as boolean) : existing.validated,
+  };
+}
+
 export const handlers = [
   // Auth
   http.post(`${BASE}/auth/login`, () =>
@@ -263,7 +286,7 @@ export const handlers = [
     // Upsert par ancre (cf. backend) : si la phrase est déjà annotée et `upsert`, on MET
     // À JOUR la clause existante (200) au lieu de dupliquer / 409 (INV-2).
     if (existing && body.upsert) {
-      const merged = { ...buildMockClause(body), id: existing.id, order: existing.order };
+      const merged = mergeMockClause(existing, body);
       annotation = {
         ...annotation,
         clauses: annotation.clauses.map((c) => (c.id === existing.id ? merged : c)),
@@ -293,7 +316,7 @@ export const handlers = [
         continue;
       }
       if (existing) {
-        const merged = { ...buildMockClause(item), id: existing.id, order: existing.order };
+        const merged = mergeMockClause(existing, item);
         annotation = { ...annotation, clauses: annotation.clauses.map((c) => (c.id === existing.id ? merged : c)) };
         created.push(merged);
         continue;

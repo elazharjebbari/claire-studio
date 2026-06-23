@@ -157,6 +157,12 @@ export function useAutosave(annotationId: string | null) {
           ...(d.themes ? { themes: d.themes } : {}),
           ...(d.boundary ? { boundary: d.boundary } : {}),
           ...(d.triageLevel ? { triageLevel: d.triageLevel } : {}),
+          // Convergence : si une clause existe déjà côté serveur à cette ancre (désync :
+          // seed non rechargé, sauvegarde antérieure perdue côté client), on MET À JOUR au
+          // lieu d'un 409 INV-2 qui rendrait l'auto-save terminal (perte silencieuse). Le
+          // brouillon local fait foi pour MA propre annotation (INV-4). L'idempotence
+          // clientOpId protège déjà les retours d'un même op.
+          upsert: true,
           clientOpId: d.localId,
         });
         upsert(persistedRef.current, fromClause(created));

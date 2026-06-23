@@ -1,5 +1,5 @@
 import { beforeEach, describe, expect, it, vi } from "vitest";
-import { fireEvent, render, screen } from "@testing-library/react";
+import { act, fireEvent, render, screen } from "@testing-library/react";
 
 import { RULES, triageEngine } from "@/lib/triage";
 import type { TriageResult } from "@/lib/triage";
@@ -187,13 +187,35 @@ describe("TriageQueue (conteneur) — acceptation via le store & synchro de sél
     expect(c!.themes?.some((t) => t.role === "primary")).toBe(true);
   });
 
-  it("doc → file : focaliser la phrase 2 positionne la file sur sa carte", () => {
+  it("ouverture : la file démarre au 1er item (pos 0), sans sauter au focus par défaut", () => {
+    // Même si une phrase triable est focalisée AVANT l'ouverture, la file s'ouvre en tête
+    // de tri (régression #9 : le focus par défaut ne doit pas écraser la position 0).
     useWorkspaceStore.getState().focusSentence(2);
     renderQueue();
+    expect(screen.getByTestId("triage-position")).toHaveTextContent("phrase #0");
+  });
+
+  it("doc → file : cliquer une phrase APRÈS ouverture positionne la file sur sa carte", () => {
+    renderQueue();
+    expect(screen.getByTestId("triage-position")).toHaveTextContent("phrase #0");
+    act(() => { useWorkspaceStore.getState().focusSentence(2); });
     expect(screen.getByTestId("triage-position")).toHaveTextContent("phrase #2");
   });
 
-  it("multi-sélection : « Accepter la sélection » applique le lot au store", () => {
+  it("doc → file : re-cliquer une phrase déjà poussée par la file la re-suit (garde relâchée)", () => {
+    renderQueue();
+    // La file pousse le focus en naviguant (j → goToPos → phrase #2, lastPushedFocus=2).
+    fireEvent.keyDown(window, { key: "j" });
+    expect(screen.getByTestId("triage-position")).toHaveTextContent("phrase #2");
+    // Clic ailleurs (phrase 0) puis RE-clic de la phrase 2 : sans le reset, le 2ᵉ clic
+    // serait ignoré (2 === lastPushedFocus figé) → la file resterait bloquée sur #0.
+    act(() => { useWorkspaceStore.getState().focusSentence(0); });
+    expect(screen.getByTestId("triage-position")).toHaveTextContent("phrase #0");
+    act(() => { useWorkspaceStore.getState().focusSentence(2); });
+    expect(screen.getByTestId("triage-position")).toHaveTextContent("phrase #2");
+  });
+
+  it("multi-sélection : « Accepter la sélection » applique le lot ET vide la sélection", () => {
     useWorkspaceStore.getState().setSelection([0, 2]);
     renderQueue();
     const btn = screen.getByTestId("triage-batch-selection");
@@ -202,6 +224,8 @@ describe("TriageQueue (conteneur) — acceptation via le store & synchro de sél
     const drafts = useWorkspaceStore.getState().draftClauses;
     expect(drafts.filter((d) => d.validated && d.triageLevel).length).toBe(2);
     expect(drafts.map((d) => d.anchorIndex).sort()).toEqual([0, 2]);
+    // Sélection CONSOMMÉE (plus de surbrillance résiduelle dans le document).
+    expect(useWorkspaceStore.getState().selectedSentences).toEqual([]);
   });
 
   it("readOnly : aucune écriture dans le store à l'acceptation", () => {

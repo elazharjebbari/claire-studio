@@ -30,9 +30,18 @@ export interface PersistedClause {
   triageLevel?: TriageLevel | null;
 }
 
-/** Clé canonique d'un ensemble multi-label (indépendante de l'ordre). */
+/** Clé canonique d'un ensemble multi-label (indépendante de l'ordre).
+ *
+ * Un unique primaire de support 0 est le **miroir trivial** du scalaire `theme` (clause
+ * mono) : il ne porte aucune info multi-label → même clé que « absent ». Sans ça, une
+ * clause mono créée localement (themes `undefined`) différerait en permanence de la même
+ * clause rechargée du serveur — qui renvoie TOUJOURS `[{label, primary, 0}]` par défaut —
+ * et provoquerait un PATCH parasite à chaque tick d'auto-save. */
 function themesKey(themes?: ThemeTag[]): string {
   if (!themes || themes.length === 0) return "";
+  if (themes.length === 1 && themes[0]!.role === "primary" && (themes[0]!.support ?? 0) === 0) {
+    return "";
+  }
   return themes
     .map((t) => `${t.label}:${t.role}:${t.support ?? 0}`)
     .sort()
@@ -40,7 +49,10 @@ function themesKey(themes?: ThemeTag[]): string {
 }
 
 function boundaryKey(b?: { type: string; support: number }): string {
-  return b ? `${b.type}:${b.support}` : "";
+  if (!b) return "";
+  // Frontière par défaut du serveur (dure, support 1) = triviale → même clé qu'« absente ».
+  if (b.type === "hard" && b.support === 1) return "";
+  return `${b.type}:${b.support}`;
 }
 
 export interface ClauseSyncPlan {

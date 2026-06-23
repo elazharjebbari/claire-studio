@@ -121,6 +121,19 @@ describe("planClauseSync — multi-label / frontière / niveau (triage)", () => 
     expect(isEmptyPlan(planClauseSync([d], [p]))).toBe(true);
   });
 
+  it("clause mono locale (themes/boundary absents) == clause mono serveur (défauts) → AUCUN diff", () => {
+    // Régression : le serveur renvoie toujours themes=[{primary,0}] et boundary={hard,1} ;
+    // un draft mono local les a en `undefined`. Les défauts triviaux doivent être neutres
+    // (sinon PATCH parasite à chaque tick sur toute clause manuelle).
+    const d = draft({ anchorIndex: 0, serverId: "c0", theme: "META" }); // themes/boundary undefined
+    const p = {
+      ...persisted({ anchorIndex: 0, serverId: "c0", theme: "META" }),
+      themes: [{ label: "META", role: "primary" as const, support: 0 }],
+      boundary: { type: "hard" as const, support: 1 },
+    };
+    expect(isEmptyPlan(planClauseSync([d], [p]))).toBe(true);
+  });
+
   it("draftsToPersisted conserve themes/boundary/triageLevel", () => {
     const d = {
       ...draft({ anchorIndex: 0, serverId: "c0", theme: "TERMINATION" }),
