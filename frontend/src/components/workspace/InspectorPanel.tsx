@@ -53,14 +53,17 @@ export function InspectorPanel({
   // État « aucune clause sur la phrase focalisée » → proposer la création (Q2).
   if (!draft) {
     return (
-      <div className="flex flex-col gap-3 p-4" data-testid="inspector">
-        <p className="text-sm text-ink-muted" data-testid="inspector-no-clause">
+      // min-h-full : remplit la zone défilante du panneau ; la palette (fill)
+      // s'étire pour occuper l'espace → plus de bande vide en bas (état vide).
+      <div className="flex min-h-full flex-col gap-3 p-4" data-testid="inspector">
+        <p className="shrink-0 text-sm text-ink-muted" data-testid="inspector-no-clause">
           Phrase {focusedSentence} — aucune clause. Choisissez un thème pour créer une clause.
         </p>
         <ThemePalette
           value={null}
           themeCodes={themeCodes}
           autoFocus={false}
+          fill
           onChange={(code) => {
             setBoundary(focusedSentence, code);
           }}
@@ -71,7 +74,11 @@ export function InspectorPanel({
   }
 
   return (
-    <div className="flex flex-col gap-4 p-4" data-testid="inspector">
+    // min-h-full : l'inspecteur remplit la zone défilante du panneau. La section
+    // commentaires (grow, plus bas) absorbe l'espace résiduel → aucune bande vide
+    // en bas quand le panneau est plus haut que le contenu (grand écran / clause
+    // courte). Le panneau défile seulement si le contenu dépasse réellement.
+    <div className="flex min-h-full flex-col gap-4 p-4" data-testid="inspector">
       {/* En-tête (axe 3a) : identité de la clause + nature + VALIDER + supprimer,
           toujours visibles en haut de l'inspecteur. */}
       <div className="flex flex-wrap items-center justify-between gap-2">
@@ -212,12 +219,17 @@ export function InspectorPanel({
       />
 
       {/* Axe 3d : commentaires rendus VISIBLES (section encadrée, pas un bas de page
-          discret) — la collaboration est un citoyen de 1re classe de l'inspecteur. */}
-      <div className="rounded-md border border-line bg-panel-muted/30 p-2" data-testid="inspector-comments">
-        <h3 className="mb-1.5 flex items-center gap-1.5 text-xs font-semibold uppercase tracking-wide text-ink-muted">
+          discret) — la collaboration est un citoyen de 1re classe de l'inspecteur.
+          `grow` + `fill` : cette section s'étire pour occuper l'espace résiduel du
+          panneau (composeur épinglé en bas, liste défilante), supprimant la bande vide. */}
+      <div
+        className="flex grow flex-col rounded-md border border-line bg-panel-muted/30 p-2"
+        data-testid="inspector-comments"
+      >
+        <h3 className="mb-1.5 flex shrink-0 items-center gap-1.5 text-xs font-semibold uppercase tracking-wide text-ink-muted">
           <MessageSquare size={13} aria-hidden /> Commentaires &amp; discussion
         </h3>
-        <CommentThread annotationId={annotationId} clauseId={draft.serverId} />
+        <CommentThread annotationId={annotationId} clauseId={draft.serverId} fill />
       </div>
     </div>
   );

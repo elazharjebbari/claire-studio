@@ -65,6 +65,10 @@ export function WorkspaceToolbar({
   const [snapshotMsg, setSnapshotMsg] = useState<string | null>(null);
   const [submitOpen, setSubmitOpen] = useState(false);
   const [submitting, setSubmitting] = useState(false);
+  // Erreur de soumission (échec du flush anti-perte ou des mutations) affichée
+  // dans le dialog — distincte du gate de validation (`submitBlockReason`).
+  const [submitError, setSubmitError] = useState<string | null>(null);
+  const flushAutosave = useAutosaveStore((s) => s.flush);
   // Juge en attente de CONFIRMATION d'écrasement (le pré-remplissage remplace tout).
   const [pendingPrefill, setPendingPrefill] = useState<Exclude<PrefillJudge, null> | null>(null);
 
@@ -139,9 +143,27 @@ export function WorkspaceToolbar({
     }
   }, [preClaude, setGhost]);
 
-  // Soumission versionnée (point 2) : crée la version de soumission puis passe submitted.
-  function confirmSubmit(payload: { name: string; description: string }) {
+  // Soumission versionnée (point 2). ANTI-PERTE : le snapshot de version est figé
+  // CÔTÉ SERVEUR à partir des clauses déjà persistées. On FLUSH donc l'autosave et on
+  // attend la convergence AVANT de créer la version — sinon une modification récente
+  // (débounce non écoulé, synchro en vol, autosave en erreur) serait perdue du
+  // snapshot soumis. Si la convergence échoue, on abandonne et on explique.
+  async function confirmSubmit(payload: { name: string; description: string }) {
     setSubmitting(true);
+    setSubmitError(null);
+
+    const flush = flushAutosave;
+    const result = flush ? await flush() : { converged: true, state: "idle" as const };
+    if (!result.converged) {
+      setSubmitting(false);
+      setSubmitError(
+        result.state === "unauthorized"
+          ? "Session expirée ou annotation non modifiable : vos dernières modifications ne sont pas enregistrées. Reconnectez-vous, puis réessayez."
+          : "Des modifications ne sont pas encore enregistrées sur le serveur. Patientez quelques secondes (ou utilisez « Réessayer ») puis soumettez à nouveau — pour ne perdre aucune donnée.",
+      );
+      return;
+    }
+
     createVersionMutate(
       { name: payload.name, description: payload.description, kind: "soumission" },
       {
@@ -149,15 +171,24 @@ export function WorkspaceToolbar({
           patchAnnotation.mutate(
             { status: "submitted" },
             {
-              onSettled: () => {
+              onSuccess: () => {
+                // markClean UNIQUEMENT au vrai succès du passage `submitted`
+                // (ne pas masquer un état « non enregistré » sur échec).
                 markClean();
-                setSubmitting(false);
                 setSubmitOpen(false);
               },
+              onError: () =>
+                setSubmitError(
+                  "La version a été créée mais le passage en « soumise » a échoué. Réessayez la soumission.",
+                ),
+              onSettled: () => setSubmitting(false),
             },
           );
         },
-        onError: () => setSubmitting(false),
+        onError: () => {
+          setSubmitting(false);
+          setSubmitError("La soumission a échoué (création de la version). Réessayez.");
+        },
       },
     );
   }
@@ -325,7 +356,10 @@ export function WorkspaceToolbar({
           variant="primary"
           data-testid="submit-btn"
           disabled={readOnly}
-          onClick={() => setSubmitOpen(true)}
+          onClick={() => {
+            setSubmitError(null);
+            setSubmitOpen(true);
+          }}
         >
           Soumettre
         </Button>
@@ -336,7 +370,11 @@ export function WorkspaceToolbar({
           stats={stats}
           busy={submitting}
           blockReason={submitBlockReason}
-          onCancel={() => setSubmitOpen(false)}
+          submitError={submitError}
+          onCancel={() => {
+            setSubmitOpen(false);
+            setSubmitError(null);
+          }}
           onConfirm={confirmSubmit}
         />
       )}

@@ -19,11 +19,23 @@ export interface SubmitDialogProps {
   busy?: boolean;
   /** Point d : si défini, la soumission est BLOQUÉE (toutes les phrases pas validées). */
   blockReason?: string | null;
+  /**
+   * Erreur de soumission (échec du flush anti-perte ou des mutations) — distincte du
+   * gate de validation. Affichée en rouge ; n'empêche pas de réessayer.
+   */
+  submitError?: string | null;
   onCancel: () => void;
   onConfirm: (payload: { name: string; description: string }) => void;
 }
 
-export function SubmitDialog({ stats, busy, blockReason, onCancel, onConfirm }: SubmitDialogProps) {
+export function SubmitDialog({
+  stats,
+  busy,
+  blockReason,
+  submitError,
+  onCancel,
+  onConfirm,
+}: SubmitDialogProps) {
   const [name, setName] = useState("");
   const [description, setDescription] = useState("");
   const ref = useRef<HTMLInputElement>(null);
@@ -66,6 +78,16 @@ export function SubmitDialog({ stats, busy, blockReason, onCancel, onConfirm }: 
           >
             ⚠ {blockReason} — validez toutes les phrases avant de soumettre. Les
             pré-annotations ne comptent pas tant qu'elles ne sont pas validées.
+          </div>
+        )}
+
+        {submitError && (
+          <div
+            data-testid="submit-error"
+            role="alert"
+            className="mb-4 rounded-md border border-red-400/50 bg-red-400/10 px-3 py-2 text-xs text-red-200"
+          >
+            ⚠ {submitError}
           </div>
         )}
 

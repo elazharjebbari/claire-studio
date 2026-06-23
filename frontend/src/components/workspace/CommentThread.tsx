@@ -3,15 +3,23 @@
 /** Fil de commentaires ancré (F9) — affiché dans l'inspecteur. */
 
 import { useState } from "react";
+import { cn } from "@/lib/cn";
 import { useAddComment, useComments, useResolveComment } from "@/lib/api/hooks";
 import { Button } from "@/components/ui/primitives";
 
 export function CommentThread({
   annotationId,
   clauseId,
+  fill = false,
 }: {
   annotationId: string;
   clauseId?: string;
+  /**
+   * `fill` : disposition « discussion » qui occupe toute la hauteur disponible —
+   * la liste défile (flex-1) et le composeur reste épinglé en bas. Sert à remplir
+   * l'inspecteur (pas de bande vide) sans casser la disposition naturelle ailleurs.
+   */
+  fill?: boolean;
 }) {
   const { data } = useComments(annotationId);
   const addComment = useAddComment(annotationId);
@@ -23,8 +31,11 @@ export function CommentThread({
   );
 
   return (
-    <div className="flex flex-col gap-2" data-testid="comment-thread">
-      <ul className="flex flex-col gap-2">
+    <div
+      className={cn("flex flex-col gap-2", fill && "min-h-0 flex-1")}
+      data-testid="comment-thread"
+    >
+      <ul className={cn("flex flex-col gap-2", fill && "min-h-0 flex-1 overflow-y-auto")}>
         {comments.map((c) => (
           <li
             key={c.id}
@@ -61,7 +72,7 @@ export function CommentThread({
           addComment.mutate({ body: draft.trim(), clauseId });
           setDraft("");
         }}
-        className="flex flex-col gap-1"
+        className={cn("flex flex-col gap-1", fill && "shrink-0")}
       >
         <label htmlFor="comment-input" className="sr-only">
           Nouveau commentaire

@@ -24,6 +24,13 @@ export interface ThemePaletteProps {
   /** Info-bulle (libellé + description) au survol PROLONGÉ (intention), pour le menu. */
   describeOnHover?: boolean;
   /**
+   * `fill` (layout liste) : la palette occupe toute la hauteur disponible —
+   * racine en colonne flex extensible (`flex-1`) et liste défilante (`flex-1`) au
+   * lieu d'un `max-h-64` fixe. Évite la bande vide quand la palette est seule dans
+   * le panneau (état « aucune clause »). Sans effet en `grid`.
+   */
+  fill?: boolean;
+  /**
    * Ref impérative : `.current` est câblé sur une fonction qui focalise le champ
    * de recherche. Permet à un parent (touche `B`, ouverture inspecteur) de donner
    * le focus à la palette sans la remonter.
@@ -38,9 +45,12 @@ export function ThemePalette({
   autoFocus,
   layout = "list",
   describeOnHover = false,
+  fill = false,
   focusRef,
 }: ThemePaletteProps) {
   const grid = layout === "grid";
+  // `fill` ne concerne que la liste (la grille est déjà sans scroll, D4).
+  const fillList = fill && !grid;
   const [query, setQuery] = useState("");
   const [activeIdx, setActiveIdx] = useState(0);
   const inputRef = useRef<HTMLInputElement>(null);
@@ -94,7 +104,10 @@ export function ThemePalette({
   }
 
   return (
-    <div className="flex flex-col gap-2" data-testid="theme-palette">
+    <div
+      className={cn("flex flex-col gap-2", fillList && "min-h-0 flex-1")}
+      data-testid="theme-palette"
+    >
       <input
         ref={inputRef}
         autoFocus={autoFocus}
@@ -106,7 +119,7 @@ export function ThemePalette({
         onKeyDown={handleKeyDown}
         placeholder="Filtrer un thème…"
         aria-label="Rechercher un thème"
-        className="w-full rounded-md border border-line bg-panel-muted px-2 py-1.5 text-sm text-ink placeholder:text-ink-muted"
+        className="w-full shrink-0 rounded-md border border-line bg-panel-muted px-2 py-1.5 text-sm text-ink placeholder:text-ink-muted"
       />
       <ul
         role="listbox"
@@ -114,7 +127,12 @@ export function ThemePalette({
         className={cn(
           "rounded-md border border-line",
           // grid : 2 colonnes, AUCUN scroll (toutes les catégories visibles, D4).
-          grid ? "grid grid-cols-2 gap-0.5 p-0.5" : "max-h-64 overflow-auto",
+          grid
+            ? "grid grid-cols-2 gap-0.5 p-0.5"
+            : // liste : `fill` → occupe la hauteur restante ; sinon plafond fixe.
+              fillList
+              ? "min-h-0 flex-1 overflow-auto"
+              : "max-h-64 overflow-auto",
         )}
       >
         {options.map((t, i) => {

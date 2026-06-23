@@ -14,7 +14,7 @@
 
 import { useEffect, useRef } from "react";
 import { useWorkspaceStore } from "@/store/workspace";
-import { useAutosaveStore } from "@/store/autosave";
+import { useAutosaveStore, type FlushResult } from "@/store/autosave";
 import { addClause, deleteClause, patchClause } from "@/lib/api/endpoints";
 import { ApiError } from "@/lib/api/client";
 import {
@@ -29,6 +29,12 @@ const DEBOUNCE_MS = 1200;
 const MAX_ATTEMPTS = 5;
 const BACKOFF_BASE_MS = 1000;
 const BACKOFF_CAP_MS = 30000;
+// Flush forcé (soumission) : convergence bornée pour ne jamais bloquer l'UI.
+const FLUSH_POLL_MS = 40;
+const FLUSH_WAIT_CAP_MS = 8000; // attente max d'une synchro déjà en vol
+const FLUSH_MAX_PASSES = 12; // passes de convergence (création→update→delete)
+
+const sleep = (ms: number) => new Promise<void>((r) => setTimeout(r, ms));
 
 /** Classe une erreur de synchro : `auth` (401/403, terminal), `client` (autre 4xx,
  *  terminal — réessayer n'aide pas), `transient` (5xx / réseau — réessai borné). */
@@ -83,6 +89,11 @@ export function useAutosave(annotationId: string | null) {
   const timer = useRef<ReturnType<typeof setTimeout> | null>(null);
   const syncing = useRef(false);
   const runRef = useRef<() => void>(() => {});
+  const flushRef = useRef<() => Promise<FlushResult>>(async () => ({
+    converged: true,
+    state: "idle",
+  }));
+  const setFlush = useAutosaveStore((s) => s.setFlush);
   // Erreur TERMINALE (401/403 = auth, ou 4xx = client) : on cesse tout réessai AUTO
   // (réessai manuel possible). Réarmé à chaque changement d'annotation.
   const terminal = useRef(false);
@@ -113,29 +124,15 @@ export function useAutosave(annotationId: string | null) {
     timer.current = setTimeout(() => runRef.current(), delay);
   };
 
-  // Routine de synchro recréée à chaque rendu (capture fraîche), appelée via ref.
-  runRef.current = async () => {
-    if (
-      !annotationId ||
-      initedFor.current !== annotationId ||
-      syncing.current ||
-      terminal.current
-    )
-      return;
-    if (typeof navigator !== "undefined" && navigator.onLine === false) {
-      setSaveState("offline");
-      const onOnline = () => {
-        window.removeEventListener("online", onOnline);
-        runRef.current();
-      };
-      window.addEventListener("online", onOnline);
-      return;
-    }
+  // UNE passe de synchro — ATTENDABLE, sans planification de réessai. Cœur partagé
+  // par le runner auto (débounce/backoff) et le flush (soumission). Met à jour
+  // persistedRef de façon incrémentale et renvoie l'issue de la passe.
+  const runPass = async (): Promise<"empty" | "ok" | "transient" | "terminal"> => {
     const plan = planClauseSync(
       useWorkspaceStore.getState().draftClauses,
       persistedRef.current,
     );
-    if (isEmptyPlan(plan)) return;
+    if (isEmptyPlan(plan)) return "empty";
 
     syncing.current = true;
     setSaveState("saving");
@@ -145,7 +142,7 @@ export function useAutosave(annotationId: string | null) {
       // partiel ne fait pas rejouer les ops déjà appliquées (et l'idempotence
       // couvre une création « réussie côté serveur mais perdue côté client »).
       for (const d of plan.creates) {
-        const created = await addClause(annotationId, {
+        const created = await addClause(annotationId!, {
           anchorIndex: d.anchorIndex,
           theme: d.theme,
           legalNature: d.legalNature,
@@ -203,15 +200,39 @@ export function useAutosave(annotationId: string | null) {
         terminal.current = true;
         setSaveState("error");
       } else {
-        transientFailure = true; // 5xx / réseau → réessai borné ci-dessous
+        transientFailure = true; // 5xx / réseau → réessai borné par l'appelant
       }
     } finally {
       syncing.current = false;
     }
 
-    if (terminal.current) return;
+    if (terminal.current) return "terminal";
+    return transientFailure ? "transient" : "ok";
+  };
 
-    if (transientFailure) {
+  // Runner AUTO (débounce + backoff + convergence) — recréé à chaque rendu (capture
+  // fraîche), appelé via ref. Comportement inchangé : il pilote la PLANIFICATION.
+  runRef.current = async () => {
+    if (
+      !annotationId ||
+      initedFor.current !== annotationId ||
+      syncing.current ||
+      terminal.current
+    )
+      return;
+    if (typeof navigator !== "undefined" && navigator.onLine === false) {
+      setSaveState("offline");
+      const onOnline = () => {
+        window.removeEventListener("online", onOnline);
+        runRef.current();
+      };
+      window.addEventListener("online", onOnline);
+      return;
+    }
+    const outcome = await runPass();
+    if (outcome === "empty" || outcome === "terminal") return;
+
+    if (outcome === "transient") {
       attempts.current += 1;
       if (attempts.current <= MAX_ATTEMPTS) {
         setSaveState("retrying");
@@ -231,6 +252,56 @@ export function useAutosave(annotationId: string | null) {
     );
     if (!isEmptyPlan(remaining)) scheduleRun(DEBOUNCE_MS);
   };
+
+  // FLUSH forcé (soumission) : annule le débounce, attend une synchro en vol, puis
+  // rejoue des passes jusqu'à CONVERGENCE (plan vide) ou erreur terminale. Garantit
+  // « zéro donnée manquante » avant de figer la version de soumission.
+  flushRef.current = async () => {
+    const planNow = () =>
+      planClauseSync(useWorkspaceStore.getState().draftClauses, persistedRef.current);
+    const result = (): FlushResult => ({
+      converged: isEmptyPlan(planNow()),
+      state: useAutosaveStore.getState().saveState,
+    });
+
+    if (!annotationId || initedFor.current !== annotationId) return result();
+
+    // On synchronise MAINTENANT : annule le débounce en attente.
+    if (timer.current) {
+      clearTimeout(timer.current);
+      timer.current = null;
+    }
+    // Une soumission explicite mérite une vraie tentative, même après une erreur
+    // transitoire antérieure : on ré-arme le compteur et l'état terminal.
+    terminal.current = false;
+    attempts.current = 0;
+
+    // Attend la fin d'une synchro déjà en vol (borné, pour ne jamais figer l'UI).
+    for (let w = 0; syncing.current && w < FLUSH_WAIT_CAP_MS; w += FLUSH_POLL_MS) {
+      await sleep(FLUSH_POLL_MS);
+    }
+
+    if (typeof navigator !== "undefined" && navigator.onLine === false) {
+      setSaveState("offline");
+      return { converged: isEmptyPlan(planNow()), state: "offline" };
+    }
+
+    // Converge (borné) : create→update→delete peut nécessiter plusieurs passes si
+    // une modification arrive pendant l'une d'elles.
+    for (let pass = 0; pass < FLUSH_MAX_PASSES; pass++) {
+      const outcome = await runPass();
+      if (outcome === "empty" || outcome === "terminal") break;
+      await sleep(FLUSH_POLL_MS); // laisse retomber un éventuel dernier changement
+    }
+    return result();
+  };
+
+  // Enregistre le flush dans le store autosave pour que la soumission l'appelle
+  // sans tunneler une prop à travers l'arbre. Toujours la dernière closure (ref).
+  useEffect(() => {
+    setFlush(() => flushRef.current());
+    return () => setFlush(null);
+  }, [setFlush]);
 
   // Réessai MANUEL (bouton « Réessayer ») : réarme (compteur + terminal) et relance.
   useEffect(() => {

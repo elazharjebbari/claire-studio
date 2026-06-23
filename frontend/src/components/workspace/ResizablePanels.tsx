@@ -179,13 +179,17 @@ export function ResizablePanels({
       ) : (
         <>
           <Handle side="right" />
+          {/* Colonne flex : en-tête figé (shrink-0) + zone de contenu défilante (flex-1).
+              Le panneau remplit toute la hauteur ; le contenu (inspecteur) peut donc
+              s'étirer pour occuper l'espace, sans bande vide en bas (la barre de
+              défilement n'apparaît que si le contenu dépasse réellement). */}
           <aside
             style={{ width: layout.right }}
-            className="h-full shrink-0 overflow-y-auto border-l border-line bg-elevated"
+            className="flex h-full shrink-0 flex-col overflow-hidden border-l border-line bg-elevated"
             aria-label="Inspecteur"
           >
             {onCollapseRight && (
-              <div className="sticky top-0 z-10 flex justify-end border-b border-line/40 bg-elevated/85 px-1 py-1 backdrop-blur">
+              <div className="z-10 flex shrink-0 justify-end border-b border-line/40 bg-elevated/85 px-1 py-1 backdrop-blur">
                 <button
                   type="button"
                   data-testid="inspector-collapse"
@@ -198,7 +202,9 @@ export function ResizablePanels({
                 </button>
               </div>
             )}
-            {right}
+            <div className="min-h-0 flex-1 overflow-y-auto" data-testid="inspector-scroll">
+              {right}
+            </div>
           </aside>
         </>
       )}

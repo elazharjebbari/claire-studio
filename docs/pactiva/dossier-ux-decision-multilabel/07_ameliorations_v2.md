@@ -53,6 +53,32 @@ Nouvelle version :
   bouton « Choisir » (`Check`).
 - Hiérarchie, espaces et contrastes revus pour la lisibilité.
 
+## 8. Bug corrigé — bande vide en bas de l'inspecteur (panneau droit) — ✅
+Symptôme : le panneau de l'inspecteur laissait une grande zone vide en bas quand son
+contenu était plus court que le panneau (écran haut, clause courte, et surtout l'état
+« aucune clause » : ~380 px de contenu dans ~730 px → ~350 px de vide noir).
+Correction au BON NIVEAU (pas un rustine par état) :
+- Le panneau droit devient une **colonne flex** : en-tête figé (`shrink-0`) + zone de
+  contenu **défilante** (`flex-1 min-h-0 overflow-y-auto`). La barre de défilement
+  n'apparaît donc que si le contenu **dépasse réellement**.
+- L'inspecteur **remplit** cette zone (`min-h-full`) et une section *grandit* pour
+  absorber l'espace résiduel : les **commentaires** (style « discussion », liste
+  défilante + composeur épinglé en bas) pour l'éditeur, la **palette de thèmes**
+  (`fill`) pour l'état « aucune clause » (tous les thèmes visibles au lieu d'une liste
+  tronquée + un vide).
+- Vérifié visuellement (Playwright, 1440×900 et 1440×1700) : **bande vide = 0 px** sur
+  grand écran ; remplissage propre en état vide. Verrouillé par 6 tests de contrat.
+
+## 9. Soumission sans perte de données (course autosave/submit) — ✅
+La soumission ne transporte PAS les clauses : elle crée une version (snapshot figé
+**côté serveur** à partir de l'état déjà persisté) puis passe `submitted`. Risque
+identifié : une modification faite < 1,2 s avant le clic (débounce non écoulé), une
+synchro en vol, ou un autosave en erreur → le snapshot soumis **perdait** ces données.
+Correction : `confirmSubmit` appelle d'abord `flush()` (annule le débounce, synchronise
+MAINTENANT, attend la **convergence**). La soumission n'est autorisée que si tout est
+sur le serveur ; sinon elle s'abstient avec un message explicite (pas de perte
+silencieuse). `markClean` n'est posé qu'au vrai succès du passage `submitted`.
+
 ## Tests & déploiement
 Vitest pur + RTL (ClauseChip provenance/états/`+N`, MultiLabelEditor, validationDisplay) ; suite
 front complète verte ; tsc clean. Déploiement sur `pactiva.legal` (gate + healthcheck + rollback).

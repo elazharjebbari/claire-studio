@@ -44,3 +44,27 @@ describe("ThemePalette — info-bulle d'intention", () => {
     expect(screen.queryByTestId("theme-tooltip")).toBeNull();
   });
 });
+
+describe("ThemePalette — mode fill (remplit le panneau, anti-bande vide)", () => {
+  it("liste : fill ajoute flex-1 (occupe la hauteur) au conteneur et à la liste", () => {
+    render(<ThemePalette value={null} onChange={() => {}} fill />);
+    const palette = screen.getByTestId("theme-palette");
+    expect(palette.className).toContain("flex-1");
+    const list = screen.getByRole("listbox");
+    expect(list.className).toContain("flex-1");
+    expect(list.className).not.toContain("max-h-64"); // plus de plafond fixe
+  });
+
+  it("sans fill : conteneur sans flex-1, liste plafonnée (max-h-64)", () => {
+    render(<ThemePalette value={null} onChange={() => {}} />);
+    expect(screen.getByTestId("theme-palette").className).not.toContain("flex-1");
+    expect(screen.getByRole("listbox").className).toContain("max-h-64");
+  });
+
+  it("grid : fill n'altère pas la grille (pas de scroll, toutes catégories)", () => {
+    render(<ThemePalette value={null} onChange={() => {}} layout="grid" fill />);
+    const list = screen.getByRole("listbox");
+    expect(list.className).toContain("grid");
+    expect(list.className).not.toContain("flex-1");
+  });
+});
