@@ -101,6 +101,9 @@ const FITBIT_REFERENCE_LABELS: ReferenceLabel[] = [
   { id: "rl-9", sentenceId: "s-fitbit-24", sentenceIndex: 24, category: "LAW", level: 1, source: "claudette" },
   { id: "rl-10", sentenceId: "s-fitbit-25", sentenceIndex: 25, category: "J", level: 2, source: "claudette" },
   { id: "rl-11", sentenceId: "s-fitbit-3", sentenceIndex: 3, category: "USE", level: 2, source: "claudette" },
+  // Phrase MULTI-catégories (test de la loupe) : la phrase 20 cumule LTD (N3, dominante)
+  // + A (N2) → la fiche doit lister DEUX cartes ; l'overlay garde la dominante LTD N3.
+  { id: "rl-12", sentenceId: "s-fitbit-20", sentenceIndex: 20, category: "A", level: 2, source: "claudette" },
 ];
 
 export const FIXTURE_DOCUMENT: DocumentDetail = {

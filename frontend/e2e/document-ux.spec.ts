@@ -40,8 +40,10 @@ test.describe("DocumentPanel — refonte ergonomique", () => {
   test("Shift+clic crée une multi-sélection et affiche la barre d'actions", async ({ page }) => {
     await page.getByTestId("sentence-2").click();
     await page.getByTestId("sentence-4").click({ modifiers: ["Shift"] });
-    await expect(page.getByTestId("selection-toolbar")).toBeVisible();
-    await expect(page.getByTestId("selection-count")).toContainText("3");
+    const toolbar = page.getByTestId("selection-toolbar");
+    await expect(toolbar).toBeVisible();
+    // `selection-count` existe aussi dans selection-tools → scoper à la barre visée.
+    await expect(toolbar.getByTestId("selection-count")).toContainText("3");
   });
 
   test("le mode Bilingue affiche la ligne FR sous l'original", async ({ page }) => {

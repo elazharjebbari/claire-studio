@@ -60,6 +60,6 @@ describe("useUnfairnessIndex", () => {
     ];
     const { result } = renderHook(() => useUnfairnessIndex(labels));
     expect(result.current.get(4)?.level).toBe(3);
-    expect(result.current.get(4)?.label).toBe("Limitation of liability");
+    expect(result.current.get(4)?.label).toBe("Limitation de responsabilité");
   });
 });

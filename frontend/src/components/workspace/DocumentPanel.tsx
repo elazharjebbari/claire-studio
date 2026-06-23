@@ -50,7 +50,8 @@ import {
   useMe,
 } from "@/lib/api/hooks";
 import { cn } from "@/lib/cn";
-import { unfairnessStyle, useUnfairnessIndex, type UnfairnessMark } from "./useUnfairness";
+import { unfairnessStyle, useUnfairnessMarks, type UnfairnessMark } from "./useUnfairness";
+import { InjusticeLens } from "./InjusticeLens";
 import { useLongPress } from "./useLongPress";
 import { TRIAGE_ENABLED } from "@/lib/env";
 import { useTriage } from "@/lib/triage/useTriage";
@@ -199,7 +200,16 @@ export function DocumentPanel({
     return m;
   }, [attribution.data]);
 
-  const unfairIndex = useUnfairnessIndex(referenceLabels);
+  // Toutes les marques d'injustice par phrase (triées par sévérité ↓) : la 1ʳᵉ porte
+  // l'overlay permanent (style) ; l'ensemble alimente la loupe (fiche multi-catégories).
+  const unfairMarks = useUnfairnessMarks(referenceLabels);
+  // Texte ORIGINAL par index (pour le repère d'évidence : le lexique CLAUDETTE est en
+  // anglais → matcher le texte source, pas une éventuelle traduction affichée).
+  const sentenceTextByIndex = useMemo(() => {
+    const m = new Map<number, string>();
+    for (const s of sentences) m.set(s.index, s.cleanText || s.rawText || "");
+    return m;
+  }, [sentences]);
   const anchorByIndex = useMemo(
     () => new Map(drafts.map((d) => [d.anchorIndex, d])),
     [drafts],
@@ -425,6 +435,34 @@ export function DocumentPanel({
   };
   useEffect(() => () => {
     if (hoverTimer.current) clearTimeout(hoverTimer.current);
+  }, []);
+
+  // Loupe d'injustice (dossier dossier-injustice-hover) : aperçu PASSIF au survol de la
+  // MARQUE (délai ~350 ms) + fiche ÉPINGLÉE au clic/clavier sur la marque. Déclenchée
+  // uniquement sur les phrases marquées → « à proximité des clauses abusives ».
+  const [injusticeHover, setInjusticeHover] = useState<{ index: number; x: number; y: number } | null>(null);
+  const [injusticePinned, setInjusticePinned] = useState<{ index: number; x: number; y: number } | null>(null);
+  const injusticeTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const openInjustice = (index: number, x: number, y: number) => {
+    if (injusticeTimer.current) clearTimeout(injusticeTimer.current);
+    injusticeTimer.current = setTimeout(() => setInjusticeHover({ index, x, y }), 350);
+  };
+  const closeInjustice = () => {
+    if (injusticeTimer.current) clearTimeout(injusticeTimer.current);
+    // Délai assez long pour traverser l'espace marque→carte (carte HOVERABLE).
+    injusticeTimer.current = setTimeout(() => setInjusticeHover(null), 220);
+  };
+  const keepInjustice = () => {
+    // Le pointeur est entré dans la carte → on annule la fermeture.
+    if (injusticeTimer.current) clearTimeout(injusticeTimer.current);
+  };
+  const pinInjustice = (index: number, x: number, y: number) => {
+    if (injusticeTimer.current) clearTimeout(injusticeTimer.current);
+    setInjusticeHover(null);
+    setInjusticePinned({ index, x, y });
+  };
+  useEffect(() => () => {
+    if (injusticeTimer.current) clearTimeout(injusticeTimer.current);
   }, []);
   // Dernière phrase ayant reçu le focus (point d'ancrage de Shift+clic).
   const lastFocusedRef = useRef(focused);
@@ -709,9 +747,9 @@ export function DocumentPanel({
           const isFocused = s.index === focused;
           const anchor = anchorByIndex.get(s.index);
           const ghostList = ghostByIndex.get(s.index);
-          const mark: UnfairnessMark | undefined = showUnfairness
-            ? unfairIndex.get(s.index)
-            : undefined;
+          const marks: UnfairnessMark[] = showUnfairness
+            ? unfairMarks.get(s.index) ?? []
+            : [];
 
           // Comparaison N-way par phrase : thèmes des modèles SÉLECTIONNÉS (réglette).
           const cmpThemes = selectedCompareIds
@@ -977,7 +1015,7 @@ export function DocumentPanel({
                 hasAnchor={Boolean(anchor)}
                 compareState={isCompare ? (compareAgree ? "agree" : compareDisagree ? "disagree" : null) : null}
                 ghosts={ghostList}
-                mark={mark}
+                marks={marks}
                 runColor={runColor}
                 showDashedTop={showDashedTop}
                 isRunStart={isRunStart}
@@ -1018,6 +1056,9 @@ export function DocumentPanel({
                 onOpenMenu={(x, y) => setMenu({ index: s.index, x, y })}
                 onHover={(x, y) => openHover(s.index, x, y)}
                 onHoverEnd={closeHover}
+                onInjusticeHover={(x, y) => openInjustice(s.index, x, y)}
+                onInjusticeHoverEnd={closeInjustice}
+                onInjusticePin={(x, y) => pinInjustice(s.index, x, y)}
               />
               {/* Ligne FR sous l'original (P5/P9) — uniquement en mode orig/both. */}
               {perSentenceFr && (
@@ -1084,6 +1125,8 @@ export function DocumentPanel({
       {hover &&
         !menu &&
         !boundaryPop &&
+        !injusticeHover &&
+        !injusticePinned &&
         (() => {
           const a = anchorByIndex.get(hover.index);
           const hj: HoverJudge[] = LLM_JUDGES.map((j): HoverJudge | null => {
@@ -1113,6 +1156,31 @@ export function DocumentPanel({
             />
           );
         })()}
+
+      {/* Loupe d'injustice — aperçu passif au survol de la marque (masqué si épinglé
+          ou si un menu/popover est ouvert). */}
+      {injusticeHover && !injusticePinned && !menu && !boundaryPop && (
+        <InjusticeLens
+          mode="preview"
+          x={injusticeHover.x}
+          y={injusticeHover.y}
+          marks={unfairMarks.get(injusticeHover.index) ?? []}
+          sentenceText={sentenceTextByIndex.get(injusticeHover.index) ?? ""}
+          onMouseEnter={keepInjustice}
+          onMouseLeave={closeInjustice}
+        />
+      )}
+      {/* Fiche complète épinglée (clic/clavier sur la marque). */}
+      {injusticePinned && (
+        <InjusticeLens
+          mode="pinned"
+          x={injusticePinned.x}
+          y={injusticePinned.y}
+          marks={unfairMarks.get(injusticePinned.index) ?? []}
+          sentenceText={sentenceTextByIndex.get(injusticePinned.index) ?? ""}
+          onClose={() => setInjusticePinned(null)}
+        />
+      )}
 
       {menu && (
         <SentenceMenu
@@ -1275,7 +1343,7 @@ function SentenceRow({
   hasAnchor,
   compareState,
   ghosts,
-  mark,
+  marks,
   runColor,
   showDashedTop,
   isRunStart,
@@ -1291,6 +1359,9 @@ function SentenceRow({
   shouldSuppressContextMenu,
   onHover,
   onHoverEnd,
+  onInjusticeHover,
+  onInjusticeHoverEnd,
+  onInjusticePin,
 }: {
   sentence: Sentence;
   isFocused: boolean;
@@ -1299,7 +1370,8 @@ function SentenceRow({
   /** En mode comparaison : accord ('agree')/divergence ('disagree') de la phrase. */
   compareState: "agree" | "disagree" | null;
   ghosts: Array<{ judge: string; theme: string }> | undefined;
-  mark: UnfairnessMark | undefined;
+  /** Marques d'injustice de la phrase, triées par sévérité ↓ (vide si aucune). */
+  marks: UnfairnessMark[];
   runColor: string | undefined;
   showDashedTop: boolean;
   isRunStart: boolean;
@@ -1319,6 +1391,10 @@ function SentenceRow({
   /** Survol SOURIS (axe 1) : aperçu passif du rationale. Tactile non concerné. */
   onHover: (x: number, y: number) => void;
   onHoverEnd: () => void;
+  /** Loupe d'injustice : survol de la MARQUE (aperçu), clic/clavier (épinglage). */
+  onInjusticeHover: (x: number, y: number) => void;
+  onInjusticeHoverEnd: () => void;
+  onInjusticePin: (x: number, y: number) => void;
 }) {
   const longPress = useLongPress((x, y) => onOpenMenu(x, y));
   // Texte affiché : FR en mode `fr` (repli VO), sinon VO. L'index de phrase
@@ -1390,12 +1466,36 @@ function SentenceRow({
       <span aria-hidden className="mr-2 select-none font-mono text-[11px] text-ink-muted">
         {s.index}
       </span>
-      {mark ? (
+      {marks.length > 0 ? (
+        // La marque est le DÉCLENCHEUR de la loupe d'injustice : survol = aperçu,
+        // clic/clavier = fiche épinglée. outline (pas ring) pour ne pas écraser le
+        // box-shadow inline du surlignage. Aperçu prioritaire sur le RationaleHover.
         <span
-          className="unfairness-mark"
-          style={unfairnessStyle(mark)}
-          title={`Injustice ${mark.label} · niveau ${mark.level}`}
+          className="unfairness-mark cursor-help rounded-sm outline-offset-1 hover:outline hover:outline-1 hover:outline-amber-300/70 focus-visible:outline focus-visible:outline-2 focus-visible:outline-amber-300"
+          style={unfairnessStyle(marks[0]!)}
           data-testid={`unfairness-${s.index}`}
+          tabIndex={0}
+          role="button"
+          aria-haspopup="dialog"
+          aria-label={`Clause marquée injuste : ${marks
+            .map((m) => `${m.label} niveau ${m.level}`)
+            .join(", ")}. Activer pour les détails.`}
+          onMouseEnter={(e) => {
+            onHoverEnd(); // la loupe d'injustice prime sur l'aperçu de rationale
+            onInjusticeHover(e.clientX, e.clientY);
+          }}
+          onMouseLeave={onInjusticeHoverEnd}
+          // PAS de onClick : le clic reste la sélection/focus de la phrase (ne pas
+          // détourner le geste principal sur les phrases marquées). La carte de survol
+          // donne déjà toute l'info ; le clavier (Entrée/Espace) ouvre la fiche épinglée.
+          onKeyDown={(e) => {
+            if (e.key === "Enter" || e.key === " ") {
+              e.preventDefault();
+              e.stopPropagation();
+              const r = (e.currentTarget as HTMLElement).getBoundingClientRect();
+              onInjusticePin(r.left, r.bottom);
+            }
+          }}
         >
           {displayText}
         </span>
