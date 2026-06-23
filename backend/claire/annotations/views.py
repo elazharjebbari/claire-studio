@@ -21,7 +21,7 @@ from claire.imports.services import seed_annotation_from_preannotation
 from django.db import transaction
 
 from claire.corpora.models import Sentence
-from claire.schemes.models import Theme
+from claire.schemes.models import LegalNature, Theme
 
 from .models import (
     Annotation,
@@ -63,6 +63,35 @@ def _apply_boundary_and_level(clause, data) -> list[str]:
     if level is not None:
         clause.triage_level = str(level)[:2]
         changed.append("triage_level")
+    return changed
+
+
+def _apply_scalar_fields(clause, item, scheme) -> list[str]:
+    """Applique à une clause les champs scalaires PRÉSENTS dans `item` (camel/snake) :
+    legal_nature (code→FK ou null), evidence_span, rationale, certainty. Donne au batch la
+    MÊME couverture de champs que add_clause unitaire (parité). Retourne les champs modifiés."""
+    changed: list[str] = []
+    if "legal_nature" in item or "legalNature" in item:
+        code = item.get("legal_nature", item.get("legalNature"))
+        if code:
+            try:
+                clause.legal_nature = scheme.legal_natures.get(code=code)
+                changed.append("legal_nature")
+            except LegalNature.DoesNotExist:
+                pass
+        else:
+            clause.legal_nature = None
+            changed.append("legal_nature")
+    es = item.get("evidence_span", item.get("evidenceSpan"))
+    if es is not None:
+        clause.evidence_span = es
+        changed.append("evidence_span")
+    if item.get("rationale") is not None:
+        clause.rationale = item.get("rationale")
+        changed.append("rationale")
+    if item.get("certainty") is not None:
+        clause.certainty = item.get("certainty")
+        changed.append("certainty")
     return changed
 
 logger = logging.getLogger("claire.annotations")
@@ -207,7 +236,14 @@ class AnnotationViewSet(viewsets.ModelViewSet):
         if client_op_id:
             existing = annotation.clauses.filter(client_op_id=client_op_id).first()
             if existing is not None:
-                return Response(ClauseSerializer(existing).data, status=status.HTTP_200_OK)
+                # Court-circuit d'idempotence borné à l'ANCRE : on ne retourne la clause que
+                # si elle est sur la phrase demandée. Sinon (même op_id réutilisé pour une
+                # autre ancre — anormal) on n'IGNORE PAS silencieusement la décision : on
+                # relâche l'op_id stale et on applique la décision sur l'ancre demandée.
+                req_anchor = request.data.get("anchor_index", request.data.get("anchorIndex"))
+                if req_anchor is None or existing.anchor_sentence.index == req_anchor:
+                    return Response(ClauseSerializer(existing).data, status=status.HTTP_200_OK)
+                client_op_id = ""
         ser = ClauseSerializer(data=request.data)
         ser.is_valid(raise_exception=True)
         attrs = ser._resolve(annotation, dict(ser.validated_data))
@@ -289,6 +325,9 @@ class AnnotationViewSet(viewsets.ModelViewSet):
 
         with transaction.atomic():
             order0 = annotation.clauses.count()
+            # `created_count` n'avance QUE sur une vraie création → ordres contigus (les
+            # items upsertés ne consomment pas de slot d'ordre, sinon trous dans `order`).
+            created_count = 0
             for idx, item in enumerate(items):
                 op = str(item.get("client_op_id") or item.get("clientOpId") or "").strip()
                 if op:
@@ -311,6 +350,14 @@ class AnnotationViewSet(viewsets.ModelViewSet):
                 except Theme.DoesNotExist:
                     conflicts.append({"anchorIndex": anchor_index, "reason": f"thème '{code}' hors scheme"})
                     continue
+                # Validation par item AVANT toute écriture (le lot est transactionnel) : une
+                # certitude hors plage déclencherait sinon un IntegrityError (CHECK
+                # ck_clause_certainty_range) qui avorterait TOUT le lot. On la rapporte comme
+                # un conflit d'item et on poursuit — cohérent avec add_clause unitaire (422).
+                cert = item.get("certainty")
+                if cert is not None and cert not in (0, 1, 2, 3):
+                    conflicts.append({"anchorIndex": anchor_index, "reason": "certitude invalide (0–3)"})
+                    continue
                 existing_at_anchor = annotation.clauses.filter(
                     anchor_sentence=sentence
                 ).first()
@@ -331,9 +378,14 @@ class AnnotationViewSet(viewsets.ModelViewSet):
                 else:
                     clause = Clause.objects.create(
                         annotation=annotation, anchor_sentence=sentence, theme=theme,
-                        order=order0 + idx, client_op_id=op,
+                        order=order0 + created_count, client_op_id=op,
                         validated=bool(item.get("validated") or False),
                     )
+                    created_count += 1
+                # Parité avec add_clause unitaire : champs scalaires + frontière/niveau.
+                sch = _apply_scalar_fields(clause, item, scheme)
+                if sch:
+                    clause.save(update_fields=sch)
                 ch = _apply_boundary_and_level(clause, item)
                 if ch:
                     clause.save(update_fields=ch)

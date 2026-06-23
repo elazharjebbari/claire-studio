@@ -168,7 +168,7 @@ export function useAutosave(annotationId: string | null) {
         upsert(persistedRef.current, fromClause(created));
       }
       for (const u of plan.updates) {
-        await patchClause(u.serverId, {
+        const updated = await patchClause(u.serverId, {
           theme: u.draft.theme,
           legalNature: u.draft.legalNature,
           evidenceSpan: u.draft.evidenceSpan,
@@ -179,19 +179,10 @@ export function useAutosave(annotationId: string | null) {
           ...(u.draft.boundary ? { boundary: u.draft.boundary } : {}),
           ...(u.draft.triageLevel ? { triageLevel: u.draft.triageLevel } : {}),
         });
-        upsert(persistedRef.current, {
-          anchorIndex: u.draft.anchorIndex,
-          serverId: u.serverId,
-          theme: u.draft.theme,
-          legalNature: u.draft.legalNature ?? null,
-          evidenceSpan: u.draft.evidenceSpan ?? "",
-          rationale: u.draft.rationale ?? "",
-          certainty: u.draft.certainty ?? null,
-          validated: u.draft.validated ?? false,
-          themes: u.draft.themes,
-          boundary: u.draft.boundary,
-          triageLevel: u.draft.triageLevel ?? null,
-        });
+        // Référence = RÉPONSE serveur (comme le create) et non les valeurs du draft : si le
+        // backend normalise (support/rôle multi-label, frontière…), persistedRef reste fidèle
+        // → pas de faux diff ni de vrai écart masqué jusqu'au prochain rechargement.
+        upsert(persistedRef.current, fromClause(updated));
       }
       for (const id of plan.deletes) {
         await deleteClause(id);

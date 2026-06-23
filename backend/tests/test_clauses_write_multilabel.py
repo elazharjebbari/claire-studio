@@ -177,6 +177,87 @@ def test_batch_upsert_updates_existing(annotation, annotator, auth):
     assert annotation.clauses.count() == 2
 
 
+def test_batch_upsert_updates_scalar_fields(annotation, annotator, auth):
+    """#13 — parité : le batch upsert met aussi à jour rationale/certainty/evidence_span
+    (comme add_clause unitaire), pas seulement theme/validated/frontière/niveau."""
+    c = auth(annotator)
+    c.post(f"/api/v1/annotations/{annotation.id}/clauses",
+           {"anchorIndex": 0, "theme": "META"}, format="json")
+    payload = {"upsert": True, "clauses": [
+        {"anchorIndex": 0, "theme": "TERMINATION", "rationale": "motif",
+         "certainty": 2, "evidenceSpan": "preuve"},
+    ]}
+    r = c.post(f"/api/v1/annotations/{annotation.id}/clauses/batch", payload, format="json")
+    assert r.status_code == 201, r.content
+    a0 = annotation.clauses.get(anchor_sentence__index=0)
+    assert a0.theme.code == "TERMINATION"
+    assert a0.rationale == "motif"
+    assert a0.certainty == 2
+    assert a0.evidence_span == "preuve"
+
+
+def test_batch_upsert_keeps_order_contiguous(annotation, annotator, auth):
+    """#15 — un item upserté ne consomme pas de slot d'ordre : la création conserve un
+    `order` contigu (pas de trou)."""
+    c = auth(annotator)
+    c.post(f"/api/v1/annotations/{annotation.id}/clauses",
+           {"anchorIndex": 0, "theme": "META"}, format="json")  # order 0
+    payload = {"upsert": True, "clauses": [
+        {"anchorIndex": 0, "theme": "TERMINATION"},  # upsert → pas d'ordre consommé
+        {"anchorIndex": 3, "theme": "TERMINATION"},  # création
+    ]}
+    r = c.post(f"/api/v1/annotations/{annotation.id}/clauses/batch", payload, format="json")
+    assert r.status_code == 201, r.content
+    a3 = annotation.clauses.get(anchor_sentence__index=3)
+    assert a3.order == 1  # contigu après l'existante (order 0), et non 2
+
+
+def test_batch_invalid_certainty_reported_without_aborting(annotation, annotator, auth):
+    """#13 (régression) — une certitude hors plage est rapportée en conflit d'item et NE
+    fait PAS avorter le lot transactionnel ; les items valides sont bien créés."""
+    c = auth(annotator)
+    payload = {"clauses": [
+        {"anchorIndex": 0, "theme": "META"},                       # valide
+        {"anchorIndex": 1, "theme": "TERMINATION", "certainty": 5}, # certitude invalide
+    ]}
+    r = c.post(f"/api/v1/annotations/{annotation.id}/clauses/batch", payload, format="json")
+    assert r.status_code == 201, r.content
+    body = r.json()
+    assert len(body["created"]) == 1
+    assert any(cf["anchorIndex"] == 1 and "certitude" in cf["reason"] for cf in body["conflicts"])
+    # L'item valide n'est PAS rollback ; l'item invalide n'a rien créé.
+    assert annotation.clauses.filter(anchor_sentence__index=0).exists()
+    assert not annotation.clauses.filter(anchor_sentence__index=1).exists()
+
+
+def test_add_clause_op_id_reused_on_other_anchor_applies_decision(annotation, annotator, auth):
+    """#14 — un client_op_id réutilisé pour une AUTRE ancre ne court-circuite pas sur la
+    mauvaise clause : la décision est bien appliquée sur l'ancre demandée."""
+    c = auth(annotator)
+    r0 = c.post(f"/api/v1/annotations/{annotation.id}/clauses",
+                {"anchorIndex": 0, "theme": "META", "clientOpId": "op-x"}, format="json")
+    cid0 = r0.json()["id"]
+    r = c.post(f"/api/v1/annotations/{annotation.id}/clauses",
+               {"anchorIndex": 1, "theme": "TERMINATION", "clientOpId": "op-x"}, format="json")
+    assert r.status_code == 201, r.content
+    body = r.json()
+    assert body["id"] != cid0
+    assert body["anchorIndex"] == 1 and body["theme"] == "TERMINATION"
+    assert annotation.clauses.filter(anchor_sentence__index=1).exists()
+
+
+def test_add_clause_op_id_same_anchor_still_idempotent(annotation, annotator, auth):
+    """#14 (non-régression) — même op_id + MÊME ancre = idempotent (retour de l'existante)."""
+    c = auth(annotator)
+    r0 = c.post(f"/api/v1/annotations/{annotation.id}/clauses",
+                {"anchorIndex": 0, "theme": "META", "clientOpId": "op-y"}, format="json")
+    r1 = c.post(f"/api/v1/annotations/{annotation.id}/clauses",
+                {"anchorIndex": 0, "theme": "TERMINATION", "clientOpId": "op-y"}, format="json")
+    assert r1.status_code == 200
+    assert r1.json()["id"] == r0.json()["id"]
+    assert annotation.clauses.filter(anchor_sentence__index=0).count() == 1
+
+
 def test_boundary_set_soft_then_hard(annotation, annotator, auth):
     c = auth(annotator)
     r = c.post(f"/api/v1/annotations/{annotation.id}/clauses",
