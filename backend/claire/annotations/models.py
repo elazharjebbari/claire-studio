@@ -69,6 +69,16 @@ class Annotation(TimeStampedModel):
         max_length=24, choices=AnnotationSource.choices,
         default=AnnotationSource.HUMAN,
     )
+    # Verrouillage (édition gelée) — orthogonal au statut : posé AUTOMATIQUEMENT à la
+    # soumission (entrée en `submitted`) et MANUELLEMENT via lock/unlock. Tant que
+    # `locked`, toute écriture de clause est refusée (423). Le déverrouillage d'un
+    # document soumis le ROUVRE en `draft` (cf. services.transition_status + vues).
+    locked = models.BooleanField(default=False)
+    locked_at = models.DateTimeField(null=True, blank=True)
+    locked_by = models.ForeignKey(
+        settings.AUTH_USER_MODEL, on_delete=models.SET_NULL,
+        null=True, blank=True, related_name="+",
+    )
 
     class Meta:
         constraints = [

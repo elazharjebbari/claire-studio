@@ -409,6 +409,26 @@ export function usePatchAnnotation(annotationId: string) {
   });
 }
 
+export function useLockAnnotation(annotationId: string) {
+  const qc = useQueryClient();
+  return useMutation({
+    mutationFn: () => api.lockAnnotation(annotationId),
+    onSuccess: () => qc.invalidateQueries({ queryKey: qk.annotation(annotationId) }),
+  });
+}
+
+export function useUnlockAnnotation(annotationId: string) {
+  const qc = useQueryClient();
+  return useMutation({
+    // Réouverture possible (submitted → draft) : on rafraîchit aussi les versions.
+    mutationFn: () => api.unlockAnnotation(annotationId),
+    onSuccess: () => {
+      qc.invalidateQueries({ queryKey: qk.annotation(annotationId) });
+      qc.invalidateQueries({ queryKey: qk.versions(annotationId) });
+    },
+  });
+}
+
 export function useAddComment(annotationId: string) {
   const qc = useQueryClient();
   return useMutation({

@@ -264,9 +264,14 @@ export const handlers = [
     const patch = (await request.json()) as Partial<Annotation> & {
       global_certainty?: number;
     };
+    const nextStatus = (patch.status as Annotation["status"]) ?? annotation.status;
     annotation = {
       ...annotation,
-      status: (patch.status as Annotation["status"]) ?? annotation.status,
+      status: nextStatus,
+      // Verrouillage en fonction de l'état (miroir du backend) : submitted → locked ;
+      // retour draft → unlocked.
+      locked:
+        nextStatus === "submitted" ? true : nextStatus === "draft" ? false : annotation.locked,
       globalCertainty:
         patch.global_certainty !== undefined
           ? (patch.global_certainty as Annotation["globalCertainty"])
@@ -276,7 +281,21 @@ export const handlers = [
     return HttpResponse.json(annotation);
   }),
   http.post(`${BASE}/annotations/:id/submit`, () => {
-    annotation = { ...annotation, status: "submitted" };
+    annotation = { ...annotation, status: "submitted", locked: true };
+    return HttpResponse.json(annotation);
+  }),
+  http.post(`${BASE}/annotations/:id/lock`, () => {
+    annotation = { ...annotation, locked: true, lockedAt: new Date().toISOString() };
+    return HttpResponse.json(annotation);
+  }),
+  http.post(`${BASE}/annotations/:id/unlock`, () => {
+    // Un document soumis est rouvert en brouillon (miroir du backend).
+    annotation = {
+      ...annotation,
+      locked: false,
+      lockedAt: null,
+      status: annotation.status === "submitted" ? "draft" : annotation.status,
+    };
     return HttpResponse.json(annotation);
   }),
   http.post(`${BASE}/annotations/:id/clauses`, async ({ request }) => {

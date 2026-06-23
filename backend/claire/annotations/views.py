@@ -6,9 +6,12 @@ from rest_framework import status, viewsets
 from rest_framework.decorators import action
 from rest_framework.response import Response
 
+from django.utils import timezone
+
+from claire.audit.services import record_event
 from claire.collaboration.models import Comment, Review, ReviewDecision
 from claire.collaboration.serializers import CommentSerializer, ReviewSerializer
-from claire.common.exceptions import Conflict
+from claire.common.exceptions import Conflict, Locked
 from claire.common.pagination import results_envelope
 from claire.common.permissions import (
     IsAnnotationOwner,
@@ -44,6 +47,24 @@ from .services import (
     set_clause_theme_tags,
     transition_status,
 )
+
+
+def _assert_not_locked(annotation) -> None:
+    """Refuse toute écriture de contenu sur une annotation VERROUILLÉE (423).
+
+    Verrou posé à la soumission (auto) ou manuellement : tant qu'il tient, on ne crée,
+    modifie ni supprime aucune clause. Le frontend traduit le 423 en avertissement
+    « Document verrouillé — déverrouillez pour modifier »."""
+    if annotation.locked:
+        raise Locked("Document verrouillé : déverrouillez-le pour le modifier.")
+
+
+def _assert_submittable(annotation) -> None:
+    """Refuse la soumission d'une annotation VIDE (≥1 clause requise)."""
+    if not annotation.clauses.exists():
+        raise Conflict(
+            "Impossible de soumettre une annotation vide : ajoutez au moins une clause."
+        )
 
 
 def _apply_boundary_and_level(clause, data) -> list[str]:
@@ -211,22 +232,85 @@ class AnnotationViewSet(viewsets.ModelViewSet):
         certainty = ser.validated_data.get("global_certainty", "__nochange__")
 
         if certainty != "__nochange__":
+            # Édition de CONTENU gelée si verrouillé (les transitions de statut, elles,
+            # restent permises — c'est ainsi qu'on rouvre/déverrouille).
+            _assert_not_locked(annotation)
             annotation.global_certainty = certainty
             annotation.save(update_fields=["global_certainty", "updated_at"])
         if new_status and new_status != annotation.status:
+            if new_status == AnnotationStatus.SUBMITTED:
+                _assert_submittable(annotation)
             transition_status(annotation, new_status, request.user)
         return Response(AnnotationDetailSerializer(annotation).data)
 
     @action(detail=True, methods=["post"])
     def submit(self, request, pk=None):
         annotation = self.get_object()
+        # Garde anti-soumission VIDE (filet de sécurité serveur ; le front bloque déjà
+        # via le gate de validation). Une session sans aucune clause ne fait référence
+        # à rien — refuser plutôt que figer un snapshot vide.
+        _assert_submittable(annotation)
         transition_status(annotation, AnnotationStatus.SUBMITTED, request.user)
+        return Response(AnnotationDetailSerializer(annotation).data)
+
+    @action(detail=True, methods=["post"])
+    def lock(self, request, pk=None):
+        """Verrouille manuellement (édition gelée). Idempotent. Owner + reviewer/admin."""
+        annotation = self.get_object()
+        if not annotation.locked:
+            annotation.locked = True
+            annotation.locked_at = timezone.now()
+            annotation.locked_by = request.user
+            annotation.save(update_fields=["locked", "locked_at", "locked_by", "updated_at"])
+            record_event(
+                actor=request.user, verb="annotation.locked", target=annotation,
+                payload={"status": annotation.status},
+            )
+        return Response(AnnotationDetailSerializer(annotation).data)
+
+    @action(detail=True, methods=["post"])
+    def unlock(self, request, pk=None):
+        """Déverrouille. Un document SOUMIS est ROUVERT en `draft` (on souhaite y revenir
+        → une re-soumission recréera une version et re-verrouillera). Un verrou MANUEL
+        sur un BROUILLON est simplement levé. Les états terminaux ou de revue
+        (in_review / approved / rejected / archived) ne sont PAS déverrouillables ici :
+        leur verrou protège le contenu et seule la machine de revue peut les rouvrir —
+        sinon on pourrait éditer un gold approuvé/archivé. Idempotent. Owner + reviewer/admin."""
+        annotation = self.get_object()
+        if annotation.status == AnnotationStatus.SUBMITTED:
+            # Réouverture : transition_status(draft) lève le verrou (règle d'état) +
+            # journalise annotation.draft. On ajoute un événement unlocked explicite.
+            transition_status(annotation, AnnotationStatus.DRAFT, request.user)
+            record_event(
+                actor=request.user, verb="annotation.unlocked", target=annotation,
+                payload={"reopened": True},
+            )
+        elif annotation.status == AnnotationStatus.DRAFT:
+            if annotation.locked:
+                annotation.locked = False
+                annotation.locked_at = None
+                annotation.locked_by = None
+                annotation.save(
+                    update_fields=["locked", "locked_at", "locked_by", "updated_at"]
+                )
+                record_event(
+                    actor=request.user, verb="annotation.unlocked", target=annotation,
+                    payload={"reopened": False},
+                )
+        else:
+            # in_review / approved / rejected / archived : non déverrouillable directement
+            # (le verrou est la garde d'intégrité du contenu après revue).
+            raise Conflict(
+                "Document en revue/approuvé/archivé : non déverrouillable directement "
+                "(le contenu reste protégé)."
+            )
         return Response(AnnotationDetailSerializer(annotation).data)
 
     # --- clauses ----------------------------------------------------------
     @action(detail=True, methods=["post"], url_path="clauses")
     def add_clause(self, request, pk=None):
         annotation = self.get_object()
+        _assert_not_locked(annotation)
         # Idempotence (chantier C) : un retry portant le même client_op_id retombe
         # sur la clause déjà créée (200) — pas de doublon, pas de conflit faux positif.
         # Coercition str : le client peut renvoyer un client_op_id NUMÉRIQUE (ex. l'id
@@ -308,6 +392,7 @@ class AnnotationViewSet(viewsets.ModelViewSet):
         ``{"clauses": [{anchorIndex, themes|theme, boundary?, triageLevel?, clientOpId?}]}``.
         """
         annotation = self.get_object()
+        _assert_not_locked(annotation)
         scheme = annotation.project.scheme
         document = annotation.document
         items = request.data.get("clauses") or []
@@ -611,8 +696,14 @@ class ClauseViewSet(viewsets.ModelViewSet):
         self.check_object_permissions(self.request, obj.annotation)
         return obj
 
+    def destroy(self, request, *args, **kwargs):
+        clause = self.get_object()
+        _assert_not_locked(clause.annotation)
+        return super().destroy(request, *args, **kwargs)
+
     def partial_update(self, request, *args, **kwargs):
         clause = self.get_object()
+        _assert_not_locked(clause.annotation)
         ser = ClauseSerializer(clause, data=request.data, partial=True)
         ser.is_valid(raise_exception=True)
         attrs = ser._resolve(clause.annotation, dict(ser.validated_data))
@@ -644,6 +735,7 @@ class ClauseViewSet(viewsets.ModelViewSet):
     def swap_primary(self, request, pk=None):
         """Permute primaire/secondaire en un geste. Corps : ``{"label": <code>}``."""
         clause = self.get_object()
+        _assert_not_locked(clause.annotation)
         target = request.data.get("label")
         tags = list(clause.theme_tags.select_related("theme").all())
         cur_primary = next((t for t in tags if t.role == ClauseRole.PRIMARY), None)
@@ -670,6 +762,7 @@ class ClauseViewSet(viewsets.ModelViewSet):
         """Figer la frontière dure/molle. Corps : ``{"op": "set_hard"|"set_soft", "validatedBy"?}``.
         (merge/scission = DELETE/POST clause via les endpoints existants.)"""
         clause = self.get_object()
+        _assert_not_locked(clause.annotation)
         op = request.data.get("op")
         if op == "set_hard":
             clause.boundary_type = BoundaryType.HARD

@@ -101,6 +101,17 @@ export function useAutosave(annotationId: string | null) {
   // et au changement d'annotation.
   const attempts = useRef(0);
 
+  // Quand l'autosave est DÉSACTIVÉ (annotationId null : lecture seule / verrouillé),
+  // on « désarme » la baseline pour qu'un futur retour à l'édition (déverrouillage)
+  // la RECONSTRUISE depuis les clauses serveur fraîches — sinon `persistedRef`,
+  // `terminal` et `attempts` resteraient figés sur l'état d'avant le verrou (risque
+  // de baseline obsolète ou d'autosave resté désarmé après une erreur antérieure).
+  useEffect(() => {
+    if (!annotationId && initedFor.current !== null) {
+      initedFor.current = null;
+    }
+  }, [annotationId]);
+
   // Snapshot de référence pris une fois le store chargé avec les clauses serveur de
   // CETTE annotation — sinon on partirait de [] et tout paraîtrait « à créer ».
   useEffect(() => {
@@ -113,7 +124,7 @@ export function useAutosave(annotationId: string | null) {
         useWorkspaceStore.getState().draftClauses,
       );
       initedFor.current = annotationId;
-      terminal.current = false; // nouvelle annotation → on réarme l'autosave.
+      terminal.current = false; // nouvelle annotation / retour édition → on réarme.
       attempts.current = 0;
     }
   }, [annotationId, storeAnnId, drafts]);

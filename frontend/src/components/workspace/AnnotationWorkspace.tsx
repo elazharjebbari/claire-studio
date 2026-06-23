@@ -8,10 +8,19 @@
 
 import { useCallback, useEffect, useRef, useState } from "react";
 import Link from "next/link";
-import { Pencil, Eye } from "lucide-react";
-import { useAnnotation, useDocument, useProject, useScheme, useMe } from "@/lib/api/hooks";
+import { Pencil, Eye, Lock, LockOpen } from "lucide-react";
+import {
+  useAnnotation,
+  useDocument,
+  useProject,
+  useScheme,
+  useMe,
+  useLockAnnotation,
+  useUnlockAnnotation,
+} from "@/lib/api/hooks";
 import { useWorkspaceStore } from "@/store/workspace";
 import { useUiStore } from "@/store/ui";
+import { useAutosaveStore } from "@/store/autosave";
 import { setRuntimeThemes } from "@/lib/tokens";
 import { llmJudgeLabel } from "@/lib/llmJudges";
 import { ResizablePanels } from "./ResizablePanels";
@@ -49,6 +58,24 @@ export function AnnotationWorkspace({ annotationId }: { annotationId: string }) 
   // considère que ce N'EST PAS ma session → lecture seule, donc aucune écriture sous
   // identité incertaine (évite les 403 d'autosave quand me n'est pas encore chargé).
   const isMine = !!me && !!annotation && String(annotation.annotatorId) === String(me.id);
+  // Verrouillage : édition gelée (soumission auto ou verrou manuel). Réactif via la
+  // requête annotation (invalidée après lock/unlock).
+  const locked = !!annotation?.locked;
+  const lockAnn = useLockAnnotation(annotationId);
+  const unlockAnn = useUnlockAnnotation(annotationId);
+  const [unlockConfirm, setUnlockConfirm] = useState(false);
+  // Avertissement à la tentative d'édition d'un document verrouillé : le bandeau
+  // « pulse » brièvement pour signaler « déverrouillez pour modifier ».
+  const [lockFlash, setLockFlash] = useState(false);
+  const flashTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const nudgeLock = useCallback(() => {
+    setLockFlash(true);
+    if (flashTimer.current) clearTimeout(flashTimer.current);
+    flashTimer.current = setTimeout(() => setLockFlash(false), 1100);
+  }, []);
+  useEffect(() => () => {
+    if (flashTimer.current) clearTimeout(flashTimer.current);
+  }, []);
 
   const init = useWorkspaceStore((s) => s.init);
   const reset = useWorkspaceStore((s) => s.reset);
@@ -67,19 +94,33 @@ export function AnnotationWorkspace({ annotationId }: { annotationId: string }) 
   const [showComments, setShowComments] = useState(false);
   const [showTriage, setShowTriage] = useState(false);
 
-  // Initialise le store local dès que l'annotation + le document sont chargés.
+  // Nettoyage à la sortie du workspace UNIQUEMENT (démontage). Séparé de l'init pour
+  // ne pas réinitialiser le store à chaque re-rendu/refetch.
+  useEffect(() => () => reset(), [reset]);
+
+  // (Ré)initialise le store local quand l'IDENTITÉ ou le MODE change : id d'annotation,
+  // document, ou bascule lecture seule / verrouillage. PAS à chaque refetch de
+  // l'annotation (sinon un PATCH globalCertainty / snapshot, qui invalide la requête,
+  // ré-initialiserait le store et ÉCRASERAIT des éditions de clause locales non encore
+  // persistées par l'autosave — perte de données). `init` pose tout l'état, donc pas
+  // besoin d'un reset intermédiaire ; il relit les clauses serveur fraîches à chaque
+  // re-init légitime (ouverture, déverrouillage).
+  const annId = annotation?.id;
+  const docId = doc?.id;
+  const nSent = doc?.nSentences;
   useEffect(() => {
-    if (annotation && doc) {
-      init({
-        annotationId: annotation.id,
-        nSentences: doc.nSentences,
-        clauses: annotation.clauses,
-        // R1 — lecture seule stricte sur l'annotation d'un AUTRE annotateur.
-        readOnly: !isMine,
-      });
-    }
-    return () => reset();
-  }, [annotation, doc, init, reset, isMine]);
+    if (!annotation || !doc) return;
+    init({
+      annotationId: annotation.id,
+      nSentences: doc.nSentences,
+      clauses: annotation.clauses,
+      // R1 — lecture seule stricte sur l'annotation d'un AUTRE annotateur, OU si le
+      // document est VERROUILLÉ (soumis / verrou manuel). Le déverrouillage (qui change
+      // `locked`) ré-initialise et rend l'édition.
+      readOnly: !isMine || locked,
+    });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [annId, docId, nSent, isMine, locked, init]);
 
   // R4 — aligne le projet courant sur le document réellement ouvert (nav cohérente :
   // file de travail, breadcrumbs, sélecteur de la TopBar suivent ce projet).
@@ -101,9 +142,9 @@ export function AnnotationWorkspace({ annotationId }: { annotationId: string }) 
   useEffect(() => () => setRuntimeThemes(null), []);
 
   // Auto-save : persiste les clauses en arrière-plan (chantier C), sans perte.
-  // R1 — UNIQUEMENT sur MA session : un viewer (lecture seule) n'écrit jamais
-  // (évite tout 403 parasite et garantit l'intégrité de l'annotation d'autrui).
-  useAutosave(isMine ? annotation?.id ?? null : null);
+  // R1 — UNIQUEMENT sur MA session ET non verrouillée : un viewer (lecture seule)
+  // ou un document verrouillé n'écrit jamais (évite tout 403/423 parasite).
+  useAutosave(isMine && !locked ? annotation?.id ?? null : null);
 
   const themeFocusRef = useRef<(() => void) | null>(null);
   useWorkspaceShortcuts({
@@ -175,8 +216,50 @@ export function AnnotationWorkspace({ annotationId }: { annotationId: string }) 
         onToggleHistory={() => setShowHistory((v) => !v)}
         onToggleComments={() => setShowComments((v) => !v)}
         onToggleTriage={isMine ? () => setShowTriage((v) => !v) : undefined}
+        locked={locked}
+        onLock={
+          isMine && !locked
+            ? async () => {
+                // Anti-perte : on s'assure que les dernières modifications sont
+                // persistées AVANT de geler l'édition (le verrou coupe l'autosave).
+                const flush = useAutosaveStore.getState().flush;
+                if (flush) await flush();
+                lockAnn.mutate();
+              }
+            : undefined
+        }
+        onRequestUnlock={isMine && locked ? () => setUnlockConfirm(true) : undefined}
       />
-      {isMine ? (
+      {isMine && locked ? (
+        // Bandeau de VERROUILLAGE (point 2) — persistant, élégant, avec déverrouillage.
+        // « Pulse » à la tentative d'édition (nudgeLock) pour signaler la lecture seule.
+        <div
+          data-testid="lock-banner"
+          className={
+            "flex h-9 shrink-0 items-center gap-2 border-b px-3 text-xs font-medium text-ink transition-all " +
+            (lockFlash
+              ? "border-amber-400 bg-amber-400/25 ring-1 ring-inset ring-amber-400/60"
+              : "border-line bg-slate-400/15")
+          }
+        >
+          <Lock size={14} aria-hidden className={lockFlash ? "text-amber-300" : "text-slate-300"} />
+          <span>
+            <strong>Document {annotation.status === "submitted" ? "soumis et " : ""}verrouillé</strong>{" "}
+            — lecture seule.{" "}
+            <span className={lockFlash ? "text-amber-200" : "text-ink-muted"}>
+              Déverrouillez pour {annotation.status === "submitted" ? "reprendre l'annotation" : "modifier"}.
+            </span>
+          </span>
+          <button
+            type="button"
+            data-testid="lock-banner-unlock"
+            onClick={() => setUnlockConfirm(true)}
+            className="ml-auto inline-flex items-center gap-1 rounded-md border border-amber-400/50 bg-amber-400/10 px-2 py-0.5 text-xs font-semibold text-amber-200 hover:bg-amber-400/20"
+          >
+            <LockOpen size={13} aria-hidden /> Déverrouiller
+          </button>
+        </div>
+      ) : isMine ? (
         <div
           data-testid="session-banner"
           className="flex h-7 shrink-0 items-center gap-1.5 border-b border-line bg-accent/10 px-3 text-xs font-medium text-ink"
@@ -204,7 +287,32 @@ export function AnnotationWorkspace({ annotationId }: { annotationId: string }) 
         </div>
       )}
       <div className="flex min-h-0 flex-1">
-        <div className="min-w-0 flex-1">
+        <div
+          className="min-w-0 flex-1"
+          // Avertissement à la tentative d'ÉDITION d'un document verrouillé : un clic
+          // sur une vraie affordance d'édition du contenu fait « pulser » le bandeau.
+          // On EXCLUT les contrôles de lecture/navigation (zoom, source LLM, versions,
+          // frontières/niveaux…) et les commentaires (autorisés sur doc verrouillé) —
+          // sinon le nudge se déclencherait à tort en simple consultation.
+          onClickCapture={
+            locked
+              ? (e) => {
+                  const t = e.target as HTMLElement;
+                  const editTarget = t.closest(
+                    '[data-testid^="theme-option-"],' +
+                      '[data-testid="legal-nature"] button,' +
+                      '[data-testid="certainty-picker"] button,' +
+                      '[data-testid="inspector-validate"],' +
+                      '[data-testid="delete-clause"],' +
+                      '[data-testid="multilabel-editor"] button,' +
+                      "#evidence,#rationale," +
+                      "[data-quickaction-validate]",
+                  );
+                  if (editTarget) nudgeLock();
+                }
+              : undefined
+          }
+        >
         <ResizablePanels
           left={<TocPanel docTitle={doc.title} />}
           center={
@@ -247,6 +355,55 @@ export function AnnotationWorkspace({ annotationId }: { annotationId: string }) 
           />
         )}
       </div>
+
+      {/* Confirmation de DÉVERROUILLAGE — geste conscient (rouvre un document soumis). */}
+      {unlockConfirm && (
+        <div
+          className="fixed inset-0 z-[70] flex items-center justify-center bg-black/40 p-4"
+          onMouseDown={(e) => {
+            if (e.target === e.currentTarget) setUnlockConfirm(false);
+          }}
+        >
+          <div
+            role="dialog"
+            aria-modal="true"
+            aria-label="Déverrouiller le document"
+            data-testid="unlock-dialog"
+            className="w-full max-w-md rounded-xl border border-line bg-elevated p-5 shadow-2xl"
+          >
+            <h2 className="mb-1 flex items-center gap-2 text-base font-semibold text-ink">
+              <LockOpen size={16} aria-hidden className="text-amber-300" /> Déverrouiller ce document ?
+            </h2>
+            <p className="mb-4 text-xs text-ink-muted">
+              {annotation.status === "submitted"
+                ? "Le document soumis sera rouvert en brouillon : vous pourrez le modifier. Pensez à le re-soumettre ensuite (une nouvelle version sera créée)."
+                : "L'édition sera de nouveau possible."}
+            </p>
+            <div className="flex justify-end gap-2">
+              <button
+                type="button"
+                data-testid="unlock-cancel"
+                onClick={() => setUnlockConfirm(false)}
+                className="rounded-md border border-line px-3 py-1.5 text-sm text-ink hover:bg-panel-muted"
+              >
+                Annuler
+              </button>
+              <button
+                type="button"
+                data-testid="unlock-confirm"
+                disabled={unlockAnn.isPending}
+                onClick={() =>
+                  unlockAnn.mutate(undefined, { onSettled: () => setUnlockConfirm(false) })
+                }
+                className="inline-flex items-center gap-1.5 rounded-md bg-amber-500 px-3 py-1.5 text-sm font-medium text-white hover:brightness-110 disabled:opacity-50"
+              >
+                <LockOpen size={14} aria-hidden />
+                {unlockAnn.isPending ? "Déverrouillage…" : "Déverrouiller"}
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }

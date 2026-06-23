@@ -19,7 +19,16 @@ import {
   usePatchAnnotation,
   usePreAnnotations,
 } from "@/lib/api/hooks";
-import { History, MessageSquare, Layers, BarChart3, PanelRight, ListChecks } from "lucide-react";
+import {
+  History,
+  MessageSquare,
+  Layers,
+  BarChart3,
+  PanelRight,
+  ListChecks,
+  Lock,
+  LockOpen,
+} from "lucide-react";
 import { TRIAGE_ENABLED } from "@/lib/env";
 import { preClausesToPivot } from "@/lib/pivot";
 import { LLM_JUDGES } from "@/lib/llmJudges";
@@ -36,6 +45,9 @@ export function WorkspaceToolbar({
   onToggleHistory,
   onToggleComments,
   onToggleTriage,
+  locked = false,
+  onLock,
+  onRequestUnlock,
 }: {
   annotationId: string;
   projectSlug: string;
@@ -44,6 +56,10 @@ export function WorkspaceToolbar({
   onToggleHistory?: () => void;
   onToggleComments?: () => void;
   onToggleTriage?: () => void;
+  /** Verrouillage : état + actions (définies seulement pour le propriétaire). */
+  locked?: boolean;
+  onLock?: () => void;
+  onRequestUnlock?: () => void;
 }) {
   const { data: annotation } = useAnnotation(annotationId);
   const { data: preClaude } = usePreAnnotations(projectSlug, documentId);
@@ -352,6 +368,30 @@ export function WorkspaceToolbar({
         >
           {validation.complete ? "✓" : "◷"} {validation.validated}/{validation.total}
         </span>
+        {/* Cadenas (point 2) : verrouiller/déverrouiller. Affiché pour le propriétaire. */}
+        {locked && onRequestUnlock ? (
+          <button
+            type="button"
+            data-testid="toolbar-unlock"
+            onClick={onRequestUnlock}
+            title="Document verrouillé — cliquez pour déverrouiller"
+            className="inline-flex items-center gap-1.5 rounded-md border border-amber-400/50 bg-amber-400/10 px-2.5 py-1 text-sm font-medium text-amber-200 transition-colors hover:bg-amber-400/20"
+          >
+            <Lock size={14} aria-hidden /> Verrouillé
+          </button>
+        ) : (
+          onLock && (
+            <button
+              type="button"
+              data-testid="toolbar-lock"
+              onClick={onLock}
+              title="Verrouiller (gèle l'édition)"
+              className="inline-flex items-center gap-1.5 rounded-md border border-line px-2.5 py-1 text-sm font-medium text-ink-muted transition-colors hover:bg-panel-muted hover:text-ink"
+            >
+              <LockOpen size={14} aria-hidden /> Verrouiller
+            </button>
+          )
+        )}
         <Button
           variant="primary"
           data-testid="submit-btn"

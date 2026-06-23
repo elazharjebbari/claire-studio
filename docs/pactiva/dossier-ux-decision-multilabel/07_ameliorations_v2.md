@@ -79,6 +79,32 @@ MAINTENANT, attend la **convergence**). La soumission n'est autorisée que si to
 sur le serveur ; sinon elle s'abstient avec un message explicite (pas de perte
 silencieuse). `markClean` n'est posé qu'au vrai succès du passage `submitted`.
 
+## 10. Garde anti-soumission vide (point campagne 1) — ✅
+Filet de sécurité serveur : `transition → submitted` est refusé (409) si l'annotation a
+0 clause (les deux portes : `POST /submit` et `PATCH status=submitted`). Le gate de
+validation front (toutes phrases validées) reste la première barrière ; le backend
+garantit qu'aucune session vide ne peut être figée en snapshot.
+
+## 11. Verrouillage / déverrouillage du document (point campagne 2) — ✅
+Édition gelée, orthogonale au statut. `Annotation.locked` (+ `locked_at`, `locked_by`) :
+- **Auto-lock** à la soumission (entrée `submitted`) ; **auto-unlock** au retour `draft`.
+- **lock/unlock manuels** (`POST …/lock|/unlock`, propriétaire + relecteur/admin).
+- **Déverrouiller un document soumis le ROUVRE en `draft`** (« on souhaite y revenir ») ;
+  une re-soumission recrée une version et re-verrouille. Les états de revue/terminaux
+  (in_review/approved/rejected/archived) **ne sont pas** déverrouillables directement
+  (le verrou protège le gold).
+- **Refus d'écriture** : toute écriture de clause (et `globalCertainty`) sur un document
+  verrouillé répond **`423 Locked`** ; le front traduit en avertissement.
+
+UI (option A retenue) : **bandeau persistant** « 🔒 Document soumis et verrouillé —
+déverrouillez pour reprendre », **cadenas dans la toolbar** (Verrouiller/Déverrouiller,
+icônes lucide), **confirmation** au déverrouillage, **avertissement « pulse »** du bandeau
+quand on tente une vraie action d'édition (thème/nature/certitude/valider/supprimer…),
+lecture/commentaires non perturbés. Lecture seule via `readOnly` du store ; autosave gelé ;
+**flush anti-perte avant le verrouillage manuel**. Revue adversariale passée (4 findings
+corrigés : déverrouillage des états terminaux, ré-armement autosave au déverrouillage,
+sur-déclenchement du nudge, ré-init destructif sur refetch).
+
 ## Tests & déploiement
 Vitest pur + RTL (ClauseChip provenance/états/`+N`, MultiLabelEditor, validationDisplay) ; suite
 front complète verte ; tsc clean. Déploiement sur `pactiva.legal` (gate + healthcheck + rollback).

@@ -133,6 +133,7 @@ class AnnotationListSerializer(serializers.ModelSerializer):
         source="annotator", read_only=True
     )
     n_clauses = serializers.SerializerMethodField()
+    locked_by = serializers.PrimaryKeyRelatedField(read_only=True)
 
     def get_n_clauses(self, obj) -> int:
         # Prefer the annotated aggregate (set by the list queryset) to avoid an
@@ -147,7 +148,7 @@ class AnnotationListSerializer(serializers.ModelSerializer):
         fields = [
             "id", "project_slug", "document_id", "annotator_id", "status",
             "global_certainty", "source", "n_clauses", "created_at",
-            "updated_at",
+            "updated_at", "locked", "locked_at", "locked_by",
         ]
 
 

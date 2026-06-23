@@ -10,6 +10,7 @@ from __future__ import annotations
 import logging
 
 from django.db import transaction
+from django.utils import timezone
 
 from rest_framework import serializers as drf_serializers
 
@@ -192,7 +193,23 @@ def transition_status(
         )
 
     annotation.status = new_status
-    annotation.save(update_fields=["status", "updated_at"])
+    update_fields = ["status", "updated_at"]
+    # Verrouillage en fonction de l'état (orthogonal au lock MANUEL) :
+    #  - entrée en `submitted` → VERROUILLE (édition gelée jusqu'au déverrouillage) ;
+    #  - retour en `draft` (réouverture) → DÉVERROUILLE (on peut ré-éditer).
+    # Les autres transitions (in_review, approved, rejected, archived) conservent
+    # l'état de verrou courant.
+    if new_status == AnnotationStatus.SUBMITTED:
+        annotation.locked = True
+        annotation.locked_at = timezone.now()
+        annotation.locked_by = actor if getattr(actor, "pk", None) else None
+        update_fields += ["locked", "locked_at", "locked_by"]
+    elif new_status == AnnotationStatus.DRAFT:
+        annotation.locked = False
+        annotation.locked_at = None
+        annotation.locked_by = None
+        update_fields += ["locked", "locked_at", "locked_by"]
+    annotation.save(update_fields=update_fields)
 
     record_event(
         actor=actor,

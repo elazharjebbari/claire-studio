@@ -275,6 +275,15 @@ def test_random_sequence_roundtrip_no_data_loss(
 
     # --- 5) SUBMIT ---------------------------------------------------------------
     versions_before = annotation.versions.count()
+    # Garde anti-vide : si la séquence a supprimé TOUTES les clauses, la soumission
+    # est refusée (409) — on vérifie ce cas puis on s'arrête (rien à figer).
+    if not live:
+        r = client.post(f"{API}/annotations/{annotation.id}/submit")
+        assert r.status_code == 409, (r.status_code, r.content)
+        annotation.refresh_from_db()
+        assert annotation.status == "draft"
+        assert annotation.versions.count() == versions_before
+        return
     r = client.post(f"{API}/annotations/{annotation.id}/submit")
     assert r.status_code == 200, (r.status_code, r.content)
     annotation.refresh_from_db()

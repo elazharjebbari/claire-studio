@@ -345,6 +345,10 @@ export interface Annotation {
   clauses: Clause[];
   createdAt: string;
   updatedAt: string;
+  /** Verrouillage (édition gelée) : posé à la soumission ou manuellement. */
+  locked?: boolean;
+  lockedAt?: string | null;
+  lockedBy?: string | null;
 }
 
 export interface PreClause {

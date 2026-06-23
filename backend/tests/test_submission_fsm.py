@@ -63,12 +63,27 @@ def _set_status(annotation, status):
     annotation.refresh_from_db()
 
 
+def _seed_clause(client, annotation, anchor=0, theme="META"):
+    """Pose UNE clause (la soumission exige ≥1 clause — garde-fou serveur anti-vide).
+
+    Les transitions de statut ne dépendent pas du contenu, mais l'API /submit refuse
+    désormais une annotation vide (409). On amorce donc une clause pour tester le FSM.
+    """
+    r = client.post(
+        f"{API}/annotations/{annotation.id}/clauses",
+        {"anchorIndex": anchor, "theme": theme, "validated": True},
+        format="json",
+    )
+    assert r.status_code == 201, r.content
+
+
 # ─── 1. Chemin nominal complet : draft → submitted → in_review → approved ───────
 def test_full_happy_path_draft_submitted_in_review_approved(
     auth, annotation, annotator, admin_user
 ):
     assert annotation.status == AnnotationStatus.DRAFT
     c = auth(annotator)
+    _seed_clause(c, annotation)  # ≥1 clause pour pouvoir soumettre
 
     # draft → submitted (via l'API /submit, propriétaire).
     r = c.post(f"{API}/annotations/{annotation.id}/submit")
@@ -101,6 +116,7 @@ def test_full_happy_path_draft_submitted_in_review_approved(
 # ─── 2. Réouverture : submitted → draft puis re-submit (légal) ──────────────────
 def test_reopen_submitted_to_draft_then_resubmit(auth, annotation, annotator):
     c = auth(annotator)
+    _seed_clause(c, annotation)  # ≥1 clause pour pouvoir soumettre
 
     # draft → submitted.
     assert c.post(f"{API}/annotations/{annotation.id}/submit").status_code == 200
@@ -278,6 +294,9 @@ def test_illegal_transition_via_api_submit_from_approved_returns_409(
 ):
     """approved → submitted est interdit : POST /submit sur une annotation approuvée
     répond 409 et laisse l'état approved (terminal hors archivage)."""
+    # Amorce une clause (sinon le 409 viendrait de la garde anti-vide, pas de la
+    # transition illégale qu'on veut tester).
+    _seed_clause(auth(annotator), annotation)
     # Mène à approved par la FSM légale.
     transition_status(annotation, AnnotationStatus.SUBMITTED, admin_user)
     transition_status(annotation, AnnotationStatus.IN_REVIEW, admin_user)
@@ -298,6 +317,7 @@ def test_resubmit_same_state_is_noop_no_second_version(auth, annotation, annotat
     """POST /submit sur une annotation DÉJÀ submitted : new_status == current →
     NO-OP 200, sans 2e version ni 2e événement (sinon doublons d'audit/versions)."""
     c = auth(annotator)
+    _seed_clause(c, annotation)  # ≥1 clause pour pouvoir soumettre
     assert c.post(f"{API}/annotations/{annotation.id}/submit").status_code == 200
     annotation.refresh_from_db()
     assert annotation.status == AnnotationStatus.SUBMITTED

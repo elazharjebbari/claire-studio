@@ -289,6 +289,16 @@ export function submitAnnotation(id: string): Promise<Annotation> {
   return apiFetch<Annotation>(`/annotations/${id}/submit`, { method: "POST" });
 }
 
+/** Verrouille (édition gelée). Idempotent. */
+export function lockAnnotation(id: string): Promise<Annotation> {
+  return apiFetch<Annotation>(`/annotations/${id}/lock`, { method: "POST" });
+}
+
+/** Déverrouille ; un document SOUMIS est rouvert en brouillon (on souhaite y revenir). */
+export function unlockAnnotation(id: string): Promise<Annotation> {
+  return apiFetch<Annotation>(`/annotations/${id}/unlock`, { method: "POST" });
+}
+
 export function addClause(
   annotationId: string,
   clause: Partial<Clause> & {

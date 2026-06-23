@@ -273,14 +273,20 @@ def test_order_is_contiguous_across_adds(auth, annotation, annotator):
     assert orders == [0, 1, 2]
 
 
-# ── 7. ⚠ Comportement actuel : soumission d'une annotation VIDE autorisée ────────
-def test_empty_annotation_submission_is_currently_allowed(auth, annotation, annotator):
-    """Aucune garde de complétude côté backend : une annotation à 0 clause peut être
-    soumise (le frontend, lui, bloque via le gate de validation). Verrouillé ici pour
-    décision explicite avant campagne (faut-il un garde-fou serveur ?)."""
+# ── 7. Soumission d'une annotation VIDE REFUSÉE (garde-fou serveur, point 1) ─────
+def test_empty_annotation_submission_is_rejected(auth, annotation, annotator):
+    """Filet de sécurité serveur : une annotation à 0 clause ne peut PAS être soumise
+    (409). Aucune transition, aucun snapshot, statut inchangé."""
     c = auth(annotator)
     r = c.post(f"{API}/annotations/{annotation.id}/submit")
-    assert r.status_code == 200
+    assert r.status_code == 409, r.content
     annotation.refresh_from_db()
-    assert annotation.status == AnnotationStatus.SUBMITTED
-    assert _latest_version(annotation).snapshot["clauses"] == []
+    assert annotation.status == AnnotationStatus.DRAFT
+    assert annotation.versions.count() == 0
+    assert annotation.locked is False
+
+    # Même refus via PATCH status=submitted (l'autre chemin de soumission).
+    r2 = c.patch(f"{API}/annotations/{annotation.id}", {"status": "submitted"}, format="json")
+    assert r2.status_code == 409, r2.content
+    annotation.refresh_from_db()
+    assert annotation.status == AnnotationStatus.DRAFT
