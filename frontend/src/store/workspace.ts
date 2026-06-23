@@ -18,6 +18,43 @@ import type {
   ThemeTag,
   TriageLevel,
 } from "@/types/contract";
+import { RULES } from "@/lib/triage";
+
+/**
+ * Sanitise un ensemble multi-label pour respecter les invariants (front, miroir backend) :
+ * dédup par label, EXACTEMENT un primaire (le 1ᵉʳ primaire trouvé, sinon le 1ᵉʳ élément), et
+ * un thème REFUGE n'est jamais secondaire (retiré). Garantit que le PATCH /clauses ne sera
+ * pas rejeté (400) côté serveur.
+ */
+function sanitizeThemeSet(themes: ThemeTag[]): ThemeTag[] {
+  const refuges = new Set(RULES.refuges);
+  const seen = new Set<string>();
+  const dedup = themes.filter((t) => (seen.has(t.label) ? false : (seen.add(t.label), true)));
+  if (dedup.length === 0) return [];
+  const firstPrimary = dedup.findIndex((t) => t.role === "primary");
+  const primaryIdx = firstPrimary >= 0 ? firstPrimary : 0;
+  const roled = dedup.map((t, i) => ({
+    ...t,
+    role: (i === primaryIdx ? "primary" : "secondary") as ThemeTag["role"],
+  }));
+  // refuge jamais secondaire
+  return roled.filter((t) => t.role === "primary" || !refuges.has(t.label));
+}
+
+/**
+ * Change le thème PRIMAIRE d'une clause en MAINTENANT le miroir `theme` ↔ `themes` : si la
+ * clause est multi-label, le nouveau thème devient primaire et les autres deviennent
+ * secondaires (dédup + refuge≠secondaire). Indispensable pour qu'un re-thème (palette,
+ * inspecteur, document) ne désynchronise pas le scalaire `theme` du primaire de `themes`
+ * (sinon le PATCH enverrait theme ≠ themes.primary et violerait l'invariant côté serveur).
+ */
+function withPrimaryTheme<T extends { theme: string; themes?: ThemeTag[] }>(c: T, theme: string): T {
+  if (!c.themes || c.themes.length === 0) return { ...c, theme };
+  const others = c.themes
+    .filter((t) => t.label !== theme)
+    .map((t) => ({ ...t, role: "secondary" as const }));
+  return { ...c, theme, themes: sanitizeThemeSet([{ label: theme, role: "primary" }, ...others]) };
+}
 
 /** Source affichée dans le DocumentPanel (Q3).
  *  "human" | "compare" | id de juge (claude/codex/mistral…, cf. LLM_JUDGES). */
@@ -217,6 +254,12 @@ interface WorkspaceState {
   resolveDivergenceRange: (start: number, end: number, judge: string, theme: string) => void;
   removeBoundary: (anchorIndex: number) => void;
   updateDraft: (localId: string, patch: Partial<DraftClause>) => void;
+  /**
+   * Définit l'ensemble MULTI-LABEL d'une clause (édition manuelle hors triage, ou ajout/
+   * retrait d'un secondaire). Sanitise (1 primaire, refuge jamais secondaire), met à jour le
+   * scalaire `theme` (= primaire), pousse un snapshot d'undo. RÉVERSIBLE (toggle/undo).
+   */
+  setClauseThemes: (localId: string, themes: ThemeTag[]) => void;
   /**
    * Validation humaine (point d). `setValidated` (re)marque UNE clause ; `validateClauses`
    * traite un lot (sélection / bloc) en UN snapshot d'undo. Valider = confirmer que la
@@ -468,9 +511,12 @@ export const useWorkspaceStore = create<WorkspaceState>((set, get) => ({
           return { selectedClauseId: existing.localId };
         }
         return {
-          // Re-thématisation humaine = décision validée (point d).
+          // Re-thématisation humaine = décision validée (point d). Maintient le miroir
+          // theme↔themes (multi-label) et purge le niveau de triage (décision désormais humaine).
           draftClauses: s.draftClauses.map((c) =>
-            c.localId === existing.localId ? { ...c, theme, validated: true } : c,
+            c.localId === existing.localId
+              ? { ...withPrimaryTheme(c, theme), validated: true, triageLevel: null }
+              : c,
           ),
           selectedClauseId: existing.localId,
           dirty: true,
@@ -761,9 +807,17 @@ export const useWorkspaceStore = create<WorkspaceState>((set, get) => ({
       const verb =
         "theme" in patch ? "clause.retheme" : `clause.set_${field}`;
       return {
-        draftClauses: s.draftClauses.map((c) =>
-          c.localId === localId ? { ...c, ...patch } : c,
-        ),
+        draftClauses: s.draftClauses.map((c) => {
+          if (c.localId !== localId) return c;
+          let next = { ...c, ...patch };
+          // Re-thème : maintenir le miroir theme↔themes (et purger le niveau de triage car la
+          // décision devient HUMAINE, donc plus « moteur »).
+          if ("theme" in patch && patch.theme) {
+            next = withPrimaryTheme(next, patch.theme);
+            if (next.triageLevel) next = { ...next, triageLevel: null };
+          }
+          return next;
+        }),
         dirty: true,
         undoStack: pushUndo(s.undoStack, s.draftClauses),
         redoStack: [],
@@ -774,6 +828,37 @@ export const useWorkspaceStore = create<WorkspaceState>((set, get) => ({
               ? `Thème → ${patch.theme} @${target?.anchorIndex ?? "?"}`
               : `Édition ${field} @${target?.anchorIndex ?? "?"}`,
           anchorIndex: target?.anchorIndex,
+          localId,
+        }),
+      };
+    }),
+
+  setClauseThemes: (localId, themes) =>
+    set((s) => {
+      if (s.readOnly) return {};
+      const clean = sanitizeThemeSet(themes);
+      if (clean.length === 0) return {};
+      const primary = clean.find((t) => t.role === "primary")!;
+      const target = s.draftClauses.find((c) => c.localId === localId);
+      if (!target) return {};
+      const nSecond = clean.filter((t) => t.role === "secondary").length;
+      return {
+        // Édition multi-label MANUELLE : on pose le set, on aligne le scalaire (primaire), on
+        // VALIDE d'office (geste humain explicite) et on PURGE triageLevel (la décision n'est
+        // plus « moteur » — sinon la marque ⚡ Cx attribuerait à tort la décision au triage).
+        draftClauses: s.draftClauses.map((c) =>
+          c.localId === localId
+            ? { ...c, themes: clean, theme: primary.label, validated: true, triageLevel: null }
+            : c,
+        ),
+        selectedClauseId: localId,
+        dirty: true,
+        undoStack: pushUndo(s.undoStack, s.draftClauses),
+        redoStack: [],
+        actionLog: appendLog(s.actionLog, {
+          kind: "clause.set_themes",
+          label: `Thèmes → ${primary.label}${nSecond ? ` +${nSecond}` : ""} @${target.anchorIndex}`,
+          anchorIndex: target.anchorIndex,
           localId,
         }),
       };

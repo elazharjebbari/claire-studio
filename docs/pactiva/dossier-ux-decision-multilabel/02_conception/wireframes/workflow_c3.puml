@@ -1,0 +1,85 @@
+@startuml workflow_c3
+' Flux C3 (multi-label) — de la détection du cluster à l'état multi-label, avec toggle réversible et annulation.
+' Canaux : NIVEAU = couleur badge (C3 violet #8B5CF6) ; PROVENANCE = forme (⚡ moteur) ; MULTI-LABEL = chip plein vs pointillé + toggle 🏷.
+title Workflow C3 — aide a la decision multi-label
+
+skinparam backgroundColor #FFFFFF
+skinparam ActivityBorderColor #8B5CF6
+skinparam ActivityBackgroundColor #F5F2FF
+skinparam ActivityDiamondBackgroundColor #FFF7E6
+skinparam ArrowColor #64748B
+skinparam DefaultFontName Arial
+
+start
+
+:Le moteur de triage classe la clause en **C3**
+(desaccord STRUCTURE / chevauchement de themes);
+note right
+  Badge de niveau **violet (#8B5CF6)** glyphe ⧉.
+  C3 = cas QUALITATIF (multi-label), pas un "moins bon" niveau.
+end note
+
+:Affichage du rail d'actions rapides
++ bouton recommandation **Cx** (violet);
+
+:Ouverture de la **SuggestionCard**
+(au clic sur le bouton Cx ou focus clavier);
+
+partition "SuggestionCard — proposition multi-label" {
+  :Chip **primaire** = " ✓ THEME " (PLEIN, gras, bordure 2px);
+  :Chip **secondaire** = " + THEME " (CONTOUR POINTILLE, prefixe +, ~85%);
+  :Explication (contexte / logique de la regle)
+  + indicateur de frontiere : dure ▮ / molle ┄;
+  note left
+    Provenance pressentie : **⚡ moteur** (couleur du niveau Cx affichee).
+    Etat AVANT validation : **ambre (◷ / a_valider)**.
+  end note
+}
+
+if (Decision de l'annotateur ?) then (Valider le set propose)
+  :Clic **Valider** (cible >= 24px, feedback < 200 ms);
+  :Etat -> **valide** : forme ⚡ passe au **vert (#34D399)**
+  + badge Cx conserve;
+  :Pose du **multi-label** :
+  primaire (plein) + secondaire(s) (pointille);
+  note right
+    Backend : ClauseTheme (1 primaire + N secondaires),
+    triageLevel renseigne + validated. swap-primary dispo.
+  end note
+
+  :Plan (Toc) : ClauseChip recoit la pastille **＋N**
+  (N = nb de secondaires) -> multi-label visible sans ouvrir;
+
+elseif (Ajuster le set) then (Permuter / Retirer / Choisir)
+  :Permuter primaire<->secondaire (swap-primary)
+  OU Retirer le 2nd OU Choisir un autre theme;
+  :Mise a jour immediate des chips (plein/pointille)
+  feedback < 200 ms;
+  :Retour a la decision;
+  detach
+
+else (Refuser le multi-label)
+  :Bascule du toggle **🏷 (#64B5F6)** sur **OFF / Mono**;
+  :Conserve UNIQUEMENT le primaire (chip plein),
+  secondaires masques;
+endif
+
+partition "Etat multi-label actif — reversibilite" {
+  :Toggle **🏷 Multi-label = ON**
+  (fond bleu clair leger + libelle "Multi-label");
+  if (Re-clic sur le toggle 🏷 ?) then (oui — ANNULER)
+    :Toggle -> **OFF / Mono** : le geste **EST** l'annulation
+    (retour a l'etat precedent, secondaires retires);
+    note right
+      Reversibilite native (principe 2).
+      Filet additionnel : undo/redo global transactionnel.
+    end note
+    :ClauseChip du plan : pastille ＋N retiree;
+    stop
+  else (non — conserver)
+    :Set multi-label maintenu;
+    stop
+  endif
+}
+
+@enduml

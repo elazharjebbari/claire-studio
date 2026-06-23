@@ -13,12 +13,14 @@
 import { MessageSquare } from "lucide-react";
 import { useWorkspaceStore, selectSelectedDraft } from "@/store/workspace";
 import type { LegalNature } from "@/types/contract";
+import { secondaryCount } from "@/lib/validationDisplay";
 import { ThemePalette } from "@/components/ui/ThemePalette";
 import { NaturePicker } from "@/components/ui/NaturePicker";
 import { CertaintyPicker } from "@/components/ui/CertaintyPicker";
 import { ClauseChip } from "@/components/ui/ClauseChip";
 import { Field } from "@/components/ui/primitives";
 import { CommentThread } from "./CommentThread";
+import { MultiLabelEditor } from "./MultiLabelEditor";
 import { InspectorJudgeCompare } from "./InspectorJudgeCompare";
 
 export function InspectorPanel({
@@ -74,7 +76,16 @@ export function InspectorPanel({
           toujours visibles en haut de l'inspecteur. */}
       <div className="flex flex-wrap items-center justify-between gap-2">
         <div className="flex items-center gap-1.5">
-          <ClauseChip themeCode={draft.theme} anchorIndex={draft.anchorIndex} selected />
+          <ClauseChip
+            themeCode={draft.theme}
+            anchorIndex={draft.anchorIndex}
+            selected
+            validated={Boolean(draft.validated)}
+            seededFrom={draft.seededFrom}
+            resolvedFrom={draft.resolvedFrom}
+            triageLevel={draft.triageLevel}
+            secondaryCount={secondaryCount(draft.themes)}
+          />
           {draft.legalNature && (
             <span
               data-testid="nature-badge"
@@ -144,6 +155,9 @@ export function InspectorPanel({
           focusRef={themeFocusRef}
         />
       </Field>
+
+      {/* Multi-label : toggle Mono/Multi + secondaires + ajout hors C3 (dossier UX). */}
+      <MultiLabelEditor draft={draft} themeCodes={themeCodes} />
 
       <Field label="Nature juridique">
         {/* Axe 2 : pastilles cohérentes (toutes visibles) + définition au survol,

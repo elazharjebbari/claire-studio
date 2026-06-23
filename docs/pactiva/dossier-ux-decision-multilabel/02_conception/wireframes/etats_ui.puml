@@ -1,0 +1,72 @@
+@startuml etats_ui
+' Diagramme d'etats de l'annotation d'une clause.
+' 3 canaux orthogonaux : NIVEAU (couleur Cx) ; PROVENANCE = forme (★ pre-annotation / ⚡ moteur / ✎ manuel) ; MULTI-LABEL (mono <-> multi via toggle 🏷).
+' COULEUR encode l'ETAT : ambre = a valider (◷) ; vert = valide.
+title Etats UI d'une clause — provenance (forme), etat (couleur), multi-label (toggle)
+
+skinparam backgroundColor #FFFFFF
+skinparam state {
+  BackgroundColor #F8FAFC
+  BorderColor #64748B
+  FontName Arial
+}
+
+[*] --> NonCouvert
+
+state NonCouvert : phrase sans clause
+state NonCouvert : glyphe **·** gris (#64748B)
+
+NonCouvert --> AValider : annotation creee\n(seed LLM / triage / saisie)
+
+state "A valider (◷ ambre #FBBF24)" as AValider {
+  state AValider : Etat PROPOSE, non confirme.
+  state AValider : La FORME indique deja la provenance pressentie,
+  state AValider : mais la couleur reste **ambre** (non valide).
+  state "★ ambre — pre-annotation proposee" as P_pre
+  state "⚡ ambre + Cx — propose par le moteur" as P_moteur
+  state "◷ ambre — saisie manuelle en cours" as P_manuel
+  [*] --> P_moteur
+  P_pre --> P_moteur
+  P_moteur --> P_manuel
+  P_manuel --> P_pre
+}
+
+' ── Validation : la couleur passe au VERT, la forme (provenance) est conservee ──
+AValider --> Valide_PreAnnotation : Valider (adopter le seed)
+AValider --> Valide_Moteur : Valider via le rail/file (Cx)
+AValider --> Valide_Manuel : Saisir/valider a la main
+
+state "Valide (vert #34D399)" as Valide {
+  state "★ vert — Pre-annotation" as Valide_PreAnnotation
+  state Valide_PreAnnotation : seededFrom + validated
+  state "⚡ vert + Cx — Moteur" as Valide_Moteur
+  state Valide_Moteur : triageLevel + validated\nbadge Cx teinte couleur du niveau
+  state "✎ vert — Manuel" as Valide_Manuel
+  state Valide_Manuel : validated sans seed ni triageLevel
+  --
+  ' Sous-etat orthogonal : dimension multi-label (mono <-> multi)
+  state Mono
+  state Mono : 1 theme (chip PLEIN ✓), pas de pastille
+  state Multi
+  state Multi : primaire PLEIN ✓ + secondaire(s) POINTILLE +\nClauseChip du plan : pastille ＋N
+  [*] --> Mono
+  Mono --> Multi : toggle **🏷 ON** (#64B5F6)\nou + thème secondaire (inspecteur)
+  Multi --> Mono : re-clic toggle **🏷 OFF**\n(le toggle EST l'annulation)
+}
+
+' La provenance peut etre re-attribuee par une nouvelle action (la derniere fait foi)
+Valide_Moteur --> Valide_Manuel : override manuel (✎)
+Valide_PreAnnotation --> Valide_Manuel : correction manuelle (✎)
+
+' ── Conflit C4/C5 : JAMAIS auto-valide, attention requise ──
+AValider --> Conflit : niveau **C4 / C5**
+state "Conflit C4/C5 (❗ rose #F43F5E)" as Conflit {
+  state Conflit : C4 ◑ ambre = a verifier ; C5 ⚖ rose = arbitrage.
+  state Conflit : Alerte (couleur vive + ❗). AUCUNE auto-validation.
+  state Conflit : Resolution OBLIGATOIREMENT manuelle.
+}
+Conflit --> Valide_Manuel : decision humaine explicite (✎)
+
+Valide --> [*]
+
+@enduml

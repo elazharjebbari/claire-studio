@@ -1,0 +1,57 @@
+# Système d'icônes — 3 types de validation + états + multi-label
+# Règle : FORME = qui/quoi (stable) ; COULEUR = état (vert validé / ambre à valider / gris non couvert).
+# → un même type de validation garde sa forme, qu'il soit proposé ou validé : zéro confusion.
+
+# ── Les 3 TYPES DE VALIDATION (demande explicite) ────────────────────────────────────────
+types_validation:
+  - id: pre_annotation
+    titre: "Validation d'une pré-annotation"
+    forme: "★"
+    accent: "#F59E0B"          # ambre (origine assistée)
+    etat_valide: "★ vert (#34D399)"
+    etat_propose: "★ ambre (#FBBF24)"
+    tooltip: "Pré-annotation LLM confirmée"
+    ou: "piste de validation + ClauseChip + en-tête de clause"
+  - id: moteur_triage
+    titre: "Validation par le moteur C1→C5"
+    forme: "⚡"
+    accent: "#3B82F6"          # bleu (système)
+    complement: "badge Cx (●◐⧉◑⚖) teinté couleur du niveau, juste après l'éclair"
+    etat_valide: "⚡ vert + Cx"
+    tooltip: "Validé via le triage — règle {Cx} appliquée"
+    ou: "piste de validation + ClauseChip + carte de suggestion"
+  - id: manuel
+    titre: "Validation manuelle (annotateur)"
+    forme: "✎"
+    accent: "#22C55E"          # vert (action humaine)
+    etat_valide: "✎ vert"
+    tooltip: "Saisi/validé manuellement"
+    ou: "piste de validation + ClauseChip (remplace l'actuel « ✎ moi »)"
+
+# ── ÉTATS génériques (couleur) ───────────────────────────────────────────────────────────
+etats:
+  a_valider:   { glyphe: "◷", couleur: "#FBBF24", sens: "proposé, non confirmé (toute provenance)" }
+  valide:      { glyphe: "(forme de provenance)", couleur: "#34D399", sens: "validé" }
+  non_couvert: { glyphe: "·", couleur: "#64748B", sens: "phrase sans clause" }
+  conflit:     { glyphe: "❗", couleur: "#F43F5E", sens: "C4/C5 — attention requise (jamais auto-validé)" }
+
+# ── MULTI-LABEL ─────────────────────────────────────────────────────────────────────────
+multi_label:
+  toggle:        { glyphe: "🏷", couleur: "#64B5F6", sens: "ON = multi-label actif / OFF = mono" }
+  primaire:      { glyphe: "✓", style: "chip plein gras", sens: "thème principal (1)" }
+  secondaire:    { glyphe: "+", style: "chip contour pointillé", sens: "thème connexe (N)" }
+  badge_plan:    { glyphe: "＋N", sens: "nb de secondaires sur le ClauseChip (multi-label en un coup d'œil)" }
+
+# ── COMPATIBILITÉ avec l'existant (ne PAS casser l'acquis) ───────────────────────────────
+heritage:
+  - "Actuel : ✓ (validé, emerald) / ◷ (à valider, amber) sur la piste de validation et le ClauseChip."
+  - "Actuel : pastilles de provenance dans l'en-tête de clause — resolvedFrom ✓ {Juge} (vert), seededFrom ◷ {Juge} (ambre), humain « ✎ moi »."
+  - "Proposition : UNIFIER ces deux endroits avec le même trio ★/⚡/✎ (forme=provenance, couleur=état), pour que la provenance soit lisible PARTOUT (piste + chip + en-tête), pas seulement dans l'en-tête."
+  - "Conserver le glyphe ◷ comme état « à valider » générique ; la forme de provenance le remplace une fois validé."
+
+# ── Règles d'usage (résumé ; détail composants_ui/*.md) ──────────────────────────────────
+regles:
+  - "Une seule forme de provenance par clause (la dernière action de validation fait foi)."
+  - "Le niveau Cx (couleur violette/ambre/etc.) n'apparaît QUE pour la provenance moteur, à côté de ⚡."
+  - "Taille glyphes >= 12px ; toujours doublés d'un title/aria-label textuel."
+  - "Le toggle multi-label est distinguable sans couleur (libellé Mono/Multi + position)."

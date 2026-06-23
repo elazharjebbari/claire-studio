@@ -10,6 +10,7 @@ import { ClauseChip } from "@/components/ui/ClauseChip";
 import { ThemePalette } from "@/components/ui/ThemePalette";
 import { useWorkspaceStore } from "@/store/workspace";
 import { LLM_JUDGES } from "@/lib/llmJudges";
+import { secondaryCount } from "@/lib/validationDisplay";
 
 export function TocPanel({ docTitle }: { docTitle: string }) {
   const drafts = useWorkspaceStore((s) => s.draftClauses);
@@ -188,6 +189,10 @@ export function TocPanel({ docTitle }: { docTitle: string }) {
             selected={selectedId === c.localId || selectedClauseIds.includes(c.localId)}
             ghost={Boolean(c.seededFrom) && !c.validated}
             validated={Boolean(c.validated)}
+            seededFrom={c.seededFrom}
+            resolvedFrom={c.resolvedFrom}
+            triageLevel={c.triageLevel}
+            secondaryCount={secondaryCount(c.themes)}
             onClick={(e) => onChipClick(e, c.localId, c.anchorIndex)}
             onContextMenu={(e) => onChipContext(e, c.localId)}
             className="w-full justify-start"

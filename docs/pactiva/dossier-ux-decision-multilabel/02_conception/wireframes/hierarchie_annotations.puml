@@ -1,0 +1,66 @@
+@startuml hierarchie_annotations
+' Hierarchie visuelle multi-label : primaire PLEIN vs secondaire POINTILLE + badge +N.
+' Maquette filaire (salt) — pas de code, demonstration d'agencement et d'etats.
+title Hierarchie des annotations — primaire (plein) vs secondaire (pointille) + badge ＋N
+
+skinparam backgroundColor #FFFFFF
+
+salt
+{
+  {+
+    == Document — badge de clause (multi-label) ==
+    {
+      ' Primaire = chip PLEIN, gras, ✓ devant (thème dominant, 1 seul)
+      [ ✓ Confidentialite ]  | .
+      ' Secondaires = chips CONTOUR POINTILLE, prefixe +, plus petits (~85%)
+      ( + Donnees perso )    | ( + Duree )
+    }
+    --
+    "Primaire : chip PLEIN, bordure 2px, gras, marque ✓ — RESSORT meme en niveaux de gris."
+    "Secondaire(s) : chip CONTOUR POINTILLE, 1px, prefixe +, opacite 0.9, ~85% — discret."
+  }
+}
+
+salt
+{
+  {+
+    == Plan (ToC) — ClauseChip avec badge ＋N ==
+    {
+      "Art. 4 — Confidentialite   "  | "[ ✓ ]  ＋2"
+      "Art. 7 — Resiliation       "  | "[ ◷ ]    "
+      "Art. 9 — Donnees personnelles" | "[ ✓ ]  ＋1"
+      "Art. 11 — Loi applicable    " | "[ ✓ ]    "
+    }
+    --
+    "Glyphe etat : ✓ valide / ◷ a valider (inchange)."
+    "Pastille ＋N = nombre de themes secondaires -> clauses multi-label reperables sans les ouvrir."
+  }
+}
+
+salt
+{
+  {+
+    == Inspecteur — zone Themes ==
+    {
+      "Multi-label"   | "[X] 🏷 ON   "
+      --
+      "Primaire"      | "[ ✓ Confidentialite ]"
+      "Secondaires"   | "( + Donnees perso )  ( + Duree )"
+      .               | "( + thème secondaire )"
+    }
+    --
+    "Toggle 🏷 (#64B5F6) en tete : ON = Multi-label / OFF = Mono — distinguable SANS couleur (libelle + position)."
+    "Affordance ( + thème secondaire ) : ajout hors-C3 (meme rendu pointille, meme toggle)."
+  }
+}
+
+legend bottom
+  ==Lecture rapide==
+  | Forme | Sens |
+  | chip PLEIN ✓ | thème PRIMAIRE (1) |
+  | chip POINTILLE + | thème SECONDAIRE (N, jamais un refuge) |
+  | ＋N | nb de secondaires (plan) |
+  | 🏷 | toggle multi-label REVERSIBLE (#64B5F6) |
+endlegend
+
+@enduml

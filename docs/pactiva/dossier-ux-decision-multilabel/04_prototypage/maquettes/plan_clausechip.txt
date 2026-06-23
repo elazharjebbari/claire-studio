@@ -1,0 +1,70 @@
+════════════════════════════════════════════════════════════════════════════
+ MAQUETTE — PLAN (TocPanel) · ClauseChip  ·  AVANT / APRÈS
+ Pactiva / dossier-ux-decision-multilabel · prototype basse fidélité (ASCII)
+════════════════════════════════════════════════════════════════════════════
+ Objectif : faire apparaître dans le plan les 3 informations aujourd'hui
+ absentes du ClauseChip → (1) PROVENANCE (forme ★/⚡/✎), (2) MULTI-LABEL (+N),
+ tout en conservant (3) la teinte de thème et l'état validé/à-valider.
+────────────────────────────────────────────────────────────────────────────
+
+
+  AVANT  (UI actuelle)
+  ─────────────────────────────────────────────────────────────────────────
+  Le chip est teinté par thème + 1 glyphe d'état seulement. On ne sait NI qui
+  a validé, NI si la clause est multi-label.
+
+   ┌───────────────────────────────────────────┐
+   │ ✓  Art. 12 — Responsabilité                 │   ✓ = validé (emerald)
+   ├───────────────────────────────────────────┤
+   │ ◷  Art. 13 — Garantie                       │   ◷ = à valider (amber)
+   ├───────────────────────────────────────────┤
+   │ ✓  Art. 14 — Confidentialité                │   (rien sur le multi-label,
+   ├───────────────────────────────────────────┤    rien sur la provenance)
+   │ ◷  Art. 15 — Résiliation                    │
+   └───────────────────────────────────────────┘
+        ▲
+        └─ teinte de fond = thème (inchangé)
+
+
+  APRÈS  (proposition)
+  ─────────────────────────────────────────────────────────────────────────
+  Gabarit du chip :   [ <provenance>  <Titre> ............... <+N> ]
+   • <provenance> = forme ★/⚡/✎ ; couleur = état (vert validé / ambre à-valider)
+   • ◷ reste l'état générique « à valider » tant qu'aucune provenance n'a tranché
+   • <+N> = pastille bleu-clair = nb de thèmes secondaires (absent si mono)
+
+   ┌───────────────────────────────────────────────────────────────┐
+   │ ⚡C3 Art. 12 — Responsabilité .....................  ⟨＋2⟩       │  validé via moteur
+   │      ▲    ▲                                          ▲          │  (⚡ vert) · niveau C3
+   │      │    └ Cx accolé au ⚡ (teinté couleur niveau)  │          │  · 2 secondaires
+   │      └ ⚡ vert = état validé                         └ pastille │
+   ├───────────────────────────────────────────────────────────────┤
+   │ ★   Art. 13 — Garantie ...........................             │  pré-annotation
+   │     ▲                                                          │  validée (★ vert),
+   │     └ ★ = seed LLM confirmé                                    │  mono → pas de +N
+   ├───────────────────────────────────────────────────────────────┤
+   │ ✎   Art. 14 — Confidentialité ....................  ⟨＋1⟩       │  validé à la main
+   │     ▲                                                ▲          │  (✎ vert) · 1 second.
+   │     └ plume = décision humaine                       └ ＋1      │
+   ├───────────────────────────────────────────────────────────────┤
+   │ ◷   Art. 15 — Résiliation ........................             │  à valider (◷ ambre)
+   │     ▲                                                          │  provenance pas
+   │     └ état générique tant que NON validé                      │  encore arbitrée
+   ├───────────────────────────────────────────────────────────────┤
+   │ ❗⚖ Art. 16 — Indemnisation ......................             │  C5 arbitrage :
+   │     ▲                                                          │  ❗ + ⚖ rose,
+   │     └ jamais auto-validé → attention requise                  │  décision humaine
+   └───────────────────────────────────────────────────────────────┘
+        ▲
+        └─ teinte de fond = thème PRIMAIRE (inchangée)
+
+  LÉGENDE (pied de panneau ou survol)
+   ★ pré-annotation  ⚡ moteur+Cx  ✎ manuel  │  ◷ à valider  │  ＋N secondaires
+   couleur forme : vert = validé · ambre = à valider
+
+  RÈGLES D'AFFICHAGE
+   • Une seule forme de provenance par chip (dernière validation fait foi).
+   • Le code Cx (●◐⧉◑⚖, teinté niveau) n'apparaît QUE collé au ⚡ (moteur).
+   • La pastille ＋N n'apparaît que si secondaires ≥ 1 ; cible de survol ≥ 24 px.
+   • Lisible en niveaux de gris : forme + texte portent le sens, la teinte renforce.
+════════════════════════════════════════════════════════════════════════════

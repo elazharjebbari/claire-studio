@@ -1,0 +1,83 @@
+# Système de couleurs — Aide à la décision C1–C5 & multi-label (Pactiva)
+# Dossier UX/UI (conception, pas de code). Adapté à docs/pactiva/.
+# PRINCIPE : 3 canaux orthogonaux pour ne PAS surcharger un seul signal visuel.
+#   (1) NIVEAU C1–C5  = couleur du badge de niveau (conservée — déjà déployée).
+#   (2) PROVENANCE de la validation = FORME d'icône ; la couleur encode l'ÉTAT.
+#   (3) MULTI-LABEL = chip secondaire pointillé + accent bleu clair + toggle.
+# Accessibilité : aucune information n'est portée par la couleur SEULE (forme + texte + glyphe).
+# Thème : valeurs « dark » = tokens de l'app (fond sombre) ; « light » = repli clair WCAG AA.
+
+meta:
+  wcag_cible: "AA (contraste texte >= 4.5:1, éléments non textuels >= 3:1)"
+  regle_or: "couleur = signal SECONDAIRE ; forme/glyphe/texte = signal PRIMAIRE"
+
+# ── Canal 1 : niveaux de triage C1→C5 (INCHANGÉS — source unique lib/triage/levels.ts) ──
+niveaux_triage:
+  C1: { label: "Or",          hex: "#10B981", glyphe: "●", sens: "Accord total → acceptable en lot" }
+  C2: { label: "Haute",       hex: "#84CC16", glyphe: "◐", sens: "Thème unanime, frontière majoritaire → 1 clic" }
+  C3: { label: "Multi-label", hex: "#8B5CF6", glyphe: "⧉", sens: "Désaccord STRUCTURÉ (chevauchement) → multi-label" }
+  C4: { label: "Majorité",    hex: "#F59E0B", glyphe: "◑", sens: "Majorité + dissidence → vérifier" }
+  C5: { label: "Arbitrage",   hex: "#F43F5E", glyphe: "⚖", sens: "Désaccord fort → décision humaine" }
+  note: >
+    Le violet de C3 est VOLONTAIREMENT hors du gradient accord (émeraude→rose) : C3 n'est pas
+    un « moins bon » niveau mais un cas QUALITATIF (multi-label), d'où une couleur dédiée.
+
+# ── Canal 2 : ÉTAT de validation (couleur) — orthogonal au thème ──
+etat_validation:
+  valide:        { hex_dark: "#34D399", hex_light: "#2E7D32", sens: "Validé (fait référence)" }
+  a_valider:     { hex_dark: "#FBBF24", hex_light: "#B45309", sens: "Proposé / pré-rempli, NON confirmé" }
+  non_couvert:   { hex_dark: "#64748B", hex_light: "#9E9E9E", sens: "Phrase non annotée" }
+
+# ── Canal 2bis : PROVENANCE de la validation = FORME (couleur = état ci-dessus) ──
+# La FORME dit QUI a validé ; la COULEUR dit l'ÉTAT. → 3 types sans ambiguïté.
+provenance_validation:
+  pre_annotation:
+    forme: "★"        # étoile = proposition d'un modèle adoptée
+    accent_hex: "#F59E0B"   # ambre/orange (rappel : origine assistée)
+    sens: "Validé en adoptant une pré-annotation LLM (seed confirmé)"
+    correspondance_code: "DraftClause.seededFrom + validated"
+  moteur_triage:
+    forme: "⚡"        # éclair = décision dérivée du moteur C1–C5
+    accent_hex: "#3B82F6"   # bleu (système)
+    complement: "code Cx affiché, teinté de la couleur du niveau"
+    sens: "Validé via la file/le rail de triage (niveau Cx)"
+    correspondance_code: "DraftClause.triageLevel renseigné + validated"
+  manuel:
+    forme: "✎"        # plume = saisie/décision humaine explicite
+    accent_hex: "#22C55E"   # vert (action humaine)
+    sens: "Validé manuellement par l'annotateur (aucune assistance)"
+    correspondance_code: "validated sans seededFrom ni triageLevel (= ✎ moi actuel)"
+  regle: >
+    Quand validé, la couleur de la forme passe au VERT 'valide' ; à l'état proposé, elle est
+    AMBRE 'a_valider'. La forme reste la même (provenance stable). Ex. : ★ ambre = pré-annotation
+    proposée ; ★ vert = pré-annotation validée.
+
+# ── Canal 3 : MULTI-LABEL (primaire / secondaire + toggle) ──
+multi_label:
+  primaire:
+    sens: "Thème dominant de la clause (1 seul)"
+    style: "chip PLEIN, bordure 2px, gras, ✓ devant"
+  secondaire:
+    sens: "Thème(s) connexe(s) (N possibles ; jamais un refuge)"
+    style: "chip CONTOUR POINTILLÉ, plus petit, opacité 0.9, préfixe '+'"
+  toggle:
+    hex: "#64B5F6"        # bleu clair — distinct du violet C3 et du vert validation
+    glyphe: "🏷"
+    etats: { actif: "fond #64B5F6 léger + 🏷 + 'Multi-label'", inactif: "neutre + 'Mono'" }
+    sens: "Active/désactive le multi-label sur la clause ; RÉVERSIBLE (le toggle EST l'annulation)"
+  badge_plan:
+    sens: "Sur le ClauseChip du plan, pastille '+N' = nb de thèmes secondaires (multi-label en un coup d'œil)"
+
+# ── Neutres / surfaces (rappel tokens app) ──
+neutres:
+  ink: "var(--surface-text)"
+  ink_muted: "var(--surface-text-muted)"
+  line: "var(--surface-border)"
+  panel: "var(--surface-panel)"
+  selection_ring: "accent (anneau focus/sélection — inchangé)"
+
+# ── Règles de contraste (extrait — détail dans regles_contraste.md / accessibilite.md) ──
+contraste:
+  - "Texte sur chip teinté : utiliser ink (clair) sur fond couleur à 18% d'opacité → AA."
+  - "Glyphes de validation (★/⚡/✎/◷) : taille >= 12px, contraste >= 3:1 sur le fond du chip."
+  - "Toggle multi-label : état ON/OFF distinguable SANS la couleur (libellé Mono/Multi + position du switch)."

@@ -1,0 +1,74 @@
+════════════════════════════════════════════════════════════════════════════
+ MAQUETTE — INSPECTEUR DE CLAUSE  ·  zone « Thèmes » (mono → multi-label)
+ Pactiva / dossier-ux-decision-multilabel · prototype basse fidélité (ASCII)
+════════════════════════════════════════════════════════════════════════════
+ Rappel des 3 canaux :  NIVEAU = couleur badge Cx · PROVENANCE = forme ★/⚡/✎
+ (couleur = état)  ·  MULTI-LABEL = chip plein vs pointillé + toggle 🏷
+ Cibles ≥ 32 px dans l'inspecteur. WCAG AA : forme + glyphe + texte, jamais couleur seule.
+────────────────────────────────────────────────────────────────────────────
+
+
+┌─ INSPECTEUR ────────────────────────────────────────────── [Clause 14] ─┐
+│                                                                          │
+│  PROVENANCE          ⚡  Cx ⧉ C3       ◷ à valider                       │
+│  ───────────         (forme = qui a validé ; ici moteur de triage)       │
+│  ┊ ★ pré-annotation   ⚡ moteur+Cx   ✎ manuel ┊  ← légende au survol     │
+│                                                                          │
+│  CERTITUDE           ○──●──○──○        2 / 3  « plutôt sûr »              │
+│  ───────────         0  1  2  3        (échelle indépendante du niveau)  │
+│                                                                          │
+│ ┌──────────────────────────────────────────────────────────────────┐   │
+│ │  THÈMES                              🏷 Multi-label  [●━━━ Multi]  │   │ ← toggle réversible
+│ │  ─────────                           (#64B5F6 ; OFF = « ○━━ Mono ») │   │   re-cliquer = annuler
+│ │                                                                    │   │
+│ │   PRIMAIRE                                                         │   │
+│ │   ┏━━━━━━━━━━━━━━━━━━━━━━━━━┓                                       │   │
+│ │   ┃ ✓  RESPONSABILITÉ      ┃   ← chip PLEIN, bordure 2px, gras    │   │
+│ │   ┗━━━━━━━━━━━━━━━━━━━━━━━━━┛     (✓ devant, opacité 1, 100 %)     │   │
+│ │                                                                    │   │
+│ │   SECONDAIRES                                                      │   │
+│ │   ┌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌┐  ┌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌┐                          │   │
+│ │   ┊ + GARANTIE       ┊  ┊ + RÉSILIATION ┊   ← contour pointillé   │   │
+│ │   └╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌┘  └╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌┘     '+' devant, ~85 %,  │   │
+│ │                                               opacité 0.9          │   │
+│ │   ┌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌┐                                   │   │
+│ │   ┊ +  ＋ thème secondaire …   ┊  ← affordance « hors C3 »         │   │
+│ │   └╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌┘     ouvre la palette de thèmes    │   │
+│ │                                       (même rendu, même toggle)    │   │
+│ └──────────────────────────────────────────────────────────────────┘   │
+│                                                                          │
+│  NATURE JURIDIQUE    [ Clause de limitation de responsabilité ▾ ]        │
+│                                                                          │
+│  RATIONALE / PREUVE  « … le plafond de 12 mois renvoie aussi à la        │
+│                        garantie → 2ⁿᵈ thème GARANTIE … »                 │
+│                                                                          │
+│  ┌────────────────────────────┐   ┌──────────────────────────────────┐  │
+│  │   ✎  Valider manuellement   │   │   Comparer par juge  ⇄           │  │ ← ≥ 32 px
+│  └────────────────────────────┘   └──────────────────────────────────┘  │
+└──────────────────────────────────────────────────────────────────────────┘
+
+
+────────────────────────────────────────────────────────────────────────────
+ ÉTAT « MONO » (toggle OFF) — la zone Thèmes se réduit au seul primaire :
+────────────────────────────────────────────────────────────────────────────
+
+ ┌──────────────────────────────────────────────────────────────────┐
+ │  THÈMES                                🏷 Multi-label  [○━━ Mono]  │  ← OFF :
+ │  ─────────                                                         │    libellé « Mono »
+ │   ┏━━━━━━━━━━━━━━━━━━━━━━━━━┓                                       │    + switch à gauche
+ │   ┃ ✓  RESPONSABILITÉ      ┃    (les secondaires sont MASQUÉS,     │    (distinguable
+ │   ┗━━━━━━━━━━━━━━━━━━━━━━━━━┛     conservés en mémoire, non perdus) │     sans couleur)
+ │   ┌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌┐                                   │
+ │   ┊ +  ＋ thème secondaire …   ┊  ← bascule en Multi au 1ᵉʳ ajout  │
+ │   └╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌┘                                   │
+ └──────────────────────────────────────────────────────────────────┘
+
+ RÈGLES
+ • Le refuge n'est JAMAIS secondaire (back-end) → grisé / non sélectionnable
+   dans la palette « ＋ thème secondaire ».
+ • Toggle = annulation : OFF re-masque les secondaires sans les détruire ; ON
+   les réaffiche. Undo/redo global en filet de sécurité.
+ • Feedback de bascule < 200 ms (cf. animations.md : transition mono↔multi).
+ • La couleur de ⚡ / ★ / ✎ encode l'état (vert validé · ambre à valider) ;
+   la FORME ne change pas (provenance stable).
+════════════════════════════════════════════════════════════════════════════

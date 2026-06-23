@@ -590,6 +590,70 @@ describe("applyTriageDecision / applyTriageBatch (acceptation de suggestions)", 
     expect(useWorkspaceStore.getState().showQuickActions).toBe(false);
   });
 
+  it("setClauseThemes : 1 primaire, refuge rejeté en secondaire, dirty + undo", () => {
+    useWorkspaceStore.getState().reset();
+    useWorkspaceStore.getState().init({ annotationId: "ann-1", nSentences: 10, clauses: baseClauses });
+    // baseClauses : 1 clause @0 (localId "c1", thème META).
+    useWorkspaceStore.getState().setClauseThemes("c1", [
+      { label: "TERMINATION", role: "primary" },
+      { label: "LICENSE_IP", role: "secondary" },
+      { label: "PREAMBLE_SCOPE", role: "secondary" }, // REFUGE → doit être retiré
+    ]);
+    const c = useWorkspaceStore.getState().draftClauses.find((d) => d.localId === "c1")!;
+    expect(c.theme).toBe("TERMINATION"); // miroir = primaire
+    const roles = (c.themes ?? []).map((t) => `${t.label}:${t.role}`);
+    expect(roles).toContain("TERMINATION:primary");
+    expect(roles).toContain("LICENSE_IP:secondary");
+    expect(roles.some((r) => r.startsWith("PREAMBLE_SCOPE"))).toBe(false); // refuge écarté
+    expect(useWorkspaceStore.getState().dirty).toBe(true);
+    // undo restaure l'état mono d'origine.
+    useWorkspaceStore.getState().undo();
+    expect(useWorkspaceStore.getState().draftClauses.find((d) => d.localId === "c1")!.theme).toBe("META");
+  });
+
+  it("re-thème via updateDraft sur une clause MULTI-LABEL : miroir theme↔themes maintenu + triageLevel purgé", () => {
+    useWorkspaceStore.getState().reset();
+    useWorkspaceStore.getState().init({ annotationId: "ann-1", nSentences: 10, clauses: baseClauses });
+    // Rend la clause multi-label + triée (moteur C3).
+    useWorkspaceStore.getState().setClauseThemes("c1", [
+      { label: "META", role: "primary" },
+      { label: "LICENSE_IP", role: "secondary" },
+    ]);
+    // simule un niveau moteur posé (édition directe du draft pour le test)
+    useWorkspaceStore.getState().updateDraft("c1", { triageLevel: "C3" });
+    // Re-thème le PRIMAIRE via la palette (updateDraft theme) → ne doit PAS désync.
+    useWorkspaceStore.getState().updateDraft("c1", { theme: "TERMINATION" });
+    const c = useWorkspaceStore.getState().draftClauses.find((d) => d.localId === "c1")!;
+    expect(c.theme).toBe("TERMINATION");
+    const primary = (c.themes ?? []).find((t) => t.role === "primary");
+    expect(primary?.label).toBe("TERMINATION"); // miroir maintenu
+    expect((c.themes ?? []).some((t) => t.label === "LICENSE_IP" && t.role === "secondary")).toBe(true);
+    expect(c.triageLevel ?? null).toBeNull(); // décision devenue humaine → plus « moteur »
+  });
+
+  it("setClauseThemes : deux primaires → un seul primaire conservé (le 1ᵉʳ)", () => {
+    useWorkspaceStore.getState().reset();
+    useWorkspaceStore.getState().init({ annotationId: "ann-1", nSentences: 10, clauses: baseClauses });
+    useWorkspaceStore.getState().setClauseThemes("c1", [
+      { label: "TERMINATION", role: "primary" },
+      { label: "LICENSE_IP", role: "primary" },
+    ]);
+    const themes = useWorkspaceStore.getState().draftClauses.find((d) => d.localId === "c1")!.themes ?? [];
+    expect(themes.filter((t) => t.role === "primary")).toHaveLength(1);
+    expect(themes.find((t) => t.role === "primary")!.label).toBe("TERMINATION");
+  });
+
+  it("readOnly : setClauseThemes est un no-op", () => {
+    useWorkspaceStore.getState().reset();
+    useWorkspaceStore.getState().init({ annotationId: "ann-1", nSentences: 10, clauses: baseClauses, readOnly: true });
+    useWorkspaceStore.getState().setClauseThemes("c1", [
+      { label: "TERMINATION", role: "primary" },
+      { label: "LICENSE_IP", role: "secondary" },
+    ]);
+    const c = useWorkspaceStore.getState().draftClauses.find((d) => d.localId === "c1")!;
+    expect(c.theme).toBe("META"); // inchangé
+  });
+
   it("readOnly : applyTriageDecision est un no-op", () => {
     useWorkspaceStore.getState().reset();
     useWorkspaceStore.getState().init({ annotationId: "ann-1", nSentences: 10, clauses: [], readOnly: true });

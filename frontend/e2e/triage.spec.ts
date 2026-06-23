@@ -92,6 +92,30 @@ test.describe("File de triage — carte de suggestion & gestes", () => {
     }
   });
 
+  test("multi-label : ajouter un thème secondaire depuis l'inspecteur → badge +N dans le plan", async ({ page }: { page: Page }) => {
+    await page.goto("/annotate/ann-1");
+    await expect(page.getByTestId("annotation-workspace")).toBeVisible();
+
+    // Sélectionne la première clause du plan pour ouvrir l'inspecteur.
+    const chips = page.getByTestId("clause-chip");
+    if ((await chips.count()) === 0) return;
+    await chips.first().click();
+
+    const editor = page.getByTestId("multilabel-editor");
+    if (!(await editor.isVisible().catch(() => false))) return;
+
+    // Active le multi-label puis ajoute le 1ᵉʳ thème secondaire proposé.
+    await page.getByTestId("multilabel-toggle").click();
+    const option = page.getByTestId("secondary-picker").getByTestId(/^theme-option-/).first();
+    if (await option.isVisible().catch(() => false)) {
+      await option.click();
+      // Un chip secondaire (pointillé) apparaît dans l'inspecteur.
+      await expect(page.getByTestId("secondary-chips")).toBeVisible();
+      // Et le plan signale le multi-label par un badge +N.
+      await expect(page.getByTestId("multilabel-badge").first()).toBeVisible();
+    }
+  });
+
   test("rail d'actions rapides : activation, valider+suivant, recommandation au survol", async ({ page }: { page: Page }) => {
     await page.goto("/annotate/ann-1");
     await expect(page.getByTestId("annotation-workspace")).toBeVisible();

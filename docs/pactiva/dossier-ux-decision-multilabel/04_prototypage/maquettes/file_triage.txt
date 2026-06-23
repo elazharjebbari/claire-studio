@@ -1,0 +1,60 @@
+════════════════════════════════════════════════════════════════════════════
+ MAQUETTE — FILE DE TRIAGE  ·  compteurs Cx + carte courante + provenance
+ Pactiva / dossier-ux-decision-multilabel · prototype basse fidélité (ASCII)
+════════════════════════════════════════════════════════════════════════════
+ La file enchaîne les clauses à arbitrer. En tête : compteurs par niveau Cx
+ (couleur = canal NIVEAU). La carte courante porte la provenance (forme) et,
+ pour C3, l'état multi-label.
+────────────────────────────────────────────────────────────────────────────
+
+
+  ┌─ FILE DE TRIAGE ─────────────────────────────── 18 clauses à traiter ──┐
+  │                                                                         │
+  │  COMPTEURS PAR NIVEAU   (clic = filtrer la file)                        │
+  │  ┌──────┐ ┌──────┐ ┌──────┐ ┌──────┐ ┌──────┐                          │
+  │  │ ● C1 │ │ ◐ C2 │ │ ⧉ C3 │ │ ◑ C4 │ │ ⚖ C5 │                          │
+  │  │  6   │ │  4   │ │  5   │ │  2   │ │  1   │   ← effectifs              │
+  │  └──────┘ └──────┘ └──────┘ └──────┘ └──────┘                          │
+  │   émeraude  lime    violet   ambre    rose     (teinte = couleur niveau)│
+  │                                                                         │
+  │  ─────────────────────────────────────────────────────────────────────│
+  │                                                                         │
+  │  CARTE COURANTE                                       3 / 18            │
+  │  ┌───────────────────────────────────────────────────────────────────┐│
+  │  │ [⧉ C3 · Multi-label]                       ⚡ ◷  à valider (ambre)  ││
+  │  │   ▲ NIVEAU (violet)                         ▲                       ││
+  │  │                                             └ PROVENANCE : moteur,  ││
+  │  │ Art. 12 — Responsabilité                      état non confirmé     ││
+  │  │ « … le Prestataire ne saurait être tenu … plafond de 12 mois … »   ││
+  │  │                                                                     ││
+  │  │  Thèmes proposés                                                    ││
+  │  │  ┏━━━━━━━━━━━━━━━━━━━┓  ┌╌╌╌╌╌╌╌╌╌╌╌╌╌╌┐                            ││
+  │  │  ┃ ✓ RESPONSABILITÉ ┃  ┊ ◻ GARANTIE   ┊   primaire + 2ⁿᵈ proposé   ││
+  │  │  ┗━━━━━━━━━━━━━━━━━━━┛  └╌╌╌╌╌╌╌╌╌╌╌╌╌╌┘                            ││
+  │  │                                                                     ││
+  │  │  ┌────────────────────┐ ┌────────────────────┐ ┌────────────────┐  ││
+  │  │  │ ✎ Valider + suivant │ │  Choisir / Permuter │ │  Passer  ⏭    │  ││ ≥ 32 px
+  │  │  └────────────────────┘ └────────────────────┘ └────────────────┘  ││
+  │  └───────────────────────────────────────────────────────────────────┘│
+  │                                                                         │
+  │  À SUIVRE   (provenance + niveau d'un coup d'œil)                       │
+  │   4. ◑ C4  Art. 13 — Garantie .................. ⚡ ◷ à valider         │
+  │   5. ⚖ C5  Art. 16 — Indemnisation ............. ❗ arbitrage requis    │
+  │   6. ● C1  Art. 4 — Définitions ................ ★ ◷ (seed à confirmer) │
+  └─────────────────────────────────────────────────────────────────────────┘
+
+  DÉJÀ TRAITÉES  (rappel d'état — provenance verte)
+   2. ⚡C2 Art. 11 — Préambule ........... ⚡ validé (vert)
+   1. ★   Art. 1 — Objet ................. ★ validé (vert, seed confirmé)
+
+  RÈGLES
+   • Compteurs : la couleur = NIVEAU (canal 1). L'ordre de saillance suit la
+     priorité d'attention C5 > C4 > C3 > C2 > C1 (cf. hierarchie_visuelle.md).
+   • Carte courante : NIVEAU (badge couleur) et PROVENANCE (forme ⚡/★/✎,
+     couleur d'état) occupent des emplacements distincts → pas de télescopage.
+   • C4/C5 : pas d'action « Valider + suivant » en 1 clic — bouton de décision
+     manuelle explicite (✎) + marque ❗ (jamais d'auto-validation).
+   • C1/C2 : « Valider + suivant » 1-clic mis en avant (faible attention requise).
+   • Feedback de validation < 200 ms ; la carte suivante glisse en place
+     (cf. animations.md).
+════════════════════════════════════════════════════════════════════════════

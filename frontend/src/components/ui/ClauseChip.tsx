@@ -8,6 +8,8 @@
 
 import { cn } from "@/lib/cn";
 import { getThemeToken, hexToRgbChannels } from "@/lib/tokens";
+import type { TriageLevel } from "@/types/contract";
+import { ProvenanceMark } from "@/components/ui/ProvenanceMark";
 
 export interface ClauseChipProps {
   themeCode: string;
@@ -15,8 +17,14 @@ export interface ClauseChipProps {
   anchorIndex?: number;
   selected?: boolean;
   ghost?: boolean;
-  /** Validation humaine (point d) : ✓ vert si validée, ◷ ambre sinon (plan des clauses). */
+  /** Validation humaine (point d) : marque de provenance (⚡/★/✎ si validé, ◷ sinon). */
   validated?: boolean;
+  /** Provenance — dérivation des 3 types de validation (voir lib/validationDisplay). */
+  seededFrom?: string | null;
+  resolvedFrom?: string | null;
+  triageLevel?: TriageLevel | null;
+  /** Nb de thèmes secondaires (multi-label) → badge « +N ». */
+  secondaryCount?: number;
   size?: "sm" | "md";
   onClick?: (e: React.MouseEvent) => void;
   onContextMenu?: (e: React.MouseEvent) => void;
@@ -29,6 +37,10 @@ export function ClauseChip({
   selected = false,
   ghost = false,
   validated,
+  seededFrom,
+  resolvedFrom,
+  triageLevel,
+  secondaryCount = 0,
   size = "md",
   onClick,
   onContextMenu,
@@ -76,20 +88,23 @@ export function ClauseChip({
         style={{ backgroundColor: token.color }}
       />
       {validated !== undefined && (
-        <span
-          aria-hidden
-          className={cn(
-            "shrink-0 text-[10px] font-bold leading-none",
-            validated ? "text-emerald-400" : "text-amber-400",
-          )}
-        >
-          {validated ? "✓" : "◷"}
-        </span>
+        <ProvenanceMark clause={{ validated, seededFrom, resolvedFrom, triageLevel }} className="shrink-0" />
       )}
       {anchorIndex !== undefined && (
         <span className="font-mono text-ink">[{anchorIndex}]</span>
       )}
-      <span className="truncate text-ink">{token.label}</span>
+      <span className="min-w-0 truncate text-ink">{token.label}</span>
+      {secondaryCount > 0 && (
+        <span
+          data-testid="multilabel-badge"
+          title={`Multi-label : ${secondaryCount} thème(s) secondaire(s)`}
+          aria-label={`${secondaryCount} thème(s) secondaire(s)`}
+          className="ml-1 shrink-0 rounded-full border px-1 text-[9px] font-bold leading-none"
+          style={{ color: "#64B5F6", borderColor: "rgb(100 181 246 / 0.4)" }}
+        >
+          +{secondaryCount}
+        </span>
+      )}
     </Comp>
   );
 }

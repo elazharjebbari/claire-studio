@@ -1,0 +1,74 @@
+════════════════════════════════════════════════════════════════════════════
+ MAQUETTE — SuggestionCard C3 (Multi-label)  ·  AVANT / APRÈS validation
+ Pactiva / dossier-ux-decision-multilabel · prototype basse fidélité (ASCII)
+════════════════════════════════════════════════════════════════════════════
+ C3 = désaccord STRUCTURÉ (chevauchement) → porte d'entrée n°1 du multi-label.
+ Le badge Cx (couleur niveau ⧉ violet) reste le repère de NIVEAU ; la
+ validation pose le set primaire+secondaire ; le bouton devient un TOGGLE.
+────────────────────────────────────────────────────────────────────────────
+
+
+  AVANT validation  (proposition à examiner)
+  ─────────────────────────────────────────────────────────────────────────
+
+  ┌─ SUGGESTION ──────────────────────────────────── [⧉ C3 · Multi-label] ─┐
+  │                                                    ▲                    │
+  │                                                    └ badge NIVEAU       │
+  │                                                      (violet #8B5CF6)   │
+  │   Thèmes proposés                                                       │
+  │   ┏━━━━━━━━━━━━━━━━━━━━━━━┓   ┌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌┐                       │
+  │   ┃ ✓  RESPONSABILITÉ    ┃   ┊ ◻ GARANTIE       ┊                       │
+  │   ┗━━━━━━━━━━━━━━━━━━━━━━━┛   └╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌┘                       │
+  │     primaire (plein, ✓)        secondaire proposé (contour, ◻ = non posé)│
+  │                                                                         │
+  │   Frontière :  ▮ dure  ┄ molle        [ ▮ dure ]  (choix actif)         │
+  │                                                                         │
+  │   Pourquoi C3 ?                                                         │
+  │   • Contexte : 2 juges sur 3 → RESPONSABILITÉ ; 1 juge → GARANTIE.      │
+  │   • Logique : chevauchement sémantique (plafond commun) → multi-label.  │
+  │                                                                         │
+  │  ┌──────────────┐ ┌──────────────┐ ┌──────────┐ ┌──────────┐           │
+  │  │ ✎  Accepter   │ │  Permuter ⇄  │ │ Choisir… │ │ Annuler  │           │ ← ≥ 32 px
+  │  └──────────────┘ └──────────────┘ └──────────┘ └──────────┘           │
+  │     ▲ pose le set    primaire↔2ⁿᵈ    override     ferme                 │
+  └─────────────────────────────────────────────────────────────────────────┘
+        provenance affichée pendant l'examen : ⚡ ◷ (moteur, à valider — ambre)
+
+
+  APRÈS validation  (set multi-label appliqué)
+  ─────────────────────────────────────────────────────────────────────────
+  Le clic « Accepter » : (1) ◻ GARANTIE devient un secondaire POSÉ (chip
+  pointillé '+'), (2) la provenance passe à ⚡ VERT + C3, (3) le bouton
+  d'action principal se transforme en TOGGLE « Annuler » (réversible).
+
+  ┌─ SUGGESTION ────────────────────── [⧉ C3]   ⚡ C3  ✓ validé (vert) ────┐
+  │                                              ▲                          │
+  │                                              └ provenance moteur, état  │
+  │                                                validé → ⚡ devient VERT  │
+  │   Thèmes posés                                                          │
+  │   ┏━━━━━━━━━━━━━━━━━━━━━━━┓   ┌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌┐                       │
+  │   ┃ ✓  RESPONSABILITÉ    ┃   ┊ + GARANTIE       ┊                       │
+  │   ┗━━━━━━━━━━━━━━━━━━━━━━━┛   └╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌┘                       │
+  │     primaire posé              secondaire POSÉ ('+' ≠ '◻' du « avant ») │
+  │                                                                         │
+  │   Frontière :  ▮ dure  (appliquée)            🏷 Multi-label  [●━━ Multi]│
+  │                                                                         │
+  │  ┌──────────────────────────────┐   ┌──────────────────────────────┐   │
+  │  │  ↩  Annuler la validation     │   │  Choisir…  (ré-éditer le set) │   │ ← le bouton
+  │  └──────────────────────────────┘   └──────────────────────────────┘   │   « Accepter »
+  │     ▲ TOGGLE : re-cliquer rétablit l'état « avant » (set retiré,        │   est devenu
+  │       provenance ⚡ ◷ ambre)                                            │   « Annuler »
+  └─────────────────────────────────────────────────────────────────────────┘
+
+  TRANSITION (cf. animations.md)
+   • Pulse de confirmation ⚡ : ambre → vert, < 200 ms, sans déplacement de mise en page.
+   • ◻ GARANTIE → + GARANTIE : remplissage du préfixe + maintien de la position.
+   • Toggle « Multi-label » passe ON automatiquement (un secondaire est posé).
+
+  RÈGLES
+   • La couleur du badge ⧉ C3 (violet) NE change PAS à la validation : elle dit
+     le NIVEAU, pas l'état. Seule la forme de provenance (⚡) change de couleur.
+   • « Annuler » ne supprime pas le primaire validé seul ; il rétablit l'état
+     pré-validation complet (filet undo/redo global au-delà).
+   • Refuge jamais secondaire : « Choisir… » ne le propose pas comme 2ⁿᵈ.
+════════════════════════════════════════════════════════════════════════════
