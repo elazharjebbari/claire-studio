@@ -26,7 +26,7 @@ Lots livrés dans le code (preuves : tsc clean + suite vitest **316** verte) :
 | L4 | store `setClauseThemes` (sanitize 1 primaire/refuge≠2ⁿᵈ, undo, dirty) | ✅ | `tests/workspaceStore.test.ts` (+3) |
 | L5 | `MultiLabelEditor` (toggle Mono/Multi + secondaires + « +secondaire » hors C3) dans `InspectorPanel` | ✅ | `tests/multiLabelEditor.test.tsx` (3) |
 | L7 | tests d'intégration + e2e | ✅ | vitest 316 ; `e2e/triage.spec.ts` (multi-label) |
-| L8 | revue adversariale + déploiement | 🔄 | workflow `review-multilabel-impl` → corrections → deploy |
+| L8 | revue adversariale + déploiement | ✅ | revue 26 agents/17 findings → 7 correctifs (dont miroir theme↔themes, provenance resolvedFrom, purge triageLevel) ; déployé `8921e45`, health 200 |
 
 **Différé (⤵️, documenté dans `04_plan_developpement.md`)** : unification de la provenance dans
 l'en-tête du document, indicateur de conflit C4/C5 (clignotement), carte de suggestion en
