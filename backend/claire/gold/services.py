@@ -9,6 +9,8 @@ jamais écrasée par un recompute.
 
 from __future__ import annotations
 
+from datetime import timedelta
+
 from django.db import transaction
 from django.utils import timezone
 
@@ -29,6 +31,7 @@ from .models import (
 )
 
 AUTO_LEVELS = ("auto_1click", "auto")
+LOCK_LEASE_SECONDS = 90  # bail du verrou d'arbitrage ; heartbeat conseillé toutes les 20 s
 
 
 # ── Construction des votes ───────────────────────────────────────────────────
@@ -116,11 +119,14 @@ def _refresh_status(resolution: GoldResolution, decided_count: int, n: int) -> N
     resolution.save(update_fields=["pct_resolved", "status", "updated_at"])
 
 
-def recompute_document(resolution: GoldResolution, *, data: dict | None = None) -> dict:
+def recompute_document(
+    resolution: GoldResolution, *, data: dict | None = None, require_holder=None
+) -> dict:
     """Recalcule toutes les phrases : rafraîchit la proposition, applique l'auto-résolution
     sur les cas peu risqués, PRÉSERVE les décisions humaines. Idempotent : n'écrit que les
     lignes réellement modifiées (un GET sans changement de votes n'émet aucune écriture).
-    Atomique. Renvoie un récapitulatif."""
+    Atomique, sous verrou de ligne. Si `require_holder` est fourni, exige (sous le verrou de
+    ligne) que ce soit le détenteur du verrou d'arbitrage actif — sinon Conflict (409)."""
     project, document = resolution.project, resolution.document
     cfg = build_engine_config(project)
     data = data or build_document_data(project, document)
@@ -139,6 +145,11 @@ def recompute_document(resolution: GoldResolution, *, data: dict | None = None) 
     decided_count = 0
     auto_count = 0
     with transaction.atomic():
+        # Verrou de ligne : sérialise contre acquire/heartbeat/steal et tout autre
+        # recompute/decide concurrent. Le contrôle d'exclusivité est fait SOUS ce verrou.
+        locked_res = GoldResolution.objects.select_for_update().get(pk=resolution.pk)
+        if require_holder is not None:
+            _assert_holder(locked_res, require_holder)
         for s in data["per_sentence"]:
             i = s["index"]
             score = score_sentence(s["votes"], cfg)
@@ -193,15 +204,15 @@ def recompute_document(resolution: GoldResolution, *, data: dict | None = None) 
     return {"n": n, "decided": decided_count, "auto_resolved": auto_count}
 
 
-def resolve_and_payload(project, document) -> dict:
+def resolve_and_payload(project, document, user=None) -> dict:
     """Recompute + payload de l'atelier pour un document."""
     resolution = get_or_create_resolution(project, document)
     data = build_document_data(project, document)
     recompute_document(resolution, data=data)
-    return document_payload(resolution, data=data)
+    return document_payload(resolution, data=data, user=user)
 
 
-def document_payload(resolution: GoldResolution, *, data: dict | None = None) -> dict:
+def document_payload(resolution: GoldResolution, *, data: dict | None = None, user=None) -> dict:
     project, document = resolution.project, resolution.document
     data = data or build_document_data(project, document)
     text_by_index = {s.index: (s.clean_text or s.raw_text) for s in document.sentences.all()}
@@ -240,7 +251,7 @@ def document_payload(resolution: GoldResolution, *, data: dict | None = None) ->
         },
         "status": resolution.status,
         "pct_resolved": resolution.pct_resolved,
-        "locked": resolution.locked,
+        "lock": lock_state(resolution, user),
         "sentences": rows,
     }
 
@@ -272,34 +283,143 @@ def decide_sentence(resolution, index, primary_code, secondaries, comment, actor
         if s in REFUGE_CODES:
             raise ValueError(f"un refuge ({s}) ne peut pas être secondaire.")
 
-    gs, _ = GoldSentence.objects.get_or_create(resolution=resolution, index=index)
-    was_auto = gs.auto_resolved
-    gs.decided = True
-    gs.auto_resolved = False
-    gs.primary_theme = theme
-    gs.secondaries = secs
-    gs.decided_by = actor
-    gs.decided_at = timezone.now()
-    gs.comment = comment or ""
-    gs.save()
+    # Contrôle d'exclusivité + écriture SOUS le verrou de ligne et dans la MÊME
+    # transaction (pas de fenêtre TOCTOU avec un acquire/steal concurrent).
+    with transaction.atomic():
+        locked_res = GoldResolution.objects.select_for_update().get(pk=resolution.pk)
+        _assert_holder(locked_res, actor)
+        gs, _ = GoldSentence.objects.get_or_create(resolution=resolution, index=index)
+        was_auto = gs.auto_resolved
+        gs.decided = True
+        gs.auto_resolved = False
+        gs.primary_theme = theme
+        gs.secondaries = secs
+        gs.decided_by = actor
+        gs.decided_at = timezone.now()
+        gs.comment = comment or ""
+        gs.save()
 
-    ArbitrationEvent.objects.create(
-        resolution=resolution, index=index, actor=actor,
-        verb=ArbitrationVerb.OVERRIDE if was_auto else ArbitrationVerb.DECIDE,
-        payload={"primary": primary_code, "secondaries": secs},
-        note=comment or "",
-    )
-    n = resolution.document.n_sentences or 0
-    decided = resolution.sentences.filter(decided=True).count()
-    _refresh_status(resolution, decided, n)
+        ArbitrationEvent.objects.create(
+            resolution=resolution, index=index, actor=actor,
+            verb=ArbitrationVerb.OVERRIDE if was_auto else ArbitrationVerb.DECIDE,
+            payload={"primary": primary_code, "secondaries": secs},
+            note=comment or "",
+        )
+        n = resolution.document.n_sentences or 0
+        decided = resolution.sentences.filter(decided=True).count()
+        _refresh_status(resolution, decided, n)
     return gs
 
 
 def auto_resolve_document(resolution, actor) -> dict:
-    """Force l'auto-résolution (recompute) + trace l'événement."""
-    summary = recompute_document(resolution)
+    """Force l'auto-résolution (recompute, exclusivité exigée) + trace l'événement."""
+    summary = recompute_document(resolution, require_holder=actor)
     ArbitrationEvent.objects.create(
         resolution=resolution, index=None, actor=actor,
         verb=ArbitrationVerb.AUTO, payload=summary,
     )
     return summary
+
+
+# ── Verrou d'arbitrage exclusif (bail auto-expirant ; DB = source de vérité) ──
+def _lock_active(resolution: GoldResolution, now) -> bool:
+    return bool(
+        resolution.locked
+        and resolution.lock_expires_at is not None
+        and resolution.lock_expires_at > now
+    )
+
+
+def lock_state(resolution: GoldResolution, user=None) -> dict:
+    """État du verrou tel qu'exposé au front (un verrou expiré est considéré libre)."""
+    now = timezone.now()
+    active = _lock_active(resolution, now)
+    holder = resolution.locked_by if active else None
+    return {
+        "locked": active,
+        "locked_by": holder.username if holder else None,
+        "locked_by_name": display_name(holder) if holder else "",
+        "locked_by_id": holder.id if holder else None,
+        "held_by_me": bool(active and user is not None and resolution.locked_by_id == user.id),
+        "expires_at": resolution.lock_expires_at.isoformat() if active else None,
+        "lease_seconds": LOCK_LEASE_SECONDS,
+    }
+
+
+def _save_lock(res: GoldResolution) -> None:
+    res.save(update_fields=["locked", "locked_by", "locked_at", "lock_expires_at", "updated_at"])
+
+
+def acquire_lock(resolution, user, lease: int = LOCK_LEASE_SECONDS) -> tuple[bool, GoldResolution]:
+    """Prend le verrou si libre, expiré, ou déjà tenu par `user`. Sinon (False, détenteur)."""
+    with transaction.atomic():
+        res = GoldResolution.objects.select_for_update().get(pk=resolution.pk)
+        now = timezone.now()
+        if _lock_active(res, now) and res.locked_by_id != user.id:
+            return False, res
+        res.locked = True
+        res.locked_by = user
+        res.locked_at = now
+        res.lock_expires_at = now + timedelta(seconds=lease)
+        _save_lock(res)
+        return True, res
+
+
+def heartbeat_lock(resolution, user, lease: int = LOCK_LEASE_SECONDS) -> tuple[bool, GoldResolution]:
+    """Prolonge le bail si l'appelant tient toujours un verrou actif. Sinon (False, …)."""
+    with transaction.atomic():
+        res = GoldResolution.objects.select_for_update().get(pk=resolution.pk)
+        now = timezone.now()
+        if not _lock_active(res, now) or res.locked_by_id != user.id:
+            return False, res
+        res.lock_expires_at = now + timedelta(seconds=lease)
+        _save_lock(res)
+        return True, res
+
+
+def release_lock(resolution, user) -> tuple[bool, GoldResolution]:
+    """Libère le verrou si l'appelant le tient (ou s'il est déjà libre/expiré). Idempotent."""
+    with transaction.atomic():
+        res = GoldResolution.objects.select_for_update().get(pk=resolution.pk)
+        now = timezone.now()
+        if _lock_active(res, now) and res.locked_by_id != user.id:
+            return False, res
+        res.locked = False
+        res.locked_by = None
+        res.locked_at = None
+        res.lock_expires_at = None
+        _save_lock(res)
+        return True, res
+
+
+def steal_lock(resolution, user, lease: int = LOCK_LEASE_SECONDS) -> GoldResolution:
+    """Reprise inconditionnelle (lead/admin) — tracée. Le détenteur précédent perd son bail."""
+    with transaction.atomic():
+        res = GoldResolution.objects.select_for_update().get(pk=resolution.pk)
+        prev = res.locked_by
+        now = timezone.now()
+        res.locked = True
+        res.locked_by = user
+        res.locked_at = now
+        res.lock_expires_at = now + timedelta(seconds=lease)
+        _save_lock(res)
+        ArbitrationEvent.objects.create(
+            resolution=res, index=None, actor=user, verb=ArbitrationVerb.STEAL,
+            payload={"from": prev.username if prev else None},
+        )
+        return res
+
+
+def _assert_holder(resolution, user) -> None:
+    """Lève Conflict (409) si un AUTRE arbitre détient un verrou actif (exclusivité).
+
+    À appeler SOUS `select_for_update` (sur `resolution`) dans la transaction d'écriture,
+    sinon le contrôle n'est pas sérialisé vis-à-vis d'un acquire/steal concurrent."""
+    from claire.common.exceptions import Conflict
+
+    now = timezone.now()
+    if _lock_active(resolution, now) and resolution.locked_by_id != user.id:
+        holder = resolution.locked_by
+        raise Conflict(
+            f"Document en cours d'arbitrage par {display_name(holder) if holder else 'un autre arbitre'}."
+        )

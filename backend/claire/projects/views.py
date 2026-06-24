@@ -690,6 +690,7 @@ class ProjectViewSet(viewsets.ModelViewSet):
         from django.db.models import Count, Q
 
         from claire.gold.models import GoldSentence
+        from claire.gold.services import lock_state
 
         project = self.get_object()
         documents = list(project.corpus.documents.all().order_by("external_id"))
@@ -714,6 +715,7 @@ class ProjectViewSet(viewsets.ModelViewSet):
         rows = []
         for doc in documents:
             r = res_by_doc.get(doc.id)
+            lock = lock_state(r) if r else {"locked": False, "locked_by": None}
             rows.append({
                 "document": {
                     "id": doc.id,
@@ -723,12 +725,22 @@ class ProjectViewSet(viewsets.ModelViewSet):
                 },
                 "status": r.status if r else "unresolved",
                 "pct_resolved": r.pct_resolved if r else 0.0,
-                "locked": bool(r and r.locked),
-                "locked_by": (r.locked_by.username if (r and r.locked_by) else None),
+                "locked": lock["locked"],          # tient compte de l'expiration du bail
+                "locked_by": lock["locked_by"],
                 "counts": counts.get(r.id, {}) if r else {},
                 "arbiters": [u.username for u in r.arbiters.all()] if r else [],
             })
         return Response(results_envelope(rows))
+
+    # ── helper commun : (project, document, resolution|None) SANS création ──
+    def _gold_ctx(self, document_id):
+        project = self.get_object()
+        document = get_object_or_404(project.corpus.documents, external_id=document_id)
+        resolution = (
+            project.gold_resolutions.select_related("locked_by")
+            .filter(document=document).first()
+        )
+        return project, document, resolution
 
     @action(detail=True, methods=["get"], url_path=r"gold/(?P<document_id>[^/.]+)")
     def gold_detail(self, request, slug=None, document_id=None):
@@ -740,7 +752,7 @@ class ProjectViewSet(viewsets.ModelViewSet):
 
         project = self.get_object()
         document = get_object_or_404(project.corpus.documents, external_id=document_id)
-        return Response(resolve_and_payload(project, document))
+        return Response(resolve_and_payload(project, document, user=request.user))
 
     @action(detail=True, methods=["post"], url_path=r"gold/(?P<document_id>[^/.]+)/decide")
     def gold_decide(self, request, slug=None, document_id=None):
@@ -752,18 +764,16 @@ class ProjectViewSet(viewsets.ModelViewSet):
             is_arbiter,
         )
 
-        project = self.get_object()
-        document = get_object_or_404(project.corpus.documents, external_id=document_id)
+        project, document, resolution = self._gold_ctx(document_id)
         # Contrôles AVANT toute écriture (pas de création de résolution sur refus).
-        if not is_arbiter(request.user, project):
+        if not is_arbiter(request.user, project, resolution):
             return Response(
                 {"detail": "Réservé aux arbitres (lead, reviewer ou administrateur)."},
                 status=status.HTTP_403_FORBIDDEN,
             )
         if project.locked:
             raise Locked("Projet verrouillé par un administrateur : arbitrage gelé.")
-        resolution = get_or_create_resolution(project, document)
-
+        # Validation de la requête (400) AVANT de matérialiser / contrôler le verrou.
         try:
             index = int(request.data.get("index"))
         except (TypeError, ValueError):
@@ -774,8 +784,11 @@ class ProjectViewSet(viewsets.ModelViewSet):
         if index < 0 or index >= (document.n_sentences or 0):
             return Response({"detail": "index hors document."}, status=status.HTTP_400_BAD_REQUEST)
         secondaries = request.data.get("secondaries") or []
+
+        if resolution is None:
+            resolution = get_or_create_resolution(project, document)
         try:
-            gs = decide_sentence(
+            gs = decide_sentence(  # exclusivité + écriture sous verrou de ligne (409 si autre)
                 resolution, index, primary, secondaries,
                 request.data.get("comment", ""), request.user,
             )
@@ -801,18 +814,104 @@ class ProjectViewSet(viewsets.ModelViewSet):
             is_arbiter,
         )
 
-        project = self.get_object()
-        document = get_object_or_404(project.corpus.documents, external_id=document_id)
-        if not is_arbiter(request.user, project):
+        project, document, resolution = self._gold_ctx(document_id)
+        if not is_arbiter(request.user, project, resolution):
             return Response(
                 {"detail": "Réservé aux arbitres (lead, reviewer ou administrateur)."},
                 status=status.HTTP_403_FORBIDDEN,
             )
         if project.locked:
             raise Locked("Projet verrouillé par un administrateur : arbitrage gelé.")
-        resolution = get_or_create_resolution(project, document)
-        summary = auto_resolve_document(resolution, request.user)
+        if resolution is None:
+            resolution = get_or_create_resolution(project, document)
+        summary = auto_resolve_document(resolution, request.user)  # exclusivité sous verrou
         return Response({**summary, "status": resolution.status, "pct_resolved": resolution.pct_resolved})
+
+    # --- verrou d'arbitrage exclusif (bail auto-expirant ; temps réel) -------
+    def _gold_arbiter_guard(self, request, document_id, *, check_project_lock):
+        """(project, document, resolution, None) si OK, sinon (…, Response). Pas de création
+        de résolution sur refus. `check_project_lock` lève Locked (423) si projet gelé."""
+        from claire.common.exceptions import Locked
+        from claire.gold.services import get_or_create_resolution, is_arbiter
+
+        project, document, resolution = self._gold_ctx(document_id)
+        if not is_arbiter(request.user, project, resolution):
+            return None, None, None, Response(
+                {"detail": "Réservé aux arbitres (lead, reviewer ou administrateur)."},
+                status=status.HTTP_403_FORBIDDEN,
+            )
+        if check_project_lock and project.locked:
+            raise Locked("Projet verrouillé par un administrateur : arbitrage gelé.")
+        if resolution is None:
+            resolution = get_or_create_resolution(project, document)
+        return project, document, resolution, None
+
+    @action(detail=True, methods=["post"], url_path=r"gold/(?P<document_id>[^/.]+)/lock")
+    def gold_lock_acquire(self, request, slug=None, document_id=None):
+        """Acquiert le verrou d'arbitrage (bail 90 s). 409 si tenu par un autre arbitre."""
+        from claire.common.exceptions import Conflict
+        from claire.gold.services import acquire_lock, lock_state
+
+        _, _, resolution, err = self._gold_arbiter_guard(request, document_id, check_project_lock=True)
+        if err:
+            return err
+        ok, resolution = acquire_lock(resolution, request.user)
+        if not ok:
+            holder = resolution.locked_by
+            raise Conflict(
+                f"Document en cours d'arbitrage par {holder.username if holder else 'un autre arbitre'}."
+            )
+        return Response(lock_state(resolution, request.user))
+
+    @action(detail=True, methods=["post"], url_path=r"gold/(?P<document_id>[^/.]+)/lock/heartbeat")
+    def gold_lock_heartbeat(self, request, slug=None, document_id=None):
+        """Prolonge le bail. 409 si le verrou a été perdu (expiré/repris)."""
+        from claire.common.exceptions import Conflict
+        from claire.gold.services import heartbeat_lock, lock_state
+
+        _, _, resolution, err = self._gold_arbiter_guard(request, document_id, check_project_lock=True)
+        if err:
+            return err
+        ok, resolution = heartbeat_lock(resolution, request.user)
+        if not ok:
+            raise Conflict("Verrou d'arbitrage perdu (expiré ou repris).")
+        return Response(lock_state(resolution, request.user))
+
+    @action(detail=True, methods=["post"], url_path=r"gold/(?P<document_id>[^/.]+)/lock/release")
+    def gold_lock_release(self, request, slug=None, document_id=None):
+        """Libère le verrou (idempotent ; autorisé même projet gelé). 409 si tenu par un autre."""
+        from claire.common.exceptions import Conflict
+        from claire.gold.services import lock_state, release_lock
+
+        _, _, resolution, err = self._gold_arbiter_guard(request, document_id, check_project_lock=False)
+        if err:
+            return err
+        ok, resolution = release_lock(resolution, request.user)
+        if not ok:
+            raise Conflict("Verrou tenu par un autre arbitre.")
+        return Response(lock_state(resolution, request.user))
+
+    @action(detail=True, methods=["post"], url_path=r"gold/(?P<document_id>[^/.]+)/lock/steal")
+    def gold_lock_steal(self, request, slug=None, document_id=None):
+        """Reprise du verrou — réservée aux leads/admin (tracée ; refusée si projet gelé)."""
+        from claire.common.exceptions import Locked
+        from claire.gold.services import get_or_create_resolution, lock_state, steal_lock
+
+        project, document, resolution = self._gold_ctx(document_id)
+        is_lead = project.memberships.filter(
+            user=request.user, role=MembershipRole.LEAD
+        ).exists()
+        if not (getattr(request.user, "is_admin_role", False) or is_lead):
+            return Response(
+                {"detail": "Reprise réservée aux leads et administrateurs."},
+                status=status.HTTP_403_FORBIDDEN,
+            )
+        if project.locked:
+            raise Locked("Projet verrouillé par un administrateur : arbitrage gelé.")
+        if resolution is None:
+            resolution = get_or_create_resolution(project, document)
+        resolution = steal_lock(resolution, request.user)
+        return Response(lock_state(resolution, request.user))
 
 
 # --- Publication publique (chantier F) ---------------------------------------

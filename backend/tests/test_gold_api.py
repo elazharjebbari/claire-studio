@@ -5,7 +5,10 @@ DIVERGENTS contrôlés sur un document de 5 phrases, couvrant accord strict, maj
 divergence et signal fort « humain ≠ LLM ».
 """
 
+from datetime import timedelta
+
 import pytest
+from django.utils import timezone
 
 from claire.annotations.models import (
     Annotation,
@@ -14,7 +17,12 @@ from claire.annotations.models import (
     ClauseRole,
     ClauseTheme,
 )
-from claire.gold.models import GoldResolution, GoldSentence
+from claire.gold.models import (
+    ArbitrationEvent,
+    ArbitrationVerb,
+    GoldResolution,
+    GoldSentence,
+)
 from claire.imports.models import Judge, PreAnnotation, PreClause
 from claire.projects.models import MembershipRole, ProjectMembership
 from tests.conftest import UserFactory
@@ -396,3 +404,151 @@ def test_cockpit_query_count_does_not_grow_with_documents(project, scheme_with_t
     q2 = len(ctx2.captured_queries)
 
     assert q2 == q1, f"N+1 suspecté : {q1} requêtes avec 1 doc, {q2} avec 2"
+
+
+# ─────────────────────────────────────────────────────────────────────────────
+# V3 — verrou d'arbitrage temps réel (bail auto-expirant)
+# ─────────────────────────────────────────────────────────────────────────────
+def _lock_url(c, suffix=""):
+    return f"/api/v1/projects/{c['project'].slug}/gold/{c['doc'].external_id}/lock{suffix}"
+
+
+def test_lock_acquire_grants_to_arbiter(campaign, auth):
+    c = campaign
+    r = auth(c["lead"]).post(_lock_url(c), {}, format="json")
+    assert r.status_code == 200, r.content
+    body = r.json()
+    assert body["locked"] is True
+    assert body["heldByMe"] is True
+    assert body["lockedBy"] == c["lead"].username
+    assert body["expiresAt"] is not None
+
+
+def test_lock_exclusive_second_arbiter_gets_409(campaign, auth):
+    c = campaign
+    auth(c["lead"]).post(_lock_url(c), {}, format="json")
+    r = auth(c["rev"]).post(_lock_url(c), {}, format="json")
+    assert r.status_code == 409
+    assert c["lead"].username in r.json()["detail"]
+
+
+def test_lock_non_arbiter_forbidden(campaign, auth):
+    c = campaign
+    r = auth(c["alice"]).post(_lock_url(c), {}, format="json")
+    assert r.status_code == 403
+
+
+def test_lock_heartbeat_extends_lease(campaign, auth):
+    c = campaign
+    client = auth(c["lead"])
+    first = client.post(_lock_url(c), {}, format="json").json()["expiresAt"]
+    # Rapproche artificiellement l'expiration, puis heartbeat doit la repousser.
+    res = GoldResolution.objects.get(document=c["doc"])
+    res.lock_expires_at = timezone.now() + timedelta(seconds=5)
+    res.save(update_fields=["lock_expires_at"])
+    r = client.post(_lock_url(c, "/heartbeat"), {}, format="json")
+    assert r.status_code == 200
+    assert r.json()["expiresAt"] > first or r.json()["heldByMe"] is True
+
+
+def test_lock_heartbeat_after_expiry_is_409(campaign, auth):
+    c = campaign
+    client = auth(c["lead"])
+    client.post(_lock_url(c), {}, format="json")
+    res = GoldResolution.objects.get(document=c["doc"])
+    res.lock_expires_at = timezone.now() - timedelta(seconds=1)  # expiré
+    res.save(update_fields=["lock_expires_at"])
+    r = client.post(_lock_url(c, "/heartbeat"), {}, format="json")
+    assert r.status_code == 409
+
+
+def test_expired_lock_can_be_acquired_by_another(campaign, auth):
+    c = campaign
+    auth(c["lead"]).post(_lock_url(c), {}, format="json")
+    res = GoldResolution.objects.get(document=c["doc"])
+    res.lock_expires_at = timezone.now() - timedelta(seconds=1)
+    res.save(update_fields=["lock_expires_at"])
+    r = auth(c["rev"]).post(_lock_url(c), {}, format="json")
+    assert r.status_code == 200
+    assert r.json()["lockedBy"] == c["rev"].username
+
+
+def test_release_frees_lock(campaign, auth):
+    c = campaign
+    auth(c["lead"]).post(_lock_url(c), {}, format="json")
+    rel = auth(c["lead"]).post(_lock_url(c, "/release"), {}, format="json")
+    assert rel.status_code == 200
+    assert rel.json()["locked"] is False
+    # Un autre arbitre peut alors prendre le verrou.
+    r = auth(c["rev"]).post(_lock_url(c), {}, format="json")
+    assert r.status_code == 200
+
+
+def test_lead_can_steal_lock(campaign, auth):
+    c = campaign
+    auth(c["rev"]).post(_lock_url(c), {}, format="json")  # rev tient le verrou
+    r = auth(c["lead"]).post(_lock_url(c, "/steal"), {}, format="json")
+    assert r.status_code == 200
+    assert r.json()["lockedBy"] == c["lead"].username
+    ev = ArbitrationEvent.objects.filter(
+        resolution__document=c["doc"], verb=ArbitrationVerb.STEAL
+    ).first()
+    assert ev is not None
+    assert ev.payload.get("from") == c["rev"].username
+
+
+def test_reviewer_cannot_steal_lock(campaign, auth):
+    c = campaign
+    auth(c["lead"]).post(_lock_url(c), {}, format="json")
+    r = auth(c["rev"]).post(_lock_url(c, "/steal"), {}, format="json")
+    assert r.status_code == 403
+
+
+def test_decide_blocked_when_locked_by_another(campaign, auth):
+    c = campaign
+    auth(c["rev"]).post(_lock_url(c), {}, format="json")  # rev verrouille
+    r = auth(c["lead"]).post(
+        f"/api/v1/projects/{c['project'].slug}/gold/{c['doc'].external_id}/decide",
+        {"index": 2, "primary": "META"}, format="json",
+    )
+    assert r.status_code == 409
+
+
+def test_decide_allowed_for_lock_holder(campaign, auth):
+    c = campaign
+    auth(c["lead"]).post(_lock_url(c), {}, format="json")
+    r = auth(c["lead"]).post(
+        f"/api/v1/projects/{c['project'].slug}/gold/{c['doc'].external_id}/decide",
+        {"index": 2, "primary": "META"}, format="json",
+    )
+    assert r.status_code == 200
+    assert r.json()["decided"] is True
+
+
+def test_atelier_payload_exposes_lock_state(campaign, auth):
+    c = campaign
+    auth(c["lead"]).post(_lock_url(c), {}, format="json")
+    body = _detail(auth, c["rev"], c["project"], c["doc"]).json()
+    assert body["lock"]["locked"] is True
+    assert body["lock"]["lockedBy"] == c["lead"].username
+    assert body["lock"]["heldByMe"] is False
+
+
+def test_lock_acquire_blocked_when_project_frozen(campaign, auth):
+    c = campaign
+    c["project"].locked = True
+    c["project"].save(update_fields=["locked"])
+    r = auth(c["lead"]).post(_lock_url(c), {}, format="json")
+    assert r.status_code == 423
+
+
+def test_cockpit_hides_expired_lock(campaign, auth):
+    c = campaign
+    auth(c["lead"]).post(_lock_url(c), {}, format="json")
+    res = GoldResolution.objects.get(document=c["doc"])
+    res.lock_expires_at = timezone.now() - timedelta(seconds=1)  # bail expiré
+    res.save(update_fields=["lock_expires_at"])
+    r = auth(c["lead"]).get(f"/api/v1/projects/{c['project'].slug}/gold/documents")
+    row = next(x for x in r.json()["results"] if x["document"]["externalId"] == c["doc"].external_id)
+    assert row["locked"] is False  # l'expiration est prise en compte
+    assert row["lockedBy"] is None
