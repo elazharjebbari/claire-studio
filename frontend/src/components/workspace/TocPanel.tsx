@@ -12,7 +12,7 @@ import { ThemePalette } from "@/components/ui/ThemePalette";
 import { useWorkspaceStore } from "@/store/workspace";
 import { LLM_JUDGES } from "@/lib/llmJudges";
 import { secondaryCount } from "@/lib/validationDisplay";
-import { planOutline, uncoveredCount, nextUncovered } from "@/lib/planCoverage";
+import { uncoveredCount, nextUncovered } from "@/lib/planCoverage";
 
 export function TocPanel({ docTitle }: { docTitle: string }) {
   const drafts = useWorkspaceStore((s) => s.draftClauses);
@@ -119,18 +119,18 @@ export function TocPanel({ docTitle }: { docTitle: string }) {
     nSentences > 0 ? Math.round((validatedCount / nSentences) * 100) : 0;
 
   // Correctif « blocks manquants » : les phrases NON annotées étaient invisibles dans le
-  // plan (qui ne listait que les clauses). On dérive l'ANCRE par phrase, le nombre de
-  // phrases restantes, et un PLAN COMPLET (clauses + trous groupés) en ordre document, de
-  // sorte que le plan reflète tout le document et qu'on puisse sauter aux phrases libres.
+  // plan (qui ne listait que les clauses). On affiche désormais UN BLOC PAR PHRASE en ordre
+  // document — chip de clause si annotée, sinon bloc « à annoter » (placeholder) cliquable.
+  // Le plan reflète ainsi TOUT le document (193 blocs ici), pas seulement les clauses.
   const anchorIndexes = useMemo(() => drafts.map((d) => d.anchorIndex), [drafts]);
   const remaining = uncoveredCount(anchorIndexes, nSentences);
-  const outline = useMemo(
-    () => planOutline(anchorIndexes, nSentences),
-    [anchorIndexes, nSentences],
-  );
   const draftByAnchor = useMemo(
     () => new Map(drafts.map((d) => [d.anchorIndex, d])),
     [drafts],
+  );
+  const sentenceIndexes = useMemo(
+    () => Array.from({ length: Math.max(0, nSentences) }, (_, i) => i),
+    [nSentences],
   );
 
   // « Aller à la prochaine phrase non annotée » : cycle les trous depuis la phrase
@@ -143,8 +143,10 @@ export function TocPanel({ docTitle }: { docTitle: string }) {
     clearClauseSelection();
   }
 
-  function goToGap(start: number) {
-    focusSentence(start);
+  // Clic d'un bloc « à annoter » : focalise la phrase dans le document (scroll) pour
+  // l'annoter sur place. Désélectionne toute clause.
+  function focusEmptySentence(index: number) {
+    focusSentence(index);
     selectClause(null);
     clearClauseSelection();
   }
@@ -251,54 +253,50 @@ export function TocPanel({ docTitle }: { docTitle: string }) {
         aria-label="Plan des clauses"
         className="flex min-h-0 flex-1 flex-col gap-1 overflow-y-auto"
       >
-        {drafts.length === 0 && (
+        {nSentences === 0 && (
           <p className="rounded-md border border-dashed border-line p-3 text-xs text-ink-muted">
-            Aucune clause. Cliquez une phrase ou appuyez sur <kbd>B</kbd> pour poser une ancre.
+            Aucune phrase à annoter dans ce document.
           </p>
         )}
-        {/* Plan COMPLET en ordre document : chips de clauses + lignes « trou » (phrases non
-            annotées groupées) cliquables — répond à « où sont le reste des blocks ». */}
-        {outline.map((item) => {
-          if (item.type === "gap") {
-            const single = item.count === 1;
+        {/* Plan COMPLET en ordre document : UN BLOC PAR PHRASE — chip de clause si annotée,
+            sinon bloc « à annoter » (placeholder) cliquable. Répond à « où sont le reste des
+            blocks » : toutes les phrases du document ont leur bloc, pas un résumé. */}
+        {sentenceIndexes.map((i) => {
+          const c = draftByAnchor.get(i);
+          if (c) {
             return (
-              <button
-                key={`gap-${item.start}`}
-                type="button"
-                data-testid="plan-gap"
-                data-range={`${item.start}-${item.end}`}
-                onClick={() => goToGap(item.start)}
-                title="Phrases non annotées — cliquez pour y aller"
-                className="flex w-full items-center gap-1.5 rounded-md border border-dashed border-line/70 bg-panel-muted/20 px-2 py-1 text-left text-[11px] text-ink-muted transition-colors hover:border-accent/40 hover:bg-panel-muted hover:text-ink"
-              >
-                <CircleDashed size={12} aria-hidden className="shrink-0" />
-                <span className="min-w-0 truncate">
-                  {item.count} phrase{single ? "" : "s"} non annotée{single ? "" : "s"}
-                </span>
-                <span className="ml-auto shrink-0 font-mono text-[10px]">
-                  {single ? `[${item.start}]` : `[${item.start}]–[${item.end}]`}
-                </span>
-              </button>
+              <ClauseChip
+                key={c.localId}
+                themeCode={c.theme}
+                anchorIndex={c.anchorIndex}
+                selected={selectedId === c.localId || selectedClauseIds.includes(c.localId)}
+                ghost={Boolean(c.seededFrom) && !c.validated}
+                validated={Boolean(c.validated)}
+                seededFrom={c.seededFrom}
+                resolvedFrom={c.resolvedFrom}
+                triageLevel={c.triageLevel}
+                secondaryCount={secondaryCount(c.themes)}
+                onClick={(e) => onChipClick(e, c.localId, c.anchorIndex)}
+                onContextMenu={(e) => onChipContext(e, c.localId)}
+                className="w-full justify-start"
+              />
             );
           }
-          const c = draftByAnchor.get(item.anchorIndex);
-          if (!c) return null;
+          // Bloc « à annoter » : même gabarit que les chips, mais en pointillés/sourdine.
           return (
-            <ClauseChip
-              key={c.localId}
-              themeCode={c.theme}
-              anchorIndex={c.anchorIndex}
-              selected={selectedId === c.localId || selectedClauseIds.includes(c.localId)}
-              ghost={Boolean(c.seededFrom) && !c.validated}
-              validated={Boolean(c.validated)}
-              seededFrom={c.seededFrom}
-              resolvedFrom={c.resolvedFrom}
-              triageLevel={c.triageLevel}
-              secondaryCount={secondaryCount(c.themes)}
-              onClick={(e) => onChipClick(e, c.localId, c.anchorIndex)}
-              onContextMenu={(e) => onChipContext(e, c.localId)}
-              className="w-full justify-start"
-            />
+            <button
+              key={`empty-${i}`}
+              type="button"
+              data-testid="plan-empty"
+              data-index={i}
+              onClick={() => focusEmptySentence(i)}
+              title={`Phrase ${i} non annotée — cliquez pour l'annoter`}
+              className="inline-flex w-full items-center justify-start gap-1.5 rounded-md border border-dashed border-line/70 bg-panel-muted/15 px-2 py-1 text-xs font-medium text-ink-muted transition-colors hover:border-accent/40 hover:bg-panel-muted hover:text-ink"
+            >
+              <CircleDashed size={12} aria-hidden className="shrink-0 opacity-70" />
+              <span className="font-mono">[{i}]</span>
+              <span className="min-w-0 truncate italic">à annoter</span>
+            </button>
           );
         })}
       </nav>

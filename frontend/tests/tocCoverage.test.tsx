@@ -23,19 +23,22 @@ function seed(nSentences: number, annotated: number[]) {
   });
 }
 
-describe("TocPanel — couverture & phrases non annotées", () => {
-  it("affiche l'encart de couverture et une ligne de trou groupée (cas Academia réduit)", () => {
-    // 10 phrases, annotées 0..6 → trou 7..9 (3 phrases).
+describe("TocPanel — un bloc par phrase (annotée ou « à annoter »)", () => {
+  it("affiche UN bloc par phrase non annotée (pas un résumé) + encart de couverture", () => {
+    // 10 phrases, annotées 0..6 → 3 phrases « à annoter » : 7, 8, 9.
     seed(10, [0, 1, 2, 3, 4, 5, 6]);
     render(<TocPanel docTitle="Academia" />);
 
     expect(screen.getByTestId("toc-coverage")).toHaveTextContent("7/10");
     expect(screen.getByTestId("toc-coverage")).toHaveTextContent("3 restantes");
 
-    const gap = screen.getByTestId("plan-gap");
-    expect(gap).toHaveAttribute("data-range", "7-9");
-    expect(gap).toHaveTextContent("3 phrases non annotées");
-    expect(gap).toHaveTextContent("[7]–[9]");
+    // 7 chips de clause + 3 blocs « à annoter ».
+    expect(screen.getAllByTestId("clause-chip")).toHaveLength(7);
+    const empties = screen.getAllByTestId("plan-empty");
+    expect(empties).toHaveLength(3);
+    expect(empties.map((e) => e.getAttribute("data-index"))).toEqual(["7", "8", "9"]);
+    expect(empties[0]).toHaveTextContent("[7]");
+    expect(empties[0]).toHaveTextContent("à annoter");
   });
 
   it("le bouton « Prochaine non annotée » focalise la 1re phrase libre puis avance", () => {
@@ -49,18 +52,20 @@ describe("TocPanel — couverture & phrases non annotées", () => {
     expect(useWorkspaceStore.getState().focusedSentence).toBe(8);
   });
 
-  it("cliquer la ligne de trou saute à sa 1re phrase", () => {
+  it("cliquer un bloc « à annoter » focalise sa phrase", () => {
     seed(10, [0, 1, 2, 3, 4, 5, 6]);
     render(<TocPanel docTitle="Academia" />);
-    fireEvent.click(screen.getByTestId("plan-gap"));
-    expect(useWorkspaceStore.getState().focusedSentence).toBe(7);
+    const empty9 = screen.getAllByTestId("plan-empty").find((e) => e.getAttribute("data-index") === "9")!;
+    fireEvent.click(empty9);
+    expect(useWorkspaceStore.getState().focusedSentence).toBe(9);
   });
 
-  it("document entièrement annoté : ni encart restant, ni ligne de trou", () => {
+  it("document entièrement annoté : un chip par phrase, aucun bloc « à annoter », pas d'encart restant", () => {
     seed(3, [0, 1, 2]);
     render(<TocPanel docTitle="Doc" />);
+    expect(screen.getAllByTestId("clause-chip")).toHaveLength(3);
+    expect(screen.queryByTestId("plan-empty")).not.toBeInTheDocument();
     expect(screen.queryByTestId("toc-coverage")).not.toBeInTheDocument();
-    expect(screen.queryByTestId("plan-gap")).not.toBeInTheDocument();
     expect(screen.queryByTestId("toc-goto-gap")).not.toBeInTheDocument();
   });
 });

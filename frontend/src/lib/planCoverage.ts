@@ -19,11 +19,6 @@ export interface CoverageGap {
   count: number;
 }
 
-/** Item du plan en ordre document : une clause (ancre) ou un trou de couverture. */
-export type PlanItem =
-  | { type: "clause"; anchorIndex: number }
-  | { type: "gap"; start: number; end: number; count: number };
-
 /** Ensemble trié+dédupliqué des ancres valides dans [0, n). */
 function normalizedAnchors(anchorIndexes: number[], n: number): number[] {
   const seen = new Set<number>();
@@ -59,6 +54,9 @@ export function coverageGaps(anchorIndexes: number[], n: number): CoverageGap[] 
   return gaps;
 }
 
+// (Le plan affiche désormais UN bloc par phrase ; le regroupement en « plan outline »
+// n'est plus nécessaire — voir TocPanel qui itère directement les phrases.)
+
 /** Nombre de phrases non annotées. */
 export function uncoveredCount(anchorIndexes: number[], n: number): number {
   if (!Number.isInteger(n) || n <= 0) return 0;
@@ -84,28 +82,4 @@ export function nextUncovered(
     if (!anchors.has(i)) return i;
   }
   return null;
-}
-
-/**
- * Plan en ordre document : clauses (ancres) et trous (runs non annotés) entremêlés,
- * de sorte que le plan reflète TOUTE la structure du document, pas seulement les
- * clauses. `anchorIndexes` n'a pas besoin d'être trié.
- */
-export function planOutline(anchorIndexes: number[], n: number): PlanItem[] {
-  if (!Number.isInteger(n) || n <= 0) return [];
-  const anchors = normalizedAnchors(anchorIndexes, n);
-  const anchorSet = new Set(anchors);
-  const items: PlanItem[] = [];
-  let i = 0;
-  while (i < n) {
-    if (anchorSet.has(i)) {
-      items.push({ type: "clause", anchorIndex: i });
-      i += 1;
-    } else {
-      const start = i;
-      while (i < n && !anchorSet.has(i)) i += 1;
-      items.push({ type: "gap", start, end: i - 1, count: i - start });
-    }
-  }
-  return items;
 }

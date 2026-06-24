@@ -26,26 +26,34 @@ illusion de « blocks disparus ». (Vérifié de façon adverse : aucune limite 
 `useTriage`/`TriageQueue`/`applyTriageBatch`/sérialiseur de clauses/pagination DRF.)
 
 ## 3. Solution (frontend, modèle per-sentence inchangé)
-Module pur `frontend/src/lib/planCoverage.ts` (testé) :
-- `coverageGaps`, `uncoveredCount`, `nextUncovered`, `planOutline` (clauses + trous groupés en
-  ordre document). Défensifs, sans React.
+Le plan affiche désormais **UN BLOC PAR PHRASE** (et non un résumé) : l'utilisateur veut voir
+« les blocks comme au début », un par phrase restante.
+
+Module pur `frontend/src/lib/planCoverage.ts` (testé, défensif, sans React) :
+`coverageGaps`, `uncoveredCount`, `nextUncovered`.
 
 `TocPanel` :
-- **Plan COMPLET en ordre document** : chips de clauses **+ lignes « trou »** groupées
-  (`data-testid=plan-gap`, ex. « 60 phrases non annotées [133]–[192] ») cliquables → saut à la
-  1ʳᵉ phrase libre (`focusSentence`). Le plan reflète désormais TOUT le document.
+- **Un bloc par phrase, en ordre document** : pour chaque phrase 0..n−1, un chip de clause si
+  annotée, sinon un **bloc « à annoter »** (`data-testid=plan-empty`, gabarit identique aux
+  chips mais pointillés/sourdine, `[i]` + « à annoter ») cliquable → focalise la phrase dans le
+  document (`focusSentence`) pour l'annoter sur place. Le plan reflète TOUT le document
+  (193 blocs : 133 chips + 60 « à annoter »).
 - **Encart de couverture** (`toc-coverage`) « 133/193 annotées · 60 restantes » +
-  bouton **« Prochaine non annotée → »** (`toc-goto-gap`) qui cycle les trous depuis la phrase
-  focalisée. Masqués quand la couverture est complète (doc 100% annoté = plan inchangé).
+  bouton **« Prochaine non annotée → »** (`toc-goto-gap`) qui cycle les phrases libres depuis
+  la phrase focalisée. Masqués quand la couverture est complète (doc 100% annoté = un chip par
+  phrase, aucun bloc « à annoter »).
 - Tokens uniquement (zéro hex), `<button>` focusables, `aria-live` sur le compteur.
 
 ## 4. Tests
-- `tests/planCoverage.test.ts` (10) — dont le cas Academia exact (0..132/193 → trou 133..192).
-- `tests/tocCoverage.test.tsx` (4) — encart, ligne de trou, saut + cyclage, doc complet sans trou.
-- e2e `sync-toc.spec.ts` — le plan expose les trous + couverture + saut (Fitbit partiel).
-- Suites : vitest **392** vertes, tsc clean.
+- `tests/planCoverage.test.ts` — couverture/gaps/`nextUncovered` (dont le cas Academia
+  0..132/193 → 60 restantes).
+- `tests/tocCoverage.test.tsx` — un bloc par phrase (chips + blocs « à annoter »), encart,
+  saut + cyclage, doc complet sans bloc « à annoter ».
+- e2e `sync-toc.spec.ts` — le plan affiche un bloc « à annoter » par phrase + couverture + saut.
+- Suites : vitest **389** vertes, tsc clean.
 
 ## 5. Pour l'utilisateur
 Les 60 phrases (133..192) n'avaient pas disparu : elles n'étaient pas encore annotées et le
-plan ne les montrait pas. Désormais le plan affiche la ligne « 60 phrases non annotées » et le
-bouton « Prochaine non annotée » pour les traiter une à une.
+plan ne les montrait pas. Désormais le plan affiche **un bloc par phrase** — chaque phrase
+restante a son propre bloc « à annoter » (`[133]` … `[192]`), cliquable pour y aller — plus le
+compteur « 60 restantes » et le bouton « Prochaine non annotée ».

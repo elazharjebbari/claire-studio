@@ -49,20 +49,20 @@ test.describe("Synchro plan ↔ phrase", () => {
     expect(gap).toBeLessThanOrEqual(40);
   });
 
-  test("le plan EXPOSE les phrases non annotées (trous) + couverture + saut", async ({ page }) => {
+  test("le plan affiche UN bloc par phrase non annotée + couverture + saut", async ({ page }) => {
     // Correctif « blocks manquants » : sur un document partiellement annoté, le plan doit
-    // montrer les phrases NON annotées (ligne de trou groupée) et un encart de couverture,
-    // au lieu de ne lister que les clauses (qui faisait croire à des blocks disparus).
+    // afficher UN bloc « à annoter » par phrase non annotée (pas un résumé), au lieu de ne
+    // lister que les clauses (qui faisait croire à des blocks disparus).
     await page.goto("/annotate/ann-1");
     await expect(page.getByTestId("annotation-workspace")).toBeVisible();
     const toc = page.getByRole("complementary", { name: "Plan du document" });
 
     // Encart de couverture (Fitbit n'est que partiellement annoté).
     await expect(toc.getByTestId("toc-coverage")).toContainText("restante");
-    // Au moins une ligne de trou cliquable, étiquetée « non annotée(s) ».
-    const gap = toc.getByTestId("plan-gap").first();
-    await expect(gap).toBeVisible();
-    await expect(gap).toContainText("non annotée");
+    // Au moins un bloc « à annoter » cliquable.
+    const empty = toc.getByTestId("plan-empty").first();
+    await expect(empty).toBeVisible();
+    await expect(empty).toContainText("à annoter");
 
     // Le bouton « Prochaine non annotée » déplace le focus document vers une phrase libre.
     await toc.getByTestId("toc-goto-gap").click();

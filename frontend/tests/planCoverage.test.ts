@@ -1,10 +1,5 @@
 import { describe, expect, it } from "vitest";
-import {
-  coverageGaps,
-  uncoveredCount,
-  nextUncovered,
-  planOutline,
-} from "@/lib/planCoverage";
+import { coverageGaps, uncoveredCount, nextUncovered } from "@/lib/planCoverage";
 
 describe("coverageGaps", () => {
   it("reproduit le cas Academia : 0..132 annotées sur 193 → 1 trou 133..192", () => {
@@ -49,32 +44,5 @@ describe("nextUncovered (navigation cyclique)", () => {
 
   it("null si tout est annoté", () => {
     expect(nextUncovered([0, 1, 2], 3, 0)).toBeNull();
-  });
-});
-
-describe("planOutline (chips + trous en ordre document)", () => {
-  it("entremêle clauses et trous dans l'ordre du document", () => {
-    expect(planOutline([0, 3, 4], 7)).toEqual([
-      { type: "clause", anchorIndex: 0 },
-      { type: "gap", start: 1, end: 2, count: 2 },
-      { type: "clause", anchorIndex: 3 },
-      { type: "clause", anchorIndex: 4 },
-      { type: "gap", start: 5, end: 6, count: 2 },
-    ]);
-  });
-
-  it("Academia : 133 clauses puis un trou final", () => {
-    const anchors = Array.from({ length: 133 }, (_, i) => i);
-    const out = planOutline(anchors, 193);
-    expect(out).toHaveLength(134); // 133 clauses + 1 trou
-    expect(out[133]).toEqual({ type: "gap", start: 133, end: 192, count: 60 });
-  });
-
-  it("doc entièrement annoté = uniquement des clauses (pas de trou)", () => {
-    expect(planOutline([0, 1, 2], 3)).toEqual([
-      { type: "clause", anchorIndex: 0 },
-      { type: "clause", anchorIndex: 1 },
-      { type: "clause", anchorIndex: 2 },
-    ]);
   });
 });
