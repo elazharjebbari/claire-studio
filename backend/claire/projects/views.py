@@ -747,6 +747,41 @@ class ProjectViewSet(viewsets.ModelViewSet):
             data["iaa"] = None
         return Response(data)
 
+    @action(detail=True, methods=["get", "patch"], url_path="gold/config")
+    def gold_config(self, request, slug=None):
+        """Studio de config de la résolution (admin/lead) : GET la config, PATCH la met à jour.
+
+        Le champ `arbiters` (usernames) définit NOMINATIVEMENT qui peut arbitrer ; il est
+        validé contre les membres du projet (l'autocomplétion ne propose qu'eux)."""
+        from claire.gold.config import (
+            resolution_config_full,
+            save_resolution_config,
+            validate_resolution_config,
+        )
+
+        project = self.get_object()
+        if request.method == "GET":
+            return Response(resolution_config_full(project))
+
+        # PATCH — réservé admin/lead, refusé si projet gelé.
+        is_lead = project.memberships.filter(
+            user=request.user, role=MembershipRole.LEAD
+        ).exists()
+        if not (getattr(request.user, "is_admin_role", False) or is_lead):
+            return Response(
+                {"detail": "Réservé aux administrateurs et leads."},
+                status=status.HTTP_403_FORBIDDEN,
+            )
+        if project.locked:
+            from claire.common.exceptions import Locked
+
+            raise Locked("Projet verrouillé : configuration gelée.")
+        try:
+            cfg = validate_resolution_config(request.data, project)
+        except ValueError as exc:
+            return Response({"detail": str(exc)}, status=status.HTTP_400_BAD_REQUEST)
+        return Response(save_resolution_config(project, cfg, actor=request.user))
+
     # ── helper commun : (project, document, resolution|None) SANS création ──
     def _gold_ctx(self, document_id):
         project = self.get_object()

@@ -42,6 +42,8 @@ import {
   FIXTURE_GOLD_DOCUMENTS,
   FIXTURE_GOLD_DETAIL,
   FIXTURE_GOLD_STATS,
+  FIXTURE_MEMBERS,
+  FIXTURE_GOLD_CONFIG,
 } from "./fixtures";
 
 const BASE = process.env.NEXT_PUBLIC_API_BASE ?? "/api/v1";
@@ -56,6 +58,7 @@ let commentSeq = 100;
 let reviewSeq = 100;
 let translationSeq = 100;
 let projectLocked = false; // verrou NIVEAU PROJET (mutable, mock)
+let goldConfig: Record<string, unknown> = structuredClone(FIXTURE_GOLD_CONFIG); // config résolution (mock mutable)
 // Préférences UI par compte (mock) : blob camelCase fusionné partiellement, comme le serveur.
 let meUiPreferences: Record<string, unknown> = {};
 function mergeDeep(
@@ -85,6 +88,7 @@ export function resetDb(): void {
   translationSeq = 100;
   projectLocked = false;
   meUiPreferences = {};
+  goldConfig = structuredClone(FIXTURE_GOLD_CONFIG);
 }
 
 function page<T>(results: T[]) {
@@ -265,6 +269,13 @@ export const handlers = [
     HttpResponse.json(page(FIXTURE_GOLD_DOCUMENTS)),
   ),
   http.get(`${BASE}/projects/:slug/gold/stats`, () => HttpResponse.json(FIXTURE_GOLD_STATS)),
+  http.get(`${BASE}/projects/:slug/members`, () => HttpResponse.json(page(FIXTURE_MEMBERS))),
+  http.get(`${BASE}/projects/:slug/gold/config`, () => HttpResponse.json(goldConfig)),
+  http.patch(`${BASE}/projects/:slug/gold/config`, async ({ request }) => {
+    const patch = (await request.json().catch(() => ({}))) as Record<string, unknown>;
+    goldConfig = mergeDeep(goldConfig, patch); // PATCH partiel fusionné (comme le serveur)
+    return HttpResponse.json(goldConfig);
+  }),
   http.get(`${BASE}/projects/:slug/gold/:externalId`, ({ params }) =>
     HttpResponse.json({
       ...FIXTURE_GOLD_DETAIL,

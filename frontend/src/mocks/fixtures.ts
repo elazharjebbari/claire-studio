@@ -768,3 +768,22 @@ export const FIXTURE_GOLD_STATS = {
   goldCovered: 25,
   iaa: { meanKappa: 0.74, pairs: [] },
 };
+
+export const FIXTURE_MEMBERS = [
+  { id: "m1", userId: "u-alice", username: "alice", displayName: "Alice", role: "lead" as const, joinedAt: "2026-06-01T09:00:00Z" },
+  { id: "m2", userId: "u-bruno", username: "bruno", displayName: "Bruno", role: "annotator" as const, joinedAt: "2026-06-01T09:00:00Z" },
+  { id: "m3", userId: "u-camille", username: "camille", displayName: "Camille", role: "annotator" as const, joinedAt: "2026-06-01T09:00:00Z" },
+  { id: "m4", userId: "u-dora", username: "dora", displayName: "Dora", role: "reviewer" as const, joinedAt: "2026-06-01T09:00:00Z" },
+];
+
+export const FIXTURE_GOLD_CONFIG = {
+  v: 1,
+  llm: { role: "tiebreak" as const, weight: 0.5, perJudge: {} },
+  annotatorWeights: {},
+  signalBonus: 0.2,
+  autoResolve: { absoluteAgreement: true, lowRiskLevels: ["C1", "C2"], manualLevels: ["C3", "C4", "C5"] },
+  arbiters: [] as string[],
+  autoShare: true,
+  secondaryPolicy: "advisory" as const,
+  statuses: ["submitted", "in_review", "approved"],
+};

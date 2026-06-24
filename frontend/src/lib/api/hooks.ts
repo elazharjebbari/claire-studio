@@ -50,6 +50,7 @@ export const qk = {
   goldDocuments: (slug: string) => ["projects", slug, "gold", "documents"] as const,
   goldDocument: (slug: string, ext: string) => ["projects", slug, "gold", ext] as const,
   goldStats: (slug: string) => ["projects", slug, "gold", "stats"] as const,
+  goldConfig: (slug: string) => ["projects", slug, "gold", "config"] as const,
 };
 
 export function useMe() {
@@ -699,5 +700,26 @@ export function useGoldStats(slug?: string) {
     queryKey: qk.goldStats(slug ?? ""),
     queryFn: () => api.getGoldStats(slug!),
     enabled: Boolean(slug),
+  });
+}
+
+/** Config de campagne de résolution (studio V7). */
+export function useGoldConfig(slug?: string) {
+  return useQuery({
+    queryKey: qk.goldConfig(slug ?? ""),
+    queryFn: () => api.getGoldConfig(slug!),
+    enabled: Boolean(slug),
+  });
+}
+
+export function useSaveGoldConfig(slug: string) {
+  const qc = useQueryClient();
+  return useMutation({
+    mutationFn: (config: Partial<import("@/lib/gold/types").ResolutionConfig>) =>
+      api.patchGoldConfig(slug, config),
+    onSuccess: (cfg) => {
+      qc.setQueryData(qk.goldConfig(slug), cfg);
+      qc.invalidateQueries({ queryKey: qk.goldConfig(slug) });
+    },
   });
 }

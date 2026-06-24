@@ -12,6 +12,7 @@ import type {
   GoldAutoResolveResponse,
   GoldLockState,
   GoldStats,
+  ResolutionConfig,
 } from "@/lib/gold/types";
 import type {
   Annotation,
@@ -726,6 +727,20 @@ export function getGoldDocument(slug: string, externalId: string): Promise<GoldD
 
 export function getGoldStats(slug: string): Promise<GoldStats> {
   return apiFetch<GoldStats>(`/projects/${slug}/gold/stats`);
+}
+
+export function getGoldConfig(slug: string): Promise<ResolutionConfig> {
+  return apiFetch<ResolutionConfig>(`/projects/${slug}/gold/config`);
+}
+
+export function patchGoldConfig(
+  slug: string,
+  config: Partial<ResolutionConfig>,
+): Promise<ResolutionConfig> {
+  return apiFetch<ResolutionConfig>(`/projects/${slug}/gold/config`, {
+    method: "PATCH",
+    body: config,
+  });
 }
 
 export function decideGold(

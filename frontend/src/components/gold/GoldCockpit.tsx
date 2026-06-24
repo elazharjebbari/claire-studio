@@ -9,7 +9,7 @@
 import { useEffect, useState } from "react";
 import Link from "next/link";
 import { useMutation } from "@tanstack/react-query";
-import { Gavel, Lock, ShieldCheck, AlertTriangle, BarChart3, Download } from "lucide-react";
+import { Gavel, Lock, ShieldCheck, AlertTriangle, BarChart3, Download, Settings2 } from "lucide-react";
 import { useGoldDocuments, useProject, useMe } from "@/lib/api/hooks";
 import { createExport } from "@/lib/api/endpoints";
 import { isAdminRole } from "@/lib/roles";
@@ -157,6 +157,15 @@ export function GoldCockpit({ slug }: { slug: string }) {
           >
             <BarChart3 size={14} aria-hidden /> Stats
           </Link>
+          {(isAdmin || project?.myRole === "lead") && (
+            <Link
+              href={`/projects/${slug}/gold/config`}
+              data-testid="gold-config-link"
+              className="inline-flex items-center gap-1 rounded-md border border-line bg-panel px-3 py-1.5 text-sm text-ink hover:bg-panel-muted"
+            >
+              <Settings2 size={14} aria-hidden /> Configurer
+            </Link>
+          )}
           {isAdmin && (
             <Button
               variant="subtle"

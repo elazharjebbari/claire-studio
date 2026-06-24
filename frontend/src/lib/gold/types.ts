@@ -2,7 +2,20 @@
  * Types « wire » du module GOLD (réponses camelCase via drf-camel-case).
  * Réutilise les unions du moteur pur (goldScoring.ts) pour rester cohérent.
  */
-import type { AgreementClass, AutoLevel, RiskBand } from "@/lib/goldScoring";
+import type { AgreementClass, AutoLevel, RiskBand, LlmRole } from "@/lib/goldScoring";
+
+export interface ResolutionConfig {
+  v: number;
+  llm: { role: LlmRole; weight: number; perJudge?: Record<string, number> };
+  annotatorWeights: Record<string, number>;
+  signalBonus: number;
+  autoResolve: { absoluteAgreement: boolean; lowRiskLevels: string[]; manualLevels: string[] };
+  arbiters: string[]; // usernames autorisés à arbitrer (allow-list nominative)
+  autoShare: boolean;
+  secondaryPolicy: "optional" | "required" | "advisory";
+  statuses: string[];
+  configChanges?: { at: string; by: string | null }[];
+}
 
 export type GoldStatus = "unresolved" | "in_progress" | "resolved";
 

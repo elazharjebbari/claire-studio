@@ -258,12 +258,29 @@ def document_payload(resolution: GoldResolution, *, data: dict | None = None, us
 
 # ── Décision & permissions ───────────────────────────────────────────────────
 def is_arbiter(user, project, resolution: GoldResolution | None = None) -> bool:
-    """Qui peut arbitrer : admin, lead, reviewer (preset défaut) ou arbitre explicite."""
+    """Qui peut arbitrer :
+    - admin et lead : TOUJOURS (gestionnaires de campagne) ;
+    - si la config définit une liste d'arbitres NOMINATIVE → seuls ces usernames (allow-list,
+      c'est ainsi qu'on inclut des annotateurs précis) ;
+    - sinon (liste vide) → politique par défaut = reviewers ;
+    - plus tout arbitre explicite sur la résolution du document.
+    """
+    from .config import config_arbiters
+
+    if not getattr(user, "is_authenticated", False):
+        return False
     if getattr(user, "is_admin_role", False):
         return True
-    roles = {MembershipRole.LEAD, MembershipRole.REVIEWER}
-    if project.memberships.filter(user=user, role__in=roles).exists():
+    if project.memberships.filter(user=user, role=MembershipRole.LEAD).exists():
         return True
+
+    arbiters = config_arbiters(project)
+    if arbiters:
+        if user.username in arbiters:
+            return True
+    elif project.memberships.filter(user=user, role=MembershipRole.REVIEWER).exists():
+        return True
+
     if resolution is not None and resolution.arbiters.filter(pk=user.pk).exists():
         return True
     return False

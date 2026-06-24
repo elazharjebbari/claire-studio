@@ -543,6 +543,107 @@ def test_lock_acquire_blocked_when_project_frozen(campaign, auth):
 
 
 # ─────────────────────────────────────────────────────────────────────────────
+# V7 — studio de config de campagne (dont arbitres nominatifs)
+# ─────────────────────────────────────────────────────────────────────────────
+def _config_url(c):
+    return f"/api/v1/projects/{c['project'].slug}/gold/config"
+
+
+def _decide(client, c, index, primary="META"):
+    return client.post(
+        f"/api/v1/projects/{c['project'].slug}/gold/{c['doc'].external_id}/decide",
+        {"index": index, "primary": primary}, format="json",
+    )
+
+
+def test_gold_config_get_returns_default_preset(campaign, auth):
+    c = campaign
+    r = auth(c["lead"]).get(_config_url(c))
+    assert r.status_code == 200, r.content
+    body = r.json()
+    assert body["llm"]["role"] == "tiebreak"
+    assert body["arbiters"] == []
+    assert body["autoShare"] is True
+    assert body["secondaryPolicy"] == "advisory"
+
+
+def test_gold_config_patch_sets_named_arbiters(campaign, auth):
+    c = campaign
+    # Le lead choisit NOMINATIVEMENT un annotateur (g_alice) comme arbitre.
+    r = auth(c["lead"]).patch(_config_url(c), {"arbiters": ["g_alice"]}, format="json")
+    assert r.status_code == 200, r.content
+    assert r.json()["arbiters"] == ["g_alice"]
+    # g_alice (simple annotateur) peut désormais arbitrer.
+    _detail(auth, c["lead"], c["project"], c["doc"])
+    assert _decide(auth(c["alice"]), c, 2).status_code == 200
+    # ...mais le reviewer, hors liste explicite, ne le peut plus.
+    assert _decide(auth(c["rev"]), c, 3).status_code == 403
+
+
+def test_gold_config_rejects_non_member_arbiter(campaign, auth):
+    c = campaign
+    r = auth(c["lead"]).patch(_config_url(c), {"arbiters": ["ghost_user"]}, format="json")
+    assert r.status_code == 400
+    assert "ghost_user" in r.json()["detail"]
+
+
+def test_gold_config_patch_requires_lead_or_admin(campaign, auth):
+    c = campaign
+    r = auth(c["alice"]).patch(_config_url(c), {"arbiters": []}, format="json")
+    assert r.status_code == 403
+
+
+def test_gold_config_validates_enums(campaign, auth):
+    c = campaign
+    r = auth(c["lead"]).patch(_config_url(c), {"llm": {"role": "wat"}}, format="json")
+    assert r.status_code == 400
+
+
+def test_gold_config_drops_unknown_weight_keys(campaign, auth):
+    c = campaign
+    r = auth(c["lead"]).patch(
+        _config_url(c),
+        {
+            "annotatorWeights": {"g_alice": 4.0, "ghost": 2.0},
+            "llm": {"perJudge": {"claude": 1.5, "bogus": 0.9}},
+        },
+        format="json",
+    )
+    assert r.status_code == 200, r.content
+    body = r.json()
+    # Seules les clés valides (membre / juge connu) sont retenues (la clé de sortie est
+    # camélisée par le renderer, donc on teste robuste à la casse : ghost/bogus absents).
+    aw = body["annotatorWeights"]
+    assert "ghost" not in aw and list(aw.values()) == [4.0]
+    assert body["llm"]["perJudge"] == {"claude": 1.5}
+
+
+def test_gold_config_partial_patch_preserves_other_fields(campaign, auth):
+    c = campaign
+    client = auth(c["lead"])
+    client.patch(_config_url(c), {"llm": {"role": "full"}}, format="json")
+    # PATCH partiel (arbitres seuls) ne doit PAS réinitialiser le rôle LLM.
+    client.patch(_config_url(c), {"arbiters": ["g_alice"]}, format="json")
+    body = client.get(_config_url(c)).json()
+    assert body["llm"]["role"] == "full"
+    assert body["arbiters"] == ["g_alice"]
+
+
+def test_gold_config_persists_llm_and_auto_share(campaign, auth):
+    c = campaign
+    auth(c["lead"]).patch(
+        _config_url(c),
+        {"llm": {"role": "full", "weight": 1.0}, "autoShare": False, "secondaryPolicy": "required"},
+        format="json",
+    )
+    body = auth(c["lead"]).get(_config_url(c)).json()
+    assert body["llm"]["role"] == "full"
+    assert body["llm"]["weight"] == 1.0
+    assert body["autoShare"] is False
+    assert body["secondaryPolicy"] == "required"
+
+
+# ─────────────────────────────────────────────────────────────────────────────
 # V6 — stats de concordance + export gold
 # ─────────────────────────────────────────────────────────────────────────────
 def test_gold_stats_ranks_closest_to_gold(campaign, auth):
