@@ -128,15 +128,16 @@ def test_detail_returns_per_sentence_votes_and_proposals(campaign, auth):
     assert sents[2]["decided"] is False
     assert sents[2]["riskBand"] == "high"
 
-    # s3 : humains unanimes META mais LLM unanimes TERMINATION → signal fort.
-    assert sents[3]["humanDissent"] is True
-    assert sents[3]["autoLevel"] == "manual"
-    assert sents[3]["decided"] is False
-    assert sents[3]["riskBand"] == "high"
+    # s3 : annotateurs unanimes META — la divergence des LLM N'EST PAS un conflit.
+    assert sents[3]["agreementClass"] == "strict"
+    assert sents[3]["humanDissent"] is False
+    assert sents[3]["autoLevel"] == "auto_1click"
+    assert sents[3]["decided"] is True
+    assert sents[3]["riskBand"] == "low"
 
-    # Avancement : 3 décidées (s0,s1,s4) / 5.
+    # Avancement : 4 décidées (s0,s1,s3,s4) / 5 ; seul s2 (divergence inter-annotateurs) reste.
     assert body["status"] == "in_progress"
-    assert body["pctResolved"] == pytest.approx(0.6)
+    assert body["pctResolved"] == pytest.approx(0.8)
 
 
 def test_recompute_is_idempotent(campaign, auth):
@@ -146,7 +147,7 @@ def test_recompute_is_idempotent(campaign, auth):
     first = res.sentences.filter(decided=True).count()
     _detail(auth, c["lead"], c["project"], c["doc"])
     res.refresh_from_db()
-    assert res.sentences.filter(decided=True).count() == first == 3
+    assert res.sentences.filter(decided=True).count() == first == 4
 
 
 # ─────────────────────────────────────────────────────────────────────────────
@@ -169,8 +170,8 @@ def test_arbiter_can_decide_divergent_sentence(campaign, auth):
     gs = GoldSentence.objects.get(resolution__document=c["doc"], index=2)
     assert gs.decided_by_id == c["rev"].id
     assert gs.comment == "tranché"
-    # 4 décidées / 5 désormais.
-    assert body["pctResolved"] == pytest.approx(0.8)
+    # s2 était le dernier conflit → 5 décidées / 5.
+    assert body["pctResolved"] == pytest.approx(1.0)
 
 
 def test_plain_annotator_cannot_decide(campaign, auth):
@@ -241,8 +242,8 @@ def test_auto_resolve_endpoint(campaign, auth):
     )
     assert r.status_code == 200, r.content
     body = r.json()
-    assert body["autoResolved"] == 3  # s0, s1, s4
-    assert body["decided"] == 3
+    assert body["autoResolved"] == 4  # s0, s1, s3, s4 (s3 strict malgré divergence LLM)
+    assert body["decided"] == 4
     assert body["status"] == "in_progress"
 
 
@@ -255,12 +256,12 @@ def test_cockpit_lists_documents_with_status(campaign, auth):
     rows = r.json()["results"]
     row = next(x for x in rows if x["document"]["externalId"] == c["doc"].external_id)
     assert row["status"] == "in_progress"
-    assert row["pctResolved"] == pytest.approx(0.6)
+    assert row["pctResolved"] == pytest.approx(0.8)
     assert row["counts"]["divergence"] == 1
     assert row["counts"]["majority"] == 1
-    assert row["counts"]["decided"] == 3
-    # s2 (divergence) + s3 (dissent) = 2 phrases à risque élevé.
-    assert row["counts"]["highRisk"] == 2
+    assert row["counts"]["decided"] == 4  # s0,s1,s3,s4
+    # Seul s2 (divergence INTER-ANNOTATEURS) est à risque élevé.
+    assert row["counts"]["highRisk"] == 1
 
 
 def test_cockpit_unopened_document_is_unresolved(project, document_with_sentences, auth, annotator):
@@ -593,6 +594,20 @@ def test_gold_config_patch_requires_lead_or_admin(campaign, auth):
     assert r.status_code == 403
 
 
+def test_gold_config_auto_flags_drive_resolution(campaign, auth):
+    c = campaign
+    # Désactiver l'auto sur les MAJORITÉS → s1 (2/3) ne doit plus être auto-résolu.
+    auth(c["lead"]).patch(
+        _config_url(c), {"autoResolve": {"majority": False}}, format="json"
+    )
+    body = _detail(auth, c["lead"], c["project"], c["doc"]).json()
+    sents = {s["index"]: s for s in body["sentences"]}
+    assert sents[1]["agreementClass"] == "majority"
+    assert sents[1]["decided"] is False  # plus auto (la bascule l'a désactivé)
+    # Les accords stricts restent auto (absolu toujours actif).
+    assert sents[0]["decided"] is True and sents[3]["decided"] is True
+
+
 def test_gold_config_validates_enums(campaign, auth):
     c = campaign
     r = auth(c["lead"]).patch(_config_url(c), {"llm": {"role": "wat"}}, format="json")
@@ -648,17 +663,17 @@ def test_gold_config_persists_llm_and_auto_share(campaign, auth):
 # ─────────────────────────────────────────────────────────────────────────────
 def test_gold_stats_ranks_closest_to_gold(campaign, auth):
     c = campaign
-    _detail(auth, c["lead"], c["project"], c["doc"])  # matérialise + auto-résout s0,s1,s4
+    _detail(auth, c["lead"], c["project"], c["doc"])  # matérialise + auto-résout s0,s1,s3,s4
     r = auth(c["lead"]).get(f"/api/v1/projects/{c['project'].slug}/gold/stats")
     assert r.status_code == 200, r.content
     body = r.json()
     anns = {a["username"]: a for a in body["annotators"]}
-    # gold = [META, TERMINATION, None, None, META] → alice/bob 100%, carol 50%.
+    # gold = [META, TERMINATION, None, META, META] → alice/bob 100%, carol 2/3.
     assert anns["g_alice"]["pct"] == 100.0
     assert anns["g_bob"]["pct"] == 100.0
-    assert anns["g_carol"]["pct"] == 50.0
+    assert anns["g_carol"]["pct"] == pytest.approx(66.7, abs=0.1)
     assert body["closestToGold"]["pct"] == 100.0
-    # LLM↔GOLD présent (les 3 juges votent TERMINATION partout).
+    # LLM↔GOLD présent (les juges sont une RÉFÉRENCE, mesurée vs gold).
     assert any(j["judge"] in {"claude", "codex", "mistral"} for j in body["judges"])
     # A↔A (IAA) inclus.
     assert "iaa" in body

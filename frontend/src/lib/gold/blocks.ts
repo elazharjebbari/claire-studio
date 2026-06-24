@@ -8,9 +8,9 @@
  */
 import type { GoldSentenceRow } from "./types";
 
-/** Une phrase « mérite attention » si l'accord humain n'est pas strict, OU dissent LLM. */
+/** Une phrase « mérite attention » = désaccord ENTRE ANNOTATEURS (jamais vis-à-vis des LLM). */
 export function needsAttention(s: GoldSentenceRow): boolean {
-  return s.agreementClass !== "strict" || s.humanDissent;
+  return s.agreementClass !== "strict";
 }
 
 /** Clé de bloc : si décidée → le thème gold ; sinon la classe d'accord (+ dissent). */

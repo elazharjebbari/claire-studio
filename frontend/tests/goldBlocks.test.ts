@@ -34,9 +34,10 @@ const s = (over: Partial<GoldSentenceRow> & { index: number }): GoldSentenceRow 
 });
 
 describe("needsAttention", () => {
-  it("strict sans dissent = pas d'attention ; sinon attention", () => {
+  it("désaccord ENTRE annotateurs uniquement (la divergence LLM ne compte jamais)", () => {
     expect(needsAttention(s({ index: 0, agreementClass: "strict" }))).toBe(false);
-    expect(needsAttention(s({ index: 0, agreementClass: "strict", humanDissent: true }))).toBe(true);
+    // Accord strict des annotateurs : pas d'attention même si humanDissent (déprécié) est vrai.
+    expect(needsAttention(s({ index: 0, agreementClass: "strict", humanDissent: true }))).toBe(false);
     expect(needsAttention(s({ index: 0, agreementClass: "majority" }))).toBe(true);
     expect(needsAttention(s({ index: 0, agreementClass: "divergence" }))).toBe(true);
   });
@@ -87,12 +88,13 @@ describe("navigation", () => {
 });
 
 describe("outlineStats", () => {
-  it("compte décidées/conflits/à faire", () => {
+  it("compte décidées/conflits/à faire (conflits = désaccord entre annotateurs)", () => {
     const st = outlineStats([
       s({ index: 0, decided: true, agreementClass: "strict" }),
       s({ index: 1, agreementClass: "divergence" }),
+      // strict + humanDissent (déprécié) → PAS un conflit.
       s({ index: 2, agreementClass: "strict", humanDissent: true }),
     ]);
-    expect(st).toEqual({ total: 3, decided: 1, conflicts: 2, pending: 2 });
+    expect(st).toEqual({ total: 3, decided: 1, conflicts: 1, pending: 2 });
   });
 });

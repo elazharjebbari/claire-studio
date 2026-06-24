@@ -10,8 +10,11 @@ from __future__ import annotations
 
 import copy
 
-from claire.projects.gold_scoring import LLM_ROLES, default_config
+from claire.projects.gold_scoring import default_config
 
+# Les LLM ne sont qu'une RÉFÉRENCE (jamais un votant) ; ces rôles restent stockables
+# dans la config par compat mais n'ont AUCUN effet sur le moteur.
+LLM_ROLES = ("ignore", "tiebreak", "signal", "full")
 LEVELS = {"C1", "C2", "C3", "C4", "C5"}
 SECONDARY_POLICIES = {"optional", "required", "advisory"}
 ANNOTATION_STATUSES = {"submitted", "in_review", "approved", "draft"}
@@ -25,7 +28,8 @@ DEFAULT_RESOLUTION_CONFIG: dict = {
     "annotator_weights": {},  # username -> poids
     "signal_bonus": 0.2,
     "auto_resolve": {
-        "absolute_agreement": True,
+        "absolute_agreement": True,  # accord strict des annotateurs → 1 clic
+        "majority": True,            # majorité d'annotateurs ≥ 2/3 → auto
         "low_risk_levels": ["C1", "C2"],
         "manual_levels": ["C3", "C4", "C5"],
     },
@@ -57,36 +61,22 @@ def resolution_settings(project) -> dict:
 
 
 def build_engine_config(project) -> dict:
-    """Traduit la config de campagne en config pour `score_sentence` (pur)."""
+    """Traduit la config de campagne en config pour `score_sentence` (ANNOTATEURS seuls).
+
+    Les LLM ne sont PAS parties au conflit : la config ne porte que des paramètres
+    annotateurs (poids par annotateur, seuil de secondaires)."""
     cfg = default_config()
     res = resolution_settings(project)
 
-    llm = _get(res, "llm", default={}) or {}
-    role = _get(llm, "role") or _get(res, "llm_role", "llmRole")
-    if role in LLM_ROLES:
-        cfg["llm_role"] = role
-    weight = _get(llm, "weight") or _get(res, "llm_weight", "llmWeight")
-    if weight is not None:
-        try:
-            cfg["llm_weight"] = float(weight)
-        except (TypeError, ValueError):
-            pass
-
     per_annotator = _get(res, "annotator_weights", "annotatorWeights", "per_annotator", default={})
     if isinstance(per_annotator, dict):
-        cfg["per_annotator"] = {str(k): float(v) for k, v in per_annotator.items()}
-    per_llm = _get(llm, "per_judge", "perJudge") or _get(res, "per_llm", default={})
-    if isinstance(per_llm, dict):
-        # Forme {judge: {weight}} ou {judge: weight}.
         out = {}
-        for k, v in per_llm.items():
-            w = v.get("weight") if isinstance(v, dict) else v
-            if w is not None:
-                try:
-                    out[str(k)] = float(w)
-                except (TypeError, ValueError):
-                    pass
-        cfg["per_llm"] = out
+        for k, v in per_annotator.items():
+            try:
+                out[str(k)] = float(v)
+            except (TypeError, ValueError):
+                pass
+        cfg["per_annotator"] = out
 
     sec_min = _get(res, "secondary_min_annotators", "secondaryMinAnnotators")
     if sec_min is not None:
@@ -105,6 +95,16 @@ def annotation_statuses(project) -> set:
     if isinstance(raw, (list, tuple)) and raw:
         return set(raw)
     return {"submitted", "in_review", "approved"}
+
+
+def auto_resolve_flags(project) -> dict:
+    """Drapeaux d'auto-résolution effectifs (accord strict 1-clic, majorité ≥ 2/3)."""
+    res = resolution_settings(project)
+    ar = _get(res, "auto_resolve", "autoResolve", default={}) or {}
+    return {
+        "absolute_agreement": bool(_get(ar, "absolute_agreement", "absoluteAgreement", default=True)),
+        "majority": bool(_get(ar, "majority", default=True)),
+    }
 
 
 def config_arbiters(project) -> set:
@@ -184,6 +184,8 @@ def validate_resolution_config(raw: dict, project) -> dict:
     ar = raw.get("auto_resolve") if isinstance(raw.get("auto_resolve"), dict) else {}
     if "absolute_agreement" in ar:
         cfg["auto_resolve"]["absolute_agreement"] = bool(ar["absolute_agreement"])
+    if "majority" in ar:
+        cfg["auto_resolve"]["majority"] = bool(ar["majority"])
     for key in ("low_risk_levels", "manual_levels"):
         if key in ar:
             vals = ar[key] if isinstance(ar[key], (list, tuple)) else []

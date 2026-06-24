@@ -9,11 +9,8 @@ import { scoreSentence, type Vote, type ScoringConfig } from "@/lib/goldScoring"
 // Le golden stocke la config en clés Python (snake_case) → on mappe vers ScoringConfig.
 function mapConfig(c: Record<string, unknown>): Partial<ScoringConfig> {
   const out: Partial<ScoringConfig> = {};
-  if (c.llm_role !== undefined) out.llmRole = c.llm_role as ScoringConfig["llmRole"];
-  if (c.llm_weight !== undefined) out.llmWeight = c.llm_weight as number;
   if (c.annotator_weight !== undefined) out.annotatorWeight = c.annotator_weight as number;
   if (c.per_annotator !== undefined) out.perAnnotator = c.per_annotator as Record<string, number>;
-  if (c.per_llm !== undefined) out.perLlm = c.per_llm as Record<string, number>;
   if (c.secondary_min_annotators !== undefined)
     out.secondaryMinAnnotators = c.secondary_min_annotators as number;
   if (c.reliability !== undefined) out.reliability = c.reliability as Record<string, number>;
@@ -22,7 +19,7 @@ function mapConfig(c: Record<string, unknown>): Partial<ScoringConfig> {
 
 describe("parité moteur GOLD (TS == golden partagé)", () => {
   it("golden présent et versionné", () => {
-    expect((golden as { engineVersion: number }).engineVersion).toBe(1);
+    expect((golden as { engineVersion: number }).engineVersion).toBe(2);
     expect((golden as { cases: unknown[] }).cases.length).toBeGreaterThanOrEqual(15);
   });
 

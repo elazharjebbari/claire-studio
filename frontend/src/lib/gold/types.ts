@@ -9,7 +9,12 @@ export interface ResolutionConfig {
   llm: { role: LlmRole; weight: number; perJudge?: Record<string, number> };
   annotatorWeights: Record<string, number>;
   signalBonus: number;
-  autoResolve: { absoluteAgreement: boolean; lowRiskLevels: string[]; manualLevels: string[] };
+  autoResolve: {
+    absoluteAgreement: boolean;
+    majority: boolean;
+    lowRiskLevels?: string[];
+    manualLevels?: string[];
+  };
   arbiters: string[]; // usernames autorisés à arbitrer (allow-list nominative)
   autoShare: boolean;
   secondaryPolicy: "optional" | "required" | "advisory";

@@ -21,7 +21,7 @@ from claire.projects.gold_scoring import Vote, score_sentence
 from claire.projects.models import MembershipRole
 from claire.schemes.models import Theme
 
-from .config import annotation_statuses, build_engine_config
+from .config import annotation_statuses, auto_resolve_flags, build_engine_config
 from .models import (
     ArbitrationEvent,
     ArbitrationVerb,
@@ -129,6 +129,8 @@ def recompute_document(
     ligne) que ce soit le détenteur du verrou d'arbitrage actif — sinon Conflict (409)."""
     project, document = resolution.project, resolution.document
     cfg = build_engine_config(project)
+    flags = auto_resolve_flags(project)  # accord strict 1-clic / majorité ≥ 2/3 (configurables)
+    allow_auto = {"auto_1click": flags["absolute_agreement"], "auto": flags["majority"]}
     data = data or build_document_data(project, document)
     n = data["n"]
     theme_by_code = {t.code: t for t in Theme.objects.filter(scheme=project.scheme)}
@@ -174,7 +176,8 @@ def recompute_document(
                 pass  # décision humaine : sacrée
             else:
                 primary_theme = theme_by_code.get(score.primary) if score.primary else None
-                if score.auto_level in AUTO_LEVELS and primary_theme is not None:
+                auto_ok = score.auto_level in AUTO_LEVELS and allow_auto.get(score.auto_level, True)
+                if auto_ok and primary_theme is not None:
                     gs.decided = True
                     gs.auto_resolved = True
                     gs.primary_theme = primary_theme

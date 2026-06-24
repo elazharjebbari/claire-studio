@@ -14,15 +14,7 @@ import { useUiStore } from "@/store/ui";
 import { Button, Panel } from "@/components/ui/primitives";
 import { ArbiterPicker } from "./ArbiterPicker";
 import type { ResolutionConfig } from "@/lib/gold/types";
-import type { LlmRole } from "@/lib/goldScoring";
 
-const LLM_ROLES: { value: LlmRole; label: string }[] = [
-  { value: "ignore", label: "Ignorés" },
-  { value: "tiebreak", label: "Départage seulement" },
-  { value: "signal", label: "Signal (pas de décision)" },
-  { value: "full", label: "Comptés pleinement" },
-];
-const LEVELS = ["C1", "C2", "C3", "C4", "C5"];
 const SECONDARY_POLICIES: { value: ResolutionConfig["secondaryPolicy"]; label: string }[] = [
   { value: "advisory", label: "Indicatif" },
   { value: "optional", label: "Optionnel" },
@@ -70,7 +62,7 @@ function Section({ icon, title, desc, children }: { icon: React.ReactNode; title
   );
 }
 
-export function GoldConfigStudio({ slug }: { slug: string }) {
+export function GoldConfigStudio({ slug, embedded = false }: { slug: string; embedded?: boolean }) {
   const setProject = useUiStore((s) => s.setCurrentProject);
   useEffect(() => setProject(slug), [slug, setProject]);
 
@@ -90,26 +82,25 @@ export function GoldConfigStudio({ slug }: { slug: string }) {
     [draft, config],
   );
 
-  if (!draft) return <div className="px-6 py-8 text-ink-muted">Chargement de la configuration…</div>;
+  if (!draft) return <div className={embedded ? "py-4 text-ink-muted" : "px-6 py-8 text-ink-muted"}>Chargement de la configuration…</div>;
 
   const patch = (p: Partial<ResolutionConfig>) => setDraft({ ...draft, ...p });
-  const toggleLevel = (lvl: string) => {
-    const cur = draft.autoResolve.lowRiskLevels;
-    const next = cur.includes(lvl) ? cur.filter((l) => l !== lvl) : [...cur, lvl];
-    patch({ autoResolve: { ...draft.autoResolve, lowRiskLevels: next } });
-  };
 
   return (
-    <div className="mx-auto max-w-3xl px-6 py-8" data-testid="gold-config">
-      <Link href={`/projects/${slug}/gold`} className="mb-3 inline-flex items-center gap-1 text-sm text-ink-muted hover:text-ink">
-        <ChevronLeft size={15} aria-hidden /> Cockpit
-      </Link>
-      <h1 className="mb-1 flex items-center gap-2 text-xl font-semibold text-ink">
-        <Gavel size={18} className="text-gold" aria-hidden /> Configuration de la résolution
-      </h1>
-      <p className="mb-5 text-sm text-ink-muted">
-        Réglez la campagne d'arbitrage : qui arbitre, comment les modèles comptent, et l'auto-résolution.
-      </p>
+    <div className={embedded ? "" : "mx-auto max-w-3xl px-6 py-8"} data-testid="gold-config">
+      {!embedded && (
+        <>
+          <Link href={`/projects/${slug}/gold`} className="mb-3 inline-flex items-center gap-1 text-sm text-ink-muted hover:text-ink">
+            <ChevronLeft size={15} aria-hidden /> Cockpit
+          </Link>
+          <h1 className="mb-1 flex items-center gap-2 text-xl font-semibold text-ink">
+            <Gavel size={18} className="text-gold" aria-hidden /> Configuration de la résolution
+          </h1>
+          <p className="mb-5 text-sm text-ink-muted">
+            Réglez l'arbitrage inter-annotateurs : qui arbitre, l'auto-résolution, le partage.
+          </p>
+        </>
+      )}
 
       {locked && (
         <div className="mb-4 flex items-center gap-2 rounded-md border border-warning/40 bg-warning/10 px-3 py-2 text-[12px] text-warning" data-testid="gold-config-locked">
@@ -132,46 +123,21 @@ export function GoldConfigStudio({ slug }: { slug: string }) {
           />
         </Section>
 
-        {/* LLM */}
-        <Section icon={<Bot size={15} aria-hidden />} title="Modèles LLM" desc="Rôle des juges (claude/codex/mistral) dans la décision et leur poids.">
-          <div className="grid gap-3 sm:grid-cols-2">
-            <label className="flex flex-col gap-1 text-sm">
-              <span className="text-xs font-medium uppercase tracking-wide text-ink-muted">Rôle</span>
-              <select
-                data-testid="config-llm-role"
-                disabled={locked}
-                value={draft.llm.role}
-                onChange={(e) => patch({ llm: { ...draft.llm, role: e.target.value as LlmRole } })}
-                className="rounded-md border border-line bg-panel px-2 py-1.5 text-sm text-ink"
-              >
-                {LLM_ROLES.map((r) => (
-                  <option key={r.value} value={r.value}>{r.label}</option>
-                ))}
-              </select>
-            </label>
-            <label className="flex flex-col gap-1 text-sm">
-              <span className="text-xs font-medium uppercase tracking-wide text-ink-muted">
-                Poids LLM ({draft.llm.weight})
-              </span>
-              <input
-                type="range"
-                min={0}
-                max={2}
-                step={0.5}
-                disabled={locked}
-                data-testid="config-llm-weight"
-                value={draft.llm.weight}
-                onChange={(e) => patch({ llm: { ...draft.llm, weight: Number(e.target.value) } })}
-                className="accent-accent"
-              />
-            </label>
+        {/* Modèles — RÉFÉRENCE seulement */}
+        <Section
+          icon={<Bot size={15} aria-hidden />}
+          title="Modèles LLM"
+          desc="Les modèles (claude/codex/mistral) sont affichés en RÉFÉRENCE dans l'atelier mais n'entrent JAMAIS dans la décision : la résolution reste strictement entre annotateurs."
+        >
+          <div className="rounded-md border border-line bg-panel-muted/40 px-3 py-2 text-[12px] text-ink-muted">
+            Aucun réglage : un désaccord avec un modèle n'est jamais un conflit.
           </div>
         </Section>
 
-        {/* Auto-résolution */}
-        <Section icon={<Sparkles size={15} aria-hidden />} title="Auto-résolution" desc="Trancher automatiquement les cas sûrs pour ne garder que les vrais conflits.">
+        {/* Auto-résolution (annotateurs seuls) */}
+        <Section icon={<Sparkles size={15} aria-hidden />} title="Auto-résolution" desc="Trancher automatiquement les accords entre annotateurs pour ne garder que les vrais conflits.">
           <div className="flex items-center justify-between py-1">
-            <span className="text-sm text-ink">Accord absolu = 1 clic (auto)</span>
+            <span className="text-sm text-ink">Accord strict des annotateurs → 1 clic (auto)</span>
             <Toggle
               testid="config-absolute"
               disabled={locked}
@@ -179,28 +145,14 @@ export function GoldConfigStudio({ slug }: { slug: string }) {
               onClick={() => patch({ autoResolve: { ...draft.autoResolve, absoluteAgreement: !draft.autoResolve.absoluteAgreement } })}
             />
           </div>
-          <div className="mt-2">
-            <div className="mb-1 text-xs font-medium uppercase tracking-wide text-ink-muted">Niveaux peu risqués (auto)</div>
-            <div className="flex gap-1.5">
-              {LEVELS.map((lvl) => {
-                const on = draft.autoResolve.lowRiskLevels.includes(lvl);
-                return (
-                  <button
-                    key={lvl}
-                    type="button"
-                    disabled={locked}
-                    data-testid={`config-level-${lvl}`}
-                    aria-pressed={on}
-                    onClick={() => toggleLevel(lvl)}
-                    className={`rounded-md border px-2 py-1 text-[12px] font-mono disabled:opacity-50 ${
-                      on ? "border-info/50 bg-info/15 text-info" : "border-line bg-panel text-ink-muted"
-                    }`}
-                  >
-                    {lvl}
-                  </button>
-                );
-              })}
-            </div>
+          <div className="flex items-center justify-between py-1">
+            <span className="text-sm text-ink">Majorité d'annotateurs ≥ 2/3 → auto</span>
+            <Toggle
+              testid="config-majority"
+              disabled={locked}
+              on={draft.autoResolve.majority}
+              onClick={() => patch({ autoResolve: { ...draft.autoResolve, majority: !draft.autoResolve.majority } })}
+            />
           </div>
         </Section>
 

@@ -37,7 +37,7 @@ def _votes(spec):
 
 def test_golden_present_and_versioned():
     data = _load()
-    assert data["engineVersion"] == 1
+    assert data["engineVersion"] == 2
     assert len(data["cases"]) >= 15
 
 

@@ -15,7 +15,7 @@ import type { GoldSentenceRow } from "@/lib/gold/types";
 
 function accentClass(s: GoldSentenceRow): string {
   if (s.decided) return s.autoResolved ? "border-l-info" : "border-l-success";
-  if (s.agreementClass === "divergence" || s.humanDissent) return "border-l-danger";
+  if (s.agreementClass === "divergence") return "border-l-danger";
   if (s.agreementClass === "majority") return "border-l-warning";
   return "border-l-line";
 }
@@ -117,12 +117,12 @@ export function GoldReadingPanel({ sentences, canDecide, onValidate }: GoldReadi
                 {!s.decided && needsAttention(s) && (
                   <span
                     className={`shrink-0 rounded px-1 text-[10px] font-semibold ${
-                      s.agreementClass === "divergence" || s.humanDissent
+                      s.agreementClass === "divergence"
                         ? "bg-danger/15 text-danger"
                         : "bg-warning/15 text-warning"
                     }`}
                   >
-                    {s.humanDissent ? "≠LLM" : s.agreementClass === "divergence" ? "split" : "maj."}
+                    {s.agreementClass === "divergence" ? "split" : "maj."}
                   </span>
                 )}
               </div>

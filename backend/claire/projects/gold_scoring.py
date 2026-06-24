@@ -1,14 +1,15 @@
-"""Moteur de scoring GOLD (PUR) — résolution de conflits inter-annotateurs.
+"""Moteur de scoring GOLD (PUR) — résolution de conflits PUREMENT inter-annotateurs.
 
 À côté d'iaa.py / concordance.py : aucune dépendance Django, testable en unité + property-based.
-Décide, PAR PHRASE, le gold à partir des votes : électorat PONDÉRÉ où les annotateurs pèsent
-PLUS que les LLM (dossier docs/pactiva/dossier-gold-tech/02-scoring-engine.md, ADR-003).
+Décide, PAR PHRASE, le gold à partir des SEULS votes d'annotateurs.
 
-Principes :
-- Les ANNOTATEURS font autorité (le gold est humain) ; les LLM aident selon `llm_role`.
-- Une décision humaine ≠ consensus LLM (`human_dissent`) est un SIGNAL FORT → jamais d'auto.
-- Classification : strict / majority / divergence (sur les annotateurs).
-- Niveaux d'auto-résolution : auto_1click (accord absolu) / auto (cas peu risqué) / manual.
+Principe FONDAMENTAL : les conflits ne sont JAMAIS « annotateur vs LLM ». Les LLM ne sont
+PAS parties au conflit — ils n'entrent ni dans la décision, ni dans la classe d'accord, ni
+dans le risque, ni dans l'auto-résolution. Ils sont seulement exposés (`llm_block`) à titre
+de RÉFÉRENCE indicative pour aider l'arbitre humain.
+
+- Classification (annotateurs) : strict / majority / divergence.
+- Auto-résolution (annotateurs) : auto_1click (accord absolu) / auto (majorité ≥ 2/3) / manual.
 - Multi-label : primaire + secondaires décidés séparément.
 """
 
@@ -16,14 +17,9 @@ from __future__ import annotations
 
 from dataclasses import dataclass
 
-ANNOTATOR_WEIGHT_DEFAULT = 3.0
-LLM_WEIGHT_DEFAULT = 1.0
-LOW_CONFIDENCE = 0.34
+ANNOTATOR_WEIGHT_DEFAULT = 1.0  # plus aucun LLM à surpondérer
 SECONDARY_MIN_ANNOTATORS = 2
-LLM_UNANIMOUS_MIN = 3
 MAJORITY_RATIO = 2.0 / 3.0
-
-LLM_ROLES = ("ignore", "tiebreak", "signal", "full")
 
 
 @dataclass(frozen=True)
@@ -42,21 +38,18 @@ class GoldScore:
     agreement_class: str  # strict | majority | divergence | empty
     confidence: float
     risk_band: str  # low | medium | high
-    human_dissent: bool
+    human_dissent: bool  # DÉPRÉCIÉ : toujours False (les LLM ne créent jamais de conflit)
     human_block: str | None
-    llm_block: str | None
+    llm_block: str | None  # référence indicative (n'entre pas dans la décision)
     auto_level: str  # auto_1click | auto | manual
-    tally: dict  # thème -> masse de poids (électorat de décision)
+    tally: dict  # thème -> masse de poids (annotateurs seuls)
 
 
 def default_config() -> dict:
-    """Config par défaut « confiance aux annotateurs » (cf. presets.yaml)."""
+    """Config par défaut — pondération des ANNOTATEURS uniquement."""
     return {
         "annotator_weight": ANNOTATOR_WEIGHT_DEFAULT,
-        "llm_weight": LLM_WEIGHT_DEFAULT,
-        "llm_role": "tiebreak",
-        "per_annotator": {},   # voter_id -> poids
-        "per_llm": {},         # voter_id -> poids
+        "per_annotator": {},   # voter_id (username) -> poids
         "secondary_min_annotators": SECONDARY_MIN_ANNOTATORS,
         "reliability": {},     # thème -> kappa de fiabilité (∈[0,1]) ; défaut 1.0
     }
@@ -67,9 +60,14 @@ def _clamp01(x: float) -> float:
 
 
 def _weight(vote: Vote, config: dict) -> float:
+    # Les LLM ne servent qu'au consensus indicatif (`llm_block`) → poids uniforme.
     if vote.is_llm:
-        return float(config.get("per_llm", {}).get(vote.voter_id, config.get("llm_weight", LLM_WEIGHT_DEFAULT)))
-    return float(config.get("per_annotator", {}).get(vote.voter_id, config.get("annotator_weight", ANNOTATOR_WEIGHT_DEFAULT)))
+        return 1.0
+    return float(
+        config.get("per_annotator", {}).get(
+            vote.voter_id, config.get("annotator_weight", ANNOTATOR_WEIGHT_DEFAULT)
+        )
+    )
 
 
 def _tally(votes: list[Vote], config: dict) -> dict:
@@ -95,59 +93,33 @@ def _block(votes: list[Vote], config: dict) -> tuple[str | None, dict]:
 
 
 def score_sentence(votes: list[Vote], config: dict | None = None) -> GoldScore:
-    """Calcule la décision gold d'une phrase à partir des votes (annotateurs + LLM). PUR."""
+    """Décide le gold d'une phrase — PUREMENT inter-annotateurs.
+
+    Les LLM ne sont JAMAIS parties au conflit : ils n'entrent NI dans la décision, NI dans
+    la classe d'accord, NI dans le risque, NI dans l'auto-résolution. Ils sont seulement
+    exposés (`llm_block`) à titre de RÉFÉRENCE indicative. La résolution arbitre les
+    désaccords ENTRE ANNOTATEURS uniquement. PUR.
+    """
     cfg = {**default_config(), **(config or {})}
-    role = cfg.get("llm_role", "tiebreak")
-    if role not in LLM_ROLES:
-        role = "tiebreak"
 
     humans = [v for v in votes if not v.is_llm]
     llms = [v for v in votes if v.is_llm]
     covering_humans = [v for v in humans if v.primary is not None]
-    covering_llms = [v for v in llms if v.primary is not None]
 
+    # Électorat de décision = ANNOTATEURS uniquement.
     human_block, human_tally = _block(humans, cfg)
-    llm_block, llm_tally = _block(llms, cfg)
-
-    # ── Électorat de DÉCISION selon le rôle des LLM ──────────────────────────
-    if role == "full":
-        decision = dict(human_tally)
-        for k, w in llm_tally.items():
-            decision[k] = decision.get(k, 0.0) + w
-    elif role == "tiebreak":
-        decision = dict(human_tally)
-        # LLM ne départagent QUE les ex-aequo humains de tête.
-        if human_tally:
-            top = max(human_tally.values())
-            tied = [k for k, w in human_tally.items() if w == top]
-            if len(tied) > 1:
-                for k in tied:
-                    decision[k] = decision.get(k, 0.0) + llm_tally.get(k, 0.0)
-    else:  # ignore | signal : les LLM ne participent pas à la décision
-        decision = dict(human_tally)
-
-    # Repli LLM si AUCUN humain n'a couvert la phrase (rare) et rôle non-ignore.
-    if not decision and role in ("full", "tiebreak", "signal") and llm_tally:
-        decision = dict(llm_tally)
-
+    llm_block, _ = _block(llms, cfg)  # référence indicative seulement (aucun effet)
+    decision = dict(human_tally)
     primary = _argmax(decision)
 
-    # ── Confiance = soutien pondéré du primaire sur l'électorat de confiance ──
-    # Humains toujours ; LLM SAUF rôle 'ignore' (un renfort LLM concordant remonte la
-    # confiance et abaisse le risque, cohérent avec l'auto-résolution des cas peu risqués).
-    support_votes = covering_humans + ([] if role == "ignore" else covering_llms)
-    support_total = sum(_weight(v, cfg) for v in support_votes)
-    support_top = sum(_weight(v, cfg) for v in support_votes if v.primary == primary)
+    # ── Confiance = soutien pondéré des ANNOTATEURS pour le primaire ─────────
+    support_total = sum(_weight(v, cfg) for v in covering_humans)
+    support_top = sum(_weight(v, cfg) for v in covering_humans if v.primary == primary)
     support = (support_top / support_total) if support_total > 0 else 0.0
     reliability = float(cfg.get("reliability", {}).get(primary, 1.0)) if primary else 0.0
     confidence = _clamp01(support) * reliability
 
-    # ── Signal fort : décision humaine ≠ consensus LLM ───────────────────────
-    human_dissent = (
-        human_block is not None and llm_block is not None and human_block != llm_block
-    )
-
-    # ── Classification (sur les ANNOTATEURS, autorité du gold) ───────────────
+    # ── Classification (ANNOTATEURS seuls) ───────────────────────────────────
     if not covering_humans:
         agreement_class = "empty"
     else:
@@ -171,33 +143,27 @@ def score_sentence(votes: list[Vote], config: dict | None = None) -> GoldScore:
                 sec_counts[s] = sec_counts.get(s, 0) + 1
     secondaries = sorted([s for s, n in sec_counts.items() if n >= sec_min])
 
-    # ── Bande de risque ──────────────────────────────────────────────────────
-    if agreement_class == "divergence" or human_dissent or confidence < LOW_CONFIDENCE:
+    # ── Bande de risque (sur l'accord entre annotateurs uniquement) ──────────
+    if agreement_class == "divergence":
         risk_band = "high"
-    elif agreement_class == "strict" and not human_dissent:
+    elif agreement_class == "strict":
         risk_band = "low"
     else:
         risk_band = "medium"
 
-    # ── Niveau d'auto-résolution (politique auto-resolution.yaml) ────────────
+    # ── Auto-résolution (ANNOTATEURS seuls — aucun critère LLM) ──────────────
     secondaries_identical = (
         len({tuple(sorted(set(v.secondaries))) for v in covering_humans}) == 1
         if covering_humans else False
     )
-    llm_unanimous = (
-        len(covering_llms) >= LLM_UNANIMOUS_MIN
-        and len({v.primary for v in covering_llms}) == 1
-    )
-    # Ratio sur le NOMBRE d'annotateurs (fidèle à « 2/3 des annotateurs d'accord »).
+    # Ratio sur le NOMBRE d'annotateurs d'accord avec le primaire.
     ratio = (
         sum(1 for v in covering_humans if v.primary == human_block) / len(covering_humans)
         if covering_humans else 0.0
     )
-    if human_dissent:
-        auto_level = "manual"
-    elif agreement_class == "strict" and secondaries_identical:
+    if agreement_class == "strict" and secondaries_identical:
         auto_level = "auto_1click"
-    elif ratio >= MAJORITY_RATIO - 1e-9 and llm_unanimous and llm_block == human_block:
+    elif agreement_class == "majority" and ratio >= MAJORITY_RATIO - 1e-9:
         auto_level = "auto"
     else:
         auto_level = "manual"
@@ -208,9 +174,9 @@ def score_sentence(votes: list[Vote], config: dict | None = None) -> GoldScore:
         agreement_class=agreement_class,
         confidence=round(confidence, 4),
         risk_band=risk_band,
-        human_dissent=human_dissent,
+        human_dissent=False,  # déprécié : les LLM ne créent JAMAIS de conflit
         human_block=human_block,
-        llm_block=llm_block,
+        llm_block=llm_block,  # référence indicative (n'entre pas dans la décision)
         auto_level=auto_level,
         tally=decision,
     )

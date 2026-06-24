@@ -8,7 +8,7 @@
  */
 
 import { useMemo } from "react";
-import { Check, Bot, AlertTriangle, Sparkles } from "lucide-react";
+import { Check, Bot, Sparkles } from "lucide-react";
 import { Panel } from "@/components/ui/primitives";
 import { readableTextColor } from "@/lib/tokens";
 import { AGREEMENT_META, RISK_META, AUTO_META } from "@/lib/gold/styling";
@@ -22,6 +22,7 @@ export interface GoldInspectorProps {
 }
 
 function candidatePrimaries(s: GoldSentenceRow): string[] {
+  // Candidats = propositions des ANNOTATEURS uniquement (la résolution reste entre eux).
   const seen = new Set<string>();
   const out: string[] = [];
   const add = (c: string) => {
@@ -32,7 +33,6 @@ function candidatePrimaries(s: GoldSentenceRow): string[] {
   };
   add(s.proposedPrimary);
   s.annotators.forEach((a) => add(a.primary));
-  s.llms.forEach((l) => add(l.primary));
   return out;
 }
 
@@ -74,15 +74,6 @@ export function GoldInspectorPanel({ sentence, canDecide, pending, onDecide }: G
         </span>
       </div>
 
-      {sentence.humanDissent && (
-        <div
-          data-testid="gold-dissent"
-          className="flex items-center gap-1.5 rounded-md border border-danger/40 bg-danger/10 px-2 py-1 text-[12px] text-danger"
-        >
-          <AlertTriangle size={13} aria-hidden /> Signal fort : la décision humaine diverge du consensus LLM.
-        </div>
-      )}
-
       {/* Votes des annotateurs */}
       <div>
         <div className="mb-1 text-[11px] uppercase tracking-wide text-ink-muted">Annotateurs</div>
@@ -109,10 +100,10 @@ export function GoldInspectorPanel({ sentence, canDecide, pending, onDecide }: G
         </ul>
       </div>
 
-      {/* Votes LLM */}
+      {/* Votes LLM — RÉFÉRENCE indicative (n'entrent pas dans la décision) */}
       <div>
         <div className="mb-1 flex items-center gap-1 text-[11px] uppercase tracking-wide text-ink-muted">
-          <Bot size={12} aria-hidden /> Modèles
+          <Bot size={12} aria-hidden /> Modèles · référence (hors décision)
         </div>
         <ul className="flex flex-wrap gap-1" data-testid="gold-llm-votes">
           {sentence.llms.map((l) => (

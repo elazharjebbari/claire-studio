@@ -1,23 +1,17 @@
 /**
  * Moteur de scoring GOLD (PUR, miroir EXACT du backend `claire/projects/gold_scoring.py`).
  *
- * Décide, PAR PHRASE, le gold à partir des votes : électorat PONDÉRÉ où les annotateurs
- * pèsent PLUS que les LLM. La parité TS/PY est verrouillée par un golden partagé
- * (cf. dossier docs/pactiva/dossier-gold-tech/02-scoring-engine.md, ADR-003).
- *
- * - Les ANNOTATEURS font autorité ; les LLM aident selon `llmRole`.
- * - Décision humaine ≠ consensus LLM (`humanDissent`) = SIGNAL FORT → jamais d'auto.
- * - Classification strict / majority / divergence (sur les annotateurs).
- * - Niveaux d'auto : auto_1click (accord absolu) / auto (peu risqué) / manual.
+ * Résolution PUREMENT inter-annotateurs : les conflits ne sont JAMAIS « annotateur vs LLM ».
+ * Les LLM ne sont PAS parties au conflit — ils n'entrent ni dans la décision, ni dans la
+ * classe d'accord, ni dans le risque, ni dans l'auto-résolution. Ils sont seulement exposés
+ * (`llmBlock`) à titre de RÉFÉRENCE indicative. Parité TS/PY via golden partagé.
  */
 
-export const ANNOTATOR_WEIGHT_DEFAULT = 3.0;
-export const LLM_WEIGHT_DEFAULT = 1.0;
-export const LOW_CONFIDENCE = 0.34;
+export const ANNOTATOR_WEIGHT_DEFAULT = 1.0;
 export const SECONDARY_MIN_ANNOTATORS = 2;
-export const LLM_UNANIMOUS_MIN = 3;
 export const MAJORITY_RATIO = 2 / 3;
 
+/** Conservé pour la config de campagne (les LLM y restent une RÉFÉRENCE, pas un votant). */
 export type LlmRole = "ignore" | "tiebreak" | "signal" | "full";
 export type AgreementClass = "strict" | "majority" | "divergence" | "empty";
 export type RiskBand = "low" | "medium" | "high";
@@ -32,10 +26,7 @@ export interface Vote {
 
 export interface ScoringConfig {
   annotatorWeight: number;
-  llmWeight: number;
-  llmRole: LlmRole;
   perAnnotator: Record<string, number>;
-  perLlm: Record<string, number>;
   secondaryMinAnnotators: number;
   reliability: Record<string, number>;
 }
@@ -46,9 +37,9 @@ export interface GoldScore {
   agreementClass: AgreementClass;
   confidence: number;
   riskBand: RiskBand;
-  humanDissent: boolean;
+  humanDissent: boolean; // DÉPRÉCIÉ : toujours false (les LLM ne créent jamais de conflit)
   humanBlock: string | null;
-  llmBlock: string | null;
+  llmBlock: string | null; // référence indicative (n'entre pas dans la décision)
   autoLevel: AutoLevel;
   tally: Record<string, number>;
 }
@@ -56,10 +47,7 @@ export interface GoldScore {
 export function defaultConfig(): ScoringConfig {
   return {
     annotatorWeight: ANNOTATOR_WEIGHT_DEFAULT,
-    llmWeight: LLM_WEIGHT_DEFAULT,
-    llmRole: "tiebreak",
     perAnnotator: {},
-    perLlm: {},
     secondaryMinAnnotators: SECONDARY_MIN_ANNOTATORS,
     reliability: {},
   };
@@ -68,7 +56,7 @@ export function defaultConfig(): ScoringConfig {
 const clamp01 = (x: number) => (x < 0 ? 0 : x > 1 ? 1 : x);
 
 function weightOf(v: Vote, cfg: ScoringConfig): number {
-  if (v.isLlm) return cfg.perLlm[v.voterId] ?? cfg.llmWeight;
+  if (v.isLlm) return 1.0; // référence indicative uniquement (consensus llmBlock)
   return cfg.perAnnotator[v.voterId] ?? cfg.annotatorWeight;
 }
 
@@ -99,58 +87,31 @@ const sum = (t: Record<string, number>) => Object.values(t).reduce((a, b) => a +
 
 export function scoreSentence(votes: Vote[], config?: Partial<ScoringConfig>): GoldScore {
   const cfg: ScoringConfig = { ...defaultConfig(), ...(config ?? {}) };
-  const validRoles: LlmRole[] = ["ignore", "tiebreak", "signal", "full"];
-  const role: LlmRole = validRoles.includes(cfg.llmRole) ? cfg.llmRole : "tiebreak";
-
   const norm = (v: Vote): Vote => ({ ...v, secondaries: v.secondaries ?? [] });
   const all = votes.map(norm);
   const humans = all.filter((v) => !v.isLlm);
   const llms = all.filter((v) => v.isLlm);
   const coveringHumans = humans.filter((v) => v.primary !== null);
-  const coveringLlms = llms.filter((v) => v.primary !== null);
 
   const humanTally = tally(humans, cfg);
   const llmTally = tally(llms, cfg);
   const humanBlock = argmax(humanTally);
-  const llmBlock = argmax(llmTally);
+  const llmBlock = argmax(llmTally); // référence indicative seulement
 
-  // ── Électorat de décision selon le rôle des LLM ──
-  let decision: Record<string, number>;
-  if (role === "full") {
-    decision = { ...humanTally };
-    for (const [k, w] of Object.entries(llmTally)) decision[k] = (decision[k] ?? 0) + w;
-  } else if (role === "tiebreak") {
-    decision = { ...humanTally };
-    const vals = Object.values(humanTally);
-    if (vals.length > 0) {
-      const top = Math.max(...vals);
-      const tied = Object.keys(humanTally).filter((k) => humanTally[k] === top);
-      if (tied.length > 1) for (const k of tied) decision[k] = (decision[k] ?? 0) + (llmTally[k] ?? 0);
-    }
-  } else {
-    decision = { ...humanTally }; // ignore | signal
-  }
-  if (Object.keys(decision).length === 0 && role !== "ignore" && Object.keys(llmTally).length > 0) {
-    decision = { ...llmTally };
-  }
-
+  // ── Électorat de décision = ANNOTATEURS uniquement ──
+  const decision = { ...humanTally };
   const primary = argmax(decision);
 
-  // ── Confiance = soutien pondéré du primaire sur l'électorat de confiance ──
-  // Humains toujours ; LLM sauf rôle 'ignore' (un renfort LLM concordant remonte la confiance).
-  const supportVotes = coveringHumans.concat(role === "ignore" ? [] : coveringLlms);
-  const supportTotal = supportVotes.reduce((acc, v) => acc + weightOf(v, cfg), 0);
-  const supportTop = supportVotes
+  // ── Confiance = soutien pondéré des ANNOTATEURS pour le primaire ──
+  const supportTotal = coveringHumans.reduce((acc, v) => acc + weightOf(v, cfg), 0);
+  const supportTop = coveringHumans
     .filter((v) => v.primary === primary)
     .reduce((acc, v) => acc + weightOf(v, cfg), 0);
   const support = supportTotal > 0 ? supportTop / supportTotal : 0;
   const reliability = primary ? cfg.reliability[primary] ?? 1.0 : 0;
   const confidence = Math.round(clamp01(support) * reliability * 10000) / 10000;
 
-  // ── Signal fort ──
-  const humanDissent = humanBlock !== null && llmBlock !== null && humanBlock !== llmBlock;
-
-  // ── Classification (sur les annotateurs) ──
+  // ── Classification (annotateurs seuls) ──
   let agreementClass: AgreementClass;
   const secKey = (v: Vote) => [...new Set(v.secondaries ?? [])].sort().join("");
   if (coveringHumans.length === 0) {
@@ -176,25 +137,22 @@ export function scoreSentence(votes: Vote[], config?: Partial<ScoringConfig>): G
     .filter((s) => (secCounts[s] ?? 0) >= cfg.secondaryMinAnnotators)
     .sort();
 
-  // ── Bande de risque ──
-  let riskBand: RiskBand;
-  if (agreementClass === "divergence" || humanDissent || confidence < LOW_CONFIDENCE) riskBand = "high";
-  else if (agreementClass === "strict" && !humanDissent) riskBand = "low";
-  else riskBand = "medium";
+  // ── Bande de risque (accord entre annotateurs uniquement) ──
+  const riskBand: RiskBand =
+    agreementClass === "divergence" ? "high" : agreementClass === "strict" ? "low" : "medium";
 
-  // ── Niveau d'auto-résolution ──
+  // ── Auto-résolution (annotateurs seuls — aucun critère LLM) ──
   const secondariesIdentical =
     coveringHumans.length > 0 && new Set(coveringHumans.map(secKey)).size === 1;
-  const llmUnanimous =
-    coveringLlms.length >= LLM_UNANIMOUS_MIN && new Set(coveringLlms.map((v) => v.primary)).size === 1;
   const ratio = coveringHumans.length
     ? coveringHumans.filter((v) => v.primary === humanBlock).length / coveringHumans.length
     : 0;
   let autoLevel: AutoLevel;
-  if (humanDissent) autoLevel = "manual";
-  else if (agreementClass === "strict" && secondariesIdentical) autoLevel = "auto_1click";
-  else if (ratio >= MAJORITY_RATIO - 1e-9 && llmUnanimous && llmBlock === humanBlock) autoLevel = "auto";
+  if (agreementClass === "strict" && secondariesIdentical) autoLevel = "auto_1click";
+  else if (agreementClass === "majority" && ratio >= MAJORITY_RATIO - 1e-9) autoLevel = "auto";
   else autoLevel = "manual";
+
+  const humanDissent = false; // déprécié : les LLM ne créent jamais de conflit
 
   return {
     primary,

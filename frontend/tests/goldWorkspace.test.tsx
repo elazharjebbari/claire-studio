@@ -36,11 +36,13 @@ describe("GoldWorkspace", () => {
     expect(screen.getByTestId("gold-row-2")).toBeInTheDocument();
   });
 
-  it("acquiert le verrou (Vous arbitrez) et auto-sélectionne la 1ʳᵉ à trancher (dissent)", async () => {
+  it("acquiert le verrou (Vous arbitrez) et auto-sélectionne le 1ᵉʳ conflit inter-annotateurs", async () => {
     render(<GoldWorkspace slug="claudette-gold-v1" documentId="Atlas" />, { wrapper: wrapper() });
     await waitFor(() => expect(screen.getByTestId("gold-lock-mine")).toBeInTheDocument());
-    // index 0 est auto-résolu → 1ʳᵉ non décidée = index 1 (signal humain≠LLM).
-    expect(screen.getByTestId("gold-dissent")).toBeInTheDocument();
+    // index 0 est auto-résolu → 1ʳᵉ non décidée = index 1 (désaccord alice/bob).
+    expect(screen.getByTestId("gold-inspector")).toHaveTextContent("Phrase 1");
+    // Aucun bandeau « signal fort » : les LLM ne créent jamais de conflit.
+    expect(screen.queryByTestId("gold-dissent")).not.toBeInTheDocument();
   });
 
   it("clic sur un candidat envoie la décision au serveur", async () => {
@@ -76,7 +78,6 @@ describe("GoldWorkspace", () => {
     fireEvent.click(await screen.findByTestId("gold-decide-PRIVACY"));
     // Après le 409, l'avance optimiste est annulée → on revient sur la phrase 1.
     await waitFor(() => expect(screen.getByTestId("gold-inspector")).toHaveTextContent("Phrase 1"));
-    expect(screen.getByTestId("gold-dissent")).toBeInTheDocument();
   });
 
   it("le filtre « conflits » restreint la liste du plan", async () => {

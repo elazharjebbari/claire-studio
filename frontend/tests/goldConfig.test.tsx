@@ -41,10 +41,17 @@ describe("GoldConfigStudio", () => {
     await waitFor(() => expect(screen.getByTestId("gold-config-saved")).toBeInTheDocument());
   });
 
-  it("change le rôle des LLM et l'active à l'enregistrement", async () => {
+  it("bascule l'auto-résolution des majorités et l'active à l'enregistrement", async () => {
     render(<GoldConfigStudio slug="claudette-gold-v1" />, { wrapper: wrapper() });
     await waitFor(() => expect(screen.getByTestId("gold-config")).toBeInTheDocument());
-    fireEvent.change(screen.getByTestId("config-llm-role"), { target: { value: "full" } });
+    fireEvent.click(screen.getByTestId("config-majority"));
     await waitFor(() => expect(screen.getByTestId("gold-config-save")).not.toBeDisabled());
+  });
+
+  it("n'expose AUCUN réglage de décision LLM (résolution inter-annotateurs)", async () => {
+    render(<GoldConfigStudio slug="claudette-gold-v1" />, { wrapper: wrapper() });
+    await waitFor(() => expect(screen.getByTestId("gold-config")).toBeInTheDocument());
+    expect(screen.queryByTestId("config-llm-role")).not.toBeInTheDocument();
+    expect(screen.queryByTestId("config-llm-weight")).not.toBeInTheDocument();
   });
 });

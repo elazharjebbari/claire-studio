@@ -25,7 +25,7 @@ import type { GoldSentenceRow } from "@/lib/gold/types";
 function statusMeta(s: GoldSentenceRow): { Icon: LucideIcon; cls: string; label: string } {
   if (s.decided && s.autoResolved) return { Icon: Sparkles, cls: "text-info", label: "auto-résolu" };
   if (s.decided) return { Icon: Check, cls: "text-success", label: "décidé" };
-  if (s.agreementClass === "divergence" || s.humanDissent)
+  if (s.agreementClass === "divergence")
     return { Icon: AlertTriangle, cls: "text-danger", label: "conflit" };
   if (s.agreementClass === "majority") return { Icon: CircleDot, cls: "text-warning", label: "majorité" };
   return { Icon: Circle, cls: "text-ink-muted", label: "à trancher" };

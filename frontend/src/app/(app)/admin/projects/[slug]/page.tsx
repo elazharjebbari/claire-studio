@@ -22,9 +22,10 @@ import {
   useProjectIaa,
 } from "@/lib/api/hooks";
 import { Panel, Button, Badge, StatusPill } from "@/components/ui/primitives";
+import { GoldConfigStudio } from "@/components/gold/GoldConfigStudio";
 import type { IaaPair } from "@/types/contract";
 
-type Tab = "assign" | "sessions" | "progress" | "iaa" | "members" | "publish";
+type Tab = "assign" | "sessions" | "progress" | "iaa" | "members" | "resolution" | "publish";
 
 export default function CampaignDetail({ params }: { params: { slug: string } }) {
   const slug = params.slug;
@@ -38,6 +39,7 @@ export default function CampaignDetail({ params }: { params: { slug: string } })
     { id: "progress", label: "Avancement" },
     { id: "iaa", label: "Accord (IAA)" },
     { id: "members", label: "Membres" },
+    { id: "resolution", label: "Résolution" },
     { id: "publish", label: "Publication" },
   ];
 
@@ -81,6 +83,7 @@ export default function CampaignDetail({ params }: { params: { slug: string } })
         {tab === "progress" && <ProgressTab slug={slug} />}
         {tab === "iaa" && <IaaTab slug={slug} />}
         {tab === "members" && <MembersTab slug={slug} qc={qc} />}
+        {tab === "resolution" && <ResolutionTab slug={slug} />}
         {tab === "publish" && <PublishTab slug={slug} qc={qc} />}
       </div>
     </div>
@@ -88,6 +91,22 @@ export default function CampaignDetail({ params }: { params: { slug: string } })
 }
 
 // ── Assignations : matrice documents × annotateurs ─────────────────────────────
+function ResolutionTab({ slug }: { slug: string }) {
+  return (
+    <div data-testid="resolution-tab">
+      <p className="mb-4 text-sm text-ink-muted">
+        Arbitrage des conflits <strong>entre annotateurs</strong> (les modèles LLM restent une simple
+        référence). Réglez qui arbitre et l'auto-résolution, puis ouvrez le{" "}
+        <Link href={`/projects/${slug}/gold`} className="text-accent hover:underline">
+          cockpit de résolution
+        </Link>
+        .
+      </p>
+      <GoldConfigStudio slug={slug} embedded />
+    </div>
+  );
+}
+
 function AssignTab({
   slug,
   corpusSlug,
