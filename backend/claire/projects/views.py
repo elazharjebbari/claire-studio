@@ -680,6 +680,140 @@ class ProjectViewSet(viewsets.ModelViewSet):
         qs = project.export_jobs.select_related("requested_by")[:50]
         return Response(results_envelope(ExportJobSerializer(qs, many=True).data))
 
+    # --- résolution GOLD (module de décision du gold standard) ---------------
+    # NB : DRF ordonne les @action alphabétiquement par NOM de méthode pour bâtir les
+    # URLs. `gold_cockpit` doit trier AVANT `gold_detail` (regex `gold/<id>`) pour que
+    # le chemin littéral `gold/documents` matche en premier (sinon capturé comme id).
+    @action(detail=True, methods=["get"], url_path="gold/documents")
+    def gold_cockpit(self, request, slug=None):
+        """Cockpit GOLD : une ligne PAR document (statut/avancement/verrou/répartition)."""
+        from django.db.models import Count, Q
+
+        from claire.gold.models import GoldSentence
+
+        project = self.get_object()
+        documents = list(project.corpus.documents.all().order_by("external_id"))
+        res_by_doc = {
+            r.document_id: r
+            for r in project.gold_resolutions.select_related("locked_by").prefetch_related("arbiters")
+        }
+        # Une SEULE agrégation GROUP BY pour tous les documents (pas de N+1).
+        counts = {
+            row["resolution_id"]: {k: v for k, v in row.items() if k != "resolution_id"}
+            for row in GoldSentence.objects.filter(resolution__project=project)
+            .values("resolution_id")
+            .annotate(
+                decided=Count("id", filter=Q(decided=True)),
+                auto=Count("id", filter=Q(auto_resolved=True)),
+                strict=Count("id", filter=Q(agreement_class="strict")),
+                majority=Count("id", filter=Q(agreement_class="majority")),
+                divergence=Count("id", filter=Q(agreement_class="divergence")),
+                high_risk=Count("id", filter=Q(risk_band="high")),
+            )
+        }
+        rows = []
+        for doc in documents:
+            r = res_by_doc.get(doc.id)
+            rows.append({
+                "document": {
+                    "id": doc.id,
+                    "external_id": doc.external_id,
+                    "title": doc.title,
+                    "n_sentences": doc.n_sentences,
+                },
+                "status": r.status if r else "unresolved",
+                "pct_resolved": r.pct_resolved if r else 0.0,
+                "locked": bool(r and r.locked),
+                "locked_by": (r.locked_by.username if (r and r.locked_by) else None),
+                "counts": counts.get(r.id, {}) if r else {},
+                "arbiters": [u.username for u in r.arbiters.all()] if r else [],
+            })
+        return Response(results_envelope(rows))
+
+    @action(detail=True, methods=["get"], url_path=r"gold/(?P<document_id>[^/.]+)")
+    def gold_detail(self, request, slug=None, document_id=None):
+        """Atelier de résolution d'un document : votes par phrase + proposition du moteur.
+
+        Recalcule (synchrone, pur) la proposition et applique l'auto-résolution des cas
+        peu risqués, sans jamais écraser une décision humaine."""
+        from claire.gold.services import resolve_and_payload
+
+        project = self.get_object()
+        document = get_object_or_404(project.corpus.documents, external_id=document_id)
+        return Response(resolve_and_payload(project, document))
+
+    @action(detail=True, methods=["post"], url_path=r"gold/(?P<document_id>[^/.]+)/decide")
+    def gold_decide(self, request, slug=None, document_id=None):
+        """Décision gold HUMAINE d'une phrase (réservé arbitres ; refusé si projet gelé)."""
+        from claire.common.exceptions import Locked
+        from claire.gold.services import (
+            decide_sentence,
+            get_or_create_resolution,
+            is_arbiter,
+        )
+
+        project = self.get_object()
+        document = get_object_or_404(project.corpus.documents, external_id=document_id)
+        # Contrôles AVANT toute écriture (pas de création de résolution sur refus).
+        if not is_arbiter(request.user, project):
+            return Response(
+                {"detail": "Réservé aux arbitres (lead, reviewer ou administrateur)."},
+                status=status.HTTP_403_FORBIDDEN,
+            )
+        if project.locked:
+            raise Locked("Projet verrouillé par un administrateur : arbitrage gelé.")
+        resolution = get_or_create_resolution(project, document)
+
+        try:
+            index = int(request.data.get("index"))
+        except (TypeError, ValueError):
+            return Response({"detail": "index requis."}, status=status.HTTP_400_BAD_REQUEST)
+        primary = request.data.get("primary")
+        if not primary:
+            return Response({"detail": "primary requis."}, status=status.HTTP_400_BAD_REQUEST)
+        if index < 0 or index >= (document.n_sentences or 0):
+            return Response({"detail": "index hors document."}, status=status.HTTP_400_BAD_REQUEST)
+        secondaries = request.data.get("secondaries") or []
+        try:
+            gs = decide_sentence(
+                resolution, index, primary, secondaries,
+                request.data.get("comment", ""), request.user,
+            )
+        except ValueError as exc:
+            return Response({"detail": str(exc)}, status=status.HTTP_400_BAD_REQUEST)
+        return Response({
+            "index": gs.index,
+            "decided": gs.decided,
+            "auto_resolved": gs.auto_resolved,
+            "primary": gs.primary_theme.code if gs.primary_theme else "",
+            "secondaries": gs.secondaries,
+            "status": resolution.status,
+            "pct_resolved": resolution.pct_resolved,
+        })
+
+    @action(detail=True, methods=["post"], url_path=r"gold/(?P<document_id>[^/.]+)/auto-resolve")
+    def gold_auto_resolve(self, request, slug=None, document_id=None):
+        """Applique l'auto-résolution (accord absolu + cas peu risqués) sur tout le document."""
+        from claire.common.exceptions import Locked
+        from claire.gold.services import (
+            auto_resolve_document,
+            get_or_create_resolution,
+            is_arbiter,
+        )
+
+        project = self.get_object()
+        document = get_object_or_404(project.corpus.documents, external_id=document_id)
+        if not is_arbiter(request.user, project):
+            return Response(
+                {"detail": "Réservé aux arbitres (lead, reviewer ou administrateur)."},
+                status=status.HTTP_403_FORBIDDEN,
+            )
+        if project.locked:
+            raise Locked("Projet verrouillé par un administrateur : arbitrage gelé.")
+        resolution = get_or_create_resolution(project, document)
+        summary = auto_resolve_document(resolution, request.user)
+        return Response({**summary, "status": resolution.status, "pct_resolved": resolution.pct_resolved})
+
 
 # --- Publication publique (chantier F) ---------------------------------------
 def _public_aggregates(project):
