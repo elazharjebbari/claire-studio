@@ -1044,6 +1044,9 @@ export function DocumentPanel({
                   clearSelection();
                   clearClauseSelection();
                   focusSentence(s.index);
+                  // Synchro phrase → block : sélectionne la clause ancrée à cette phrase
+                  // (anchorByIndex = toujours un draft HUMAIN → match garanti du chip du
+                  // plan, qui se défile alors dans la vue ; cf. TocPanel). Modèle par phrase.
                   if (anchor) selectClause(anchor.localId);
                   else selectClause(null);
                 }}

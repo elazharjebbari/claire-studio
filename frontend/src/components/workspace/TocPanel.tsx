@@ -27,6 +27,19 @@ export function TocPanel({ docTitle }: { docTitle: string }) {
   const readOnly = useWorkspaceStore((s) => s.readOnly);
   const [menu, setMenu] = useState<{ x: number; y: number } | null>(null);
   const menuRef = useRef<HTMLDivElement>(null);
+  const navRef = useRef<HTMLElement>(null);
+
+  // Synchro phrase → block : quand la clause sélectionnée change (ex. clic d'une phrase
+  // dans la zone d'annotation), on DÉFILE le chip correspondant dans la vue de l'aside
+  // (symétrique du scroll document au clic d'un chip) — sinon le chip surligné reste
+  // hors écran sur un plan long. Sélection SIMPLE uniquement (pas la multi-sélection).
+  useEffect(() => {
+    if (!selectedId) return;
+    const el = navRef.current?.querySelector<HTMLElement>(
+      '[data-testid="clause-chip"][data-selected]',
+    );
+    el?.scrollIntoView({ block: "nearest" });
+  }, [selectedId]);
 
   // Fermeture du menu : clic EN DEHORS (check `contains`) ou Échap. Un blanket
   // `mousedown → close` fermait le menu sur le mousedown d'une tuile, la démontant
@@ -175,7 +188,7 @@ export function TocPanel({ docTitle }: { docTitle: string }) {
         </div>
       )}
 
-      <nav aria-label="Plan des clauses" className="flex flex-col gap-1">
+      <nav ref={navRef} aria-label="Plan des clauses" className="flex flex-col gap-1">
         {drafts.length === 0 && (
           <p className="rounded-md border border-dashed border-line p-3 text-xs text-ink-muted">
             Aucune clause. Cliquez une phrase ou appuyez sur <kbd>B</kbd> pour poser une ancre.
