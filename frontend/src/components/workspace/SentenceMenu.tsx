@@ -18,12 +18,12 @@
 import { useEffect, useState } from "react";
 import { useWorkspaceStore } from "@/store/workspace";
 import { getThemeToken } from "@/lib/tokens";
+import { RULES } from "@/lib/triage";
 import { runAt, type Run } from "@/lib/runs";
-import { ThemePalette } from "@/components/ui/ThemePalette";
-import { MultiLabelEditor } from "./MultiLabelEditor";
+import { ThemeMultiPicker } from "@/components/ui/ThemeMultiPicker";
 import { CertaintyPicker } from "@/components/ui/CertaintyPicker";
 import { useAnchoredPosition } from "./useAnchoredPosition";
-import type { Certainty } from "@/types/contract";
+import type { Certainty, ThemeTag } from "@/types/contract";
 
 /** Détail d'un juge pour la phrase (ancre + thème + rationale + evidence). */
 export interface JudgeDetail {
@@ -67,7 +67,10 @@ export function SentenceMenu({
 }: SentenceMenuProps) {
   const { ref, style: anchoredStyle } = useAnchoredPosition(x, y);
   const drafts = useWorkspaceStore((s) => s.draftClauses);
-  const toggleBoundary = useWorkspaceStore((s) => s.toggleBoundary);
+  const setBoundary = useWorkspaceStore((s) => s.setBoundary);
+  const setClauseThemes = useWorkspaceStore((s) => s.setClauseThemes);
+  const removeBoundary = useWorkspaceStore((s) => s.removeBoundary);
+  const selectClause = useWorkspaceStore((s) => s.selectClause);
   const setCertainty = useWorkspaceStore((s) => s.setCertainty);
   const setValidated = useWorkspaceStore((s) => s.setValidated);
   const resolveDivergenceRange = useWorkspaceStore((s) => s.resolveDivergenceRange);
@@ -115,11 +118,46 @@ export function SentenceMenu({
     ref.current?.focus();
   }, [ref]);
 
-  function handleSetTheme(code: string) {
-    // C3 — toggle : crée si absent, re-thématise si différent, retire si MÊME thème
-    // (désannotation d'un même geste). Annotation PAR PHRASE (C4) : agit sur cette
-    // phrase précisément, pas sur un span.
-    toggleBoundary(sentenceIndex, code);
+  // Ensemble multi-label courant (primaire + secondaires) de la clause couvrante.
+  const currentSet: ThemeTag[] = coveringDraft
+    ? coveringDraft.themes && coveringDraft.themes.length
+      ? coveringDraft.themes
+      : [{ label: coveringDraft.theme, role: "primary", support: 0 }]
+    : [];
+
+  // Toggle unifié : 1ᵉʳ thème = primaire (crée la clause) ; suivants = secondaires ;
+  // re-clic = retire (set vide → désannote ; sinon sanitize promeut un primaire).
+  function onToggleTheme(code: string) {
+    if (!coveringDraft) {
+      setBoundary(sentenceIndex, code); // crée la clause avec ce primaire
+      return;
+    }
+    const exists = currentSet.some((t) => t.label === code);
+    const next: ThemeTag[] = exists
+      ? currentSet.filter((t) => t.label !== code)
+      : [...currentSet, { label: code, role: currentSet.length === 0 ? "primary" : "secondary" }];
+    if (next.length === 0) {
+      removeBoundary(coveringDraft.anchorIndex);
+      selectClause(null);
+    } else {
+      setClauseThemes(coveringDraft.localId, next);
+    }
+  }
+
+  // Promotion d'un secondaire en primaire (l'ancien primaire redevient secondaire).
+  function onPromoteTheme(code: string) {
+    if (!coveringDraft) return;
+    setClauseThemes(
+      coveringDraft.localId,
+      currentSet.map((t) => ({ ...t, role: t.label === code ? "primary" : "secondary" })),
+    );
+  }
+
+  // Indice LLM DISCRET : thème proposé par chaque juge présent (un thème/juge).
+  const judgeHints: Record<string, string[]> = {};
+  for (const j of judges) {
+    const th = j.detail?.theme;
+    if (th) (judgeHints[th] ??= []).push(j.label);
   }
 
   return (
@@ -146,18 +184,19 @@ export function SentenceMenu({
         </button>
       </div>
 
-      {/* (a) Annoter… — choisir un thème CRÉE/réassigne la clause (Q2, thème requis) */}
+      {/* (a) Annoter… — grille UNIFIÉE : 1ᵉʳ clic = principal, suivants = secondaires
+          (numérotés), ★ = promouvoir principal, re-clic = retirer. */}
       <section className="flex flex-col gap-2 border-b border-line pb-3">
         <h3 className="text-[11px] font-semibold uppercase text-ink-muted">
-          Annoter… {coveringDraft ? "(re-cliquer le thème = retirer)" : "(choisir un thème)"}
+          Annoter… {coveringDraft ? "(★ = principal · re-cliquer = retirer)" : "(choisir un thème principal)"}
         </h3>
-        {/* D4 — grille 2 colonnes SANS scroll : toutes les catégories visibles. */}
-        <ThemePalette
-          value={coveringDraft?.theme ?? null}
-          onChange={handleSetTheme}
-          autoFocus={false}
-          layout="grid"
+        <ThemeMultiPicker
+          selection={currentSet}
+          refuges={RULES.refuges}
+          judgeHints={judgeHints}
           describeOnHover
+          onToggle={onToggleTheme}
+          onPromote={onPromoteTheme}
         />
         <CertaintyPicker
           size="sm"
@@ -183,9 +222,6 @@ export function SentenceMenu({
             {(coveringDraft.validated ?? false) ? "✓ Phrase validée — cliquer pour dévalider" : "◷ Valider cette phrase"}
           </button>
         )}
-        {/* (a-bis) Multi-label DIRECT au clic-droit : ajouter/retirer des thèmes secondaires
-            sur la clause couvrante, sans ouvrir l'inspecteur (ergonomie maximale). */}
-        {coveringDraft && <MultiLabelEditor draft={coveringDraft} />}
       </section>
 
       {/* (b) LLM — propositions de chaque juge configuré (Claude/Codex/Mistral…). */}
