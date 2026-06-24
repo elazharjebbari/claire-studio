@@ -28,6 +28,10 @@ test.describe("File de triage — carte de suggestion & gestes", () => {
     await expect(page.getByTestId("suggestion-card")).toBeVisible();
     await expect(page.getByTestId("triage-badge")).toBeVisible();
     await expect(page.getByTestId("suggestion-logic")).toBeVisible();
+    // Lisibilité (refonte) : texte de la phrase + décision + « pourquoi » structurés.
+    await expect(page.getByTestId("suggestion-sentence")).toBeVisible();
+    await expect(page.getByTestId("suggestion-decision")).toBeVisible();
+    await expect(page.getByTestId("suggestion-why")).toBeVisible();
 
     // Navigation clavier (j) — la position change.
     const posBefore = await page.getByTestId("triage-position").textContent();
@@ -68,8 +72,9 @@ test.describe("File de triage — carte de suggestion & gestes", () => {
     const accept = page.getByTestId("suggestion-accept");
     if (await accept.isVisible().catch(() => false)) {
       await accept.click();
-      // Marque « traité » dans la file ET maj du document sans rechargement.
-      await expect(page.getByTestId("triage-done")).toBeVisible();
+      // Le document est mis à jour IMMÉDIATEMENT via le store (compteur de validées),
+      // sans rechargement. (La file auto-avance ensuite à l'item suivant : on ne vérifie
+      // donc pas `triage-done` sur la carte courante, qui a changé.)
       await expect(validated).not.toHaveText(before);
     }
   });

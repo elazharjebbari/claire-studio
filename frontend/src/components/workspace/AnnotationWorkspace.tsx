@@ -372,6 +372,7 @@ export function AnnotationWorkspace({ annotationId }: { annotationId: string }) 
             annotationId={annotation.id}
             documentId={annotation.documentId}
             projectSlug={annotation.projectSlug}
+            sentences={doc.sentences}
             onClose={() => setShowTriage(false)}
           />
         )}

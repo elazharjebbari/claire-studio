@@ -15,7 +15,7 @@ import { useEffect, useMemo, useRef, useState } from "react";
 
 import { useTriage } from "@/lib/triage/useTriage";
 import type { TriageLevel, TriageResult } from "@/lib/triage";
-import type { ThemeTag } from "@/types/contract";
+import type { Sentence, ThemeTag } from "@/types/contract";
 import { useWorkspaceStore } from "@/store/workspace";
 import { TriageQueueView, type QueueRow } from "./TriageQueueView";
 
@@ -29,10 +29,12 @@ export interface TriageQueueProps {
   annotationId: string;
   documentId: string;
   projectSlug: string;
+  /** Phrases du document (pour afficher le texte dans la carte). Fourni par le workspace. */
+  sentences?: Sentence[];
   onClose: () => void;
 }
 
-export function TriageQueue({ documentId, projectSlug, onClose }: TriageQueueProps) {
+export function TriageQueue({ documentId, projectSlug, sentences = [], onClose }: TriageQueueProps) {
   const llmVersion = useWorkspaceStore((s) => s.llmVersion);
   const applyTriageDecision = useWorkspaceStore((s) => s.applyTriageDecision);
   const applyTriageBatch = useWorkspaceStore((s) => s.applyTriageBatch);
@@ -45,13 +47,28 @@ export function TriageQueue({ documentId, projectSlug, onClose }: TriageQueuePro
   const [pos, setPos] = useState(0);
   const [done, setDone] = useState<Set<number>>(new Set());
 
+  // Texte ORIGINAL par index (contexte de décision affiché dans la carte).
+  const textByIndex = useMemo(() => {
+    const m = new Map<number, string>();
+    for (const s of sentences) m.set(s.index, s.cleanText || s.rawText || "");
+    return m;
+  }, [sentences]);
+
   const items: QueueRow[] = useMemo(
     () =>
       triage.items
-        .filter((it): it is { index: number; result: TriageResult } => it.result != null)
-        .map((it) => ({ index: it.index, result: it.result }))
+        .filter(
+          (it): it is { index: number; result: TriageResult; votes: Record<string, string> } =>
+            it.result != null,
+        )
+        .map((it) => ({
+          index: it.index,
+          result: it.result,
+          votes: it.votes,
+          text: textByIndex.get(it.index) ?? "",
+        }))
         .sort((a, b) => ORDER[a.result.level] - ORDER[b.result.level] || a.index - b.index),
-    [triage.items],
+    [triage.items, textByIndex],
   );
 
   // Index inverse n° de phrase → rang dans la file (pour la synchro document → file).
@@ -120,6 +137,13 @@ export function TriageQueue({ documentId, projectSlug, onClose }: TriageQueuePro
 
   const onChoose = (row: QueueRow, label: string) =>
     persist(row, [{ label, role: "primary", support: 0 }]);
+
+  // Composer un MULTI (arbitrage C5) : 2 candidats → primaire + secondaire.
+  const onMulti = (row: QueueRow, primary: string, secondary: string) =>
+    persist(row, [
+      { label: primary, role: "primary", support: 0 },
+      { label: secondary, role: "secondary", support: 0 },
+    ]);
 
   const onUndoOverride = (row: QueueRow) => {
     const from = row.result.override?.from; // accepter le refuge d'origine écarté
@@ -196,6 +220,7 @@ export function TriageQueue({ documentId, projectSlug, onClose }: TriageQueuePro
       onSwap={onSwap}
       onRemoveSecondary={onRemoveSecondary}
       onChoose={onChoose}
+      onMulti={onMulti}
       onUndoOverride={onUndoOverride}
       onBatchAcceptC1={onBatchAcceptC1}
       onBatchAcceptSelection={onBatchAcceptSelection}

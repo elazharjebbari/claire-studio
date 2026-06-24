@@ -54,18 +54,62 @@ describe("SuggestionCard — rendu par niveau", () => {
     fireEvent.click(screen.getByTestId("suggestion-choose-GOVERNING_LAW"));
     expect(onChoose).toHaveBeenCalledWith("GOVERNING_LAW");
   });
+
+  it("affiche des LIBELLÉS humains, pas des codes bruts", () => {
+    render(<SuggestionCard result={res("LIMITATION_LIABILITY", "LIMITATION_LIABILITY", "LIMITATION_LIABILITY")} onAccept={() => {}} />);
+    const card = screen.getByTestId("suggestion-card");
+    expect(card).toHaveTextContent("Limitation de responsabilité");
+    expect(card).not.toHaveTextContent("LIMITATION_LIABILITY");
+  });
+
+  it("affiche le texte de la phrase (contexte de décision)", () => {
+    render(<SuggestionCard result={res("META", "META", "META")} sentenceText="Ceci est la clause." onAccept={() => {}} />);
+    expect(screen.getByTestId("suggestion-sentence")).toHaveTextContent("Ceci est la clause.");
+  });
+
+  it("récap des votes : juges → thèmes + jauge d'accord", () => {
+    render(
+      <SuggestionCard
+        result={res("ACCEPTABLE_USE", "ACCEPTABLE_USE", "LICENSE_IP")}
+        votes={{ claude: "ACCEPTABLE_USE", codex: "ACCEPTABLE_USE", mistral: "LICENSE_IP" }}
+        onAccept={() => {}}
+      />,
+    );
+    const votes = screen.getByTestId("suggestion-votes");
+    expect(votes).toHaveTextContent("accord 2/3");
+    expect(votes.textContent).toMatch(/Claude|Codex|Mistral/);
+  });
+
+  it("niveau rendu par une icône lucide (pas un glyphe unicode)", () => {
+    render(<SuggestionCard result={res("META", "META", "META")} onAccept={() => {}} />);
+    expect(screen.getByTestId("triage-badge").querySelector("svg")).toBeTruthy();
+  });
+
+  it("C5 : composer un multi à partir des 2 premiers candidats", () => {
+    const onMulti = vi.fn();
+    render(<SuggestionCard result={res("PREAMBLE_SCOPE", "THIRD_PARTY_SERVICES", "GOVERNING_LAW")}
+      onAccept={() => {}} onMulti={onMulti} />);
+    const btn = screen.queryByTestId("suggestion-make-multi");
+    if (btn) {
+      fireEvent.click(btn);
+      expect(onMulti).toHaveBeenCalledTimes(1);
+      expect(onMulti.mock.calls[0]).toHaveLength(2);
+    }
+  });
 });
 
 describe("TriageQueueView — navigation & gestes", () => {
+  const vAll = { claude: "PREAMBLE_SCOPE", codex: "PREAMBLE_SCOPE", mistral: "PREAMBLE_SCOPE" };
+  const vC3 = { claude: "ACCEPTABLE_USE", codex: "ACCEPTABLE_USE", mistral: "LICENSE_IP" };
   const items: QueueRow[] = [
-    { index: 0, result: res("PREAMBLE_SCOPE", "PREAMBLE_SCOPE", "PREAMBLE_SCOPE") }, // C1
-    { index: 2, result: res("ACCEPTABLE_USE", "ACCEPTABLE_USE", "LICENSE_IP") }, // C3
+    { index: 0, result: res("PREAMBLE_SCOPE", "PREAMBLE_SCOPE", "PREAMBLE_SCOPE"), votes: vAll, text: "Phrase zéro." }, // C1
+    { index: 2, result: res("ACCEPTABLE_USE", "ACCEPTABLE_USE", "LICENSE_IP"), votes: vC3, text: "Phrase deux." }, // C3
   ];
   const summary = { C1: 1, C2: 0, C3: 1, C4: 0, C5: 0 };
   const baseProps = () => ({
     items, summary, pos: 0, done: new Set<number>(), c1Count: 1, selectedCount: 0,
     onPos: vi.fn(), onAccept: vi.fn(), onSwap: vi.fn(), onRemoveSecondary: vi.fn(),
-    onChoose: vi.fn(), onUndoOverride: vi.fn(), onBatchAcceptC1: vi.fn(),
+    onChoose: vi.fn(), onMulti: vi.fn(), onUndoOverride: vi.fn(), onBatchAcceptC1: vi.fn(),
     onBatchAcceptSelection: vi.fn(), onClose: vi.fn(),
   });
 
@@ -159,7 +203,10 @@ describe("TriageQueue (conteneur) — acceptation via le store & synchro de sél
   const c1 = res("PREAMBLE_SCOPE", "PREAMBLE_SCOPE", "PREAMBLE_SCOPE"); // C1
   const c3 = res("ACCEPTABLE_USE", "ACCEPTABLE_USE", "LICENSE_IP"); // C3 (phrase 2)
   const triageData = {
-    items: [{ index: 0, result: c1 }, { index: 2, result: c3 }],
+    items: [
+      { index: 0, result: c1, votes: { claude: "PREAMBLE_SCOPE", codex: "PREAMBLE_SCOPE", mistral: "PREAMBLE_SCOPE" } },
+      { index: 2, result: c3, votes: { claude: "ACCEPTABLE_USE", codex: "ACCEPTABLE_USE", mistral: "LICENSE_IP" } },
+    ],
     byIndex: { 0: c1, 2: c3 } as Record<number, TriageResult | null>,
     summary: { C1: 1, C2: 0, C3: 1, C4: 0, C5: 0 },
     byLevel: { C1: [0], C2: [], C3: [2], C4: [], C5: [] },

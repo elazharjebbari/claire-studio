@@ -20,6 +20,8 @@ export interface TriageItem {
   index: number;
   /** null si moins de `minJudges` juges couvrent la phrase. */
   result: TriageResult | null;
+  /** Votes de thème par juge (judgeId → code thème) — pour expliquer « pourquoi ». */
+  votes: Record<string, string>;
 }
 
 export interface TriageData {
@@ -67,7 +69,11 @@ export function buildTriageItems(
         boundaryVotes[pj.j] = pj.starts.has(i);
       }
     }
-    items.push({ index: i, result: triageEngine(themeVotes, boundaryVotes, RULES) });
+    items.push({
+      index: i,
+      result: triageEngine(themeVotes, boundaryVotes, RULES),
+      votes: themeVotes,
+    });
   }
   return items;
 }

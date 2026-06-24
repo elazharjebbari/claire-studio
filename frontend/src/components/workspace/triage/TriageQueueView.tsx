@@ -21,6 +21,10 @@ import { TriageHelpModal } from "./TriageHelpModal";
 export interface QueueRow {
   index: number; // index de phrase
   result: TriageResult;
+  /** Votes par juge (judgeId → code thème) — pour expliquer « pourquoi ». */
+  votes: Record<string, string>;
+  /** Texte original de la phrase (contexte de décision). */
+  text: string;
 }
 
 export interface TriageQueueViewProps {
@@ -36,6 +40,7 @@ export interface TriageQueueViewProps {
   onSwap: (row: QueueRow, label: string) => void;
   onRemoveSecondary: (row: QueueRow, label: string) => void;
   onChoose: (row: QueueRow, label: string) => void;
+  onMulti: (row: QueueRow, primary: string, secondary: string) => void;
   onUndoOverride: (row: QueueRow) => void;
   onBatchAcceptC1: () => void;
   onBatchAcceptSelection: () => void;
@@ -146,10 +151,13 @@ export function TriageQueueView(props: TriageQueueViewProps) {
             </div>
             <SuggestionCard
               result={current.result}
+              sentenceText={current.text}
+              votes={current.votes}
               onAccept={() => onAccept(current)}
               onSwap={(l) => props.onSwap(current, l)}
               onRemoveSecondary={(l) => props.onRemoveSecondary(current, l)}
               onChoose={(l) => props.onChoose(current, l)}
+              onMulti={(p, s) => props.onMulti(current, p, s)}
               onUndoOverride={() => props.onUndoOverride(current)}
             />
             {done.has(current.index) && (
