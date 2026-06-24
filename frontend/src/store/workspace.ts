@@ -263,6 +263,15 @@ interface WorkspaceState {
   removeBoundary: (anchorIndex: number) => void;
   updateDraft: (localId: string, patch: Partial<DraftClause>) => void;
   /**
+   * RÉCONCILIATION brouillon ← réponse serveur (anti-boucle de soumission). Aligne les
+   * champs PERSISTÉS d'une clause sur ce que le serveur a réellement stocké/renvoyé, SANS
+   * marquer `dirty` ni pousser d'undo (ce n'est pas une édition humaine). Appelé par le
+   * FLUSH après une écriture réussie quand la réponse diffère du brouillon (champ dérivé
+   * normalisé par le serveur : support/frontière/niveau/nature) — sinon `planClauseSync`
+   * diffèrerait à perpétuité et la soumission ne convergerait jamais. Sûr car le flush
+   * n'intervient qu'à la soumission (l'utilisateur ne tape pas). */
+  reconcileServerClause: (localId: string, patch: Partial<DraftClause>) => void;
+  /**
    * Définit l'ensemble MULTI-LABEL d'une clause (édition manuelle hors triage, ou ajout/
    * retrait d'un secondaire). Sanitise (1 primaire, refuge jamais secondaire), met à jour le
    * scalaire `theme` (= primaire), pousse un snapshot d'undo. RÉVERSIBLE (toggle/undo).
@@ -842,6 +851,18 @@ export const useWorkspaceStore = create<WorkspaceState>((set, get) => ({
           anchorIndex: target?.anchorIndex,
           localId,
         }),
+      };
+    }),
+
+  reconcileServerClause: (localId, patch) =>
+    set((s) => {
+      const found = s.draftClauses.some((c) => c.localId === localId);
+      if (!found) return {};
+      // Alignement pur sur la vérité serveur : pas de `dirty`, pas d'undo, pas de log.
+      return {
+        draftClauses: s.draftClauses.map((c) =>
+          c.localId === localId ? { ...c, ...patch } : c,
+        ),
       };
     }),
 

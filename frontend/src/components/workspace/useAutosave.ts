@@ -135,10 +135,33 @@ export function useAutosave(annotationId: string | null) {
     timer.current = setTimeout(() => runRef.current(), delay);
   };
 
+  // Aligne le BROUILLON sur la réponse serveur (champs persistés) — RÉCONCILIATION
+  // anti-boucle de soumission. Le serveur peut normaliser un champ dérivé (support
+  // multi-label, frontière, niveau de triage, nature hors schéma) de sorte que sa réponse
+  // ne corresponde JAMAIS au brouillon → `planClauseSync` diffèrerait à perpétuité et le
+  // flush ne convergerait pas. On ne l'applique QUE pendant le flush (soumission), donc
+  // sans risque d'écraser une frappe en cours.
+  const reconcileDraft = (localId: string, c: Clause): void => {
+    useWorkspaceStore.getState().reconcileServerClause(localId, {
+      theme: c.theme,
+      legalNature: c.legalNature ?? null,
+      evidenceSpan: c.evidenceSpan ?? "",
+      rationale: c.rationale ?? "",
+      certainty: c.certainty ?? null,
+      validated: c.validated ?? false,
+      themes: c.themes,
+      boundary: c.boundary,
+      triageLevel: c.triageLevel ?? null,
+    });
+  };
+
   // UNE passe de synchro — ATTENDABLE, sans planification de réessai. Cœur partagé
   // par le runner auto (débounce/backoff) et le flush (soumission). Met à jour
-  // persistedRef de façon incrémentale et renvoie l'issue de la passe.
-  const runPass = async (): Promise<"empty" | "ok" | "transient" | "terminal"> => {
+  // persistedRef de façon incrémentale et renvoie l'issue de la passe. `reconcile`
+  // (flush) aligne le brouillon sur la réponse serveur pour garantir la convergence.
+  const runPass = async (
+    reconcile = false,
+  ): Promise<"empty" | "ok" | "transient" | "terminal"> => {
     const plan = planClauseSync(
       useWorkspaceStore.getState().draftClauses,
       persistedRef.current,
@@ -174,6 +197,7 @@ export function useAutosave(annotationId: string | null) {
           clientOpId: d.localId,
         });
         upsert(persistedRef.current, fromClause(created));
+        if (reconcile) reconcileDraft(d.localId, created);
       }
       for (const u of plan.updates) {
         const updated = await patchClause(u.serverId, {
@@ -191,6 +215,9 @@ export function useAutosave(annotationId: string | null) {
         // backend normalise (support/rôle multi-label, frontière…), persistedRef reste fidèle
         // → pas de faux diff ni de vrai écart masqué jusqu'au prochain rechargement.
         upsert(persistedRef.current, fromClause(updated));
+        // FLUSH : aligne aussi le BROUILLON sur la réponse → convergence garantie même si le
+        // serveur a normalisé un champ dérivé (sinon re-PATCH perpétuel, soumission bloquée).
+        if (reconcile) reconcileDraft(u.draft.localId, updated);
       }
       for (const id of plan.deletes) {
         await deleteClause(id);
@@ -298,9 +325,10 @@ export function useAutosave(annotationId: string | null) {
     }
 
     // Converge (borné) : create→update→delete peut nécessiter plusieurs passes si
-    // une modification arrive pendant l'une d'elles.
+    // une modification arrive pendant l'une d'elles. `reconcile=true` aligne le brouillon
+    // sur la réponse serveur → casse tout diff perpétuel (champ dérivé normalisé).
     for (let pass = 0; pass < FLUSH_MAX_PASSES; pass++) {
-      const outcome = await runPass();
+      const outcome = await runPass(true);
       if (outcome === "empty" || outcome === "terminal") break;
       await sleep(FLUSH_POLL_MS); // laisse retomber un éventuel dernier changement
     }

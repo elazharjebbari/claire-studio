@@ -22,6 +22,7 @@ import { useAutosave } from "@/components/workspace/useAutosave";
 import { useWorkspaceStore } from "@/store/workspace";
 import { useAutosaveStore } from "@/store/autosave";
 import { ApiError } from "@/lib/api/client";
+import type { Clause as ClauseType } from "@/types/contract";
 
 const mockAdd = addClause as unknown as ReturnType<typeof vi.fn>;
 const mockPatch = patchClause as unknown as ReturnType<typeof vi.fn>;
@@ -100,5 +101,52 @@ describe("flush avant soumission — zéro donnée manquante", () => {
 
     expect(mockAdd).not.toHaveBeenCalled();
     expect(result!.converged).toBe(true);
+  });
+
+  it("CONVERGE malgré un champ dérivé normalisé par le serveur (anti-boucle Atlas)", async () => {
+    // Régression du bug « modifications pas encore enregistrées » sur Atlas : le serveur
+    // NORMALISE le support multi-label (renvoie 0 ≠ ce que le brouillon porte) → sans
+    // réconciliation, planClauseSync diffèrerait à perpétuité (re-PATCH en boucle, 200).
+    // Le serveur renvoie TOUJOURS support=0 quoi qu'on envoie.
+    mockPatch.mockReset();
+    mockPatch.mockImplementation((id: string, body: Record<string, unknown>) =>
+      Promise.resolve({
+        id,
+        ...body,
+        themes: [
+          { label: "TERMINATION", role: "primary", support: 0 },
+          { label: "META", role: "secondary", support: 0 },
+        ],
+      }),
+    );
+    // Clause persistée AVEC un support non trivial (2) — divergera de la réponse (0).
+    const clause = {
+      id: "c-1", annotationId: "f4", anchorIndex: 0, theme: "TERMINATION",
+      themes: [
+        { label: "TERMINATION", role: "primary", support: 2 },
+        { label: "META", role: "secondary", support: 2 },
+      ],
+      boundary: { type: "soft", support: 1 }, triageLevel: "C3",
+      legalNature: null, evidenceSpan: "x", rationale: "y", certainty: 1,
+      validated: true, order: 0,
+    } as unknown as ClauseType;
+    useWorkspaceStore.getState().init({ annotationId: "f4", nSentences: 5, clauses: [clause] });
+    renderHook(() => useAutosave("f4"));
+
+    // Édition qui force un UPDATE (la certitude change) → déclenche la synchro.
+    act(() => {
+      useWorkspaceStore.getState().setCertainty("c-1", 3);
+    });
+
+    let result: { converged: boolean; state: string } | undefined;
+    await act(async () => {
+      result = await useAutosaveStore.getState().flush!();
+    });
+
+    // Sans réconciliation, le flush ferait FLUSH_MAX_PASSES et renverrait converged=false.
+    expect(result!.converged).toBe(true);
+    // Le brouillon a été aligné sur la vérité serveur (support 0).
+    const c = useWorkspaceStore.getState().draftClauses.find((d) => d.localId === "c-1");
+    expect(c?.themes?.every((t) => t.support === 0)).toBe(true);
   });
 });

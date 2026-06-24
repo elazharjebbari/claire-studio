@@ -6,7 +6,7 @@
  * globale (F10), soumission VERSIONNÉE (point 2). Indicateur dirty + tour.
  */
 
-import { useCallback, useEffect, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { Button, StatusPill } from "@/components/ui/primitives";
 import { CertaintyPicker } from "@/components/ui/CertaintyPicker";
 import { useWorkspaceStore, type PrefillJudge } from "@/store/workspace";
@@ -37,6 +37,7 @@ import { WorkspaceTourButton } from "./WorkspaceTourButton";
 import { DocumentSwitcher } from "./DocumentSwitcher";
 import { SubmitDialog } from "./SubmitDialog";
 import { SubmitSuccessDialog } from "./SubmitSuccessDialog";
+import { SubmissionProgressDialog, type SubmissionPhase } from "./SubmissionProgressDialog";
 import { AutoPrefillConsentDialog } from "./AutoPrefillConsentDialog";
 import { PreferencesPopover } from "./PreferencesPopover";
 import { ConcordanceWidget } from "./ConcordanceWidget";
@@ -93,10 +94,15 @@ export function WorkspaceToolbar({
   const setPrefillPref = usePrefsStore((s) => s.setPrefill);
 
   const patchAnnotation = usePatchAnnotation(annotationId);
-  const { mutate: createVersionMutate } = useCreateVersion(annotationId);
+  const createVersion = useCreateVersion(annotationId);
+  const createVersionMutate = createVersion.mutate;
   const [snapshotMsg, setSnapshotMsg] = useState<string | null>(null);
   const [submitOpen, setSubmitOpen] = useState(false);
   const [submitting, setSubmitting] = useState(false);
+  // Soumission en TÂCHE DE FOND (barre de progression + notification) : phase courante +
+  // erreur éventuelle. null = pas de soumission en cours. Le dernier payload sert au « Réessayer ».
+  const [submission, setSubmission] = useState<{ phase: SubmissionPhase; error: string | null } | null>(null);
+  const lastSubmitPayload = useRef<{ name: string; description: string } | null>(null);
   // Confirmation de SUCCÈS (point 1) : nom de la version soumise (null = modale fermée).
   const [submittedName, setSubmittedName] = useState<string | null>(null);
   // Erreur de soumission (échec du flush anti-perte ou des mutations) affichée
@@ -181,57 +187,58 @@ export function WorkspaceToolbar({
     }
   }, [preClaude, setGhost]);
 
-  // Soumission versionnée (point 2). ANTI-PERTE : le snapshot de version est figé
-  // CÔTÉ SERVEUR à partir des clauses déjà persistées. On FLUSH donc l'autosave et on
-  // attend la convergence AVANT de créer la version — sinon une modification récente
-  // (débounce non écoulé, synchro en vol, autosave en erreur) serait perdue du
-  // snapshot soumis. Si la convergence échoue, on abandonne et on explique.
-  async function confirmSubmit(payload: { name: string; description: string }) {
-    setSubmitting(true);
+  // Soumission en TÂCHE DE FOND, séquencée en 3 étapes avec barre de progression et
+  // notification de fin (au lieu d'un message bloquant). ANTI-PERTE : le snapshot de version
+  // est figé CÔTÉ SERVEUR à partir des clauses persistées — on FLUSH d'abord (avec
+  // réconciliation → convergence garantie). À chaque échec d'étape : état d'erreur + « Réessayer ».
+  async function runSubmission(payload: { name: string; description: string }) {
+    lastSubmitPayload.current = payload;
+    setSubmitOpen(false);
     setSubmitError(null);
+    setSubmitting(true);
 
+    // Étape 1 — Enregistrement (flush anti-perte).
+    setSubmission({ phase: "save", error: null });
     const flush = flushAutosave;
     const result = flush ? await flush() : { converged: true, state: "idle" as const };
     if (!result.converged) {
       setSubmitting(false);
-      setSubmitError(
-        result.state === "unauthorized"
-          ? "Session expirée ou annotation non modifiable : vos dernières modifications ne sont pas enregistrées. Reconnectez-vous, puis réessayez."
-          : "Des modifications ne sont pas encore enregistrées sur le serveur. Patientez quelques secondes (ou utilisez « Réessayer ») puis soumettez à nouveau — pour ne perdre aucune donnée.",
-      );
+      setSubmission({
+        phase: "save",
+        error:
+          result.state === "unauthorized"
+            ? "Session expirée ou annotation non modifiable : reconnectez-vous, puis réessayez."
+            : "Des modifications n'ont pas pu être enregistrées sur le serveur. Vérifiez votre connexion puis réessayez (aucune donnée n'est perdue).",
+      });
       return;
     }
 
-    createVersionMutate(
-      { name: payload.name, description: payload.description, kind: "soumission" },
-      {
-        onSuccess: () => {
-          patchAnnotation.mutate(
-            { status: "submitted" },
-            {
-              onSuccess: () => {
-                // markClean UNIQUEMENT au vrai succès du passage `submitted`
-                // (ne pas masquer un état « non enregistré » sur échec).
-                markClean();
-                setSubmitOpen(false);
-                // Point 1 : confirmation explicite de réussite + verrouillage + option
-                // de déverrouillage (au lieu d'une fermeture silencieuse).
-                setSubmittedName(payload.name);
-              },
-              onError: () =>
-                setSubmitError(
-                  "La version a été créée mais le passage en « soumise » a échoué. Réessayez la soumission.",
-                ),
-              onSettled: () => setSubmitting(false),
-            },
-          );
-        },
-        onError: () => {
-          setSubmitting(false);
-          setSubmitError("La soumission a échoué (création de la version). Réessayez.");
-        },
-      },
-    );
+    try {
+      // Étape 2 — Création de la version figée (snapshot immuable).
+      setSubmission({ phase: "version", error: null });
+      await createVersion.mutateAsync({
+        name: payload.name,
+        description: payload.description,
+        kind: "soumission",
+      });
+
+      // Étape 3 — Publication (passage en « soumise »).
+      setSubmission({ phase: "publish", error: null });
+      await patchAnnotation.mutateAsync({ status: "submitted" });
+
+      markClean();
+      setSubmission(null); // ferme la progression…
+      setSubmittedName(payload.name); // …et notifie le SUCCÈS (verrouillage + déverrouillage).
+    } catch {
+      // Échec d'une mutation : on reste sur l'étape courante en erreur (Réessayer relance tout).
+      setSubmission((cur) => ({
+        phase: cur?.phase ?? "version",
+        error:
+          "La publication a échoué à cette étape. Vos données sont enregistrées — réessayez.",
+      }));
+    } finally {
+      setSubmitting(false);
+    }
   }
 
   // (SaveIndicator est défini hors composant, plus bas.)
@@ -478,7 +485,17 @@ export function WorkspaceToolbar({
             setSubmitOpen(false);
             setSubmitError(null);
           }}
-          onConfirm={confirmSubmit}
+          onConfirm={runSubmission}
+        />
+      )}
+
+      {/* Soumission en TÂCHE DE FOND : barre de progression + notification d'échec/retry. */}
+      {submission && (
+        <SubmissionProgressDialog
+          phase={submission.phase}
+          error={submission.error}
+          onRetry={() => lastSubmitPayload.current && runSubmission(lastSubmitPayload.current)}
+          onClose={() => setSubmission(null)}
         />
       )}
 
