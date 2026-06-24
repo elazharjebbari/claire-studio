@@ -61,12 +61,20 @@ export interface ClauseSyncPlan {
   deletes: string[]; // serverIds
 }
 
+/** Texte normalisé comme le serveur : DRF `CharField(trim_whitespace=True)` ÉBARBE les
+ * espaces de bordure à l'écriture. Le serveur renvoie donc la valeur ébarbée, alors que le
+ * brouillon local garde la saisie brute (le store n'est pas réécrit depuis la réponse).
+ * Sans cette normalisation, un `evidenceSpan`/`rationale` à espaces de bordure différerait
+ * EN PERMANENCE de sa version persistée → PATCH parasite éternel → l'auto-save (et le
+ * `flush()` de soumission) ne convergerait jamais, bloquant la soumission. */
+const trimmed = (s?: string | null): string => (s ?? "").trim();
+
 function sameFields(d: DraftClause, p: PersistedClause): boolean {
   return (
     d.theme === p.theme &&
     (d.legalNature ?? null) === p.legalNature &&
-    (d.evidenceSpan ?? "") === p.evidenceSpan &&
-    (d.rationale ?? "") === p.rationale &&
+    trimmed(d.evidenceSpan) === trimmed(p.evidenceSpan) &&
+    trimmed(d.rationale) === trimmed(p.rationale) &&
     (d.certainty ?? null) === p.certainty &&
     (d.validated ?? false) === p.validated &&
     themesKey(d.themes) === themesKey(p.themes) &&

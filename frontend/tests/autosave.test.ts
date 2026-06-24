@@ -134,6 +134,22 @@ describe("planClauseSync — multi-label / frontière / niveau (triage)", () => 
     expect(isEmptyPlan(planClauseSync([d], [p]))).toBe(true);
   });
 
+  it("espaces de BORDURE dans evidenceSpan/rationale → AUCUN diff (le serveur ébarbe)", () => {
+    // Régression du bug « Des modifications ne sont pas encore enregistrées » (soumission
+    // bloquée) : DRF trim_whitespace ébarbe à l'écriture → le serveur renvoie la valeur
+    // ébarbée, le brouillon garde la saisie brute. Sans normalisation, le diff serait
+    // ÉTERNEL et flush() ne convergerait jamais.
+    const d = draft({
+      anchorIndex: 0, serverId: "c0", theme: "META",
+      evidenceSpan: "  may terminate  ", rationale: "\nclause de résiliation \t",
+    });
+    const p = persisted({
+      anchorIndex: 0, serverId: "c0", theme: "META",
+      evidenceSpan: "may terminate", rationale: "clause de résiliation", // ébarbés (serveur)
+    });
+    expect(isEmptyPlan(planClauseSync([d], [p]))).toBe(true);
+  });
+
   it("draftsToPersisted conserve themes/boundary/triageLevel", () => {
     const d = {
       ...draft({ anchorIndex: 0, serverId: "c0", theme: "TERMINATION" }),
