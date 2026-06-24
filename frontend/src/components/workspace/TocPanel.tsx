@@ -116,8 +116,12 @@ export function TocPanel({ docTitle }: { docTitle: string }) {
     nSentences > 0 ? Math.round((validatedCount / nSentences) * 100) : 0;
 
   return (
-    <div className="flex flex-col gap-3 p-3">
-      <div>
+    // Colonne pleine hauteur : en-tête + overlays figés (shrink-0), liste de clauses
+    // défilante (flex-1) au milieu. Plus de grande zone vide sous le plan quand le
+    // contenu est court (le `<nav>` s'étire), et liste défilable proprement quand il est
+    // long — sans rogner l'en-tête ni les overlays (patron de l'inspecteur).
+    <div className="flex h-full flex-col gap-3 p-3">
+      <div className="shrink-0">
         <h2 className="text-sm font-semibold text-ink">{docTitle}</h2>
         <p className="text-xs text-ink-muted">
           {drafts.length} clause(s) · {nSentences} phrases
@@ -161,7 +165,7 @@ export function TocPanel({ docTitle }: { docTitle: string }) {
       {selectedClauseIds.length > 0 && (
         <div
           data-testid="toc-selection-bar"
-          className="flex items-center justify-between gap-2 rounded-md border border-accent/40 bg-accent/10 px-2 py-1 text-[11px] text-ink"
+          className="flex shrink-0 items-center justify-between gap-2 rounded-md border border-accent/40 bg-accent/10 px-2 py-1 text-[11px] text-ink"
         >
           <span>{selectedClauseIds.length} sélectionnée{selectedClauseIds.length > 1 ? "s" : ""}</span>
           <div className="flex items-center gap-1">
@@ -188,7 +192,11 @@ export function TocPanel({ docTitle }: { docTitle: string }) {
         </div>
       )}
 
-      <nav ref={navRef} aria-label="Plan des clauses" className="flex flex-col gap-1">
+      <nav
+        ref={navRef}
+        aria-label="Plan des clauses"
+        className="flex min-h-0 flex-1 flex-col gap-1 overflow-y-auto"
+      >
         {drafts.length === 0 && (
           <p className="rounded-md border border-dashed border-line p-3 text-xs text-ink-muted">
             Aucune clause. Cliquez une phrase ou appuyez sur <kbd>B</kbd> pour poser une ancre.
@@ -213,7 +221,7 @@ export function TocPanel({ docTitle }: { docTitle: string }) {
         ))}
       </nav>
 
-      <fieldset className="mt-2 rounded-md border border-line p-2">
+      <fieldset data-testid="toc-overlays" className="shrink-0 rounded-md border border-line p-2">
         <legend className="px-1 text-[11px] font-semibold uppercase text-ink-muted">
           Overlays
         </legend>

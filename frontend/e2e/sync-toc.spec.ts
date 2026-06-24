@@ -30,6 +30,25 @@ test.describe("Synchro plan ↔ phrase", () => {
     await expect(chip2).toHaveAttribute("aria-pressed", "false");
   });
 
+  test("le plan REMPLIT l'aside : les overlays sont épinglés en bas (pas de zone vide)", async ({ page }) => {
+    // Régression du « bas vide » (dossier docs/pactiva/dossier-statuts-concordance) :
+    // quand le plan est court, l'aside gauche ne doit pas laisser une grande bande vide
+    // sous les overlays — la liste de clauses s'étire et les overlays restent collés au bas.
+    await page.goto("/annotate/ann-1");
+    await expect(page.getByTestId("annotation-workspace")).toBeVisible();
+    const aside = page.getByRole("complementary", { name: "Plan du document" });
+    const overlays = page.getByTestId("toc-overlays");
+    await expect(overlays).toBeVisible();
+    const a = await aside.boundingBox();
+    const o = await overlays.boundingBox();
+    expect(a).not.toBeNull();
+    expect(o).not.toBeNull();
+    // Bas des overlays ≈ bas de l'aside (au padding p-3 près). Avant le correctif :
+    // ~283px d'écart. Tolérance large (≤ 40px) pour absorber padding + bordures.
+    const gap = a!.y + a!.height - (o!.y + o!.height);
+    expect(gap).toBeLessThanOrEqual(40);
+  });
+
   test("round-trip : clic chip → phrase focalisée → re-presse le chip", async ({ page }) => {
     await page.goto("/annotate/ann-1");
     await expect(page.getByTestId("annotation-workspace")).toBeVisible();

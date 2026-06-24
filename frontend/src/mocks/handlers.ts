@@ -201,6 +201,8 @@ export const handlers = [
         status: a.status,
         annotationId: a.annotationId ?? null,
         nClauses: 0,
+        // Miroir backend : une session soumise est auto-verrouillée.
+        locked: ["submitted", "in_review", "approved"].includes(a.status),
       };
       if (mine === "1") return { document: a.document, mySession };
       // Matrice admin : la session de l'utilisateur démo + 2 annotateurs simulés.

@@ -116,7 +116,8 @@ def test_project_detail_and_progress_shape(admin_client):
     _assert_keys(
         prog,
         {"totalDocuments", "annotatedDocuments", "submittedDocuments",
-         "approvedDocuments", "myAssigned", "myDone", "iaa", "iaaDetail"},
+         "approvedDocuments", "myAssigned", "myDone", "iaa", "iaaDetail",
+         "concordance"},
         where="ProjectProgress",
     )
     assert isinstance(prog["totalDocuments"], int)

@@ -236,6 +236,11 @@ export function AnnotationWorkspace({ annotationId }: { annotationId: string }) 
           // (campagne gelée) n'est levable que par un admin.
           isMine && sessionLocked && !projectLocked ? () => setUnlockConfirm(true) : undefined
         }
+        onUnlock={
+          // Déverrouillage DIRECT depuis la modale de succès (le geste y est déjà
+          // explicité). Indisponible si la campagne est gelée (verrou projet → admin).
+          isMine && !projectLocked ? () => unlockAnn.mutate() : undefined
+        }
         projectLocked={projectLocked}
       />
       {isMine && locked ? (

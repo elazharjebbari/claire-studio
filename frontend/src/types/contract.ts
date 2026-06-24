@@ -213,6 +213,24 @@ export interface ProjectProgress {
   iaa?: number | null;
   /** Détail IAA (κ par thème + frontières), si ≥ 2 annotateurs. */
   iaaDetail?: IaaDetail | null;
+  /** Concordance de MA session avec les modèles LLM (point 4) ; null si rien à comparer. */
+  concordance?: ProjectConcordance | null;
+}
+
+/** Concordance humain ↔ LLM et LLM ↔ LLM agrégée sur mes documents (point 4). */
+export interface ProjectConcordance {
+  /** Accord de mon annotation avec chaque juge, trié décroissant. */
+  perJudge: { judge: string; pct: number | null; n: number; matches: number }[];
+  /** Juge le plus concordant avec moi (support > 0), ou null. */
+  bestMatch?: { judge: string; pct: number } | null;
+  /** Accord LLM ↔ LLM, paire à paire. */
+  llmPairs: { a: string; b: string; pct: number | null; n: number }[];
+  /** Moyenne des accords LLM ↔ LLM, ou null. */
+  llmMeanPct?: number | null;
+  /** Nombre de documents comparés. */
+  documentsCompared: number;
+  /** Nombre total de phrases que j'ai annotées (couverture). */
+  humanCovered: number;
 }
 
 /** κ de Cohen d'une paire d'annotateurs sur UN document (matrice pairwise, R3). */
@@ -281,6 +299,8 @@ export interface SessionRollup {
   status: AnnotationStatus | "unstarted";
   annotationId?: string | null;
   nClauses: number;
+  /** Verrou de la session (soumission auto OU verrou manuel) — édition gelée. */
+  locked?: boolean;
 }
 
 /**

@@ -141,9 +141,12 @@ export function ResizablePanels({
 
   return (
     <div ref={containerRef} className="flex h-full w-full overflow-hidden">
+      {/* overflow-hidden (et non -y-auto) : le panneau gauche (TocPanel) gère son PROPRE
+          défilement interne — en-tête + overlays épinglés, liste de clauses défilante —
+          de sorte qu'aucune bande vide n'apparaisse sous le contenu (parité inspecteur). */}
       <aside
         style={{ width: layout.left }}
-        className="h-full shrink-0 overflow-y-auto border-r border-line bg-elevated"
+        className="h-full shrink-0 overflow-hidden border-r border-line bg-elevated"
         aria-label="Plan du document"
       >
         {left}

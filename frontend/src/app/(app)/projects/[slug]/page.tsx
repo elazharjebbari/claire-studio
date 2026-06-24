@@ -14,8 +14,11 @@ import {
 } from "@/lib/api/hooks";
 import { createAnnotation } from "@/lib/api/endpoints";
 import { isAdminRole } from "@/lib/roles";
-import { Panel, Button, StatusPill } from "@/components/ui/primitives";
+import { Panel, Button } from "@/components/ui/primitives";
 import { IaaDashboard } from "@/components/projects/IaaDashboard";
+import { ConcordancePanel } from "@/components/projects/ConcordancePanel";
+import { DocStatusBadge } from "@/components/projects/DocStatusBadge";
+import { ProjectLockControl } from "@/components/projects/ProjectLockControl";
 import { useUiStore } from "@/store/ui";
 
 export default function ProjectDashboard({ params }: { params: { slug: string } }) {
@@ -70,6 +73,17 @@ export default function ProjectDashboard({ params }: { params: { slug: string } 
         </p>
       )}
 
+      {/* Verrou de CAMPAGNE (admin) : gèle/dégèle toutes les sessions, avec confirmation. */}
+      {isAdmin && project && (
+        <div className="mt-4">
+          <ProjectLockControl
+            slug={params.slug}
+            locked={Boolean(project.locked)}
+            lockedBy={project.lockedBy}
+          />
+        </div>
+      )}
+
       <div className="mt-4 grid gap-4 md:grid-cols-4">
         {[
           ["Documents", `${progress?.annotatedDocuments ?? 0}/${progress?.totalDocuments ?? 0}`],
@@ -96,7 +110,10 @@ export default function ProjectDashboard({ params }: { params: { slug: string } 
               <li key={d.document.id} className="flex items-center justify-between text-sm">
                 <span className="truncate text-ink">{d.document.title}</span>
                 <div className="flex items-center gap-2">
-                  <StatusPill status={d.mySession?.status ?? "unstarted"} />
+                  <DocStatusBadge
+                    status={d.mySession?.status ?? "unstarted"}
+                    locked={Boolean(d.mySession?.locked) || Boolean(project?.locked)}
+                  />
                   <button
                     type="button"
                     disabled={opening === d.document.externalId}
@@ -128,6 +145,12 @@ export default function ProjectDashboard({ params }: { params: { slug: string } 
           </ul>
         </Panel>
       </div>
+
+      {progress?.concordance && (
+        <div className="mt-6">
+          <ConcordancePanel data={progress.concordance} />
+        </div>
+      )}
 
       <div className="mt-6">
         {progress?.iaaDetail ? (

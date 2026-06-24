@@ -184,6 +184,23 @@ export const FIXTURE_PROGRESS: ProjectProgress = {
       { code: "MISC_BOILERPLATE", label: "Boilerplate divers", kappa: 0.41, support: 27 },
     ],
   },
+  // Concordance de MA session avec les modèles (point 4).
+  concordance: {
+    perJudge: [
+      { judge: "claude", pct: 82.0, n: 120, matches: 98 },
+      { judge: "codex", pct: 64.0, n: 120, matches: 77 },
+      { judge: "mistral", pct: 58.0, n: 120, matches: 70 },
+    ],
+    bestMatch: { judge: "claude", pct: 82.0 },
+    llmPairs: [
+      { a: "claude", b: "codex", pct: 71.0, n: 120 },
+      { a: "claude", b: "mistral", pct: 66.0, n: 120 },
+      { a: "codex", b: "mistral", pct: 69.0, n: 120 },
+    ],
+    llmMeanPct: 68.7,
+    documentsCompared: 4,
+    humanCovered: 120,
+  },
 };
 
 export const FIXTURE_PROJECT: Project = {

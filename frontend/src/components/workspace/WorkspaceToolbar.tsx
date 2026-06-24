@@ -35,6 +35,8 @@ import { LLM_JUDGES } from "@/lib/llmJudges";
 import { WorkspaceTourButton } from "./WorkspaceTourButton";
 import { DocumentSwitcher } from "./DocumentSwitcher";
 import { SubmitDialog } from "./SubmitDialog";
+import { SubmitSuccessDialog } from "./SubmitSuccessDialog";
+import { ConcordanceWidget } from "./ConcordanceWidget";
 import type { Certainty } from "@/types/contract";
 
 export function WorkspaceToolbar({
@@ -48,6 +50,7 @@ export function WorkspaceToolbar({
   locked = false,
   onLock,
   onRequestUnlock,
+  onUnlock,
   projectLocked = false,
 }: {
   annotationId: string;
@@ -61,6 +64,8 @@ export function WorkspaceToolbar({
   locked?: boolean;
   onLock?: () => void;
   onRequestUnlock?: () => void;
+  /** Déverrouillage DIRECT (depuis la modale de succès de soumission) — rouvre en brouillon. */
+  onUnlock?: () => void;
   /** Verrou NIVEAU PROJET : non déverrouillable par l'annotateur (admin requis). */
   projectLocked?: boolean;
 }) {
@@ -84,6 +89,8 @@ export function WorkspaceToolbar({
   const [snapshotMsg, setSnapshotMsg] = useState<string | null>(null);
   const [submitOpen, setSubmitOpen] = useState(false);
   const [submitting, setSubmitting] = useState(false);
+  // Confirmation de SUCCÈS (point 1) : nom de la version soumise (null = modale fermée).
+  const [submittedName, setSubmittedName] = useState<string | null>(null);
   // Erreur de soumission (échec du flush anti-perte ou des mutations) affichée
   // dans le dialog — distincte du gate de validation (`submitBlockReason`).
   const [submitError, setSubmitError] = useState<string | null>(null);
@@ -195,6 +202,9 @@ export function WorkspaceToolbar({
                 // (ne pas masquer un état « non enregistré » sur échec).
                 markClean();
                 setSubmitOpen(false);
+                // Point 1 : confirmation explicite de réussite + verrouillage + option
+                // de déverrouillage (au lieu d'une fermeture silencieuse).
+                setSubmittedName(payload.name);
               },
               onError: () =>
                 setSubmitError(
@@ -352,6 +362,8 @@ export function WorkspaceToolbar({
             {snapshotMsg}
           </span>
         )}
+        {/* Point 4 — concordance temps réel avec les modèles (pastille + carte dépliable). */}
+        <ConcordanceWidget projectSlug={projectSlug} documentId={documentId} />
         <Button variant="outline" data-testid="snapshot-btn" disabled={readOnly} onClick={snapshot}>
           Snapshot ⌘S
         </Button>
@@ -427,6 +439,15 @@ export function WorkspaceToolbar({
             setSubmitError(null);
           }}
           onConfirm={confirmSubmit}
+        />
+      )}
+
+      {/* Confirmation de SUCCÈS de soumission (point 1). */}
+      {submittedName !== null && (
+        <SubmitSuccessDialog
+          versionName={submittedName}
+          onClose={() => setSubmittedName(null)}
+          onUnlock={onUnlock}
         />
       )}
 

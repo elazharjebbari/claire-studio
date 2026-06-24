@@ -8,7 +8,9 @@ import { useRouter } from "next/navigation";
 import { useProjectDocuments, useProject, useMe } from "@/lib/api/hooks";
 import { createAnnotation } from "@/lib/api/endpoints";
 import { isAdminRole } from "@/lib/roles";
-import { Panel, StatusPill } from "@/components/ui/primitives";
+import { Panel } from "@/components/ui/primitives";
+import { DocStatusBadge } from "@/components/projects/DocStatusBadge";
+import { ProjectLockControl } from "@/components/projects/ProjectLockControl";
 
 export default function ProjectDocs({ params }: { params: { slug: string } }) {
   const router = useRouter();
@@ -64,6 +66,15 @@ export default function ProjectDocs({ params }: { params: { slug: string } }) {
           . Cette liste montre <strong className="text-ink">votre propre</strong> session.
         </p>
       )}
+      {isAdmin && project && (
+        <div className="mb-4">
+          <ProjectLockControl
+            slug={params.slug}
+            locked={Boolean(project.locked)}
+            lockedBy={project.lockedBy}
+          />
+        </div>
+      )}
       <Panel className="divide-y divide-line">
         {documents.map((d) => {
           const status = d.mySession?.status ?? "unstarted";
@@ -77,7 +88,10 @@ export default function ProjectDocs({ params }: { params: { slug: string } }) {
                 </div>
               </div>
               <div className="flex items-center gap-3">
-                <StatusPill status={status} />
+                <DocStatusBadge
+                  status={status}
+                  locked={Boolean(d.mySession?.locked) || Boolean(project?.locked)}
+                />
                 <button
                   type="button"
                   disabled={opening === d.document.externalId}

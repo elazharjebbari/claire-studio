@@ -13,6 +13,7 @@ from claire.common.pagination import results_envelope
 from claire.common.permissions import IsAdminRole
 
 from .iaa import project_iaa, project_iaa_detail
+from .concordance import project_concordance
 from .models import (
     Assignment,
     MembershipRole,
@@ -302,7 +303,9 @@ class ProjectViewSet(viewsets.ModelViewSet):
             (an["document_id"], an["annotator_id"]): an
             for an in Annotation.objects.filter(project=project)
             .annotate(n_clauses=Count("clauses", distinct=True))
-            .values("id", "document_id", "annotator_id", "status", "n_clauses")
+            .values(
+                "id", "document_id", "annotator_id", "status", "n_clauses", "locked"
+            )
         }
         # Une seule requête pour le voyant « traduction disponible » (évite le N+1).
         translated_ids = set(
@@ -330,6 +333,9 @@ class ProjectViewSet(viewsets.ModelViewSet):
                 "status": an["status"] if an else "unstarted",
                 "annotation_id": an["id"] if an else None,
                 "n_clauses": an["n_clauses"] if an else 0,
+                # Verrou de la session (soumission auto OU verrou manuel) : permet
+                # d'afficher « verrouillé » sur les pages projet, indépendamment du statut.
+                "locked": bool(an["locked"]) if an else False,
             }
 
         def doc_summary(doc):
@@ -395,6 +401,13 @@ class ProjectViewSet(viewsets.ModelViewSet):
 
         iaa = project_iaa(project)
         iaa_detail = project_iaa_detail(project)
+        # Concordance de MON annotation avec les modèles LLM (point 4) — agrégée sur
+        # mes documents de la campagne ; None si rien à comparer.
+        concordance = (
+            project_concordance(project, request.user)
+            if getattr(request.user, "is_authenticated", False)
+            else None
+        )
         return Response(
             {
                 "total_documents": total_documents,
@@ -405,6 +418,7 @@ class ProjectViewSet(viewsets.ModelViewSet):
                 "my_done": my_done,
                 "iaa": iaa["mean_kappa"],
                 "iaa_detail": iaa_detail,
+                "concordance": concordance,
             }
         )
 

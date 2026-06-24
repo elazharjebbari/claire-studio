@@ -120,6 +120,26 @@ def test_annotator_cannot_lock_project(auth, project, annotator):
     assert project.locked is False
 
 
+# ── le rollup documents expose le verrou de session (point 2 — badges de statut) ─
+def test_documents_rollup_exposes_session_locked(auth, project, annotation, annotator):
+    ProjectMembership.objects.get_or_create(project=project, user=annotator)
+    ac = _client(annotator)
+    assert _add(ac, annotation.id).status_code == 201
+
+    # Avant soumission : session non verrouillée, statut draft.
+    rows = ac.get(f"{API}/projects/{project.slug}/documents").json()["results"]
+    mine = next(r for r in rows if r["document"]["id"] == annotation.document_id)
+    assert mine["mySession"]["locked"] is False
+    assert mine["mySession"]["status"] == "draft"
+
+    # Après soumission : auto-verrou → locked True, statut submitted.
+    assert ac.post(f"{API}/annotations/{annotation.id}/submit").status_code == 200
+    rows = ac.get(f"{API}/projects/{project.slug}/documents").json()["results"]
+    mine = next(r for r in rows if r["document"]["id"] == annotation.document_id)
+    assert mine["mySession"]["locked"] is True
+    assert mine["mySession"]["status"] == "submitted"
+
+
 # ── le verrou projet n'efface PAS les verrous par-annotation (indépendance) ─────
 def test_project_unlock_keeps_annotation_locks(
     auth, project, annotation, annotator, admin_user

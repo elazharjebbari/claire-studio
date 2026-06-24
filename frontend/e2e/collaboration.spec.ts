@@ -26,4 +26,21 @@ test.describe("Collaboration (F4) & IAA", () => {
     await expect(page.getByTestId("iaa-theme-META")).toContainText("0.94");
     await expect(page.getByTestId("iaa-theme-MISC_BOILERPLATE")).toContainText("0.41");
   });
+
+  test("affiche les statuts par document (point 2)", async ({ page }) => {
+    await page.goto("/projects/claudette-gold-v1");
+    const badges = page.getByTestId("doc-status-badge");
+    await expect(badges.first()).toBeVisible();
+    // Le document en cours (fixture) est un brouillon → badge « Brouillon ».
+    await expect(badges.filter({ hasText: "Brouillon" }).first()).toBeVisible();
+  });
+
+  test("affiche la concordance avec les modèles (point 4) : meilleur modèle + LLM↔LLM", async ({ page }) => {
+    await page.goto("/projects/claudette-gold-v1");
+    const panel = page.getByTestId("concordance-panel");
+    await expect(panel).toBeVisible();
+    await expect(page.getByTestId("concordance-panel-best")).toContainText("Claude");
+    await expect(page.getByTestId("concordance-panel-best")).toContainText("82%");
+    await expect(page.getByTestId("concordance-panel-llm-mean")).toBeVisible();
+  });
 });
