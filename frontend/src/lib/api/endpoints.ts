@@ -5,6 +5,14 @@
 
 import { apiFetch, tokenStore, API_BASE } from "./client";
 import type {
+  GoldDocumentRow,
+  GoldDocumentDetail,
+  GoldDecidePayload,
+  GoldDecideResponse,
+  GoldAutoResolveResponse,
+  GoldLockState,
+} from "@/lib/gold/types";
+import type {
   Annotation,
   ActivityEvent,
   AnnotatorProgress,
@@ -701,4 +709,59 @@ export function createTranslationSet(payload: {
 
 export function syncTranslationSet(id: string): Promise<TranslationSyncResult> {
   return apiFetch<TranslationSyncResult>(`/translations/sets/${id}/sync`, { method: "POST" });
+}
+
+// ── Résolution GOLD (module de décision du gold standard) ──────────────────────
+const goldDoc = (slug: string, externalId: string) =>
+  `/projects/${slug}/gold/${encodeURIComponent(externalId)}`;
+
+export function listGoldDocuments(slug: string): Promise<Paginated<GoldDocumentRow>> {
+  return apiFetch<Paginated<GoldDocumentRow>>(`/projects/${slug}/gold/documents`);
+}
+
+export function getGoldDocument(slug: string, externalId: string): Promise<GoldDocumentDetail> {
+  return apiFetch<GoldDocumentDetail>(goldDoc(slug, externalId));
+}
+
+export function decideGold(
+  slug: string,
+  externalId: string,
+  payload: GoldDecidePayload,
+): Promise<GoldDecideResponse> {
+  return apiFetch<GoldDecideResponse>(`${goldDoc(slug, externalId)}/decide`, {
+    method: "POST",
+    body: payload,
+  });
+}
+
+export function autoResolveGold(slug: string, externalId: string): Promise<GoldAutoResolveResponse> {
+  return apiFetch<GoldAutoResolveResponse>(`${goldDoc(slug, externalId)}/auto-resolve`, {
+    method: "POST",
+    body: {},
+  });
+}
+
+export function acquireGoldLock(slug: string, externalId: string): Promise<GoldLockState> {
+  return apiFetch<GoldLockState>(`${goldDoc(slug, externalId)}/lock`, { method: "POST", body: {} });
+}
+
+export function heartbeatGoldLock(slug: string, externalId: string): Promise<GoldLockState> {
+  return apiFetch<GoldLockState>(`${goldDoc(slug, externalId)}/lock/heartbeat`, {
+    method: "POST",
+    body: {},
+  });
+}
+
+export function releaseGoldLock(slug: string, externalId: string): Promise<GoldLockState> {
+  return apiFetch<GoldLockState>(`${goldDoc(slug, externalId)}/lock/release`, {
+    method: "POST",
+    body: {},
+  });
+}
+
+export function stealGoldLock(slug: string, externalId: string): Promise<GoldLockState> {
+  return apiFetch<GoldLockState>(`${goldDoc(slug, externalId)}/lock/steal`, {
+    method: "POST",
+    body: {},
+  });
 }

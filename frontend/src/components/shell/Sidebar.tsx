@@ -22,6 +22,7 @@ import {
   Download,
   Users,
   ScrollText,
+  Gavel,
   type LucideIcon,
 } from "lucide-react";
 import { cn } from "@/lib/cn";
@@ -53,6 +54,7 @@ function navGroups(slug: string | undefined): NavGroup[] {
   }
   const corpus: NavItem[] = [];
   if (slug) corpus.push({ href: `/projects/${slug}/docs`, label: "Documents", icon: FileText });
+  if (slug) corpus.push({ href: `/projects/${slug}/gold`, label: "Résolution GOLD", icon: Gavel });
   corpus.push({ href: `/projects`, label: "Mes projets", icon: FolderKanban });
   corpus.push({ href: `/public`, label: "Projets publiés", icon: Globe });
 

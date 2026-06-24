@@ -39,6 +39,8 @@ import {
   FIXTURE_TRANSLATION_SETS,
   FIXTURE_USER,
   FIXTURE_VERSIONS,
+  FIXTURE_GOLD_DOCUMENTS,
+  FIXTURE_GOLD_DETAIL,
 } from "./fixtures";
 
 const BASE = process.env.NEXT_PUBLIC_API_BASE ?? "/api/v1";
@@ -256,6 +258,53 @@ export const handlers = [
     return HttpResponse.json(page(results));
   }),
   http.get(`${BASE}/projects/:slug/progress`, () => HttpResponse.json(FIXTURE_PROGRESS)),
+
+  // ── Résolution GOLD ──
+  http.get(`${BASE}/projects/:slug/gold/documents`, () =>
+    HttpResponse.json(page(FIXTURE_GOLD_DOCUMENTS)),
+  ),
+  http.get(`${BASE}/projects/:slug/gold/:externalId`, ({ params }) =>
+    HttpResponse.json({
+      ...FIXTURE_GOLD_DETAIL,
+      document: { ...FIXTURE_GOLD_DETAIL.document, externalId: String(params.externalId) },
+    }),
+  ),
+  http.post(`${BASE}/projects/:slug/gold/:externalId/decide`, async ({ request }) => {
+    const body = (await request.json().catch(() => ({}))) as Record<string, unknown>;
+    return HttpResponse.json({
+      index: Number(body.index ?? 0),
+      decided: true,
+      autoResolved: false,
+      primary: String(body.primary ?? ""),
+      secondaries: (body.secondaries as string[]) ?? [],
+      status: "in_progress",
+      pctResolved: 0.5,
+    });
+  }),
+  http.post(`${BASE}/projects/:slug/gold/:externalId/auto-resolve`, () =>
+    HttpResponse.json({ n: 3, decided: 1, autoResolved: 1, status: "in_progress", pctResolved: 0.3333 }),
+  ),
+  http.post(`${BASE}/projects/:slug/gold/:externalId/lock`, () =>
+    HttpResponse.json({
+      locked: true, lockedBy: FIXTURE_USER.username, lockedByName: FIXTURE_USER.username,
+      lockedById: 1, heldByMe: true, expiresAt: "2026-06-24T12:00:00Z", leaseSeconds: 90,
+    }),
+  ),
+  http.post(`${BASE}/projects/:slug/gold/:externalId/lock/heartbeat`, () =>
+    HttpResponse.json({
+      locked: true, lockedBy: FIXTURE_USER.username, lockedByName: FIXTURE_USER.username,
+      lockedById: 1, heldByMe: true, expiresAt: "2026-06-24T12:01:00Z", leaseSeconds: 90,
+    }),
+  ),
+  http.post(`${BASE}/projects/:slug/gold/:externalId/lock/release`, () =>
+    HttpResponse.json({ locked: false, lockedBy: null, heldByMe: false, expiresAt: null, leaseSeconds: 90 }),
+  ),
+  http.post(`${BASE}/projects/:slug/gold/:externalId/lock/steal`, () =>
+    HttpResponse.json({
+      locked: true, lockedBy: FIXTURE_USER.username, lockedByName: FIXTURE_USER.username,
+      lockedById: 1, heldByMe: true, expiresAt: "2026-06-24T12:02:00Z", leaseSeconds: 90,
+    }),
+  ),
 
   // Publication publique (chantier F) — lecture seule.
   http.get(`${BASE}/public/projects`, () =>

@@ -34,6 +34,7 @@ const LABELS: Record<string, string> = {
   help: "Documentation",
   history: "Historique",
   insights: "Insights",
+  gold: "Résolution GOLD",
 };
 
 interface Crumb {

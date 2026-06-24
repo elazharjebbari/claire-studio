@@ -47,6 +47,8 @@ export const qk = {
     ["preannotations", project, doc] as const,
   activity: (project?: string) => ["activity", project ?? "all"] as const,
   translationSets: ["translations", "sets"] as const,
+  goldDocuments: (slug: string) => ["projects", slug, "gold", "documents"] as const,
+  goldDocument: (slug: string, ext: string) => ["projects", slug, "gold", ext] as const,
 };
 
 export function useMe() {
@@ -619,5 +621,73 @@ export function useRetryExport(slug?: string) {
       qc.invalidateQueries({ queryKey: ["exports", job.id] });
       if (slug) qc.invalidateQueries({ queryKey: ["projects", slug, "exports"] });
     },
+  });
+}
+
+// ── Résolution GOLD ────────────────────────────────────────────────────────────
+/** Cockpit : liste des documents du projet avec statut/avancement/verrou. */
+export function useGoldDocuments(slug?: string) {
+  return useQuery({
+    queryKey: qk.goldDocuments(slug ?? ""),
+    queryFn: () => api.listGoldDocuments(slug!),
+    enabled: Boolean(slug),
+  });
+}
+
+/** Atelier : recompute + payload de résolution d'un document (par external_id). */
+export function useGoldDocument(slug?: string, externalId?: string) {
+  return useQuery({
+    queryKey: qk.goldDocument(slug ?? "", externalId ?? ""),
+    queryFn: () => api.getGoldDocument(slug!, externalId!),
+    enabled: Boolean(slug) && Boolean(externalId),
+  });
+}
+
+function useGoldInvalidate(slug: string, externalId: string) {
+  const qc = useQueryClient();
+  return () => {
+    qc.invalidateQueries({ queryKey: qk.goldDocument(slug, externalId) });
+    qc.invalidateQueries({ queryKey: qk.goldDocuments(slug) });
+  };
+}
+
+export function useDecideGold(slug: string, externalId: string) {
+  const invalidate = useGoldInvalidate(slug, externalId);
+  return useMutation({
+    mutationFn: (payload: import("@/lib/gold/types").GoldDecidePayload) =>
+      api.decideGold(slug, externalId, payload),
+    onSuccess: invalidate,
+  });
+}
+
+export function useAutoResolveGold(slug: string, externalId: string) {
+  const invalidate = useGoldInvalidate(slug, externalId);
+  return useMutation({
+    mutationFn: () => api.autoResolveGold(slug, externalId),
+    onSuccess: invalidate,
+  });
+}
+
+export function useAcquireGoldLock(slug: string, externalId: string) {
+  const invalidate = useGoldInvalidate(slug, externalId);
+  return useMutation({
+    mutationFn: () => api.acquireGoldLock(slug, externalId),
+    onSuccess: invalidate,
+  });
+}
+
+export function useReleaseGoldLock(slug: string, externalId: string) {
+  const invalidate = useGoldInvalidate(slug, externalId);
+  return useMutation({
+    mutationFn: () => api.releaseGoldLock(slug, externalId),
+    onSuccess: invalidate,
+  });
+}
+
+export function useStealGoldLock(slug: string, externalId: string) {
+  const invalidate = useGoldInvalidate(slug, externalId);
+  return useMutation({
+    mutationFn: () => api.stealGoldLock(slug, externalId),
+    onSuccess: invalidate,
   });
 }
