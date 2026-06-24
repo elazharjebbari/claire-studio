@@ -1,0 +1,29 @@
+{
+  "comment": "Tokens additifs GOLD a fusionner dans design-tokens.json. ZERO hex en dur cote composants.",
+  "semantic_mapping": {
+    "resolu": "--sem-success",
+    "en_cours": "--sem-warning",
+    "divergence_forte": "--sem-danger",
+    "auto_resolvable_llm": "--sem-info"
+  },
+  "gold_severity": {
+    "--gold-sev-1": "accord absolu",
+    "--gold-sev-2": "peu risque",
+    "--gold-sev-3": "risque"
+  },
+  "article_bg_opacity": {
+    "strict": 0.33,
+    "majoritaire": 0.22,
+    "split": 0.0
+  },
+  "brand": {
+    "--brand-gold": "accents GOLD parcimonieux (titre module, medaille top-1, lisere final)"
+  },
+  "migrations": {
+    "ComparePanel.STATUS_COLOR": [
+      "#34D399 -> --sem-success",
+      "#FBBF24 -> --sem-warning",
+      "#64748B -> neutre"
+    ]
+  }
+}

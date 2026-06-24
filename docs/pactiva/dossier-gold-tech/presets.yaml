@@ -1,0 +1,20 @@
+# Presets de configuration de campagne de résolution.
+presets:
+  confiance_annotateurs:        # DÉFAUT (fait confiance aux annotateurs)
+    llm: { role: tiebreak, weight: 0.5 }
+    annotatorWeights: {}
+    signalBonus: 0.2
+    autoResolve: { absoluteAgreement: true, lowRiskLevels: [C1, C2], manualLevels: [C3, C4, C5] }
+    autoShare: true
+    secondaryPolicy: advisory
+  equilibre:
+    llm: { role: full, weight: 1.0 }
+    annotatorWeights: {}
+    autoResolve: { absoluteAgreement: true, lowRiskLevels: [C1], manualLevels: [C2, C3, C4, C5] }
+    autoShare: true
+    secondaryPolicy: advisory
+  audit_strict:
+    llm: { role: signal, weight: 0.0 }
+    autoResolve: { absoluteAgreement: false, lowRiskLevels: [], manualLevels: [C1, C2, C3, C4, C5] }
+    autoShare: false
+    secondaryPolicy: required

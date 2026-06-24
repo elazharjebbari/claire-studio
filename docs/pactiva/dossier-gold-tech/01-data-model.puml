@@ -1,0 +1,53 @@
+@startuml
+title Modèle de données — module GOLD
+class GoldResolution {
+  project FK
+  document FK
+  status: unresolved|in_progress|resolved
+  pct_resolved: float
+  arbiters: M2M(User)
+  locked: bool
+  locked_by FK(User) null
+  locked_at: datetime null
+  lock_expires_at: datetime null
+  finalized_at: datetime null
+}
+class GoldSentence {
+  project FK
+  document FK
+  index: int
+  primary_theme FK(Theme) null
+  secondaries: JSON[str]
+  agreement_class: strict|majority|divergence
+  confidence: float
+  risk_band: low|medium|high
+  auto_resolved: bool
+  resolution: JSON {voter_tally, human_block, llm_block, human_dissent, level}
+  decided_by FK(User) null
+  decided_at: datetime null
+  comment: text null
+  -- unique(project, document, index)
+}
+class GoldRun {
+  project FK
+  document FK null
+  kind: draft|final
+  payload: JSON (snapshot GoldSentence[])
+  created_by FK(User)
+  created_at
+}
+class ArbitrationEvent {
+  document FK
+  index: int null
+  actor FK(User)
+  verb: decide|override|comment|lock|unlock|steal
+  payload: JSON
+  note: text null
+  created_at
+}
+GoldResolution "1" -- "N" GoldSentence
+GoldResolution "1" -- "N" ArbitrationEvent
+GoldResolution "1" -- "N" GoldRun
+note bottom of GoldResolution : verrou DB source de vérité\n(lease lock_expires_at + heartbeat REST)
+note bottom of GoldSentence : recalculé au (re)submit d'Annotation\nvia ExportJob async ; décision GOLD écrite ici
+@enduml

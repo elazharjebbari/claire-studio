@@ -1,0 +1,596 @@
+{
+  "engineVersion": 1,
+  "cases": [
+    {
+      "id": "strict-absolute",
+      "votes": [
+        {
+          "voterId": "a1",
+          "primary": "TERMINATION",
+          "secondaries": [
+            "LTD"
+          ]
+        },
+        {
+          "voterId": "a2",
+          "primary": "TERMINATION",
+          "secondaries": [
+            "LTD"
+          ]
+        },
+        {
+          "voterId": "a3",
+          "primary": "TERMINATION",
+          "secondaries": [
+            "LTD"
+          ]
+        }
+      ],
+      "config": {},
+      "expect": {
+        "primary": "TERMINATION",
+        "secondaries": [
+          "LTD"
+        ],
+        "agreementClass": "strict",
+        "confidence": 1.0,
+        "riskBand": "low",
+        "humanDissent": false,
+        "humanBlock": "TERMINATION",
+        "llmBlock": null,
+        "autoLevel": "auto_1click"
+      }
+    },
+    {
+      "id": "humans-beat-llms",
+      "votes": [
+        {
+          "voterId": "a1",
+          "primary": "X"
+        },
+        {
+          "voterId": "a2",
+          "primary": "X"
+        },
+        {
+          "voterId": "a3",
+          "primary": "X"
+        },
+        {
+          "voterId": "claude",
+          "primary": "Y",
+          "isLlm": true
+        },
+        {
+          "voterId": "codex",
+          "primary": "Y",
+          "isLlm": true
+        },
+        {
+          "voterId": "mistral",
+          "primary": "Y",
+          "isLlm": true
+        }
+      ],
+      "config": {},
+      "expect": {
+        "primary": "X",
+        "secondaries": [],
+        "agreementClass": "strict",
+        "confidence": 0.75,
+        "riskBand": "high",
+        "humanDissent": true,
+        "humanBlock": "X",
+        "llmBlock": "Y",
+        "autoLevel": "manual"
+      }
+    },
+    {
+      "id": "human-dissent-strong-signal",
+      "votes": [
+        {
+          "voterId": "a1",
+          "primary": "PRIVACY"
+        },
+        {
+          "voterId": "a2",
+          "primary": "PRIVACY"
+        },
+        {
+          "voterId": "a3",
+          "primary": "PRIVACY"
+        },
+        {
+          "voterId": "claude",
+          "primary": "LIABILITY",
+          "isLlm": true
+        },
+        {
+          "voterId": "codex",
+          "primary": "LIABILITY",
+          "isLlm": true
+        },
+        {
+          "voterId": "mistral",
+          "primary": "LIABILITY",
+          "isLlm": true
+        }
+      ],
+      "config": {},
+      "expect": {
+        "primary": "PRIVACY",
+        "secondaries": [],
+        "agreementClass": "strict",
+        "confidence": 0.75,
+        "riskBand": "high",
+        "humanDissent": true,
+        "humanBlock": "PRIVACY",
+        "llmBlock": "LIABILITY",
+        "autoLevel": "manual"
+      }
+    },
+    {
+      "id": "auto-majority-llm-unanimous",
+      "votes": [
+        {
+          "voterId": "a1",
+          "primary": "X"
+        },
+        {
+          "voterId": "a2",
+          "primary": "X"
+        },
+        {
+          "voterId": "a3",
+          "primary": "Y"
+        },
+        {
+          "voterId": "claude",
+          "primary": "X",
+          "isLlm": true
+        },
+        {
+          "voterId": "codex",
+          "primary": "X",
+          "isLlm": true
+        },
+        {
+          "voterId": "mistral",
+          "primary": "X",
+          "isLlm": true
+        }
+      ],
+      "config": {},
+      "expect": {
+        "primary": "X",
+        "secondaries": [],
+        "agreementClass": "majority",
+        "confidence": 0.75,
+        "riskBand": "medium",
+        "humanDissent": false,
+        "humanBlock": "X",
+        "llmBlock": "X",
+        "autoLevel": "auto"
+      }
+    },
+    {
+      "id": "total-divergence",
+      "votes": [
+        {
+          "voterId": "a1",
+          "primary": "X"
+        },
+        {
+          "voterId": "a2",
+          "primary": "Y"
+        },
+        {
+          "voterId": "a3",
+          "primary": "Z"
+        }
+      ],
+      "config": {},
+      "expect": {
+        "primary": "X",
+        "secondaries": [],
+        "agreementClass": "divergence",
+        "confidence": 0.3333,
+        "riskBand": "high",
+        "humanDissent": false,
+        "humanBlock": "X",
+        "llmBlock": null,
+        "autoLevel": "manual"
+      }
+    },
+    {
+      "id": "secondary-two-of-three",
+      "votes": [
+        {
+          "voterId": "a1",
+          "primary": "X",
+          "secondaries": [
+            "S1"
+          ]
+        },
+        {
+          "voterId": "a2",
+          "primary": "X",
+          "secondaries": [
+            "S1"
+          ]
+        },
+        {
+          "voterId": "a3",
+          "primary": "X"
+        }
+      ],
+      "config": {},
+      "expect": {
+        "primary": "X",
+        "secondaries": [
+          "S1"
+        ],
+        "agreementClass": "majority",
+        "confidence": 1.0,
+        "riskBand": "medium",
+        "humanDissent": false,
+        "humanBlock": "X",
+        "llmBlock": null,
+        "autoLevel": "manual"
+      }
+    },
+    {
+      "id": "role-full-llm-tips",
+      "votes": [
+        {
+          "voterId": "a1",
+          "primary": "X"
+        },
+        {
+          "voterId": "c",
+          "primary": "Y",
+          "isLlm": true
+        },
+        {
+          "voterId": "d",
+          "primary": "Y",
+          "isLlm": true
+        },
+        {
+          "voterId": "m",
+          "primary": "Y",
+          "isLlm": true
+        },
+        {
+          "voterId": "n",
+          "primary": "Y",
+          "isLlm": true
+        }
+      ],
+      "config": {
+        "llm_role": "full"
+      },
+      "expect": {
+        "primary": "Y",
+        "secondaries": [],
+        "agreementClass": "strict",
+        "confidence": 0.5714,
+        "riskBand": "high",
+        "humanDissent": true,
+        "humanBlock": "X",
+        "llmBlock": "Y",
+        "autoLevel": "manual"
+      }
+    },
+    {
+      "id": "role-tiebreak",
+      "votes": [
+        {
+          "voterId": "a1",
+          "primary": "X"
+        },
+        {
+          "voterId": "a2",
+          "primary": "Y"
+        },
+        {
+          "voterId": "c",
+          "primary": "Y",
+          "isLlm": true
+        },
+        {
+          "voterId": "d",
+          "primary": "Y",
+          "isLlm": true
+        }
+      ],
+      "config": {
+        "llm_role": "tiebreak"
+      },
+      "expect": {
+        "primary": "Y",
+        "secondaries": [],
+        "agreementClass": "divergence",
+        "confidence": 0.625,
+        "riskBand": "high",
+        "humanDissent": true,
+        "humanBlock": "X",
+        "llmBlock": "Y",
+        "autoLevel": "manual"
+      }
+    },
+    {
+      "id": "role-ignore",
+      "votes": [
+        {
+          "voterId": "a1",
+          "primary": "X"
+        },
+        {
+          "voterId": "c",
+          "primary": "Y",
+          "isLlm": true
+        },
+        {
+          "voterId": "d",
+          "primary": "Y",
+          "isLlm": true
+        },
+        {
+          "voterId": "m",
+          "primary": "Y",
+          "isLlm": true
+        },
+        {
+          "voterId": "n",
+          "primary": "Y",
+          "isLlm": true
+        }
+      ],
+      "config": {
+        "llm_role": "ignore"
+      },
+      "expect": {
+        "primary": "X",
+        "secondaries": [],
+        "agreementClass": "strict",
+        "confidence": 1.0,
+        "riskBand": "high",
+        "humanDissent": true,
+        "humanBlock": "X",
+        "llmBlock": "Y",
+        "autoLevel": "manual"
+      }
+    },
+    {
+      "id": "empty-no-humans",
+      "votes": [
+        {
+          "voterId": "c",
+          "primary": "Y",
+          "isLlm": true
+        },
+        {
+          "voterId": "d",
+          "primary": "Y",
+          "isLlm": true
+        }
+      ],
+      "config": {},
+      "expect": {
+        "primary": "Y",
+        "secondaries": [],
+        "agreementClass": "empty",
+        "confidence": 1.0,
+        "riskBand": "medium",
+        "humanDissent": false,
+        "humanBlock": null,
+        "llmBlock": "Y",
+        "autoLevel": "manual"
+      }
+    },
+    {
+      "id": "per-annotator-weight",
+      "votes": [
+        {
+          "voterId": "a1",
+          "primary": "X"
+        },
+        {
+          "voterId": "a2",
+          "primary": "Y"
+        },
+        {
+          "voterId": "a3",
+          "primary": "Y"
+        }
+      ],
+      "config": {
+        "per_annotator": {
+          "a1": 10.0,
+          "a2": 1.0,
+          "a3": 1.0
+        }
+      },
+      "expect": {
+        "primary": "X",
+        "secondaries": [],
+        "agreementClass": "majority",
+        "confidence": 0.8333,
+        "riskBand": "medium",
+        "humanDissent": false,
+        "humanBlock": "X",
+        "llmBlock": null,
+        "autoLevel": "manual"
+      }
+    },
+    {
+      "id": "reliability-scaled",
+      "votes": [
+        {
+          "voterId": "a1",
+          "primary": "X"
+        },
+        {
+          "voterId": "a2",
+          "primary": "X"
+        },
+        {
+          "voterId": "a3",
+          "primary": "X"
+        }
+      ],
+      "config": {
+        "reliability": {
+          "X": 0.5
+        }
+      },
+      "expect": {
+        "primary": "X",
+        "secondaries": [],
+        "agreementClass": "strict",
+        "confidence": 0.5,
+        "riskBand": "low",
+        "humanDissent": false,
+        "humanBlock": "X",
+        "llmBlock": null,
+        "autoLevel": "auto_1click"
+      }
+    },
+    {
+      "id": "uncovered-ignored",
+      "votes": [
+        {
+          "voterId": "a1",
+          "primary": "X"
+        },
+        {
+          "voterId": "a2",
+          "primary": "X"
+        },
+        {
+          "voterId": "a3",
+          "primary": null
+        }
+      ],
+      "config": {},
+      "expect": {
+        "primary": "X",
+        "secondaries": [],
+        "agreementClass": "strict",
+        "confidence": 1.0,
+        "riskBand": "low",
+        "humanDissent": false,
+        "humanBlock": "X",
+        "llmBlock": null,
+        "autoLevel": "auto_1click"
+      }
+    },
+    {
+      "id": "majority-no-llm",
+      "votes": [
+        {
+          "voterId": "a1",
+          "primary": "X"
+        },
+        {
+          "voterId": "a2",
+          "primary": "X"
+        },
+        {
+          "voterId": "a3",
+          "primary": "Y"
+        }
+      ],
+      "config": {},
+      "expect": {
+        "primary": "X",
+        "secondaries": [],
+        "agreementClass": "majority",
+        "confidence": 0.6667,
+        "riskBand": "medium",
+        "humanDissent": false,
+        "humanBlock": "X",
+        "llmBlock": null,
+        "autoLevel": "manual"
+      }
+    },
+    {
+      "id": "strict-primary-diff-secondary",
+      "votes": [
+        {
+          "voterId": "a1",
+          "primary": "X",
+          "secondaries": [
+            "S1"
+          ]
+        },
+        {
+          "voterId": "a2",
+          "primary": "X",
+          "secondaries": [
+            "S2"
+          ]
+        },
+        {
+          "voterId": "a3",
+          "primary": "X"
+        }
+      ],
+      "config": {},
+      "expect": {
+        "primary": "X",
+        "secondaries": [],
+        "agreementClass": "majority",
+        "confidence": 1.0,
+        "riskBand": "medium",
+        "humanDissent": false,
+        "humanBlock": "X",
+        "llmBlock": null,
+        "autoLevel": "manual"
+      }
+    },
+    {
+      "id": "signal-role-keeps-dissent",
+      "votes": [
+        {
+          "voterId": "a1",
+          "primary": "X"
+        },
+        {
+          "voterId": "a2",
+          "primary": "X"
+        },
+        {
+          "voterId": "c",
+          "primary": "Y",
+          "isLlm": true
+        },
+        {
+          "voterId": "d",
+          "primary": "Y",
+          "isLlm": true
+        },
+        {
+          "voterId": "m",
+          "primary": "Y",
+          "isLlm": true
+        }
+      ],
+      "config": {
+        "llm_role": "signal"
+      },
+      "expect": {
+        "primary": "X",
+        "secondaries": [],
+        "agreementClass": "strict",
+        "confidence": 0.6667,
+        "riskBand": "high",
+        "humanDissent": true,
+        "humanBlock": "X",
+        "llmBlock": "Y",
+        "autoLevel": "manual"
+      }
+    }
+  ]
+}

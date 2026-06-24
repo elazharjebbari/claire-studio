@@ -1,0 +1,15 @@
+# Politique d'auto-résolution GOLD (déclarative, versionnée) — séparée du barème.
+version: 1
+rules:
+  - id: absolute_all
+    when: { agreement_class: strict, secondaries_identical: true, human_dissent: false }
+    action: auto_1click           # accord absolu : un clic valide tout le bloc contigu
+  - id: low_risk_consensus
+    when: { llm_unanimous_min: 3, annotators_majority_ratio: 0.66, risk_band: low, human_dissent: false }
+    action: auto
+  - id: default
+    when: {}
+    action: manual                # tout le reste : décision humaine requise
+notes:
+  - human_dissent (décision humaine != consensus LLM) force TOUJOURS manual + badge « signal fort ».
+  - secondaryPolicy=required => un bloc n'est auto que si les secondaires sont aussi tranchés.

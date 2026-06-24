@@ -1,0 +1,13 @@
+exigence,ecran,priorite,source-socle
+liste docs (statut/%/verrou/arbitres),Cockpit,P0,ProjectViewSet.documents
+voir accord strict/majoritaire/divergence,Atelier+Sidebar,P0,iaa._theme_set_vector
+accord sur primaire ET secondaires,Atelier,P0,ClauseTheme.role
+tous les outils de /annotate,Atelier,P0,ResizablePanels+panels
+navigation blocs similaires + divergences,Sidebar+Atelier,P0,divergence.ts/blocks.ts
+verrou d'arbitrage exclusif auto-expirant,Atelier,P0,Annotation.locked pattern+WS
+moteur de scoring + auto-resolution,transverse,P0,triage/rules.py+iaa
+config de campagne (pondérations/arbitres/partage),Studio config,P0,Project.settings+mergeUiPrefs
+stats A<->A / A<->LLM / A<->GOLD,Stats,P1,iaa.py+concordance.py
+export gold (intermediaire/final),Export,P1,ExportJob
+memoire config interface par document,transverse,P1,prefs perDoc
+clics successifs sans bouger la souris,Atelier,P0,QuickActionRail+useAnchoredPosition

@@ -1,0 +1,26 @@
+@startuml
+title Carte des ecrans — module GOLD (aller/retour)
+state "Page projet /projects/[slug]" as P
+state "Cockpit /gold" as C
+state "Stats /gold/stats" as S
+state "Atelier /gold/[doc]" as A
+state "Studio config /admin/projects/[slug]#resolution" as CFG
+state "Compare N-way (overlay)" as CMP
+state "Focus tunnel (overlay)" as F
+state "Export gold (overlay)" as E
+P --> C : Resolution GOLD (g o)
+C --> P : Retour projet (fil d'Ariane)
+C --> A : Arbitrer (o) [acquiert verrou]
+A --> C : < Cockpit / Echap [relache verrou]
+A --> A : doc suivant/precedent ([ ])
+C --> S : onglet Stats (s)
+S --> C : onglet Liste (l)
+C --> CFG : Config campagne (lead)
+CFG --> C : < Revenir
+A --> CMP : Comparer (c)
+CMP --> A : Echap (focus reparque)
+A --> F : Focus (f)
+F --> A : f/Echap (sur le conflit courant)
+C --> E : Exporter gold
+A --> E : Exporter ce doc
+@enduml
