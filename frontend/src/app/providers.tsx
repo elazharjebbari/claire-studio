@@ -17,6 +17,7 @@ import { useUiStore } from "@/store/ui";
 import { useApiErrorStore } from "@/store/apiErrors";
 import { setAuthExpiredHandler } from "@/lib/api/client";
 import { AuthGate } from "@/components/auth/AuthGate";
+import { useUiPrefsSync } from "@/lib/prefs/useUiPrefsSync";
 import { ApiErrorBanner } from "@/components/debug/ApiErrorBanner";
 import { DebugBar } from "@/components/debug/DebugBar";
 import { ErrorBoundary } from "@/components/debug/ErrorBoundary";
@@ -116,6 +117,12 @@ function useAuthExpiredRedirect() {
   }, []);
 }
 
+/** Monte la synchro des préférences par compte (rend null). */
+function UiPrefsSyncMount() {
+  useUiPrefsSync();
+  return null;
+}
+
 export function Providers({ children }: { children: React.ReactNode }) {
   const clientRef = useRef<QueryClient>();
   if (!clientRef.current) clientRef.current = makeClient();
@@ -138,6 +145,9 @@ export function Providers({ children }: { children: React.ReactNode }) {
     <QueryClientProvider client={clientRef.current}>
       <ErrorBoundary>
         <AuthGate>
+          {/* Sync des préférences PAR COMPTE : hydrate au login + PATCH /me débouncé.
+              DANS le gate (authentifié) pour les mêmes raisons que la DebugBar. */}
+          <UiPrefsSyncMount />
           {children}
           {/* DebugBar DANS le gate : /me n'est sondé qu'une fois authentifié
               (évite un 401 de fond pré-login qui boucle). */}

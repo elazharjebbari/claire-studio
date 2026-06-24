@@ -11,7 +11,6 @@ import { Button, StatusPill } from "@/components/ui/primitives";
 import { CertaintyPicker } from "@/components/ui/CertaintyPicker";
 import { useWorkspaceStore, type PrefillJudge } from "@/store/workspace";
 import { useAutosaveStore } from "@/store/autosave";
-import { useUiStore } from "@/store/ui";
 import { validationByIndex, validationSummary } from "@/lib/validation";
 import {
   useAnnotation,
@@ -28,14 +27,18 @@ import {
   ListChecks,
   Lock,
   LockOpen,
+  WandSparkles,
 } from "lucide-react";
 import { TRIAGE_ENABLED } from "@/lib/env";
 import { preClausesToPivot } from "@/lib/pivot";
-import { LLM_JUDGES } from "@/lib/llmJudges";
+import { LLM_JUDGES, llmJudgeLabel } from "@/lib/llmJudges";
+import { usePrefsStore } from "@/store/prefs";
 import { WorkspaceTourButton } from "./WorkspaceTourButton";
 import { DocumentSwitcher } from "./DocumentSwitcher";
 import { SubmitDialog } from "./SubmitDialog";
 import { SubmitSuccessDialog } from "./SubmitSuccessDialog";
+import { AutoPrefillConsentDialog } from "./AutoPrefillConsentDialog";
+import { PreferencesPopover } from "./PreferencesPopover";
 import { ConcordanceWidget } from "./ConcordanceWidget";
 import type { Certainty } from "@/types/contract";
 
@@ -81,8 +84,13 @@ export function WorkspaceToolbar({
   // R1 — lecture seule : on neutralise toutes les actions serveur de la barre
   // (soumission, snapshot, certitude, pré-remplissage) sur l'annotation d'autrui.
   const readOnly = useWorkspaceStore((s) => s.readOnly);
-  const inspectorOpen = useUiStore((s) => s.inspectorOpen);
-  const toggleInspector = useUiStore((s) => s.toggleInspector);
+  // Panneau inspecteur : état PAR COMPTE (store de prefs, synchronisé serveur).
+  const inspectorOpen = usePrefsStore((s) => s.prefs.panels.inspectorOpen);
+  const setPanel = usePrefsStore((s) => s.setPanel);
+  const toggleInspector = () => setPanel("inspectorOpen", !inspectorOpen);
+  // Auto-pré-annotation (point produit) : préférence PAR COMPTE.
+  const autoPrefill = usePrefsStore((s) => s.prefs.prefill);
+  const setPrefillPref = usePrefsStore((s) => s.setPrefill);
 
   const patchAnnotation = usePatchAnnotation(annotationId);
   const { mutate: createVersionMutate } = useCreateVersion(annotationId);
@@ -97,6 +105,8 @@ export function WorkspaceToolbar({
   const flushAutosave = useAutosaveStore((s) => s.flush);
   // Juge en attente de CONFIRMATION d'écrasement (le pré-remplissage remplace tout).
   const [pendingPrefill, setPendingPrefill] = useState<Exclude<PrefillJudge, null> | null>(null);
+  // Juge pour lequel on DEMANDE le consentement auto-prefill (1ère exécution manuelle).
+  const [consentJudge, setConsentJudge] = useState<string | null>(null);
 
   // Pré-remplissage : applique la segmentation du juge (ÉCRASE l'annotation courante)
   // ou retire le pré-remplissage (judge = null).
@@ -108,6 +118,8 @@ export function WorkspaceToolbar({
     const pre = preClaude?.results.find((p) => p.judge === judge);
     if (!pre) return;
     replacePrefill(preClausesToPivot(pre.clauses), judge);
+    // 1ère exécution MANUELLE → demander si on auto-exécute désormais (une seule fois/compte).
+    if (!usePrefsStore.getState().prefs.prefill.asked) setConsentJudge(judge);
   }
 
   // Demande de pré-remplissage : confirme l'ÉCRASEMENT si des annotations existent
@@ -277,6 +289,34 @@ export function WorkspaceToolbar({
           );
         })}
       </div>
+
+      {/* Auto-pré-annotation (point produit) : icône discrète de (ré)activation, homogène à
+          la toolbar. HORS du radiogroup (a11y : un radiogroup ne contient que des radios).
+          Désactivée tant qu'aucun modèle n'est armé (choisi via la modale ou le popover). */}
+      <button
+        type="button"
+        data-testid="autoprefill-toggle"
+        aria-pressed={autoPrefill.enabled}
+        disabled={readOnly || !autoPrefill.judge}
+        onClick={() => setPrefillPref({ enabled: !autoPrefill.enabled })}
+        title={
+          autoPrefill.judge
+            ? autoPrefill.enabled
+              ? `Auto-pré-annotation activée : ${llmJudgeLabel(autoPrefill.judge)} (à l'ouverture d'un document vierge)`
+              : `Auto-pré-annotation désactivée — cliquez pour activer (${llmJudgeLabel(autoPrefill.judge)})`
+            : "Auto-pré-annotation : choisissez d'abord un modèle (Préférences)"
+        }
+        className={
+          "inline-flex items-center rounded-md border p-1.5 transition-colors disabled:cursor-not-allowed disabled:opacity-40 " +
+          (autoPrefill.enabled
+            ? "border-accent/40 bg-accent/10 text-accent"
+            : "border-line text-ink-muted hover:bg-panel-muted hover:text-ink")
+        }
+      >
+        <WandSparkles size={14} aria-hidden />
+      </button>
+
+      <PreferencesPopover />
 
       <button
         type="button"
@@ -461,13 +501,11 @@ export function WorkspaceToolbar({
         >
           <div className="w-full max-w-md rounded-lg border border-line bg-elevated p-5 shadow-xl">
             <h2 className="font-display text-lg font-semibold text-ink">
-              Remplacer l'annotation par {pendingPrefill === "claude" ? "Claude" : "Codex"} ?
+              Remplacer l'annotation par {llmJudgeLabel(pendingPrefill)} ?
             </h2>
             <p className="mt-2 text-sm text-ink-muted">
               Le pré-remplissage applique la segmentation de{" "}
-              <strong className="text-ink">
-                {pendingPrefill === "claude" ? "Claude" : "Codex"}
-              </strong>{" "}
+              <strong className="text-ink">{llmJudgeLabel(pendingPrefill)}</strong>{" "}
               et <strong className="text-warning">écrase TOUTES vos annotations actuelles</strong>{" "}
               (y compris les annotations humaines). Vous pourrez ensuite les modifier, et{" "}
               <strong className="text-ink">annuler</strong> ce remplacement (⌘Z ou l'historique).
@@ -494,6 +532,21 @@ export function WorkspaceToolbar({
             </div>
           </div>
         </div>
+      )}
+
+      {/* 1ère exécution manuelle du prefill → demander l'auto-exécution (une fois/compte). */}
+      {consentJudge && (
+        <AutoPrefillConsentDialog
+          judge={consentJudge}
+          onActivate={() => {
+            setPrefillPref({ enabled: true, judge: consentJudge, asked: true });
+            setConsentJudge(null);
+          }}
+          onDecline={() => {
+            setPrefillPref({ asked: true });
+            setConsentJudge(null);
+          }}
+        />
       )}
     </div>
   );

@@ -20,6 +20,7 @@ from .serializers import (
     VerifyEmailSerializer,
 )
 from .tokens import read_email_verify_token, read_password_reset
+from .ui_prefs import merge_ui_preferences
 
 User = get_user_model()
 
@@ -45,9 +46,28 @@ class MeView(APIView):
 
     @extend_schema(request=ProfileUpdateSerializer, responses=UserSerializer)
     def patch(self, request):
-        ser = ProfileUpdateSerializer(request.user, data=request.data, partial=True)
-        ser.is_valid(raise_exception=True)
-        ser.save()
+        # Préférences UI par compte (point produit) : PATCH PARTIEL fusionné sur l'existant,
+        # whitelist stricte (jamais de JSON arbitraire), version forcée. Le blob reste
+        # camelCase verbatim (exclu de la conversion via JSON_UNDERSCOREIZE.ignore_fields).
+        if "ui_preferences" in request.data:
+            incoming = request.data.get("ui_preferences")
+            if not isinstance(incoming, dict):
+                return Response(
+                    {"detail": "uiPreferences must be an object."},
+                    status=status.HTTP_400_BAD_REQUEST,
+                )
+            request.user.ui_preferences = merge_ui_preferences(
+                request.user.ui_preferences, incoming
+            )
+            request.user.save(update_fields=["ui_preferences"])
+
+        # Champs de profil (display_name / locale) — inchangés.
+        profile_fields = {k: request.data[k] for k in ("display_name", "locale") if k in request.data}
+        if profile_fields:
+            ser = ProfileUpdateSerializer(request.user, data=profile_fields, partial=True)
+            ser.is_valid(raise_exception=True)
+            ser.save()
+
         return Response(UserSerializer(request.user).data)
 
 

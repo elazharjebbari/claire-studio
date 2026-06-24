@@ -24,6 +24,11 @@ class User(AbstractUser):
     locale = models.CharField(max_length=12, default="en")
     # Vérification e-mail (chantier E). Les comptes seedés sont marqués vérifiés.
     is_email_verified = models.BooleanField(default=False)
+    # Préférences d'interface PAR COMPTE (overlays atelier, panneaux, auto-pré-annotation) —
+    # blob JSON versionné camelCase (contrat front lib/prefs/schema.ts), fusionné aux défauts
+    # à la lecture. Absence = défauts front (aucune data-migration). Whitelisté à l'écriture
+    # via accounts.ui_prefs.merge_ui_preferences ; exclu de la conversion camel↔snake.
+    ui_preferences = models.JSONField(default=dict, blank=True)
 
     REQUIRED_FIELDS = ["email"]
 

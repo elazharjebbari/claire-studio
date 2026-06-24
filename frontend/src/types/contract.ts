@@ -59,6 +59,8 @@ export interface User {
   locale?: string;
   /** Vérification e-mail (chantier E). */
   isEmailVerified?: boolean;
+  /** Préférences d'interface PAR COMPTE (blob camelCase versionné ; cf. lib/prefs/schema). */
+  uiPreferences?: Record<string, unknown>;
 }
 
 export interface Corpus {

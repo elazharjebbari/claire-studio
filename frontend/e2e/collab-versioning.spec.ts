@@ -22,6 +22,9 @@ test.describe("Collaboration & versioning — socle (points 0,1,2)", () => {
     // La session a déjà des clauses → chaque bascule demande CONFIRMATION d'écrasement.
     await claude.click();
     await page.getByTestId("prefill-confirm-ok").click();
+    // 1ère exécution manuelle → modale de consentement auto-prefill : on refuse pour continuer.
+    const decline = page.getByTestId("auto-prefill-decline");
+    if (await decline.isVisible().catch(() => false)) await decline.click();
     await expect(claude).toHaveAttribute("aria-checked", "true");
     await codex.click();
     await page.getByTestId("prefill-confirm-ok").click();

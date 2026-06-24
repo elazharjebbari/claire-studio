@@ -207,6 +207,14 @@ interface WorkspaceState {
     nSentences: number;
     clauses: Clause[];
     readOnly?: boolean;
+    /** Défauts d'overlays PAR COMPTE (store de prefs). Sans quoi on retombe sur les défauts
+     * historiques (injustice visible, VO, source humaine) — fin du « reconfigurer par doc ». */
+    overlays?: {
+      showUnfairness?: boolean;
+      displayLang?: "orig" | "both" | "fr";
+      llmSource?: LlmSource;
+      ghostJudges?: Record<string, boolean>;
+    };
   }) => void;
   focusSentence: (index: number) => void;
   moveFocus: (delta: number) => void;
@@ -460,8 +468,8 @@ export const useWorkspaceStore = create<WorkspaceState>((set, get) => ({
   readOnly: false,
   dirty: false,
 
-  init: ({ annotationId, nSentences, clauses, readOnly = false }) =>
-    set({
+  init: ({ annotationId, nSentences, clauses, readOnly = false, overlays }) =>
+    set((s) => ({
       annotationId,
       nSentences,
       readOnly,
@@ -473,8 +481,12 @@ export const useWorkspaceStore = create<WorkspaceState>((set, get) => ({
       selectedSentences: [],
       selectedClauseIds: [],
       translatedSentences: [],
-      displayLang: "orig",
-      llmSource: "human",
+      // Overlays/affichage = défauts PAR COMPTE (au lieu d'un hard-reset par document).
+      // Repli sur les valeurs historiques si non fournis.
+      showUnfairness: overlays?.showUnfairness ?? s.showUnfairness,
+      ghostJudges: overlays?.ghostJudges ?? s.ghostJudges,
+      displayLang: overlays?.displayLang ?? "orig",
+      llmSource: overlays?.llmSource ?? "human",
       llmVersion: null,
       showComparePanel: false,
       showAttribution: false,
@@ -482,7 +494,7 @@ export const useWorkspaceStore = create<WorkspaceState>((set, get) => ({
       actionLog: [],
       undoStack: [],
       redoStack: [],
-    }),
+    })),
 
   focusSentence: (index) =>
     set((s) => ({

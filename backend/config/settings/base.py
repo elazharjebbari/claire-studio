@@ -188,6 +188,12 @@ REST_FRAMEWORK = {
         "djangorestframework_camel_case.parser.CamelCaseFormParser",
         "djangorestframework_camel_case.parser.CamelCaseMultiPartParser",
     ),
+    # `ui_preferences` (préférences UI par compte) est un BLOB JSON dont les clés internes
+    # SONT déjà en camelCase (contrat front lib/prefs/schema.ts) et dont certaines clés sont
+    # des ids de modèle LIBRES (map ghostJudges). On l'exclut de la conversion camel↔snake
+    # pour le préserver VERBATIM dans les deux sens (sinon les clés imbriquées seraient
+    # snake-isées au parse et re-camelisées au render, corrompant les ids de juge).
+    "JSON_UNDERSCOREIZE": {"ignore_fields": ("ui_preferences", "uiPreferences")},
     "DEFAULT_AUTHENTICATION_CLASSES": (
         "rest_framework_simplejwt.authentication.JWTAuthentication",
         "rest_framework.authentication.SessionAuthentication",

@@ -37,6 +37,9 @@ export function ProvenanceMark({ clause, showLevel = true, size = 12, className 
       data-testid="provenance-mark"
       data-provenance={d.validated ? d.provenance : "pending"}
       data-state={d.state}
+      // role="img" : rend `aria-label` permis sur ce span (sinon axe `aria-prohibited-attr` :
+      // aria-label interdit sur un span sans rôle). L'icône interne reste aria-hidden.
+      role="img"
       title={d.label}
       aria-label={d.label}
       className={cn("inline-flex items-center gap-0.5 leading-none", d.colorClass, className)}

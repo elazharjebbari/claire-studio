@@ -94,6 +94,11 @@ export function updateProfile(payload: {
   return apiFetch<User>("/me", { method: "PATCH", body: payload });
 }
 
+/** Persiste les préférences d'interface PAR COMPTE (blob camelCase, fusionné côté serveur). */
+export function patchUiPreferences(uiPreferences: unknown): Promise<User> {
+  return apiFetch<User>("/me", { method: "PATCH", body: { uiPreferences } });
+}
+
 /** GET /health (sans auth) — état du backend (status + compteurs). */
 export function getHealth(): Promise<HealthStatus> {
   return apiFetch<HealthStatus>("/health");

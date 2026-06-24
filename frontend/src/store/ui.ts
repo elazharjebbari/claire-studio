@@ -10,9 +10,13 @@ import { persist } from "zustand/middleware";
 
 export type ColorTheme = "dark" | "light";
 
+/**
+ * Couche SHELL / POSTE (par navigateur) — ce qui dépend de l'écran. Les états « par compte »
+ * (inspecteur/sidebar ouverts, overlays atelier, auto-pré-annotation) vivent désormais dans le
+ * store de préférences PAR COMPTE (`store/prefs.ts`), synchronisé serveur.
+ */
 interface UiState {
   theme: ColorTheme;
-  sidebarCollapsed: boolean;
   currentProjectSlug: string | null;
   commandPaletteOpen: boolean;
   density: "comfortable" | "compact";
@@ -20,21 +24,17 @@ interface UiState {
   gutterModels: Record<string, boolean>;
   /** Réglette : afficher la teinte/abréviation de catégorie par segment (défaut off). */
   gutterShowCategory: boolean;
-  /** Panneau Inspecteur (droite) ouvert/replié — gain d'espace (point f). */
-  inspectorOpen: boolean;
   /** Zoom du texte de lecture (1 = défaut). Borné [0.8, 1.6] (lisibilité). */
   readingZoom: number;
   /** Lignes élargies : utilise la largeur libérée (ex. inspecteur replié). */
   readingWide: boolean;
   toggleTheme: () => void;
   setTheme: (t: ColorTheme) => void;
-  toggleSidebar: () => void;
   setCurrentProject: (slug: string | null) => void;
   setCommandPaletteOpen: (open: boolean) => void;
   setDensity: (d: "comfortable" | "compact") => void;
   toggleGutterModel: (id: string) => void;
   toggleGutterCategory: () => void;
-  toggleInspector: () => void;
   setReadingZoom: (z: number) => void;
   toggleReadingWide: () => void;
 }
@@ -43,18 +43,15 @@ export const useUiStore = create<UiState>()(
   persist(
     (set) => ({
       theme: "dark",
-      sidebarCollapsed: false,
       currentProjectSlug: null,
       commandPaletteOpen: false,
       density: "comfortable",
       gutterModels: {},
       gutterShowCategory: false,
-      inspectorOpen: true,
       readingZoom: 1,
       readingWide: false,
       toggleTheme: () => set((s) => ({ theme: s.theme === "dark" ? "light" : "dark" })),
       setTheme: (theme) => set({ theme }),
-      toggleSidebar: () => set((s) => ({ sidebarCollapsed: !s.sidebarCollapsed })),
       setCurrentProject: (currentProjectSlug) => set({ currentProjectSlug }),
       setCommandPaletteOpen: (commandPaletteOpen) => set({ commandPaletteOpen }),
       setDensity: (density) => set({ density }),
@@ -62,7 +59,6 @@ export const useUiStore = create<UiState>()(
       toggleGutterModel: (id) =>
         set((s) => ({ gutterModels: { ...s.gutterModels, [id]: s.gutterModels[id] === false } })),
       toggleGutterCategory: () => set((s) => ({ gutterShowCategory: !s.gutterShowCategory })),
-      toggleInspector: () => set((s) => ({ inspectorOpen: !s.inspectorOpen })),
       setReadingZoom: (z) => set({ readingZoom: Math.max(0.8, Math.min(1.6, z)) }),
       toggleReadingWide: () => set((s) => ({ readingWide: !s.readingWide })),
     }),
@@ -70,12 +66,10 @@ export const useUiStore = create<UiState>()(
       name: "claire.ui",
       partialize: (s) => ({
         theme: s.theme,
-        sidebarCollapsed: s.sidebarCollapsed,
         currentProjectSlug: s.currentProjectSlug,
         density: s.density,
         gutterModels: s.gutterModels,
         gutterShowCategory: s.gutterShowCategory,
-        inspectorOpen: s.inspectorOpen,
         readingZoom: s.readingZoom,
         readingWide: s.readingWide,
       }),

@@ -17,12 +17,15 @@ import {
   useMe,
   useLockAnnotation,
   useUnlockAnnotation,
+  usePreAnnotations,
 } from "@/lib/api/hooks";
 import { useWorkspaceStore } from "@/store/workspace";
 import { useUiStore } from "@/store/ui";
+import { usePrefsStore } from "@/store/prefs";
 import { useAutosaveStore } from "@/store/autosave";
 import { setRuntimeThemes } from "@/lib/tokens";
 import { llmJudgeLabel } from "@/lib/llmJudges";
+import { preClausesToPivot } from "@/lib/pivot";
 import { ResizablePanels } from "./ResizablePanels";
 import { TocPanel } from "./TocPanel";
 import { DocumentPanel } from "./DocumentPanel";
@@ -87,15 +90,31 @@ export function AnnotationWorkspace({ annotationId }: { annotationId: string }) 
   // référence) ; « compare » = superposition. Sert la bannière de contexte ci-dessous.
   const llmSource = useWorkspaceStore((s) => s.llmSource);
   const isJudgeView = isMine && llmSource !== "human" && llmSource !== "compare";
+  // Overlays live (pour le PONT vers les prefs PAR COMPTE). `llmSource` n'est PAS ponté : il
+  // double comme mode de consultation transitoire (vue-juge), on ne le persiste donc pas.
+  const showUnfairness = useWorkspaceStore((s) => s.showUnfairness);
+  const ghostJudges = useWorkspaceStore((s) => s.ghostJudges);
+  const displayLang = useWorkspaceStore((s) => s.displayLang);
   const setCurrentProject = useUiStore((s) => s.setCurrentProject);
-  // Point f : repli de l'inspecteur (droite) pour gagner de l'espace, persisté.
-  const inspectorOpen = useUiStore((s) => s.inspectorOpen);
-  const toggleInspector = useUiStore((s) => s.toggleInspector);
+  // États de panneaux PAR COMPTE (store de prefs, synchronisé serveur) : inspecteur replié
+  // (point f) + panneaux historique/commentaires/triage (auparavant éphémères par doc).
+  const panels = usePrefsStore((s) => s.prefs.panels);
+  const setPanel = usePrefsStore((s) => s.setPanel);
+  const inspectorOpen = panels.inspectorOpen;
+  const toggleInspector = useCallback(
+    () => setPanel("inspectorOpen", !usePrefsStore.getState().prefs.panels.inspectorOpen),
+    [setPanel],
+  );
+  const showHistory = panels.historyOpen;
+  const showComments = panels.commentsOpen;
+  const showTriage = panels.triageOpen;
+  // Auto-pré-annotation PAR COMPTE + données de pré-annotation du document (pour l'effet).
+  const autoPrefill = usePrefsStore((s) => s.prefs.prefill);
+  const replacePrefill = useWorkspaceStore((s) => s.replacePrefill);
+  const { data: preData } = usePreAnnotations(annotation?.projectSlug, annotation?.documentId);
+  const autoPrefilledRef = useRef<string | null>(null);
   const [snapshotFn, setSnapshotFn] = useState<(() => void) | null>(null);
   const registerSnapshot = useCallback((fn: () => void) => setSnapshotFn(() => fn), []);
-  const [showHistory, setShowHistory] = useState(false);
-  const [showComments, setShowComments] = useState(false);
-  const [showTriage, setShowTriage] = useState(false);
 
   // Nettoyage à la sortie du workspace UNIQUEMENT (démontage). Séparé de l'init pour
   // ne pas réinitialiser le store à chaque re-rendu/refetch.
@@ -113,6 +132,10 @@ export function AnnotationWorkspace({ annotationId }: { annotationId: string }) 
   const nSent = doc?.nSentences;
   useEffect(() => {
     if (!annotation || !doc) return;
+    // Overlays SEMÉS depuis les prefs PAR COMPTE (lus à l'instant, hors dépendances pour ne
+    // pas ré-initialiser à chaque toggle) → fin du « reconfigurer à chaque document ».
+    const o = usePrefsStore.getState().prefs.overlays;
+    const g = usePrefsStore.getState().prefs.ghostJudges;
     init({
       annotationId: annotation.id,
       nSentences: doc.nSentences,
@@ -121,9 +144,58 @@ export function AnnotationWorkspace({ annotationId }: { annotationId: string }) 
       // document est VERROUILLÉ (soumis / verrou manuel). Le déverrouillage (qui change
       // `locked`) ré-initialise et rend l'édition.
       readOnly: !isMine || locked,
+      overlays: {
+        showUnfairness: o.showUnfairness,
+        displayLang: o.displayLang,
+        llmSource: o.llmSource,
+        ghostJudges: g,
+      },
     });
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [annId, docId, nSent, isMine, locked, init]);
+
+  // AUTO-PRÉ-ANNOTATION à l'ouverture (point produit) — effet SÉPARÉ d'init (hors de ses
+  // dépendances) pour ne pas ré-initialiser. Gardé STRICTEMENT : ma session, non verrouillé,
+  // activé + modèle armé, document VIERGE (annotation serveur sans clause → jamais
+  // d'écrasement), modèle disponible pour ce doc. Drapeau anti-ré-exécution par annotationId.
+  useEffect(() => {
+    if (!annotation || !doc || !isMine || locked) return;
+    if (!autoPrefill.enabled || !autoPrefill.judge) return;
+    if ((annotation.clauses?.length ?? 0) !== 0) return; // document non vierge → on ne touche pas
+    if (autoPrefilledRef.current === annotation.id) return;
+    const pre = preData?.results.find((p) => p.judge === autoPrefill.judge);
+    if (!pre) return; // pré-annotation du modèle absente pour ce doc → sauté silencieusement
+    autoPrefilledRef.current = annotation.id;
+    replacePrefill(preClausesToPivot(pre.clauses), autoPrefill.judge);
+  }, [
+    annId,
+    docId,
+    isMine,
+    locked,
+    autoPrefill.enabled,
+    autoPrefill.judge,
+    preData,
+    annotation,
+    doc,
+    replacePrefill,
+  ]);
+
+  // PONT overlays atelier → prefs PAR COMPTE : persiste les toggles d'affichage (injustice,
+  // langue, fantômes LLM) pour qu'ils suivent le compte. Idempotent côté store (no-op si
+  // inchangé) → aucun écho lors du semis par init(). `llmSource` exclu (mode transitoire).
+  const setOverlaysPref = usePrefsStore((s) => s.setOverlays);
+  const setGhostJudgePref = usePrefsStore((s) => s.setGhostJudge);
+  useEffect(() => {
+    if (!isMine) return; // en lecture seule (annotation d'autrui), on ne persiste rien
+    setOverlaysPref({ showUnfairness, displayLang });
+  }, [isMine, showUnfairness, displayLang, setOverlaysPref]);
+  useEffect(() => {
+    if (!isMine) return;
+    const cur = usePrefsStore.getState().prefs.ghostJudges;
+    for (const [judge, visible] of Object.entries(ghostJudges)) {
+      if (cur[judge] !== visible) setGhostJudgePref(judge, visible);
+    }
+  }, [isMine, ghostJudges, setGhostJudgePref]);
 
   // R4 — aligne le projet courant sur le document réellement ouvert (nav cohérente :
   // file de travail, breadcrumbs, sélecteur de la TopBar suivent ce projet).
@@ -216,9 +288,9 @@ export function AnnotationWorkspace({ annotationId }: { annotationId: string }) 
         projectSlug={annotation.projectSlug}
         documentId={annotation.documentId}
         onSnapshotRef={registerSnapshot}
-        onToggleHistory={() => setShowHistory((v) => !v)}
-        onToggleComments={() => setShowComments((v) => !v)}
-        onToggleTriage={isMine ? () => setShowTriage((v) => !v) : undefined}
+        onToggleHistory={() => setPanel("historyOpen", !showHistory)}
+        onToggleComments={() => setPanel("commentsOpen", !showComments)}
+        onToggleTriage={isMine ? () => setPanel("triageOpen", !showTriage) : undefined}
         locked={locked}
         onLock={
           isMine && !locked
@@ -368,17 +440,17 @@ export function AnnotationWorkspace({ annotationId }: { annotationId: string }) 
           <CommentsPanel
             annotationId={annotation.id}
             documentId={annotation.documentId}
-            onClose={() => setShowComments(false)}
+            onClose={() => setPanel("commentsOpen", false)}
           />
         )}
-        {showHistory && <HistoryPanel onClose={() => setShowHistory(false)} />}
+        {showHistory && <HistoryPanel onClose={() => setPanel("historyOpen", false)} />}
         {TRIAGE_ENABLED && isMine && showTriage && (
           <TriageQueue
             annotationId={annotation.id}
             documentId={annotation.documentId}
             projectSlug={annotation.projectSlug}
             sentences={doc.sentences}
-            onClose={() => setShowTriage(false)}
+            onClose={() => setPanel("triageOpen", false)}
           />
         )}
       </div>

@@ -26,7 +26,7 @@ import {
 } from "lucide-react";
 import { cn } from "@/lib/cn";
 import { Logo } from "@/components/brand/Logo";
-import { useUiStore } from "@/store/ui";
+import { usePrefsStore } from "@/store/prefs";
 import { useCurrentProjectSlug } from "@/lib/useCurrentProject";
 import { useMe } from "@/lib/api/hooks";
 import { isAdminRole } from "@/lib/roles";
@@ -78,8 +78,10 @@ const ADMIN_NAV: NavItem[] = [
 ];
 
 export function Sidebar() {
-  const collapsed = useUiStore((s) => s.sidebarCollapsed);
-  const toggle = useUiStore((s) => s.toggleSidebar);
+  // État PAR COMPTE (synchronisé serveur) : barre latérale repliée.
+  const collapsed = usePrefsStore((s) => s.prefs.panels.sidebarCollapsed);
+  const setPanel = usePrefsStore((s) => s.setPanel);
+  const toggle = () => setPanel("sidebarCollapsed", !collapsed);
   const project = useCurrentProjectSlug();
   const pathname = usePathname();
   const groups = navGroups(project);

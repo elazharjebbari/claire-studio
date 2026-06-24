@@ -53,6 +53,23 @@ let commentSeq = 100;
 let reviewSeq = 100;
 let translationSeq = 100;
 let projectLocked = false; // verrou NIVEAU PROJET (mutable, mock)
+// Préférences UI par compte (mock) : blob camelCase fusionné partiellement, comme le serveur.
+let meUiPreferences: Record<string, unknown> = {};
+function mergeDeep(
+  base: Record<string, unknown>,
+  patch: Record<string, unknown>,
+): Record<string, unknown> {
+  const out: Record<string, unknown> = { ...base };
+  for (const [k, v] of Object.entries(patch ?? {})) {
+    const cur = out[k];
+    if (v && typeof v === "object" && !Array.isArray(v) && cur && typeof cur === "object" && !Array.isArray(cur)) {
+      out[k] = mergeDeep(cur as Record<string, unknown>, v as Record<string, unknown>);
+    } else {
+      out[k] = v;
+    }
+  }
+  return out;
+}
 
 export function resetDb(): void {
   annotation = structuredClone(FIXTURE_ANNOTATION);
@@ -64,6 +81,7 @@ export function resetDb(): void {
   reviewSeq = 100;
   translationSeq = 100;
   projectLocked = false;
+  meUiPreferences = {};
 }
 
 function page<T>(results: T[]) {
@@ -123,7 +141,20 @@ export const handlers = [
   http.post(`${BASE}/auth/refresh`, () =>
     HttpResponse.json({ access: "mock-access-token-refreshed" }),
   ),
-  http.get(`${BASE}/me`, () => HttpResponse.json(FIXTURE_USER)),
+  // /me — état mutable des préférences UI par compte (persistance simulée pour les tests).
+  http.get(`${BASE}/me`, () =>
+    HttpResponse.json({ ...FIXTURE_USER, uiPreferences: meUiPreferences }),
+  ),
+  http.patch(`${BASE}/me`, async ({ request }) => {
+    const body = (await request.json().catch(() => ({}))) as Record<string, unknown>;
+    if (body && typeof body === "object" && "uiPreferences" in body) {
+      // Fusion partielle (miroir du merge serveur) sur l'état en mémoire.
+      meUiPreferences = mergeDeep(meUiPreferences, body.uiPreferences as Record<string, unknown>);
+    }
+    const profile: Record<string, unknown> = {};
+    for (const k of ["displayName", "locale"]) if (k in body) profile[k] = body[k];
+    return HttpResponse.json({ ...FIXTURE_USER, ...profile, uiPreferences: meUiPreferences });
+  }),
   // Sonde de santé (sans auth) — utilisée par la DebugBar / useHealth.
   http.get(`${BASE}/health`, () =>
     HttpResponse.json({ status: "ok", documents: 1, annotations: 1 }),
