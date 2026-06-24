@@ -19,6 +19,11 @@ if (typeof window !== "undefined" && !window.localStorage) {
   });
 }
 
+// jsdom n'implémente pas scrollIntoView (utilisé par les panneaux qui suivent la sélection).
+if (typeof Element !== "undefined" && !Element.prototype.scrollIntoView) {
+  Element.prototype.scrollIntoView = function scrollIntoView() {};
+}
+
 beforeAll(() => server.listen({ onUnhandledRequest: "bypass" }));
 afterEach(() => {
   server.resetHandlers();
