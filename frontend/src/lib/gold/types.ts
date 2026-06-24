@@ -109,3 +109,28 @@ export interface GoldAutoResolveResponse {
   status: GoldStatus;
   pctResolved: number;
 }
+
+export interface GoldStatRow {
+  username: string;
+  displayName: string;
+  color: string;
+  pct: number | null;
+  n: number;
+  matches: number;
+}
+
+export interface GoldJudgeRow {
+  judge: string;
+  pct: number | null;
+  n: number;
+  matches: number;
+}
+
+export interface GoldStats {
+  annotators: GoldStatRow[];
+  judges: GoldJudgeRow[];
+  closestToGold: { username: string; displayName: string; pct: number } | null;
+  documentsCompared: number;
+  goldCovered: number;
+  iaa: { meanKappa: number | null; pairs?: unknown[] } | null;
+}

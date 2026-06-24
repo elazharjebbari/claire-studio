@@ -189,6 +189,11 @@ def run_export(job: ExportJob) -> ExportJob:
     job.save(update_fields=["status", "error"])
 
     try:
+        # Export du gold (scope.gold) — voie dédiée (snapshot par phrase, pas par annotateur).
+        if (job.scope or {}).get("gold"):
+            from claire.gold.export import run_gold_export
+
+            return run_gold_export(job)
         with transaction.atomic():
             records = [build_snapshot(a) for a in _selected_annotations(job)]
 

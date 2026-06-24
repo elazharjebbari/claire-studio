@@ -751,3 +751,20 @@ export const FIXTURE_GOLD_DETAIL = {
     },
   ],
 };
+
+export const FIXTURE_GOLD_STATS = {
+  annotators: [
+    { username: "alice", displayName: "Alice", color: "#3B82F6", pct: 92.0, n: 25, matches: 23 },
+    { username: "bob", displayName: "Bob", color: "#10B981", pct: 80.0, n: 25, matches: 20 },
+    { username: "carol", displayName: "Carol", color: "#F59E0B", pct: 64.0, n: 22, matches: 14 },
+  ],
+  judges: [
+    { judge: "claude", pct: 78.0, n: 30, matches: 23 },
+    { judge: "codex", pct: 71.0, n: 30, matches: 21 },
+    { judge: "mistral", pct: 66.0, n: 30, matches: 20 },
+  ],
+  closestToGold: { username: "alice", displayName: "Alice", pct: 92.0 },
+  documentsCompared: 3,
+  goldCovered: 25,
+  iaa: { meanKappa: 0.74, pairs: [] },
+};

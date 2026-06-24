@@ -49,6 +49,7 @@ export const qk = {
   translationSets: ["translations", "sets"] as const,
   goldDocuments: (slug: string) => ["projects", slug, "gold", "documents"] as const,
   goldDocument: (slug: string, ext: string) => ["projects", slug, "gold", ext] as const,
+  goldStats: (slug: string) => ["projects", slug, "gold", "stats"] as const,
 };
 
 export function useMe() {
@@ -689,5 +690,14 @@ export function useStealGoldLock(slug: string, externalId: string) {
   return useMutation({
     mutationFn: () => api.stealGoldLock(slug, externalId),
     onSuccess: invalidate,
+  });
+}
+
+/** Stats de concordance GOLD (A↔GOLD, LLM↔GOLD, A↔A). */
+export function useGoldStats(slug?: string) {
+  return useQuery({
+    queryKey: qk.goldStats(slug ?? ""),
+    queryFn: () => api.getGoldStats(slug!),
+    enabled: Boolean(slug),
   });
 }

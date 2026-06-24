@@ -732,6 +732,21 @@ class ProjectViewSet(viewsets.ModelViewSet):
             })
         return Response(results_envelope(rows))
 
+    # NB : `gold_concordance` (chemin gold/stats) doit trier AVANT `gold_detail`
+    # (regex gold/<id>) — nom de méthode 'gold_co…' < 'gold_de…'.
+    @action(detail=True, methods=["get"], url_path="gold/stats")
+    def gold_concordance(self, request, slug=None):
+        """Stats de concordance : A↔GOLD (qui est le plus proche), LLM↔GOLD, et A↔A (IAA)."""
+        from claire.gold.stats import gold_stats
+
+        project = self.get_object()
+        data = gold_stats(project)
+        try:
+            data["iaa"] = project_iaa(project)
+        except Exception:  # noqa: BLE001 — l'IAA ne doit jamais casser l'écran stats
+            data["iaa"] = None
+        return Response(data)
+
     # ── helper commun : (project, document, resolution|None) SANS création ──
     def _gold_ctx(self, document_id):
         project = self.get_object()

@@ -6,12 +6,15 @@
  * Couleurs par tokens sémantiques (zéro hex), encodage statut = pastille + texte + barre.
  */
 
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import Link from "next/link";
-import { Gavel, Lock, ShieldCheck, AlertTriangle } from "lucide-react";
-import { useGoldDocuments, useProject } from "@/lib/api/hooks";
+import { useMutation } from "@tanstack/react-query";
+import { Gavel, Lock, ShieldCheck, AlertTriangle, BarChart3, Download } from "lucide-react";
+import { useGoldDocuments, useProject, useMe } from "@/lib/api/hooks";
+import { createExport } from "@/lib/api/endpoints";
+import { isAdminRole } from "@/lib/roles";
 import { useUiStore } from "@/store/ui";
-import { Panel } from "@/components/ui/primitives";
+import { Button, Panel } from "@/components/ui/primitives";
 import { summarize } from "@/lib/gold/cockpit";
 import { STATUS_META, progressBarClass } from "@/lib/gold/styling";
 import type { GoldDocumentRow } from "@/lib/gold/types";
@@ -115,7 +118,15 @@ export function GoldCockpit({ slug }: { slug: string }) {
   useEffect(() => setProject(slug), [slug, setProject]);
 
   const { data: project } = useProject(slug);
+  const { data: me } = useMe();
+  const isAdmin = isAdminRole(me?.role);
   const { data, isLoading, error } = useGoldDocuments(slug);
+
+  const [exported, setExported] = useState(false);
+  const exportGold = useMutation({
+    mutationFn: () => createExport(slug, { format: "jsonl", scope: { gold: true } }),
+    onSuccess: () => setExported(true),
+  });
 
   if (isLoading) {
     return <div className="px-6 py-8 text-ink-muted">Chargement du cockpit GOLD…</div>;
@@ -138,10 +149,42 @@ export function GoldCockpit({ slug }: { slug: string }) {
         <h1 className="text-xl font-semibold text-ink">
           Résolution GOLD{project ? ` — ${project.name}` : ""}
         </h1>
+        <div className="ml-auto flex items-center gap-2">
+          <Link
+            href={`/projects/${slug}/gold/stats`}
+            data-testid="gold-stats-link"
+            className="inline-flex items-center gap-1 rounded-md border border-line bg-panel px-3 py-1.5 text-sm text-ink hover:bg-panel-muted"
+          >
+            <BarChart3 size={14} aria-hidden /> Stats
+          </Link>
+          {isAdmin && (
+            <Button
+              variant="subtle"
+              data-testid="gold-export"
+              disabled={exportGold.isPending}
+              onClick={() => exportGold.mutate()}
+              title="Exporter le gold décidé (tâche de fond)"
+            >
+              <Download size={14} aria-hidden /> Exporter le gold
+            </Button>
+          )}
+        </div>
       </div>
-      <p className="mb-5 text-sm text-ink-muted">
+      <p className="mb-2 text-sm text-ink-muted">
         Arbitrer les conflits inter-annotateurs pour décider le gold standard, document par document.
       </p>
+      {exported && (
+        <div
+          data-testid="gold-export-started"
+          className="mb-4 rounded-md border border-info/40 bg-info/10 px-3 py-1.5 text-[12px] text-info"
+        >
+          Export lancé en tâche de fond.{" "}
+          <Link href="/admin/exports" className="underline">
+            Suivre et télécharger dans Exports
+          </Link>
+          .
+        </div>
+      )}
 
       <div className="mb-6 grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-5">
         <Kpi label="Documents" value={String(s.total)} />

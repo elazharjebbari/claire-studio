@@ -542,6 +542,55 @@ def test_lock_acquire_blocked_when_project_frozen(campaign, auth):
     assert r.status_code == 423
 
 
+# ─────────────────────────────────────────────────────────────────────────────
+# V6 — stats de concordance + export gold
+# ─────────────────────────────────────────────────────────────────────────────
+def test_gold_stats_ranks_closest_to_gold(campaign, auth):
+    c = campaign
+    _detail(auth, c["lead"], c["project"], c["doc"])  # matérialise + auto-résout s0,s1,s4
+    r = auth(c["lead"]).get(f"/api/v1/projects/{c['project'].slug}/gold/stats")
+    assert r.status_code == 200, r.content
+    body = r.json()
+    anns = {a["username"]: a for a in body["annotators"]}
+    # gold = [META, TERMINATION, None, None, META] → alice/bob 100%, carol 50%.
+    assert anns["g_alice"]["pct"] == 100.0
+    assert anns["g_bob"]["pct"] == 100.0
+    assert anns["g_carol"]["pct"] == 50.0
+    assert body["closestToGold"]["pct"] == 100.0
+    # LLM↔GOLD présent (les 3 juges votent TERMINATION partout).
+    assert any(j["judge"] in {"claude", "codex", "mistral"} for j in body["judges"])
+    # A↔A (IAA) inclus.
+    assert "iaa" in body
+
+
+def test_gold_export_inline(campaign, auth, settings, tmp_path):
+    import json
+    import os
+
+    from claire.exports.models import ExportJob
+    from claire.exports.services import run_export
+
+    c = campaign
+    _detail(auth, c["lead"], c["project"], c["doc"])  # matérialise le gold
+    settings.EXPORTS_DIR = str(tmp_path)
+    job = ExportJob.objects.create(
+        project=c["project"], format="jsonl", scope={"gold": True}, requested_by=c["lead"]
+    )
+    run_export(job)
+    job.refresh_from_db()
+    assert job.status == "done"
+    assert job.manifest["kind"] == "gold"
+    assert job.manifest["n_documents"] >= 1
+    assert job.manifest["n_decided"] >= 3
+    assert os.path.exists(job.artifact_path)
+    lines = [json.loads(line) for line in open(job.artifact_path, encoding="utf-8") if line.strip()]
+    atlas = next(r for r in lines if r["document"] == c["doc"].external_id)
+    # Bloc d'arbitrage additif présent ; auto-résolu sur la phrase 0 (accord absolu).
+    s0 = next(s for s in atlas["sentences"] if s["index"] == 0)
+    assert s0["decided"] is True
+    assert s0["arbitration"]["auto_resolved"] is True
+
+
 def test_cockpit_hides_expired_lock(campaign, auth):
     c = campaign
     auth(c["lead"]).post(_lock_url(c), {}, format="json")

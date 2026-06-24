@@ -41,6 +41,7 @@ import {
   FIXTURE_VERSIONS,
   FIXTURE_GOLD_DOCUMENTS,
   FIXTURE_GOLD_DETAIL,
+  FIXTURE_GOLD_STATS,
 } from "./fixtures";
 
 const BASE = process.env.NEXT_PUBLIC_API_BASE ?? "/api/v1";
@@ -263,6 +264,7 @@ export const handlers = [
   http.get(`${BASE}/projects/:slug/gold/documents`, () =>
     HttpResponse.json(page(FIXTURE_GOLD_DOCUMENTS)),
   ),
+  http.get(`${BASE}/projects/:slug/gold/stats`, () => HttpResponse.json(FIXTURE_GOLD_STATS)),
   http.get(`${BASE}/projects/:slug/gold/:externalId`, ({ params }) =>
     HttpResponse.json({
       ...FIXTURE_GOLD_DETAIL,

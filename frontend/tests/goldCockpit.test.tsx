@@ -2,7 +2,7 @@
  * GoldCockpit — rendu de la liste des documents GOLD via MSW (statut, avancement, verrou).
  */
 import { afterEach, describe, expect, it } from "vitest";
-import { render, screen, cleanup, waitFor } from "@testing-library/react";
+import { render, screen, cleanup, waitFor, fireEvent } from "@testing-library/react";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { GoldCockpit } from "@/components/gold/GoldCockpit";
 
@@ -48,5 +48,18 @@ describe("GoldCockpit", () => {
     // 3 documents, 1 résolu.
     expect(kpis).toContain("3");
     expect(kpis).toContain("1/3");
+  });
+
+  it("expose le lien Stats et (admin) le bouton d'export gold", async () => {
+    render(<GoldCockpit slug="claudette-gold-v1" />, { wrapper: wrapper() });
+    await waitFor(() => expect(screen.getByTestId("gold-cockpit")).toBeInTheDocument());
+    expect(screen.getByTestId("gold-stats-link")).toHaveAttribute(
+      "href",
+      "/projects/claudette-gold-v1/gold/stats",
+    );
+    // FIXTURE_USER est admin → bouton d'export visible.
+    const exportBtn = await screen.findByTestId("gold-export");
+    fireEvent.click(exportBtn);
+    await waitFor(() => expect(screen.getByTestId("gold-export-started")).toBeInTheDocument());
   });
 });

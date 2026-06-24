@@ -11,6 +11,7 @@ import type {
   GoldDecideResponse,
   GoldAutoResolveResponse,
   GoldLockState,
+  GoldStats,
 } from "@/lib/gold/types";
 import type {
   Annotation,
@@ -721,6 +722,10 @@ export function listGoldDocuments(slug: string): Promise<Paginated<GoldDocumentR
 
 export function getGoldDocument(slug: string, externalId: string): Promise<GoldDocumentDetail> {
   return apiFetch<GoldDocumentDetail>(goldDoc(slug, externalId));
+}
+
+export function getGoldStats(slug: string): Promise<GoldStats> {
+  return apiFetch<GoldStats>(`/projects/${slug}/gold/stats`);
 }
 
 export function decideGold(
