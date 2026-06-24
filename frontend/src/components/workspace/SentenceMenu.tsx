@@ -167,7 +167,7 @@ export function SentenceMenu({
       aria-label={`Annoter la phrase ${sentenceIndex}`}
       tabIndex={-1}
       data-testid="sentence-menu"
-      className="fixed z-50 max-h-[88vh] w-80 overflow-auto rounded-lg border border-line bg-elevated p-3 text-sm text-ink shadow-xl outline-none"
+      className="fixed z-50 max-h-[88vh] w-[26rem] max-w-[94vw] overflow-auto rounded-lg border border-line bg-elevated p-3 text-sm text-ink shadow-xl outline-none"
       style={anchoredStyle}
     >
       <div className="mb-2 flex items-center justify-between">

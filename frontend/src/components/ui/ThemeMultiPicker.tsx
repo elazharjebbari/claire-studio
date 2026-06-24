@@ -187,9 +187,9 @@ export function ThemeMultiPicker({
               }}
               onMouseLeave={disarmTooltip}
               className={cn(
-                "flex w-full items-center gap-2 rounded px-2 py-1.5 text-left text-sm transition-colors",
+                "flex w-full items-start gap-2 rounded px-2 py-1.5 text-left text-[13px] transition-colors",
                 disabled
-                  ? "cursor-not-allowed opacity-40"
+                  ? "cursor-not-allowed opacity-50"
                   : "cursor-pointer",
                 isPrimary
                   ? "bg-accent/10 ring-1 ring-inset ring-accent/50 font-semibold"
@@ -207,67 +207,69 @@ export function ThemeMultiPicker({
             >
               <span
                 aria-hidden
-                className="h-3 w-3 shrink-0 rounded-full ring-1 ring-inset ring-black/20"
+                className="mt-0.5 h-3 w-3 shrink-0 rounded-full ring-1 ring-inset ring-black/20"
                 style={{ backgroundColor: t.color }}
               />
-              <span className="min-w-0 flex-1 truncate text-ink">{t.label}</span>
-
-              {/* Indice LLM discret : initiale(s) des juges ayant proposé ce thème. */}
-              {hints.length > 0 && (
-                <span
-                  data-testid={`llm-hint-${t.code}`}
-                  title={`Proposé par ${hints.join(", ")}`}
-                  className="shrink-0 font-mono text-[8px] uppercase text-ink-muted/70"
-                >
-                  {hints.map((h) => h[0]).join("")}
+              {/* Colonne texte : libellé COMPLET (retour à la ligne, jamais tronqué) +
+                  marqueurs primaire/secondaire EN DESSOUS (le texte garde toute la largeur). */}
+              <span className="flex min-w-0 flex-1 flex-col gap-0.5">
+                <span className="flex items-start gap-1">
+                  <span className="min-w-0 flex-1 leading-snug text-ink">{t.label}</span>
+                  {/* Indice LLM discret : initiale(s) des juges ayant proposé ce thème. */}
+                  {hints.length > 0 && (
+                    <span
+                      data-testid={`llm-hint-${t.code}`}
+                      title={`Proposé par ${hints.join(", ")}`}
+                      className="mt-0.5 shrink-0 font-mono text-[8px] uppercase text-ink-muted/70"
+                    >
+                      {hints.map((h) => h[0]).join("")}
+                    </span>
+                  )}
                 </span>
-              )}
 
-              {/* Badge primaire ★ Principal. */}
-              {isPrimary && (
-                <span
-                  data-testid={`primary-badge-${t.code}`}
-                  className="inline-flex shrink-0 items-center gap-0.5 rounded bg-accent/20 px-1 text-[9px] font-bold uppercase text-accent"
-                >
-                  <Star size={9} aria-hidden fill="currentColor" /> Principal
-                </span>
-              )}
-
-              {/* Badge secondaire numéroté + bouton ★ « promouvoir primaire ». */}
-              {order > 0 && (
-                <span className="flex shrink-0 items-center gap-1">
+                {isPrimary && (
                   <span
-                    data-testid={`secondary-order-${t.code}`}
-                    aria-hidden
-                    className="inline-flex h-4 w-4 items-center justify-center rounded-full text-[9px] font-bold"
-                    style={{
-                      backgroundColor: getThemeToken(t.code).color,
-                      color: readableTextColor(getThemeToken(t.code).color),
-                    }}
+                    data-testid={`primary-badge-${t.code}`}
+                    className="inline-flex w-fit items-center gap-0.5 rounded bg-accent/20 px-1 py-px text-[9px] font-bold uppercase text-accent"
                   >
-                    {order}
+                    <Star size={9} aria-hidden fill="currentColor" /> Principal
                   </span>
-                  <button
-                    type="button"
-                    data-testid={`promote-${t.code}`}
-                    aria-label={`Définir « ${t.label} » comme thème principal`}
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      onPromote(t.code);
-                    }}
-                    className="inline-flex rounded p-0.5 text-ink-muted hover:bg-panel-muted hover:text-accent"
-                    title="Définir comme principal"
-                  >
-                    <Star size={11} aria-hidden />
-                  </button>
-                </span>
-              )}
+                )}
 
-              {disabled && (
-                <span className="shrink-0 text-[8px] uppercase text-ink-muted">
-                  principal
-                </span>
-              )}
+                {order > 0 && (
+                  <span className="inline-flex w-fit items-center gap-1">
+                    <span
+                      data-testid={`secondary-order-${t.code}`}
+                      aria-hidden
+                      className="inline-flex h-4 w-4 items-center justify-center rounded-full text-[9px] font-bold"
+                      style={{
+                        backgroundColor: getThemeToken(t.code).color,
+                        color: readableTextColor(getThemeToken(t.code).color),
+                      }}
+                    >
+                      {order}
+                    </span>
+                    <span className="text-[9px] uppercase text-ink-muted">secondaire</span>
+                    <button
+                      type="button"
+                      data-testid={`promote-${t.code}`}
+                      aria-label={`Définir « ${t.label} » comme thème principal`}
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        onPromote(t.code);
+                      }}
+                      className="inline-flex items-center gap-0.5 rounded px-1 text-[9px] uppercase text-ink-muted hover:bg-panel-muted hover:text-accent"
+                      title="Définir comme principal"
+                    >
+                      <Star size={10} aria-hidden /> principal
+                    </button>
+                  </span>
+                )}
+
+                {disabled && (
+                  <span className="text-[9px] uppercase text-ink-muted">principal uniquement</span>
+                )}
+              </span>
             </li>
           );
         })}

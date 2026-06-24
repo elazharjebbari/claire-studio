@@ -169,7 +169,11 @@ export function ThemePalette({
                 className="h-3 w-3 shrink-0 rounded-full ring-1 ring-inset ring-black/20"
                 style={{ backgroundColor: t.color }}
               />
-              <span className="flex-1 truncate text-ink">{t.label}</span>
+              {/* Grille : libellé COMPLET (retour à la ligne) ; liste : tronqué (le code
+                  occupe la droite). Évite les « … » illisibles dans la grille 2 colonnes. */}
+              <span className={cn("min-w-0 flex-1 text-ink", grid ? "leading-snug" : "truncate")}>
+                {t.label}
+              </span>
               {/* Code masqué en grille (gain de place pour 2 colonnes sans scroll, D4). */}
               {!grid && <span className="font-mono text-[10px] text-ink-muted">{t.code}</span>}
               {selected && <span aria-hidden>✓</span>}
