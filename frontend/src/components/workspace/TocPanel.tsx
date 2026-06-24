@@ -5,18 +5,21 @@
  * sauts rapides, et toggles d'overlays (injustice, fantôme LLM). navigation.md §3.
  */
 
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
+import { CircleDashed, ArrowRight } from "lucide-react";
 import { ClauseChip } from "@/components/ui/ClauseChip";
 import { ThemePalette } from "@/components/ui/ThemePalette";
 import { useWorkspaceStore } from "@/store/workspace";
 import { LLM_JUDGES } from "@/lib/llmJudges";
 import { secondaryCount } from "@/lib/validationDisplay";
+import { planOutline, uncoveredCount, nextUncovered } from "@/lib/planCoverage";
 
 export function TocPanel({ docTitle }: { docTitle: string }) {
   const drafts = useWorkspaceStore((s) => s.draftClauses);
   const selectedId = useWorkspaceStore((s) => s.selectedClauseId);
   const selectClause = useWorkspaceStore((s) => s.selectClause);
   const focusSentence = useWorkspaceStore((s) => s.focusSentence);
+  const focusedSentence = useWorkspaceStore((s) => s.focusedSentence);
   const nSentences = useWorkspaceStore((s) => s.nSentences);
   // Sélection MULTIPLE de clauses dans le plan (Cmd/Ctrl+clic) → annoter/valider en lot.
   const selectedClauseIds = useWorkspaceStore((s) => s.selectedClauseIds);
@@ -115,6 +118,37 @@ export function TocPanel({ docTitle }: { docTitle: string }) {
   const validatedPct =
     nSentences > 0 ? Math.round((validatedCount / nSentences) * 100) : 0;
 
+  // Correctif « blocks manquants » : les phrases NON annotées étaient invisibles dans le
+  // plan (qui ne listait que les clauses). On dérive l'ANCRE par phrase, le nombre de
+  // phrases restantes, et un PLAN COMPLET (clauses + trous groupés) en ordre document, de
+  // sorte que le plan reflète tout le document et qu'on puisse sauter aux phrases libres.
+  const anchorIndexes = useMemo(() => drafts.map((d) => d.anchorIndex), [drafts]);
+  const remaining = uncoveredCount(anchorIndexes, nSentences);
+  const outline = useMemo(
+    () => planOutline(anchorIndexes, nSentences),
+    [anchorIndexes, nSentences],
+  );
+  const draftByAnchor = useMemo(
+    () => new Map(drafts.map((d) => [d.anchorIndex, d])),
+    [drafts],
+  );
+
+  // « Aller à la prochaine phrase non annotée » : cycle les trous depuis la phrase
+  // focalisée (le DocumentPanel défile vers `focused`). Désélectionne la clause courante.
+  function goToNextUncovered() {
+    const i = nextUncovered(anchorIndexes, nSentences, focusedSentence);
+    if (i == null) return;
+    focusSentence(i);
+    selectClause(null);
+    clearClauseSelection();
+  }
+
+  function goToGap(start: number) {
+    focusSentence(start);
+    selectClause(null);
+    clearClauseSelection();
+  }
+
   return (
     // Colonne pleine hauteur : en-tête + overlays figés (shrink-0), liste de clauses
     // défilante (flex-1) au milieu. Plus de grande zone vide sous le plan quand le
@@ -160,6 +194,26 @@ export function TocPanel({ docTitle }: { docTitle: string }) {
             ✓ {validatedCount}/{nSentences}
           </span>
         </div>
+
+        {/* Couverture : phrases restant à annoter + saut direct (correctif « blocks
+            manquants » — l'annotateur voit qu'il reste des phrases et y accède d'un clic). */}
+        {remaining > 0 && (
+          <div className="mt-2 flex items-center justify-between gap-2">
+            <span className="text-[11px] text-ink-muted" data-testid="toc-coverage" aria-live="polite">
+              <span className="font-mono text-ink">{drafts.length}/{nSentences}</span> annotées ·{" "}
+              <span className="font-mono text-amber-300">{remaining}</span> restante{remaining > 1 ? "s" : ""}
+            </span>
+            <button
+              type="button"
+              data-testid="toc-goto-gap"
+              onClick={goToNextUncovered}
+              title="Aller à la prochaine phrase non annotée"
+              className="inline-flex shrink-0 items-center gap-1 rounded-md border border-line px-2 py-0.5 text-[11px] font-medium text-ink-muted transition-colors hover:bg-panel-muted hover:text-ink"
+            >
+              Prochaine non annotée <ArrowRight size={12} aria-hidden />
+            </button>
+          </div>
+        )}
       </div>
 
       {selectedClauseIds.length > 0 && (
@@ -202,23 +256,51 @@ export function TocPanel({ docTitle }: { docTitle: string }) {
             Aucune clause. Cliquez une phrase ou appuyez sur <kbd>B</kbd> pour poser une ancre.
           </p>
         )}
-        {drafts.map((c) => (
-          <ClauseChip
-            key={c.localId}
-            themeCode={c.theme}
-            anchorIndex={c.anchorIndex}
-            selected={selectedId === c.localId || selectedClauseIds.includes(c.localId)}
-            ghost={Boolean(c.seededFrom) && !c.validated}
-            validated={Boolean(c.validated)}
-            seededFrom={c.seededFrom}
-            resolvedFrom={c.resolvedFrom}
-            triageLevel={c.triageLevel}
-            secondaryCount={secondaryCount(c.themes)}
-            onClick={(e) => onChipClick(e, c.localId, c.anchorIndex)}
-            onContextMenu={(e) => onChipContext(e, c.localId)}
-            className="w-full justify-start"
-          />
-        ))}
+        {/* Plan COMPLET en ordre document : chips de clauses + lignes « trou » (phrases non
+            annotées groupées) cliquables — répond à « où sont le reste des blocks ». */}
+        {outline.map((item) => {
+          if (item.type === "gap") {
+            const single = item.count === 1;
+            return (
+              <button
+                key={`gap-${item.start}`}
+                type="button"
+                data-testid="plan-gap"
+                data-range={`${item.start}-${item.end}`}
+                onClick={() => goToGap(item.start)}
+                title="Phrases non annotées — cliquez pour y aller"
+                className="flex w-full items-center gap-1.5 rounded-md border border-dashed border-line/70 bg-panel-muted/20 px-2 py-1 text-left text-[11px] text-ink-muted transition-colors hover:border-accent/40 hover:bg-panel-muted hover:text-ink"
+              >
+                <CircleDashed size={12} aria-hidden className="shrink-0" />
+                <span className="min-w-0 truncate">
+                  {item.count} phrase{single ? "" : "s"} non annotée{single ? "" : "s"}
+                </span>
+                <span className="ml-auto shrink-0 font-mono text-[10px]">
+                  {single ? `[${item.start}]` : `[${item.start}]–[${item.end}]`}
+                </span>
+              </button>
+            );
+          }
+          const c = draftByAnchor.get(item.anchorIndex);
+          if (!c) return null;
+          return (
+            <ClauseChip
+              key={c.localId}
+              themeCode={c.theme}
+              anchorIndex={c.anchorIndex}
+              selected={selectedId === c.localId || selectedClauseIds.includes(c.localId)}
+              ghost={Boolean(c.seededFrom) && !c.validated}
+              validated={Boolean(c.validated)}
+              seededFrom={c.seededFrom}
+              resolvedFrom={c.resolvedFrom}
+              triageLevel={c.triageLevel}
+              secondaryCount={secondaryCount(c.themes)}
+              onClick={(e) => onChipClick(e, c.localId, c.anchorIndex)}
+              onContextMenu={(e) => onChipContext(e, c.localId)}
+              className="w-full justify-start"
+            />
+          );
+        })}
       </nav>
 
       <fieldset data-testid="toc-overlays" className="shrink-0 rounded-md border border-line p-2">
