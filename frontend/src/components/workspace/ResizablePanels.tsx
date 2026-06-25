@@ -23,6 +23,9 @@ export function ResizablePanels({
   left,
   center,
   right,
+  leftCollapsed = false,
+  onExpandLeft,
+  onCollapseLeft,
   rightCollapsed = false,
   onExpandRight,
   onCollapseRight,
@@ -30,6 +33,10 @@ export function ResizablePanels({
   left: React.ReactNode;
   center: React.ReactNode;
   right: React.ReactNode;
+  /** Repli SYMÉTRIQUE du panneau gauche (plan) en rail fin (L1 — dock bilatéral). */
+  leftCollapsed?: boolean;
+  onExpandLeft?: () => void;
+  onCollapseLeft?: () => void;
   /** Point f : replie le panneau droit (inspecteur) en un rail fin pour gagner de l'espace. */
   rightCollapsed?: boolean;
   onExpandRight?: () => void;
@@ -144,14 +151,50 @@ export function ResizablePanels({
       {/* overflow-hidden (et non -y-auto) : le panneau gauche (TocPanel) gère son PROPRE
           défilement interne — en-tête + overlays épinglés, liste de clauses défilante —
           de sorte qu'aucune bande vide n'apparaisse sous le contenu (parité inspecteur). */}
-      <aside
-        style={{ width: layout.left }}
-        className="h-full shrink-0 overflow-hidden border-r border-line bg-elevated"
-        aria-label="Plan du document"
-      >
-        {left}
-      </aside>
-      <Handle side="left" />
+      {leftCollapsed ? (
+        // Rail fin : le plan est replié (L1 dock bilatéral). Bouton vertical pour le déplier.
+        <aside
+          className="flex h-full w-8 shrink-0 flex-col items-center border-r border-line bg-elevated"
+          aria-label="Plan (replié)"
+        >
+          <button
+            type="button"
+            data-testid="sidebar-expand"
+            onClick={onExpandLeft}
+            title="Déplier le plan"
+            aria-label="Déplier le plan"
+            className="flex w-full flex-1 flex-col items-center gap-2 py-3 text-ink-muted hover:bg-panel-muted hover:text-ink"
+          >
+            <ChevronRight size={16} aria-hidden />
+            <span className="text-[10px] font-semibold uppercase tracking-wide [writing-mode:vertical-rl]">
+              Plan
+            </span>
+          </button>
+        </aside>
+      ) : (
+        <>
+          <aside
+            style={{ width: layout.left }}
+            className="relative h-full shrink-0 overflow-hidden border-r border-line bg-elevated"
+            aria-label="Plan du document"
+          >
+            {onCollapseLeft && (
+              <button
+                type="button"
+                data-testid="sidebar-collapse"
+                onClick={onCollapseLeft}
+                title="Replier le plan"
+                aria-label="Replier le plan"
+                className="absolute right-1 top-1 z-10 inline-flex items-center rounded px-1 text-ink-muted hover:bg-panel-muted hover:text-ink"
+              >
+                <ChevronLeft size={16} aria-hidden />
+              </button>
+            )}
+            {left}
+          </aside>
+          <Handle side="left" />
+        </>
+      )}
       <section
         role="region"
         className="h-full flex-1 overflow-y-auto bg-reading"

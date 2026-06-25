@@ -105,6 +105,12 @@ export function AnnotationWorkspace({ annotationId }: { annotationId: string }) 
     () => setPanel("inspectorOpen", !usePrefsStore.getState().prefs.panels.inspectorOpen),
     [setPanel],
   );
+  // L1 — repli SYMÉTRIQUE du plan (état PAR COMPTE via prefs.panels.sidebarCollapsed).
+  const sidebarCollapsed = panels.sidebarCollapsed;
+  const toggleSidebar = useCallback(
+    () => setPanel("sidebarCollapsed", !usePrefsStore.getState().prefs.panels.sidebarCollapsed),
+    [setPanel],
+  );
   const showHistory = panels.historyOpen;
   const showComments = panels.commentsOpen;
   const showTriage = panels.triageOpen;
@@ -431,6 +437,9 @@ export function AnnotationWorkspace({ annotationId }: { annotationId: string }) 
               themeFocusRef={themeFocusRef}
             />
           }
+          leftCollapsed={sidebarCollapsed}
+          onExpandLeft={toggleSidebar}
+          onCollapseLeft={toggleSidebar}
           rightCollapsed={!inspectorOpen}
           onExpandRight={toggleInspector}
           onCollapseRight={toggleInspector}

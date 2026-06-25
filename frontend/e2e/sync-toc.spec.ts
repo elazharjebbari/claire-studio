@@ -6,6 +6,20 @@ import { test, expect } from "@playwright/test";
  * correspondante dans le plan (aside gauche).
  */
 test.describe("Synchro plan ↔ phrase", () => {
+  test("le plan se replie en rail et se déplie (dock bilatéral, L1)", async ({ page }) => {
+    await page.goto("/annotate/ann-1");
+    await expect(page.getByTestId("annotation-workspace")).toBeVisible();
+    const plan = page.getByRole("complementary", { name: "Plan du document" });
+    await expect(plan).toBeVisible();
+    // Replier → rail fin + bouton de dépliage (le plan plein disparaît, libère l'espace).
+    await page.getByTestId("sidebar-collapse").click();
+    await expect(page.getByTestId("sidebar-expand")).toBeVisible();
+    await expect(plan).toHaveCount(0);
+    // Déplier → plan de retour (symétrique de l'inspecteur).
+    await page.getByTestId("sidebar-expand").click();
+    await expect(plan).toBeVisible();
+  });
+
   test("clic d'une phrase annotée → chip de sa clause pressé ; bascule entre clauses", async ({ page }) => {
     await page.goto("/annotate/ann-1");
     await expect(page.getByTestId("annotation-workspace")).toBeVisible();
