@@ -195,7 +195,7 @@ export function TocPanel({ docTitle }: { docTitle: string }) {
             aria-valuemax={100}
           >
             <div
-              className="h-full bg-emerald-400 transition-all"
+              className="h-full bg-success transition-all"
               style={{ width: `${validatedPct}%` }}
               aria-hidden
             />
@@ -211,7 +211,7 @@ export function TocPanel({ docTitle }: { docTitle: string }) {
           <div className="mt-2 flex items-center justify-between gap-2">
             <span className="text-[11px] text-ink-muted" data-testid="toc-coverage" aria-live="polite">
               <span className="font-mono text-ink">{drafts.length}/{nSentences}</span> annotées ·{" "}
-              <span className="font-mono text-amber-300">{remaining}</span> restante{remaining > 1 ? "s" : ""}
+              <span className="font-mono text-warning">{remaining}</span> restante{remaining > 1 ? "s" : ""}
             </span>
             <button
               type="button"
@@ -240,7 +240,7 @@ export function TocPanel({ docTitle }: { docTitle: string }) {
                 validateClauses(selectedClauseIds, true);
                 clearClauseSelection();
               }}
-              className="rounded border border-emerald-400/50 px-1.5 py-0.5 text-emerald-300 hover:bg-emerald-400/10"
+              className="rounded border border-success/50 px-1.5 py-0.5 text-success hover:bg-success/10"
             >
               ✓ Valider
             </button>
@@ -389,7 +389,7 @@ export function TocPanel({ docTitle }: { docTitle: string }) {
                 setMenu(null);
                 clearClauseSelection();
               }}
-              className="rounded-md border border-emerald-400/50 px-2 py-1 text-xs text-emerald-300 hover:bg-emerald-400/10"
+              className="rounded-md border border-success/50 px-2 py-1 text-xs text-success hover:bg-success/10"
             >
               ✓ Valider la sélection
             </button>
