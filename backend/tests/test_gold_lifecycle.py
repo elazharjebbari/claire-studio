@@ -8,7 +8,7 @@
 import pytest
 
 from claire.annotations.models import Annotation, AnnotationStatus, Clause
-from claire.gold.models import GoldResolution
+from claire.gold.models import GoldResolution, GoldSentence
 from claire.imports.models import Judge, PreAnnotation, PreClause
 from claire.projects.models import (
     Assignment,
@@ -316,3 +316,151 @@ def test_llm_annotators_add_requires_lead_or_admin(scheme_with_themes, auth):
     base = f"/api/v1/projects/{project.slug}/gold/llm-annotators"
     r = auth(plain).post(base, {"judge": "claude", "action": "add"}, format="json")
     assert r.status_code == 403
+
+
+# ─────────────────────────────────────────────────────────────────────────────
+# Garantie « gold figé » : une résolution finalisée est immuable (revue xhigh)
+# ─────────────────────────────────────────────────────────────────────────────
+def _finalize_strict_doc(auth, project, doc, lead):
+    """Accord strict sur 1 phrase → auto-résolu → soumis (finalisé)."""
+    _detail(auth, lead, project, doc)  # matérialise + auto-résout
+    r = auth(lead).post(f"/api/v1/projects/{project.slug}/gold/{doc.external_id}/submit", {}, format="json")
+    assert r.status_code == 200, r.content
+
+
+def test_finalized_gold_frozen_on_get_after_votes_change(scheme_with_themes, auth):
+    corpus = CorpusFactory()
+    project, doc = _doc(corpus, scheme_with_themes)
+    lead = _lead(project)
+    a1 = _assigned(project, doc, "fz_a1", code="META")
+    _assigned(project, doc, "fz_a2", code="META")  # accord strict META
+    _finalize_strict_doc(auth, project, doc, lead)
+
+    gs = GoldSentence.objects.get(resolution__document=doc, index=0)
+    assert gs.decided and gs.primary_theme.code == "META"
+
+    # Un vote change APRÈS finalisation (a1 passe de META à TERMINATION → divergence).
+    themes = {t.code: t for t in project.scheme.themes.all()}
+    clause = Clause.objects.get(annotation__annotator=a1, annotation__document=doc)
+    clause.theme = themes["TERMINATION"]
+    clause.save(update_fields=["theme"])
+
+    # Le GET ne doit RIEN recalculer : décision gelée (sinon la divergence l'effacerait).
+    body = _detail(auth, lead, project, doc).json()
+    assert body["status"] == "resolved"
+    gs.refresh_from_db()
+    assert gs.decided is True and gs.primary_theme.code == "META"
+
+
+def test_decide_rejected_on_finalized(scheme_with_themes, auth):
+    corpus = CorpusFactory()
+    project, doc = _doc(corpus, scheme_with_themes)
+    lead = _lead(project)
+    _assigned(project, doc, "df_a1", code="META")
+    _assigned(project, doc, "df_a2", code="META")
+    _finalize_strict_doc(auth, project, doc, lead)
+    r = auth(lead).post(
+        f"/api/v1/projects/{project.slug}/gold/{doc.external_id}/decide",
+        {"index": 0, "primary": "TERMINATION"}, format="json",
+    )
+    assert r.status_code == 409  # gold figé : rouvrir d'abord
+    assert GoldSentence.objects.get(resolution__document=doc, index=0).primary_theme.code == "META"
+
+
+def test_auto_resolve_rejected_on_finalized(scheme_with_themes, auth):
+    corpus = CorpusFactory()
+    project, doc = _doc(corpus, scheme_with_themes)
+    lead = _lead(project)
+    _assigned(project, doc, "af_a1", code="META")
+    _assigned(project, doc, "af_a2", code="META")
+    _finalize_strict_doc(auth, project, doc, lead)
+    r = auth(lead).post(
+        f"/api/v1/projects/{project.slug}/gold/{doc.external_id}/auto-resolve", {}, format="json"
+    )
+    assert r.status_code == 409
+
+
+def test_reopen_resets_stored_status_and_unfreezes(scheme_with_themes, auth):
+    corpus = CorpusFactory()
+    project, doc = _doc(corpus, scheme_with_themes)
+    lead = _lead(project)
+    _assigned(project, doc, "rs_a1", code="META")
+    _assigned(project, doc, "rs_a2", code="META")
+    _finalize_strict_doc(auth, project, doc, lead)
+    res = GoldResolution.objects.get(document=doc)
+    assert res.status == "resolved" and res.finalized_at is not None
+
+    r = auth(lead).post(f"/api/v1/projects/{project.slug}/gold/{doc.external_id}/reopen", {}, format="json")
+    assert r.status_code == 200
+    res.refresh_from_db()
+    # Statut STOCKÉ réaligné immédiatement (pas « resolved » jusqu'au prochain recompute).
+    assert res.finalized_at is None
+    assert res.status == "in_progress"  # une phrase reste décidée (auto)
+    # Dégelé : on peut de nouveau décider (après prise de main du verrou).
+    auth(lead).post(f"/api/v1/projects/{project.slug}/gold/{doc.external_id}/lock", {}, format="json")
+    r2 = auth(lead).post(
+        f"/api/v1/projects/{project.slug}/gold/{doc.external_id}/decide",
+        {"index": 0, "primary": "TERMINATION"}, format="json",
+    )
+    assert r2.status_code == 200, r2.content
+
+
+def test_reopen_respects_project_lock(scheme_with_themes, auth):
+    corpus = CorpusFactory()
+    project, doc = _doc(corpus, scheme_with_themes)
+    lead = _lead(project)
+    _assigned(project, doc, "rl_a1", code="META")
+    _assigned(project, doc, "rl_a2", code="META")
+    _finalize_strict_doc(auth, project, doc, lead)
+    project.locked = True
+    project.save(update_fields=["locked"])
+    r = auth(lead).post(f"/api/v1/projects/{project.slug}/gold/{doc.external_id}/reopen", {}, format="json")
+    assert r.status_code == 423  # projet gelé : dégel interdit aussi
+
+
+def test_finalize_bounded_by_in_range_decided(scheme_with_themes, auth):
+    """Une décision orpheline hors-bornes (index ≥ n) ne doit pas valider la finalisation."""
+    corpus = CorpusFactory()
+    project, doc = _doc(corpus, scheme_with_themes, n=2)
+    lead = _lead(project)
+    # index0 : accord strict META (auto) ; index1 : non décidé.
+    a1 = _assigned(project, doc, "bd_a1", code="META")
+    a2 = _assigned(project, doc, "bd_a2", code="META")
+    _detail(auth, lead, project, doc)
+    res = GoldResolution.objects.get(document=doc)
+    # Décision humaine ORPHELINE hors-bornes (survit à l'élagage : decided humain).
+    GoldSentence.objects.create(resolution=res, index=5, decided=True, auto_resolved=False)
+    r = auth(lead).post(f"/api/v1/projects/{project.slug}/gold/{doc.external_id}/submit", {}, format="json")
+    assert r.status_code == 409  # index1 reste à décider, l'orpheline ne compte pas
+
+
+def test_cockpit_finalized_priority_matches_workspace(scheme_with_themes, auth):
+    """Cockpit et atelier dérivent le MÊME statut : finalisé prioritaire (fin de divergence)."""
+    corpus = CorpusFactory()
+    project, doc = _doc(corpus, scheme_with_themes)
+    lead = _lead(project)
+    _assigned(project, doc, "cp_a1", code="META")
+    _assigned(project, doc, "cp_a2", code="META")
+    _finalize_strict_doc(auth, project, doc, lead)
+    _assigned(project, doc, "cp_a3", code=None)  # complétude perdue
+
+    ws = _detail(auth, lead, project, doc).json()
+    rows = auth(lead).get(f"/api/v1/projects/{project.slug}/gold/documents").json()["results"]
+    row = next(r for r in rows if r["document"]["externalId"] == doc.external_id)
+    assert ws["status"] == "resolved"
+    assert row["status"] == "resolved"  # AVANT : cockpit affichait « awaiting » (divergence)
+
+
+def test_llm_documents_count_deduped_across_schema_versions(scheme_with_themes, auth):
+    corpus = CorpusFactory()
+    project, doc = _doc(corpus, scheme_with_themes)
+    lead = _lead(project)
+    # Même document, DEUX schema_versions → un seul document attendu.
+    for ver in ("v1", "v2"):
+        pre = PreAnnotation.objects.create(
+            project=project, document=doc, judge=Judge.CLAUDE, schema_version=ver, raw={}
+        )
+        PreClause.objects.create(preannotation=pre, anchor_index=0, theme_code="META", order=0)
+    rows = auth(lead).get(f"/api/v1/projects/{project.slug}/gold/llm-annotators").json()["results"]
+    claude = next(x for x in rows if x["judge"] == "claude")
+    assert claude["documents"] == 1  # AVANT : 2 (gonflé par schema_version)

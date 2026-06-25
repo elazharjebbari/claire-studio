@@ -84,16 +84,27 @@ def resolution_readiness(project, document) -> dict:
     }
 
 
-def effective_status(resolution, readiness: dict, decided: int) -> str:
-    """Statut affiché : resolved (finalisé, prioritaire) sinon awaiting (annotations
-    incomplètes) → ready (possible, pas commencé) → in_progress (commencé)."""
-    if resolution.finalized_at is not None:
-        return "resolved"  # une résolution soumise reste « résolue » (priorité)
-    if not readiness["ready"]:
+def compute_status(*, finalized: bool, ready: bool, decided: int) -> str:
+    """Échelle de statut PURE, source unique de vérité (cockpit ET atelier la réutilisent) :
+    resolved (finalisé, prioritaire) → awaiting (annotations incomplètes) → ready (possible,
+    pas commencé) → in_progress (commencé). La priorité « finalisé d'abord » garantit qu'un
+    document figé qui perd ensuite sa complétude reste « résolu » dans les deux vues."""
+    if finalized:
+        return "resolved"
+    if not ready:
         return "awaiting"
     if decided == 0:
         return "ready"
     return "in_progress"
+
+
+def effective_status(resolution, readiness: dict, decided: int) -> str:
+    """Statut affiché pour une résolution (per-document)."""
+    return compute_status(
+        finalized=resolution.finalized_at is not None,
+        ready=bool(readiness["ready"]),
+        decided=decided,
+    )
 
 
 # ── Construction des votes ───────────────────────────────────────────────────
@@ -197,6 +208,11 @@ def recompute_document(
     Atomique, sous verrou de ligne. Si `require_holder` est fourni, exige (sous le verrou de
     ligne) que ce soit le détenteur du verrou d'arbitrage actif — sinon Conflict (409)."""
     project, document = resolution.project, resolution.document
+    # Un gold FINALISÉ est figé : aucun recalcul ni auto-résolution (la garantie « figé »
+    # tient même si les votes changent après coup). Le dégel passe par reopen.
+    if resolution.finalized_at is not None:
+        decided = resolution.sentences.filter(decided=True).count()
+        return {"n": document.n_sentences or 0, "decided": decided, "auto_resolved": 0}
     cfg = build_engine_config(project)
     flags = auto_resolve_flags(project)  # accord strict 1-clic / majorité ≥ 2/3 (configurables)
     allow_auto = {"auto_1click": flags["absolute_agreement"], "auto": flags["majority"]}
@@ -388,6 +404,7 @@ def decide_sentence(resolution, index, primary_code, secondaries, comment, actor
     # transaction (pas de fenêtre TOCTOU avec un acquire/steal concurrent).
     with transaction.atomic():
         locked_res = GoldResolution.objects.select_for_update().get(pk=resolution.pk)
+        assert_not_finalized(locked_res)  # gold figé : pas de mutation sans reopen (sous verrou)
         _assert_holder(locked_res, actor)
         gs, _ = GoldSentence.objects.get_or_create(resolution=resolution, index=index)
         was_auto = gs.auto_resolved
@@ -424,6 +441,17 @@ def assert_resolution_ready(project, document) -> None:
         )
 
 
+def assert_not_finalized(resolution) -> None:
+    """Garde « gold figé » : interdit toute mutation d'une résolution finalisée. Le dégel
+    explicite (reopen) est le seul chemin pour reprendre les décisions."""
+    from claire.common.exceptions import Conflict
+
+    if resolution.finalized_at is not None:
+        raise Conflict(
+            "Résolution finalisée (gold figé) : rouvrez-la avant toute modification."
+        )
+
+
 def finalize_resolution(resolution, actor) -> GoldResolution:
     """Soumet (finalise) la résolution : exige complétude + toutes les phrases décidées."""
     from claire.common.exceptions import Conflict
@@ -431,7 +459,9 @@ def finalize_resolution(resolution, actor) -> GoldResolution:
     project, document = resolution.project, resolution.document
     assert_resolution_ready(project, document)
     n = document.n_sentences or 0
-    decided = resolution.sentences.filter(decided=True).count()
+    # Borné à index < n : une décision orpheline hors-bornes (document rétréci, la phrase
+    # décidée survit à l'élagage) ne doit pas faire passer le seuil « toutes décidées ».
+    decided = resolution.sentences.filter(decided=True, index__lt=n).count()
     if n == 0 or decided < n:
         raise Conflict("Toutes les phrases doivent être décidées avant de soumettre la résolution.")
     resolution.finalized_at = timezone.now()
@@ -445,9 +475,17 @@ def finalize_resolution(resolution, actor) -> GoldResolution:
 
 
 def reopen_resolution(resolution, actor) -> GoldResolution:
-    """Rouvre une résolution finalisée (corrections)."""
+    """Rouvre une résolution finalisée (corrections) : dégèle ET réaligne le statut stocké
+    (sinon il resterait « resolved » jusqu'à un recompute, faussant l'export et le cockpit)."""
+    document = resolution.document
+    n = document.n_sentences or 0
+    decided = resolution.sentences.filter(decided=True, index__lt=n).count()
     resolution.finalized_at = None
-    resolution.save(update_fields=["finalized_at", "updated_at"])
+    resolution.pct_resolved = round(decided / n, 4) if n else 0.0
+    resolution.status = (
+        ResolutionStatus.IN_PROGRESS if decided > 0 else ResolutionStatus.UNRESOLVED
+    )
+    resolution.save(update_fields=["finalized_at", "pct_resolved", "status", "updated_at"])
     ArbitrationEvent.objects.create(
         resolution=resolution, index=None, actor=actor, verb=ArbitrationVerb.REOPEN, payload={},
     )
@@ -456,6 +494,7 @@ def reopen_resolution(resolution, actor) -> GoldResolution:
 
 def auto_resolve_document(resolution, actor) -> dict:
     """Force l'auto-résolution (recompute, exclusivité exigée) + trace l'événement."""
+    assert_not_finalized(resolution)  # gold figé : auto-résolution interdite sans reopen
     summary = recompute_document(resolution, require_holder=actor)
     ArbitrationEvent.objects.create(
         resolution=resolution, index=None, actor=actor,

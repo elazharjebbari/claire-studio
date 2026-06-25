@@ -57,10 +57,11 @@ def _judge_user(judge: str):
 def llm_annotator_status(project) -> list[dict]:
     """Pour chaque juge ayant des pré-annotations : est-il actuellement un annotateur ?"""
     gold_grade = annotation_statuses(project)
-    by_judge: dict[str, int] = {}
+    # Dédup par document_id : un juge peut avoir plusieurs schema_versions du MÊME document
+    # (la contrainte d'unicité inclut schema_version) — ne pas gonfler le compte de documents.
+    by_judge: dict[str, set] = {}
     for p in PreAnnotation.objects.filter(project=project).values("judge", "document_id"):
-        by_judge.setdefault(p["judge"], 0)
-        by_judge[p["judge"]] += 1
+        by_judge.setdefault(p["judge"], set()).add(p["document_id"])
     out = []
     for judge in sorted(by_judge):
         user = _llm_user(judge)  # compte LLM dédié uniquement
@@ -73,7 +74,7 @@ def llm_annotator_status(project) -> list[dict]:
         out.append({
             "judge": judge,
             "added": added,
-            "documents": by_judge[judge],
+            "documents": len(by_judge[judge]),
         })
     return out
 
@@ -83,9 +84,14 @@ def add_llm_annotator(project, judge: str) -> dict:
     """Crée/réutilise le compte <judge> et dérive des annotations SOUMISES de ses
     pré-annotations (une par document), idempotent."""
     user = _judge_user(judge)
-    ProjectMembership.objects.get_or_create(
+    membership, _ = ProjectMembership.objects.get_or_create(
         project=project, user=user, defaults={"role": MembershipRole.ANNOTATOR}
     )
+    # Répare une appartenance LLM préexistante au mauvais rôle (ex. REVIEWER hérité) :
+    # le juge doit compter comme ANNOTATEUR pour entrer dans les attendus de complétude.
+    if membership.role != MembershipRole.ANNOTATOR:
+        membership.role = MembershipRole.ANNOTATOR
+        membership.save(update_fields=["role"])
     created = 0
     pres = PreAnnotation.objects.filter(project=project, judge=judge).select_related("document")
     for pre in pres:

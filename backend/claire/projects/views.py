@@ -692,7 +692,7 @@ class ProjectViewSet(viewsets.ModelViewSet):
         from claire.annotations.models import Annotation
         from claire.gold.config import annotation_statuses
         from claire.gold.models import GoldSentence
-        from claire.gold.services import lock_state
+        from claire.gold.services import compute_status, lock_state
 
         project = self.get_object()
         documents = list(project.corpus.documents.all().order_by("external_id"))
@@ -740,15 +740,14 @@ class ProjectViewSet(viewsets.ModelViewSet):
             submitted = (submitted_by_doc.get(doc.id, set()) & expected)
             ready = bool(expected) and len(submitted) >= len(expected)
             decided = (counts.get(r.id, {}).get("decided", 0) if r else 0)
-            n = doc.n_sentences or 0
-            if not ready:
-                status_eff = "awaiting"
-            elif r and r.finalized_at is not None:
-                status_eff = "resolved"
-            elif decided == 0:
-                status_eff = "ready"
-            else:
-                status_eff = "in_progress"
+            # MÊME échelle pure que l'atelier (services.compute_status) : « finalisé »
+            # prioritaire — un gold figé qui perd ensuite sa complétude reste « résolu »
+            # dans les deux vues (fin de la divergence cockpit/atelier).
+            status_eff = compute_status(
+                finalized=bool(r and r.finalized_at is not None),
+                ready=ready,
+                decided=decided,
+            )
             rows.append({
                 "document": {
                     "id": doc.id,
@@ -980,12 +979,16 @@ class ProjectViewSet(viewsets.ModelViewSet):
     @action(detail=True, methods=["post"], url_path=r"gold/(?P<document_id>[^/.]+)/reopen")
     def gold_reopen(self, request, slug=None, document_id=None):
         """Rouvre une résolution finalisée (corrections) — réservé lead/admin."""
+        from claire.common.exceptions import Locked
         from claire.gold.services import get_or_create_resolution, reopen_resolution
 
         project, document, resolution = self._gold_ctx(document_id)
         is_lead = project.memberships.filter(user=request.user, role=MembershipRole.LEAD).exists()
         if not (getattr(request.user, "is_admin_role", False) or is_lead):
             return Response({"detail": "Réservé aux leads et administrateurs."}, status=status.HTTP_403_FORBIDDEN)
+        # Cohérent avec finalize/decide : un projet gelé fige aussi le dégel (gold immuable).
+        if project.locked:
+            raise Locked("Projet verrouillé par un administrateur : arbitrage gelé.")
         if resolution is None:
             resolution = get_or_create_resolution(project, document)
         reopen_resolution(resolution, request.user)
