@@ -551,23 +551,9 @@ export function DocumentPanel({
           )}
         >
           {/* Pliable ET fermable : au repli, on masque AUSSI CollabBar → seul reste le bouton
-              « Outils » (la barre se ferme entièrement). Dépli = tout revient. État PAR COMPTE. */}
+              « Outils » (déplacé au COIN DROIT de la barre, position cohérente ouvert/fermé).
+              Dépli = tout revient. État PAR COMPTE. */}
           {!docControlsCollapsed && <CollabBar projectSlug={projectSlug} />}
-          <button
-            type="button"
-            data-testid="doc-controls-toggle"
-            aria-expanded={!docControlsCollapsed}
-            onClick={() => setPanel("docControlsCollapsed", !docControlsCollapsed)}
-            title={docControlsCollapsed ? "Ouvrir la barre d'outils du document" : "Fermer la barre d'outils du document"}
-            className="inline-flex items-center gap-1 rounded-md border border-line px-2 py-1 text-[11px] text-ink-muted transition-colors hover:bg-panel-muted hover:text-ink"
-          >
-            <SlidersHorizontal size={13} aria-hidden /> Outils
-            {docControlsCollapsed ? (
-              <ChevronDown size={12} aria-hidden />
-            ) : (
-              <ChevronUp size={12} aria-hidden />
-            )}
-          </button>
           {/* Barre STABLE (axe 4) : alignement à GAUCHE + ordre fixe → les contrôles ne
               « changent plus de côté » quand un élément conditionnel apparaît/disparaît
               (l'ancien justify-end re-tassait tout à droite). La zone Lecture/Langue est
@@ -738,6 +724,24 @@ export function DocumentPanel({
           </div>
           </div>
           )}
+          {/* Bouton de repli/fermeture AU COIN DROIT (ml-auto) : position conventionnelle et
+              cohérente — à droite que la barre soit ouverte (après les contrôles) ou fermée
+              (seul élément). */}
+          <button
+            type="button"
+            data-testid="doc-controls-toggle"
+            aria-expanded={!docControlsCollapsed}
+            onClick={() => setPanel("docControlsCollapsed", !docControlsCollapsed)}
+            title={docControlsCollapsed ? "Ouvrir la barre d'outils du document" : "Fermer la barre d'outils du document"}
+            className="ml-auto inline-flex shrink-0 items-center gap-1 rounded-md border border-line px-2 py-1 text-[11px] text-ink-muted transition-colors hover:bg-panel-muted hover:text-ink"
+          >
+            <SlidersHorizontal size={13} aria-hidden /> Outils
+            {docControlsCollapsed ? (
+              <ChevronDown size={12} aria-hidden />
+            ) : (
+              <ChevronUp size={12} aria-hidden />
+            )}
+          </button>
           {/* Comparaison N-WAY (axe 7) : bandeau + navigation des divergences, placés
               DANS la barre sticky (largeur pleine → sa propre ligne) afin de rester
               TOUJOURS à l'écran pendant le défilement. Plus de pairwise Claude/Codex. */}
