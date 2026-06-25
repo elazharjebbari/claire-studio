@@ -26,7 +26,7 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import type { PreClause, ReferenceLabel, Sentence } from "@/types/contract";
 import { useWorkspaceStore } from "@/store/workspace";
-import { getThemeToken } from "@/lib/tokens";
+import { getThemeToken, hexToRgbChannels } from "@/lib/tokens";
 import {
   computeRuns,
   coalesceRuns,
@@ -774,7 +774,11 @@ export function DocumentPanel({
 
           // Run couvrant la phrase (P2) → rail gauche + détection du début de run.
           const run = runAt(runs, s.index);
-          let runColor = run?.theme ? getThemeToken(run.theme).color : undefined;
+          // Rail gauche : couleur du thème du run, alpha PRÉ-BAKÉ (~0.5) → forme rgb(r g b / a)
+          // homogène avec le mode compare (plus de concaténation d'alpha hex `${color}80`).
+          let runColor = run?.theme
+            ? `rgb(${hexToRgbChannels(getThemeToken(run.theme).color)} / 0.5)`
+            : undefined;
           const isRunStart = run != null && run.start === s.index;
           let showDashedTop = showBoundaries && isRunStart && run!.theme != null;
 
@@ -784,8 +788,8 @@ export function DocumentPanel({
               comparePresent === 0
                 ? undefined
                 : compareAgree
-                  ? "rgb(var(--sem-success))"
-                  : "rgb(var(--sem-warning))";
+                  ? "rgb(var(--sem-success) / 0.5)"
+                  : "rgb(var(--sem-warning) / 0.5)";
             showDashedTop = false;
           }
 
@@ -1407,8 +1411,11 @@ function SentenceRow({
   return (
     <div
       ref={focusedRef}
-      role="button"
-      tabIndex={0}
+      // PAS de role="button" : la ligne contient des contrôles focusables (gutter, marque
+      // d'injustice, action rapide) → un rôle interactif ici = nested-interactive (WCAG).
+      // Le clic souris sélectionne (onClick) ; le clavier navigue par j/k (focus programmatique
+      // via focusedRef, d'où tabIndex={-1}) et Entrée/Espace active la ligne focalisée.
+      tabIndex={-1}
       data-testid={`sentence-${s.index}`}
       data-focused={isFocused || undefined}
       data-anchor={hasAnchor ? true : undefined}
@@ -1458,7 +1465,7 @@ function SentenceRow({
         // l'overlay injustice. Opacité modérée via box-shadow inset. À défaut de rail
         // de thème, un liseré PLUS FIN porte le niveau de triage (overlay opt-in).
         boxShadow: runColor
-          ? `inset 3px 0 0 ${runColor}80`
+          ? `inset 3px 0 0 ${runColor}`
           : triageColor
             ? `inset 2px 0 0 ${triageColor}aa`
             : undefined,
