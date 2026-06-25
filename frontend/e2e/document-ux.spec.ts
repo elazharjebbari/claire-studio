@@ -15,6 +15,15 @@ test.describe("DocumentPanel — refonte ergonomique", () => {
     await expect(page.getByTestId("annotation-workspace")).toBeVisible();
   });
 
+  test("la touche ? ouvre la cheat-sheet des raccourcis, Échap ferme (L9)", async ({ page }) => {
+    await page.keyboard.press("?");
+    const help = page.getByTestId("shortcuts-help");
+    await expect(help).toBeVisible();
+    await expect(help).toContainText("Raccourcis");
+    await page.keyboard.press("Escape");
+    await expect(help).toHaveCount(0);
+  });
+
   test("l'overlay frontières est togglable (pointillés au début de run)", async ({ page }) => {
     // Le 1er début de clause humaine porte data-boundary + data-dashed quand ON.
     const firstBoundary = page.locator('[data-boundary="true"]').first();

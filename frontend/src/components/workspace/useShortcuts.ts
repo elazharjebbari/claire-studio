@@ -20,6 +20,8 @@ export interface ShortcutCallbacks {
   onFocusTheme?: () => void;
   onComment?: () => void;
   onSnapshot?: () => void;
+  /** Touche `?` : ouvre la cheat-sheet des raccourcis (L9). */
+  onShowHelp?: () => void;
 }
 
 function isEditable(el: EventTarget | null): boolean {
@@ -56,6 +58,13 @@ export function useWorkspaceShortcuts(cb: ShortcutCallbacks = {}) {
         return;
       }
       if (editable || e.metaKey || e.ctrlKey || e.altKey) return;
+
+      // `?` (Maj+/) : cheat-sheet des raccourcis. Avant le switch car porteur de Maj.
+      if (e.key === "?") {
+        e.preventDefault();
+        cb.onShowHelp?.();
+        return;
+      }
 
       switch (e.key) {
         case "j":

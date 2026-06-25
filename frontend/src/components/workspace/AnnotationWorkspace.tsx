@@ -36,6 +36,7 @@ import { CommentsPanel } from "./CommentsPanel";
 import { TriageQueue } from "./triage/TriageQueue";
 import { TRIAGE_ENABLED } from "@/lib/env";
 import { useWorkspaceShortcuts } from "./useShortcuts";
+import { ShortcutsHelp } from "./ShortcutsHelp";
 import { useAutosave } from "./useAutosave";
 
 export function AnnotationWorkspace({ annotationId }: { annotationId: string }) {
@@ -120,6 +121,7 @@ export function AnnotationWorkspace({ annotationId }: { annotationId: string }) 
   const { data: preData } = usePreAnnotations(annotation?.projectSlug, annotation?.documentId);
   const autoPrefilledRef = useRef<string | null>(null);
   const [snapshotFn, setSnapshotFn] = useState<(() => void) | null>(null);
+  const [shortcutsOpen, setShortcutsOpen] = useState(false); // cheat-sheet raccourcis (L9)
   const registerSnapshot = useCallback((fn: () => void) => setSnapshotFn(() => fn), []);
 
   // Nettoyage à la sortie du workspace UNIQUEMENT (démontage). Séparé de l'init pour
@@ -235,6 +237,7 @@ export function AnnotationWorkspace({ annotationId }: { annotationId: string }) 
       el?.focus();
     },
     onSnapshot: () => snapshotFn?.(),
+    onShowHelp: () => setShortcutsOpen(true),
   });
 
   // Erreur de chargement : NE PAS rester bloqué sur un spinner (symptôme « l'écran
@@ -503,7 +506,7 @@ export function AnnotationWorkspace({ annotationId }: { annotationId: string }) 
                 onClick={() =>
                   unlockAnn.mutate(undefined, { onSettled: () => setUnlockConfirm(false) })
                 }
-                className="inline-flex items-center gap-1.5 rounded-md bg-amber-500 px-3 py-1.5 text-sm font-medium text-white hover:brightness-110 disabled:opacity-50"
+                className="inline-flex items-center gap-1.5 rounded-md bg-warning px-3 py-1.5 text-sm font-medium text-bg hover:brightness-110 disabled:opacity-50"
               >
                 <LockOpen size={14} aria-hidden />
                 {unlockAnn.isPending ? "Déverrouillage…" : "Déverrouiller"}
@@ -512,6 +515,8 @@ export function AnnotationWorkspace({ annotationId }: { annotationId: string }) 
           </div>
         </div>
       )}
+
+      {shortcutsOpen && <ShortcutsHelp onClose={() => setShortcutsOpen(false)} />}
     </div>
   );
 }
