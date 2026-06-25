@@ -3,21 +3,21 @@
 /**
  * SentenceMenu (P3 + Q3) — popover d'annotation contextuelle d'une phrase, ouvert au
  * long-press (~450 ms) ou au clic-droit. Trois blocs :
- *  (a) Annoter… : ThemePalette (choisir/changer le thème). Choisir un thème CRÉE la
+ *  (a) Annoter… : ThemeMultiPicker (choisir/changer le thème). Choisir un thème CRÉE la
  *      clause à cet index (Q2 : pas de thème par défaut), ou la (ré)assigne si elle
- *      existe. CertaintyPicker pour la clause couvrante.
- *  (b) LLM : pour chaque juge configuré (Claude/Codex/Mistral…), thème + rationale
- *      (tronqué + dépliable) + evidence, + indicateur d'accord ✓/✗ (data-testid menu-llm,
- *      llm-agreement, menu-llm-<id>). Les juges proviennent de LLM_JUDGES (source unique).
- *  (c) Traduire cette phrase.
+ *      existe. Indices LLM DISCRETS dans la grille (judgeHints). CertaintyPicker.
+ *  (b) Traduire cette phrase.
+ *
+ * Les propositions LLM détaillées NE sont PLUS dans ce menu (il redevient un geste rapide,
+ * pas un mini-inspecteur) : elles vivent au survol, dans l'œil de frontière (BoundaryEvidence,
+ * adoption N-way) et dans l'inspecteur (InspectorJudgeCompare).
  *
  * Positionné en `fixed` aux coordonnées du déclencheur, fermé au clic extérieur et
  * à Échap, navigable au clavier (focus piégé sur l'ouverture).
  */
 
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { useWorkspaceStore } from "@/store/workspace";
-import { getThemeToken } from "@/lib/tokens";
 import { RULES } from "@/lib/triage";
 import { runAt, type Run } from "@/lib/runs";
 import { ThemeMultiPicker } from "@/components/ui/ThemeMultiPicker";
@@ -73,7 +73,6 @@ export function SentenceMenu({
   const selectClause = useWorkspaceStore((s) => s.selectClause);
   const setCertainty = useWorkspaceStore((s) => s.setCertainty);
   const setValidated = useWorkspaceStore((s) => s.setValidated);
-  const resolveDivergenceRange = useWorkspaceStore((s) => s.resolveDivergenceRange);
   const setTranslated = useWorkspaceStore((s) => s.setTranslated);
   const translatedSentences = useWorkspaceStore((s) => s.translatedSentences);
   const displayLang = useWorkspaceStore((s) => s.displayLang);
@@ -87,12 +86,6 @@ export function SentenceMenu({
   const coveringDraft = coveringRun?.localId
     ? drafts.find((d) => d.localId === coveringRun.localId)
     : undefined;
-
-  // Accord/divergence entre les juges PRÉSENTS (généralisé Claude/Codex/Mistral…).
-  const presentJudges = judges.filter((j) => j.detail?.theme != null);
-  const presentThemes = presentJudges.map((j) => j.detail!.theme);
-  const multiPresent = presentJudges.length >= 2;
-  const allAgree = multiPresent && presentThemes.every((t) => t === presentThemes[0]);
 
   // Clic extérieur + Échap → fermeture.
   useEffect(() => {
@@ -224,43 +217,11 @@ export function SentenceMenu({
         )}
       </section>
 
-      {/* (b) LLM — propositions de chaque juge configuré (Claude/Codex/Mistral…). */}
-      <section className="flex flex-col gap-2 border-b border-line py-3" data-testid="menu-llm">
-        <h3 className="text-[11px] font-semibold uppercase text-ink-muted">Propositions LLM</h3>
-        {multiPresent ? (
-          allAgree ? (
-            <p data-testid="llm-agreement" className="text-xs font-medium text-emerald-400">
-              ✓ Accord — {getThemeToken(presentThemes[0]!).label}
-            </p>
-          ) : (
-            <p data-testid="llm-agreement" className="text-xs font-medium text-amber-400">
-              ✗ Divergence ({presentJudges.length} juges)
-            </p>
-          )
-        ) : (
-          <p data-testid="llm-agreement" className="text-xs text-ink-muted">
-            {presentJudges.length === 1
-              ? "Un seul juge couvre cette phrase."
-              : "Pas de proposition pour cette phrase."}
-          </p>
-        )}
-        {judges.map((j) => (
-          <JudgeBlock
-            key={j.id}
-            name={j.label}
-            detail={j.detail}
-            testid={`menu-llm-${j.id}`}
-            adopted={coveringDraft?.resolvedFrom === j.id}
-            onAdopt={() => {
-              if (!j.detail) return;
-              // Adoption sur TOUT le segment du juge (toutes les phrases de la frontière),
-              // pas seulement l'ancre — chaque phrase devient validée + resolvedFrom.
-              resolveDivergenceRange(j.detail.anchorIndex, j.detail.endIndex, j.id, j.detail.theme);
-              onClose();
-            }}
-          />
-        ))}
-      </section>
+      {/* Les propositions LLM ne sont PLUS détaillées ici (le menu cessait d'être un geste
+          rapide pour devenir un mini-inspecteur). Elles restent : (1) en indice DISCRET dans
+          la grille de thèmes ci-dessus (judgeHints), (2) au survol (RationaleHover), (3) via
+          l'ŒIL de frontière (BoundaryEvidence, adoption N-way) et (4) dans l'inspecteur
+          (InspectorJudgeCompare → « Reprendre dans mon annotation »). */}
 
       {/* (c) Traduire / masquer la traduction de cette phrase (toggle, P9) */}
       <section className="pt-3">
@@ -278,98 +239,6 @@ export function SentenceMenu({
           {isTranslated ? "🙈 Masquer la traduction" : "🌐 Traduire cette phrase"}
         </button>
       </section>
-    </div>
-  );
-}
-
-/** Bloc d'un juge : thème (puce colorée) + rationale (tronqué + dépliable) + evidence
- * + bouton « Choisir » (arbitrage P1). `adopted` affiche le voyant ✓. */
-function JudgeBlock({
-  name,
-  detail,
-  testid,
-  adopted,
-  onAdopt,
-}: {
-  name: string;
-  detail: JudgeDetail | null;
-  testid: string;
-  adopted: boolean;
-  onAdopt: () => void;
-}) {
-  const [expanded, setExpanded] = useState(false);
-  const token = detail ? getThemeToken(detail.theme) : null;
-  const rationale = detail?.rationale ?? "";
-  const isLong = rationale.length > 90;
-  const shown = !isLong || expanded ? rationale : `${rationale.slice(0, 90)}…`;
-
-  return (
-    <div
-      data-testid={testid}
-      className="rounded-md border border-line bg-panel-muted/40 px-2 py-1.5 text-xs"
-    >
-      <div className="flex items-center justify-between gap-2">
-        <span className="font-semibold text-ink-muted">{name}</span>
-        {token ? (
-          <span className="flex items-center gap-1 font-medium text-ink">
-            <span
-              aria-hidden
-              className="h-2 w-2 shrink-0 rounded-full"
-              style={{ backgroundColor: token.color }}
-            />
-            {token.label}
-          </span>
-        ) : (
-          <span className="text-ink-muted">—</span>
-        )}
-      </div>
-      {detail?.legalNature && (
-        <div className="mt-1 text-[10px] text-ink-muted">
-          Nature :{" "}
-          <span className="rounded bg-panel-muted px-1 font-medium uppercase text-ink">
-            {detail.legalNature}
-          </span>
-        </div>
-      )}
-      {detail && (
-        <div className="mt-1.5 flex items-center gap-2">
-          <button
-            type="button"
-            data-testid={`${testid}-adopt`}
-            onClick={onAdopt}
-            aria-pressed={adopted}
-            className={
-              "rounded border px-2 py-0.5 text-[11px] font-medium transition-colors " +
-              (adopted
-                ? "border-emerald-400/60 bg-emerald-400/10 text-emerald-300"
-                : "border-line text-ink hover:bg-panel-muted")
-            }
-          >
-            {adopted ? `✓ ${name} adopté` : `Choisir ${name}`}
-          </button>
-        </div>
-      )}
-      {detail && rationale && (
-        <p className="mt-1 text-ink-muted">
-          {shown}{" "}
-          {isLong && (
-            <button
-              type="button"
-              data-testid={`${testid}-toggle`}
-              aria-expanded={expanded}
-              onClick={() => setExpanded((v) => !v)}
-              className="text-accent hover:underline"
-            >
-              {expanded ? "réduire" : "déplier"}
-            </button>
-          )}
-        </p>
-      )}
-      {detail?.evidence && (
-        <p className="mt-1 border-l-2 border-line pl-2 italic text-ink-muted">
-          « {detail.evidence} »
-        </p>
-      )}
     </div>
   );
 }

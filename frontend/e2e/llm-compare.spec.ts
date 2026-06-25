@@ -39,13 +39,19 @@ test.describe("Comparaison & arbitrage LLM", () => {
     await expect(page.getByTestId("divergence-counter")).toContainText("1 /");
   });
 
-  test("arbitre une divergence via le menu et affiche le voyant", async ({ page }) => {
+  test("le menu clic-droit n'arbitre plus les LLM (geste rapide) — adoption au clavier", async ({ page }) => {
     await openCompare(page);
     // Phrase 1 : Claude=MODIFICATION_OF_TERMS, Codex=META (divergence).
     await page.getByTestId("sentence-1").click({ button: "right" });
     await expect(page.getByTestId("sentence-menu")).toBeVisible();
-    await page.getByTestId("menu-llm-claude-adopt").click();
-    // Voyant d'arbitrage sur la clause (Claude adopté).
+    // Le bloc « Propositions LLM » et ses boutons d'adoption ont quitté le menu :
+    // l'arbitrage passe par l'œil de frontière, l'inspecteur, ou le clavier.
+    await expect(page.getByTestId("menu-llm")).toHaveCount(0);
+    await expect(page.getByTestId("menu-llm-claude-adopt")).toHaveCount(0);
+    await page.keyboard.press("Escape");
+    // Adoption Claude au clavier (« 1 ») sur la phrase focalisée → voyant d'arbitrage.
+    await page.getByTestId("sentence-1").click();
+    await page.keyboard.press("1");
     const voyant = page.getByTestId("resolved-1");
     await expect(voyant).toBeVisible();
     await expect(voyant).toHaveAttribute("data-judge", "claude");

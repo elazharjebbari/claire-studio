@@ -39,11 +39,18 @@ describe("ClauseChip — provenance (3 types) + badge multi-label", () => {
   it("distinction nette validé vs à-valider (accent émeraude / pointillé)", () => {
     const { rerender } = render(<ClauseChip themeCode="META" validated />);
     const validatedChip = screen.getByTestId("clause-chip");
-    expect(validatedChip.style.boxShadow).toContain("inset"); // accent gauche émeraude
+    expect(validatedChip.style.boxShadow).toContain("inset"); // accent gauche (token succès)
     expect(validatedChip.className).not.toContain("border-dashed");
     rerender(<ClauseChip themeCode="META" validated={false} />);
     const pendingChip = screen.getByTestId("clause-chip");
     expect(pendingChip.className).toContain("border-dashed"); // brouillon = pointillé
     expect(pendingChip.style.boxShadow).toBe(""); // pas d'accent « validé »
+  });
+
+  it("rend un glyphe de thème (icône, forme en plus de la couleur — WCAG 1.4.1)", () => {
+    const { container } = render(<ClauseChip themeCode="TERMINATION" />);
+    const svg = container.querySelector("svg");
+    expect(svg).not.toBeNull();
+    expect(svg).toHaveAttribute("aria-hidden"); // sens porté par le libellé, pas l'icône
   });
 });

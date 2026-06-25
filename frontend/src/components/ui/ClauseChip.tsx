@@ -8,6 +8,7 @@
 
 import { cn } from "@/lib/cn";
 import { getThemeToken, hexToRgbChannels } from "@/lib/tokens";
+import { getThemeIcon } from "@/lib/themeIcons";
 import type { TriageLevel } from "@/types/contract";
 import { ProvenanceMark } from "@/components/ui/ProvenanceMark";
 
@@ -48,6 +49,7 @@ export function ClauseChip({
 }: ClauseChipProps) {
   const token = getThemeToken(themeCode);
   const rgb = hexToRgbChannels(token.color);
+  const ThemeIcon = getThemeIcon(themeCode);
   const Comp = onClick ? "button" : "span";
   // État « brouillon / à valider » (≠ validé) : rendu visuellement distinct et NON ambigu —
   // bordure pointillée + fond plus pâle + libellé atténué, vs validé = plein + accent émeraude.
@@ -82,16 +84,20 @@ export function ClauseChip({
           backgroundColor: `rgb(${rgb} / ${ghost ? 0.08 : pending ? 0.1 : 0.2})`,
           borderColor: `rgb(${rgb} / ${selected ? 0.9 : pending ? 0.35 : 0.55})`,
           "--tw-ring-color": token.color,
-          // Accent émeraude à gauche = « validé » (signal fort, position + couleur, AA) ;
-          // absent à l'état brouillon → distinction nette même sans lire le glyphe.
-          boxShadow: validated ? "inset 3px 0 0 #34D399" : undefined,
+          // Accent « validé » à gauche (signal fort, position + couleur, AA) ; absent à
+          // l'état brouillon → distinction nette même sans lire le glyphe. Tokenisé (succès).
+          boxShadow: validated ? "inset 3px 0 0 rgb(var(--sem-success))" : undefined,
         } as React.CSSProperties
       }
     >
-      <span
+      {/* Glyphe de thème (forme + couleur) à la place du point coloré : désambiguïse les
+          teintes proches sans ajouter de signal, dans la couleur du thème (subtil, AA via
+          forme). aria-hidden : le sens est déjà porté par le libellé textuel. */}
+      <ThemeIcon
+        size={size === "sm" ? 12 : 13}
         aria-hidden
-        className="h-2 w-2 shrink-0 rounded-full"
-        style={{ backgroundColor: token.color, opacity: pending ? 0.5 : 1 }}
+        className="shrink-0"
+        style={{ color: token.color, opacity: pending ? 0.6 : 1 }}
       />
       {validated !== undefined && (
         <ProvenanceMark clause={{ validated, seededFrom, resolvedFrom, triageLevel }} className="shrink-0" />
@@ -105,8 +111,7 @@ export function ClauseChip({
           data-testid="multilabel-badge"
           title={`Multi-label : ${secondaryCount} thème(s) secondaire(s)`}
           aria-label={`${secondaryCount} thème(s) secondaire(s)`}
-          className="ml-1 shrink-0 rounded-full border px-1 text-[9px] font-bold leading-none"
-          style={{ color: "#64B5F6", borderColor: "rgb(100 181 246 / 0.4)" }}
+          className="ml-1 shrink-0 rounded-full border border-info/40 px-1 text-[9px] font-bold leading-none text-info"
         >
           +{secondaryCount}
         </span>

@@ -27,10 +27,12 @@ test.describe("DocumentPanel — refonte ergonomique", () => {
     await expect(page.locator('[data-dashed="true"]').first()).toBeVisible();
   });
 
-  test("le clic-droit ouvre le menu de phrase avec le bloc LLM", async ({ page }) => {
+  test("le clic-droit ouvre le menu de phrase (geste rapide, sans bloc LLM)", async ({ page }) => {
     await page.getByTestId("sentence-2").click({ button: "right" });
     await expect(page.getByTestId("sentence-menu")).toBeVisible();
-    await expect(page.getByTestId("menu-llm")).toBeVisible();
+    // Le menu est désormais un geste rapide : plus de bloc « Propositions LLM »
+    // (disponible au survol, via l'œil de frontière et dans l'inspecteur).
+    await expect(page.getByTestId("menu-llm")).toHaveCount(0);
     await expect(page.getByTestId("menu-translate")).toBeVisible();
     // Fermeture à Échap.
     await page.keyboard.press("Escape");
