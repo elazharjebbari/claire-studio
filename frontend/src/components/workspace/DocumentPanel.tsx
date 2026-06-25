@@ -42,6 +42,7 @@ import { ModelBoundaryStrip, ModelBoundaryLegend, type GutterModel } from "./Mod
 import { LLM_JUDGES, llmJudgeLabel } from "@/lib/llmJudges";
 import { validationByIndex } from "@/lib/validation";
 import { useUiStore } from "@/store/ui";
+import { usePrefsStore } from "@/store/prefs";
 import {
   useAnnotationVersions,
   useAttribution,
@@ -62,7 +63,7 @@ import { SentenceMenu, type JudgeDetail } from "./SentenceMenu";
 import { SelectionToolbar } from "./SelectionToolbar";
 import { LangSwitch } from "./LangSwitch";
 import { LlmSourceSwitch } from "./LlmSourceSwitch";
-import { Eye, Users, Columns2, Ghost, TextSelect } from "lucide-react";
+import { Eye, Users, Columns2, Ghost, TextSelect, SlidersHorizontal, ChevronDown, ChevronUp } from "lucide-react";
 import { CollabBar } from "./CollabBar";
 import { DivergenceNav } from "./DivergenceNav";
 import { ComparePanel } from "./ComparePanel";
@@ -123,6 +124,9 @@ export function DocumentPanel({
   const toggleComparePanel = useWorkspaceStore((s) => s.toggleComparePanel);
   const showAttribution = useWorkspaceStore((s) => s.showAttribution);
   const toggleAttribution = useWorkspaceStore((s) => s.toggleAttribution);
+  // Barre de contrôles repliable (gain de place petits écrans) — état PAR COMPTE.
+  const docControlsCollapsed = usePrefsStore((s) => s.prefs.panels.docControlsCollapsed);
+  const setPanel = usePrefsStore((s) => s.setPanel);
   const annotationId = useWorkspaceStore((s) => s.annotationId);
   const showUnfairness = useWorkspaceStore((s) => s.showUnfairness);
   const ghostJudges = useWorkspaceStore((s) => s.ghostJudges);
@@ -539,10 +543,28 @@ export function DocumentPanel({
           className="sticky top-0 z-20 -mx-2 mb-4 flex flex-wrap items-center gap-3 border-b border-line/40 bg-reading/90 px-2 py-2 text-sm backdrop-blur supports-[backdrop-filter]:bg-reading/75"
         >
           <CollabBar projectSlug={projectSlug} />
+          {/* Repli de la barre d'outils du document (petits écrans) : un seul bouton ;
+              CollabBar reste visible, le reste se replie. État persisté PAR COMPTE. */}
+          <button
+            type="button"
+            data-testid="doc-controls-toggle"
+            aria-expanded={!docControlsCollapsed}
+            onClick={() => setPanel("docControlsCollapsed", !docControlsCollapsed)}
+            title={docControlsCollapsed ? "Déplier les outils du document" : "Replier les outils du document"}
+            className="inline-flex items-center gap-1 rounded-md border border-line px-2 py-1 text-[11px] text-ink-muted transition-colors hover:bg-panel-muted hover:text-ink"
+          >
+            <SlidersHorizontal size={13} aria-hidden /> Outils
+            {docControlsCollapsed ? (
+              <ChevronDown size={12} aria-hidden />
+            ) : (
+              <ChevronUp size={12} aria-hidden />
+            )}
+          </button>
           {/* Barre STABLE (axe 4) : alignement à GAUCHE + ordre fixe → les contrôles ne
               « changent plus de côté » quand un élément conditionnel apparaît/disparaît
               (l'ancien justify-end re-tassait tout à droite). La zone Lecture/Langue est
               poussée à droite comme un BLOC (ml-auto) et reste groupée au repli. */}
+          {!docControlsCollapsed && (
           <div className="flex flex-1 flex-wrap items-center gap-x-2.5 gap-y-2">
           {/* P3 : sélecteur de version TOUJOURS visible dès qu'il existe des versions,
               indépendamment de la source. Le switch n'affecte QUE l'overlay LLM
@@ -707,6 +729,7 @@ export function DocumentPanel({
           <LangSwitch />
           </div>
           </div>
+          )}
           {/* Comparaison N-WAY (axe 7) : bandeau + navigation des divergences, placés
               DANS la barre sticky (largeur pleine → sa propre ligne) afin de rester
               TOUJOURS à l'écran pendant le défilement. Plus de pairwise Claude/Codex. */}

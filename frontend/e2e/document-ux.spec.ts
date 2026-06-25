@@ -15,6 +15,20 @@ test.describe("DocumentPanel — refonte ergonomique", () => {
     await expect(page.getByTestId("annotation-workspace")).toBeVisible();
   });
 
+  test("la barre d'outils du document se replie pour gagner de la place (petits écrans)", async ({ page }) => {
+    // Déployée par défaut : les contrôles sont visibles.
+    await expect(page.getByTestId("reading-controls")).toBeVisible();
+    await expect(page.getByTestId("llm-source-switch")).toBeVisible();
+    // Replier → seuls CollabBar + le bouton restent ; les contrôles disparaissent.
+    await page.getByTestId("doc-controls-toggle").click();
+    await expect(page.getByTestId("reading-controls")).toHaveCount(0);
+    await expect(page.getByTestId("llm-source-switch")).toHaveCount(0);
+    await expect(page.getByTestId("doc-controls-toggle")).toBeVisible();
+    // Déplier → tout revient.
+    await page.getByTestId("doc-controls-toggle").click();
+    await expect(page.getByTestId("reading-controls")).toBeVisible();
+  });
+
   test("la touche ? ouvre la cheat-sheet des raccourcis, Échap ferme (L9)", async ({ page }) => {
     await page.keyboard.press("?");
     const help = page.getByTestId("shortcuts-help");

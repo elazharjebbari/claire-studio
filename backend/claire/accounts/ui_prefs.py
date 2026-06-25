@@ -25,13 +25,17 @@ DEFAULTS: dict = {
         "historyOpen": False,
         "commentsOpen": False,
         "triageOpen": False,
+        "docControlsCollapsed": False,
     },
     "prefill": {"enabled": False, "judge": None, "asked": False},
 }
 
 _BOOL_KEYS = {
     "overlays": ["showUnfairness"],
-    "panels": ["inspectorOpen", "sidebarCollapsed", "historyOpen", "commentsOpen", "triageOpen"],
+    "panels": [
+        "inspectorOpen", "sidebarCollapsed", "historyOpen", "commentsOpen", "triageOpen",
+        "docControlsCollapsed",
+    ],
     "prefill": ["enabled", "asked"],
 }
 

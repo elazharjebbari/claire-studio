@@ -33,6 +33,8 @@ export interface UiPrefsPanels {
   historyOpen: boolean;
   commentsOpen: boolean;
   triageOpen: boolean;
+  /** Barre de contrôles du document repliée (gain de place sur petits écrans). */
+  docControlsCollapsed: boolean;
 }
 
 export interface UiPrefsPrefill {
@@ -63,6 +65,7 @@ export const UI_PREFS_DEFAULTS: UiPrefsV1 = {
     historyOpen: false,
     commentsOpen: false,
     triageOpen: false,
+    docControlsCollapsed: false,
   },
   prefill: { enabled: false, judge: null, asked: false },
 };
@@ -124,6 +127,10 @@ export function mergeUiPrefs(
       historyOpen: asBool((pan as Record<string, unknown>).historyOpen, defaults.panels.historyOpen),
       commentsOpen: asBool((pan as Record<string, unknown>).commentsOpen, defaults.panels.commentsOpen),
       triageOpen: asBool((pan as Record<string, unknown>).triageOpen, defaults.panels.triageOpen),
+      docControlsCollapsed: asBool(
+        (pan as Record<string, unknown>).docControlsCollapsed,
+        defaults.panels.docControlsCollapsed,
+      ),
     },
     prefill: {
       enabled: asBool((pf as Record<string, unknown>).enabled, defaults.prefill.enabled),
