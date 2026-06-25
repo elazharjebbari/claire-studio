@@ -991,24 +991,22 @@ export function DocumentPanel({
                     ))}
                 </div>
               )}
-              {/* Frontière LLM (P5) : marqueur discret + aperçu evidence/rationale.
-                  Indépendant du badge humain car les frontières des juges ne
-                  coïncident pas toujours avec les clauses humaines. */}
+              {/* L7 — ŒIL DE FRONTIÈRE UNIFIÉ : un SEUL affordance « frontière ici » (icône +
+                  libellé en une pastille cliquable) = le point d'entrée unique vers le détail
+                  N-way (BoundaryEvidence : tous les juges + Comparer + adoption). Remplace le
+                  texte passif + bouton séparé ; la densité N-way reste à la demande, pas dans
+                  le flux. Les ghosts/réglette par modèle restent des overlays OPT-IN. */}
               {llmFrontier && (
-                <div
-                  data-testid={`llm-frontier-${s.index}`}
-                  className="-mb-0.5 mt-2 flex items-center gap-1 pl-2 text-[10px] text-ink-muted"
-                >
-                  <span aria-hidden className="text-ink-muted">frontière LLM</span>
+                <div data-testid={`llm-frontier-${s.index}`} className="-mb-0.5 mt-2 pl-2">
                   <button
                     type="button"
                     data-testid={`boundary-peek-${s.index}`}
-                    aria-label={`Aperçu des preuves LLM à la frontière ${s.index}`}
-                    title="Aperçu evidence/rationale — e"
+                    aria-label={`Frontière de segment — voir le détail des juges (phrase ${s.index})`}
+                    title="Frontière de segment · détail des juges (evidence/rationale, N-way) — touche e"
                     onClick={(e) => openBoundaryAt(s.index, e.clientX, e.clientY)}
-                    className="inline-flex items-center rounded px-1 text-ink-muted hover:bg-panel-muted"
+                    className="inline-flex items-center gap-1 rounded px-1.5 py-0.5 text-[10px] font-medium text-ink-muted ring-1 ring-inset ring-line transition-colors hover:bg-panel-muted hover:text-ink"
                   >
-                    <Eye size={13} aria-hidden />
+                    <Eye size={12} aria-hidden /> frontière
                   </button>
                 </div>
               )}
