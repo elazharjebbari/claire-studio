@@ -6,8 +6,9 @@
  */
 
 import { useEffect, useMemo, useRef, useState } from "react";
-import { CircleDashed, ArrowRight } from "lucide-react";
+import { CircleDashed, ArrowRight, SlidersHorizontal } from "lucide-react";
 import { ClauseChip } from "@/components/ui/ClauseChip";
+import { Disclosure } from "@/components/ui/Disclosure";
 import { ThemePalette } from "@/components/ui/ThemePalette";
 import { useWorkspaceStore } from "@/store/workspace";
 import { LLM_JUDGES } from "@/lib/llmJudges";
@@ -112,6 +113,13 @@ export function TocPanel({ docTitle }: { docTitle: string }) {
   const displayLang = useWorkspaceStore((s) => s.displayLang);
   const setDisplayLang = useWorkspaceStore((s) => s.setDisplayLang);
   const frActive = displayLang === "fr";
+
+  // Nombre d'overlays ACTIFS (pour le badge du Disclosure replié) : injustice + fantômes LLM
+  // par juge + traduction. Donne la conscience d'état sans déplier.
+  const overlaysActiveCount =
+    (showUnfairness ? 1 : 0) +
+    LLM_JUDGES.filter((j) => ghostJudges[j.id] === true).length +
+    (frActive ? 1 : 0);
 
   const coverage = nSentences > 0 ? Math.round((drafts.length / nSentences) * 100) : 0;
   const validatedCount = drafts.filter((c) => c.validated).length;
@@ -301,43 +309,53 @@ export function TocPanel({ docTitle }: { docTitle: string }) {
         })}
       </nav>
 
-      <fieldset data-testid="toc-overlays" className="shrink-0 rounded-md border border-line p-2">
-        <legend className="px-1 text-[11px] font-semibold uppercase text-ink-muted">
-          Overlays
-        </legend>
-        <label className="flex cursor-pointer items-center gap-2 py-1 text-sm text-ink">
-          <input
-            type="checkbox"
-            data-testid="toggle-unfairness"
-            checked={showUnfairness}
-            onChange={toggleUnfairness}
-          />
-          Injustice CLAUDETTE
-        </label>
-        {LLM_JUDGES.map((j) => (
-          <label
-            key={j.id}
-            className="flex cursor-pointer items-center gap-2 py-1 text-sm text-ink"
-          >
+      {/* Overlays repliés par défaut (révélation à la demande) → libère la hauteur du <nav>
+          des blocs au-dessus. Le badge « N actifs » signale ce qui est allumé sous le pli.
+          Le contenu reste MONTÉ (data-testid atteignables) ; les valeurs des overlays restent
+          persistées PAR COMPTE (pont prefs dans AnnotationWorkspace, inchangé). */}
+      <Disclosure
+        testId="toc-overlays"
+        className="shrink-0"
+        summary="Affichage"
+        icon={<SlidersHorizontal size={13} />}
+        badge={overlaysActiveCount}
+      >
+        <fieldset>
+          <legend className="sr-only">Overlays d'affichage</legend>
+          <label className="flex cursor-pointer items-center gap-2 py-1 text-sm text-ink">
             <input
               type="checkbox"
-              data-testid={`toggle-ghost-${j.id}`}
-              checked={ghostJudges[j.id] === true}
-              onChange={() => toggleGhost(j.id)}
+              data-testid="toggle-unfairness"
+              checked={showUnfairness}
+              onChange={toggleUnfairness}
             />
-            Fantôme LLM · {j.label}
+            Injustice CLAUDETTE
           </label>
-        ))}
-        <label className="flex cursor-pointer items-center gap-2 py-1 text-sm text-ink">
-          <input
-            type="checkbox"
-            data-testid="toggle-translation"
-            checked={frActive}
-            onChange={() => setDisplayLang(frActive ? "orig" : "fr")}
-          />
-          Traduction (FR)
-        </label>
-      </fieldset>
+          {LLM_JUDGES.map((j) => (
+            <label
+              key={j.id}
+              className="flex cursor-pointer items-center gap-2 py-1 text-sm text-ink"
+            >
+              <input
+                type="checkbox"
+                data-testid={`toggle-ghost-${j.id}`}
+                checked={ghostJudges[j.id] === true}
+                onChange={() => toggleGhost(j.id)}
+              />
+              Fantôme LLM · {j.label}
+            </label>
+          ))}
+          <label className="flex cursor-pointer items-center gap-2 py-1 text-sm text-ink">
+            <input
+              type="checkbox"
+              data-testid="toggle-translation"
+              checked={frActive}
+              onChange={() => setDisplayLang(frActive ? "orig" : "fr")}
+            />
+            Traduction (FR)
+          </label>
+        </fieldset>
+      </Disclosure>
 
       {/* Menu contextuel (clic-droit) : annoter / valider TOUTE la sélection en lot. */}
       {menu && (

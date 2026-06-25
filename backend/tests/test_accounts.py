@@ -156,3 +156,57 @@ def test_me_patch_updates_profile_but_not_role(client):
     assert user.locale == "fr"
     assert user.role == "annotator"  # rôle jamais modifiable via le profil
     assert resp.json()["isEmailVerified"] is False
+
+
+# ─────────────────────────────────────────────────────────────────────────────
+# Préférences d'interface PAR COMPTE — isolation entre comptes (refonte atelier).
+# « Marche pour TOUS les comptes, pas que le mien » : ce que pose un annotateur ne
+# doit jamais déteindre sur un autre, quel que soit le rôle.
+# ─────────────────────────────────────────────────────────────────────────────
+def _patch_prefs(client, user, prefs):
+    client.force_authenticate(user=user)
+    return client.patch("/api/v1/me", {"uiPreferences": prefs}, format="json")
+
+
+def test_ui_preferences_isolated_between_accounts(client):
+    """Deux comptes (rôles différents) ; les prefs de l'un n'affectent jamais l'autre."""
+    alice = User.objects.create_user(username="ui_alice", email="a@ex.com", password="x", role="annotator")
+    bob = User.objects.create_user(username="ui_bob", email="b@ex.com", password="x", role="lead")
+
+    r1 = _patch_prefs(client, alice, {"overlays": {"showUnfairness": False}, "panels": {"inspectorOpen": False}})
+    assert r1.status_code == 200
+    r2 = _patch_prefs(client, bob, {"overlays": {"showUnfairness": True}, "panels": {"inspectorOpen": True}})
+    assert r2.status_code == 200
+
+    alice.refresh_from_db(); bob.refresh_from_db()
+    # Chaque compte conserve EXACTEMENT ses propres valeurs (aucune fuite croisée).
+    assert alice.ui_preferences["overlays"]["showUnfairness"] is False
+    assert alice.ui_preferences["panels"]["inspectorOpen"] is False
+    assert bob.ui_preferences["overlays"]["showUnfairness"] is True
+    assert bob.ui_preferences["panels"]["inspectorOpen"] is True
+
+    # Le GET /me de chacun renvoie SON blob (pas celui de l'autre).
+    client.force_authenticate(user=alice)
+    assert client.get("/api/v1/me").json()["uiPreferences"]["panels"]["inspectorOpen"] is False
+    client.force_authenticate(user=bob)
+    assert client.get("/api/v1/me").json()["uiPreferences"]["panels"]["inspectorOpen"] is True
+
+
+def test_ui_preferences_partial_merge_preserves_other_keys(client):
+    """PATCH PARTIEL : poser une clé ne réinitialise pas les autres (par compte)."""
+    u = User.objects.create_user(username="ui_merge", email="m@ex.com", password="x", role="annotator")
+    _patch_prefs(client, u, {"overlays": {"showUnfairness": False}})
+    _patch_prefs(client, u, {"panels": {"triageOpen": True}})
+    u.refresh_from_db()
+    assert u.ui_preferences["overlays"]["showUnfairness"] is False  # préservé
+    assert u.ui_preferences["panels"]["triageOpen"] is True
+
+
+def test_ui_preferences_whitelist_rejects_arbitrary_keys(client):
+    """Whitelist stricte : une clé inconnue est ignorée (jamais de JSON arbitraire stocké)."""
+    u = User.objects.create_user(username="ui_wl", email="w@ex.com", password="x", role="annotator")
+    r = _patch_prefs(client, u, {"evil": {"x": 1}, "overlays": {"showUnfairness": False}})
+    assert r.status_code == 200
+    u.refresh_from_db()
+    assert "evil" not in u.ui_preferences
+    assert u.ui_preferences["overlays"]["showUnfairness"] is False

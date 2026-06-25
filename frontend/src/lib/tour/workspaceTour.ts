@@ -176,17 +176,10 @@ export const WORKSPACE_TOUR_STEPS: TourStep[] = [
   // ── E. Overlays ─────────────────────────────────────────────────────────
   {
     section: "Overlays",
-    element: '[data-testid="toggle-unfairness"]',
-    title: "Overlay d'injustice CLAUDETTE",
+    element: '[data-testid="toc-overlays-summary"]',
+    title: "Affichage — overlays (replié par défaut)",
     description:
-      "Surlignez les phrases marquées injustes par CLAUDETTE, avec leur catégorie et leur niveau, pour repérer les zones sensibles.",
-  },
-  {
-    section: "Overlays",
-    element: '[data-testid="toggle-ghost-claude"]',
-    title: "Fantômes de comparaison",
-    description:
-      "Affichez en pointillés les frontières proposées par un juge mais non encore retenues (un fantôme par juge). Comparaison seulement : votre annotation n'est pas modifiée.",
+      "Dépliez « Affichage » au pied du plan pour activer les overlays : injustice CLAUDETTE (zones sensibles), fantômes LLM en pointillés (frontières proposées par un juge, comparaison seulement) et traduction (FR). Un badge « N actifs » indique ce qui est allumé sous le pli.",
   },
   {
     section: "Overlays",

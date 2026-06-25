@@ -50,8 +50,7 @@ describe("Configuration de la visite guidée du workspace", () => {
       '[data-testid="theme-palette"]',
       '[data-testid="certainty-picker"]',
       '[data-testid="prefill-switch"]',
-      '[data-testid="toggle-unfairness"]',
-      '[data-testid="toggle-ghost-claude"]',
+      '[data-testid="toc-overlays-summary"]',
       '[data-testid="snapshot-btn"]',
       '[data-testid="submit-btn"]',
       // Blocs récents désormais couverts par la visite refondue (N-way + UI à jour)

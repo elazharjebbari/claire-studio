@@ -132,6 +132,7 @@ test.describe("Collaboration & versioning — socle (points 0,1,2)", () => {
 
   test("le fantôme LLM reste visible même sur une phrase ancrée (fix overlay)", async ({ page }) => {
     await open(page);
+    await page.getByTestId("toc-overlays-summary").click(); // déplier « Affichage »
     await page.getByTestId("toggle-ghost-claude").click();
     // L'ancre 0 porte une clause humaine ET une proposition Claude → le fantôme
     // doit s'afficher (correctif : plus masqué par la présence d'une ancre humaine).

@@ -9,6 +9,9 @@ test.describe("Overlay injustice CLAUDETTE (F12)", () => {
   test.beforeEach(async ({ page }) => {
     await page.goto("/annotate/ann-1");
     await expect(page.getByTestId("annotation-workspace")).toBeVisible();
+    // Les overlays sont désormais repliés par défaut (révélation à la demande) : on déplie
+    // « Affichage » pour rendre les toggles actionnables.
+    await page.getByTestId("toc-overlays-summary").click();
   });
 
   test("affiche le surlignage par défaut et le retire au toggle", async ({ page }) => {

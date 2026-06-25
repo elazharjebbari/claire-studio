@@ -34,6 +34,7 @@ test.describe("Pré-remplissage LLM (F2)", () => {
   });
 
   test("affiche les fantômes Claude quand l'overlay est activé", async ({ page }) => {
+    await page.getByTestId("toc-overlays-summary").click(); // déplier « Affichage »
     await page.getByTestId("toggle-ghost-claude").check();
     await expect(page.getByTestId("ghost-claude-0")).toBeVisible();
   });
