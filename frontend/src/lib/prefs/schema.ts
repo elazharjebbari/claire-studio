@@ -28,8 +28,11 @@ export interface UiPrefsOverlays {
 }
 
 export interface UiPrefsPanels {
+  /** Barre latérale de l'APPLICATION (shell nav) repliée. */
   inspectorOpen: boolean;
   sidebarCollapsed: boolean;
+  /** Panneau PLAN de l'atelier replié (distinct de la sidebar de l'app — anti-collision). */
+  planCollapsed: boolean;
   historyOpen: boolean;
   commentsOpen: boolean;
   triageOpen: boolean;
@@ -62,6 +65,7 @@ export const UI_PREFS_DEFAULTS: UiPrefsV1 = {
   panels: {
     inspectorOpen: true,
     sidebarCollapsed: false,
+    planCollapsed: false,
     historyOpen: false,
     commentsOpen: false,
     triageOpen: false,
@@ -124,6 +128,7 @@ export function mergeUiPrefs(
     panels: {
       inspectorOpen: asBool((pan as Record<string, unknown>).inspectorOpen, defaults.panels.inspectorOpen),
       sidebarCollapsed: asBool((pan as Record<string, unknown>).sidebarCollapsed, defaults.panels.sidebarCollapsed),
+      planCollapsed: asBool((pan as Record<string, unknown>).planCollapsed, defaults.panels.planCollapsed),
       historyOpen: asBool((pan as Record<string, unknown>).historyOpen, defaults.panels.historyOpen),
       commentsOpen: asBool((pan as Record<string, unknown>).commentsOpen, defaults.panels.commentsOpen),
       triageOpen: asBool((pan as Record<string, unknown>).triageOpen, defaults.panels.triageOpen),

@@ -540,17 +540,25 @@ export function DocumentPanel({
        >
         <div
           data-testid="document-controls"
-          className="sticky top-0 z-20 -mx-2 mb-4 flex flex-wrap items-center gap-3 border-b border-line/40 bg-reading/90 px-2 py-2 text-sm backdrop-blur supports-[backdrop-filter]:bg-reading/75"
+          data-collapsed={docControlsCollapsed || undefined}
+          className={cn(
+            "sticky top-0 z-20 -mx-2 flex flex-wrap items-center gap-3 bg-reading/90 px-2 text-sm backdrop-blur supports-[backdrop-filter]:bg-reading/75",
+            // Repliée (« fermée ») : strip minimal (juste la pastille « Outils ») → gain de
+            // place maximal sur petits écrans. Dépliée : barre complète bordée.
+            docControlsCollapsed
+              ? "mb-2 py-1"
+              : "mb-4 border-b border-line/40 py-2",
+          )}
         >
-          <CollabBar projectSlug={projectSlug} />
-          {/* Repli de la barre d'outils du document (petits écrans) : un seul bouton ;
-              CollabBar reste visible, le reste se replie. État persisté PAR COMPTE. */}
+          {/* Pliable ET fermable : au repli, on masque AUSSI CollabBar → seul reste le bouton
+              « Outils » (la barre se ferme entièrement). Dépli = tout revient. État PAR COMPTE. */}
+          {!docControlsCollapsed && <CollabBar projectSlug={projectSlug} />}
           <button
             type="button"
             data-testid="doc-controls-toggle"
             aria-expanded={!docControlsCollapsed}
             onClick={() => setPanel("docControlsCollapsed", !docControlsCollapsed)}
-            title={docControlsCollapsed ? "Déplier les outils du document" : "Replier les outils du document"}
+            title={docControlsCollapsed ? "Ouvrir la barre d'outils du document" : "Fermer la barre d'outils du document"}
             className="inline-flex items-center gap-1 rounded-md border border-line px-2 py-1 text-[11px] text-ink-muted transition-colors hover:bg-panel-muted hover:text-ink"
           >
             <SlidersHorizontal size={13} aria-hidden /> Outils

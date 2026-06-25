@@ -11,10 +11,15 @@ test.describe("Synchro plan ↔ phrase", () => {
     await expect(page.getByTestId("annotation-workspace")).toBeVisible();
     const plan = page.getByRole("complementary", { name: "Plan du document" });
     await expect(plan).toBeVisible();
+    // ANTI-COLLISION (bug corrigé) : le repli du PLAN ne doit PAS toucher la barre latérale
+    // de l'APP (états distincts planCollapsed ≠ sidebarCollapsed).
+    const appSidebar = page.getByTestId("app-sidebar-toggle");
+    await expect(appSidebar).toHaveAttribute("aria-expanded", "true");
     // Replier → rail fin + bouton de dépliage (le plan plein disparaît, libère l'espace).
     await page.getByTestId("sidebar-collapse").click();
     await expect(page.getByTestId("sidebar-expand")).toBeVisible();
     await expect(plan).toHaveCount(0);
+    await expect(appSidebar).toHaveAttribute("aria-expanded", "true"); // sidebar app INTACTE
     // Déplier → plan de retour (symétrique de l'inspecteur).
     await page.getByTestId("sidebar-expand").click();
     await expect(plan).toBeVisible();

@@ -128,6 +128,7 @@ export function Sidebar() {
         </Link>
         <button
           type="button"
+          data-testid="app-sidebar-toggle"
           onClick={toggle}
           aria-label={collapsed ? "Déplier la barre latérale" : "Replier la barre latérale"}
           aria-expanded={!collapsed}

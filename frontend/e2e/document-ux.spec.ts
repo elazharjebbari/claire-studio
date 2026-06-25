@@ -29,14 +29,17 @@ test.describe("DocumentPanel — refonte ergonomique", () => {
     // Déployée par défaut : les contrôles sont visibles.
     await expect(page.getByTestId("reading-controls")).toBeVisible();
     await expect(page.getByTestId("llm-source-switch")).toBeVisible();
-    // Replier → seuls CollabBar + le bouton restent ; les contrôles disparaissent.
+    await expect(page.getByTestId("collab-bar")).toBeVisible();
+    // Fermer → la barre se FERME entièrement (contrôles ET CollabBar) ; seul le bouton reste.
     await page.getByTestId("doc-controls-toggle").click();
     await expect(page.getByTestId("reading-controls")).toHaveCount(0);
     await expect(page.getByTestId("llm-source-switch")).toHaveCount(0);
+    await expect(page.getByTestId("collab-bar")).toHaveCount(0);
     await expect(page.getByTestId("doc-controls-toggle")).toBeVisible();
-    // Déplier → tout revient.
+    // Rouvrir → tout revient.
     await page.getByTestId("doc-controls-toggle").click();
     await expect(page.getByTestId("reading-controls")).toBeVisible();
+    await expect(page.getByTestId("collab-bar")).toBeVisible();
   });
 
   test("la touche ? ouvre la cheat-sheet des raccourcis, Échap ferme (L9)", async ({ page }) => {

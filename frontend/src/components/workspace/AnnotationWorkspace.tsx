@@ -106,10 +106,12 @@ export function AnnotationWorkspace({ annotationId }: { annotationId: string }) 
     () => setPanel("inspectorOpen", !usePrefsStore.getState().prefs.panels.inspectorOpen),
     [setPanel],
   );
-  // L1 — repli SYMÉTRIQUE du plan (état PAR COMPTE via prefs.panels.sidebarCollapsed).
-  const sidebarCollapsed = panels.sidebarCollapsed;
-  const toggleSidebar = useCallback(
-    () => setPanel("sidebarCollapsed", !usePrefsStore.getState().prefs.panels.sidebarCollapsed),
+  // L1 — repli du plan (état PAR COMPTE via prefs.panels.planCollapsed). DISTINCT de
+  // panels.sidebarCollapsed (= barre latérale de l'APP, shell/Sidebar) → fin de la collision
+  // qui repliait les deux à la fois.
+  const planCollapsed = panels.planCollapsed;
+  const togglePlan = useCallback(
+    () => setPanel("planCollapsed", !usePrefsStore.getState().prefs.panels.planCollapsed),
     [setPanel],
   );
   const showHistory = panels.historyOpen;
@@ -440,9 +442,9 @@ export function AnnotationWorkspace({ annotationId }: { annotationId: string }) 
               themeFocusRef={themeFocusRef}
             />
           }
-          leftCollapsed={sidebarCollapsed}
-          onExpandLeft={toggleSidebar}
-          onCollapseLeft={toggleSidebar}
+          leftCollapsed={planCollapsed}
+          onExpandLeft={togglePlan}
+          onCollapseLeft={togglePlan}
           rightCollapsed={!inspectorOpen}
           onExpandRight={toggleInspector}
           onCollapseRight={toggleInspector}
