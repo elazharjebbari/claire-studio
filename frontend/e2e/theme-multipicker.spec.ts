@@ -38,31 +38,35 @@ test.describe("Grille de thèmes unifiée (primaire + secondaires)", () => {
     await expect(picker.getByTestId("secondary-order-TERMINATION")).toHaveCount(0);
   });
 
-  test("le principal se CONFIRME au clic (jamais retiré) + bouton « Valider » nommé en tête", async ({ page }) => {
+  test("TOGGLE : retirer le principal (✕) promeut le secondaire ; bouton « Valider » nommé", async ({ page }) => {
     await page.goto("/annotate/ann-1");
     await expect(page.getByTestId("annotation-workspace")).toBeVisible();
     await page.getByTestId("sentence-12").click({ button: "right" });
     const menu = page.getByTestId("sentence-menu");
     await expect(menu).toBeVisible();
 
-    // Choisir un principal (clause humaine → déjà validée).
+    // Principal + secondaire.
     await menu.getByTestId("theme-option-TERMINATION").click();
     await expect(menu.getByTestId("primary-badge-TERMINATION")).toBeVisible();
+    // L'action « Valider » NOMME le thème (clarté). Clause humaine → déjà validée → dévalider.
     const validate = menu.getByTestId("menu-validate");
     await expect(validate).toContainText(/validée/i);
-
-    // Dévalider → l'action principale NOMME le thème à confirmer (clarté du geste dominant).
     await validate.click();
     await expect(validate).toContainText("Résiliation"); // « Valider : Résiliation »
 
-    // Clic sur le thème PRINCIPAL = le CONFIRMER (valide + ferme le menu), ne le retire JAMAIS.
-    await menu.getByTestId("theme-option-TERMINATION").click();
-    await expect(page.getByTestId("sentence-menu")).toHaveCount(0);
-    // Le principal n'a PAS été retiré : la phrase reste annotée (chip [12] dans le plan).
-    await expect(
-      page.getByRole("complementary", { name: "Plan du document" })
-        .getByTestId("clause-chip").filter({ hasText: "[12]" }),
-    ).toBeVisible();
+    await menu.getByTestId("theme-option-LIMITATION_LIABILITY").click(); // secondaire
+    await expect(menu.getByTestId("secondary-order-LIMITATION_LIABILITY")).toBeVisible();
+
+    // RETIRER le PRINCIPAL via le ✕ → le 1er secondaire devient PRINCIPAL (logique demandée).
+    await menu.getByTestId("deselect-TERMINATION").click();
+    await expect(menu.getByTestId("primary-badge-LIMITATION_LIABILITY")).toBeVisible();
+    await expect(menu.getByTestId("primary-badge-TERMINATION")).toHaveCount(0);
+
+    // Le clic du tile bascule aussi : re-cliquer LIMITATION (désormais principal) le retire →
+    // plus aucun thème → la clause est désannotée (le menu repasse en « choisir un thème »).
+    await menu.getByTestId("theme-option-LIMITATION_LIABILITY").click();
+    await expect(menu.getByTestId("primary-badge-LIMITATION_LIABILITY")).toHaveCount(0);
+    await expect(menu).toContainText(/choisir un thème principal/i);
   });
 
   test("refuge non sélectionnable en secondaire", async ({ page }) => {

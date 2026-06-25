@@ -15,7 +15,7 @@
  */
 
 import { useEffect, useMemo, useRef, useState } from "react";
-import { Star } from "lucide-react";
+import { Star, X } from "lucide-react";
 import { cn } from "@/lib/cn";
 import { THEMES, getThemeToken } from "@/lib/tokens";
 import { getThemeDescription } from "@/lib/themeDescriptions";
@@ -270,6 +270,23 @@ export function ThemeMultiPicker({
                   <span className="text-[9px] uppercase text-ink-muted">principal uniquement</span>
                 )}
               </span>
+              {/* ✕ RETIRER explicite (le clic du tile bascule aussi) : rend le toggle clair.
+                  Retirer le principal promeut le 1er secondaire (sanitize côté store). */}
+              {selected && (
+                <button
+                  type="button"
+                  data-testid={`deselect-${t.code}`}
+                  aria-label={`Retirer « ${t.label} »`}
+                  title="Retirer ce thème"
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    onToggle(t.code);
+                  }}
+                  className="mt-0.5 inline-flex h-4 w-4 shrink-0 items-center justify-center rounded text-ink-muted transition-colors hover:bg-danger/10 hover:text-danger"
+                >
+                  <X size={12} aria-hidden />
+                </button>
+              )}
             </li>
           );
         })}

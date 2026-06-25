@@ -139,24 +139,33 @@ export function SentenceMenu({
     }
   }
 
-  // Clic sur un thème :
+  // TOGGLE clair (sélectionner / désélectionner) :
   //  - aucune clause → crée le principal ;
-  //  - clic sur le PRINCIPAL courant → le CONFIRME (valide la phrase), ne le retire JAMAIS ;
-  //  - clic sur un autre → ajoute/retire un secondaire (le principal reste).
+  //  - thème NON sélectionné → l'ajoute (principal si aucun, sinon secondaire) ;
+  //  - thème SÉLECTIONNÉ → le RETIRE. Retirer le PRINCIPAL promeut le 1er secondaire restant
+  //    (via sanitizeThemeSet du store) ; retirer le dernier thème désannote la phrase.
+  //  (La VALIDATION est une action distincte — bouton « Valider » en tête.)
   function onToggleTheme(code: string) {
     if (!coveringDraft) {
       setBoundary(sentenceIndex, code); // crée la clause avec ce primaire
       return;
     }
-    if (code === primaryCode) {
-      validateSentence(); // confirmer la recommandation (intuitif) — fini le retrait accidentel
+    const exists = currentSet.some((t) => t.label === code);
+    if (!exists) {
+      setClauseThemes(coveringDraft.localId, [
+        ...currentSet,
+        { label: code, role: currentSet.length === 0 ? "primary" : "secondary" },
+      ]);
       return;
     }
-    const exists = currentSet.some((t) => t.label === code);
-    const next: ThemeTag[] = exists
-      ? currentSet.filter((t) => t.label !== code) // retire un SECONDAIRE
-      : [...currentSet, { label: code, role: currentSet.length === 0 ? "primary" : "secondary" }];
-    setClauseThemes(coveringDraft.localId, next);
+    const next = currentSet.filter((t) => t.label !== code);
+    if (next.length === 0) {
+      removeBoundary(coveringDraft.anchorIndex); // dernier thème retiré → désannote
+      selectClause(null);
+    } else {
+      // Le store sanitize : si on a retiré le principal, le 1er restant devient principal.
+      setClauseThemes(coveringDraft.localId, next);
+    }
   }
 
   // Promotion d'un secondaire en primaire (l'ancien primaire redevient secondaire).
@@ -233,7 +242,7 @@ export function SentenceMenu({
       <section className="flex flex-col gap-2 border-b border-line pb-3">
         <h3 className="text-[11px] font-semibold uppercase text-ink-muted">
           {coveringDraft
-            ? "Thème — le principal est en surbrillance (le cliquer = valider)"
+            ? "Thème — cliquer = (dé)sélectionner · ★ promeut · ✕ retire"
             : "Choisir un thème principal"}
         </h3>
         <ThemeMultiPicker

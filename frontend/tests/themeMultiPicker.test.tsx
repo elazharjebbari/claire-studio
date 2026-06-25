@@ -66,6 +66,19 @@ describe("ThemeMultiPicker — grille unifiée primaire + secondaires", () => {
     expect(onToggle).toHaveBeenCalledWith("ARBITRATION_DISPUTES");
   });
 
+  it("✕ « retirer » présent sur les thèmes SÉLECTIONNÉS (toggle clair) et appelle onToggle", () => {
+    const { onToggle } = setup([
+      { label: "LIMITATION_LIABILITY", role: "primary" },
+      { label: "ARBITRATION_DISPUTES", role: "secondary" },
+    ]);
+    // Présent sur principal + secondaire, absent sur un non-sélectionné.
+    expect(screen.getByTestId("deselect-LIMITATION_LIABILITY")).toBeInTheDocument();
+    expect(screen.getByTestId("deselect-ARBITRATION_DISPUTES")).toBeInTheDocument();
+    expect(screen.queryByTestId("deselect-TERMINATION")).toBeNull();
+    fireEvent.click(screen.getByTestId("deselect-LIMITATION_LIABILITY"));
+    expect(onToggle).toHaveBeenCalledWith("LIMITATION_LIABILITY"); // retrait du principal
+  });
+
   it("refuge désactivé en secondaire quand un primaire différent existe", () => {
     const { onToggle } = setup([{ label: "LIMITATION_LIABILITY", role: "primary" }]);
     const refugeOpt = screen.getByTestId("theme-option-PREAMBLE_SCOPE");
