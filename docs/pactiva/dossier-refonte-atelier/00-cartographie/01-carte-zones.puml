@@ -1,0 +1,24 @@
+@startuml
+' Carte des zones de l'atelier d'annotation Pactiva
+skinparam rectangle {
+  BackgroundColor #1b1622
+  BorderColor #6b5b95
+  FontColor #e8e2f0
+}
+skinparam shadowing false
+
+rectangle "Barre d'outils (WorkspaceToolbar)" as TB
+rectangle "Bandeaux de contexte" as BAN
+rectangle "Plan / ToC\n(panneau gauche)" as TOC
+rectangle "Document\n(panneau central)" as DOC
+rectangle "Inspecteur\n(panneau droit)" as INS
+rectangle "Panneaux auxiliaires\n(commentaires/historique/triage)" as AUX
+
+TB -down-> BAN
+BAN -down-> TOC
+BAN -down-> DOC
+BAN -down-> INS
+TOC -right-> DOC
+DOC -right-> INS
+INS -right-> AUX
+@enduml
