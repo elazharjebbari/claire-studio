@@ -22,7 +22,14 @@ export interface ResolutionConfig {
   configChanges?: { at: string; by: string | null }[];
 }
 
-export type GoldStatus = "unresolved" | "in_progress" | "resolved";
+export type GoldStatus = "awaiting" | "ready" | "in_progress" | "resolved";
+
+export interface GoldReadiness {
+  expected: number;
+  submitted: number;
+  missing: number;
+  ready: boolean;
+}
 
 export interface GoldCounts {
   decided?: number;
@@ -44,6 +51,8 @@ export interface GoldDocumentRow {
   document: GoldDocumentSummary;
   status: GoldStatus;
   pctResolved: number;
+  readiness?: GoldReadiness;
+  finalized?: boolean;
   locked: boolean;
   lockedBy: string | null;
   counts: GoldCounts;
@@ -99,8 +108,17 @@ export interface GoldDocumentDetail {
   document: GoldDocumentSummary;
   status: GoldStatus;
   pctResolved: number;
+  readiness: GoldReadiness;
+  finalized: boolean;
+  canFinalize: boolean;
   lock: GoldLockState;
   sentences: GoldSentenceRow[];
+}
+
+export interface GoldLlmAnnotator {
+  judge: string;
+  added: boolean;
+  documents: number;
 }
 
 export interface GoldDecidePayload {

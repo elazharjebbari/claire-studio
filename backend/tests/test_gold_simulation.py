@@ -347,15 +347,20 @@ def test_multi_document_aggregation(scheme_with_themes, auth):
             llm_annotator(project, d, j, {0: "META"})  # accord strict → résolu
         detail(auth, lead, project, d)  # matérialise chaque document
 
-    # Cockpit : 2 documents résolus.
+    # Toutes les phrases décidées (accord strict auto) → finalisables ; on les soumet.
+    for d in docs:
+        r = auth(lead).post(f"/api/v1/projects/{project.slug}/gold/{d.external_id}/submit", {}, format="json")
+        assert r.status_code == 200, r.content
+
+    # Cockpit : 2 documents résolus (finalisés).
     rows = auth(lead).get(f"/api/v1/projects/{project.slug}/gold/documents").json()["results"]
     resolved = [r for r in rows if r["document"]["externalId"].startswith("Doc_")]
     assert len(resolved) == 2
     assert all(r["status"] == "resolved" and r["pctResolved"] == 1.0 for r in resolved)
 
-    # Statut DB.
+    # Finalisation persistée en DB.
     for d in docs:
-        assert GoldResolution.objects.get(project=project, document=d).status == "resolved"
+        assert GoldResolution.objects.get(project=project, document=d).finalized_at is not None
 
     # Stats agrégées multi-documents : les annotateurs sont à 100 % du gold.
     stats = auth(lead).get(f"/api/v1/projects/{project.slug}/gold/stats").json()

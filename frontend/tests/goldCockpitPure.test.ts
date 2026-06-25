@@ -14,7 +14,7 @@ import type { GoldDocumentRow } from "@/lib/gold/types";
 
 const row = (over: Partial<GoldDocumentRow>): GoldDocumentRow => ({
   document: { id: 1, externalId: "D", title: "D", nSentences: 10 },
-  status: "unresolved",
+  status: "awaiting",
   pctResolved: 0,
   locked: false,
   lockedBy: null,
@@ -28,12 +28,12 @@ describe("summarize (cockpit)", () => {
     const s = summarize([
       row({ status: "resolved", document: { id: 1, externalId: "A", title: "A", nSentences: 4 }, counts: { decided: 4 } }),
       row({ status: "in_progress", document: { id: 2, externalId: "B", title: "B", nSentences: 6 }, counts: { decided: 3, highRisk: 2 } }),
-      row({ status: "unresolved", document: { id: 3, externalId: "C", title: "C", nSentences: 5 }, counts: {} }),
+      row({ status: "awaiting", document: { id: 3, externalId: "C", title: "C", nSentences: 5 }, counts: {} }),
     ]);
     expect(s.total).toBe(3);
     expect(s.resolved).toBe(1);
     expect(s.inProgress).toBe(1);
-    expect(s.unresolved).toBe(1);
+    expect(s.awaiting).toBe(1);
     expect(s.sentencesTotal).toBe(15);
     expect(s.sentencesDecided).toBe(7);
     expect(s.pctOverall).toBeCloseTo(7 / 15);

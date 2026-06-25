@@ -80,6 +80,64 @@ describe("GoldWorkspace", () => {
     await waitFor(() => expect(screen.getByTestId("gold-inspector")).toHaveTextContent("Phrase 1"));
   });
 
+  it("bloque la résolution tant que les annotations sont incomplètes (awaiting)", async () => {
+    server.use(
+      http.get(`${BASE}/projects/:slug/gold/:externalId`, () =>
+        HttpResponse.json({
+          document: { id: 1, externalId: "Atlas", title: "Atlas", nSentences: 1 },
+          status: "awaiting",
+          pctResolved: 0,
+          readiness: { expected: 3, submitted: 1, missing: 2, ready: false },
+          finalized: false,
+          canFinalize: false,
+          lock: { locked: false, lockedBy: null, heldByMe: false, expiresAt: null, leaseSeconds: 90 },
+          sentences: [
+            {
+              index: 0, text: "x", annotators: [], llms: [],
+              agreementClass: "empty", riskBand: "medium", autoLevel: "manual", confidence: 0,
+              humanDissent: false, proposedPrimary: "", proposedSecondaries: [],
+              decided: false, autoResolved: false, primary: "", secondaries: [],
+              decidedBy: null, decidedByName: "", comment: "",
+            },
+          ],
+        }),
+      ),
+    );
+    render(<GoldWorkspace slug="claudette-gold-v1" documentId="Atlas" />, { wrapper: wrapper() });
+    await waitFor(() => expect(screen.getByTestId("gold-awaiting-banner")).toBeInTheDocument());
+    expect(screen.getByTestId("gold-awaiting-banner")).toHaveTextContent("1/3 annotateurs");
+    // Pas de prise de verrou ni d'auto-résolution tant que ce n'est pas prêt.
+    expect(screen.queryByTestId("gold-lock-acquire")).not.toBeInTheDocument();
+    expect(screen.queryByTestId("gold-auto-resolve")).not.toBeInTheDocument();
+  });
+
+  it("propose « Soumettre la résolution » quand tout est décidé", async () => {
+    server.use(
+      http.get(`${BASE}/projects/:slug/gold/:externalId`, () =>
+        HttpResponse.json({
+          document: { id: 1, externalId: "Atlas", title: "Atlas", nSentences: 1 },
+          status: "in_progress",
+          pctResolved: 1,
+          readiness: { expected: 2, submitted: 2, missing: 0, ready: true },
+          finalized: false,
+          canFinalize: true,
+          lock: { locked: false, lockedBy: null, heldByMe: false, expiresAt: null, leaseSeconds: 90 },
+          sentences: [
+            {
+              index: 0, text: "x", annotators: [], llms: [],
+              agreementClass: "strict", riskBand: "low", autoLevel: "auto_1click", confidence: 1,
+              humanDissent: false, proposedPrimary: "META", proposedSecondaries: [],
+              decided: true, autoResolved: true, primary: "META", secondaries: [],
+              decidedBy: null, decidedByName: "", comment: "",
+            },
+          ],
+        }),
+      ),
+    );
+    render(<GoldWorkspace slug="claudette-gold-v1" documentId="Atlas" />, { wrapper: wrapper() });
+    await waitFor(() => expect(screen.getByTestId("gold-finalize")).toBeInTheDocument());
+  });
+
   it("le filtre « conflits » restreint la liste du plan", async () => {
     render(<GoldWorkspace slug="claudette-gold-v1" documentId="Atlas" />, { wrapper: wrapper() });
     await waitFor(() => expect(screen.getByTestId("gold-outline")).toBeInTheDocument());

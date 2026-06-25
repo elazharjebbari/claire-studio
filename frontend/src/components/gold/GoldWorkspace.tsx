@@ -8,12 +8,21 @@
 
 import { useEffect, useMemo, useRef, useState } from "react";
 import Link from "next/link";
-import { Gavel, Lock, Unlock, Sparkles, ChevronLeft, ArrowRight, HelpCircle } from "lucide-react";
+import { Gavel, Lock, Unlock, Sparkles, ChevronLeft, ArrowRight, HelpCircle, Clock, Send, RotateCcw, Users } from "lucide-react";
 import { ResizablePanels } from "@/components/workspace/ResizablePanels";
 import { Button } from "@/components/ui/primitives";
 import { GoldHelpModal } from "./GoldHelpModal";
 import { ApiError } from "@/lib/api/client";
-import { useGoldDocument, useDecideGold, useAutoResolveGold } from "@/lib/api/hooks";
+import {
+  useGoldDocument,
+  useDecideGold,
+  useAutoResolveGold,
+  useFinalizeGold,
+  useReopenGold,
+  useMe,
+  useProject,
+} from "@/lib/api/hooks";
+import { isAdminRole } from "@/lib/roles";
 import { useUiStore } from "@/store/ui";
 import { useGoldStore } from "@/store/goldStore";
 import { nextUndecided } from "@/lib/gold/blocks";
@@ -36,7 +45,13 @@ export function GoldWorkspace({ slug, documentId }: { slug: string; documentId: 
   const { data: detail, isLoading, error } = useGoldDocument(slug, documentId);
   const decide = useDecideGold(slug, documentId);
   const autoResolve = useAutoResolveGold(slug, documentId);
-  const lock = useArbitrationLock(slug, documentId, { initial: detail?.lock });
+  const finalize = useFinalizeGold(slug, documentId);
+  const reopen = useReopenGold(slug, documentId);
+  const ready = detail?.readiness?.ready ?? false;
+  const { data: me } = useMe();
+  const { data: project } = useProject(slug);
+  const isManager = isAdminRole(me?.role) || project?.myRole === "lead";
+  const lock = useArbitrationLock(slug, documentId, { initial: detail?.lock, enabled: ready });
 
   const sentences = useMemo(() => detail?.sentences ?? [], [detail]);
   const selected = useMemo(
@@ -57,7 +72,7 @@ export function GoldWorkspace({ slug, documentId }: { slug: string; documentId: 
   }, [sentences, selectedIndex, select]);
 
   const committingRef = useRef(false);
-  const canDecide = lock.heldByMe && !decide.isPending;
+  const canDecide = ready && lock.heldByMe && !decide.isPending;
 
   async function commit(index: number, primary: string, secondaries: string[], clientY: number) {
     if (!primary || committingRef.current) return; // primary requis + anti-double-clic
@@ -117,18 +132,65 @@ export function GoldWorkspace({ slug, documentId }: { slug: string; documentId: 
           >
             <HelpCircle size={15} aria-hidden />
           </button>
-          <LockBanner lock={lock} />
-          <Button
-            variant="subtle"
-            data-testid="gold-auto-resolve"
-            disabled={!lock.heldByMe || autoResolve.isPending}
-            onClick={() => autoResolve.mutate()}
-            title="Auto-résoudre les accords absolus et cas peu risqués"
-          >
-            <Sparkles size={14} aria-hidden /> Auto-résoudre
-          </Button>
+          {ready && !detail.finalized && (
+            <>
+              <LockBanner lock={lock} isManager={isManager} />
+              <Button
+                variant="subtle"
+                data-testid="gold-auto-resolve"
+                disabled={!lock.heldByMe || autoResolve.isPending}
+                onClick={() => autoResolve.mutate()}
+                title="Auto-résoudre les accords absolus et cas peu risqués"
+              >
+                <Sparkles size={14} aria-hidden /> Auto-résoudre
+              </Button>
+              {detail.canFinalize && (
+                <Button
+                  variant="primary"
+                  data-testid="gold-finalize"
+                  disabled={finalize.isPending}
+                  onClick={() => finalize.mutate()}
+                  title="Soumettre la résolution (toutes les phrases sont décidées)"
+                >
+                  <Send size={14} aria-hidden /> Soumettre la résolution
+                </Button>
+              )}
+            </>
+          )}
+          {detail.finalized && isManager && (
+            <Button
+              variant="outline"
+              data-testid="gold-reopen"
+              disabled={reopen.isPending}
+              onClick={() => reopen.mutate()}
+              title="Rouvrir la résolution (corrections)"
+            >
+              <RotateCcw size={14} aria-hidden /> Rouvrir
+            </Button>
+          )}
         </div>
       </div>
+
+      {/* Bandeau de statut : indisponible (annotations incomplètes) ou résolue (soumise). */}
+      {!ready && (
+        <div
+          data-testid="gold-awaiting-banner"
+          className="flex items-center gap-2 border-b border-line bg-warning/10 px-4 py-2 text-[13px] text-warning"
+        >
+          <Clock size={14} aria-hidden />
+          <Users size={14} aria-hidden />
+          Résolution indisponible : {detail.readiness.submitted}/{detail.readiness.expected} annotateurs
+          ont soumis. La résolution des conflits ne sera possible qu'une fois toutes les annotations validées.
+        </div>
+      )}
+      {detail.finalized && (
+        <div
+          data-testid="gold-resolved-banner"
+          className="flex items-center gap-2 border-b border-line bg-success/10 px-4 py-2 text-[13px] text-success"
+        >
+          <Gavel size={14} aria-hidden /> Résolution soumise : le gold de ce document est figé.
+        </div>
+      )}
 
       <div className="flex min-h-0 flex-1">
         <ResizablePanels
@@ -161,7 +223,13 @@ export function GoldWorkspace({ slug, documentId }: { slug: string; documentId: 
   );
 }
 
-function LockBanner({ lock }: { lock: ReturnType<typeof useArbitrationLock> }) {
+function LockBanner({
+  lock,
+  isManager,
+}: {
+  lock: ReturnType<typeof useArbitrationLock>;
+  isManager: boolean;
+}) {
   if (lock.heldByMe) {
     return (
       <span
@@ -181,9 +249,11 @@ function LockBanner({ lock }: { lock: ReturnType<typeof useArbitrationLock> }) {
         >
           <Lock size={12} aria-hidden /> Arbitré par {lock.lock.lockedBy ?? "un autre"}
         </span>
-        <Button variant="outline" data-testid="gold-lock-steal" onClick={lock.steal} title="Reprendre (lead/admin)">
-          <ArrowRight size={13} aria-hidden /> Reprendre
-        </Button>
+        {isManager && (
+          <Button variant="outline" data-testid="gold-lock-steal" onClick={lock.steal} title="Reprendre (lead/admin)">
+            <ArrowRight size={13} aria-hidden /> Reprendre
+          </Button>
+        )}
       </span>
     );
   }

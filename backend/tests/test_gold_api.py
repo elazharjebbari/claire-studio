@@ -264,7 +264,8 @@ def test_cockpit_lists_documents_with_status(campaign, auth):
     assert row["counts"]["highRisk"] == 1
 
 
-def test_cockpit_unopened_document_is_unresolved(project, document_with_sentences, auth, annotator):
+def test_cockpit_unopened_document_is_awaiting(project, document_with_sentences, auth, annotator):
+    # Aucun annotateur n'a soumis → la résolution n'est pas encore possible (awaiting).
     ProjectMembership.objects.create(
         project=project, user=annotator, role=MembershipRole.LEAD
     )
@@ -273,7 +274,7 @@ def test_cockpit_unopened_document_is_unresolved(project, document_with_sentence
     assert r.status_code == 200
     rows = r.json()["results"]
     assert rows  # le document existe
-    assert all(x["status"] == "unresolved" for x in rows)
+    assert all(x["status"] == "awaiting" for x in rows)
 
 
 # ─────────────────────────────────────────────────────────────────────────────

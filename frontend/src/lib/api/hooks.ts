@@ -51,6 +51,7 @@ export const qk = {
   goldDocument: (slug: string, ext: string) => ["projects", slug, "gold", ext] as const,
   goldStats: (slug: string) => ["projects", slug, "gold", "stats"] as const,
   goldConfig: (slug: string) => ["projects", slug, "gold", "config"] as const,
+  goldLlmAnnotators: (slug: string) => ["projects", slug, "gold", "llm-annotators"] as const,
 };
 
 export function useMe() {
@@ -721,5 +722,48 @@ export function useSaveGoldConfig(slug: string) {
       qc.setQueryData(qk.goldConfig(slug), cfg);
       qc.invalidateQueries({ queryKey: qk.goldConfig(slug) });
     },
+  });
+}
+
+/** Finalisation / réouverture de la résolution d'un document. */
+export function useFinalizeGold(slug: string, externalId: string) {
+  const qc = useQueryClient();
+  return useMutation({
+    mutationFn: () => api.finalizeGold(slug, externalId),
+    onSuccess: () => {
+      qc.invalidateQueries({ queryKey: qk.goldDocument(slug, externalId) });
+      qc.invalidateQueries({ queryKey: qk.goldDocuments(slug) });
+    },
+  });
+}
+
+export function useReopenGold(slug: string, externalId: string) {
+  const qc = useQueryClient();
+  return useMutation({
+    mutationFn: () => api.reopenGold(slug, externalId),
+    onSuccess: () => {
+      qc.invalidateQueries({ queryKey: qk.goldDocument(slug, externalId) });
+      qc.invalidateQueries({ queryKey: qk.goldDocuments(slug) });
+    },
+  });
+}
+
+/** Comptes annotateurs dérivés des LLM (ajout/retrait en config). */
+export function useGoldLlmAnnotators(slug?: string) {
+  return useQuery({
+    queryKey: qk.goldLlmAnnotators(slug ?? ""),
+    queryFn: () => api.listGoldLlmAnnotators(slug!),
+    enabled: Boolean(slug),
+  });
+}
+
+export function useMutateGoldLlmAnnotator(slug: string) {
+  const qc = useQueryClient();
+  return useMutation({
+    mutationFn: (vars: { judge: string; action: "add" | "remove" }) =>
+      api.mutateGoldLlmAnnotator(slug, vars.judge, vars.action),
+    // Ajouter/retirer un annotateur change la complétude → invalider TOUT le préfixe gold
+    // (cockpit, atelier de CHAQUE document, liste des juges).
+    onSuccess: () => qc.invalidateQueries({ queryKey: ["projects", slug, "gold"] }),
   });
 }

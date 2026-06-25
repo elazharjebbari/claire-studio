@@ -689,6 +689,8 @@ class ProjectViewSet(viewsets.ModelViewSet):
         """Cockpit GOLD : une ligne PAR document (statut/avancement/verrou/répartition)."""
         from django.db.models import Count, Q
 
+        from claire.annotations.models import Annotation
+        from claire.gold.config import annotation_statuses
         from claire.gold.models import GoldSentence
         from claire.gold.services import lock_state
 
@@ -712,10 +714,41 @@ class ProjectViewSet(viewsets.ModelViewSet):
                 high_risk=Count("id", filter=Q(risk_band="high")),
             )
         }
+        # Complétude des annotations (batch) : annotateurs attendus vs soumis, par document.
+        member_ids = set(
+            project.memberships.filter(role=MembershipRole.ANNOTATOR).values_list("user_id", flat=True)
+        )
+        assigned_by_doc: dict = {}
+        for a in project.assignments.filter(assignee_id__in=member_ids).values("document_id", "assignee_id"):
+            assigned_by_doc.setdefault(a["document_id"], set()).add(a["assignee_id"])
+        gold_grade = annotation_statuses(project)
+        # Annotateurs ayant RÉELLEMENT une annotation (repli sans assignation) + soumis.
+        annotated_by_doc: dict = {}
+        submitted_by_doc: dict = {}
+        for an in Annotation.objects.filter(project=project, annotator_id__in=member_ids).values(
+            "document_id", "annotator_id", "status"
+        ):
+            annotated_by_doc.setdefault(an["document_id"], set()).add(an["annotator_id"])
+            if an["status"] in gold_grade:
+                submitted_by_doc.setdefault(an["document_id"], set()).add(an["annotator_id"])
+
         rows = []
         for doc in documents:
             r = res_by_doc.get(doc.id)
             lock = lock_state(r) if r else {"locked": False, "locked_by": None}
+            expected = assigned_by_doc.get(doc.id) or annotated_by_doc.get(doc.id, set())
+            submitted = (submitted_by_doc.get(doc.id, set()) & expected)
+            ready = bool(expected) and len(submitted) >= len(expected)
+            decided = (counts.get(r.id, {}).get("decided", 0) if r else 0)
+            n = doc.n_sentences or 0
+            if not ready:
+                status_eff = "awaiting"
+            elif r and r.finalized_at is not None:
+                status_eff = "resolved"
+            elif decided == 0:
+                status_eff = "ready"
+            else:
+                status_eff = "in_progress"
             rows.append({
                 "document": {
                     "id": doc.id,
@@ -723,8 +756,15 @@ class ProjectViewSet(viewsets.ModelViewSet):
                     "title": doc.title,
                     "n_sentences": doc.n_sentences,
                 },
-                "status": r.status if r else "unresolved",
+                "status": status_eff,
                 "pct_resolved": r.pct_resolved if r else 0.0,
+                "readiness": {
+                    "expected": len(expected),
+                    "submitted": len(submitted),
+                    "missing": len(expected) - len(submitted),
+                    "ready": ready,
+                },
+                "finalized": bool(r and r.finalized_at is not None),
                 "locked": lock["locked"],          # tient compte de l'expiration du bail
                 "locked_by": lock["locked_by"],
                 "counts": counts.get(r.id, {}) if r else {},
@@ -746,6 +786,46 @@ class ProjectViewSet(viewsets.ModelViewSet):
         except Exception:  # noqa: BLE001 — l'IAA ne doit jamais casser l'écran stats
             data["iaa"] = None
         return Response(data)
+
+    # NB : nom de méthode `gold_annotators_llm` (trie AVANT `gold_detail`) pour que le
+    # chemin littéral `gold/llm-annotators` matche avant la regex `gold/<id>`.
+    @action(detail=True, methods=["get", "post"], url_path="gold/llm-annotators")
+    def gold_annotators_llm(self, request, slug=None):
+        """Promouvoir des juges LLM en COMPTES ANNOTATEURS (ou les retirer). Admin/lead.
+
+        POST body {judge, action: 'add'|'remove'} → crée le compte <judge> + annotations
+        SOUMISES dérivées de ses pré-annotations, ou les retire."""
+        from claire.gold.llm_seed import (
+            add_llm_annotator,
+            llm_annotator_status,
+            remove_llm_annotator,
+        )
+
+        project = self.get_object()
+        if request.method == "GET":
+            return Response(results_envelope(llm_annotator_status(project)))
+
+        is_lead = project.memberships.filter(
+            user=request.user, role=MembershipRole.LEAD
+        ).exists()
+        if not (getattr(request.user, "is_admin_role", False) or is_lead):
+            return Response(
+                {"detail": "Réservé aux administrateurs et leads."},
+                status=status.HTTP_403_FORBIDDEN,
+            )
+        if project.locked:
+            from claire.common.exceptions import Locked
+
+            raise Locked("Projet verrouillé : configuration gelée.")
+        judge = request.data.get("judge")
+        action_ = request.data.get("action")
+        if judge not in {"claude", "codex", "mistral"}:
+            return Response({"detail": "juge inconnu."}, status=status.HTTP_400_BAD_REQUEST)
+        if action_ == "add":
+            return Response(add_llm_annotator(project, judge))
+        if action_ == "remove":
+            return Response(remove_llm_annotator(project, judge))
+        return Response({"detail": "action invalide (add|remove)."}, status=status.HTTP_400_BAD_REQUEST)
 
     @action(detail=True, methods=["get", "patch"], url_path="gold/config")
     def gold_config(self, request, slug=None):
@@ -809,6 +889,7 @@ class ProjectViewSet(viewsets.ModelViewSet):
         """Décision gold HUMAINE d'une phrase (réservé arbitres ; refusé si projet gelé)."""
         from claire.common.exceptions import Locked
         from claire.gold.services import (
+            assert_resolution_ready,
             decide_sentence,
             get_or_create_resolution,
             is_arbiter,
@@ -823,6 +904,7 @@ class ProjectViewSet(viewsets.ModelViewSet):
             )
         if project.locked:
             raise Locked("Projet verrouillé par un administrateur : arbitrage gelé.")
+        assert_resolution_ready(project, document)  # 409 si annotations incomplètes
         # Validation de la requête (400) AVANT de matérialiser / contrôler le verrou.
         try:
             index = int(request.data.get("index"))
@@ -859,6 +941,7 @@ class ProjectViewSet(viewsets.ModelViewSet):
         """Applique l'auto-résolution (accord absolu + cas peu risqués) sur tout le document."""
         from claire.common.exceptions import Locked
         from claire.gold.services import (
+            assert_resolution_ready,
             auto_resolve_document,
             get_or_create_resolution,
             is_arbiter,
@@ -872,10 +955,41 @@ class ProjectViewSet(viewsets.ModelViewSet):
             )
         if project.locked:
             raise Locked("Projet verrouillé par un administrateur : arbitrage gelé.")
+        assert_resolution_ready(project, document)  # 409 si annotations incomplètes
         if resolution is None:
             resolution = get_or_create_resolution(project, document)
         summary = auto_resolve_document(resolution, request.user)  # exclusivité sous verrou
         return Response({**summary, "status": resolution.status, "pct_resolved": resolution.pct_resolved})
+
+    @action(detail=True, methods=["post"], url_path=r"gold/(?P<document_id>[^/.]+)/submit")
+    def gold_finalize(self, request, slug=None, document_id=None):
+        """Soumet (finalise) la résolution du document — statut « résolu »."""
+        from claire.common.exceptions import Locked
+        from claire.gold.services import finalize_resolution, get_or_create_resolution, is_arbiter
+
+        project, document, resolution = self._gold_ctx(document_id)
+        if not is_arbiter(request.user, project, resolution):
+            return Response({"detail": "Réservé aux arbitres."}, status=status.HTTP_403_FORBIDDEN)
+        if project.locked:
+            raise Locked("Projet verrouillé par un administrateur : arbitrage gelé.")
+        if resolution is None:
+            resolution = get_or_create_resolution(project, document)
+        finalize_resolution(resolution, request.user)
+        return Response({"status": "resolved", "finalized": True})
+
+    @action(detail=True, methods=["post"], url_path=r"gold/(?P<document_id>[^/.]+)/reopen")
+    def gold_reopen(self, request, slug=None, document_id=None):
+        """Rouvre une résolution finalisée (corrections) — réservé lead/admin."""
+        from claire.gold.services import get_or_create_resolution, reopen_resolution
+
+        project, document, resolution = self._gold_ctx(document_id)
+        is_lead = project.memberships.filter(user=request.user, role=MembershipRole.LEAD).exists()
+        if not (getattr(request.user, "is_admin_role", False) or is_lead):
+            return Response({"detail": "Réservé aux leads et administrateurs."}, status=status.HTTP_403_FORBIDDEN)
+        if resolution is None:
+            resolution = get_or_create_resolution(project, document)
+        reopen_resolution(resolution, request.user)
+        return Response({"status": "in_progress", "finalized": False})
 
     # --- verrou d'arbitrage exclusif (bail auto-expirant ; temps réel) -------
     def _gold_arbiter_guard(self, request, document_id, *, check_project_lock):

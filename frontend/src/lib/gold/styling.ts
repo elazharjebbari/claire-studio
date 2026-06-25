@@ -14,9 +14,13 @@ export interface Meta {
 }
 
 export const STATUS_META: Record<GoldStatus, Meta> = {
-  resolved: { label: "Résolu", cls: "border-success/40 bg-success/10 text-success" },
+  awaiting: {
+    label: "En attente d'annotations",
+    cls: "border-line bg-panel-muted/60 text-ink-muted",
+  },
+  ready: { label: "Prête à résoudre", cls: "border-info/40 bg-info/10 text-info" },
   in_progress: { label: "En cours", cls: "border-warning/40 bg-warning/10 text-warning" },
-  unresolved: { label: "Non résolu", cls: "border-line bg-panel-muted/60 text-ink-muted" },
+  resolved: { label: "Résolue", cls: "border-success/40 bg-success/10 text-success" },
 };
 
 export const AGREEMENT_META: Record<AgreementClass, Meta> = {

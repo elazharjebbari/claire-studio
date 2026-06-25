@@ -44,6 +44,7 @@ import {
   FIXTURE_GOLD_STATS,
   FIXTURE_MEMBERS,
   FIXTURE_GOLD_CONFIG,
+  FIXTURE_GOLD_LLM_ANNOTATORS,
 } from "./fixtures";
 
 const BASE = process.env.NEXT_PUBLIC_API_BASE ?? "/api/v1";
@@ -269,6 +270,19 @@ export const handlers = [
     HttpResponse.json(page(FIXTURE_GOLD_DOCUMENTS)),
   ),
   http.get(`${BASE}/projects/:slug/gold/stats`, () => HttpResponse.json(FIXTURE_GOLD_STATS)),
+  http.get(`${BASE}/projects/:slug/gold/llm-annotators`, () =>
+    HttpResponse.json(page(FIXTURE_GOLD_LLM_ANNOTATORS)),
+  ),
+  http.post(`${BASE}/projects/:slug/gold/llm-annotators`, async ({ request }) => {
+    const b = (await request.json().catch(() => ({}))) as Record<string, unknown>;
+    return HttpResponse.json({ judge: String(b.judge ?? ""), added: b.action === "add" });
+  }),
+  http.post(`${BASE}/projects/:slug/gold/:externalId/submit`, () =>
+    HttpResponse.json({ status: "resolved", finalized: true }),
+  ),
+  http.post(`${BASE}/projects/:slug/gold/:externalId/reopen`, () =>
+    HttpResponse.json({ status: "in_progress", finalized: false }),
+  ),
   http.get(`${BASE}/projects/:slug/members`, () => HttpResponse.json(page(FIXTURE_MEMBERS))),
   http.get(`${BASE}/projects/:slug/gold/config`, () => HttpResponse.json(goldConfig)),
   http.patch(`${BASE}/projects/:slug/gold/config`, async ({ request }) => {

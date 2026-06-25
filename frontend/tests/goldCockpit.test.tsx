@@ -28,8 +28,10 @@ describe("GoldCockpit", () => {
 
     // Statuts distincts.
     expect(screen.getByTestId("gold-status-Atlas")).toHaveTextContent("En cours");
-    expect(screen.getByTestId("gold-status-Academia")).toHaveTextContent("Résolu");
-    expect(screen.getByTestId("gold-status-Borea")).toHaveTextContent("Non résolu");
+    expect(screen.getByTestId("gold-status-Academia")).toHaveTextContent("Résolue");
+    expect(screen.getByTestId("gold-status-Borea")).toHaveTextContent("En attente");
+    // Document en attente : indicateur de complétude des annotations.
+    expect(screen.getByTestId("gold-readiness-Borea")).toHaveTextContent("1/3 annotateurs");
 
     // Verrou affiché sur Academia (lockedBy zahra.boulaich).
     expect(screen.getByTestId("gold-doc-lock-Academia")).toHaveTextContent("zahra.boulaich");

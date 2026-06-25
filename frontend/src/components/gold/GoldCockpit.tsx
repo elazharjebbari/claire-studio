@@ -9,7 +9,7 @@
 import { useEffect, useState } from "react";
 import Link from "next/link";
 import { useMutation } from "@tanstack/react-query";
-import { Gavel, Lock, ShieldCheck, AlertTriangle, BarChart3, Download, Settings2, HelpCircle } from "lucide-react";
+import { Gavel, Lock, ShieldCheck, AlertTriangle, BarChart3, Download, Settings2, HelpCircle, Clock, Users } from "lucide-react";
 import { useGoldDocuments, useProject, useMe } from "@/lib/api/hooks";
 import { createExport } from "@/lib/api/endpoints";
 import { isAdminRole } from "@/lib/roles";
@@ -89,27 +89,46 @@ function DocRow({ slug, row }: { slug: string; row: GoldDocumentRow }) {
           className={`inline-flex shrink-0 items-center gap-1 rounded-full border px-2 py-0.5 text-[11px] font-medium ${meta.cls}`}
           data-testid={`gold-status-${row.document.externalId}`}
         >
-          {row.status === "resolved" ? <ShieldCheck size={11} aria-hidden /> : <Gavel size={11} aria-hidden />}
+          {row.status === "resolved" ? (
+            <ShieldCheck size={11} aria-hidden />
+          ) : row.status === "awaiting" ? (
+            <Clock size={11} aria-hidden />
+          ) : (
+            <Gavel size={11} aria-hidden />
+          )}
           {meta.label}
         </span>
       </div>
-      <div className="flex items-center gap-2">
-        <ProgressBar pct={row.pctResolved ?? 0} />
-        <span className="w-16 shrink-0 text-right font-mono text-[11px] text-ink-muted">
-          {c.decided ?? 0}/{row.document.nSentences} · {pct}%
-        </span>
-      </div>
-      <div className="flex flex-wrap items-center gap-1">
-        <CountChip n={c.strict} label="strict" cls="border-success/40 bg-success/10 text-success" />
-        <CountChip n={c.majority} label="majorité" cls="border-warning/40 bg-warning/10 text-warning" />
-        <CountChip n={c.divergence} label="divergence" cls="border-danger/40 bg-danger/10 text-danger" />
-        <CountChip n={c.auto} label="auto" cls="border-info/40 bg-info/10 text-info" />
-        {!!c.highRisk && (
-          <span className="inline-flex items-center gap-1 rounded-full border border-danger/40 bg-danger/10 px-1.5 py-0.5 text-[10px] font-medium text-danger">
-            <AlertTriangle size={10} aria-hidden /> {c.highRisk} à risque
+      {row.status === "awaiting" ? (
+        <div
+          data-testid={`gold-readiness-${row.document.externalId}`}
+          className="flex items-center gap-1.5 text-[11px] text-ink-muted"
+        >
+          <Users size={11} aria-hidden />
+          {row.readiness?.submitted ?? 0}/{row.readiness?.expected ?? 0} annotateurs ont soumis —
+          résolution indisponible
+        </div>
+      ) : (
+        <div className="flex items-center gap-2">
+          <ProgressBar pct={row.pctResolved ?? 0} />
+          <span className="w-16 shrink-0 text-right font-mono text-[11px] text-ink-muted">
+            {c.decided ?? 0}/{row.document.nSentences} · {pct}%
           </span>
-        )}
-      </div>
+        </div>
+      )}
+      {row.status !== "awaiting" && (
+        <div className="flex flex-wrap items-center gap-1">
+          <CountChip n={c.strict} label="strict" cls="border-success/40 bg-success/10 text-success" />
+          <CountChip n={c.majority} label="majorité" cls="border-warning/40 bg-warning/10 text-warning" />
+          <CountChip n={c.divergence} label="divergence" cls="border-danger/40 bg-danger/10 text-danger" />
+          <CountChip n={c.auto} label="auto" cls="border-info/40 bg-info/10 text-info" />
+          {!!c.highRisk && (
+            <span className="inline-flex items-center gap-1 rounded-full border border-danger/40 bg-danger/10 px-1.5 py-0.5 text-[10px] font-medium text-danger">
+              <AlertTriangle size={10} aria-hidden /> {c.highRisk} à risque
+            </span>
+          )}
+        </div>
+      )}
     </Link>
   );
 }
@@ -207,12 +226,13 @@ export function GoldCockpit({ slug }: { slug: string }) {
         </div>
       )}
 
-      <div className="mb-6 grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-5">
+      <div className="mb-6 grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-6">
         <Kpi label="Documents" value={String(s.total)} />
-        <Kpi label="Résolus" value={`${s.resolved}/${s.total}`} tone="text-success" />
+        <Kpi label="En attente" value={String(s.awaiting)} tone={s.awaiting ? "text-ink-muted" : "text-ink"} />
+        <Kpi label="Prêtes" value={String(s.ready)} tone="text-info" />
         <Kpi label="En cours" value={String(s.inProgress)} tone="text-warning" />
+        <Kpi label="Résolus" value={`${s.resolved}/${s.total}`} tone="text-success" />
         <Kpi label="Avancement" value={`${Math.round(s.pctOverall * 100)}%`} />
-        <Kpi label="Phrases à risque" value={String(s.highRisk)} tone={s.highRisk ? "text-danger" : "text-ink"} />
       </div>
 
       <h2 className="mb-2 text-sm font-semibold uppercase tracking-wide text-ink-muted">Documents</h2>

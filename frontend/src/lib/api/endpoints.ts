@@ -12,6 +12,7 @@ import type {
   GoldAutoResolveResponse,
   GoldLockState,
   GoldStats,
+  GoldLlmAnnotator,
   ResolutionConfig,
 } from "@/lib/gold/types";
 import type {
@@ -758,6 +759,29 @@ export function autoResolveGold(slug: string, externalId: string): Promise<GoldA
   return apiFetch<GoldAutoResolveResponse>(`${goldDoc(slug, externalId)}/auto-resolve`, {
     method: "POST",
     body: {},
+  });
+}
+
+export function finalizeGold(slug: string, externalId: string): Promise<{ status: string; finalized: boolean }> {
+  return apiFetch(`${goldDoc(slug, externalId)}/submit`, { method: "POST", body: {} });
+}
+
+export function reopenGold(slug: string, externalId: string): Promise<{ status: string; finalized: boolean }> {
+  return apiFetch(`${goldDoc(slug, externalId)}/reopen`, { method: "POST", body: {} });
+}
+
+export function listGoldLlmAnnotators(slug: string): Promise<Paginated<GoldLlmAnnotator>> {
+  return apiFetch<Paginated<GoldLlmAnnotator>>(`/projects/${slug}/gold/llm-annotators`);
+}
+
+export function mutateGoldLlmAnnotator(
+  slug: string,
+  judge: string,
+  action: "add" | "remove",
+): Promise<{ judge: string; added: boolean }> {
+  return apiFetch(`/projects/${slug}/gold/llm-annotators`, {
+    method: "POST",
+    body: { judge, action },
   });
 }
 

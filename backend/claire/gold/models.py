@@ -145,6 +145,9 @@ class ArbitrationVerb(models.TextChoices):
     LOCK = "lock", "Verrou"
     UNLOCK = "unlock", "Déverrou"
     STEAL = "steal", "Reprise"
+    FINALIZE = "finalize", "Soumission de la résolution"
+    REOPEN = "reopen", "Réouverture"
+    SEED = "seed", "Annotateur LLM ajouté/retiré"
 
 
 class ArbitrationEvent(models.Model):

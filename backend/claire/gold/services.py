@@ -39,6 +39,63 @@ AUTO_LEVELS = ("auto_1click", "auto")
 LOCK_LEASE_SECONDS = 90  # bail du verrou d'arbitrage ; heartbeat conseillé toutes les 20 s
 
 
+# ── Complétude des annotations : la résolution n'est possible que lorsque TOUS les
+#    annotateurs attendus ont soumis (« on ne résout qu'une fois tout le monde fini ») ──
+def document_annotators(project, document) -> set:
+    """Annotateurs ATTENDUS pour ce document = membres de rôle ANNOTATEUR ASSIGNÉS
+    (Assignment) ; à défaut d'assignation, ceux qui ont RÉELLEMENT une annotation sur ce
+    document (et non tous les membres — sinon promouvoir un juge sur un autre document
+    bloquerait celui-ci). Les leads ARBITRENT (pas attendus comme annotateurs)."""
+    from claire.projects.models import Assignment
+
+    member_ids = set(
+        project.memberships.filter(role=MembershipRole.ANNOTATOR).values_list("user_id", flat=True)
+    )
+    assigned = set(
+        Assignment.objects.filter(
+            project=project, document=document, assignee_id__in=member_ids
+        ).values_list("assignee_id", flat=True)
+    )
+    if assigned:
+        return assigned
+    return set(
+        Annotation.objects.filter(
+            project=project, document=document, annotator_id__in=member_ids
+        ).values_list("annotator_id", flat=True)
+    )
+
+
+def resolution_readiness(project, document) -> dict:
+    """Combien d'annotateurs attendus ont soumis ; la résolution est-elle possible ?"""
+    statuses = annotation_statuses(project)
+    expected = document_annotators(project, document)
+    submitted = set(
+        Annotation.objects.filter(
+            project=project, document=document, annotator_id__in=expected, status__in=statuses
+        ).values_list("annotator_id", flat=True)
+    )
+    expected_n = len(expected)
+    submitted_n = len(submitted)
+    return {
+        "expected": expected_n,
+        "submitted": submitted_n,
+        "missing": expected_n - submitted_n,
+        "ready": expected_n > 0 and submitted_n >= expected_n,
+    }
+
+
+def effective_status(resolution, readiness: dict, decided: int) -> str:
+    """Statut affiché : resolved (finalisé, prioritaire) sinon awaiting (annotations
+    incomplètes) → ready (possible, pas commencé) → in_progress (commencé)."""
+    if resolution.finalized_at is not None:
+        return "resolved"  # une résolution soumise reste « résolue » (priorité)
+    if not readiness["ready"]:
+        return "awaiting"
+    if decided == 0:
+        return "ready"
+    return "in_progress"
+
+
 # ── Construction des votes ───────────────────────────────────────────────────
 def _annotation_sentence_map(ann: Annotation) -> dict:
     """index -> (primary_code, tuple(secondaries)) pour une annotation (EXACT)."""
@@ -75,6 +132,10 @@ def build_document_data(project, document) -> dict:
     )
     ann_maps = [(ann.annotator, _annotation_sentence_map(ann)) for ann in anns]
     judge_vecs = _judge_vectors_for_document(project, document, n)  # {judge: [code|None]}
+    # Un juge PROMU annotateur (compte du même nom) ne compte plus comme référence LLM
+    # (pas de double-comptage) : il vote désormais comme humain.
+    annotator_usernames = {u.username for u, _ in ann_maps}
+    judge_vecs = {j: v for j, v in judge_vecs.items() if j not in annotator_usernames}
 
     per_sentence = []
     for i in range(n):
@@ -114,8 +175,11 @@ def get_or_create_resolution(project, document) -> GoldResolution:
 
 
 def _refresh_status(resolution: GoldResolution, decided_count: int, n: int) -> None:
+    """Met à jour pct + statut STOCKÉ. « resolved » n'est posé QUE par finalize_resolution
+    (soumission) : décider toutes les phrases ne suffit pas (sinon divergence avec le statut
+    effectif). Une résolution finalisée n'est pas rétrogradée ici."""
     resolution.pct_resolved = round(decided_count / n, 4) if n else 0.0
-    if n > 0 and decided_count >= n:
+    if resolution.finalized_at is not None:
         resolution.status = ResolutionStatus.RESOLVED
     elif decided_count > 0:
         resolution.status = ResolutionStatus.IN_PROGRESS
@@ -137,6 +201,9 @@ def recompute_document(
     flags = auto_resolve_flags(project)  # accord strict 1-clic / majorité ≥ 2/3 (configurables)
     allow_auto = {"auto_1click": flags["absolute_agreement"], "auto": flags["majority"]}
     promote_secondaries = secondary_policy(project) == "required"
+    # Pas d'auto-résolution tant que TOUS les annotateurs n'ont pas soumis (calcul prématuré).
+    if not resolution_readiness(project, document)["ready"]:
+        allow_auto = {"auto_1click": False, "auto": False}
     data = data or build_document_data(project, document)
     n = data["n"]
     theme_by_code = {t.code: t for t in Theme.objects.filter(scheme=project.scheme)}
@@ -252,6 +319,10 @@ def document_payload(resolution: GoldResolution, *, data: dict | None = None, us
             "decided_by_name": display_name(gs.decided_by) if (gs and gs.decided_by) else "",
             "comment": gs.comment if gs else "",
         })
+    readiness = resolution_readiness(project, document)
+    decided = sum(1 for r in rows if r["decided"])
+    n = document.n_sentences or 0
+    status = effective_status(resolution, readiness, decided)
     return {
         "document": {
             "id": document.id,
@@ -259,8 +330,11 @@ def document_payload(resolution: GoldResolution, *, data: dict | None = None, us
             "title": document.title,
             "n_sentences": document.n_sentences,
         },
-        "status": resolution.status,
+        "status": status,
         "pct_resolved": resolution.pct_resolved,
+        "readiness": readiness,
+        "finalized": resolution.finalized_at is not None,
+        "can_finalize": readiness["ready"] and n > 0 and decided >= n and resolution.finalized_at is None,
         "lock": lock_state(resolution, user),
         "sentences": rows,
     }
@@ -336,6 +410,48 @@ def decide_sentence(resolution, index, primary_code, secondaries, comment, actor
         decided = resolution.sentences.filter(decided=True).count()
         _refresh_status(resolution, decided, n)
     return gs
+
+
+def assert_resolution_ready(project, document) -> None:
+    """Lève Conflict (409) si tous les annotateurs attendus n'ont pas encore soumis."""
+    from claire.common.exceptions import Conflict
+
+    r = resolution_readiness(project, document)
+    if not r["ready"]:
+        raise Conflict(
+            f"Résolution indisponible : {r['missing']} annotateur(s) sur {r['expected']} "
+            "n'ont pas encore soumis leurs annotations."
+        )
+
+
+def finalize_resolution(resolution, actor) -> GoldResolution:
+    """Soumet (finalise) la résolution : exige complétude + toutes les phrases décidées."""
+    from claire.common.exceptions import Conflict
+
+    project, document = resolution.project, resolution.document
+    assert_resolution_ready(project, document)
+    n = document.n_sentences or 0
+    decided = resolution.sentences.filter(decided=True).count()
+    if n == 0 or decided < n:
+        raise Conflict("Toutes les phrases doivent être décidées avant de soumettre la résolution.")
+    resolution.finalized_at = timezone.now()
+    resolution.status = ResolutionStatus.RESOLVED
+    resolution.save(update_fields=["finalized_at", "status", "updated_at"])
+    ArbitrationEvent.objects.create(
+        resolution=resolution, index=None, actor=actor,
+        verb=ArbitrationVerb.FINALIZE, payload={"decided": decided},
+    )
+    return resolution
+
+
+def reopen_resolution(resolution, actor) -> GoldResolution:
+    """Rouvre une résolution finalisée (corrections)."""
+    resolution.finalized_at = None
+    resolution.save(update_fields=["finalized_at", "updated_at"])
+    ArbitrationEvent.objects.create(
+        resolution=resolution, index=None, actor=actor, verb=ArbitrationVerb.REOPEN, payload={},
+    )
+    return resolution
 
 
 def auto_resolve_document(resolution, actor) -> dict:

@@ -633,6 +633,8 @@ export const FIXTURE_GOLD_DOCUMENTS = [
     document: { id: 1, externalId: "Atlas", title: "Atlas ToS", nSentences: 6 },
     status: "in_progress" as const,
     pctResolved: 0.5,
+    readiness: { expected: 3, submitted: 3, missing: 0, ready: true },
+    finalized: false,
     locked: false,
     lockedBy: null,
     counts: { decided: 3, auto: 2, strict: 2, majority: 1, divergence: 1, highRisk: 2 },
@@ -642,6 +644,8 @@ export const FIXTURE_GOLD_DOCUMENTS = [
     document: { id: 2, externalId: "Academia", title: "Academia ToS", nSentences: 4 },
     status: "resolved" as const,
     pctResolved: 1,
+    readiness: { expected: 3, submitted: 3, missing: 0, ready: true },
+    finalized: true,
     locked: true,
     lockedBy: "zahra.boulaich",
     counts: { decided: 4, auto: 4, strict: 4, majority: 0, divergence: 0, highRisk: 0 },
@@ -649,8 +653,10 @@ export const FIXTURE_GOLD_DOCUMENTS = [
   },
   {
     document: { id: 3, externalId: "Borea", title: "Borea ToS", nSentences: 5 },
-    status: "unresolved" as const,
+    status: "awaiting" as const,
     pctResolved: 0,
+    readiness: { expected: 3, submitted: 1, missing: 2, ready: false },
+    finalized: false,
     locked: false,
     lockedBy: null,
     counts: {},
@@ -662,6 +668,9 @@ export const FIXTURE_GOLD_DETAIL = {
   document: { id: 1, externalId: "Atlas", title: "Atlas ToS", nSentences: 3 },
   status: "in_progress" as const,
   pctResolved: 0.3333,
+  readiness: { expected: 2, submitted: 2, missing: 0, ready: true },
+  finalized: false,
+  canFinalize: false,
   lock: {
     locked: false,
     lockedBy: null,
@@ -788,3 +797,9 @@ export const FIXTURE_GOLD_CONFIG = {
   secondaryPolicy: "advisory" as const,
   statuses: ["submitted", "in_review", "approved"],
 };
+
+export const FIXTURE_GOLD_LLM_ANNOTATORS = [
+  { judge: "claude", added: false, documents: 3 },
+  { judge: "codex", added: true, documents: 3 },
+  { judge: "mistral", added: false, documents: 2 },
+];

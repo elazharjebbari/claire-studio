@@ -8,8 +8,15 @@
 
 import { useEffect, useMemo, useState } from "react";
 import Link from "next/link";
-import { ChevronLeft, Gavel, Save, Lock, Users, Bot, Sparkles } from "lucide-react";
-import { useGoldConfig, useMembers, useProject, useSaveGoldConfig } from "@/lib/api/hooks";
+import { ChevronLeft, Gavel, Save, Lock, Users, Bot, Sparkles, UserPlus, UserMinus } from "lucide-react";
+import {
+  useGoldConfig,
+  useMembers,
+  useProject,
+  useSaveGoldConfig,
+  useGoldLlmAnnotators,
+  useMutateGoldLlmAnnotator,
+} from "@/lib/api/hooks";
 import { useUiStore } from "@/store/ui";
 import { Button, Panel } from "@/components/ui/primitives";
 import { ArbiterPicker } from "./ArbiterPicker";
@@ -123,6 +130,9 @@ export function GoldConfigStudio({ slug, embedded = false }: { slug: string; emb
           />
         </Section>
 
+        {/* Comptes annotateurs dérivés des LLM (ajout/retrait) */}
+        <LlmAnnotatorsSection slug={slug} locked={locked} />
+
         {/* Modèles — RÉFÉRENCE seulement */}
         <Section
           icon={<Bot size={15} aria-hidden />}
@@ -198,5 +208,69 @@ export function GoldConfigStudio({ slug, embedded = false }: { slug: string; emb
         )}
       </div>
     </div>
+  );
+}
+
+function LlmAnnotatorsSection({ slug, locked }: { slug: string; locked: boolean }) {
+  const { data } = useGoldLlmAnnotators(slug);
+  const mutate = useMutateGoldLlmAnnotator(slug);
+  const judges = data?.results ?? [];
+
+  return (
+    <Section
+      icon={<Bot size={15} className="text-info" aria-hidden />}
+      title="Annotateurs issus des modèles"
+      desc="Promouvez claude/codex/mistral en VRAIS annotateurs (comptes avec annotations soumises, dérivées de leurs pré-annotations) pour tester la résolution de bout en bout. Retirez-les pour qu'ils redeviennent une simple référence."
+    >
+      {judges.length === 0 ? (
+        <div className="rounded-md border border-line bg-panel-muted/40 px-3 py-2 text-[12px] text-ink-muted">
+          Aucune pré-annotation LLM importée sur ce projet.
+        </div>
+      ) : (
+        <ul className="flex flex-col gap-1.5" data-testid="gold-llm-annotators">
+          {judges.map((j) => (
+            <li
+              key={j.judge}
+              data-testid={`gold-llm-annotator-${j.judge}`}
+              className="flex items-center gap-2 rounded-md border border-line bg-panel px-3 py-1.5 text-sm"
+            >
+              <Bot size={14} className="text-info" aria-hidden />
+              <span className="font-medium text-ink">{j.judge}</span>
+              <span className="text-[11px] text-ink-muted">{j.documents} document(s)</span>
+              {j.added ? (
+                <span className="ml-1 inline-flex items-center gap-1 rounded-full border border-success/40 bg-success/10 px-2 py-0.5 text-[10px] font-medium text-success">
+                  annotateur
+                </span>
+              ) : (
+                <span className="ml-1 inline-flex items-center gap-1 rounded-full border border-line bg-panel-muted px-2 py-0.5 text-[10px] text-ink-muted">
+                  référence
+                </span>
+              )}
+              <div className="ml-auto">
+                {j.added ? (
+                  <Button
+                    variant="ghost"
+                    data-testid={`gold-llm-remove-${j.judge}`}
+                    disabled={locked || mutate.isPending}
+                    onClick={() => mutate.mutate({ judge: j.judge, action: "remove" })}
+                  >
+                    <UserMinus size={13} aria-hidden /> Retirer
+                  </Button>
+                ) : (
+                  <Button
+                    variant="subtle"
+                    data-testid={`gold-llm-add-${j.judge}`}
+                    disabled={locked || mutate.isPending}
+                    onClick={() => mutate.mutate({ judge: j.judge, action: "add" })}
+                  >
+                    <UserPlus size={13} aria-hidden /> Ajouter comme annotateur
+                  </Button>
+                )}
+              </div>
+            </li>
+          ))}
+        </ul>
+      )}
+    </Section>
   );
 }

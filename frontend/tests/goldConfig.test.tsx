@@ -4,7 +4,11 @@
 import { afterEach, describe, expect, it } from "vitest";
 import { render, screen, cleanup, waitFor, fireEvent } from "@testing-library/react";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { http, HttpResponse } from "msw";
+import { server } from "@/mocks/server";
 import { GoldConfigStudio } from "@/components/gold/GoldConfigStudio";
+
+const BASE = "/api/v1";
 
 function wrapper() {
   const qc = new QueryClient({ defaultOptions: { queries: { retry: false } } });
@@ -53,5 +57,25 @@ describe("GoldConfigStudio", () => {
     await waitFor(() => expect(screen.getByTestId("gold-config")).toBeInTheDocument());
     expect(screen.queryByTestId("config-llm-role")).not.toBeInTheDocument();
     expect(screen.queryByTestId("config-llm-weight")).not.toBeInTheDocument();
+  });
+
+  it("permet d'ajouter/retirer les comptes annotateurs issus des LLM", async () => {
+    const calls: Array<Record<string, unknown>> = [];
+    server.use(
+      http.post(`${BASE}/projects/:slug/gold/llm-annotators`, async ({ request }) => {
+        const b = (await request.json()) as Record<string, unknown>;
+        calls.push(b);
+        return HttpResponse.json({ judge: b.judge, added: b.action === "add" });
+      }),
+    );
+    render(<GoldConfigStudio slug="claudette-gold-v1" />, { wrapper: wrapper() });
+    await waitFor(() => expect(screen.getByTestId("gold-llm-annotators")).toBeInTheDocument());
+    // claude = référence (bouton Ajouter) ; codex = déjà annotateur (bouton Retirer).
+    expect(screen.getByTestId("gold-llm-add-claude")).toBeInTheDocument();
+    expect(screen.getByTestId("gold-llm-remove-codex")).toBeInTheDocument();
+
+    fireEvent.click(screen.getByTestId("gold-llm-add-claude"));
+    await waitFor(() => expect(calls.length).toBe(1));
+    expect(calls[0]).toMatchObject({ judge: "claude", action: "add" });
   });
 });
