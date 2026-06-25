@@ -25,6 +25,7 @@ const GUARDED = [
   "src/components/workspace/triage/TriageLevelInfo.tsx",
   "src/components/workspace/triage/SuggestionCard.tsx",
   "src/components/workspace/InspectorPanel.tsx",
+  "src/components/workspace/WorkspaceToolbar.tsx",
   "src/components/gold/GoldReadingPanel.tsx",
 ];
 

@@ -405,7 +405,7 @@ export function WorkspaceToolbar({
           />
         </div>
         {snapshotMsg && (
-          <span className="text-[11px] text-emerald-400" data-testid="snapshot-msg">
+          <span className="text-[11px] text-success" data-testid="snapshot-msg">
             {snapshotMsg}
           </span>
         )}
@@ -424,8 +424,8 @@ export function WorkspaceToolbar({
           className={
             "inline-flex items-center gap-1 rounded-md border px-2 py-1 text-xs font-medium " +
             (validation.complete
-              ? "border-emerald-400/40 bg-emerald-400/10 text-emerald-300"
-              : "border-amber-400/40 bg-amber-400/10 text-amber-300")
+              ? "border-success/40 bg-success/10 text-success"
+              : "border-warning/40 bg-warning/10 text-warning")
           }
         >
           {validation.complete ? "✓" : "◷"} {validation.validated}/{validation.total}
@@ -435,7 +435,7 @@ export function WorkspaceToolbar({
           <span
             data-testid="toolbar-project-locked"
             title="Projet verrouillé par un administrateur — campagne gelée"
-            className="inline-flex items-center gap-1.5 rounded-md border border-slate-400/40 bg-slate-400/10 px-2.5 py-1 text-sm font-medium text-slate-300"
+            className="inline-flex items-center gap-1.5 rounded-md border border-ink-muted/40 bg-ink-muted/10 px-2.5 py-1 text-sm font-medium text-ink-muted"
           >
             <Lock size={14} aria-hidden /> Projet verrouillé
           </span>
@@ -445,7 +445,7 @@ export function WorkspaceToolbar({
             data-testid="toolbar-unlock"
             onClick={onRequestUnlock}
             title="Document verrouillé — cliquez pour déverrouiller"
-            className="inline-flex items-center gap-1.5 rounded-md border border-amber-400/50 bg-amber-400/10 px-2.5 py-1 text-sm font-medium text-amber-200 transition-colors hover:bg-amber-400/20"
+            className="inline-flex items-center gap-1.5 rounded-md border border-warning/50 bg-warning/10 px-2.5 py-1 text-sm font-medium text-warning transition-colors hover:bg-warning/20"
           >
             <Lock size={14} aria-hidden /> Verrouillé
           </button>
@@ -575,16 +575,16 @@ function SaveIndicator({ dirty }: { dirty: boolean }) {
   const saveState = useAutosaveStore((s) => s.saveState);
   const triggerRetry = useAutosaveStore((s) => s.triggerRetry);
   const view: Record<string, { text: string; cls: string } | null> = {
-    saving: { text: "● enregistrement…", cls: "text-amber-400" },
-    saved: { text: "✓ enregistré", cls: "text-emerald-400" },
-    offline: { text: "⚠ hors-ligne — reprise auto", cls: "text-amber-400" },
-    retrying: { text: "↻ échec réseau — nouvelle tentative…", cls: "text-amber-400" },
-    error: { text: "✗ échec d'enregistrement", cls: "text-red-400" },
+    saving: { text: "● enregistrement…", cls: "text-warning" },
+    saved: { text: "✓ enregistré", cls: "text-success" },
+    offline: { text: "⚠ hors-ligne — reprise auto", cls: "text-warning" },
+    retrying: { text: "↻ échec réseau — nouvelle tentative…", cls: "text-warning" },
+    error: { text: "✗ échec d'enregistrement", cls: "text-danger" },
     unauthorized: {
       text: "✗ non enregistré — session expirée ou lecture seule",
-      cls: "text-red-400",
+      cls: "text-danger",
     },
-    idle: dirty ? { text: "● non enregistré", cls: "text-amber-400" } : null,
+    idle: dirty ? { text: "● non enregistré", cls: "text-warning" } : null,
   };
   const v = view[saveState] ?? null;
   if (!v) return null;
