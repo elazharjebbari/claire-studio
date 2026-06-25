@@ -17,7 +17,9 @@
  */
 
 import { useEffect } from "react";
+import { Check, Eraser, Languages, X } from "lucide-react";
 import { useWorkspaceStore } from "@/store/workspace";
+import { getThemeToken } from "@/lib/tokens";
 import { RULES } from "@/lib/triage";
 import { runAt, type Run } from "@/lib/runs";
 import { ThemeMultiPicker } from "@/components/ui/ThemeMultiPicker";
@@ -118,23 +120,43 @@ export function SentenceMenu({
       : [{ label: coveringDraft.theme, role: "primary", support: 0 }]
     : [];
 
-  // Toggle unifié : 1ᵉʳ thème = primaire (crée la clause) ; suivants = secondaires ;
-  // re-clic = retire (set vide → désannote ; sinon sanitize promeut un primaire).
+  const primaryCode = currentSet.find((t) => t.role === "primary")?.label ?? null;
+
+  // Validation = geste dominant (confirmer la pré-annotation). Centralisé.
+  function validateSentence() {
+    if (coveringDraft) {
+      setValidated(coveringDraft.localId, true);
+      onClose();
+    }
+  }
+
+  // Désannoter = retrait EXPLICITE de la clause (plus jamais via un re-clic accidentel).
+  function clearClause() {
+    if (coveringDraft) {
+      removeBoundary(coveringDraft.anchorIndex);
+      selectClause(null);
+      onClose();
+    }
+  }
+
+  // Clic sur un thème :
+  //  - aucune clause → crée le principal ;
+  //  - clic sur le PRINCIPAL courant → le CONFIRME (valide la phrase), ne le retire JAMAIS ;
+  //  - clic sur un autre → ajoute/retire un secondaire (le principal reste).
   function onToggleTheme(code: string) {
     if (!coveringDraft) {
       setBoundary(sentenceIndex, code); // crée la clause avec ce primaire
       return;
     }
+    if (code === primaryCode) {
+      validateSentence(); // confirmer la recommandation (intuitif) — fini le retrait accidentel
+      return;
+    }
     const exists = currentSet.some((t) => t.label === code);
     const next: ThemeTag[] = exists
-      ? currentSet.filter((t) => t.label !== code)
+      ? currentSet.filter((t) => t.label !== code) // retire un SECONDAIRE
       : [...currentSet, { label: code, role: currentSet.length === 0 ? "primary" : "secondary" }];
-    if (next.length === 0) {
-      removeBoundary(coveringDraft.anchorIndex);
-      selectClause(null);
-    } else {
-      setClauseThemes(coveringDraft.localId, next);
-    }
+    setClauseThemes(coveringDraft.localId, next);
   }
 
   // Promotion d'un secondaire en primaire (l'ancien primaire redevient secondaire).
@@ -171,17 +193,48 @@ export function SentenceMenu({
           type="button"
           onClick={onClose}
           aria-label="Fermer le menu"
-          className="rounded px-1 text-ink-muted hover:bg-panel-muted"
+          className="inline-flex h-6 w-6 items-center justify-center rounded text-ink-muted hover:bg-panel-muted hover:text-ink"
         >
-          ✕
+          <X size={14} aria-hidden />
         </button>
       </div>
 
-      {/* (a) Annoter… — grille UNIFIÉE : 1ᵉʳ clic = principal, suivants = secondaires
-          (numérotés), ★ = promouvoir principal, re-clic = retirer. */}
+      {/* ACTION PRINCIPALE — valider/confirmer la phrase, EN TÊTE et bien visible (la
+          recommandation se confirme d'un geste évident, fini le bouton perdu en bas). */}
+      {coveringDraft && (
+        <div className="mb-2">
+          {coveringDraft.validated ? (
+            <button
+              type="button"
+              data-testid="menu-validate"
+              aria-pressed
+              onClick={() => setValidated(coveringDraft.localId, false)}
+              className="flex w-full items-center justify-center gap-1.5 rounded-md border border-success/60 bg-success/15 px-3 py-2 text-sm font-semibold text-success transition-colors hover:bg-success/25"
+            >
+              <Check size={15} aria-hidden /> Phrase validée — cliquer pour dévalider
+            </button>
+          ) : (
+            <button
+              type="button"
+              data-testid="menu-validate"
+              aria-pressed={false}
+              onClick={validateSentence}
+              className="flex w-full items-center justify-center gap-1.5 rounded-md bg-accent px-3 py-2 text-sm font-semibold text-accent-fg transition-colors hover:brightness-110"
+            >
+              <Check size={15} aria-hidden />
+              {primaryCode ? `Valider : ${getThemeToken(primaryCode).label}` : "Valider cette phrase"}
+            </button>
+          )}
+        </div>
+      )}
+
+      {/* Choisir / changer le thème. Le principal en surbrillance ; le confirmer = cliquer
+          dessus (ou le bouton ci-dessus). Les autres clics gèrent les secondaires. */}
       <section className="flex flex-col gap-2 border-b border-line pb-3">
         <h3 className="text-[11px] font-semibold uppercase text-ink-muted">
-          Annoter… {coveringDraft ? "(★ = principal · re-cliquer = retirer)" : "(choisir un thème principal)"}
+          {coveringDraft
+            ? "Thème — le principal est en surbrillance (le cliquer = valider)"
+            : "Choisir un thème principal"}
         </h3>
         <ThemeMultiPicker
           selection={currentSet}
@@ -198,21 +251,15 @@ export function SentenceMenu({
             if (coveringDraft) setCertainty(coveringDraft.localId, v);
           }}
         />
-        {/* Point d — validation explicite de la clause couvrante (référence confirmée). */}
+        {/* Retrait EXPLICITE (remplace le re-clic accidentel sur le principal). */}
         {coveringDraft && (
           <button
             type="button"
-            data-testid="menu-validate"
-            aria-pressed={coveringDraft.validated ?? false}
-            onClick={() => setValidated(coveringDraft.localId, !(coveringDraft.validated ?? false))}
-            className={
-              "w-full rounded-md border px-2 py-1 text-left text-xs font-medium transition-colors " +
-              ((coveringDraft.validated ?? false)
-                ? "border-success/60 bg-success/10 text-success"
-                : "border-warning/50 bg-warning/10 text-warning hover:bg-warning/20")
-            }
+            data-testid="menu-desannoter"
+            onClick={clearClause}
+            className="inline-flex w-fit items-center gap-1.5 rounded-md px-2 py-1 text-xs font-medium text-ink-muted transition-colors hover:bg-danger/10 hover:text-danger"
           >
-            {(coveringDraft.validated ?? false) ? "✓ Phrase validée — cliquer pour dévalider" : "◷ Valider cette phrase"}
+            <Eraser size={13} aria-hidden /> Désannoter cette phrase
           </button>
         )}
       </section>
@@ -234,9 +281,10 @@ export function SentenceMenu({
             setTranslated(sentenceIndex, !isTranslated);
             onClose();
           }}
-          className="w-full rounded-md border border-line px-2 py-1 text-left hover:bg-panel-muted"
+          className="inline-flex w-full items-center gap-1.5 rounded-md border border-line px-2 py-1 text-left hover:bg-panel-muted"
         >
-          {isTranslated ? "🙈 Masquer la traduction" : "🌐 Traduire cette phrase"}
+          <Languages size={14} aria-hidden />
+          {isTranslated ? "Masquer la traduction" : "Traduire cette phrase"}
         </button>
       </section>
     </div>

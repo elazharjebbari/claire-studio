@@ -38,6 +38,33 @@ test.describe("Grille de thèmes unifiée (primaire + secondaires)", () => {
     await expect(picker.getByTestId("secondary-order-TERMINATION")).toHaveCount(0);
   });
 
+  test("le principal se CONFIRME au clic (jamais retiré) + bouton « Valider » nommé en tête", async ({ page }) => {
+    await page.goto("/annotate/ann-1");
+    await expect(page.getByTestId("annotation-workspace")).toBeVisible();
+    await page.getByTestId("sentence-12").click({ button: "right" });
+    const menu = page.getByTestId("sentence-menu");
+    await expect(menu).toBeVisible();
+
+    // Choisir un principal (clause humaine → déjà validée).
+    await menu.getByTestId("theme-option-TERMINATION").click();
+    await expect(menu.getByTestId("primary-badge-TERMINATION")).toBeVisible();
+    const validate = menu.getByTestId("menu-validate");
+    await expect(validate).toContainText(/validée/i);
+
+    // Dévalider → l'action principale NOMME le thème à confirmer (clarté du geste dominant).
+    await validate.click();
+    await expect(validate).toContainText("Résiliation"); // « Valider : Résiliation »
+
+    // Clic sur le thème PRINCIPAL = le CONFIRMER (valide + ferme le menu), ne le retire JAMAIS.
+    await menu.getByTestId("theme-option-TERMINATION").click();
+    await expect(page.getByTestId("sentence-menu")).toHaveCount(0);
+    // Le principal n'a PAS été retiré : la phrase reste annotée (chip [12] dans le plan).
+    await expect(
+      page.getByRole("complementary", { name: "Plan du document" })
+        .getByTestId("clause-chip").filter({ hasText: "[12]" }),
+    ).toBeVisible();
+  });
+
   test("refuge non sélectionnable en secondaire", async ({ page }) => {
     await page.goto("/annotate/ann-1");
     await expect(page.getByTestId("annotation-workspace")).toBeVisible();
