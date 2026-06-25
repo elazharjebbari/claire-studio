@@ -138,21 +138,24 @@ export function GoldWorkspace({ slug, documentId }: { slug: string; documentId: 
               <Button
                 variant="subtle"
                 data-testid="gold-auto-resolve"
-                disabled={!lock.heldByMe || autoResolve.isPending}
+                disabled={!lock.heldByMe}
+                loading={autoResolve.isPending}
+                icon={<Sparkles size={14} />}
                 onClick={() => autoResolve.mutate()}
                 title="Auto-résoudre les accords absolus et cas peu risqués"
               >
-                <Sparkles size={14} aria-hidden /> Auto-résoudre
+                Auto-résoudre
               </Button>
               {detail.canFinalize && (
                 <Button
                   variant="primary"
                   data-testid="gold-finalize"
-                  disabled={finalize.isPending}
+                  loading={finalize.isPending}
+                  icon={<Send size={14} />}
                   onClick={() => finalize.mutate()}
                   title="Soumettre la résolution (toutes les phrases sont décidées)"
                 >
-                  <Send size={14} aria-hidden /> Soumettre la résolution
+                  Soumettre la résolution
                 </Button>
               )}
             </>
@@ -161,11 +164,12 @@ export function GoldWorkspace({ slug, documentId }: { slug: string; documentId: 
             <Button
               variant="outline"
               data-testid="gold-reopen"
-              disabled={reopen.isPending}
+              loading={reopen.isPending}
+              icon={<RotateCcw size={14} />}
               onClick={() => reopen.mutate()}
               title="Rouvrir la résolution (corrections)"
             >
-              <RotateCcw size={14} aria-hidden /> Rouvrir
+              Rouvrir
             </Button>
           )}
         </div>
