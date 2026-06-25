@@ -1,0 +1,13 @@
+# Conventions techniques
+
+- Zéro hex en dur : toute couleur passe par les tokens (tokens.ts / design-tokens.json) et les classes Tailwind tokenisées (bg-success, text-warning, border-danger, text-theme-*) ; opacité via <alpha-value>, jamais par concaténation hex. Garde CI anti-régression obligatoire.
+- Frontière token MÉTIER ≠ token d'ÉTAT : une couleur de thème/triage/juge ne sert JAMAIS de succès/alerte/danger, et réciproquement. Documenté dans la charte, vérifié en revue.
+- Couleur jamais seule (WCAG 1.4.1) : tout signal coloré est doublé par forme/glyphe (icône monochrome de thème, liseré plein/pointillé, glyphe d'état Lucide) ou libellé.
+- a11y AA prouvé en clair ET sombre : contraste validé via readableTextColor sur fonds dynamiques ; focus-visible présent ; respect de prefers-reduced-motion (déjà dans globals.css) ; aria-expanded/controls/pressed sur tout toggle ; role=alert sur les erreurs ; tooltips kbd focusables (fin des title= natifs).
+- Iconographie : bibliothèque Lucide UNIQUE, aucun glyphe Unicode/emoji porteur de sens (les remplacer dans menu, toolbar, chip). Icônes 14px, currentColor.
+- camelCase côté front, snake_case côté API : les hooks/endpoints mappent (ex. anchor_index→anchorIndex, legal_nature→legalNature) ; les ids sérialisés sont forcés en String (localId/serverId) pour éviter les 500 backend.
+- data-testid stable et sémantique sur tout élément interactif et toute cible E2E (convention existante : theme-option-*, inspector-validate, comment-input, lock-banner, workspace-error…) ; les nouveaux composants des lots en posent un.
+- État d'interaction temps réel dans le store workspace (Zustand, mutateurs gardés readOnly = no-op) ; persistance serveur via React Query ; préférences/layout PAR COMPTE via le store prefs (setters idempotents, migratePrefs, garde anti-boucle sur rev). Ne pas mélanger les couches (shell useUiStore vs compte prefs).
+- Révélation progressive par défaut : tout signal rare est replié (via <Disclosure>) et dévoilé au clic/survol/focus ; la surface de repos reste minimale. Ne pas réintroduire de panneau permanent volant la hauteur de lecture.
+- Atomicité d'undo : tout geste de lot pousse UN seul snapshot undo + UNE entrée actionLog ; les mutateurs maintiennent le miroir theme↔themes (withPrimaryTheme/sanitizeThemeSet).
+- Composition de classes via cn() (clsx) ; un seul composant <Button> pour tout bouton (fin des hover/disabled/focus redéfinis à la main dans SelectionToolbar/BlockToolbar).

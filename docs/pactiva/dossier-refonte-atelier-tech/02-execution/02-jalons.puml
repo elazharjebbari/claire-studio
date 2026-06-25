@@ -1,0 +1,16 @@
+@startuml
+' Jalons de la refonte de l'atelier d'annotation
+left to right direction
+skinparam shadowing false
+rectangle "J0 — Socle couleur & garde CI\n[Lot 0]" as J0
+rectangle "J1 — Primitives transverses partagées\n[Lot 2, Lot 3]" as J1
+rectangle "J2 — Disclosure & surfaces contextuelles légères\n[Lot 5, Lot 4]" as J2
+rectangle "J3 — Inspecteur & zone document\n[Lot 6, Lot 7]" as J3
+rectangle "J4 — Cadre dock & barre d'outils\n[Lot 1, Lot 8]" as J4
+rectangle "J5 — Mode rafale clavier-first\n[Lot 9]" as J5
+J0 --> J1
+J1 --> J2
+J2 --> J3
+J3 --> J4
+J4 --> J5
+@enduml
