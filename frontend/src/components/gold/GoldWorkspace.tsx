@@ -6,11 +6,12 @@
  * sous le curseur), et auto-résolution des cas peu risqués. Conflit-first.
  */
 
-import { useEffect, useMemo, useRef } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import Link from "next/link";
-import { Gavel, Lock, Unlock, Sparkles, ChevronLeft, ArrowRight } from "lucide-react";
+import { Gavel, Lock, Unlock, Sparkles, ChevronLeft, ArrowRight, HelpCircle } from "lucide-react";
 import { ResizablePanels } from "@/components/workspace/ResizablePanels";
 import { Button } from "@/components/ui/primitives";
+import { GoldHelpModal } from "./GoldHelpModal";
 import { ApiError } from "@/lib/api/client";
 import { useGoldDocument, useDecideGold, useAutoResolveGold } from "@/lib/api/hooks";
 import { useUiStore } from "@/store/ui";
@@ -31,6 +32,7 @@ export function GoldWorkspace({ slug, documentId }: { slug: string; documentId: 
   useEffect(() => setProject(slug), [slug, setProject]);
   useEffect(() => initStore(documentId), [documentId, initStore]);
 
+  const [helpOpen, setHelpOpen] = useState(false);
   const { data: detail, isLoading, error } = useGoldDocument(slug, documentId);
   const decide = useDecideGold(slug, documentId);
   const autoResolve = useAutoResolveGold(slug, documentId);
@@ -105,6 +107,16 @@ export function GoldWorkspace({ slug, documentId }: { slug: string; documentId: 
         <span className="ml-2 font-mono text-[11px] text-ink-muted">{pct}% résolu</span>
 
         <div className="ml-auto flex items-center gap-2">
+          <button
+            type="button"
+            data-testid="gold-help-open"
+            aria-label="Comment fonctionne la résolution ?"
+            title="Comment ça marche ?"
+            onClick={() => setHelpOpen(true)}
+            className="inline-flex h-7 w-7 items-center justify-center rounded-md border border-line text-ink-muted hover:bg-panel-muted hover:text-ink"
+          >
+            <HelpCircle size={15} aria-hidden />
+          </button>
           <LockBanner lock={lock} />
           <Button
             variant="subtle"
@@ -143,6 +155,8 @@ export function GoldWorkspace({ slug, documentId }: { slug: string; documentId: 
           }
         />
       </div>
+
+      {helpOpen && <GoldHelpModal onClose={() => setHelpOpen(false)} />}
     </div>
   );
 }

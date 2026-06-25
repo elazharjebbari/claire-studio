@@ -97,6 +97,14 @@ def annotation_statuses(project) -> set:
     return {"submitted", "in_review", "approved"}
 
 
+def secondary_policy(project) -> str:
+    """Politique des secondaires : 'required' = promus d'office dans le gold auto-résolu ;
+    'advisory'/'optional' = proposés (affichés) mais jamais auto-promus (l'arbitre choisit)."""
+    res = resolution_settings(project)
+    sp = _get(res, "secondary_policy", "secondaryPolicy", default="advisory")
+    return sp if sp in SECONDARY_POLICIES else "advisory"
+
+
 def auto_resolve_flags(project) -> dict:
     """Drapeaux d'auto-résolution effectifs (accord strict 1-clic, majorité ≥ 2/3)."""
     res = resolution_settings(project)

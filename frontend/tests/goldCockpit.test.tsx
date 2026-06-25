@@ -50,6 +50,16 @@ describe("GoldCockpit", () => {
     expect(kpis).toContain("1/3");
   });
 
+  it("ouvre et ferme la modale « Comment ça marche ? »", async () => {
+    render(<GoldCockpit slug="claudette-gold-v1" />, { wrapper: wrapper() });
+    await waitFor(() => expect(screen.getByTestId("gold-cockpit")).toBeInTheDocument());
+    expect(screen.queryByTestId("gold-help-modal")).not.toBeInTheDocument();
+    fireEvent.click(screen.getByTestId("gold-help-open"));
+    expect(screen.getByTestId("gold-help-modal")).toBeInTheDocument();
+    fireEvent.click(screen.getByTestId("gold-help-close"));
+    expect(screen.queryByTestId("gold-help-modal")).not.toBeInTheDocument();
+  });
+
   it("expose le lien Stats et (admin) le bouton d'export gold", async () => {
     render(<GoldCockpit slug="claudette-gold-v1" />, { wrapper: wrapper() });
     await waitFor(() => expect(screen.getByTestId("gold-cockpit")).toBeInTheDocument());

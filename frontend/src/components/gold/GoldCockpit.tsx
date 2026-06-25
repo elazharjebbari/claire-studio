@@ -9,12 +9,13 @@
 import { useEffect, useState } from "react";
 import Link from "next/link";
 import { useMutation } from "@tanstack/react-query";
-import { Gavel, Lock, ShieldCheck, AlertTriangle, BarChart3, Download, Settings2 } from "lucide-react";
+import { Gavel, Lock, ShieldCheck, AlertTriangle, BarChart3, Download, Settings2, HelpCircle } from "lucide-react";
 import { useGoldDocuments, useProject, useMe } from "@/lib/api/hooks";
 import { createExport } from "@/lib/api/endpoints";
 import { isAdminRole } from "@/lib/roles";
 import { useUiStore } from "@/store/ui";
 import { Button, Panel } from "@/components/ui/primitives";
+import { GoldHelpModal } from "./GoldHelpModal";
 import { summarize } from "@/lib/gold/cockpit";
 import { STATUS_META, progressBarClass } from "@/lib/gold/styling";
 import type { GoldDocumentRow } from "@/lib/gold/types";
@@ -123,6 +124,7 @@ export function GoldCockpit({ slug }: { slug: string }) {
   const { data, isLoading, error } = useGoldDocuments(slug);
 
   const [exported, setExported] = useState(false);
+  const [helpOpen, setHelpOpen] = useState(false);
   const exportGold = useMutation({
     mutationFn: () => createExport(slug, { format: "jsonl", scope: { gold: true } }),
     onSuccess: () => setExported(true),
@@ -150,6 +152,16 @@ export function GoldCockpit({ slug }: { slug: string }) {
           Résolution GOLD{project ? ` — ${project.name}` : ""}
         </h1>
         <div className="ml-auto flex items-center gap-2">
+          <button
+            type="button"
+            data-testid="gold-help-open"
+            aria-label="Comment fonctionne la résolution ?"
+            title="Comment ça marche ?"
+            onClick={() => setHelpOpen(true)}
+            className="inline-flex items-center gap-1 rounded-md border border-line bg-panel px-3 py-1.5 text-sm text-ink hover:bg-panel-muted"
+          >
+            <HelpCircle size={14} aria-hidden /> Comment ça marche ?
+          </button>
           <Link
             href={`/projects/${slug}/gold/stats`}
             data-testid="gold-stats-link"
@@ -211,6 +223,8 @@ export function GoldCockpit({ slug }: { slug: string }) {
           rows.map((row) => <DocRow key={row.document.id} slug={slug} row={row} />)
         )}
       </Panel>
+
+      {helpOpen && <GoldHelpModal onClose={() => setHelpOpen(false)} />}
     </div>
   );
 }

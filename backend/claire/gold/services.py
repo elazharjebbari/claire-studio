@@ -21,7 +21,12 @@ from claire.projects.gold_scoring import Vote, score_sentence
 from claire.projects.models import MembershipRole
 from claire.schemes.models import Theme
 
-from .config import annotation_statuses, auto_resolve_flags, build_engine_config
+from .config import (
+    annotation_statuses,
+    auto_resolve_flags,
+    build_engine_config,
+    secondary_policy,
+)
 from .models import (
     ArbitrationEvent,
     ArbitrationVerb,
@@ -131,6 +136,7 @@ def recompute_document(
     cfg = build_engine_config(project)
     flags = auto_resolve_flags(project)  # accord strict 1-clic / majorité ≥ 2/3 (configurables)
     allow_auto = {"auto_1click": flags["absolute_agreement"], "auto": flags["majority"]}
+    promote_secondaries = secondary_policy(project) == "required"
     data = data or build_document_data(project, document)
     n = data["n"]
     theme_by_code = {t.code: t for t in Theme.objects.filter(scheme=project.scheme)}
@@ -181,7 +187,8 @@ def recompute_document(
                     gs.decided = True
                     gs.auto_resolved = True
                     gs.primary_theme = primary_theme
-                    gs.secondaries = list(score.secondaries)
+                    # Secondaires promus d'office UNIQUEMENT si la politique = 'required'.
+                    gs.secondaries = list(score.secondaries) if promote_secondaries else []
                     gs.decided_by = None
                     if gs.decided_at is None:
                         gs.decided_at = now
