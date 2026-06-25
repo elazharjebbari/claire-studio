@@ -120,8 +120,8 @@ export function BoundaryEvidence({ x, y, judges, onClose }: BoundaryEvidenceProp
                 className={cn(
                   "mb-2.5 flex items-center gap-1.5 rounded-md px-2 py-1.5 text-xs font-medium",
                   allAgree
-                    ? "bg-emerald-400/10 text-emerald-300"
-                    : "bg-amber-400/10 text-amber-300",
+                    ? "bg-success/10 text-success"
+                    : "bg-warning/10 text-warning",
                 )}
               >
                 {allAgree ? <CheckCircle2 size={14} aria-hidden /> : <AlertTriangle size={14} aria-hidden />}

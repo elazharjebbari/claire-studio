@@ -724,10 +724,10 @@ export function DocumentPanel({
                 </span>
                 <span className="ml-auto flex items-center gap-3 text-[11px] text-ink-muted">
                   <span className="flex items-center gap-1">
-                    <span aria-hidden className="h-2 w-2 rounded-full bg-emerald-400" /> accord
+                    <span aria-hidden className="h-2 w-2 rounded-full bg-success" /> accord
                   </span>
                   <span className="flex items-center gap-1">
-                    <span aria-hidden className="h-2 w-2 rounded-full bg-amber-400" /> divergence
+                    <span aria-hidden className="h-2 w-2 rounded-full bg-warning" /> divergence
                   </span>
                 </span>
               </div>
@@ -784,8 +784,8 @@ export function DocumentPanel({
               comparePresent === 0
                 ? undefined
                 : compareAgree
-                  ? "#34D399" // emerald-400
-                  : "#FBBF24"; // amber-400
+                  ? "rgb(var(--sem-success))"
+                  : "rgb(var(--sem-warning))";
             showDashedTop = false;
           }
 
@@ -881,9 +881,9 @@ export function DocumentPanel({
                 style={{
                   backgroundColor:
                     vStatus === "validated"
-                      ? "#34D399"
+                      ? "rgb(var(--sem-success))"
                       : vStatus === "pending"
-                        ? "#FBBF24"
+                        ? "rgb(var(--sem-warning))"
                         : "rgb(var(--surface-border))",
                   opacity: vStatus === "uncovered" ? 0.35 : 0.85,
                 }}
@@ -962,7 +962,7 @@ export function DocumentPanel({
                       <span
                         data-testid={`resolved-${s.index}`}
                         data-judge={anchor.resolvedFrom}
-                        className="rounded border border-emerald-400/50 bg-emerald-400/10 px-1 text-[9px] font-semibold text-emerald-300"
+                        className="rounded border border-success/50 bg-success/10 px-1 text-[9px] font-semibold text-success"
                       >
                         ✓ {llmJudgeLabel(anchor.resolvedFrom)}
                       </span>
@@ -971,7 +971,7 @@ export function DocumentPanel({
                         data-testid={`seeded-${s.index}`}
                         data-judge={anchor.seededFrom.replace(/^preannotation:/, "")}
                         title="Pré-rempli — à valider (n'est pas la référence)"
-                        className="rounded border border-amber-400/40 bg-amber-400/10 px-1 text-[9px] font-semibold text-amber-300"
+                        className="rounded border border-warning/40 bg-warning/10 px-1 text-[9px] font-semibold text-warning"
                       >
                         ◷ {llmJudgeLabel(anchor.seededFrom.replace(/^preannotation:/, ""))}
                       </span>
@@ -980,7 +980,7 @@ export function DocumentPanel({
                         data-testid={`author-${s.index}`}
                         data-author={myName}
                         title={`Annoté par ${myName}`}
-                        className="rounded border border-slate-400/40 bg-slate-400/10 px-1 text-[9px] font-semibold text-slate-300"
+                        className="rounded border border-ink-muted/40 bg-ink-muted/10 px-1 text-[9px] font-semibold text-ink-muted"
                       >
                         ✎ moi
                       </span>
@@ -1320,14 +1320,14 @@ function computeBadge(args: {
       const t = getThemeToken(compareDistinct[0]!);
       return {
         label: t.label,
-        color: compareAgree ? "#34D399" : "#94A3B8",
+        color: compareAgree ? "rgb(var(--sem-success))" : "rgb(var(--surface-text-muted))",
         tag: compareAgree ? "accord" : "partiel",
       };
     }
     // ≥ 2 thèmes distincts parmi les modèles sélectionnés → divergence N-way.
     return {
       label: compareDistinct.map((c) => getThemeToken(c).label).join(" ≠ "),
-      color: "#FBBF24",
+      color: "rgb(var(--sem-warning))",
       tag: `divergence (${comparePresent})`,
     };
   }
@@ -1474,7 +1474,7 @@ function SentenceRow({
         // clic/clavier = fiche épinglée. outline (pas ring) pour ne pas écraser le
         // box-shadow inline du surlignage. Aperçu prioritaire sur le RationaleHover.
         <span
-          className="unfairness-mark cursor-help rounded-sm outline-offset-1 hover:outline hover:outline-1 hover:outline-amber-300/70 focus-visible:outline focus-visible:outline-2 focus-visible:outline-amber-300"
+          className="unfairness-mark cursor-help rounded-sm outline-offset-1 hover:outline hover:outline-1 hover:outline-warning/70 focus-visible:outline focus-visible:outline-2 focus-visible:outline-warning"
           style={unfairnessStyle(marks[0]!)}
           data-testid={`unfairness-${s.index}`}
           tabIndex={0}

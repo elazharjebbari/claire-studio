@@ -26,6 +26,10 @@ const GUARDED = [
   "src/components/workspace/triage/SuggestionCard.tsx",
   "src/components/workspace/InspectorPanel.tsx",
   "src/components/workspace/WorkspaceToolbar.tsx",
+  "src/components/workspace/DocumentPanel.tsx",
+  "src/components/workspace/ComparePanel.tsx",
+  "src/components/workspace/ModelBoundaryRail.tsx",
+  "src/components/workspace/BoundaryEvidence.tsx",
   "src/components/gold/GoldReadingPanel.tsx",
 ];
 

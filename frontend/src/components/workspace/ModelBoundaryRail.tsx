@@ -74,7 +74,7 @@ export function ModelBoundaryStrip({
               aria-hidden
               data-testid={`gutter-conflict-start-${sentenceIndex}`}
               className="absolute inset-x-0 top-0 h-[3px] rounded-t-[1px]"
-              style={{ backgroundColor: "#F59E0B" }}
+              style={{ backgroundColor: "rgb(var(--sem-warning))" }}
             />
           )}
         </button>

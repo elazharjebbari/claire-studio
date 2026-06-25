@@ -66,9 +66,9 @@ export function agreementSegments(
 }
 
 const STATUS_COLOR: Record<AgreeSegment["status"], string> = {
-  agree: "#34D399", // emerald-400
-  diverge: "#FBBF24", // amber-400
-  partial: "#64748B", // slate-500
+  agree: "rgb(var(--sem-success))",
+  diverge: "rgb(var(--sem-warning))",
+  partial: "rgb(var(--surface-text-muted))",
 };
 
 function JudgeRail({
@@ -185,7 +185,7 @@ export function ComparePanel({
       {judges.length < 2 ? (
         <div
           data-testid="compare-need-two"
-          className="rounded-md border border-amber-400/40 bg-amber-400/10 px-3 py-2 text-xs text-amber-200"
+          className="rounded-md border border-warning/40 bg-warning/10 px-3 py-2 text-xs text-warning"
         >
           Sélectionnez au moins 2 modèles dans la réglette « Modèles » pour comparer.
         </div>
@@ -196,7 +196,7 @@ export function ComparePanel({
       {divAnchors.length > 0 && (
         <div
           data-testid="compare-divergence-nav"
-          className="mb-2 flex items-center gap-2 rounded-md border border-amber-400/40 bg-amber-400/10 px-2 py-1 text-[11px]"
+          className="mb-2 flex items-center gap-2 rounded-md border border-warning/40 bg-warning/10 px-2 py-1 text-[11px]"
         >
           <span className="font-medium text-ink">Désaccords</span>
           <span data-testid="compare-divergence-counter" className="font-mono text-ink-muted">
