@@ -22,7 +22,7 @@ import { getThemeToken, readableTextColor } from "@/lib/tokens";
 import { llmJudgeLabel } from "@/lib/llmJudges";
 import type { TriageResult } from "@/lib/triage";
 import { TRIAGE_LEVEL_META as LEVEL_META } from "@/lib/triage";
-import { TriageLevelInfo, LEVEL_ICON } from "./TriageLevelInfo";
+import { TriageLevelInfo, TriageLevelBadge } from "./TriageLevelInfo";
 
 const themeLabel = (code: string) => getThemeToken(code).label;
 
@@ -98,7 +98,6 @@ export function SuggestionCard({
   onUndoOverride,
 }: SuggestionCardProps) {
   const meta = LEVEL_META[result.level];
-  const LevelIcon = LEVEL_ICON[result.level];
   const primary = result.labels.find((l) => l.role === "primary");
   const secondary = result.labels.find((l) => l.role === "secondary");
   const [showFull, setShowFull] = useState(false);
@@ -149,16 +148,8 @@ export function SuggestionCard({
       {/* 1. En-tête : niveau + reveal C1→C5 (à la demande) + action primaire */}
       <div className="flex items-center justify-between gap-2">
         <span className="inline-flex items-center gap-1">
-          <span
-            data-testid="triage-badge"
-            // Fond PLEIN + texte lisible (readableTextColor) → contraste AA garanti, quel que
-            // soit le niveau (fin du texte coloré sur fond pâle, sous le seuil 4.5:1).
-            className="inline-flex items-center gap-1 rounded-full px-2 py-0.5 text-[11px] font-semibold"
-            style={{ backgroundColor: meta.color, color: readableTextColor(meta.color) }}
-          >
-            <LevelIcon size={12} aria-hidden /> {result.level} · {meta.label}
-          </span>
-          {/* Sens de C1→C5 dévoilé À LA DEMANDE (aucune pollution permanente). */}
+          {/* Pastille AA (fond plein + texte lisible) + sens C1→C5 à la demande. */}
+          <TriageLevelBadge level={result.level} testId="triage-badge" />
           <TriageLevelInfo current={result.level} />
         </span>
         {result.level !== "C5" && (

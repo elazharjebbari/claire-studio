@@ -22,6 +22,8 @@ import { Field } from "@/components/ui/primitives";
 import { CommentThread } from "./CommentThread";
 import { MultiLabelEditor } from "./MultiLabelEditor";
 import { InspectorJudgeCompare } from "./InspectorJudgeCompare";
+import { TriageLevelInfo, TriageLevelBadge } from "./triage/TriageLevelInfo";
+import { TRIAGE_LEVEL_META } from "@/lib/triage";
 
 export function InspectorPanel({
   annotationId,
@@ -113,8 +115,8 @@ export function InspectorPanel({
             className={
               "rounded-md border px-2 py-0.5 text-xs font-medium transition-colors " +
               ((draft.validated ?? false)
-                ? "border-emerald-400/60 bg-emerald-400/10 text-emerald-300"
-                : "border-amber-400/50 bg-amber-400/10 text-amber-200 hover:bg-amber-400/20")
+                ? "border-success/60 bg-success/10 text-success"
+                : "border-warning/50 bg-warning/10 text-warning hover:bg-warning/20")
             }
           >
             {(draft.validated ?? false) ? "✓ Validée" : "◷ Valider"}
@@ -126,7 +128,7 @@ export function InspectorPanel({
               removeBoundary(draft.anchorIndex);
               selectClause(null);
             }}
-            className="text-xs text-red-400 hover:underline"
+            className="text-xs text-danger hover:underline"
           >
             Supprimer
           </button>
@@ -140,6 +142,21 @@ export function InspectorPanel({
         >
           Pré-rempli depuis <strong>{draft.seededFrom}</strong> — vérifiez et corrigez.
         </p>
+      )}
+
+      {/* Arbitrage AMBIANT (L6) : là où la décision se prend. Le niveau d'accord inter-juges
+          + son sens (révélé À LA DEMANDE) sans quitter l'inspecteur. N'apparaît que si la
+          clause porte un niveau de triage (sinon rien — zéro pollution). */}
+      {draft.triageLevel && (
+        <div
+          data-testid="inspector-arbitrage"
+          className="flex flex-wrap items-center gap-2 rounded-md border border-line bg-panel-muted/40 px-2 py-1.5 text-[11px]"
+        >
+          <span className="font-semibold uppercase tracking-wide text-ink-muted">Arbitrage</span>
+          <TriageLevelBadge level={draft.triageLevel} testId="inspector-triage-badge" />
+          <TriageLevelInfo current={draft.triageLevel} />
+          <span className="w-full text-ink-muted">{TRIAGE_LEVEL_META[draft.triageLevel].meaning}</span>
+        </div>
       )}
 
       <Field label="Thème (vocab fermé)">

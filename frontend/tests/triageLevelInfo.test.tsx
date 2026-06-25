@@ -1,6 +1,18 @@
 import { describe, expect, it } from "vitest";
 import { render, screen, fireEvent } from "@testing-library/react";
-import { TriageLevelInfo } from "@/components/workspace/triage/TriageLevelInfo";
+import { TriageLevelInfo, TriageLevelBadge } from "@/components/workspace/triage/TriageLevelInfo";
+
+describe("TriageLevelBadge — pastille de niveau partagée (AA)", () => {
+  it("rend code · libellé + icône, testId paramétrable", () => {
+    render(<TriageLevelBadge level="C5" testId="b" />);
+    const badge = screen.getByTestId("b");
+    expect(badge).toHaveTextContent("C5");
+    expect(badge.querySelector("svg")).toBeTruthy();
+    // Fond plein + couleur de texte explicite (readableTextColor) → AA par construction.
+    expect(badge.style.backgroundColor).not.toBe("");
+    expect(badge.style.color).not.toBe("");
+  });
+});
 
 describe("TriageLevelInfo — révélation à la demande du barème C1→C5", () => {
   it("replié par défaut : aucune pollution permanente (panneau absent)", () => {

@@ -28,6 +28,22 @@ export const LEVEL_ICON: Record<TriageLevel, LucideIcon> = {
 
 const ORDER: TriageLevel[] = ["C1", "C2", "C3", "C4", "C5"];
 
+/** Pastille de niveau (icône + code · libellé), fond PLEIN + texte lisible → AA garanti.
+ * Source unique partagée (carte de suggestion + inspecteur). */
+export function TriageLevelBadge({ level, testId }: { level: TriageLevel; testId?: string }) {
+  const m = LEVEL_META[level];
+  const Icon = LEVEL_ICON[level];
+  return (
+    <span
+      data-testid={testId}
+      className="inline-flex items-center gap-1 rounded-full px-2 py-0.5 text-[11px] font-semibold"
+      style={{ backgroundColor: m.color, color: readableTextColor(m.color) }}
+    >
+      <Icon size={12} aria-hidden /> {level} · {m.label}
+    </span>
+  );
+}
+
 export function TriageLevelInfo({ current }: { current: TriageLevel }) {
   const [open, setOpen] = useState(false);
   const panelId = useId();
