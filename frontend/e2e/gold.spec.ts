@@ -29,9 +29,8 @@ test.describe("Résolution GOLD (golden-path)", () => {
     await page.getByTestId("gold-doc-Atlas").click();
     await expect(page.getByTestId("gold-workspace")).toBeVisible();
 
-    // Lecture seule tant que le verrou n'est pas pris.
-    await expect(page.getByTestId("gold-lock-acquire")).toBeVisible();
-    await page.getByTestId("gold-lock-acquire").click();
+    // Le verrou d'arbitrage est AUTO-acquis à l'ouverture (annotations complètes →
+    // readiness.ready) : l'arbitre voit « Vous arbitrez » sans clic préalable.
     await expect(page.getByTestId("gold-lock-mine")).toBeVisible();
 
     // Arbitrer une phrase en divergence (index 1 : alice PRIVACY vs bob LIABILITY).

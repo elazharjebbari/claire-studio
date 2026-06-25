@@ -8,7 +8,7 @@
  */
 
 import { useEffect, useRef } from "react";
-import { Check, Lock } from "lucide-react";
+import { Check, Lock, Split, Scale } from "lucide-react";
 import { useGoldStore } from "@/store/goldStore";
 import { blockKey, needsAttention } from "@/lib/gold/blocks";
 import type { GoldSentenceRow } from "@/lib/gold/types";
@@ -115,15 +115,24 @@ export function GoldReadingPanel({ sentences, canDecide, onValidate }: GoldReadi
                 <span className="font-mono text-[10px] text-ink-muted">{s.index}</span>
                 <span className="min-w-0 flex-1 text-ink">{s.text}</span>
                 {!s.decided && needsAttention(s) && (
-                  <span
-                    className={`shrink-0 rounded px-1 text-[10px] font-semibold ${
-                      s.agreementClass === "divergence"
-                        ? "bg-danger/15 text-danger"
-                        : "bg-warning/15 text-warning"
-                    }`}
-                  >
-                    {s.agreementClass === "divergence" ? "split" : "maj."}
-                  </span>
+                  // Pastille ICÔNE (non-texte) plutôt qu'un mini-libellé coloré : exempte de
+                  // la règle de contraste-texte WCAG 1.4.3, l'icône passe le 3:1 non-texte, et
+                  // renforce le sens sans fatiguer l'œil. Nom accessible via role/aria-label.
+                  s.agreementClass === "divergence" ? (
+                    <Split
+                      size={13}
+                      className="shrink-0 text-danger"
+                      role="img"
+                      aria-label="Désaccord entre annotateurs (à trancher)"
+                    />
+                  ) : (
+                    <Scale
+                      size={13}
+                      className="shrink-0 text-warning"
+                      role="img"
+                      aria-label="Majorité (à confirmer)"
+                    />
+                  )
                 )}
               </div>
             </div>
