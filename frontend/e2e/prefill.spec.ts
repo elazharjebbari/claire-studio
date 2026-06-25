@@ -15,6 +15,10 @@ test.describe("Pré-remplissage LLM (F2)", () => {
   /** ann-1 contient déjà des clauses → confirmation d'écrasement, puis (1ère fois)
    *  consentement auto-prefill. Helper tolérant à l'état `asked` (state MSW persistant). */
   async function applyPrefill(page: import("@playwright/test").Page, judge: string) {
+    // Pré-remplissage déplacé dans le tiroir « Outils » (L8) : l'ouvrir si besoin.
+    if (!(await page.getByTestId("tools-drawer-panel").isVisible().catch(() => false))) {
+      await page.getByTestId("tools-drawer").click();
+    }
     await page.getByTestId(`prefill-${judge}`).click();
     const confirm = page.getByTestId("prefill-confirm-ok");
     if (await confirm.isVisible().catch(() => false)) await confirm.click();

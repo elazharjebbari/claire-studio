@@ -17,6 +17,7 @@ test.describe("Collaboration & versioning — socle (points 0,1,2)", () => {
     page,
   }) => {
     await open(page);
+    await page.getByTestId("tools-drawer").click(); // pré-remplissage déplacé dans le tiroir (L8)
     const claude = page.getByTestId("prefill-claude");
     const codex = page.getByTestId("prefill-codex");
     // La session a déjà des clauses → chaque bascule demande CONFIRMATION d'écrasement.
@@ -82,6 +83,7 @@ test.describe("Collaboration & versioning — socle (points 0,1,2)", () => {
     // Une action humaine.
     await page.getByTestId("sentence-9").click();
     await page.getByTestId("inspector").getByTestId("theme-option-TERMINATION").click();
+    await page.getByTestId("tools-drawer").click(); // Historique dans le tiroir Outils (L8)
     await page.getByTestId("toggle-history").click();
     const panel = page.getByTestId("history-panel");
     await expect(panel).toBeVisible();
@@ -102,6 +104,7 @@ test.describe("Collaboration & versioning — socle (points 0,1,2)", () => {
       .filter({ hasText: "[9]" });
     await expect(planChip).toBeVisible();
 
+    await page.getByTestId("tools-drawer").click(); // Historique dans le tiroir Outils (L8)
     await page.getByTestId("toggle-history").click();
     await page.getByTestId("undo-btn").click();
     await expect(planChip).toHaveCount(0); // clause annulée
@@ -111,6 +114,7 @@ test.describe("Collaboration & versioning — socle (points 0,1,2)", () => {
 
   test("commentaire multi-niveaux : ajout d'un commentaire général (point 3)", async ({ page }) => {
     await open(page);
+    await page.getByTestId("tools-drawer").click(); // Commentaires dans le tiroir Outils (L8)
     await page.getByTestId("toggle-comments").click();
     const panel = page.getByTestId("comments-panel");
     await expect(panel).toBeVisible();

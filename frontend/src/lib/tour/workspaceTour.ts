@@ -139,10 +139,10 @@ export const WORKSPACE_TOUR_STEPS: TourStep[] = [
   },
   {
     section: "Comparer aux juges",
-    element: '[data-testid="prefill-switch"]',
-    title: "Pré-remplir depuis un juge",
+    element: '[data-testid="tools-drawer"]',
+    title: "Outils — pré-remplissage, panneaux, navigation",
     description:
-      "Chargez les frontières et thèmes proposés par un juge comme brouillon éditable, et basculez d'un juge à l'autre : vos clauses humaines sont préservées. « Aucun » retire le pré-remplissage.",
+      "Le menu « Outils » regroupe les fonctions secondaires : pré-remplir depuis un juge LLM (charge ses frontières/thèmes comme brouillon éditable — action destructrice signalée), ouvrir Historique / Commentaires / File de triage / Inspecteur, accéder aux Versions et Insights, et régler la certitude globale.",
   },
   {
     section: "Comparer aux juges",
@@ -196,13 +196,6 @@ export const WORKSPACE_TOUR_STEPS: TourStep[] = [
     title: "Commentaires (touche c)",
     description:
       "Justifiez un choix ou dialoguez avec les relecteurs sur une clause. Raccourci : touche C sur la clause sélectionnée.",
-  },
-  {
-    section: "Collaborer & versionner",
-    element: '[data-testid="toggle-history"]',
-    title: "Historique · annuler / rétablir",
-    description:
-      "Ouvrez le journal de vos actions (création, thème, certitude, arbitrage…) ; cliquez une entrée pour revenir sur la phrase concernée. Annulez/rétablissez avec ⌘Z / ⌘Y (boutons dédiés dans la barre).",
   },
   {
     section: "Collaborer & versionner",

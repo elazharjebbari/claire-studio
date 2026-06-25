@@ -14,6 +14,8 @@ test.describe("File de triage — carte de suggestion & gestes", () => {
     await page.goto("/annotate/ann-1");
     await expect(page.getByTestId("annotation-workspace")).toBeVisible();
 
+    // File de triage déplacée dans le tiroir « Outils » (L8) : on l'ouvre d'abord.
+    await page.getByTestId("tools-drawer").click();
     // Bouton réservé au propriétaire + flag (mock).
     const toggle = page.getByTestId("toggle-triage");
     await expect(toggle).toBeVisible();
@@ -51,6 +53,7 @@ test.describe("File de triage — carte de suggestion & gestes", () => {
 
   test("acceptation par lot C1 (un geste)", async ({ page }: { page: Page }) => {
     await page.goto("/annotate/ann-1");
+    await page.getByTestId("tools-drawer").click(); // File de triage déplacée dans le tiroir Outils (L8)
     await page.getByTestId("toggle-triage").click();
     const batch = page.getByTestId("triage-batch-c1");
     if (await batch.isVisible().catch(() => false)) {
@@ -62,6 +65,7 @@ test.describe("File de triage — carte de suggestion & gestes", () => {
 
   test("accepter met à jour le document IMMÉDIATEMENT (via le store)", async ({ page }: { page: Page }) => {
     await page.goto("/annotate/ann-1");
+    await page.getByTestId("tools-drawer").click(); // File de triage déplacée dans le tiroir Outils (L8)
     await page.getByTestId("toggle-triage").click();
     await expect(page.getByTestId("triage-queue")).toBeVisible();
 
@@ -81,6 +85,7 @@ test.describe("File de triage — carte de suggestion & gestes", () => {
 
   test("sélection multiple → bouton « Accepter la sélection »", async ({ page }: { page: Page }) => {
     await page.goto("/annotate/ann-1");
+    await page.getByTestId("tools-drawer").click(); // File de triage déplacée dans le tiroir Outils (L8)
     await page.getByTestId("toggle-triage").click();
     await expect(page.getByTestId("triage-queue")).toBeVisible();
 

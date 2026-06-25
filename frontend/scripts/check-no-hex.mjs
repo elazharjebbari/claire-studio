@@ -33,7 +33,7 @@ const GUARDED = [
   "src/components/gold/GoldReadingPanel.tsx",
 ];
 
-const HEX = /#[0-9a-fA-F]{6}\b/;
+const HEX = /#[0-9a-fA-F]{3,8}\b/;
 const RAW_CLASS =
   /\b(?:slate|gray|zinc|neutral|stone|red|orange|amber|yellow|lime|green|emerald|teal|cyan|sky|blue|indigo|violet|purple|fuchsia|pink|rose)-(?:50|[1-9]00|950)\b/;
 

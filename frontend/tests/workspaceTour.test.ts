@@ -49,7 +49,9 @@ describe("Configuration de la visite guidée du workspace", () => {
       '[data-testid="inspector"]',
       '[data-testid="theme-palette"]',
       '[data-testid="certainty-picker"]',
-      '[data-testid="prefill-switch"]',
+      // Pré-remplissage + Historique vivent désormais dans le tiroir « Outils » (L8) :
+      // la visite cible le déclencheur du tiroir.
+      '[data-testid="tools-drawer"]',
       '[data-testid="toc-overlays-summary"]',
       '[data-testid="snapshot-btn"]',
       '[data-testid="submit-btn"]',
@@ -58,7 +60,6 @@ describe("Configuration de la visite guidée du workspace", () => {
       '[data-testid="legal-nature"]',
       '[data-testid="reading-controls"]',
       '[data-testid="llm-source-switch"]',
-      '[data-testid="toggle-history"]',
     ]) {
       expect(selectors, `cible manquante ${expected}`).toContain(expected);
     }

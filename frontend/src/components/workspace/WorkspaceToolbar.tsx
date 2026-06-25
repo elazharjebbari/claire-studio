@@ -28,6 +28,8 @@ import {
   Lock,
   LockOpen,
   WandSparkles,
+  Wrench,
+  ChevronDown,
 } from "lucide-react";
 import { TRIAGE_ENABLED } from "@/lib/env";
 import { preClausesToPivot } from "@/lib/pivot";
@@ -113,6 +115,29 @@ export function WorkspaceToolbar({
   const [pendingPrefill, setPendingPrefill] = useState<Exclude<PrefillJudge, null> | null>(null);
   // Juge pour lequel on DEMANDE le consentement auto-prefill (1ère exécution manuelle).
   const [consentJudge, setConsentJudge] = useState<string | null>(null);
+  // L8 — tiroir « Outils » : regroupe les destinations secondaires (pré-remplissage,
+  // panneaux, navigation) pour désencombrer la barre. Fermé au clic extérieur / Échap.
+  const [toolsOpen, setToolsOpen] = useState(false);
+  const toolsRef = useRef<HTMLDivElement>(null);
+  useEffect(() => {
+    if (!toolsOpen) return;
+    const onDown = (e: MouseEvent) => {
+      const t = e.target as Node;
+      // Ne pas fermer le tiroir si on clique dans une MODALE qu'il a ouverte (confirmation
+      // d'écrasement de pré-remplissage, consentement) — sinon le flux devient impossible.
+      const inDialog = t instanceof Element && t.closest('[role="dialog"]');
+      if (toolsRef.current && !toolsRef.current.contains(t) && !inDialog) setToolsOpen(false);
+    };
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === "Escape") setToolsOpen(false);
+    };
+    document.addEventListener("mousedown", onDown);
+    document.addEventListener("keydown", onKey);
+    return () => {
+      document.removeEventListener("mousedown", onDown);
+      document.removeEventListener("keydown", onKey);
+    };
+  }, [toolsOpen]);
 
   // Pré-remplissage : applique la segmentation du juge (ÉCRASE l'annotation courante)
   // ou retire le pré-remplissage (judge = null).
@@ -262,148 +287,198 @@ export function WorkspaceToolbar({
       <StatusPill status={annotation?.status ?? "draft"} />
       <SaveIndicator dirty={dirty} />
 
-      {/* Pré-remplissage commutable (point 0a) */}
-      <div
-        role="radiogroup"
-        aria-label="Pré-remplir depuis un juge LLM"
-        data-testid="prefill-switch"
-        className="ml-1 flex items-center gap-1 rounded-md border border-line bg-panel-muted/40 p-0.5"
-      >
-        <span className="px-1 text-[11px] text-ink-muted">Pré-remplir</span>
-        {PREFILL_OPTIONS.map((opt) => {
-          const active = prefilledJudge === opt.value;
-          // Désactivé si lecture seule, ou si ce juge n'a pas de données pour ce document.
-          const noData = opt.value != null && !availableJudges.has(opt.value);
-          return (
-            <button
-              key={opt.testid}
-              type="button"
-              role="radio"
-              aria-checked={active}
-              data-testid={opt.testid}
-              disabled={readOnly || noData}
-              title={noData ? "Aucune pré-annotation de ce modèle pour ce document" : undefined}
-              onClick={() => requestPrefill(opt.value)}
-              className={
-                "rounded px-2 py-1 text-xs font-medium transition-colors disabled:cursor-not-allowed disabled:opacity-40 " +
-                (active
-                  ? "bg-accent/15 text-ink ring-1 ring-accent/40"
-                  : "text-ink-muted hover:bg-panel-muted")
-              }
-            >
-              {opt.label}
-            </button>
-          );
-        })}
-      </div>
-
-      {/* Auto-pré-annotation (point produit) : icône discrète de (ré)activation, homogène à
-          la toolbar. HORS du radiogroup (a11y : un radiogroup ne contient que des radios).
-          Désactivée tant qu'aucun modèle n'est armé (choisi via la modale ou le popover). */}
-      <button
-        type="button"
-        data-testid="autoprefill-toggle"
-        aria-pressed={autoPrefill.enabled}
-        disabled={readOnly || !autoPrefill.judge}
-        onClick={() => setPrefillPref({ enabled: !autoPrefill.enabled })}
-        title={
-          autoPrefill.judge
-            ? autoPrefill.enabled
-              ? `Auto-pré-annotation activée : ${llmJudgeLabel(autoPrefill.judge)} (à l'ouverture d'un document vierge)`
-              : `Auto-pré-annotation désactivée — cliquez pour activer (${llmJudgeLabel(autoPrefill.judge)})`
-            : "Auto-pré-annotation : choisissez d'abord un modèle (Préférences)"
-        }
-        className={
-          "inline-flex items-center rounded-md border p-1.5 transition-colors disabled:cursor-not-allowed disabled:opacity-40 " +
-          (autoPrefill.enabled
-            ? "border-accent/40 bg-accent/10 text-accent"
-            : "border-line text-ink-muted hover:bg-panel-muted hover:text-ink")
-        }
-      >
-        <WandSparkles size={14} aria-hidden />
-      </button>
-
-      <PreferencesPopover />
-
-      <button
-        type="button"
-        data-testid="toggle-history"
-        onClick={onToggleHistory}
-        title="Historique des actions"
-        className="inline-flex items-center gap-1.5 rounded-md border border-line px-2 py-1 text-xs text-ink-muted hover:bg-panel-muted"
-      >
-        <History size={14} aria-hidden /> Historique
-      </button>
-
-      <button
-        type="button"
-        data-testid="toggle-comments"
-        onClick={onToggleComments}
-        title="Commentaires (général / phrase / sélection / clause)"
-        className="inline-flex items-center gap-1.5 rounded-md border border-line px-2 py-1 text-xs text-ink-muted hover:bg-panel-muted"
-      >
-        <MessageSquare size={14} aria-hidden /> Commentaires
-      </button>
-
-      {TRIAGE_ENABLED && onToggleTriage && (
+      {/* L8 — Tiroir « Outils » : regroupe les destinations secondaires (pré-remplissage,
+          panneaux, navigation, certitude globale) pour désencombrer la barre (3 zones :
+          Contexte · Outils · Actions). Révélation à la demande. */}
+      <div ref={toolsRef} className="relative">
         <button
           type="button"
-          data-testid="toggle-triage"
-          onClick={onToggleTriage}
-          title="File de triage — suggestions d'annotation par niveau de confiance (C1–C5)"
-          className="inline-flex items-center gap-1.5 rounded-md border border-line px-2 py-1 text-xs text-ink-muted hover:bg-panel-muted"
+          data-testid="tools-drawer"
+          aria-expanded={toolsOpen}
+          aria-haspopup="true"
+          onClick={() => setToolsOpen((v) => !v)}
+          title="Outils : pré-remplissage, panneaux, navigation"
+          className={
+            "inline-flex items-center gap-1.5 rounded-md border px-2 py-1 text-xs transition-colors " +
+            (toolsOpen
+              ? "border-accent/40 bg-accent/10 text-ink"
+              : "border-line text-ink-muted hover:bg-panel-muted hover:text-ink")
+          }
         >
-          <ListChecks size={14} aria-hidden /> File de triage
+          <Wrench size={14} aria-hidden /> Outils
+          <ChevronDown
+            size={12}
+            aria-hidden
+            className={"transition-transform " + (toolsOpen ? "rotate-180" : "")}
+          />
         </button>
-      )}
+        {toolsOpen && (
+          <div
+            aria-label="Outils"
+            data-testid="tools-drawer-panel"
+            className="absolute left-0 top-9 z-40 flex w-72 flex-col gap-2 rounded-lg border border-line bg-elevated p-2 shadow-xl"
+          >
+            {/* Pré-remplissage — action DESTRUCTRICE (écrase l'annotation) : cadre WARNING. */}
+            <div className="rounded-md border border-warning/40 bg-warning/5 p-1.5">
+              <div
+                role="radiogroup"
+                aria-label="Pré-remplir depuis un juge LLM"
+                data-testid="prefill-switch"
+                className="flex flex-wrap items-center gap-1"
+              >
+                <span className="px-1 text-[11px] font-semibold uppercase text-warning">Pré-remplir ⚠</span>
+                {PREFILL_OPTIONS.map((opt) => {
+                  const active = prefilledJudge === opt.value;
+                  const noData = opt.value != null && !availableJudges.has(opt.value);
+                  return (
+                    <button
+                      key={opt.testid}
+                      type="button"
+                      role="radio"
+                      aria-checked={active}
+                      data-testid={opt.testid}
+                      disabled={readOnly || noData}
+                      title={noData ? "Aucune pré-annotation de ce modèle pour ce document" : undefined}
+                      onClick={() => requestPrefill(opt.value)}
+                      className={
+                        "rounded px-2 py-1 text-xs font-medium transition-colors disabled:cursor-not-allowed disabled:opacity-40 " +
+                        (active
+                          ? "bg-warning/20 text-ink ring-1 ring-warning/50"
+                          : "text-ink-muted hover:bg-panel-muted")
+                      }
+                    >
+                      {opt.label}
+                    </button>
+                  );
+                })}
+                <button
+                  type="button"
+                  data-testid="autoprefill-toggle"
+                  aria-pressed={autoPrefill.enabled}
+                  disabled={readOnly || !autoPrefill.judge}
+                  onClick={() => setPrefillPref({ enabled: !autoPrefill.enabled })}
+                  title={
+                    autoPrefill.judge
+                      ? autoPrefill.enabled
+                        ? `Auto-pré-annotation activée : ${llmJudgeLabel(autoPrefill.judge)} (à l'ouverture d'un document vierge)`
+                        : `Auto-pré-annotation désactivée — cliquez pour activer (${llmJudgeLabel(autoPrefill.judge)})`
+                      : "Auto-pré-annotation : choisissez d'abord un modèle (Préférences)"
+                  }
+                  className={
+                    "inline-flex items-center rounded-md border p-1.5 transition-colors disabled:cursor-not-allowed disabled:opacity-40 " +
+                    (autoPrefill.enabled
+                      ? "border-accent/40 bg-accent/10 text-accent"
+                      : "border-line text-ink-muted hover:bg-panel-muted hover:text-ink")
+                  }
+                >
+                  <WandSparkles size={14} aria-hidden />
+                </button>
+              </div>
+              <p className="px-1 pt-1 text-[10px] text-ink-muted">Écrase l'annotation courante (annulable ⌘Z).</p>
+            </div>
 
-      <button
-        type="button"
-        data-testid="toggle-inspector"
-        onClick={toggleInspector}
-        aria-pressed={inspectorOpen}
-        title={inspectorOpen ? "Replier l'inspecteur" : "Déplier l'inspecteur"}
-        className={
-          "inline-flex items-center gap-1.5 rounded-md border px-2 py-1 text-xs hover:bg-panel-muted " +
-          (inspectorOpen
-            ? "border-accent/40 bg-accent/10 text-ink"
-            : "border-line text-ink-muted")
-        }
-      >
-        <PanelRight size={14} aria-hidden /> Inspecteur
-      </button>
+            {/* Panneaux */}
+            <div className="flex flex-col gap-1">
+              <button
+                type="button"
+                data-testid="toggle-inspector"
+                onClick={() => {
+                  toggleInspector();
+                  setToolsOpen(false);
+                }}
+                aria-pressed={inspectorOpen}
+                title={inspectorOpen ? "Replier l'inspecteur" : "Déplier l'inspecteur"}
+                className={
+                  "inline-flex w-full items-center gap-1.5 rounded-md border px-2 py-1 text-xs hover:bg-panel-muted " +
+                  (inspectorOpen ? "border-accent/40 bg-accent/10 text-ink" : "border-line text-ink-muted")
+                }
+              >
+                <PanelRight size={14} aria-hidden /> Inspecteur
+              </button>
+              <button
+                type="button"
+                data-testid="toggle-history"
+                onClick={() => {
+                  onToggleHistory?.();
+                  setToolsOpen(false);
+                }}
+                title="Historique des actions"
+                className="inline-flex w-full items-center gap-1.5 rounded-md border border-line px-2 py-1 text-xs text-ink-muted hover:bg-panel-muted"
+              >
+                <History size={14} aria-hidden /> Historique
+              </button>
+              <button
+                type="button"
+                data-testid="toggle-comments"
+                onClick={() => {
+                  onToggleComments?.();
+                  setToolsOpen(false);
+                }}
+                title="Commentaires (général / phrase / sélection / clause)"
+                className="inline-flex w-full items-center gap-1.5 rounded-md border border-line px-2 py-1 text-xs text-ink-muted hover:bg-panel-muted"
+              >
+                <MessageSquare size={14} aria-hidden /> Commentaires
+              </button>
+              {TRIAGE_ENABLED && onToggleTriage && (
+                <button
+                  type="button"
+                  data-testid="toggle-triage"
+                  onClick={() => {
+                    onToggleTriage?.();
+                    setToolsOpen(false);
+                  }}
+                  title="File de triage — suggestions d'annotation par niveau de confiance (C1–C5)"
+                  className="inline-flex w-full items-center gap-1.5 rounded-md border border-line px-2 py-1 text-xs text-ink-muted hover:bg-panel-muted"
+                >
+                  <ListChecks size={14} aria-hidden /> File de triage
+                </button>
+              )}
+            </div>
 
-      <a
-        href={`/history/${annotationId}`}
-        data-testid="versions-link"
-        title="Versions enregistrées (document & phrase)"
-        className="inline-flex items-center gap-1.5 rounded-md border border-line px-2 py-1 text-xs text-ink-muted hover:bg-panel-muted"
-      >
-        <Layers size={14} aria-hidden /> Versions
-      </a>
+            {/* Navigation */}
+            <div className="flex flex-col gap-1 border-t border-line/60 pt-2">
+              <a
+                href={`/history/${annotationId}`}
+                data-testid="versions-link"
+                title="Versions enregistrées (document & phrase)"
+                className="inline-flex w-full items-center gap-1.5 rounded-md border border-line px-2 py-1 text-xs text-ink-muted hover:bg-panel-muted"
+              >
+                <Layers size={14} aria-hidden /> Versions
+              </a>
+              <a
+                href={`/projects/${projectSlug}/insights`}
+                data-testid="insights-link"
+                title="Explorer les annotations humaines (corpus & document)"
+                className="inline-flex w-full items-center gap-1.5 rounded-md border border-line px-2 py-1 text-xs text-ink-muted hover:bg-panel-muted"
+              >
+                <BarChart3 size={14} aria-hidden /> Insights
+              </a>
+            </div>
 
-      <a
-        href={`/projects/${projectSlug}/insights`}
-        data-testid="insights-link"
-        title="Explorer les annotations humaines (corpus & document)"
-        className="inline-flex items-center gap-1.5 rounded-md border border-line px-2 py-1 text-xs text-ink-muted hover:bg-panel-muted"
-      >
-        <BarChart3 size={14} aria-hidden /> Insights
-      </a>
+            {/* Certitude globale (réglage rare) + visite guidée. */}
+            <div
+              className={
+                "flex items-center justify-between gap-2 border-t border-line/60 pt-2" +
+                (readOnly ? " pointer-events-none opacity-50" : "")
+              }
+            >
+              <span className="text-xs text-ink-muted">Certitude globale</span>
+              <CertaintyPicker
+                size="sm"
+                value={annotation?.globalCertainty ?? null}
+                onChange={(v: Certainty) =>
+                  readOnly ? undefined : patchAnnotation.mutate({ global_certainty: v })
+                }
+              />
+            </div>
+          </div>
+        )}
+      </div>
 
       <WorkspaceTourButton />
 
       <div className="ml-auto flex items-center gap-3">
-        <div className={"flex items-center gap-2" + (readOnly ? " pointer-events-none opacity-50" : "")}>
-          <span className="text-xs text-ink-muted">Certitude globale</span>
-          <CertaintyPicker
-            size="sm"
-            value={annotation?.globalCertainty ?? null}
-            onChange={(v: Certainty) =>
-              readOnly ? undefined : patchAnnotation.mutate({ global_certainty: v })
-            }
-          />
-        </div>
+        <PreferencesPopover />
         {snapshotMsg && (
           <span className="text-[11px] text-success" data-testid="snapshot-msg">
             {snapshotMsg}

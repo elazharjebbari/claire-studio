@@ -54,7 +54,6 @@ export function ModelBoundaryStrip({
   if (models.length === 0 && conflictStart == null) return null;
   return (
     <div
-      role="row"
       data-testid={`model-gutter-row-${sentenceIndex}`}
       className="pointer-events-auto absolute bottom-0 right-1 top-0 flex items-stretch gap-px"
     >
@@ -67,7 +66,7 @@ export function ModelBoundaryStrip({
           aria-label={`Conflit entre modèles, début phrase ${conflictStart}`}
           onClick={() => onJump(conflictStart)}
           className="relative w-2.5 cursor-pointer rounded-[1px]"
-          style={{ backgroundColor: "#FBBF2440" }}
+          style={{ backgroundColor: "rgb(var(--sem-warning) / 0.25)" }}
         >
           {conflictStart === sentenceIndex && (
             <span
