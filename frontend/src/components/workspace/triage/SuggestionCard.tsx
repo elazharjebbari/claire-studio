@@ -15,21 +15,14 @@
 
 import { useState } from "react";
 import {
-  ShieldCheck, Check, Layers, AlertTriangle, Scale,
+  Check, Layers,
   Users, Sparkles, Info, Shuffle, ArrowRight, Repeat, Minus, Undo2,
 } from "lucide-react";
 import { getThemeToken, readableTextColor } from "@/lib/tokens";
 import { llmJudgeLabel } from "@/lib/llmJudges";
-import type { TriageLevel, TriageResult } from "@/lib/triage";
+import type { TriageResult } from "@/lib/triage";
 import { TRIAGE_LEVEL_META as LEVEL_META } from "@/lib/triage";
-
-const LEVEL_ICON: Record<TriageLevel, typeof Check> = {
-  C1: ShieldCheck,
-  C2: Check,
-  C3: Layers,
-  C4: AlertTriangle,
-  C5: Scale,
-};
+import { TriageLevelInfo, LEVEL_ICON } from "./TriageLevelInfo";
 
 const themeLabel = (code: string) => getThemeToken(code).label;
 
@@ -153,14 +146,20 @@ export function SuggestionCard({
       className="flex flex-col gap-2 rounded-lg border border-line bg-panel p-3 text-sm"
       style={{ boxShadow: `inset 3px 0 0 ${meta.color}` }}
     >
-      {/* 1. En-tête : niveau + action primaire */}
+      {/* 1. En-tête : niveau + reveal C1→C5 (à la demande) + action primaire */}
       <div className="flex items-center justify-between gap-2">
-        <span
-          data-testid="triage-badge"
-          className="inline-flex items-center gap-1 rounded-full px-2 py-0.5 text-[11px] font-semibold"
-          style={{ backgroundColor: `${meta.color}22`, color: meta.color }}
-        >
-          <LevelIcon size={12} aria-hidden /> {result.level} · {meta.label}
+        <span className="inline-flex items-center gap-1">
+          <span
+            data-testid="triage-badge"
+            // Fond PLEIN + texte lisible (readableTextColor) → contraste AA garanti, quel que
+            // soit le niveau (fin du texte coloré sur fond pâle, sous le seuil 4.5:1).
+            className="inline-flex items-center gap-1 rounded-full px-2 py-0.5 text-[11px] font-semibold"
+            style={{ backgroundColor: meta.color, color: readableTextColor(meta.color) }}
+          >
+            <LevelIcon size={12} aria-hidden /> {result.level} · {meta.label}
+          </span>
+          {/* Sens de C1→C5 dévoilé À LA DEMANDE (aucune pollution permanente). */}
+          <TriageLevelInfo current={result.level} />
         </span>
         {result.level !== "C5" && (
           <button
