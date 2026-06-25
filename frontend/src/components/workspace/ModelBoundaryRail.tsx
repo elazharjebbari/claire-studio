@@ -166,7 +166,7 @@ export function ModelBoundaryLegend({ models }: { models: GutterModel[] }) {
     >
       <span className="text-ink-muted">Modèles&nbsp;:</span>
       {models.map((m) => {
-        const visible = gutterModels[m.id] !== false;
+        const visible = gutterModels[m.id] === true; // opt-in : masqué par défaut (L7)
         return (
           <button
             key={m.id}

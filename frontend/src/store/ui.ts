@@ -55,9 +55,10 @@ export const useUiStore = create<UiState>()(
       setCurrentProject: (currentProjectSlug) => set({ currentProjectSlug }),
       setCommandPaletteOpen: (commandPaletteOpen) => set({ commandPaletteOpen }),
       setDensity: (density) => set({ density }),
-      // Réglette frontières-modèles : false ⇒ piste masquée ; absent/true ⇒ visible.
+      // Réglette frontières-modèles (L7) : OPT-IN — masquée par défaut (densité réservée à la
+      // demande / au mode Compare, pas dans le flux de lecture). true ⇒ piste affichée.
       toggleGutterModel: (id) =>
-        set((s) => ({ gutterModels: { ...s.gutterModels, [id]: s.gutterModels[id] === false } })),
+        set((s) => ({ gutterModels: { ...s.gutterModels, [id]: !s.gutterModels[id] } })),
       toggleGutterCategory: () => set((s) => ({ gutterShowCategory: !s.gutterShowCategory })),
       setReadingZoom: (z) => set({ readingZoom: Math.max(0.8, Math.min(1.6, z)) }),
       toggleReadingWide: () => set((s) => ({ readingWide: !s.readingWide })),

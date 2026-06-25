@@ -77,10 +77,12 @@ describe("ModelBoundaryLegend (Feature A)", () => {
     useUiStore.setState({ gutterModels: {}, gutterShowCategory: false });
   });
 
-  it("toggle d'un modèle met à jour (et persiste) le store", () => {
+  it("toggle d'un modèle l'AFFICHE (opt-in : masqué par défaut, L7) et persiste", () => {
     render(<ModelBoundaryLegend models={models} />);
+    // Par défaut la piste est masquée (bouton non pressé).
+    expect(screen.getByTestId("gutter-toggle-claude")).toHaveAttribute("aria-pressed", "false");
     fireEvent.click(screen.getByTestId("gutter-toggle-claude"));
-    expect(useUiStore.getState().gutterModels.claude).toBe(false);
+    expect(useUiStore.getState().gutterModels.claude).toBe(true); // 1er clic = afficher
   });
 
   it("la piste sans données est désactivée dans la légende", () => {

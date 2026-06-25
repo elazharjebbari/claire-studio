@@ -15,6 +15,16 @@ test.describe("DocumentPanel — refonte ergonomique", () => {
     await expect(page.getByTestId("annotation-workspace")).toBeVisible();
   });
 
+  test("réglette de frontières par modèle OPT-IN : masquée par défaut, affichée au clic (L7)", async ({ page }) => {
+    // Flux de lecture propre par défaut : aucune cellule de gouttière par modèle.
+    await expect(page.locator('[data-testid^="gutter-cell-claude-"]')).toHaveCount(0);
+    await expect(page.getByTestId("gutter-toggle-claude")).toHaveAttribute("aria-pressed", "false");
+    // Activer Claude via la légende → la piste apparaît (densité À LA DEMANDE).
+    await page.getByTestId("gutter-toggle-claude").click();
+    await expect(page.getByTestId("gutter-toggle-claude")).toHaveAttribute("aria-pressed", "true");
+    await expect(page.locator('[data-testid^="gutter-cell-claude-"]').first()).toBeVisible();
+  });
+
   test("la barre d'outils du document se replie pour gagner de la place (petits écrans)", async ({ page }) => {
     // Déployée par défaut : les contrôles sont visibles.
     await expect(page.getByTestId("reading-controls")).toBeVisible();

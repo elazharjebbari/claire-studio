@@ -275,7 +275,7 @@ export function DocumentPanel({
     [runsByJudge, llm.preByJudge],
   );
   const gutterVisibleModels = useMemo(
-    () => gutterAllModels.filter((m) => m.hasData && gutterVisibility[m.id] !== false),
+    () => gutterAllModels.filter((m) => m.hasData && gutterVisibility[m.id] === true),
     [gutterAllModels, gutterVisibility],
   );
   // D3 — frontières « tous modèles confondus » : débuts de blocs HUMAINS + débuts de
