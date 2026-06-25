@@ -19,6 +19,7 @@ import { NaturePicker } from "@/components/ui/NaturePicker";
 import { CertaintyPicker } from "@/components/ui/CertaintyPicker";
 import { ClauseChip } from "@/components/ui/ClauseChip";
 import { Field } from "@/components/ui/primitives";
+import { Disclosure } from "@/components/ui/Disclosure";
 import { CommentThread } from "./CommentThread";
 import { MultiLabelEditor } from "./MultiLabelEditor";
 import { InspectorJudgeCompare } from "./InspectorJudgeCompare";
@@ -180,60 +181,72 @@ export function InspectorPanel({
         />
       </Field>
 
-      {/* Multi-label : toggle Mono/Multi + secondaires + ajout hors C3 (dossier UX). */}
-      <MultiLabelEditor draft={draft} themeCodes={themeCodes} />
+      {/* Qualification en ACCORDÉON (révélation progressive, L6) : le thème (action principale)
+          reste au-dessus, toujours visible ; les détails se replient à la demande. La
+          comparaison aux juges (la plus lourde) est repliée par défaut. */}
+      <Disclosure testId="inspector-sec-multilabel" summary="Multi-label" defaultOpen>
+        {/* toggle Mono/Multi + secondaires + ajout hors C3 (dossier UX). */}
+        <MultiLabelEditor draft={draft} themeCodes={themeCodes} />
+      </Disclosure>
 
-      <Field label="Nature juridique">
-        {/* Axe 2 : pastilles cohérentes (toutes visibles) + définition au survol,
-            à la place du <select> natif. data-testid legal-nature conservé pour les tests. */}
-        <div data-testid="legal-nature">
-          <NaturePicker
-            value={draft.legalNature}
-            legalNatures={legalNatures}
-            onChange={(code) => updateDraft(draft.localId, { legalNature: code })}
-            describeOnHover
-          />
+      <Disclosure testId="inspector-sec-nature" summary="Nature & certitude" defaultOpen>
+        <div className="flex flex-col gap-3">
+          <Field label="Nature juridique">
+            {/* Axe 2 : pastilles cohérentes + définition au survol. data-testid legal-nature conservé. */}
+            <div data-testid="legal-nature">
+              <NaturePicker
+                value={draft.legalNature}
+                legalNatures={legalNatures}
+                onChange={(code) => updateDraft(draft.localId, { legalNature: code })}
+                describeOnHover
+              />
+            </div>
+          </Field>
+          <Field label="Certitude (0–3)">
+            <CertaintyPicker
+              value={draft.certainty}
+              onChange={(v) => setCertainty(draft.localId, v)}
+            />
+          </Field>
         </div>
-      </Field>
+      </Disclosure>
 
-      <Field label="Certitude (0–3)">
-        <CertaintyPicker
-          value={draft.certainty}
-          onChange={(v) => setCertainty(draft.localId, v)}
+      <Disclosure testId="inspector-sec-justification" summary="Justification (evidence & rationale)" defaultOpen>
+        <div className="flex flex-col gap-3">
+          <Field label="Evidence span" htmlFor="evidence">
+            <input
+              id="evidence"
+              data-testid="evidence-span"
+              value={draft.evidenceSpan}
+              onChange={(e) => updateDraft(draft.localId, { evidenceSpan: e.target.value })}
+              placeholder="Citation textuelle justifiant la clause"
+              className="rounded-md border border-line bg-panel-muted px-2 py-1.5 text-sm text-ink"
+            />
+          </Field>
+          <Field label="Rationale" htmlFor="rationale">
+            <textarea
+              id="rationale"
+              data-testid="rationale"
+              value={draft.rationale}
+              onChange={(e) => updateDraft(draft.localId, { rationale: e.target.value })}
+              rows={3}
+              placeholder="Pourquoi ce thème ?"
+              className="rounded-md border border-line bg-panel-muted px-2 py-1.5 text-sm text-ink"
+            />
+          </Field>
+        </div>
+      </Disclosure>
+
+      <Disclosure testId="inspector-sec-judges" summary="Comparaison aux juges">
+        <InspectorJudgeCompare
+          documentId={documentId}
+          projectSlug={projectSlug}
+          anchorIndex={draft.anchorIndex}
+          draftLocalId={draft.localId}
+          humanEvidence={draft.evidenceSpan}
+          humanRationale={draft.rationale}
         />
-      </Field>
-
-      <Field label="Evidence span" htmlFor="evidence">
-        <input
-          id="evidence"
-          data-testid="evidence-span"
-          value={draft.evidenceSpan}
-          onChange={(e) => updateDraft(draft.localId, { evidenceSpan: e.target.value })}
-          placeholder="Citation textuelle justifiant la clause"
-          className="rounded-md border border-line bg-panel-muted px-2 py-1.5 text-sm text-ink"
-        />
-      </Field>
-
-      <Field label="Rationale" htmlFor="rationale">
-        <textarea
-          id="rationale"
-          data-testid="rationale"
-          value={draft.rationale}
-          onChange={(e) => updateDraft(draft.localId, { rationale: e.target.value })}
-          rows={3}
-          placeholder="Pourquoi ce thème ?"
-          className="rounded-md border border-line bg-panel-muted px-2 py-1.5 text-sm text-ink"
-        />
-      </Field>
-
-      <InspectorJudgeCompare
-        documentId={documentId}
-        projectSlug={projectSlug}
-        anchorIndex={draft.anchorIndex}
-        draftLocalId={draft.localId}
-        humanEvidence={draft.evidenceSpan}
-        humanRationale={draft.rationale}
-      />
+      </Disclosure>
 
       {/* Axe 3d : commentaires rendus VISIBLES (section encadrée, pas un bas de page
           discret) — la collaboration est un citoyen de 1re classe de l'inspecteur.

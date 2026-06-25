@@ -44,7 +44,7 @@ export function CollabBar({ projectSlug }: { projectSlug?: string }) {
         />
       </span>
 
-      <div className="flex -space-x-1.5" aria-label="Participants">
+      <div className="flex -space-x-1.5" role="group" aria-label="Participants">
         {people.slice(0, 4).map((p) => (
           <span
             key={p.userId}

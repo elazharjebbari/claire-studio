@@ -146,6 +146,8 @@ test.describe("Collaboration & versioning — socle (points 0,1,2)", () => {
   test("l'inspecteur compare la source evidence/rationale (Vous/Claude/Codex)", async ({ page }) => {
     await open(page);
     await page.getByTestId("sentence-0").click();
+    // Section « Comparaison aux juges » repliée par défaut (accordéon L6) : on la déplie.
+    await page.getByTestId("inspector-sec-judges-summary").click();
     const cmp = page.getByTestId("inspector-source-compare");
     await expect(cmp).toBeVisible();
     await page.getByTestId("inspector-source-claude").click();

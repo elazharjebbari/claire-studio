@@ -153,10 +153,10 @@ export const WORKSPACE_TOUR_STEPS: TourStep[] = [
   },
   {
     section: "Comparer aux juges",
-    element: '[data-testid="inspector-source-compare"]',
+    element: '[data-testid="inspector-sec-judges-summary"]',
     title: "Comparer la source (par clause)",
     description:
-      "Sous l'evidence span et le rationale, comparez votre annotation à celle de chaque juge pour la clause sélectionnée, et reprenez une proposition en un clic.",
+      "L'inspecteur se replie en sections (révélation à la demande). Dépliez « Comparaison aux juges » pour comparer votre annotation à celle de chaque juge sur la clause, et reprendre une proposition en un clic.",
   },
   {
     section: "Comparer aux juges",
