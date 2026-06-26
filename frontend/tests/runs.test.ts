@@ -1,12 +1,15 @@
 import { describe, expect, it } from "vitest";
 import {
   computeRuns,
+  coalesceRuns,
   runAt,
   runThemeAt,
+  runProvenance,
   segmentsFromRuns,
   nextBoundaryFrom,
   conflictZones,
   type RunAnchor,
+  type Run,
 } from "@/lib/runs";
 
 describe("computeRuns", () => {
@@ -164,5 +167,61 @@ describe("conflictZones (D6 — conflits inter-modèles)", () => {
     const B = m([{ startSentence: 0, endSentence: 4, themeCode: "META" }]);
     expect(conflictZones([A, B], 8)).toEqual([]);
     expect(conflictZones([A], 8)).toEqual([]);
+  });
+});
+
+describe("coalesceRuns — continuité du rail (suites de même thème fusionnées)", () => {
+  it("3 phrases perSentence de MÊME thème → UN seul run continu [0,2]", () => {
+    const anchors: RunAnchor[] = [
+      { anchorIndex: 0, theme: "META", localId: "a" },
+      { anchorIndex: 1, theme: "META", localId: "b" },
+      { anchorIndex: 2, theme: "META", localId: "c" },
+    ];
+    const per = computeRuns(anchors, 3, { perSentence: true });
+    expect(per.filter((r) => r.theme === "META").length).toBe(3); // perSentence : 3 runs
+    const coalesced = coalesceRuns(per);
+    const themed = coalesced.filter((r) => r.theme === "META");
+    expect(themed.length).toBe(1); // rail : UN bloc continu
+    expect(themed[0]).toMatchObject({ start: 0, end: 2, theme: "META", localId: "a" }); // localId du 1er
+  });
+
+  it("changement de thème → DEUX runs (une seule frontière au point de changement)", () => {
+    const anchors: RunAnchor[] = [
+      { anchorIndex: 0, theme: "META", localId: "a" },
+      { anchorIndex: 1, theme: "META", localId: "b" },
+      { anchorIndex: 2, theme: "TERMINATION", localId: "c" },
+    ];
+    const coalesced = coalesceRuns(computeRuns(anchors, 3, { perSentence: true }));
+    const themed = coalesced.filter((r) => r.theme != null);
+    expect(themed.map((r) => [r.start, r.end, r.theme])).toEqual([
+      [0, 1, "META"],
+      [2, 2, "TERMINATION"],
+    ]);
+  });
+});
+
+describe("runProvenance (rail : ferme vs suggéré)", () => {
+  const run = (start: number, end: number): Run => ({ start, end, theme: "META", localId: "x" });
+  it("toutes les phrases validées → firm", () => {
+    const m = new Map([
+      [0, { validated: true }],
+      [1, { validated: true }],
+    ]);
+    expect(runProvenance(run(0, 1), m)).toBe("firm");
+  });
+  it("une phrase seedée NON validée dans le bloc → suggested (conservateur)", () => {
+    const m = new Map<number, { validated?: boolean; seededFrom?: string | null }>([
+      [0, { validated: true }],
+      [1, { validated: false, seededFrom: "preannotation:claude" }],
+    ]);
+    expect(runProvenance(run(0, 1), m)).toBe("suggested");
+  });
+  it("resolvedFrom (arbitrage adopté) sans validated explicite → firm", () => {
+    const m = new Map([[0, { resolvedFrom: "claude" }]]);
+    expect(runProvenance(run(0, 0), m)).toBe("firm");
+  });
+  it("seedée mais validée → firm (la validation prime)", () => {
+    const m = new Map([[0, { validated: true, seededFrom: "preannotation:codex" }]]);
+    expect(runProvenance(run(0, 0), m)).toBe("firm");
   });
 });

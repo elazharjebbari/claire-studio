@@ -117,6 +117,30 @@ export function runAt(runs: Run[], index: number): Run | undefined {
   return runs.find((r) => index >= r.start && index <= r.end);
 }
 
+/** Provenance (fermeté) d'une clause pour le rail. */
+export interface ClauseProvenance {
+  validated?: boolean;
+  seededFrom?: string | null;
+  resolvedFrom?: string | null;
+}
+
+/**
+ * Provenance d'un BLOC de thème (run coalescé), pour distinguer au rail ce qui est FERME
+ * (validé par un humain / arbitrage adopté) de ce qui est SUGGÉRÉ (pré-annotation non
+ * confirmée). Règle CONSERVATRICE : « suggested » dès qu'UNE phrase du bloc est seedée et
+ * non validée (et non arbitrée) — on ne sur-affirme jamais « validé ». Pur → testable.
+ */
+export function runProvenance(
+  run: Run,
+  anchorByIndex: Map<number, ClauseProvenance>,
+): "firm" | "suggested" {
+  for (let i = run.start; i <= run.end; i += 1) {
+    const a = anchorByIndex.get(i);
+    if (a && a.seededFrom && !a.validated && !a.resolvedFrom) return "suggested";
+  }
+  return "firm";
+}
+
 /**
  * Plage ORDONNÉE de localId de clauses (P8) dont le run chevauche [fromIndex, toIndex].
  * Sert au mapping « plage de phrases → clauses » de la sélection multi-blocs au

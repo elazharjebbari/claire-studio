@@ -15,6 +15,25 @@ test.describe("DocumentPanel — refonte ergonomique", () => {
     await expect(page.getByTestId("annotation-workspace")).toBeVisible();
   });
 
+  test("rail de thème : CONTINU sur même thème, RUPTURE au changement, provenance humain vs LLM", async ({ page }) => {
+    // Crée un BLOC humain continu : phrases 5 et 6 (libres) avec le MÊME thème.
+    for (const i of [5, 6]) {
+      await page.getByTestId(`sentence-${i}`).click({ button: "right" });
+      await page.getByTestId("sentence-menu").getByTestId("theme-option-TERMINATION").click();
+      await page.keyboard.press("Escape");
+    }
+    // CONTINUITÉ : rail présent sur les deux ; la frontière (data-boundary) n'apparaît QUE sur
+    // la 1re phrase du bloc (5), PAS sur la 2e (6) de même thème → plus de « pointillés partout ».
+    await expect(page.getByTestId("rail-5")).toBeVisible();
+    await expect(page.getByTestId("sentence-5")).toHaveAttribute("data-boundary", "true");
+    await expect(page.getByTestId("sentence-6")).not.toHaveAttribute("data-boundary", "true");
+    // PROVENANCE : bloc créé/annoté par l'humain → ferme.
+    await expect(page.getByTestId("sentence-5")).toHaveAttribute("data-provenance", "firm");
+    // En mode JUGE (segmentation suggérée) → le rail passe en provenance « suggested ».
+    await page.getByTestId("llm-claude").click();
+    await expect(page.getByTestId("sentence-0")).toHaveAttribute("data-provenance", "suggested");
+  });
+
   test("réglette de frontières par modèle OPT-IN : masquée par défaut, affichée au clic (L7)", async ({ page }) => {
     // Flux de lecture propre par défaut : aucune cellule de gouttière par modèle.
     await expect(page.locator('[data-testid^="gutter-cell-claude-"]')).toHaveCount(0);

@@ -32,6 +32,7 @@ import {
   coalesceRuns,
   runAt,
   runThemeAt,
+  runProvenance,
   segmentsFromRuns,
   nextBoundaryFrom,
   conflictZones,
@@ -243,6 +244,11 @@ export function DocumentPanel({
     () => computeRuns(drafts.map((d) => ({ ...d })), n, { perSentence: true }),
     [drafts, n],
   );
+  // RAIL D'AFFICHAGE (continuité par thème) : runs humains COALESCÉS (suites adjacentes de
+  // même thème fusionnées). UNIQUEMENT pour le rail/frontière/provenance — JAMAIS pour la
+  // sélection/blocks/mapping (qui exigent humanRuns perSentence). Aligne le mode humain sur
+  // le mode juge (déjà coalescé) : fini les pointillés entre phrases de même thème.
+  const coalescedHumanRuns = useMemo(() => coalesceRuns(humanRuns), [humanRuns]);
   // Blocs dérivés (Feature B) : suites contiguës de même thème, pour la sélection
   // de bloc au double-clic (S7). Pure et mémoïsée (B-PERF-1).
   const blocks = useMemo(() => deriveBlocks(humanRuns), [humanRuns]);
@@ -300,6 +306,12 @@ export function DocumentPanel({
     llmSource === "human" || llmSource === "compare"
       ? humanRuns
       : runsByJudge[llmSource] ?? humanRuns;
+  // Source du RAIL (coalescée) : humain/comparer → coalescedHumanRuns ; juge → runsByJudge
+  // (déjà coalescé). `runs` (perSentence en humain) reste réservé à l'interaction/badge.
+  const railRuns =
+    llmSource === "human" || llmSource === "compare"
+      ? coalescedHumanRuns
+      : runsByJudge[llmSource] ?? coalescedHumanRuns;
   const isCompare = llmSource === "compare";
 
   // Comparaison N-way : thème par phrase (forward-fill) pour CHAQUE juge, dérivé de ses
@@ -807,18 +819,35 @@ export function DocumentPanel({
             ((claudeStart?.start === s.index && claudeStart.theme != null) ||
               (codexStart?.start === s.index && codexStart.theme != null));
 
-          // Run couvrant la phrase (P2) → rail gauche + détection du début de run.
+          // Run couvrant la phrase (P2) → BADGE + interaction (perSentence en humain, inchangé).
           const run = runAt(runs, s.index);
-          // Rail gauche : couleur du thème du run, alpha PRÉ-BAKÉ (~0.5) → forme rgb(r g b / a)
-          // homogène avec le mode compare (plus de concaténation d'alpha hex `${color}80`).
-          let runColor = run?.theme
-            ? `rgb(${hexToRgbChannels(getThemeToken(run.theme).color)} / 0.5)`
-            : undefined;
           const isRunStart = run != null && run.start === s.index;
-          let showDashedTop = showBoundaries && isRunStart && run!.theme != null;
+
+          // RAIL (continuité par thème) : run d'AFFICHAGE COALESCÉ. Le rail est CONTINU sur une
+          // suite de même thème ; la frontière ne reprend qu'au VRAI changement de thème.
+          const railRun = runAt(railRuns, s.index);
+          const railIsStart = railRun != null && railRun.start === s.index;
+          const railIsEnd = railRun != null && railRun.end === s.index;
+          // Provenance du BLOC : humain → ferme/suggéré (validated/seededFrom) ; juge → suggéré
+          // par nature ; compare/sans thème → aucune.
+          let provenance: "firm" | "suggested" | null =
+            railRun?.theme == null
+              ? null
+              : llmSource === "human"
+                ? runProvenance(railRun, anchorByIndex)
+                : llmSource === "compare"
+                  ? null
+                  : "suggested";
+          // Couleur du rail = teinte du thème ; alpha (+ épaisseur, prop SentenceRow) code la
+          // provenance : ferme = 0.5 net ; suggéré = 0.3 atténué (canaux NON chromatiques).
+          let runColor = railRun?.theme
+            ? `rgb(${hexToRgbChannels(getThemeToken(railRun.theme).color)} / ${provenance === "suggested" ? 0.3 : 0.5})`
+            : undefined;
+          let showDashedTop = showBoundaries && railIsStart && railRun!.theme != null;
 
           // En comparaison, le rail traduit l'ACCORD (vert/ambre) et non un thème.
           if (isCompare) {
+            provenance = null;
             runColor =
               comparePresent === 0
                 ? undefined
@@ -1056,6 +1085,9 @@ export function DocumentPanel({
                 runColor={runColor}
                 showDashedTop={showDashedTop}
                 isRunStart={isRunStart}
+                railIsStart={railIsStart}
+                railIsEnd={railIsEnd}
+                provenance={provenance}
                 triageColor={badge ? undefined : triageColor}
                 renderFr={renderFr}
                 frText={frText}
@@ -1387,6 +1419,9 @@ function SentenceRow({
   runColor,
   showDashedTop,
   isRunStart,
+  railIsStart,
+  railIsEnd,
+  provenance,
   triageColor,
   renderFr,
   frText,
@@ -1415,6 +1450,11 @@ function SentenceRow({
   runColor: string | undefined;
   showDashedTop: boolean;
   isRunStart: boolean;
+  /** Rail coalescé : début/fin du BLOC de thème (arrondis + soudure de continuité). */
+  railIsStart: boolean;
+  railIsEnd: boolean;
+  /** Provenance du bloc : ferme (humain validé / arbitré) vs suggéré (LLM / pré-annotation). */
+  provenance: "firm" | "suggested" | null;
   /** Liseré gauche du niveau de triage (overlay), pour les phrases SANS badge. */
   triageColor: string | undefined;
   /** Mode FR : afficher le texte traduit (repli VO si absent). */
@@ -1453,8 +1493,9 @@ function SentenceRow({
       data-focused={isFocused || undefined}
       data-anchor={hasAnchor ? true : undefined}
       data-selected={isSelected || undefined}
-      data-boundary={isRunStart || undefined}
+      data-boundary={railIsStart || undefined}
       data-dashed={showDashedTop || undefined}
+      data-provenance={provenance ?? undefined}
       data-compare={compareState ?? undefined}
       {...longPress}
       onPointerDown={(e) => {
@@ -1494,18 +1535,50 @@ function SentenceRow({
         ghosts?.length && !hasAnchor ? "outline-dashed outline-1 outline-ink-muted/40" : "",
       )}
       style={{
-        // Rail gauche coloré par le thème du run (P2) — canal visuel distinct de
-        // l'overlay injustice. Opacité modérée via box-shadow inset. À défaut de rail
-        // de thème, un liseré PLUS FIN porte le niveau de triage (overlay opt-in).
-        boxShadow: runColor
-          ? `inset 3px 0 0 ${runColor}`
-          : triageColor
-            ? `inset 2px 0 0 ${triageColor}aa`
-            : undefined,
-        // Frontière de clause : trait pointillé subtil au début du run, togglable.
+        // Le rail de THÈME est désormais un <span> dédié (continu/arrondi/provenance, ci-dessous).
+        // À défaut de thème, un liseré FIN box-shadow porte le niveau de triage (overlay opt-in).
+        boxShadow: !runColor && triageColor ? `inset 2px 0 0 ${triageColor}aa` : undefined,
+        // Frontière de clause : trait pointillé au VRAI changement de thème (rail coalescé).
         borderTop: showDashedTop ? "1px dashed rgb(var(--surface-text-muted) / 0.3)" : undefined,
       }}
     >
+      {/* RAIL DE THÈME continu (canal « QUOI ») : couleur du thème sur TOUT le bloc, arrondi
+          aux seules extrémités du run, SOUDÉ (déborde de -1px aux jonctions internes du bloc)
+          → un seul trait continu ; la rupture = changement de teinte + ré-arrondi au VRAI
+          changement de thème. PROVENANCE (canal « D'OÙ ») = épaisseur + opacité : ferme = 3px/0.5,
+          suggéré = 2px/0.3 (deux canaux NON chromatiques). */}
+      {runColor && (
+        <span
+          aria-hidden
+          data-testid={`rail-${s.index}`}
+          data-provenance={provenance ?? undefined}
+          className={cn(
+            "pointer-events-none absolute left-0",
+            provenance === "suggested" ? "w-[2px]" : "w-[3px]",
+            railIsStart && "rounded-t-[2px]",
+            railIsEnd && "rounded-b-[2px]",
+          )}
+          style={{
+            backgroundColor: runColor,
+            top: railIsStart ? 0 : -1,
+            bottom: railIsEnd ? 0 : -1,
+          }}
+        />
+      )}
+      {/* MARQUEUR de provenance EN TÊTE de bloc (canal FORME, a11y) : point PLEIN = ferme
+          (humain validé / arbitrage adopté) ; anneau CREUX = suggéré (LLM / pré-annotation). */}
+      {provenance && railIsStart && (
+        <span
+          data-testid={`prov-${s.index}`}
+          title={provenance === "firm" ? "Bloc validé (humain)" : "Bloc suggéré — non validé"}
+          aria-hidden
+          className={cn(
+            "pointer-events-none absolute left-0 top-1 z-[2] h-1.5 w-1.5 -translate-x-[1.5px] rounded-full",
+            provenance === "suggested" && "border border-ink-muted bg-elevated",
+          )}
+          style={provenance === "firm" ? { backgroundColor: runColor } : undefined}
+        />
+      )}
       <span aria-hidden className="mr-2 select-none font-mono text-[11px] text-ink-muted">
         {s.index}
       </span>
