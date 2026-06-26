@@ -27,6 +27,9 @@ test.describe("Accessibilité (axe-core)", () => {
   });
 
   test("le workspace d'annotation n'a pas de violation sérieuse/critique", async ({ page }) => {
+    // Canevas riche (overlay triage + rail d'actions rapides ON par défaut) → axe analyse
+    // beaucoup d'éléments ; on triple le budget temps (test légitimement lent, pas flaky).
+    test.slow();
     await page.goto("/annotate/ann-1");
     await expect(page.getByTestId("annotation-workspace")).toBeVisible();
 

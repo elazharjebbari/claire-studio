@@ -44,10 +44,30 @@ export function TriageLevelBadge({ level, testId }: { level: TriageLevel; testId
   );
 }
 
+/** Largeur du panneau (w-72 = 18rem) + marge de garde, pour le calcul anti-collision. */
+const PANEL_WIDTH = 288;
+const VIEWPORT_MARGIN = 12;
+
 export function TriageLevelInfo({ current }: { current: TriageLevel }) {
   const [open, setOpen] = useState(false);
+  // Sens d'ouverture ANTI-COLLISION : par défaut ancré à droite (s'étend vers la gauche,
+  // bon dans l'inspecteur à droite de l'écran) ; mais si le déclencheur est trop à gauche
+  // (carte d'actions rapides, près de la navbar), on ouvre vers la DROITE pour rester visible.
+  const [openRight, setOpenRight] = useState(false);
   const panelId = useId();
   const ref = useRef<HTMLDivElement>(null);
+
+  // Choisit le sceau d'ancrage AU CLIC (avant le rendu du panneau → aucun scintillement,
+  // aucun effet de layout côté SSR) : on ouvre vers la droite si la place y suffit.
+  const toggle = () => {
+    if (!open) {
+      const rect = ref.current?.getBoundingClientRect();
+      if (rect && typeof window !== "undefined") {
+        setOpenRight(window.innerWidth - rect.left >= PANEL_WIDTH + VIEWPORT_MARGIN);
+      }
+    }
+    setOpen((v) => !v);
+  };
 
   // Fermeture au clic extérieur + Échap (popover non modal).
   useEffect(() => {
@@ -75,7 +95,7 @@ export function TriageLevelInfo({ current }: { current: TriageLevel }) {
         aria-controls={panelId}
         aria-label="Que signifient les niveaux C1 à C5 ?"
         title="Que signifient C1 à C5 ?"
-        onClick={() => setOpen((v) => !v)}
+        onClick={toggle}
         className="inline-flex h-5 w-5 items-center justify-center rounded-full text-ink-muted transition-colors hover:bg-panel-muted hover:text-ink"
       >
         <HelpCircle size={13} aria-hidden />
@@ -86,7 +106,11 @@ export function TriageLevelInfo({ current }: { current: TriageLevel }) {
           data-testid="triage-level-info-panel"
           role="dialog"
           aria-label="Barème des niveaux de triage C1 à C5"
-          className="absolute right-0 top-6 z-50 w-72 rounded-lg border border-line bg-elevated p-2 text-sm shadow-xl"
+          data-side={openRight ? "right" : "left"}
+          className={
+            "absolute top-6 z-50 w-72 max-w-[calc(100vw-1.5rem)] rounded-lg border border-line bg-elevated p-2 text-sm shadow-xl " +
+            (openRight ? "left-0" : "right-0")
+          }
         >
           <p className="mb-1.5 px-1 text-[10px] font-semibold uppercase tracking-wide text-ink-muted">
             Niveaux d'accord inter-juges

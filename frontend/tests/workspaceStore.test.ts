@@ -574,20 +574,20 @@ describe("applyTriageDecision / applyTriageBatch (acceptation de suggestions)", 
     expect(useWorkspaceStore.getState().draftClauses.some((d) => d.anchorIndex === 3)).toBe(false);
   });
 
-  it("toggleTriageLevels bascule l'overlay (défaut OFF)", () => {
-    expect(useWorkspaceStore.getState().showTriageLevels).toBe(false);
-    useWorkspaceStore.getState().toggleTriageLevels();
+  it("toggleTriageLevels bascule l'overlay (défaut ON)", () => {
     expect(useWorkspaceStore.getState().showTriageLevels).toBe(true);
     useWorkspaceStore.getState().toggleTriageLevels();
     expect(useWorkspaceStore.getState().showTriageLevels).toBe(false);
+    useWorkspaceStore.getState().toggleTriageLevels();
+    expect(useWorkspaceStore.getState().showTriageLevels).toBe(true);
   });
 
-  it("toggleQuickActions bascule le rail d'actions rapides (défaut OFF)", () => {
-    expect(useWorkspaceStore.getState().showQuickActions).toBe(false);
-    useWorkspaceStore.getState().toggleQuickActions();
+  it("toggleQuickActions bascule le rail d'actions rapides (défaut ON)", () => {
     expect(useWorkspaceStore.getState().showQuickActions).toBe(true);
     useWorkspaceStore.getState().toggleQuickActions();
     expect(useWorkspaceStore.getState().showQuickActions).toBe(false);
+    useWorkspaceStore.getState().toggleQuickActions();
+    expect(useWorkspaceStore.getState().showQuickActions).toBe(true);
   });
 
   it("setClauseThemes : 1 primaire, refuge rejeté en secondaire, dirty + undo", () => {
