@@ -126,4 +126,16 @@ export async function apiFetch<T>(path: string, options: RequestOptions = {}): P
   return (await res.json()) as T;
 }
 
+export async function apiFetchBlob(path: string, retried = false): Promise<Blob> {
+  const access = tokenStore.getAccess();
+  const res = await fetch(`${API_BASE}${path}`, {
+    headers: access ? { Authorization: `Bearer ${access}` } : {},
+  });
+  if (res.status === 401 && !retried && (await refreshAccessToken())) {
+    return apiFetchBlob(path, true);
+  }
+  if (!res.ok) throw new ApiError(res.status, `API ${res.status} on ${path}`);
+  return res.blob();
+}
+
 export { API_BASE };

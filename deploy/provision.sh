@@ -72,12 +72,15 @@ ENV
 npm install --no-audit --no-fund
 npm run build
 
-cp "$DIR/deploy/systemd/$APP.service" "$DIR/deploy/systemd/$APP-web.service" /etc/systemd/system/
+cp "$DIR/deploy/systemd/$APP.service" \
+  "$DIR/deploy/systemd/$APP-web.service" \
+  "$DIR/deploy/systemd/$APP-analysis-worker.service" \
+  /etc/systemd/system/
 chown -R www-data:www-data "$DIR"
 systemctl daemon-reload
-systemctl enable --now "$APP" "$APP-web"
+systemctl enable --now "$APP" "$APP-web" "$APP-analysis-worker"
 sleep 4
-systemctl is-active "$APP" "$APP-web"
+systemctl is-active "$APP" "$APP-web" "$APP-analysis-worker"
 curl -fsS "http://127.0.0.1:$BPORT/api/v1/health" && echo " — backend OK"
 curl -fsS -o /dev/null -w "front:%{http_code}\n" "http://127.0.0.1:$FPORT/"
 echo "Provisioning app terminé (vhost+cert : étape séparée après DNS)."

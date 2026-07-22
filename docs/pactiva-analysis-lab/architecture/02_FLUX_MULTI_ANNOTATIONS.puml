@@ -1,0 +1,50 @@
+@startuml
+title Pactiva Analysis Lab — flux multi-annotations
+skinparam shadowing false
+start
+:Choisir projet et module;
+:Choisir mode, unité et acteurs;
+if (Mode ?) then (Individuel)
+  :1 humain;
+elseif (Intra)
+  :1 humain + 2 versions;
+elseif (Inter-humains)
+  :2 à N humains;
+elseif (Humain-LLM)
+  :humains + modèle/version;
+elseif (Inter-LLM)
+  :2 à N modèles/versions;
+else (Consensus/Gold)
+  :consensus/reviewer/GoldRuns;
+endif
+:Appliquer statuts, documents, période et référence;
+:AnalysisPolicy valide la visibilité;
+:ScopeResolver produit manifeste et fingerprint;
+if (Support suffisant ?) then (non)
+  :Afficher support, exclusions et correction possible;
+  stop
+endif
+if (Run réussi identique ?) then (oui)
+  :Réutiliser le run;
+else (non)
+  if (Coût sous seuil ?) then (oui)
+    :Calcul synchrone borné;
+  else (non)
+    :Créer job idempotent;
+    :Worker calcule et publie atomiquement;
+  endif
+endif
+:Afficher KPI + interprétation + visualisation + table;
+:Drill-down vers cas et contexte autorisé;
+if (Action ?) then (Revue)
+  :Créer/lier une action Review;
+elseif (Gold)
+  :Ouvrir l'arbitrage Gold;
+elseif (Taxonomie)
+  :Créer une proposition versionnée;
+elseif (Rapport)
+  :Créer un ReportJob;
+else (Aucune)
+endif
+stop
+@enduml

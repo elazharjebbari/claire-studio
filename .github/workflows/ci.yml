@@ -20,6 +20,8 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+      - name: Install repository integrity tools
+        run: sudo apt-get update -qq && sudo apt-get install -y -qq ripgrep
       - name: Repository integrity (CI paths, Dockerfiles, deploy guards)
         run: bash scripts/check_repo_integrity.sh
       - uses: astral-sh/setup-uv@v3

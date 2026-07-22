@@ -21,3 +21,6 @@ X_FRAME_OPTIONS = "DENY"
 EMAIL_BACKEND = env(
     "DJANGO_EMAIL_BACKEND", default="django.core.mail.backends.smtp.EmailBackend"
 )
+
+# Les runs et PDF sont réclamés par le service systemd claire-studio-analysis-worker.
+ANALYSIS_DISPATCH_MODE = "worker"

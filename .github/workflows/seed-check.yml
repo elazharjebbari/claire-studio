@@ -50,6 +50,7 @@ jobs:
       - name: Dump #1
         run: |
           pg_dump -h localhost -U claire -d claire --no-owner --no-acl \
+            --restrict-key=ClaireSeedIdempotency \
             --exclude-table='*django_migrations*' > /tmp/dump1.sql
 
       - name: Second seed (must be a no-op)
@@ -58,6 +59,7 @@ jobs:
       - name: Dump #2
         run: |
           pg_dump -h localhost -U claire -d claire --no-owner --no-acl \
+            --restrict-key=ClaireSeedIdempotency \
             --exclude-table='*django_migrations*' > /tmp/dump2.sql
 
       - name: Compare dumps (0 mutation attendue)

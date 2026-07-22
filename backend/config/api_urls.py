@@ -19,6 +19,27 @@ from claire.accounts.views import (
     RegisterView,
     VerifyEmailView,
 )
+from claire.analysis.views import (
+    AnalysisCatalogView,
+    AnalysisHealthView,
+    PresetDetailView,
+    PresetListCreateView,
+    ReportArtifactDownloadView,
+    ReportArtifactView,
+    ReportCompareView,
+    ReportDetailView,
+    ReportListCreateView,
+    ReportRenderView,
+    RunCancelView,
+    RunCasesView,
+    RunDetailView,
+    RunListCreateView,
+    ScopePreviewView,
+    SnapshotDetailView,
+    SnapshotListCreateView,
+    TaxonomyProposalDetailView,
+    TaxonomyProposalListCreateView,
+)
 from claire.annotations.views import (
     AnnotationViewSet,
     ClauseViewSet,
@@ -52,6 +73,7 @@ router.register("comments", CommentViewSet, basename="comment")
 router.register("translations/sets", TranslationSetViewSet, basename="translationset")
 router.register("exports", ExportJobViewSet, basename="export")
 router.register("activity", ActivityEventViewSet, basename="activity")
+
 
 class ConfigFlagsView(APIView):
     """GET /api/v1/config/flags — feature flags effectifs (l'UI s'y conforme).
@@ -117,6 +139,102 @@ urlpatterns = [
         name="auth-password-reset-confirm",
     ),
     path("me", MeView.as_view(), name="me"),
+    # Pactiva Analysis Lab — snapshots de brouillons, runs et rapports historiques.
+    path(
+        "projects/<slug:slug>/analysis/catalog",
+        AnalysisCatalogView.as_view(),
+        name="analysis-catalog",
+    ),
+    path(
+        "projects/<slug:slug>/analysis/health",
+        AnalysisHealthView.as_view(),
+        name="analysis-health",
+    ),
+    path(
+        "projects/<slug:slug>/analysis/scopes/preview",
+        ScopePreviewView.as_view(),
+        name="analysis-scope-preview",
+    ),
+    path(
+        "projects/<slug:slug>/analysis/snapshots",
+        SnapshotListCreateView.as_view(),
+        name="analysis-snapshots",
+    ),
+    path(
+        "projects/<slug:slug>/analysis/snapshots/<uuid:snapshot_id>",
+        SnapshotDetailView.as_view(),
+        name="analysis-snapshot-detail",
+    ),
+    path(
+        "projects/<slug:slug>/analysis/runs",
+        RunListCreateView.as_view(),
+        name="analysis-runs",
+    ),
+    path(
+        "projects/<slug:slug>/analysis/runs/<uuid:run_id>",
+        RunDetailView.as_view(),
+        name="analysis-run-detail",
+    ),
+    path(
+        "projects/<slug:slug>/analysis/runs/<uuid:run_id>/cancel",
+        RunCancelView.as_view(),
+        name="analysis-run-cancel",
+    ),
+    path(
+        "projects/<slug:slug>/analysis/runs/<uuid:run_id>/cases",
+        RunCasesView.as_view(),
+        name="analysis-run-cases",
+    ),
+    path(
+        "projects/<slug:slug>/analysis/presets",
+        PresetListCreateView.as_view(),
+        name="analysis-presets",
+    ),
+    path(
+        "projects/<slug:slug>/analysis/presets/<uuid:preset_id>",
+        PresetDetailView.as_view(),
+        name="analysis-preset-detail",
+    ),
+    path(
+        "projects/<slug:slug>/analysis/taxonomy-proposals",
+        TaxonomyProposalListCreateView.as_view(),
+        name="analysis-taxonomy-proposals",
+    ),
+    path(
+        "projects/<slug:slug>/analysis/taxonomy-proposals/<uuid:proposal_id>",
+        TaxonomyProposalDetailView.as_view(),
+        name="analysis-taxonomy-proposal-detail",
+    ),
+    path(
+        "projects/<slug:slug>/analysis/reports",
+        ReportListCreateView.as_view(),
+        name="analysis-reports",
+    ),
+    path(
+        "projects/<slug:slug>/analysis/reports/<uuid:report_id>",
+        ReportDetailView.as_view(),
+        name="analysis-report-detail",
+    ),
+    path(
+        "projects/<slug:slug>/analysis/reports/<uuid:report_id>/compare",
+        ReportCompareView.as_view(),
+        name="analysis-report-compare",
+    ),
+    path(
+        "projects/<slug:slug>/analysis/reports/<uuid:report_id>/render",
+        ReportRenderView.as_view(),
+        name="analysis-report-render",
+    ),
+    path(
+        "projects/<slug:slug>/analysis/artifacts/<uuid:artifact_id>",
+        ReportArtifactView.as_view(),
+        name="analysis-artifact-detail",
+    ),
+    path(
+        "projects/<slug:slug>/analysis/artifacts/<uuid:artifact_id>/download",
+        ReportArtifactDownloadView.as_view(),
+        name="analysis-artifact-download",
+    ),
     # Publication publique (chantier F) — lecture seule, sans authentification.
     path("public/projects", PublicProjectListView.as_view(), name="public-projects"),
     path(

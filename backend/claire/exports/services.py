@@ -24,9 +24,8 @@ logger = logging.getLogger("claire.exports")
 
 
 def _selected_annotations(job: ExportJob):
-    qs = (
-        Annotation.objects.filter(project=job.project)
-        .select_related("document", "annotator", "project", "project__scheme")
+    qs = Annotation.objects.filter(project=job.project).select_related(
+        "document", "annotator", "project", "project__scheme"
     )
     scope = job.scope or {}
     statuses = scope.get("statuses")
@@ -61,19 +60,39 @@ def _write_jsonl(path: Path, records: list[dict]) -> None:
 
 def _write_csv(path: Path, records: list[dict]) -> None:
     fieldnames = [
-        "doc", "project", "annotator", "schema", "status", "source",
-        "global_certainty", "anchor_index", "theme", "legal_nature",
-        "evidence_span", "rationale", "certainty", "validated", "order",
+        "doc",
+        "project",
+        "annotator",
+        "schema",
+        "status",
+        "source",
+        "global_certainty",
+        "anchor_index",
+        "theme",
+        "legal_nature",
+        "evidence_span",
+        "rationale",
+        "certainty",
+        "validated",
+        "order",
     ]
     with path.open("w", encoding="utf-8", newline="") as fh:
         # extrasaction='ignore' : robustesse si build_snapshot gagne d'autres champs.
         writer = csv.DictWriter(fh, fieldnames=fieldnames, extrasaction="ignore")
         writer.writeheader()
         for rec in records:
-            base = {k: rec.get(k) for k in (
-                "doc", "project", "annotator", "schema", "status", "source",
-                "global_certainty",
-            )}
+            base = {
+                k: rec.get(k)
+                for k in (
+                    "doc",
+                    "project",
+                    "annotator",
+                    "schema",
+                    "status",
+                    "source",
+                    "global_certainty",
+                )
+            }
             for clause in rec["clauses"]:
                 row = dict(base)
                 row.update(clause)
@@ -85,8 +104,7 @@ def _write_md(path: Path, records: list[dict]) -> None:
     lines: list[str] = ["# Export d'annotations\n"]
     for rec in records:
         lines.append(
-            f"## {rec['doc']} — {rec['annotator']} "
-            f"({rec['status']}, schéma {rec['schema']})\n"
+            f"## {rec['doc']} — {rec['annotator']} ({rec['status']}, schéma {rec['schema']})\n"
         )
         if not rec["clauses"]:
             lines.append("_(aucune clause)_\n")
@@ -261,7 +279,10 @@ def run_export(job: ExportJob) -> ExportJob:
         job.save(update_fields=["artifact_path", "manifest", "status"])
         logger.info(
             "export_done job=%s format=%s annotations=%d path=%s",
-            job.id, job.format, len(records), path,
+            job.id,
+            job.format,
+            len(records),
+            path,
         )
     except Exception as exc:  # pragma: no cover - defensive
         # Statut écrit en autocommit (hors transaction de lecture) → PERSISTE.
@@ -283,8 +304,7 @@ def run_export_async(job_id: int) -> None:
     """
     from django.db import close_old_connections, connection
 
-    def _work() -> None:
-        close_old_connections()
+    def _run() -> None:
         try:
             job = ExportJob.objects.get(pk=job_id)
             run_export(job)
@@ -295,11 +315,18 @@ def run_export_async(job_id: int) -> None:
             ExportJob.objects.filter(
                 pk=job_id, status__in=[ExportStatus.PENDING, ExportStatus.RUNNING]
             ).update(status=ExportStatus.FAILED, error="Échec inattendu de la tâche d'export.")
+
+    def _work() -> None:
+        close_old_connections()
+        try:
+            _run()
         finally:
             connection.close()
 
     if getattr(settings, "EXPORTS_RUN_INLINE", False):
-        _work()
+        # Le mode inline reste dans le thread de la requête : il doit conserver sa
+        # connexion, notamment sous PostgreSQL où les tests partagent la transaction.
+        _run()
         return
     import threading
 

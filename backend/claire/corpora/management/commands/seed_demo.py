@@ -30,6 +30,7 @@ from claire.annotations.models import (
 )
 from claire.annotations.services import transition_status
 from claire.collaboration.models import Comment
+from claire.common.persistence import update_or_create_changed
 from claire.corpora.loaders import (
     clean_sentence,
     load_claudette_document,
@@ -73,7 +74,8 @@ class Command(BaseCommand):
         scheme = load_scheme_from_yaml(settings.VOCABULARY_FILE)
         self.stdout.write(f"  scheme: {scheme.slug} ({scheme.themes.count()} themes)")
 
-        corpus, _ = Corpus.objects.update_or_create(
+        corpus, _ = update_or_create_changed(
+            Corpus,
             slug=settings.SEED_CORPUS_SLUG,
             defaults={
                 "name": "CLAUDETTE ToS (UNFAIR-ToS)",
@@ -88,7 +90,8 @@ class Command(BaseCommand):
         documents = self._load_documents(corpus, DEMO_DOCS[:max_docs])
         self.stdout.write(f"  documents: {[d.external_id for d in documents]}")
 
-        project, _ = Project.objects.update_or_create(
+        project, _ = update_or_create_changed(
+            Project,
             slug=settings.SEED_PROJECT_SLUG,
             defaults={
                 "name": "CLAUDETTE Gold v1",
@@ -111,9 +114,7 @@ class Command(BaseCommand):
 
         for doc in documents:
             for user in (annotator, annotator2):
-                Assignment.objects.get_or_create(
-                    project=project, document=doc, assignee=user
-                )
+                Assignment.objects.get_or_create(project=project, document=doc, assignee=user)
 
         # Pre-annotations (claude + codex).
         pre_index = self._load_preannotations(project, documents)
@@ -155,9 +156,7 @@ class Command(BaseCommand):
         if (claudette_dir / "Sentences").exists():
             for name in names:
                 if (claudette_dir / "Sentences" / f"{name}.txt").exists():
-                    documents.append(
-                        load_claudette_document(corpus, claudette_dir, name)
-                    )
+                    documents.append(load_claudette_document(corpus, claudette_dir, name))
             if documents:
                 return documents
 
@@ -168,15 +167,14 @@ class Command(BaseCommand):
     @transaction.atomic
     def _load_documents_from_fixture(self, corpus) -> list[Document]:
         fixture = json.loads(
-            (settings.FIXTURES_DIR / "claudette_fallback.json").read_text(
-                encoding="utf-8"
-            )
+            (settings.FIXTURES_DIR / "claudette_fallback.json").read_text(encoding="utf-8")
         )
         documents = []
         for entry in fixture["documents"]:
             raw_lines = entry["sentences"]
             n = len(raw_lines)
-            document, _ = Document.objects.update_or_create(
+            document, _ = update_or_create_changed(
+                Document,
                 corpus=corpus,
                 external_id=entry["external_id"],
                 defaults={
@@ -210,8 +208,10 @@ class Command(BaseCommand):
                     if val in (1, 2, 3) and idx in sentence_map:
                         ref.append(
                             ReferenceLabel(
-                                sentence=sentence_map[idx], category=cat,
-                                level=val, source="claudette",
+                                sentence=sentence_map[idx],
+                                category=cat,
+                                level=val,
+                                source="claudette",
                             )
                         )
             ReferenceLabel.objects.bulk_create(ref)
@@ -242,17 +242,13 @@ class Command(BaseCommand):
 
         if not loaded_from_disk:
             fixture = json.loads(
-                (settings.FIXTURES_DIR / "preannotations_fallback.json").read_text(
-                    encoding="utf-8"
-                )
+                (settings.FIXTURES_DIR / "preannotations_fallback.json").read_text(encoding="utf-8")
             )
             for entry in fixture["preannotations"]:
                 doc = doc_by_id.get(entry["document"])
                 if doc is None:
                     continue
-                pre = ingest_preannotation(
-                    project, doc, entry["judge"], entry["raw"]
-                )
+                pre = ingest_preannotation(project, doc, entry["judge"], entry["raw"])
                 index[(doc.external_id, entry["judge"])] = pre
         return index
 
@@ -285,25 +281,29 @@ class Command(BaseCommand):
 
         # Annotator 1: seed from claude, add certainty + comment, submit.
         claude_pre = pre_index.get((first.external_id, Judge.CLAUDE))
-        if claude_pre and not project.annotations.filter(
-            document=first, annotator=annotator
-        ).exists():
+        if (
+            claude_pre
+            and not project.annotations.filter(document=first, annotator=annotator).exists()
+        ):
             ann = seed_annotation_from_preannotation(claude_pre, annotator)
             ann.global_certainty = 2
             ann.save(update_fields=["global_certainty"])
             first_clause = ann.clauses.first()
             if first_clause:
                 Comment.objects.create(
-                    annotation=ann, clause=first_clause, author=annotator,
+                    annotation=ann,
+                    clause=first_clause,
+                    author=annotator,
                     body="Seeded from Claude; verified the opening clause.",
                 )
             transition_status(ann, AnnotationStatus.SUBMITTED, annotator)
 
         # Annotator 2: seed from codex (for IAA), submit.
         codex_pre = pre_index.get((first.external_id, Judge.CODEX))
-        if codex_pre and not project.annotations.filter(
-            document=first, annotator=annotator2
-        ).exists():
+        if (
+            codex_pre
+            and not project.annotations.filter(document=first, annotator=annotator2).exists()
+        ):
             ann2 = seed_annotation_from_preannotation(codex_pre, annotator2)
             ann2.global_certainty = 1
             ann2.save(update_fields=["global_certainty"])

@@ -63,6 +63,12 @@ VOCABULARY_FILE = Path(
     )
 )
 EXPORTS_DIR = Path(env("CLAIRE_EXPORTS_DIR", default=str(BASE_DIR / "var" / "exports")))
+ANALYSIS_ARTIFACTS_DIR = Path(
+    env("CLAIRE_ANALYSIS_ARTIFACTS_DIR", default=str(BASE_DIR / "var" / "analysis"))
+)
+ANALYSIS_DISPATCH_MODE = env("CLAIRE_ANALYSIS_DISPATCH_MODE", default="thread")
+ANALYSIS_RUN_TIMEOUT_SECONDS = env.int("CLAIRE_ANALYSIS_RUN_TIMEOUT_SECONDS", default=900)
+ANALYSIS_REPORT_RETENTION_DAYS = env.int("CLAIRE_ANALYSIS_REPORT_RETENTION_DAYS", default=365)
 FIXTURES_DIR = BASE_DIR / "fixtures"
 # File-based features confinement root (translations sync, auto-pull). A10/SSRF.
 TRANSLATIONS_ROOT = Path(
@@ -95,6 +101,7 @@ INSTALLED_APPS = [
     "claire.translations",
     "claire.exports",
     "claire.gold",
+    "claire.analysis",
     "claire.audit",
     "claire.common",
 ]
