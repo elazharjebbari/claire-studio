@@ -19,15 +19,28 @@ from pathlib import Path
 from django.db import transaction
 
 from claire.common.models import UNFAIRNESS_CATEGORIES
+from claire.common.persistence import update_or_create_changed
 from claire.corpora.models import Corpus, Document, ReferenceLabel, Sentence
 
 logger = logging.getLogger("claire.corpora")
 
 # Detokenisation of CLAUDETTE PTB-style tokens for the "clean" text.
 _DETOK = {
-    " -lrb- ": " (", " -rrb- ": ") ", "-lrb-": "(", "-rrb-": ")",
-    " 's": "'s", " n't": "n't", " ,": ",", " .": ".", " ;": ";",
-    " :": ":", " '": "'", " `` ": ' "', " '' ": '" ', "``": '"', "''": '"',
+    " -lrb- ": " (",
+    " -rrb- ": ") ",
+    "-lrb-": "(",
+    "-rrb-": ")",
+    " 's": "'s",
+    " n't": "n't",
+    " ,": ",",
+    " .": ".",
+    " ;": ";",
+    " :": ":",
+    " '": "'",
+    " `` ": ' "',
+    " '' ": '" ',
+    "``": '"',
+    "''": '"',
 }
 
 
@@ -55,9 +68,7 @@ def read_label_file(path: Path) -> list[int]:
 
 
 @transaction.atomic
-def load_claudette_document(
-    corpus: Corpus, claudette_dir: Path, doc_name: str
-) -> Document:
+def load_claudette_document(corpus: Corpus, claudette_dir: Path, doc_name: str) -> Document:
     """Load one CLAUDETTE document with its sentences and reference labels."""
     claudette_dir = Path(claudette_dir)
     sent_path = claudette_dir / "Sentences" / f"{doc_name}.txt"
@@ -65,15 +76,13 @@ def load_claudette_document(
         raise FileNotFoundError(f"Missing Sentences file: {sent_path}")
 
     raw_lines = [
-        ln for ln in sent_path.read_text(encoding="utf-8").splitlines()
-        if ln.strip() != ""
+        ln for ln in sent_path.read_text(encoding="utf-8").splitlines() if ln.strip() != ""
     ]
     n = len(raw_lines)
-    checksum = hashlib.sha256(
-        sent_path.read_text(encoding="utf-8").encode("utf-8")
-    ).hexdigest()
+    checksum = hashlib.sha256(sent_path.read_text(encoding="utf-8").encode("utf-8")).hexdigest()
 
-    document, _ = Document.objects.update_or_create(
+    document, _ = update_or_create_changed(
+        Document,
         corpus=corpus,
         external_id=doc_name,
         defaults={
@@ -93,9 +102,7 @@ def load_claudette_document(
         return document
 
     if document.clauses_exist():
-        raise ValueError(
-            f"Refusing to reload {doc_name}: sentences are referenced by clauses."
-        )
+        raise ValueError(f"Refusing to reload {doc_name}: sentences are referenced by clauses.")
     document.sentences.all().delete()
 
     sentences = [
@@ -112,9 +119,7 @@ def load_claudette_document(
     # INV-1 verification.
     persisted = list(document.sentences.values_list("index", flat=True))
     if sorted(persisted) != list(range(n)):
-        raise ValueError(
-            f"INV-1 violated for {doc_name}: indices not contiguous 0..{n - 1}"
-        )
+        raise ValueError(f"INV-1 violated for {doc_name}: indices not contiguous 0..{n - 1}")
 
     # Reference labels per category.
     sentence_map = {s.index: s for s in document.sentences.all()}
@@ -135,7 +140,9 @@ def load_claudette_document(
 
     logger.info(
         "claudette_loaded doc=%s sentences=%d ref_labels=%d",
-        doc_name, n, len(ref_labels),
+        doc_name,
+        n,
+        len(ref_labels),
     )
     return document
 

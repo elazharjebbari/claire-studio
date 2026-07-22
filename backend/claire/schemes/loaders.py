@@ -8,6 +8,8 @@ from pathlib import Path
 import yaml
 from django.db import transaction
 
+from claire.common.persistence import update_or_create_changed
+
 from .models import LabelScheme, LegalNature, Theme
 
 logger = logging.getLogger("claire.schemes")
@@ -18,7 +20,8 @@ def load_scheme_from_yaml(vocab_path: Path) -> LabelScheme:
     data = yaml.safe_load(Path(vocab_path).read_text(encoding="utf-8"))
     scheme_def = data["scheme"]
 
-    scheme, _ = LabelScheme.objects.update_or_create(
+    scheme, _ = update_or_create_changed(
+        LabelScheme,
         slug=scheme_def["slug"],
         defaults={
             "name": scheme_def["name"],
@@ -33,7 +36,8 @@ def load_scheme_from_yaml(vocab_path: Path) -> LabelScheme:
     )
 
     for t in data.get("themes", []):
-        Theme.objects.update_or_create(
+        update_or_create_changed(
+            Theme,
             scheme=scheme,
             code=t["code"],
             defaults={
@@ -46,7 +50,8 @@ def load_scheme_from_yaml(vocab_path: Path) -> LabelScheme:
         )
 
     for ln in data.get("legal_natures", []):
-        LegalNature.objects.update_or_create(
+        update_or_create_changed(
+            LegalNature,
             scheme=scheme,
             code=ln["code"],
             defaults={
@@ -58,6 +63,8 @@ def load_scheme_from_yaml(vocab_path: Path) -> LabelScheme:
 
     logger.info(
         "scheme_loaded slug=%s themes=%d legal_natures=%d",
-        scheme.slug, scheme.themes.count(), scheme.legal_natures.count(),
+        scheme.slug,
+        scheme.themes.count(),
+        scheme.legal_natures.count(),
     )
     return scheme

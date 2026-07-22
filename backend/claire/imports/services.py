@@ -24,7 +24,10 @@ logger = logging.getLogger("claire.imports")
 
 @transaction.atomic
 def ingest_preannotation(
-    project: Project, document: Document, judge: str, raw: dict,
+    project: Project,
+    document: Document,
+    judge: str,
+    raw: dict,
     version: str | None = None,
 ) -> PreAnnotation:
     """Normalise & persist a single pre-annotation (idempotent par clé).
@@ -43,38 +46,63 @@ def ingest_preannotation(
         schema_version=schema_version,
         defaults={"raw": raw, "mapped": True},
     )
+    desired_clauses = [
+        {
+            "anchor_index": c["anchor_index"],
+            "theme_code": c["theme"],
+            "evidence_span": c["evidence_span"],
+            "rationale": c["rationale"],
+            "legal_nature": c.get("legal_nature", ""),
+            "order": c["order"],
+        }
+        for c in pivot
+    ]
     if not created:
-        # Refresh preclauses idempotently.
+        existing_clauses = list(
+            pre.preclauses.order_by("order", "id").values(
+                "anchor_index",
+                "theme_code",
+                "evidence_span",
+                "rationale",
+                "legal_nature",
+                "order",
+            )
+        )
+        if pre.raw == raw and pre.mapped and existing_clauses == desired_clauses:
+            logger.info(
+                "preannotation_unchanged judge=%s version=%s doc=%s clauses=%d",
+                judge,
+                schema_version,
+                document.external_id,
+                len(pivot),
+            )
+            return pre
         pre.preclauses.all().delete()
-        pre.raw = raw
-        pre.mapped = True
-        pre.save(update_fields=["raw", "mapped"])
+        changed_fields = []
+        if pre.raw != raw:
+            pre.raw = raw
+            changed_fields.append("raw")
+        if not pre.mapped:
+            pre.mapped = True
+            changed_fields.append("mapped")
+        if changed_fields:
+            pre.save(update_fields=changed_fields)
 
     PreClause.objects.bulk_create(
-        [
-            PreClause(
-                preannotation=pre,
-                anchor_index=c["anchor_index"],
-                theme_code=c["theme"],
-                evidence_span=c["evidence_span"],
-                rationale=c["rationale"],
-                legal_nature=c.get("legal_nature", ""),
-                order=c["order"],
-            )
-            for c in pivot
-        ]
+        [PreClause(preannotation=pre, **clause) for clause in desired_clauses]
     )
     logger.info(
         "preannotation_ingested judge=%s version=%s doc=%s clauses=%d",
-        judge, schema_version, document.external_id, len(pivot),
+        judge,
+        schema_version,
+        document.external_id,
+        len(pivot),
     )
     return pre
 
 
 @transaction.atomic
-def seed_annotation_from_preannotation(
-    preannotation: PreAnnotation, annotator
-) -> Annotation:
+def seed_annotation_from_preannotation(preannotation: PreAnnotation, annotator) -> Annotation:
     """Create a human-editable Annotation pre-filled from an LLM pre-annotation.
 
     Respects INV-4 (idempotent on triplet) and INV-3 (theme normalised to the
@@ -92,14 +120,10 @@ def seed_annotation_from_preannotation(
         defaults={"source": AnnotationSource.PREANNOTATION_SEED},
     )
     if not created:
-        raise Conflict(
-            "An annotation already exists for this (project, document, annotator)."
-        )
+        raise Conflict("An annotation already exists for this (project, document, annotator).")
 
     themes_by_code = {t.code: t for t in scheme.themes.all()}
-    sentences_by_index = {
-        s.index: s for s in document.sentences.all()
-    }
+    sentences_by_index = {s.index: s for s in document.sentences.all()}
 
     seen_anchors: set[int] = set()
     order = 0
@@ -108,7 +132,8 @@ def seed_annotation_from_preannotation(
         if anchor is None:
             logger.warning(
                 "seed_skip_missing_anchor doc=%s index=%s",
-                document.external_id, pc.anchor_index,
+                document.external_id,
+                pc.anchor_index,
             )
             continue
         if pc.anchor_index in seen_anchors:
@@ -130,6 +155,8 @@ def seed_annotation_from_preannotation(
 
     logger.info(
         "annotation_seeded ann=%s from_pre=%s clauses=%d",
-        annotation.pk, preannotation.pk, order,
+        annotation.pk,
+        preannotation.pk,
+        order,
     )
     return annotation
