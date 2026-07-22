@@ -17,3 +17,4 @@ EMAIL_BACKEND = "django.core.mail.backends.locmem.EmailBackend"
 # Export EN TÂCHE DE FOND exécuté en SYNCHRONE en test (déterministe, pas de thread
 # → pas de verrou SQLite). En prod, run_export_async lance un thread daemon.
 EXPORTS_RUN_INLINE = True
+ANALYSIS_DISPATCH_MODE = "inline"

@@ -1,0 +1,43 @@
+@startuml
+title Séquence — création et exécution d'un AnalysisRun
+actor User
+participant UI
+participant API
+participant AnalysisPolicy
+participant ScopeResolver
+database PostgreSQL
+participant Redis
+participant Worker
+participant ArtifactStore
+
+User -> UI: appliquer configuration
+UI -> API: POST /analysis/runs + idempotencyKey
+API -> AnalysisPolicy: authorize(project, configuration)
+AnalysisPolicy --> API: allowed projection
+API -> ScopeResolver: resolve + canonicalize
+ScopeResolver -> PostgreSQL: lire versions/sources autorisées
+ScopeResolver --> API: manifest + fingerprint + support
+API -> PostgreSQL: rechercher succeeded identique
+alt cache hit valide
+  PostgreSQL --> API: AnalysisRun succeeded
+  API --> UI: 200 run
+else nouveau run
+  API -> PostgreSQL: INSERT run queued (transaction/unique)
+  API -> Redis: enqueue(run_id)
+  API --> UI: 202 run queued
+  Redis -> Worker: task(run_id)
+  Worker -> PostgreSQL: lock + running + heartbeat
+  Worker -> PostgreSQL: lecture chunkée sources
+  Worker -> Worker: calculators versionnés
+  Worker -> ArtifactStore: écriture temporaire + checksum
+  ArtifactStore --> Worker: référence publiée
+  Worker -> PostgreSQL: résultat + succeeded (transaction)
+  loop polling/backoff
+    UI -> API: GET run
+    API -> PostgreSQL: état
+    API --> UI: état/progression
+  end
+end
+UI -> API: GET visualization/cases
+API --> UI: DTO sémantique paginé
+@enduml

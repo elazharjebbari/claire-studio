@@ -1,0 +1,77 @@
+@startuml
+title Pactiva Analysis Lab — modèle de données logique
+hide methods
+skinparam shadowing false
+
+class Project
+class AnnotationVersion
+class PreAnnotation
+class GoldRun
+class AnalysisPreset {
+  UUID id
+  JSONB configuration
+  visibility
+}
+class AnalysisRun {
+  UUID id
+  mode
+  unit
+  JSONB configuration
+  JSONB source_manifest
+  fingerprint
+  metric_manifest_hash
+  status
+  progress
+  JSONB summary
+}
+class AnalysisArtifact {
+  kind
+  storage_key
+  checksum
+  size
+  expires_at
+}
+class AnalysisIssue {
+  code
+  severity
+  source_ref
+  status
+}
+class DisagreementCase {
+  unit_ref
+  JSONB actors
+  JSONB votes
+  entropy
+  type
+  status
+}
+class ReportJob {
+  JSONB configuration
+  confidentiality
+  status
+  progress
+}
+class ReportArtifact {
+  format
+  storage_key
+  checksum
+  expires_at
+}
+
+Project "1" -- "*" AnalysisPreset
+Project "1" -- "*" AnalysisRun
+AnalysisRun "*" ..> "*" AnnotationVersion : manifest refs
+AnalysisRun "*" ..> "*" PreAnnotation : manifest refs
+AnalysisRun "*" ..> "*" GoldRun : manifest refs
+AnalysisRun "1" -- "*" AnalysisArtifact
+AnalysisRun "1" -- "*" AnalysisIssue
+AnalysisRun "1" -- "*" DisagreementCase
+Project "1" -- "*" ReportJob
+ReportJob "*" ..> "*" AnalysisRun : sources
+ReportJob "1" -- "0..1" ReportArtifact
+
+note bottom of AnalysisRun
+Les références sources sont immuables.
+Les grandes séries restent en artefacts.
+end note
+@enduml

@@ -1,0 +1,115 @@
+@startuml
+title Pactiva Analysis Lab — architecture cible intégrée à Claire Studio
+skinparam componentStyle rectangle
+skinparam shadowing false
+skinparam packageStyle rectangle
+
+actor Annotateur
+actor Reviewer
+actor Chercheur
+actor Admin
+
+package "Frontend Next.js" {
+  [Routes Analysis]
+  [AnalysisShell]
+  [Context & modes]
+  [VisualizationRegistry]
+  [CaseExplorer]
+  [ReportBuilder]
+  [Tables accessibles]
+}
+
+package "API Django REST /api/v1" {
+  [Analysis Views]
+  [AnalysisPolicy]
+  [ScopeResolver]
+  [Analysis Services]
+  [Reports API]
+}
+
+package "Domaine claire.analysis" {
+  [Observation Providers]
+  [MetricRegistry]
+  [Calculators]
+  [Comparison Engines]
+  [ReportComposer]
+  [TaskDispatcher]
+  [ArtifactStore]
+}
+
+package "Domaines existants" {
+  [projects]
+  [annotations]
+  [imports LLM]
+  [gold]
+  [collaboration]
+  [audit]
+}
+
+package "Worker durable" {
+  [Celery Worker]
+  [Analysis Task]
+  [Report Renderer Playwright]
+}
+
+database PostgreSQL {
+  [Sources métier]
+  [AnalysisRun & Preset]
+  [Issues & Cases]
+  [ReportJob]
+}
+database Redis
+folder "Artefacts privés" as Artifacts
+
+Annotateur --> [Routes Analysis]
+Reviewer --> [Routes Analysis]
+Chercheur --> [Routes Analysis]
+Admin --> [Routes Analysis]
+[Routes Analysis] --> [AnalysisShell]
+[AnalysisShell] --> [Context & modes]
+[AnalysisShell] --> [VisualizationRegistry]
+[AnalysisShell] --> [CaseExplorer]
+[AnalysisShell] --> [ReportBuilder]
+[VisualizationRegistry] --> [Tables accessibles]
+[AnalysisShell] --> [Analysis Views]
+[ReportBuilder] --> [Reports API]
+[Analysis Views] --> [AnalysisPolicy]
+[Analysis Views] --> [ScopeResolver]
+[Analysis Views] --> [Analysis Services]
+[ScopeResolver] --> [Observation Providers]
+[Observation Providers] --> [projects]
+[Observation Providers] --> [annotations]
+[Observation Providers] --> [imports LLM]
+[Observation Providers] --> [gold]
+[Observation Providers] --> [collaboration]
+[Analysis Services] --> [MetricRegistry]
+[MetricRegistry] --> [Calculators]
+[Calculators] --> [Comparison Engines]
+[Analysis Services] --> [TaskDispatcher]
+[Reports API] --> [ReportComposer]
+[ReportComposer] --> [TaskDispatcher]
+[TaskDispatcher] --> Redis
+Redis --> [Celery Worker]
+[Celery Worker] --> [Analysis Task]
+[Celery Worker] --> [Report Renderer Playwright]
+[Analysis Services] --> [AnalysisRun & Preset]
+[Analysis Task] --> [Sources métier]
+[Analysis Task] --> [AnalysisRun & Preset]
+[Analysis Task] --> [Issues & Cases]
+[Analysis Task] --> [ArtifactStore]
+[Report Renderer Playwright] --> [ReportJob]
+[Report Renderer Playwright] --> [ArtifactStore]
+[ArtifactStore] --> Artifacts
+[Analysis Services] --> [audit]
+
+note right of [Observation Providers]
+Projection immuable commune.
+Les sources human, LLM,
+reviewer et gold restent séparées.
+end note
+
+note bottom of [MetricRegistry]
+Plugin = code + version + modes + unités
++ paramètres + support + calculator + sortie.
+end note
+@enduml
