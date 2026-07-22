@@ -5,7 +5,10 @@ avec les formes camelCase attendues (rendu DRF camel-case). Skip propre si le
 corpus de démo n'est pas chargé.
 """
 
+from pathlib import Path
+
 import pytest
+from django.conf import settings
 from django.core.management import call_command
 from rest_framework.test import APIClient
 from rest_framework_simplejwt.tokens import RefreshToken
@@ -13,6 +16,13 @@ from rest_framework_simplejwt.tokens import RefreshToken
 pytestmark = pytest.mark.django_db
 
 SLUG = "claudette-gold-v1"
+
+_SENTENCES_DIR = Path(settings.CLAUDETTE_DIR) / "Sentences"
+_HAS_DATA = _SENTENCES_DIR.is_dir() and any(_SENTENCES_DIR.iterdir())
+requires_data = pytest.mark.skipif(
+    not _HAS_DATA,
+    reason="corpus CLAUDETTE absent (data/claudette_tos/Sentences)",
+)
 
 
 def _client(user):
@@ -29,6 +39,7 @@ def test_config_flags_no_auth():
     assert "presence" in body
 
 
+@requires_data
 def test_insights_and_collab_endpoints(admin_user):
     call_command("feed_db", "--max-docs", "3", "--seed-human", verbosity=0)
     client = _client(admin_user)
@@ -69,6 +80,7 @@ def test_insights_and_collab_endpoints(admin_user):
     assert share.json()["token"] and "/join/" in share.json()["url"]
 
 
+@requires_data
 def test_attribution_and_presence(admin_user):
     """Attribution + présence d'une annotation existante (200, formes camel)."""
     call_command("feed_db", "--max-docs", "3", "--seed-human", verbosity=0)

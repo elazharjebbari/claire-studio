@@ -17,9 +17,17 @@ from claire.imports.models import PreAnnotation
 
 pytestmark = pytest.mark.django_db
 
-_HAS_ARCHIVE = (Path(settings.DATA_DIR) / "annotations_archive").is_dir()
+_ARCHIVE_DIR = Path(settings.DATA_DIR) / "annotations_archive"
+_SENTENCES_DIR = Path(settings.CLAUDETTE_DIR) / "Sentences"
+_HAS_ARCHIVE = (
+    _ARCHIVE_DIR.is_dir()
+    and any(_ARCHIVE_DIR.rglob("*.json"))
+    and _SENTENCES_DIR.is_dir()
+    and any(_SENTENCES_DIR.iterdir())
+)
 requires_archive = pytest.mark.skipif(
-    not _HAS_ARCHIVE, reason="archive multi-versions absente (data/annotations_archive)"
+    not _HAS_ARCHIVE,
+    reason="archive multi-versions ou corpus CLAUDETTE absent",
 )
 
 
