@@ -106,7 +106,7 @@ export function SentenceMenu({
       document.removeEventListener("mousedown", onDown);
       document.removeEventListener("keydown", onKey);
     };
-  }, [onClose]);
+  }, [onClose, ref]);
 
   // Focus initial sur le popover (a11y : navigation clavier dès l'ouverture).
   useEffect(() => {
@@ -283,9 +283,9 @@ export function SentenceMenu({
       <section className="pt-3">
         <button
           type="button"
-          role="menuitem"
+          role="menuitemcheckbox"
           data-testid="menu-translate"
-          aria-pressed={isTranslated}
+          aria-checked={isTranslated}
           onClick={() => {
             setTranslated(sentenceIndex, !isTranslated);
             onClose();

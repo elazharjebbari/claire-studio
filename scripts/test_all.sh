@@ -21,7 +21,7 @@ run() {
 
 # --- 1. Lint -----------------------------------------------------------------
 run "lint backend"  make -C "$ROOT_DIR/backend" lint
-run "lint frontend" bash -c "cd '$ROOT_DIR/frontend' && pnpm lint && pnpm typecheck"
+run "lint frontend" bash -c "cd '$ROOT_DIR/frontend' && npm run lint && npm run typecheck"
 
 # --- 2. Backend (pytest) — Postgres requis -----------------------------------
 if ! docker compose exec -T postgres pg_isready >/dev/null 2>&1; then
@@ -35,7 +35,7 @@ fi
 run "pytest backend" make -C "$ROOT_DIR/backend" test
 
 # --- 3. Frontend (Vitest + MSW) ----------------------------------------------
-run "vitest frontend" bash -c "cd '$ROOT_DIR/frontend' && pnpm test"
+run "vitest frontend" bash -c "cd '$ROOT_DIR/frontend' && npm test"
 
 # --- Bilan -------------------------------------------------------------------
 if [[ "$FAILED" -ne 0 ]]; then

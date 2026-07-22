@@ -1,7 +1,7 @@
 # =============================================================================
 # CLAIRE Studio — Makefile racine (ORCHESTRATION)
 # Délègue à backend/ (make setup|migrate|seed|run|test|lint|build) et
-# frontend/ (pnpm install|dev|test|e2e|lint|build). N'écrit jamais dans les sous-projets.
+# frontend/ (npm ci|dev|test|e2e|lint|build). N'écrit jamais dans les sous-projets.
 # =============================================================================
 
 SHELL := /bin/bash
@@ -20,7 +20,7 @@ endif
 
 .PHONY: help setup setup-backend setup-frontend migrate seed dev dev-backend dev-frontend \
         run serve dev-all dev-all-mocks stop-all ports test test-backend test-frontend e2e \
-        lint lint-backend lint-frontend build build-backend build-frontend logs ps up down reset clean check
+        lint lint-backend lint-frontend build build-backend build-frontend logs ps up down reset clean check repo-integrity
 
 help: ## Affiche cette aide
 	@grep -hE '^[a-zA-Z_-]+:.*?## ' $(MAKEFILE_LIST) \
@@ -32,9 +32,9 @@ setup: setup-backend setup-frontend ## Installe toutes les dépendances (back + 
 setup-backend: ## Installe les dépendances backend (uv)
 	$(MAKE) -C $(BACKEND_DIR) setup
 
-setup-frontend: ## Installe les dépendances frontend (pnpm) + navigateurs Playwright
-	cd $(FRONTEND_DIR) && pnpm install --frozen-lockfile || pnpm install
-	cd $(FRONTEND_DIR) && pnpm exec playwright install --with-deps || true
+setup-frontend: ## Installe les dépendances frontend (npm) + navigateurs Playwright
+	cd $(FRONTEND_DIR) && npm ci
+	cd $(FRONTEND_DIR) && npx playwright install --with-deps
 
 # --- Base de données ---------------------------------------------------------
 migrate: ## Applique les migrations Django
@@ -51,7 +51,7 @@ dev-backend: ## Lance uniquement le backend (:8000)
 	$(MAKE) -C $(BACKEND_DIR) run
 
 dev-frontend: ## Lance uniquement le frontend (:3000)
-	cd $(FRONTEND_DIR) && pnpm dev
+	cd $(FRONTEND_DIR) && npm run dev
 
 run: dev ## Alias de `dev`
 
@@ -77,7 +77,7 @@ test-backend: ## pytest (backend)
 	$(MAKE) -C $(BACKEND_DIR) test
 
 test-frontend: ## Vitest + MSW (frontend)
-	cd $(FRONTEND_DIR) && pnpm test
+	cd $(FRONTEND_DIR) && npm test
 
 e2e: ## Playwright contre la pile réelle (seed + back + front)
 	bash $(SCRIPTS_DIR)/e2e.sh
@@ -89,7 +89,10 @@ lint-backend: ## Lint backend
 	$(MAKE) -C $(BACKEND_DIR) lint
 
 lint-frontend: ## Lint + typecheck frontend
-	cd $(FRONTEND_DIR) && pnpm lint && pnpm typecheck
+	cd $(FRONTEND_DIR) && npm run lint && npm run typecheck
+
+repo-integrity: ## Vérifie chemins CI, Dockerfiles et garde-fous de déploiement
+	bash $(SCRIPTS_DIR)/check_repo_integrity.sh
 
 # --- Build -------------------------------------------------------------------
 build: build-backend build-frontend ## Build production (back + front)
@@ -98,7 +101,7 @@ build-backend: ## Build backend (collectstatic / image)
 	$(MAKE) -C $(BACKEND_DIR) build
 
 build-frontend: ## Build frontend (next build)
-	cd $(FRONTEND_DIR) && pnpm build
+	cd $(FRONTEND_DIR) && npm run build
 
 # --- Docker / exploitation ---------------------------------------------------
 ps: ## État des services docker

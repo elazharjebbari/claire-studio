@@ -12,7 +12,6 @@ concurrency:
 env:
   PYTHON_VERSION: "3.11"
   NODE_VERSION: "20"
-  PNPM_VERSION: "9"
 
 jobs:
   # ---------------------------------------------------------------------------
@@ -21,24 +20,23 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+      - name: Repository integrity (CI paths, Dockerfiles, deploy guards)
+        run: bash scripts/check_repo_integrity.sh
       - uses: astral-sh/setup-uv@v3
       - uses: actions/setup-python@v5
         with:
           python-version: ${{ env.PYTHON_VERSION }}
-      - uses: pnpm/action-setup@v4
-        with:
-          version: ${{ env.PNPM_VERSION }}
       - uses: actions/setup-node@v4
         with:
           node-version: ${{ env.NODE_VERSION }}
-          cache: pnpm
-          cache-dependency-path: annotation-studio/frontend/pnpm-lock.yaml
+          cache: npm
+          cache-dependency-path: frontend/package-lock.json
       - name: Backend lint (ruff + import-linter)
-        working-directory: annotation-studio/backend
+        working-directory: backend
         run: make setup && make lint
       - name: Frontend lint (eslint + prettier + tsc)
-        working-directory: annotation-studio/frontend
-        run: pnpm install --frozen-lockfile && pnpm lint && pnpm typecheck
+        working-directory: frontend
+        run: npm ci && npm run lint && npm run typecheck
 
   # ---------------------------------------------------------------------------
   backend-test:
@@ -71,17 +69,17 @@ jobs:
         with:
           python-version: ${{ env.PYTHON_VERSION }}
       - name: Setup + migrate
-        working-directory: annotation-studio/backend
+        working-directory: backend
         run: make setup && make migrate
       - name: pytest (avec couverture, fail-under via coverage_goals.md)
-        working-directory: annotation-studio/backend
+        working-directory: backend
         run: make test
       - name: Upload coverage backend
         if: always()
         uses: actions/upload-artifact@v4
         with:
           name: backend-coverage
-          path: annotation-studio/backend/coverage.xml
+          path: backend/coverage.xml
           if-no-files-found: ignore
 
   # ---------------------------------------------------------------------------
@@ -91,26 +89,23 @@ jobs:
     needs: lint
     steps:
       - uses: actions/checkout@v4
-      - uses: pnpm/action-setup@v4
-        with:
-          version: ${{ env.PNPM_VERSION }}
       - uses: actions/setup-node@v4
         with:
           node-version: ${{ env.NODE_VERSION }}
-          cache: pnpm
-          cache-dependency-path: annotation-studio/frontend/pnpm-lock.yaml
+          cache: npm
+          cache-dependency-path: frontend/package-lock.json
       - name: Install
-        working-directory: annotation-studio/frontend
-        run: pnpm install --frozen-lockfile
+        working-directory: frontend
+        run: npm ci
       - name: Vitest + couverture (seuils coverage_goals.md)
-        working-directory: annotation-studio/frontend
-        run: pnpm test:coverage
+        working-directory: frontend
+        run: npm run test:coverage
       - name: Upload coverage frontend
         if: always()
         uses: actions/upload-artifact@v4
         with:
           name: frontend-coverage
-          path: annotation-studio/frontend/coverage
+          path: frontend/coverage
           if-no-files-found: ignore
 
   # ---------------------------------------------------------------------------
@@ -147,41 +142,38 @@ jobs:
       - uses: actions/setup-python@v5
         with:
           python-version: ${{ env.PYTHON_VERSION }}
-      - uses: pnpm/action-setup@v4
-        with:
-          version: ${{ env.PNPM_VERSION }}
       - uses: actions/setup-node@v4
         with:
           node-version: ${{ env.NODE_VERSION }}
-          cache: pnpm
-          cache-dependency-path: annotation-studio/frontend/pnpm-lock.yaml
+          cache: npm
+          cache-dependency-path: frontend/package-lock.json
       - name: Backend setup + migrate + seed
-        working-directory: annotation-studio/backend
+        working-directory: backend
         run: make setup && make migrate && make seed
       - name: Frontend install + Playwright browsers
-        working-directory: annotation-studio/frontend
-        run: pnpm install --frozen-lockfile && pnpm exec playwright install --with-deps
+        working-directory: frontend
+        run: npm ci && npx playwright install --with-deps
       - name: Start backend (background)
-        working-directory: annotation-studio/backend
+        working-directory: backend
         run: |
           make run > /tmp/backend.log 2>&1 &
           for i in $(seq 1 60); do curl -fsS http://localhost:8000/api/v1/ && break || sleep 2; done
       - name: Start frontend (background)
-        working-directory: annotation-studio/frontend
+        working-directory: frontend
         run: |
-          pnpm build && pnpm start > /tmp/frontend.log 2>&1 &
+          npm run build && npm start > /tmp/frontend.log 2>&1 &
           for i in $(seq 1 60); do curl -fsS http://localhost:3000/ && break || sleep 2; done
       - name: Playwright
-        working-directory: annotation-studio/frontend
-        run: pnpm e2e
+        working-directory: frontend
+        run: npm run e2e
       - name: Upload Playwright report
         if: always()
         uses: actions/upload-artifact@v4
         with:
           name: playwright-report
           path: |
-            annotation-studio/frontend/playwright-report
-            annotation-studio/frontend/test-results
+            frontend/playwright-report
+            frontend/test-results
           if-no-files-found: ignore
 
   # ---------------------------------------------------------------------------
@@ -192,8 +184,8 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - name: Build backend image
-        working-directory: annotation-studio
+        working-directory: .
         run: docker build -t claire-backend:ci ./backend
       - name: Build frontend image
-        working-directory: annotation-studio
+        working-directory: .
         run: docker build -t claire-frontend:ci ./frontend

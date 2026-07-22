@@ -216,11 +216,14 @@ def test_security_headers(auth, annotator):
     assert resp.headers["Referrer-Policy"] == "strict-origin-when-cross-origin"
 
 
-def test_security_headers_hsts_in_prod(settings):
+def test_security_headers_hsts_in_prod(settings, monkeypatch):
     """Prod settings enable HSTS and SSL hardening (security.md §7)."""
     # prod.py is the source of truth; assert its hardening knobs are present.
     import importlib
 
+    # La production doit refuser de démarrer sans secret ; le test en fournit un
+    # explicitement au lieu de dépendre du shell ou d'un .env local.
+    monkeypatch.setenv("DJANGO_SECRET_KEY", "test-only-production-secret-key-32-bytes")
     prod = importlib.import_module("config.settings.prod")
     assert prod.SECURE_HSTS_SECONDS >= 31536000
     assert prod.SESSION_COOKIE_SECURE is True

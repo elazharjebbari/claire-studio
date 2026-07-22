@@ -6,8 +6,8 @@ from django.db import IntegrityError
 
 from claire.annotations.models import (
     Clause,
-    ClauseTheme,
     ClauseRole,
+    ClauseTheme,
     validate_clause_theme_set,
 )
 from claire.annotations.serializers import ClauseSerializer

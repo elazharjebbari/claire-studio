@@ -7,7 +7,7 @@ Garantit qu'une campagne peut figer un document soumis tout en permettant d'y re
 
 import pytest
 
-from claire.annotations.models import Annotation, AnnotationStatus, Clause
+from claire.annotations.models import AnnotationStatus, Clause
 from claire.annotations.services import transition_status
 from claire.audit.models import ActivityEvent
 from tests.conftest import UserFactory

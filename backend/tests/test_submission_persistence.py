@@ -14,7 +14,6 @@ et le comportement (non gardé) de la soumission d'une annotation vide.
 import pytest
 
 from claire.annotations.models import (
-    Annotation,
     AnnotationStatus,
     AnnotationVersion,
     Clause,

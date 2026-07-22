@@ -12,9 +12,8 @@ from claire.annotations.models import (
     Clause,
 )
 from claire.common.exceptions import Conflict
-from claire.corpora.models import Document, Sentence
+from claire.corpora.models import Document
 from claire.projects.models import Project
-from claire.schemes.models import Theme
 
 from .loaders import normalize_preannotation
 from .models import PreAnnotation, PreClause

@@ -1,12 +1,12 @@
 import logging
 
+from django.db import transaction
 from django.shortcuts import get_object_or_404
+from django.utils import timezone
 from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework import status, viewsets
 from rest_framework.decorators import action
 from rest_framework.response import Response
-
-from django.utils import timezone
 
 from claire.audit.services import record_event
 from claire.collaboration.models import Comment, Review, ReviewDecision
@@ -18,12 +18,9 @@ from claire.common.permissions import (
     IsAnnotationOwnerOrReviewer,
     IsReviewerOrAdmin,
 )
+from claire.corpora.models import Sentence
 from claire.imports.models import PreAnnotation
 from claire.imports.services import seed_annotation_from_preannotation
-
-from django.db import transaction
-
-from claire.corpora.models import Sentence
 from claire.schemes.models import LegalNature, Theme
 
 from .models import (
@@ -42,7 +39,6 @@ from .serializers import (
 )
 from .services import (
     create_version,
-    diff_versions,
     ensure_primary_tag,
     set_clause_theme_tags,
     transition_status,
@@ -129,6 +125,25 @@ def _apply_scalar_fields(clause, item, scheme) -> list[str]:
         clause.certainty = item.get("certainty")
         changed.append("certainty")
     return changed
+
+
+def _record_clause_event(actor, verb: str, clause: Clause, fields=()) -> None:
+    """Journalise une mutation de clause sans contenu juridique ni PII.
+
+    La cible reste l'annotation afin que le filtrage projet de ``/activity`` et les
+    futurs agrégats puissent retrouver la campagne sans dépendre d'une clause qui
+    peut ensuite être supprimée. Le payload est volontairement borné.
+    """
+    record_event(
+        actor=actor,
+        verb=verb,
+        target=clause.annotation,
+        payload={
+            "clause_id": clause.pk,
+            "anchor_index": clause.anchor_sentence.index,
+            "fields": sorted(set(str(field) for field in fields)),
+        },
+    )
 
 logger = logging.getLogger("claire.annotations")
 
@@ -408,6 +423,15 @@ class AnnotationViewSet(viewsets.ModelViewSet):
                 set_clause_theme_tags(clause, themes, annotation.project.scheme)
             else:
                 ensure_primary_tag(clause)
+            event_fields = list(attrs) + changed
+            if isinstance(themes, list) and themes:
+                event_fields.append("themes")
+            _record_clause_event(
+                request.user,
+                "clause.updated" if existing is not None else "clause.added",
+                clause,
+                event_fields,
+            )
         code = status.HTTP_200_OK if existing is not None else status.HTTP_201_CREATED
         return Response(ClauseSerializer(clause).data, status=code)
 
@@ -507,6 +531,17 @@ class AnnotationViewSet(viewsets.ModelViewSet):
                     set_clause_theme_tags(clause, themes, scheme)
                 else:
                     ensure_primary_tag(clause)
+                event_fields = ["theme", *sch, *ch]
+                if isinstance(themes, list) and themes:
+                    event_fields.append("themes")
+                if item.get("validated") is not None:
+                    event_fields.append("validated")
+                _record_clause_event(
+                    request.user,
+                    "clause.updated" if existing_at_anchor is not None else "clause.added",
+                    clause,
+                    event_fields,
+                )
                 created.append(ClauseSerializer(clause).data)
 
         http = status.HTTP_201_CREATED if created else status.HTTP_409_CONFLICT
@@ -566,15 +601,19 @@ class AnnotationViewSet(viewsets.ModelViewSet):
         for k in sorted(set(old) | set(new)):
             o, nw = old.get(k), new.get(k)
             if o is None:
-                status_ = "added"; added += 1
+                status_ = "added"
+                added += 1
             elif nw is None:
-                status_ = "removed"; removed += 1
+                status_ = "removed"
+                removed += 1
             else:
                 changed = [camel for snake, camel in fields.items() if o.get(snake) != nw.get(snake)]
                 if changed:
-                    status_ = "modified"; modified += 1
+                    status_ = "modified"
+                    modified += 1
                 else:
-                    status_ = "unchanged"; unchanged += 1
+                    status_ = "unchanged"
+                    unchanged += 1
             clauses.append(
                 {
                     "anchor_index": k,
@@ -727,7 +766,10 @@ class ClauseViewSet(viewsets.ModelViewSet):
     def destroy(self, request, *args, **kwargs):
         clause = self.get_object()
         _assert_not_locked(clause.annotation)
-        return super().destroy(request, *args, **kwargs)
+        with transaction.atomic():
+            _record_clause_event(request.user, "clause.deleted", clause)
+            clause.delete()
+        return Response(status=status.HTTP_204_NO_CONTENT)
 
     def partial_update(self, request, *args, **kwargs):
         clause = self.get_object()
@@ -743,7 +785,7 @@ class ClauseViewSet(viewsets.ModelViewSet):
         with transaction.atomic():
             for field, value in attrs.items():
                 setattr(clause, field, value)
-            _apply_boundary_and_level(clause, request.data)
+            changed = _apply_boundary_and_level(clause, request.data)
             clause.save()
             # Multi-label : `themes` remplace le set ; sinon, garder le miroir scalaire cohérent.
             themes = request.data.get("themes")
@@ -757,6 +799,10 @@ class ClauseViewSet(viewsets.ModelViewSet):
                 )
             else:
                 ensure_primary_tag(clause)
+            event_fields = list(attrs) + changed
+            if isinstance(themes, list) and themes:
+                event_fields.append("themes")
+            _record_clause_event(request.user, "clause.updated", clause, event_fields)
         return Response(ClauseSerializer(clause).data)
 
     @action(detail=True, methods=["post"], url_path="swap-primary")
@@ -782,7 +828,9 @@ class ClauseViewSet(viewsets.ModelViewSet):
             else:
                 role = t.role
             payload.append({"label": t.theme.code, "role": role, "support": t.support})
-        set_clause_theme_tags(clause, payload, clause.annotation.project.scheme)
+        with transaction.atomic():
+            set_clause_theme_tags(clause, payload, clause.annotation.project.scheme)
+            _record_clause_event(request.user, "clause.updated", clause, ["themes", "theme"])
         return Response(ClauseSerializer(clause).data)
 
     @action(detail=True, methods=["post"])
@@ -802,5 +850,7 @@ class ClauseViewSet(viewsets.ModelViewSet):
         if request.data.get("validatedBy") or request.data.get("validated_by"):
             clause.validated = True
             fields.append("validated")
-        clause.save(update_fields=fields)
+        with transaction.atomic():
+            clause.save(update_fields=fields)
+            _record_clause_event(request.user, "clause.updated", clause, fields)
         return Response(ClauseSerializer(clause).data)

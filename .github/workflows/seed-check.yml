@@ -6,9 +6,9 @@ name: Seed idempotency check
 on:
   pull_request:
     paths:
-      - "annotation-studio/backend/**"
-      - "annotation-studio/scripts/seed_all.sh"
-      - "annotation-studio/.github/workflows/seed-check.yml"
+      - "backend/**"
+      - "scripts/seed_all.sh"
+      - ".github/workflows/seed-check.yml"
   workflow_dispatch:
 
 jobs:
@@ -41,11 +41,11 @@ jobs:
         with:
           python-version: "3.11"
       - name: Setup + migrate
-        working-directory: annotation-studio/backend
+        working-directory: backend
         run: make setup && make migrate
 
       - name: First seed
-        working-directory: annotation-studio/backend
+        working-directory: backend
         run: make seed
       - name: Dump #1
         run: |
@@ -53,7 +53,7 @@ jobs:
             --exclude-table='*django_migrations*' > /tmp/dump1.sql
 
       - name: Second seed (must be a no-op)
-        working-directory: annotation-studio/backend
+        working-directory: backend
         run: make seed
       - name: Dump #2
         run: |

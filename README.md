@@ -53,9 +53,9 @@ Voir `dossier/15_runbook/RUNBOOK.md`. En résumé :
 # Backend
 cd backend && make setup && make seed && make run    # http://localhost:8000
 # Frontend
-cd frontend && pnpm install && pnpm dev               # http://localhost:3000
+cd frontend && npm ci && npm run dev                   # http://localhost:3001
 # Tests
 cd backend && make test           # pytest
-cd frontend && pnpm test          # Vitest + MSW
-cd frontend && pnpm e2e           # Playwright
+cd frontend && npm test           # Vitest + MSW
+cd frontend && npm run e2e        # Playwright
 ```

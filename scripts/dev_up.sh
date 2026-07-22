@@ -54,7 +54,7 @@ log "Démarrage du backend sur :$BACKEND_PORT…"
 PIDS+=($!)
 
 log "Démarrage du frontend sur :$FRONTEND_PORT…"
-( cd frontend && pnpm dev ) &
+( cd frontend && npm run dev ) &
 PIDS+=($!)
 
 log "Pile de dev lancée :"

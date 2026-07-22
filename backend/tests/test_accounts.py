@@ -178,7 +178,8 @@ def test_ui_preferences_isolated_between_accounts(client):
     r2 = _patch_prefs(client, bob, {"overlays": {"showUnfairness": True}, "panels": {"inspectorOpen": True}})
     assert r2.status_code == 200
 
-    alice.refresh_from_db(); bob.refresh_from_db()
+    alice.refresh_from_db()
+    bob.refresh_from_db()
     # Chaque compte conserve EXACTEMENT ses propres valeurs (aucune fuite croisée).
     assert alice.ui_preferences["overlays"]["showUnfairness"] is False
     assert alice.ui_preferences["panels"]["inspectorOpen"] is False

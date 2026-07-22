@@ -28,7 +28,6 @@ ne stocke pas » (ou l'inverse).
 import pytest
 
 from claire.annotations.models import (
-    Annotation,
     AnnotationStatus,
     AnnotationVersion,
     Clause,

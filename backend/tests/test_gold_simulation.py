@@ -15,12 +15,11 @@ import pytest
 
 from claire.annotations.models import (
     AnnotationStatus,
-    Clause,
     ClauseRole,
     ClauseTheme,
 )
 from claire.annotations.services import transition_status
-from claire.corpora.models import Document, Sentence
+from claire.corpora.models import Sentence
 from claire.gold.models import GoldResolution, GoldSentence
 from claire.imports.models import Judge, PreAnnotation, PreClause
 from claire.imports.services import seed_annotation_from_preannotation
@@ -213,7 +212,11 @@ def test_full_flow_bootstrap_to_export(scheme_with_themes, auth, settings, tmp_p
     assert job.manifest["kind"] == "gold"
     assert job.manifest["n_decided"] == 4
     assert os.path.exists(job.artifact_path)
-    rows = [json.loads(l) for l in open(job.artifact_path, encoding="utf-8") if l.strip()]
+    rows = [
+        json.loads(line)
+        for line in open(job.artifact_path, encoding="utf-8")
+        if line.strip()
+    ]
     doc_row = next(r for r in rows if r["document"] == doc.external_id)
     by_idx = {s["index"]: s for s in doc_row["sentences"]}
     assert by_idx[2]["arbitration"]["decided_by"] == lead.username  # décision humaine tracée

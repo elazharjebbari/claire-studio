@@ -57,7 +57,7 @@ services:
       postgres:
         condition: service_healthy
     healthcheck:
-      test: ["CMD-SHELL", "python -c \"import urllib.request,sys; urllib.request.urlopen('http://localhost:8000/api/v1/'); \" || curl -fsS http://localhost:8000/api/v1/ || exit 1"]
+      test: ["CMD-SHELL", "python -c \"import urllib.request; urllib.request.urlopen('http://localhost:8000/api/v1/health')\""]
       interval: 10s
       timeout: 5s
       retries: 10
@@ -92,7 +92,7 @@ services:
       context: ./frontend
     container_name: claire-frontend
     environment:
-      NEXT_PUBLIC_API_URL: ${NEXT_PUBLIC_API_URL:-http://localhost:8000/api/v1}
+      NEXT_PUBLIC_API_BASE: ${NEXT_PUBLIC_API_BASE:-http://localhost:8000/api/v1}
       NEXT_PUBLIC_WS_URL: ${NEXT_PUBLIC_WS_URL:-ws://localhost:8001/ws}
       NEXT_TELEMETRY_DISABLED: "1"
       NODE_ENV: ${NODE_ENV:-development}
@@ -101,6 +101,7 @@ services:
     volumes:
       - ./frontend:/app
       - /app/node_modules
+    command: ["npm", "run", "dev", "--", "-p", "3001"]
     depends_on:
       backend:
         condition: service_healthy

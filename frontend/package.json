@@ -3,6 +3,9 @@
   "version": "0.1.0",
   "private": true,
   "description": "CLAIRE Studio — annotation workspace frontend (Next.js 14 App Router, TypeScript, Tailwind).",
+  "engines": {
+    "node": ">=20.19.0"
+  },
   "scripts": {
     "dev": "next dev -p 3001",
     "build": "next build",
@@ -40,7 +43,7 @@
     "@types/react": "^18.3.3",
     "@types/react-dom": "^18.3.0",
     "@vitejs/plugin-react": "^4.3.1",
-    "@vitest/coverage-v8": "^2.0.5",
+    "@vitest/coverage-v8": "^2.1.9",
     "autoprefixer": "^10.4.19",
     "eslint": "^8.57.0",
     "eslint-config-next": "^14.2.33",
@@ -57,5 +60,22 @@
     "workerDirectory": [
       "public"
     ]
+  },
+  "optionalDependencies": {
+    "@next/swc-darwin-arm64": "^14.2.33",
+    "@next/swc-darwin-x64": "^14.2.33",
+    "@next/swc-linux-arm64-gnu": "^14.2.33",
+    "@next/swc-linux-arm64-musl": "^14.2.33",
+    "@next/swc-linux-x64-gnu": "^14.2.33",
+    "@next/swc-linux-x64-musl": "^14.2.33",
+    "@next/swc-win32-arm64-msvc": "^14.2.33",
+    "@next/swc-win32-ia32-msvc": "^14.2.33",
+    "@next/swc-win32-x64-msvc": "^14.2.33",
+    "@rollup/rollup-darwin-arm64": "4.62.0",
+    "@rollup/rollup-darwin-x64": "4.62.0",
+    "@rollup/rollup-linux-arm64-gnu": "4.62.0",
+    "@rollup/rollup-linux-arm64-musl": "4.62.0",
+    "@rollup/rollup-linux-x64-gnu": "4.62.0",
+    "@rollup/rollup-linux-x64-musl": "4.62.0"
   }
 }

@@ -28,6 +28,9 @@ target-version = "py310"
 
 [tool.ruff.lint]
 select = ["E", "F", "I", "W"]
+# Les migrations Django générées et plusieurs contrats contiennent des lignes
+# volontairement longues. E501 ne porte pas de risque fonctionnel ici.
+ignore = ["E501"]
 
 [tool.pytest.ini_options]
 DJANGO_SETTINGS_MODULE = "config.settings.test"

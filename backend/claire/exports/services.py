@@ -199,7 +199,7 @@ def run_export(job: ExportJob) -> ExportJob:
 
         out_dir = Path(settings.EXPORTS_DIR)
         out_dir.mkdir(parents=True, exist_ok=True)
-        stamp = dt.datetime.utcnow().strftime("%Y%m%dT%H%M%S")
+        stamp = dt.datetime.now(dt.UTC).strftime("%Y%m%dT%H%M%S")
 
         # Format effectif : un format non implémenté retombe sur jsonl, et on TRACE
         # ce repli dans le manifeste (jamais de troncature/repli silencieux, ADR‑001 §F).

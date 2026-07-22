@@ -99,7 +99,7 @@ def run_gold_export(job):
 
     out_dir = Path(settings.EXPORTS_DIR)
     out_dir.mkdir(parents=True, exist_ok=True)
-    stamp = dt.datetime.utcnow().strftime("%Y%m%dT%H%M%S")
+    stamp = dt.datetime.now(dt.UTC).strftime("%Y%m%dT%H%M%S")
     fmt = job.format if job.format in ("csv",) else "jsonl"
     ext = "csv" if fmt == "csv" else "jsonl"
     path = out_dir / f"gold_{job.project.slug}_{job.id}_{stamp}.{ext}"

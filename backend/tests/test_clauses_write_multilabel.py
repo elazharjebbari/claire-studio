@@ -2,7 +2,7 @@
 
 import pytest
 
-from claire.annotations.models import Clause, ClauseTheme
+from claire.annotations.models import Clause
 
 pytestmark = pytest.mark.django_db
 

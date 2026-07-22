@@ -5,7 +5,7 @@ Visualiser et annoter les vraies données : corpus **CLAUDETTE** (50 ToS) + pré
 
 ## Prérequis
 
-- **Node 18+** (frontend).
+- **Node ≥ 20.19** (frontend ; CI et dépendances de build).
 - **Python ≥ 3.10** (backend — Django 5). ⚠️ Le `base` de conda est souvent en **3.9** et ne
   suffit pas. Le script `run_real.sh` crée automatiquement un venv `backend/.venv` avec le
   premier `python3.10+` trouvé. Si aucun n'est disponible :

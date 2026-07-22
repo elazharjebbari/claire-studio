@@ -12,8 +12,8 @@ from claire.audit.services import record_event
 from claire.common.pagination import results_envelope
 from claire.common.permissions import IsAdminRole
 
-from .iaa import project_iaa, project_iaa_detail
 from .concordance import project_concordance
+from .iaa import project_iaa, project_iaa_detail
 from .models import (
     Assignment,
     MembershipRole,
@@ -241,7 +241,12 @@ class ProjectViewSet(viewsets.ModelViewSet):
         project = self.get_object()
         submitted = ["submitted", "in_review", "approved"]
         rows = []
-        for m in project.memberships.select_related("user").order_by("user__username"):
+        memberships = (
+            project.memberships.select_related("user")
+            .filter(role__in=[MembershipRole.ANNOTATOR, MembershipRole.LEAD])
+            .order_by("user__username")
+        )
+        for m in memberships:
             u = m.user
             assigned = project.assignments.filter(assignee=u).count()
             anns = project.annotations.filter(annotator=u)
@@ -1170,6 +1175,7 @@ class JoinShareLinkView(APIView):
         from django.db.models import F
 
         from claire.collaboration.models import ShareLink
+
         from .models import ProjectMembership
 
         link = (

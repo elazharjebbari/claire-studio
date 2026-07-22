@@ -53,7 +53,7 @@ else
   ( cd backend && make run ) >/tmp/claire-e2e-backend.log 2>&1 &
   PIDS+=($!)
   log "Frontend…"
-  ( cd frontend && pnpm dev ) >/tmp/claire-e2e-frontend.log 2>&1 &
+  ( cd frontend && npm run dev ) >/tmp/claire-e2e-frontend.log 2>&1 &
   PIDS+=($!)
 
   wait_http "${E2E_API_URL}/" "backend" 60
@@ -62,7 +62,7 @@ fi
 
 # --- Playwright --------------------------------------------------------------
 log "Exécution des 12 specs Playwright (F1->F12)…"
-( cd frontend && E2E_BASE_URL="$E2E_BASE_URL" E2E_API_URL="$E2E_API_URL" pnpm e2e )
+( cd frontend && E2E_BASE_URL="$E2E_BASE_URL" E2E_API_URL="$E2E_API_URL" npm run e2e )
 RC=$?
 
 if [[ "$RC" -ne 0 ]]; then

@@ -5,8 +5,6 @@ from django.db import IntegrityError, transaction
 
 from claire.annotations.models import Annotation, Clause
 from claire.corpora.models import Sentence
-from tests.conftest import DocumentFactory
-
 
 pytestmark = pytest.mark.django_db
 
@@ -43,7 +41,7 @@ def test_inv3_theme_must_be_in_scheme(auth, annotator, annotation):
 
 # INV-3 (scheme isolation): a theme from another scheme must not be usable.
 def test_inv3_scheme_isolation(auth, annotator, annotation):
-    from tests.conftest import ThemeFactory, LabelSchemeFactory
+    from tests.conftest import LabelSchemeFactory, ThemeFactory
 
     other_scheme = LabelSchemeFactory()
     ThemeFactory(scheme=other_scheme, code="FOREIGN", label="Foreign")

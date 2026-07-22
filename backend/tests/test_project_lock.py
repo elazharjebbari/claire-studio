@@ -6,8 +6,8 @@ d'un coup. Override prioritaire du verrou par-annotation — un annotateur ne pe
 import pytest
 from rest_framework.test import APIClient
 
-from claire.projects.models import Project, ProjectMembership
 from claire.audit.models import ActivityEvent
+from claire.projects.models import ProjectMembership
 
 pytestmark = pytest.mark.django_db
 

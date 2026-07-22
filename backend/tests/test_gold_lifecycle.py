@@ -205,7 +205,7 @@ def test_llm_annotators_list_add_remove(scheme_with_themes, auth):
     body = _detail(auth, lead, project, doc).json()
     s0 = body["sentences"][0]
     assert any(a["voterId"] == "claude" for a in s0["annotators"])
-    assert all(l["judge"] != "claude" for l in s0["llms"])
+    assert all(llm["judge"] != "claude" for llm in s0["llms"])
     assert auth(lead).get(base).json()["results"][0]["added"] is True
 
     # Retrait : redevient une référence LLM.
@@ -213,7 +213,7 @@ def test_llm_annotators_list_add_remove(scheme_with_themes, auth):
     assert r2.status_code == 200
     assert not Annotation.objects.filter(project=project, annotator=user).exists()
     body2 = _detail(auth, lead, project, doc).json()
-    assert any(l["judge"] == "claude" for l in body2["sentences"][0]["llms"])
+    assert any(llm["judge"] == "claude" for llm in body2["sentences"][0]["llms"])
 
 
 def test_llm_annotators_end_to_end_resolution(scheme_with_themes, auth):
@@ -424,8 +424,8 @@ def test_finalize_bounded_by_in_range_decided(scheme_with_themes, auth):
     project, doc = _doc(corpus, scheme_with_themes, n=2)
     lead = _lead(project)
     # index0 : accord strict META (auto) ; index1 : non décidé.
-    a1 = _assigned(project, doc, "bd_a1", code="META")
-    a2 = _assigned(project, doc, "bd_a2", code="META")
+    _assigned(project, doc, "bd_a1", code="META")
+    _assigned(project, doc, "bd_a2", code="META")
     _detail(auth, lead, project, doc)
     res = GoldResolution.objects.get(document=doc)
     # Décision humaine ORPHELINE hors-bornes (survit à l'élagage : decided humain).
