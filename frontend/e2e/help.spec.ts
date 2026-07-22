@@ -32,7 +32,7 @@ test.describe("Centre d'aide", () => {
 
   test("le lien d'aide de la TopBar mène au centre d'aide", async ({ page }) => {
     await page.goto("/home");
-    await page.getByTestId("help-link").click();
+    await page.getByRole("link", { name: "Documentation" }).click();
     await expect(page.getByTestId("help-center")).toBeVisible();
   });
 
@@ -48,8 +48,6 @@ test.describe("Centre d'aide", () => {
       "data-slug",
       "themes-segmentation",
     );
-    await expect(
-      page.getByTestId("help-content").getByText("vocabulaire fermé"),
-    ).toBeVisible();
+    await expect(page.getByTestId("help-content").getByText("vocabulaire fermé")).toBeVisible();
   });
 });

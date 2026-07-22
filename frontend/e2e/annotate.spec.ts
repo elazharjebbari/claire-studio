@@ -66,22 +66,25 @@ test.describe("Workspace d'annotation (F1)", () => {
     ).toBeVisible();
   });
 
-  test("re-thématiser met à jour immédiatement le rail + le badge dans le document (§6)", async ({ page }) => {
+  test("re-thématiser met à jour immédiatement le rail + le badge dans le document (§6)", async ({
+    page,
+  }) => {
     // Régression du bug couleur : choisir un thème pour une phrase déjà annotée
-    // doit changer IMMÉDIATEMENT le rail coloré (box-shadow inline) ET le badge de
+    // doit changer IMMÉDIATEMENT le rail coloré dédié ET le badge de
     // clause affichés dans le document — pas seulement l'inspecteur.
     const sentence = page.getByTestId("sentence-0"); // ancre META existante (fixtures)
     await sentence.click();
-    const railBefore = await sentence.getAttribute("style");
+    const rail = page.getByTestId("rail-0");
+    const railBefore = await rail.evaluate((node) => getComputedStyle(node).backgroundColor);
 
     const input = page.getByTestId("inspector").getByLabel("Rechercher un thème");
     await input.fill("résiliation");
     await page.getByTestId("inspector").getByTestId("theme-option-TERMINATION").click();
 
-    // Le rail gauche (box-shadow) de la phrase change de couleur immédiatement.
-    await expect(async () => {
-      expect(await sentence.getAttribute("style")).not.toBe(railBefore);
-    }).toPass();
+    // Le rail dédié de la phrase change de couleur immédiatement.
+    await expect
+      .poll(() => rail.evaluate((node) => getComputedStyle(node).backgroundColor))
+      .not.toBe(railBefore);
     // Le badge de clause dans le document reflète le nouveau thème.
     await expect(
       page
@@ -97,17 +100,17 @@ test.describe("Workspace d'annotation (F1)", () => {
     await expect(page.getByTestId("snapshot-msg")).toBeVisible();
   });
 
-  test("l'auto-save persiste les modifications (indicateur « enregistré », §C)", async ({ page }) => {
+  test("l'auto-save persiste les modifications (indicateur « enregistré », §C)", async ({
+    page,
+  }) => {
     // Une édition (re-thématisation) déclenche l'auto-save debounce → l'indicateur
     // d'état passe à « enregistré » une fois la synchro serveur terminée.
     await page.getByTestId("sentence-0").click();
     const input = page.getByTestId("inspector").getByLabel("Rechercher un thème");
     await input.fill("résiliation");
     await page.getByTestId("inspector").getByTestId("theme-option-TERMINATION").click();
-    await expect(page.getByTestId("save-indicator")).toHaveAttribute(
-      "data-state",
-      "saved",
-      { timeout: 8000 },
-    );
+    await expect(page.getByTestId("save-indicator")).toHaveAttribute("data-state", "saved", {
+      timeout: 8000,
+    });
   });
 });
