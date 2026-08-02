@@ -238,6 +238,22 @@ Vérifications post-déploiement, **sur le serveur** :
 | 8 commit | ✅ | |
 | 9 prod | ✅ | code + données + alignement des comptes, vérifié sur le VPS |
 
+### Preuves de production (2026-08-02, HEAD `76459bc`)
+
+| Vérification | Résultat |
+|---|---|
+| Pré-annotations par juge | claude **50**, codex **50**, mistral **50**, fable **50** |
+| `PreClause` de Fable | **1 728** (= nombre de segments du corpus source) |
+| Juges sur un document réel (`Atlas`) | `['claude', 'codex', 'fable', 'mistral']` |
+| `gold/llm-annotators` | les 4 juges, `fable` à **50 documents** |
+| Alignement des comptes | `fatima.ouali` → `fable` ; `elazhar.jebbari` et `zahra.boulaich` **conservent `claude`** (choix explicite, `asked=true`) |
+| Défaut d'un compte neuf | `{enabled: false, asked: false, judge: "fable"}` |
+| `pytest` sur le VPS | **450 passed, 20 skipped** (skips = données brutes CLAUDETTE absentes du VPS, préexistant) ; `test_judge_fable.py` **21/21, 0 skip** |
+| Santé | api 200, front 200, 3 services `active` |
+
+> ⚠ Deux comptes gardent `claude` **volontairement** : la commande ne touche pas un choix
+> exprimé. Pour les basculer aussi : `set_default_llm_judge --force`.
+
 ### Effets de bord constatés (et voulus)
 
 - `import_annotations_archive` énumérait `(claude|codex|gemini)` et mappait tout le reste sur
