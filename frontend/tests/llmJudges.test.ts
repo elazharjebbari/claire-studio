@@ -2,8 +2,8 @@ import { describe, expect, it } from "vitest";
 import { LLM_JUDGES, LLM_JUDGE_IDS, llmJudgeLabel, llmJudgeColor } from "@/lib/llmJudges";
 
 describe("config des juges LLM (source unique N-modèles)", () => {
-  it("inclut claude, codex, mistral et fable, ordonnés", () => {
-    expect(LLM_JUDGE_IDS).toEqual(["claude", "codex", "mistral", "fable"]);
+  it("ordonnés par taille de modèle décroissante : fable, claude, codex, mistral", () => {
+    expect(LLM_JUDGE_IDS).toEqual(["fable", "claude", "codex", "mistral"]);
   });
 
   it("chaque juge a label, initiale et couleur d'identité distincte", () => {

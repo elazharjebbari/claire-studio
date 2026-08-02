@@ -32,9 +32,16 @@ const read = (p: string) => readFileSync(resolve(REPO, p), "utf8");
 afterEach(cleanup);
 
 describe("Fable — nomenclature et parité backend", () => {
-  it("Fable est le 4ᵉ juge, après Mistral", () => {
-    expect(LLM_JUDGE_IDS).toEqual(["claude", "codex", "mistral", "fable"]);
+  it("Fable ouvre la liste : ordre d'affichage par taille de modèle décroissante", () => {
+    expect(LLM_JUDGE_IDS).toEqual(["fable", "claude", "codex", "mistral"]);
     expect(llmJudgeLabel("fable")).toBe("Fable");
+  });
+
+  it("PARITÉ : l'ordre d'affichage est le même côté serveur", () => {
+    const models = read("backend/claire/imports/models.py");
+    const order = /JUDGE_DISPLAY_ORDER = \(([^)]+)\)/.exec(models)?.[1] ?? "";
+    const ids = [...order.matchAll(/"([^"]+)"/g)].map((m) => m[1]!);
+    expect(ids).toEqual(LLM_JUDGE_IDS);
   });
 
   it("sa couleur d'identité est unique et n'est pas une couleur de THÈME", () => {
@@ -52,14 +59,17 @@ describe("Fable — nomenclature et parité backend", () => {
     expect(new Set(initials).size).toBe(initials.length);
   });
 
-  it("PARITÉ : LLM_JUDGES == Judge.import_judges() du backend", () => {
+  it("PARITÉ : aucun juge backend absent de LLM_JUDGES (et réciproquement)", () => {
+    // On compare les ENSEMBLES : l'ordre de déclaration backend est l'historique d'ajout,
+    // l'ordre d'affichage vit dans JUDGE_DISPLAY_ORDER (testé juste au-dessus).
     const models = read("backend/claire/imports/models.py");
     const block = models.slice(
       models.indexOf("class Judge(models.TextChoices)"),
       models.indexOf("class PreAnnotation"),
     );
     const backendIds = [...block.matchAll(/^\s{4}[A-Z_]+ = "([a-z0-9_-]+)"/gm)].map((m) => m[1]!);
-    expect(backendIds).toEqual([...LLM_JUDGE_IDS, "other"]); // `other` = fourre-tout, pas une piste
+    // `other` = fourre-tout backend, jamais une piste affichable.
+    expect(new Set(backendIds)).toEqual(new Set([...LLM_JUDGE_IDS, "other"]));
   });
 
   it("PARITÉ : le type Judge de contract.ts couvre tous les juges backend", () => {

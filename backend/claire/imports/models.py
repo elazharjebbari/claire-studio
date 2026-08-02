@@ -9,6 +9,21 @@ from claire.corpora.models import Document
 from claire.projects.models import Project
 
 
+# Ordre d'AFFICHAGE des juges (réglette des frontières, comparaison N-way, menus, atelier
+# gold) : par TAILLE DE MODÈLE décroissante, pas par ordre d'ajout. Constante de MODULE et
+# non attribut de classe : dans une Enum, toute assignation de classe deviendrait un membre.
+# Un juge absent d'ici passe en fin de liste (ordre alphabétique) plutôt que de disparaître.
+JUDGE_DISPLAY_ORDER = ("fable", "claude", "codex", "mistral")
+
+
+def judge_display_rank(judge: str) -> tuple[int, str]:
+    """Clé de tri d'affichage d'un juge (rang connu, sinon fin de liste)."""
+    try:
+        return (JUDGE_DISPLAY_ORDER.index(judge), judge)
+    except ValueError:
+        return (len(JUDGE_DISPLAY_ORDER), judge)
+
+
 class Judge(models.TextChoices):
     """Nomenclature UNIQUE des juges LLM (backend).
 
@@ -27,8 +42,12 @@ class Judge(models.TextChoices):
 
     @classmethod
     def import_judges(cls) -> list[str]:
-        """Juges NOMMÉS (hors fourre-tout `other`), dans l'ordre d'import stable."""
-        return [j for j in cls.values if j != cls.OTHER]
+        """Juges NOMMÉS (hors fourre-tout `other`), dans l'ORDRE D'AFFICHAGE.
+
+        Même ordre partout (import, API, UI) → un seul classement à comprendre. L'ordre de
+        déclaration ci-dessus reste l'historique d'ajout et n'a aucune portée d'affichage.
+        """
+        return sorted((j for j in cls.values if j != cls.OTHER), key=judge_display_rank)
 
 
 class PreAnnotation(models.Model):

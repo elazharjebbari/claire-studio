@@ -33,11 +33,15 @@ describe("QuickActionRail — rail d'actions rapides", () => {
     expect(p.onValidateAdvance).toHaveBeenCalledWith(3, expect.any(Number));
   });
 
-  it("bouton 1 désactivé quand rien à valider", () => {
+  it("bouton 1 désactivé quand rien à valider, et il DIT pourquoi", () => {
     const p = setup({ canValidate: false });
-    expect(screen.getByTestId("quick-validate-3")).toBeDisabled();
-    fireEvent.click(screen.getByTestId("quick-validate-3"));
+    const btn = screen.getByTestId("quick-validate-3");
+    expect(btn).toBeDisabled();
+    fireEvent.click(btn);
     expect(p.onValidateAdvance).not.toHaveBeenCalled();
+    // Un bouton grisé au titre trompeur (« Valider… ») se lit comme un bug : l'infobulle
+    // doit expliquer l'absence de clause sur cette phrase.
+    expect(btn.getAttribute("title")).toMatch(/ne porte pas de clause/i);
   });
 
   it("bouton 2 (C1) : clic applique la règle (onAcceptTriage avec le niveau)", () => {

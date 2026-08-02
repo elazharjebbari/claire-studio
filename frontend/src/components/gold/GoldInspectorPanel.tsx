@@ -12,6 +12,7 @@ import { Check, Bot, Sparkles } from "lucide-react";
 import { Panel } from "@/components/ui/primitives";
 import { readableTextColor } from "@/lib/tokens";
 import { AGREEMENT_META, RISK_META, AUTO_META } from "@/lib/gold/styling";
+import { llmJudgeLabel } from "@/lib/llmJudges";
 import type { GoldSentenceRow } from "@/lib/gold/types";
 
 export interface GoldInspectorProps {
@@ -111,7 +112,7 @@ export function GoldInspectorPanel({ sentence, canDecide, pending, onDecide }: G
               key={l.judge}
               className="inline-flex items-center gap-1 rounded-full border border-info/40 bg-info/10 px-2 py-0.5 text-[11px] text-info"
             >
-              {l.judge}: <span className="font-mono">{l.primary}</span>
+              {llmJudgeLabel(l.judge)}: <span className="font-mono">{l.primary}</span>
             </li>
           ))}
         </ul>

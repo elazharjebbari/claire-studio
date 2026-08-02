@@ -18,11 +18,17 @@ export interface LlmJudge {
   identityColor: string;
 }
 
+/**
+ * ORDRE D'AFFICHAGE : par TAILLE DE MODÈLE décroissante (Fable → Claude → Codex → Mistral),
+ * pas par ordre d'ajout. Cet ordre gouverne toutes les surfaces N-modèles (réglette,
+ * comparaison, menus, pré-remplissage) et doit rester en parité avec `JUDGE_DISPLAY_ORDER`
+ * côté serveur (`claire/imports/models.py`) — parité testée des deux côtés.
+ */
 export const LLM_JUDGES: LlmJudge[] = [
+  { id: "fable", label: "Fable", initial: "F", identityColor: "#FDBA74" },
   { id: "claude", label: "Claude", initial: "C", identityColor: "#94A3B8" },
   { id: "codex", label: "Codex", initial: "Cx", identityColor: "#A78BFA" },
   { id: "mistral", label: "Mistral", initial: "M", identityColor: "#5EEAD4" },
-  { id: "fable", label: "Fable", initial: "F", identityColor: "#FDBA74" },
 ];
 
 export const LLM_JUDGE_IDS: string[] = LLM_JUDGES.map((j) => j.id);

@@ -127,8 +127,18 @@ export function QuickActionRail({
         data-quickaction-validate={index}
         data-testid={`quick-validate-${index}`}
         disabled={!canValidate}
-        title="Valider (modèle courant) + phrase suivante"
-        aria-label={`Valider la phrase ${index} et passer à la suivante`}
+        // Un bouton grisé sans explication laisse croire à un bug (« curseur interdit ») :
+        // on dit POURQUOI. Une phrase de milieu de segment ne porte pas de clause à valider.
+        title={
+          canValidate
+            ? "Valider cette clause + aller à la clause suivante"
+            : "Rien à valider ici : cette phrase ne porte pas de clause"
+        }
+        aria-label={
+          canValidate
+            ? `Valider la clause de la phrase ${index} et passer à la clause suivante`
+            : `Phrase ${index} : aucune clause à valider`
+        }
         onClick={(e) =>
           // clavier (Enter/Espace) → clientY=0 : repli sur la position réelle du bouton.
           onValidateAdvance(index, e.clientY || e.currentTarget.getBoundingClientRect().top)

@@ -128,9 +128,21 @@ def _fable_payload(doc_id: str) -> dict:
 def test_fable_est_dans_la_nomenclature():
     assert Judge.FABLE.value == "fable"
     assert "fable" in Judge.values
+    # Ordre d'AFFICHAGE (taille de modèle décroissante), pas ordre d'ajout.
+    assert Judge.import_judges() == ["fable", "claude", "codex", "mistral"]
     # `other` est un fourre-tout, jamais un dossier de données à importer.
-    assert Judge.import_judges() == ["claude", "codex", "mistral", "fable"]
     assert "other" not in Judge.import_judges()
+
+
+def test_ordre_d_affichage_est_par_taille_de_modele():
+    from claire.imports.models import JUDGE_DISPLAY_ORDER, judge_display_rank
+
+    assert JUDGE_DISPLAY_ORDER == ("fable", "claude", "codex", "mistral")
+    assert sorted(["mistral", "fable", "codex", "claude"], key=judge_display_rank) == [
+        "fable", "claude", "codex", "mistral",
+    ]
+    # Un juge non classé ne disparaît pas : il passe en fin de liste.
+    assert sorted(["zzz", "fable"], key=judge_display_rank) == ["fable", "zzz"]
 
 
 def test_known_judges_est_derive_de_judge():
@@ -148,13 +160,16 @@ def test_choices_du_champ_judge_incluent_fable():
 
 
 def test_aucune_liste_de_juges_en_dur():
-    """Garde anti-régression structurelle : aucun module applicatif ne doit re-déclarer
-    une liste littérale de juges. La seule source est `Judge` (les migrations, qui figent
-    l'historique du schéma, sont exclues)."""
+    """Garde anti-régression structurelle : aucun module applicatif ne doit re-déclarer une
+    liste littérale de juges — c'est cette duplication qui avait fait diverger le frontend.
+
+    Deux exemptions, et deux seulement : `imports/models.py` (la SOURCE : `Judge` +
+    `JUDGE_DISPLAY_ORDER`) et les migrations (qui figent l'historique du schéma)."""
+    source = BACKEND_ROOT / "claire" / "imports" / "models.py"
     pattern = re.compile(r"""["'](claude|codex|mistral|fable)["']\s*,\s*["'](claude|codex|mistral|fable)["']""")
     offenders = []
     for path in (BACKEND_ROOT / "claire").rglob("*.py"):
-        if "migrations" in path.parts:
+        if "migrations" in path.parts or path == source:
             continue
         if pattern.search(path.read_text(encoding="utf-8")):
             offenders.append(str(path.relative_to(BACKEND_ROOT)))
@@ -300,7 +315,8 @@ def test_gold_expose_fable_en_reference_llm(project_4_juges, document_with_sente
 
     data = build_document_data(project_4_juges, document_with_sentences)
     details = data["per_sentence"][0]["llm_details"]
-    assert {d["judge"] for d in details} == {"claude", "codex", "mistral", "fable"}
+    # Ordre d'affichage garanti (et non ordre d'insertion en base) pour l'arbitre.
+    assert [d["judge"] for d in details] == ["fable", "claude", "codex", "mistral"]
     fable_votes = [v for v in data["per_sentence"][0]["votes"] if v.voter_id == "fable"]
     assert len(fable_votes) == 1 and fable_votes[0].is_llm is True
 
@@ -322,8 +338,9 @@ def test_triage_route_avec_4_juges():
 def test_llm_annotator_status_liste_fable(project_4_juges):
     from claire.gold.llm_seed import llm_annotator_status
 
-    rows = {r["judge"]: r for r in llm_annotator_status(project_4_juges)}
-    assert "fable" in rows
+    status = llm_annotator_status(project_4_juges)
+    assert [r["judge"] for r in status] == ["fable", "claude", "codex", "mistral"]
+    rows = {r["judge"]: r for r in status}
     assert rows["fable"]["added"] is False
     assert rows["fable"]["documents"] == 1
 
@@ -393,8 +410,9 @@ def test_defaut_front_et_serveur_sont_en_parite():
 
 
 def test_nomenclature_front_et_back_sont_en_parite():
-    """Les identifiants de `LLM_JUDGES` (frontend) == `Judge.import_judges()` (backend).
-    C'est LE test qui manquait : `contract.ts` avait raté Mistral pendant des mois."""
+    """Les identifiants de `LLM_JUDGES` (frontend) == `Judge.import_judges()` (backend),
+    ORDRE COMPRIS. C'est LE test qui manquait : `contract.ts` avait raté Mistral pendant
+    des mois, et un ordre d'affichage divergent donnerait deux classements à l'écran."""
     src = (REPO_ROOT / "frontend" / "src" / "lib" / "llmJudges.ts").read_text(encoding="utf-8")
     ids = re.findall(r'\{\s*id:\s*"([^"]+)"', src)
     assert ids == Judge.import_judges()

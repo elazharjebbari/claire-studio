@@ -42,6 +42,7 @@ import { deriveBlocks, blockAt } from "@/lib/blocks";
 import { ModelBoundaryStrip, ModelBoundaryLegend, type GutterModel } from "./ModelBoundaryRail";
 import { LLM_JUDGES, llmJudgeLabel } from "@/lib/llmJudges";
 import { validationByIndex } from "@/lib/validation";
+import { nextValidatableIndex, validatableIndicesOf } from "@/lib/quickValidate";
 import { useUiStore } from "@/store/ui";
 import { usePrefsStore } from "@/store/prefs";
 import {
@@ -219,6 +220,10 @@ export function DocumentPanel({
     () => new Map(drafts.map((d) => [d.anchorIndex, d])),
     [drafts],
   );
+  // Index des phrases VALIDABLES (= portant une clause), triés. Le rail d'actions rapides
+  // enchaîne de clause en clause : une phrase de MILIEU de segment n'a pas de clause, donc
+  // pas de bouton actif — avancer d'une phrase déposerait le curseur sur un bouton mort.
+  const validatableIndices = useMemo(() => validatableIndicesOf(drafts), [drafts]);
   // Point d — statut de validation par phrase (validated / pending / uncovered) pour la
   // piste de validation à gauche de chaque ligne.
   const validationStatuses = useMemo(() => validationByIndex(drafts, n), [drafts, n]);
@@ -505,20 +510,25 @@ export function DocumentPanel({
   // (curseur collant) → clics enchaînés sans bouger la souris. On NE crée PAS de clause là
   // où il n'y en a pas (pas de fragmentation de segment ni d'adoption d'un juge arbitraire) :
   // le bouton est désactivé en l'absence de clause (cf. quickCanValidate = présence d'ancre).
+  //
+  // On avance vers la prochaine phrase VALIDABLE, pas vers `index + 1` : les clauses ne
+  // couvrent qu'une fraction des phrases (ex. 20 clauses sur 93 phrases), donc `index + 1`
+  // déposait le curseur sur un bouton DÉSACTIVÉ ⇒ « curseur interdit », enchaînement cassé.
   const onQuickValidateAdvance = (index: number, refY: number) => {
     const anchor = anchorByIndex.get(index);
     if (!anchor) return;
     if (!anchor.validated) setValidated(anchor.localId, true);
-    if (index + 1 >= n) return; // dernière phrase : on valide sans avancer
+    const nextIndex = nextValidatableIndex(validatableIndices, index);
+    if (nextIndex === null || nextIndex >= n) return; // dernière clause : valider sans avancer
     // N'arme le drapeau que si le focus va RÉELLEMENT changer (sinon l'effet [focused] ne se
     // ré-exécute pas et le drapeau resterait coincé → scrollIntoView du prochain focus sauté).
-    if (index + 1 !== focused) {
+    if (nextIndex !== focused) {
       suppressFocusScroll.current = true;
-      focusSentence(index + 1);
+      focusSentence(nextIndex);
     }
-    // Après rendu : ramène le bouton de la phrase suivante exactement à `refY`.
+    // Après rendu : ramène le bouton de la clause suivante exactement à `refY`.
     requestAnimationFrame(() => {
-      const nextBtn = document.querySelector<HTMLElement>(`[data-quickaction-validate="${index + 1}"]`);
+      const nextBtn = document.querySelector<HTMLElement>(`[data-quickaction-validate="${nextIndex}"]`);
       if (!nextBtn) return;
       const sc = scrollParentOf(nextBtn);
       const delta = nextBtn.getBoundingClientRect().top - refY;

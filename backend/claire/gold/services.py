@@ -16,6 +16,7 @@ from django.utils import timezone
 
 from claire.annotations.models import REFUGE_CODES, Annotation, ClauseRole
 from claire.common.identity import display_name, user_color
+from claire.imports.models import judge_display_rank
 from claire.projects.concordance import _judge_vectors_for_document
 from claire.projects.gold_scoring import Vote, score_sentence
 from claire.projects.models import MembershipRole
@@ -165,7 +166,9 @@ def build_document_data(project, document) -> dict:
                     "secondaries": list(secs),
                 })
         llm_details = []
-        for judge, vec in judge_vecs.items():
+        # Ordre d'affichage unique (taille de modèle décroissante), pas l'ordre d'insertion
+        # en base — l'arbitre voit les modèles dans le même ordre que dans l'atelier.
+        for judge, vec in sorted(judge_vecs.items(), key=lambda kv: judge_display_rank(kv[0])):
             code = vec[i] if i < len(vec) else None
             votes.append(Vote(voter_id=judge, primary=code, secondaries=(), is_llm=True))
             if code is not None:

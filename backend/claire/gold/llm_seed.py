@@ -15,7 +15,7 @@ from django.db import transaction
 
 from claire.annotations.models import Annotation, AnnotationStatus
 from claire.annotations.services import transition_status
-from claire.imports.models import PreAnnotation
+from claire.imports.models import PreAnnotation, judge_display_rank
 from claire.projects.models import Assignment, MembershipRole, ProjectMembership
 
 from .config import annotation_statuses
@@ -63,7 +63,9 @@ def llm_annotator_status(project) -> list[dict]:
     for p in PreAnnotation.objects.filter(project=project).values("judge", "document_id"):
         by_judge.setdefault(p["judge"], set()).add(p["document_id"])
     out = []
-    for judge in sorted(by_judge):
+    # Ordre d'AFFICHAGE (taille de modèle décroissante), pas alphabétique : la liste part
+    # dans l'UI du studio de config.
+    for judge in sorted(by_judge, key=judge_display_rank):
         user = _llm_user(judge)  # compte LLM dédié uniquement
         added = bool(
             user
