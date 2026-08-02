@@ -15,6 +15,11 @@ from __future__ import annotations
 UI_PREFS_SCHEMA_VERSION = 1
 _DISPLAY_LANGS = ("orig", "both", "fr")
 
+# Modèle PRÉ-SÉLECTIONNÉ pour un compte neuf. Littéral car ce module est PUR (pas d'import
+# Django) : la parité avec `imports.models.Judge` et avec `DEFAULT_LLM_JUDGE` du frontend est
+# garantie par test (tests/test_judge_fable.py), pas par un import.
+DEFAULT_PREFILL_JUDGE = "fable"
+
 DEFAULTS: dict = {
     "v": UI_PREFS_SCHEMA_VERSION,
     "overlays": {"showUnfairness": True, "displayLang": "orig", "llmSource": "human"},
@@ -28,7 +33,9 @@ DEFAULTS: dict = {
         "triageOpen": False,
         "docControlsCollapsed": False,
     },
-    "prefill": {"enabled": False, "judge": None, "asked": False},
+    # `enabled: False` : l'auto-exécution reste OPT-IN (consentement explicite en UI) ;
+    # seul le CHOIX du modèle est pré-positionné.
+    "prefill": {"enabled": False, "judge": DEFAULT_PREFILL_JUDGE, "asked": False},
 }
 
 _BOOL_KEYS = {

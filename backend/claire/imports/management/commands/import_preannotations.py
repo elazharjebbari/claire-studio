@@ -1,4 +1,4 @@
-"""Importe les pré-annotations LLM (Claude/Codex) depuis ``data/preannotations``.
+"""Importe les pré-annotations LLM (Claude/Codex/Mistral/Fable) depuis ``data/preannotations``.
 
 Pour chaque document du corpus du projet, lit
 ``<dir>/<judge>/<external_id>_<judge>.json`` et appelle ``ingest_preannotation``
@@ -17,12 +17,13 @@ from pathlib import Path
 from django.conf import settings
 from django.core.management.base import BaseCommand, CommandError
 
+from claire.imports.models import Judge
 from claire.imports.services import ingest_preannotation
 from claire.projects.models import Project
 
 
 class Command(BaseCommand):
-    help = "Importe les pré-annotations LLM (claude/codex) depuis data/preannotations."
+    help = "Importe les pré-annotations LLM (claude/codex/mistral/fable) depuis data/preannotations."
 
     def add_arguments(self, parser):
         parser.add_argument("--project", required=True, help="slug du projet/campagne")
@@ -33,7 +34,9 @@ class Command(BaseCommand):
         )
         parser.add_argument(
             "--judges",
-            default="claude,codex,mistral",
+            # DÉRIVÉ de la source unique `Judge` : un juge ajouté à la nomenclature est
+            # importé par défaut, sans retoucher cette commande ni le script de prod.
+            default=",".join(Judge.import_judges()),
             help="juges à importer, séparés par des virgules",
         )
 

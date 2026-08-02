@@ -13,6 +13,8 @@
  * (useUiStore) et N'EST PAS dans ce schéma — ces réglages dépendent de l'écran, pas du compte.
  */
 
+import { DEFAULT_LLM_JUDGE } from "@/lib/llmJudges";
+
 export const UI_PREFS_SCHEMA_VERSION = 1;
 
 export type DisplayLang = "orig" | "both" | "fr";
@@ -71,7 +73,10 @@ export const UI_PREFS_DEFAULTS: UiPrefsV1 = {
     triageOpen: false,
     docControlsCollapsed: false,
   },
-  prefill: { enabled: false, judge: null, asked: false },
+  // Modèle PRÉ-SÉLECTIONNÉ par défaut (Fable) : le pré-remplissage manuel et le bouton
+  // d'auto-pré-annotation sont immédiatement utilisables. L'auto-exécution reste OPT-IN
+  // (`enabled: false` + modale de consentement) — on ne pré-annote jamais sans accord.
+  prefill: { enabled: false, judge: DEFAULT_LLM_JUDGE, asked: false },
 };
 
 function isObj(x: unknown): x is Record<string, unknown> {

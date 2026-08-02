@@ -10,10 +10,25 @@ from claire.projects.models import Project
 
 
 class Judge(models.TextChoices):
+    """Nomenclature UNIQUE des juges LLM (backend).
+
+    Toute liste de juges ailleurs dans le code DOIT être dérivée d'ici (cf.
+    `KNOWN_JUDGES`, la validation de `gold/llm-annotators`, le défaut de
+    `import_preannotations`) : c'est la duplication de cette liste qui a fait manquer
+    Mistral dans plusieurs surfaces. Le pendant frontend est `src/lib/llmJudges.ts`,
+    dont la parité est testée.
+    """
+
     CLAUDE = "claude", "Claude"
     CODEX = "codex", "Codex"
     MISTRAL = "mistral", "Mistral"
+    FABLE = "fable", "Fable"
     OTHER = "other", "Other"
+
+    @classmethod
+    def import_judges(cls) -> list[str]:
+        """Juges NOMMÉS (hors fourre-tout `other`), dans l'ordre d'import stable."""
+        return [j for j in cls.values if j != cls.OTHER]
 
 
 class PreAnnotation(models.Model):

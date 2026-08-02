@@ -22,7 +22,8 @@ export type AnnotationSource = "human" | "preannotation_seed";
 /** Échelle de certitude intuitive (CONTRACT §2, vocabulary.yaml). */
 export type Certainty = 0 | 1 | 2 | 3;
 
-export type Judge = "claude" | "codex" | "other";
+/** Doit rester en parité avec `Judge` (backend, claire/imports/models.py) — testé. */
+export type Judge = "claude" | "codex" | "mistral" | "fable" | "other";
 
 export type ReviewDecision = "approve" | "request_changes" | "reject";
 

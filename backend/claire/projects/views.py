@@ -804,6 +804,7 @@ class ProjectViewSet(viewsets.ModelViewSet):
             llm_annotator_status,
             remove_llm_annotator,
         )
+        from claire.imports.models import Judge
 
         project = self.get_object()
         if request.method == "GET":
@@ -823,7 +824,9 @@ class ProjectViewSet(viewsets.ModelViewSet):
             raise Locked("Projet verrouillé : configuration gelée.")
         judge = request.data.get("judge")
         action_ = request.data.get("action")
-        if judge not in {"claude", "codex", "mistral"}:
+        # Liste DÉRIVÉE de la source unique `Judge` (jamais réécrite ici) : un juge ajouté
+        # à la nomenclature devient promouvable sans toucher à cette vue.
+        if judge not in set(Judge.import_judges()):
             return Response({"detail": "juge inconnu."}, status=status.HTTP_400_BAD_REQUEST)
         if action_ == "add":
             return Response(add_llm_annotator(project, judge))

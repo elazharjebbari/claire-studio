@@ -10,6 +10,7 @@ from __future__ import annotations
 
 import copy
 
+from claire.imports.models import Judge
 from claire.projects.gold_scoring import default_config
 
 # Les LLM ne sont qu'une RÉFÉRENCE (jamais un votant) ; ces rôles restent stockables
@@ -18,7 +19,8 @@ LLM_ROLES = ("ignore", "tiebreak", "signal", "full")
 LEVELS = {"C1", "C2", "C3", "C4", "C5"}
 SECONDARY_POLICIES = {"optional", "required", "advisory"}
 ANNOTATION_STATUSES = {"submitted", "in_review", "approved", "draft"}
-KNOWN_JUDGES = {"claude", "codex", "mistral", "other"}
+# DÉRIVÉ de la source unique `Judge` : ajouter un juge ne demande aucune retouche ici.
+KNOWN_JUDGES = set(Judge.values)
 
 # Preset par défaut « CONFIANCE AUX ANNOTATEURS » (cf. presets.yaml). Stocké en snake_case
 # dans Project.settings['resolution'] ; le wire est camelisé par le renderer/parser DRF.

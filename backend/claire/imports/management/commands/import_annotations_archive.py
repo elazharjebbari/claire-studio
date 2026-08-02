@@ -1,4 +1,4 @@
-"""Importe l'ARCHIVE multi-versions d'annotations LLM (claude/codex/gemini).
+"""Importe l'ARCHIVE multi-versions d'annotations LLM (tout juge de la nomenclature).
 
 Source : `data/annotations_archive/v<MAJ>[_<MIN>]_session<N>_<judge>/<Doc>_<judge>.json`
 (ex. `v9_2_session1_claude/Instagram_claude.json`). La version est dérivée du dossier
@@ -22,10 +22,14 @@ from pathlib import Path
 from django.conf import settings
 from django.core.management.base import BaseCommand
 
+from claire.imports.models import Judge
 from claire.imports.services import ingest_preannotation
 from claire.projects.models import Project
 
-FOLDER_RE = re.compile(r"^(v\d+(?:_\d+)?)_session\d+_(claude|codex|gemini)$")
+# Le nom de juge n'est PAS énuméré ici (sinon une session d'un nouveau juge — fable… —
+# serait silencieusement ignorée) : on capture le suffixe et on le confronte à la
+# nomenclature `Judge` ; un juge hors nomenclature (ex. gemini) retombe sur `other`.
+FOLDER_RE = re.compile(r"^(v\d+(?:_\d+)?)_session\d+_([a-z0-9][a-z0-9._-]*)$")
 
 
 class Command(BaseCommand):
@@ -62,7 +66,7 @@ class Command(BaseCommand):
                 continue
             version = m.group(1).replace("_", ".")  # v9_2 -> v9.2
             judge_raw = m.group(2)
-            judge = judge_raw if judge_raw in ("claude", "codex") else "other"
+            judge = judge_raw if judge_raw in Judge.values else Judge.OTHER.value
 
             for f in sorted(folder.glob("*.json")):
                 stem = f.stem
