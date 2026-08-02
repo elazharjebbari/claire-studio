@@ -1,0 +1,206 @@
+% !TEX program = pdflatex
+% Proposition 1 page — deux articles JURIX 2026 — pour le directeur de thèse
+\documentclass[fontsize=9pt,a4paper]{scrartcl}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage[french]{babel}
+\usepackage{newtxtext,newtxmath}
+\renewcommand{\sfdefault}{qhv}       % sans-serif = TeX Gyre Heros (sans le package, évite le clash newtx)
+\usepackage{microtype}
+\usepackage{xcolor}
+\usepackage[most]{tcolorbox}
+\usepackage{enumitem}
+\usepackage{fontawesome5}
+\usepackage{tikz}
+\usepackage[a4paper,top=1.0cm,bottom=0.9cm,left=1.2cm,right=1.2cm]{geometry}
+
+% ── Palette (identité Pactiva : navy + or) ───────────────────────────────────
+\definecolor{navy}{HTML}{12284B}
+\definecolor{navsoft}{HTML}{2C4A73}
+\definecolor{gold}{HTML}{B8892B}
+\definecolor{ink}{HTML}{1A1F26}
+\definecolor{surface}{HTML}{F4F6F9}
+\definecolor{line}{HTML}{D7DEE7}
+
+\color{ink}
+\setlength{\parindent}{0pt}
+\setlist[itemize]{leftmargin=1.15em,itemsep=1.5pt,topsep=2pt,parsep=0pt}
+\renewcommand{\labelitemi}{\textcolor{gold}{\footnotesize\faAngleRight}}
+\pagestyle{empty}
+
+% ── Titre de section : icône + libellé sans-serif navy + filet or ────────────
+\newcommand{\heading}[2]{%
+  \par\vspace{7pt}%
+  {\sffamily\bfseries\color{navy}\small #1\hspace{0.5em}#2}\par\vspace{1pt}%
+  {\color{gold}\rule{\linewidth}{1pt}}\par\vspace{4pt}}
+
+\newcommand{\badge}[1]{\tikz[baseline=-0.6ex]\node[fill=gold,text=white,font=\sffamily\bfseries\footnotesize,
+  rounded corners=2pt,inner sep=2.2pt]{#1};}
+
+\begin{document}
+
+% ══ BANDEAU TITRE ════════════════════════════════════════════════════════════
+\begin{tcolorbox}[enhanced,colback=navy,colframe=navy,boxrule=0pt,arc=3pt,
+  left=12pt,right=12pt,top=8pt,bottom=8pt,
+  borderline west={3pt}{0pt}{gold}]
+  {\sffamily\bfseries\LARGE\color{white} JURIX 2026 — proposition de deux articles}\\[3pt]
+  {\color{white!85}\small Valoriser l'annotation thématique des \emph{Terms of Service} et sa mise en
+  graphe pour la \textbf{détection d'anomalies}}\\[5pt]
+  {\sffamily\footnotesize\color{gold}Ahmed El Azhar Jebbari}\;{\color{white!70}\footnotesize\textbullet\;
+  dir. Jean-Charles Lamirel \textbullet\; LORIA, Université de Lorraine \textbullet\; août 2026}
+\end{tcolorbox}
+
+\vspace{3pt}
+% ── Fil rouge ────────────────────────────────────────────────────────────────
+\begin{tcolorbox}[enhanced,colback=surface,colframe=line,boxrule=0.5pt,arc=2pt,
+  left=8pt,right=8pt,top=5pt,bottom=5pt]
+  {\sffamily\bfseries\color{navy}\footnotesize\faRoute~~Fil conducteur.}~
+  {\small Le but de la thèse est de \textbf{détecter les anomalies} des contrats ; CLAUDETTE en est la
+  base de référence reconnue (la \emph{clause abusive}, au sens de la directive 93/13/CEE, = l'anomalie).
+  Nos \textbf{annotations thématiques multi-annotateurs} (clauses, thèmes, certitude) sont le
+  \textbf{socle} qui rend cette détection possible, structurée et explicable. Les deux articles se suivent
+  naturellement : \textbf{A produit et publie la ressource}, \textbf{B l'exploite pour détecter les
+  anomalies} — ensemble, ils avancent le cœur de la thèse \emph{tout en} produisant deux publications.}
+\end{tcolorbox}
+
+% ══ JURIX EN BREF ════════════════════════════════════════════════════════════
+\heading{\faUniversity}{JURIX en bref}
+{\small
+\begin{minipage}[t]{0.485\linewidth}
+\begin{itemize}
+  \item \textbf{Quoi} : conférence \textbf{européenne de référence en IA \& Droit} (\emph{Foundation for
+  Legal KB Systems}) ; actes chez \textbf{IOS Press}, série FAIA.
+  \item \textbf{Quand / où} : 39\textsuperscript{e} édition, \textbf{Toulouse (IRIT), 8–10 déc. 2026}.
+  \item \textbf{Public} : communauté IA \& Droit, exigeante sur l'\textbf{ancrage juridique} et la
+  \textbf{reproductibilité}.
+\end{itemize}
+\end{minipage}\hfill
+\begin{minipage}[t]{0.485\linewidth}
+\begin{itemize}
+  \item \textbf{Soumission} : abstract \textbf{$\sim$28 août} \textbullet\ papier \textbf{$\sim$5 sept.}
+  (EasyChair, \emph{single-blind} — pas d'anonymisation).
+  \item \textbf{Formats} : long $\le$10\,p. ($\approx$20\,\% acc.) \textbullet\ short $\le$5\,p.
+  \textbullet\ poster $\le$2\,p.
+  \item \textbf{Choix stratégique} : \emph{short}/poster accessibles $\Rightarrow$ publication très
+  probable pour un travail solide.
+\end{itemize}
+\end{minipage}}
+\vspace{3pt}
+
+{\small\textcolor{navy}{\faCheckCircle}~\textbf{Pourquoi nous y sommes chez nous :} la détection de
+clauses abusives dans les ToS (\textbf{CLAUDETTE} : Lippi, Lagioia, Ruggeri, Galassi\ldots) est une
+\textbf{lignée native de JURIX}. Notre travail s'y inscrit directement, avec un angle neuf.}
+
+% ══ LES DEUX ARTICLES ════════════════════════════════════════════════════════
+\heading{\faLayerGroup}{Deux articles complémentaires}
+
+\begin{tcbraster}[raster columns=2,raster column skip=6pt,raster equal height=rows]
+% ---- CARTE A ----
+\begin{tcolorbox}[enhanced,colback=white,colframe=navy,boxrule=0.7pt,arc=2pt,
+  left=6pt,right=6pt,top=5pt,bottom=5pt,
+  title={\badge{A}\;\sffamily\bfseries\small\color{navy} Ressource \;\textcolor{navsoft}{\footnotesize(long)}},
+  coltitle=navy,colbacktitle=white,fonttitle=\bfseries,
+  attach title to upper=\hspace{0pt}\\[3pt]]
+  {\sffamily\bfseries\footnotesize\color{ink}\emph{CLAUDETTE-Themes} — enrichissement thématique
+  multi-annotateur d'Unfair-ToS}\par\vspace{3pt}
+  {\sffamily\scriptsize\color{navy}\textbf{\faLightbulb~ABSTRACT (candidat)}}\par\vspace{1pt}
+  {\footnotesize\itshape Nous enrichissons CLAUDETTE/UNFAIR-ToS : des étiquettes d'abusivité au niveau de
+  la phrase, nous passons à une annotation thématique de clauses, \emph{multi-label} ($\approx$20 thèmes
+  juridiques, certitude, justification), produite indépendamment par trois annotateurs formés, en anglais
+  et en français. Nous mesurons l'accord inter-annotateur multi-label ($\alpha$ de Krippendorff, distance
+  MASI, par thème) et publions un gold qui \emph{préserve le désaccord} — version arbitrée, votes bruts et
+  soft labels — avec des baselines Legal-BERT. La ressource et son protocole de résolution de conflits
+  sont réutilisables.}\par\vspace{3pt}
+  {\sffamily\footnotesize\color{navy}\textbf{Contribution}}
+  \begin{itemize}\footnotesize
+    \item Comble une \textbf{limite reconnue} de CLAUDETTE (grain phrase\,$\to$\,clause, multi-label).
+    \item \textbf{Ressource réutilisable} — JURIX valorise explicitement les \emph{datasets}.
+    \item \textbf{Protocole de gold} transparent (cascade + désaccord préservé) = apport méthodologique.
+  \end{itemize}
+  \vspace{2pt}{\footnotesize\textcolor{gold}{\faDatabase}~\textbf{Valorise le travail d'annotation.}}
+\end{tcolorbox}
+% ---- CARTE B ----
+\begin{tcolorbox}[enhanced,colback=white,colframe=gold,boxrule=0.7pt,arc=2pt,
+  left=6pt,right=6pt,top=5pt,bottom=5pt,
+  title={\badge{B}\;\sffamily\bfseries\small\color{navy} Graphe \;\textcolor{navsoft}{\footnotesize(short\,$\to$\,long)}},
+  coltitle=navy,colbacktitle=white,fonttitle=\bfseries,
+  attach title to upper=\hspace{0pt}\\[3pt]]
+  {\sffamily\bfseries\footnotesize\color{ink}\emph{Hypergraph Co-Occurrence Anomalies} — découvrir les
+  clauses abusives par graphe}\par\vspace{3pt}
+  {\sffamily\scriptsize\color{navy}\textbf{\faLightbulb~ABSTRACT (candidat)}}\par\vspace{1pt}
+  {\footnotesize\itshape Nous représentons chaque document de conditions d'utilisation comme un
+  hypergraphe clause–thèmes, construit à partir des annotations thématiques multi-label, et posons la
+  découverte de clauses abusives comme une détection d'anomalies de graphe \emph{non supervisée} : une
+  combinaison de thèmes juridiques rare constitue une anomalie candidate. Nous évaluons les hyperarcs
+  anormaux contre les étiquettes d'abusivité de CLAUDETTE (precision@k, AUC-PR) — et non par la seule
+  rareté —, avec des baselines peu profondes et profondes, et mesurons par ablation le coût d'une couche
+  déontique prédite (bruitée). Une détection relationnelle et explicable, bâtie sur la
+  ressource~A.}\par\vspace{3pt}
+  {\sffamily\footnotesize\color{navy}\textbf{Contribution}}
+  \begin{itemize}\footnotesize
+    \item Détection d'anomalies \textbf{relationnelle et explicable} (pas phrase par phrase).
+    \item \textbf{Niche inédite} : hypergraphe multi-label sur ToS, ancré sur CLAUDETTE.
+    \item \textbf{Construit sur la ressource~A} $\Rightarrow$ chaîne cohérente qui sert la thèse.
+  \end{itemize}
+  \vspace{2pt}{\footnotesize\textcolor{gold}{\faProjectDiagram}~\textbf{Valorise la détection d'anomalies.}}
+\end{tcolorbox}
+\end{tcbraster}
+
+% ── Rigueur & positionnement ─────────────────────────────────────────────────
+\vspace{5pt}
+\begin{tcolorbox}[enhanced,colback=surface,colframe=line,boxrule=0.5pt,arc=2pt,
+  left=8pt,right=8pt,top=5pt,bottom=5pt]
+  {\sffamily\bfseries\color{navy}\footnotesize\faBalanceScale~~Rigueur \& positionnement.}~
+  {\small Ancrage \textbf{protection du consommateur} (dir. 93/13/CEE) et dialogue avec la lignée
+  CLAUDETTE (Lippi, Lagioia, Ruggeri, Galassi). Accord multi-label mesuré par \textbf{$\alpha$-MASI +
+  Gwet AC} (robuste aux classes rares) ; \textbf{baselines} et \textbf{analyse d'erreurs} ; \textbf{désaccord
+  préservé} (répond à Braun 2023, \emph{AI \& Law}). Reproductibilité : corpus, protocole et prompts
+  publiés.}
+\end{tcolorbox}
+
+% ══ FAISABILITÉ AOÛT ═════════════════════════════════════════════════════════
+\heading{\faClock}{Faisabilité en août \& ressources en place}
+
+{\small Les données arrivent en août ; l'essentiel est ensuite de la \textbf{mise en forme} et de la
+\textbf{rédaction}.}\par\vspace{4pt}
+
+% mini-frise
+{\centering\small
+\textbf{mi-août} \emph{annotations 3\,$\times$\,50 ToS}
+~\textcolor{gold}{\faLongArrowAltRight}~ \textbf{fin août} \emph{$\alpha$-MASI + gold + baselines}
+~\textcolor{gold}{\faLongArrowAltRight}~ \textbf{$\sim$28 août} \emph{abstracts}
+~\textcolor{gold}{\faLongArrowAltRight}~ \textbf{$\sim$5 sept.} \emph{papiers}\par}
+\vspace{4pt}
+
+{\small
+\begin{minipage}[t]{0.485\linewidth}
+{\sffamily\footnotesize\color{navy}\textbf{\faServer~~Déjà en place}}
+\begin{itemize}
+  \item Corpus \textbf{50 ToS} annotés, \textbf{EN + FR} (traduits phrase à phrase, alignés 1:1).
+  \item Plateforme \textbf{Pactiva} + \textbf{moteur de gold en cascade} (arbitrage tracé) codé et testé.
+  \item \textbf{Legal-BERT} (open-weights, \emph{sans LLM}) + code de segmentation/embeddings de la thèse.
+  \item Métriques d'accord ($\alpha$-MASI, Gwet AC) et \textbf{export deux couches} outillés.
+\end{itemize}
+\end{minipage}\hfill
+\begin{minipage}[t]{0.485\linewidth}
+{\sffamily\footnotesize\color{navy}\textbf{\faLifeRing~~Le filet (dé-risque)}}
+\begin{itemize}
+  \item \textbf{A est sûr} : données présentes en août, méthodes sur étagère, surtout de la rédaction.
+  \item \textbf{B n'est jamais bloquant} : soumis en \textbf{short} (preuve de concept) ou glissé en 2027.
+  \item Arbitrage cadré sur un \textbf{échantillon stratifié} si le volume l'exige.
+  \item \textbf{Compute modeste} (fine-tuning Legal-BERT + petit graphe), sans dépendance externe.
+\end{itemize}
+\end{minipage}}
+
+% ══ CE QU'ON PROPOSE ═════════════════════════════════════════════════════════
+\vspace{5pt}
+\begin{tcolorbox}[enhanced,colback=navy,colframe=navy,boxrule=0pt,arc=2pt,
+  left=10pt,right=10pt,top=6pt,bottom=6pt,borderline west={3pt}{0pt}{gold}]
+  {\color{white}\small\textbf{\faFlag~~Proposition.} Soumettre à JURIX 2026 \textbf{A (long)} +
+  \textbf{B (short)}. \textbf{A} valorise les \emph{thèmes} (le travail d'annotation), \textbf{B} les
+  \emph{graphes} (la détection d'anomalies) ; les deux \textbf{avancent le cœur de la thèse}. \;
+  \textbf{\faBullseye~Prochaine étape :} établir l'\textbf{état réel de la campagne} (nombre de ToS
+  multi-annotés / arbitrés) pour verrouiller le périmètre et le calendrier.}
+\end{tcolorbox}
+
+\end{document}
