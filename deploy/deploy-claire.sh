@@ -110,6 +110,11 @@ $SSH "set -e; cd ${VPS_DIR} && \
   cd backend && .venv/bin/pip install -q -r requirements.txt && \
   DJANGO_SETTINGS_MODULE=${SETTINGS} .venv/bin/python manage.py migrate --noinput && \
   DJANGO_SETTINGS_MODULE=${SETTINGS} .venv/bin/python manage.py collectstatic --noinput && \
+  cd ../research && [ -d .venv ] || python3.12 -m venv .venv && \
+  .venv/bin/pip install -q --upgrade pip && \
+  .venv/bin/pip install -q -e '.[sklearn,embeddings,transformers]' && \
+  grep -q '^LAB_RESEARCH_PYTHON=' ../backend/.env || \
+    echo \"LAB_RESEARCH_PYTHON=${VPS_DIR}/research/.venv/bin/python\" >> ../backend/.env && \
   cd ../frontend && npm ci --no-audit --no-fund && npm run build && \
   cd .. && cp deploy/systemd/${APP}-analysis-worker.service deploy/systemd/${APP}-lab-worker.service /etc/systemd/system/ && \
   systemctl daemon-reload && systemctl enable ${APP}-analysis-worker ${APP}-lab-worker && \
