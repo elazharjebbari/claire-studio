@@ -3,7 +3,11 @@ import { apiFetch } from "@/lib/api/client";
 import type {
   ComputeCredential,
   DatasetSummary,
+  EstimateResponse,
+  ExperimentSummary,
+  LaunchResponse,
   PreflightReport,
+  PresetCatalog,
   RunDetail,
   RunSummary,
 } from "./types";
@@ -41,6 +45,34 @@ export function buildDataset(
   criteria: DatasetCriteria,
 ): Promise<DatasetSummary> {
   return apiFetch(`${root(slug)}/datasets`, { method: "POST", body: criteria });
+}
+
+/** Catalogue des presets scientifiques (mode guidé de « Nouvelle expérience »). */
+export function listPresets(slug: string): Promise<PresetCatalog> {
+  return apiFetch(`${root(slug)}/presets`);
+}
+
+export function createExperiment(
+  slug: string,
+  payload: { name: string; task: string; dataset: string; config: Record<string, unknown> },
+): Promise<ExperimentSummary> {
+  return apiFetch(`${root(slug)}/experiments`, { method: "POST", body: payload });
+}
+
+/** Combien de runs, et pour combien de temps — à savoir AVANT de lancer. */
+export function estimateExperiment(slug: string, experimentId: string): Promise<EstimateResponse> {
+  return apiFetch(`${root(slug)}/experiments/${experimentId}/estimate`, { method: "POST" });
+}
+
+export function launchExperiment(
+  slug: string,
+  experimentId: string,
+  force = false,
+): Promise<LaunchResponse> {
+  return apiFetch(`${root(slug)}/experiments/${experimentId}/run`, {
+    method: "POST",
+    body: { force },
+  });
 }
 
 export function listRuns(slug: string, status?: string): Promise<RunSummary[]> {

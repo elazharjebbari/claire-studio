@@ -86,6 +86,42 @@ export interface RunDetail extends RunSummary {
   attempt: number;
 }
 
+export interface Preset {
+  id: string;
+  label: string;
+  why?: string;
+  durationHint?: string;
+  note?: string;
+  config: Record<string, unknown>;
+  sweep?: { mode: string; maxRuns?: number; axes?: Record<string, unknown[]> };
+}
+
+export interface PresetCatalog {
+  presets: Preset[];
+  recommendedOrder: string[];
+}
+
+export interface ExperimentSummary {
+  id: string;
+  name: string;
+  task: LabTask;
+  dataset: string;
+  datasetFingerprint: string;
+  config: Record<string, unknown>;
+  createdAt: string;
+}
+
+export interface EstimateResponse {
+  nRuns: number;
+  estimatedMinutes: number;
+  requiresGpu: boolean;
+}
+
+export interface LaunchResponse {
+  runIds: string[];
+  duplicates: string[];
+}
+
 export interface ComputeCredential {
   id: number;
   kind: string;

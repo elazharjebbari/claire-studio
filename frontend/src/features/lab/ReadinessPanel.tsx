@@ -8,12 +8,13 @@
  * une phrase de plus.
  */
 
-import { AlertTriangle, CheckCircle2, CircleAlert, Inbox } from "lucide-react";
+import { AlertTriangle, CheckCircle2, ChevronRight, CircleAlert, Inbox } from "lucide-react";
+import Link from "next/link";
 
 import { Panel } from "@/components/ui/primitives";
 
 import type { CampaignReadiness } from "./types";
-import { buildLines, isArticleBlocked, recoverableWork, sortBlockers } from "./readiness";
+import { buildLines, hrefFor, isArticleBlocked, recoverableWork, sortBlockers } from "./readiness";
 
 const LEVEL_ICON = {
   ok: CheckCircle2,
@@ -27,7 +28,15 @@ const LEVEL_CLASS = {
   blocked: "text-danger",
 } as const;
 
-export function ReadinessPanel({ readiness }: { readiness: CampaignReadiness | null }) {
+export function ReadinessPanel({
+  readiness,
+  slug,
+}: {
+  readiness: CampaignReadiness | null;
+  /** Sans `slug`, les lignes restent informatives mais non cliquables (ex. contexte de
+   * test sans routage projet). */
+  slug?: string;
+}) {
   const lines = buildLines(readiness);
   const recoverable = recoverableWork(readiness);
   const blockers = sortBlockers(readiness?.blockers ?? []);
@@ -62,8 +71,9 @@ export function ReadinessPanel({ readiness }: { readiness: CampaignReadiness | n
         {lines.map((line) => {
           const Icon = LEVEL_ICON[line.level];
           const ratio = line.target ? Math.min(1, line.value / line.target) : 1;
-          return (
-            <li key={line.key} data-testid={`readiness-line-${line.key}`}>
+          const href = slug ? hrefFor(line.key, slug) : null;
+          const body = (
+            <>
               <div className="flex items-center gap-2 text-xs">
                 <Icon className={`h-3.5 w-3.5 shrink-0 ${LEVEL_CLASS[line.level]}`} aria-hidden />
                 <span className="flex-1 text-ink">{line.label}</span>
@@ -71,6 +81,7 @@ export function ReadinessPanel({ readiness }: { readiness: CampaignReadiness | n
                   {line.value}
                   {line.target != null ? ` / ${line.target}` : ""}
                 </span>
+                {href && <ChevronRight className="h-3 w-3 shrink-0 text-ink-muted" aria-hidden />}
               </div>
               <div
                 className="mt-1 h-1 overflow-hidden rounded-full bg-panel-muted"
@@ -92,6 +103,21 @@ export function ReadinessPanel({ readiness }: { readiness: CampaignReadiness | n
                 />
               </div>
               {line.hint && <p className="mt-0.5 text-[10px] text-ink-muted">{line.hint}</p>}
+            </>
+          );
+          return (
+            <li key={line.key} data-testid={`readiness-line-${line.key}`}>
+              {href ? (
+                <Link
+                  href={href}
+                  className="block rounded -mx-1 px-1 py-0.5 hover:bg-panel-muted"
+                  data-testid={`readiness-line-link-${line.key}`}
+                >
+                  {body}
+                </Link>
+              ) : (
+                body
+              )}
             </li>
           );
         })}

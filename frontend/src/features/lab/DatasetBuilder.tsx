@@ -30,12 +30,20 @@ const AGGREGATIONS = [
   { value: "single", label: "Un annotateur", hint: "corpus mono-annoté" },
 ] as const;
 
-export function DatasetBuilder({ slug }: { slug: string }) {
+export function DatasetBuilder({
+  slug,
+  initialMinAnnotators,
+}: {
+  slug: string;
+  /** Pré-rempli depuis le lien « Documents à ≥N annotateurs » du bandeau « Prêt pour la
+   * science » — sans ça, l'utilisateur devrait deviner la même valeur au clavier. */
+  initialMinAnnotators?: number;
+}) {
   const [criteria, setCriteria] = useState<DatasetCriteria>({
     maturity: "complete",
     aggregation: "consensus",
     completenessThreshold: 1.0,
-    minAnnotators: 0,
+    minAnnotators: initialMinAnnotators ?? 0,
     excludePartial: true,
     k: 5,
   });

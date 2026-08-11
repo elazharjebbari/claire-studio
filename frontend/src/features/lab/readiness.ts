@@ -95,3 +95,24 @@ export function sortBlockers(blockers: Blocker[]): Blocker[] {
 export function isArticleBlocked(lines: ReadinessLine[]): boolean {
   return lines.some((line) => line.key !== "annotated" && line.level === "blocked");
 }
+
+/**
+ * Où mène le clic sur une ligne — « la liste des objets concernés », comme promis par
+ * le plan UX (`03_UX_UI.md` §3.1). Pour `multi`/`triple`, le Lab EST cette liste : le
+ * DatasetBuilder affiche déjà, pour un `minAnnotators` donné, exactement ce qui est
+ * retenu et ce qui est écarté avec le motif — pas besoin d'un écran dédié de plus.
+ */
+export function hrefFor(key: string, slug: string): string | null {
+  switch (key) {
+    case "annotated":
+      return `/projects/${slug}/docs`;
+    case "multi":
+      return `/projects/${slug}/lab?tab=datasets&minAnnotators=2`;
+    case "triple":
+      return `/projects/${slug}/lab?tab=datasets&minAnnotators=3`;
+    case "gold":
+      return `/projects/${slug}/gold`;
+    default:
+      return null;
+  }
+}

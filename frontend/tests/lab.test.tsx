@@ -10,6 +10,7 @@ import { cleanup, render, screen } from "@testing-library/react";
 
 import {
   buildLines,
+  hrefFor,
   isArticleBlocked,
   levelFor,
   recoverableWork,
@@ -148,6 +149,39 @@ describe("ReadinessPanel", () => {
   it("sans instantané, dit quoi faire", () => {
     render(<ReadinessPanel readiness={null} />);
     expect(screen.getByTestId("readiness-empty").textContent).toMatch(/créez-en un/i);
+  });
+
+  it("⭐ chaque ligne rouge ou orange est cliquable et mène à la liste des objets concernés — pas juste du texte, comme le promettait le docstring depuis le début", () => {
+    render(<ReadinessPanel readiness={readiness} slug="demo" />);
+    expect(screen.getByTestId("readiness-line-link-multi")).toHaveAttribute(
+      "href",
+      "/projects/demo/lab?tab=datasets&minAnnotators=2",
+    );
+    expect(screen.getByTestId("readiness-line-link-gold")).toHaveAttribute(
+      "href", "/projects/demo/gold",
+    );
+  });
+
+  it("sans slug (contexte de test, page hors routage projet), les lignes restent du texte simple", () => {
+    render(<ReadinessPanel readiness={readiness} />);
+    expect(screen.queryByTestId("readiness-line-link-multi")).not.toBeInTheDocument();
+    expect(screen.getByTestId("readiness-line-multi")).toBeInTheDocument();
+  });
+});
+
+describe("hrefFor", () => {
+  it("multi/triple mènent au Lab avec le seuil pré-rempli", () => {
+    expect(hrefFor("multi", "demo")).toBe("/projects/demo/lab?tab=datasets&minAnnotators=2");
+    expect(hrefFor("triple", "demo")).toBe("/projects/demo/lab?tab=datasets&minAnnotators=3");
+  });
+
+  it("gold mène au cockpit GOLD, annotated à la liste des documents", () => {
+    expect(hrefFor("gold", "demo")).toBe("/projects/demo/gold");
+    expect(hrefFor("annotated", "demo")).toBe("/projects/demo/docs");
+  });
+
+  it("une clé inconnue ne mène nulle part plutôt qu'un lien cassé", () => {
+    expect(hrefFor("n-existe-pas", "demo")).toBeNull();
   });
 });
 

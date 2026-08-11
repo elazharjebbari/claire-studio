@@ -26,6 +26,7 @@ from .models import (
     RunStatus,
 )
 from .preflight import preflight
+from .presets import load_presets
 from .serializers import (
     ComputeCredentialSerializer,
     ComputeCredentialWriteSerializer,
@@ -154,6 +155,25 @@ def dataset_detail(request, slug: str, dataset_id):
         return _forbidden(str(exc))
     dataset = get_object_or_404(LabDataset, id=dataset_id, project=project)
     return Response(LabDatasetSerializer(dataset).data)
+
+
+# --------------------------------------------------------------------------- #
+# Presets — mode guidé de configuration d'expérience
+# --------------------------------------------------------------------------- #
+
+@api_view(["GET"])
+@permission_classes([IsAuthenticated])
+def presets(request, slug: str):
+    """Catalogue des presets scientifiques (`pipeline-presets.yaml`).
+
+    Chaque preset porte une config PARTIELLE (sans `dataset_id`, complété au moment de
+    la création réelle de l'expérience avec le dataset choisi par l'utilisateur).
+    """
+    try:
+        _project_for(request, slug)
+    except PermissionDenied as exc:
+        return _forbidden(str(exc))
+    return Response(load_presets())
 
 
 # --------------------------------------------------------------------------- #

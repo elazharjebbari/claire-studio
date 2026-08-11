@@ -124,8 +124,8 @@ export function RunList({ slug }: { slug: string }) {
     return (
       <Panel className="p-4" data-testid="runs-empty">
         <p className="text-xs text-ink-muted">
-          Aucune expérience lancée. Construisez d&apos;abord un jeu de données, puis
-          lancez un preset depuis la ligne de commande ou l&apos;API.
+          Aucune expérience lancée. Construisez d&apos;abord un jeu de données (onglet
+          « Jeux de données »), puis utilisez « Nouvelle expérience » ci-dessus.
         </p>
       </Panel>
     );
@@ -190,6 +190,22 @@ export function RunList({ slug }: { slug: string }) {
                       {meta.label}
                       {run.status === "running" && run.phase ? ` · ${run.phase}` : ""}
                     </span>
+                    {run.status === "running" && (
+                      <div
+                        className="mt-1 h-1 w-24 overflow-hidden rounded-full bg-panel-muted"
+                        role="progressbar"
+                        aria-valuenow={run.progress}
+                        aria-valuemin={0}
+                        aria-valuemax={100}
+                        aria-label={`Progression de ${run.experimentName}`}
+                        data-testid={`run-progress-${run.id}`}
+                      >
+                        <div
+                          className="h-full rounded-full bg-accent transition-[width]"
+                          style={{ width: `${run.progress}%` }}
+                        />
+                      </div>
+                    )}
                     {meta.hint && (
                       <span className="block text-[10px] text-ink-muted">{meta.hint}</span>
                     )}

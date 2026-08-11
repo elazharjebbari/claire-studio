@@ -436,7 +436,7 @@ export function AnalysisLab({ slug }: { slug: string }) {
               {mode === "overview" && (
                 <div className="space-y-4">
                   {result?.campaignReadiness && (
-                    <ReadinessPanel readiness={result.campaignReadiness} />
+                    <ReadinessPanel readiness={result.campaignReadiness} slug={slug} />
                   )}
                   <ActorTable result={result!} />
                 </div>

@@ -310,4 +310,34 @@ describe("RunList — comparaison", () => {
 
     await waitFor(() => expect(screen.getByTestId("figure-run-comparison")).toBeInTheDocument());
   });
+
+  it("⭐ un run en cours affiche une barre de progression réelle, pas un saut brutal 0→100", async () => {
+    // Le backend sondait déjà `run.progress`/`run.phase` mais rien ne les rendait avant
+    // ce lot : ils n'apparaissaient qu'en texte discret (« · pli 3/5 »), jamais en barre.
+    const api = await import("@/features/lab/api");
+    vi.mocked(api.listRuns).mockResolvedValueOnce([
+      {
+        id: "3", experimentName: "en-cours", task: "T1_primary", status: "running",
+        progress: 62, phase: "pli 3/5", macroF1: null, errorCode: "", createdAt: "",
+        completedAt: null,
+      },
+    ] as never);
+    const { RunList } = await import("@/features/lab/RunList");
+    render(<RunList slug="demo" />);
+
+    const bar = await screen.findByTestId("run-progress-3");
+    expect(bar).toHaveAttribute("aria-valuenow", "62");
+    const fill = bar.firstElementChild as HTMLElement;
+    expect(fill.style.width).toBe("62%");
+  });
+
+  it("un run terminé n'affiche pas de barre de progression (plus rien à suivre)", async () => {
+    const api = await import("@/features/lab/api");
+    vi.mocked(api.listRuns).mockResolvedValueOnce([...runs] as never);
+    const { RunList } = await import("@/features/lab/RunList");
+    render(<RunList slug="demo" />);
+
+    await screen.findByTestId("run-list");
+    expect(screen.queryByTestId("run-progress-1")).not.toBeInTheDocument();
+  });
 });

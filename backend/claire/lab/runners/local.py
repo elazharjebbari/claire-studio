@@ -8,14 +8,22 @@ Un bug qui n'apparaîtrait que sur la grille serait très coûteux à diagnostiq
 
 from __future__ import annotations
 
+import json
 import os
 import subprocess
 import sys
+import time
 from pathlib import Path
 
 from django.conf import settings
 
+from ..services import heartbeat
 from .base import ExecutionBackend, sentinel_present, write_config
+
+# Intervalle de sonde du fichier `progress.json` pendant un run local. Un compromis : assez
+# court pour qu'une barre de progression paraisse vivante, assez long pour ne pas multiplier
+# les écritures en base sur un run qui dure des heures.
+LOCAL_POLL_INTERVAL_SECONDS = 2.0
 
 
 def research_root() -> Path:
@@ -50,6 +58,7 @@ class LocalBackend(ExecutionBackend):
         out_dir = Path(out_dir)
         config_path = write_config(out_dir, run.config)
         cancel_file = out_dir / "CANCEL"
+        progress_path = out_dir / "progress.json"
 
         env = os.environ.copy()
         root = research_root()
@@ -57,23 +66,61 @@ class LocalBackend(ExecutionBackend):
             [p for p in (str(root), env.get("PYTHONPATH", "")) if p]
         )
 
+        cmd = [
+            research_python(), "-m", "pactiva_lab", "run",
+            "--config", str(config_path),
+            "--data", str(dataset_dir),
+            "--out", str(out_dir),
+            "--progress", str(progress_path),
+            "--cancel-file", str(cancel_file),
+        ]
+        timeout = getattr(settings, "LAB_LOCAL_TIMEOUT", 3600)
+        deadline = time.monotonic() + timeout
+
         with (out_dir / "run.log").open("w", encoding="utf-8") as log:
-            completed = subprocess.run(
-                [
-                    research_python(), "-m", "pactiva_lab", "run",
-                    "--config", str(config_path),
-                    "--data", str(dataset_dir),
-                    "--out", str(out_dir),
-                    "--progress", str(out_dir / "progress.json"),
-                    "--cancel-file", str(cancel_file),
-                ],
-                cwd=str(root), env=env, stdout=log, stderr=subprocess.STDOUT,
-                timeout=getattr(settings, "LAB_LOCAL_TIMEOUT", 3600),
-                check=False,
+            # `Popen` non bloquant plutôt que `subprocess.run` : sonder `progress.json`
+            # PENDANT l'exécution est ce qui alimente une barre de progression réelle
+            # (pli en cours) au lieu d'un saut brutal de 0 à 100 % — le fichier était déjà
+            # écrit par le runner à chaque pli, simplement jamais lu tant que le processus
+            # n'était pas terminé.
+            process = subprocess.Popen(
+                cmd, cwd=str(root), env=env, stdout=log, stderr=subprocess.STDOUT,
             )
+            last_reported: int | None = None
+            while True:
+                returncode = process.poll()
+                if returncode is not None:
+                    break
+                if time.monotonic() > deadline:
+                    process.kill()
+                    process.wait()
+                    raise subprocess.TimeoutExpired(cmd, timeout)
+                last_reported = self._report_progress(run, progress_path, last_reported)
+                time.sleep(LOCAL_POLL_INTERVAL_SECONDS)
+            self._report_progress(run, progress_path, last_reported)
+
         # Conservé pour distinguer une annulation (130) d'un échec (1).
-        self.last_returncode = completed.returncode
+        self.last_returncode = process.returncode
         return ""
+
+    @staticmethod
+    def _report_progress(run, progress_path: Path, last_reported: int | None) -> int | None:
+        """Relit `progress.json` et met à jour le run SI le pourcentage a changé.
+
+        Le garde `!=` évite d'écrire en base à chaque sonde de 2 s pour rien — seul un
+        changement réel (un nouveau pli terminé) justifie une écriture.
+        """
+        try:
+            data = json.loads(progress_path.read_text(encoding="utf-8"))
+        except (OSError, ValueError):
+            return last_reported
+        percent = data.get("percent")
+        if not isinstance(percent, (int, float)) or percent == last_reported:
+            return last_reported
+        fold, folds = data.get("fold"), data.get("folds")
+        phase = f"pli {fold}/{folds}" if fold is not None and folds is not None else ""
+        heartbeat(run, progress=int(percent), phase=phase)
+        return percent
 
     def poll(self, run) -> str:
         # Le sous-processus est synchrone : au retour de `submit`, il est terminé.

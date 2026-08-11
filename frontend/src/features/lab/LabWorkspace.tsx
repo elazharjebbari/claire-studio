@@ -7,12 +7,14 @@
  * faire ici, et surtout ne doit pas y découvrir un classement de ses pairs.
  */
 
-import { useEffect, useState } from "react";
+import { Suspense, useEffect, useState } from "react";
+import { useSearchParams } from "next/navigation";
 import { Database, FlaskConical, Server } from "lucide-react";
 
 import { Panel } from "@/components/ui/primitives";
 
 import { DatasetBuilder } from "./DatasetBuilder";
+import { ExperimentLauncher } from "./ExperimentLauncher";
 import { RunList } from "./RunList";
 import { ComputeSettings } from "./ComputeSettings";
 import { listDatasets } from "./api";
@@ -27,8 +29,27 @@ const TABS: Array<{ id: Tab; label: string; icon: typeof Database }> = [
 ];
 
 export function LabWorkspace({ slug }: { slug: string }) {
-  const [tab, setTab] = useState<Tab>("datasets");
+  // `useSearchParams` exige un contexte Suspense — isolé dans un enfant pour ne pas
+  // imposer un fallback de chargement à tout le Lab pour une simple lecture d'URL.
+  return (
+    <Suspense fallback={<div className="p-4 text-xs text-ink-muted">Chargement…</div>}>
+      <LabWorkspaceInner slug={slug} />
+    </Suspense>
+  );
+}
+
+function LabWorkspaceInner({ slug }: { slug: string }) {
+  const searchParams = useSearchParams();
+  const initialTab = (searchParams.get("tab") as Tab) || "datasets";
+  const initialMinAnnotators = searchParams.get("minAnnotators");
+  const [tab, setTab] = useState<Tab>(
+    TABS.some((t) => t.id === initialTab) ? initialTab : "datasets",
+  );
   const [datasets, setDatasets] = useState<DatasetSummary[]>([]);
+  // Force un remount (donc un refresh immédiat) de la liste des runs après un
+  // lancement : sans ça, il faudrait attendre le sondage à 5 s de `RunList` pour voir
+  // le nouveau run apparaître — un délai perceptible juste après avoir cliqué « Lancer ».
+  const [runsRefreshKey, setRunsRefreshKey] = useState(0);
 
   useEffect(() => {
     listDatasets(slug)
@@ -72,7 +93,10 @@ export function LabWorkspace({ slug }: { slug: string }) {
 
       {tab === "datasets" && (
         <div className="space-y-4">
-          <DatasetBuilder slug={slug} />
+          <DatasetBuilder
+            slug={slug}
+            initialMinAnnotators={initialMinAnnotators ? Number(initialMinAnnotators) : undefined}
+          />
           <Panel className="p-4">
             <h3 className="mb-2 text-sm font-semibold text-ink">
               Jeux de données existants ({datasets.length})
@@ -111,7 +135,12 @@ export function LabWorkspace({ slug }: { slug: string }) {
         </div>
       )}
 
-      {tab === "runs" && <RunList slug={slug} />}
+      {tab === "runs" && (
+        <div className="space-y-4">
+          <ExperimentLauncher slug={slug} onLaunched={() => setRunsRefreshKey((k) => k + 1)} />
+          <RunList key={runsRefreshKey} slug={slug} />
+        </div>
+      )}
       {tab === "compute" && <ComputeSettings />}
     </div>
   );
