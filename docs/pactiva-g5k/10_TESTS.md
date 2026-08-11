@@ -44,12 +44,24 @@ réservation, donc sans aucun impact sur la plateforme partagée.
 soumission d'un vrai job, transfert rsync réel, test de connexion avec de vrais
 identifiants, vérification de la clé SSH contre un vrai `access.grid5000.fr`. Le code
 est écrit et testé (niveaux 1-2) pour être prêt le jour où un compte existera —
-voir `11_RUNBOOK_SONNET5.md` pour la procédure de vérification manuelle à suivre à ce
-moment-là.
+voir `11_RUNBOOK_SONNET5.md` **§Étape 10** pour la checklist pas-à-pas (12 étapes,
+ordonnées par coût croissant, chacune avec son critère de passage à la suivante) à
+suivre à ce moment-là.
 
 ## Couverture cible
 
-Même standard que le reste du module Lab (`claire.lab` à 89% après l'audit du 11 août
-2026) : chaque fonction publique de `g5k_client.py`/`g5k_reference.py`/`g5k_ssh.py`
-testée, chaque branche d'erreur (`G5KError` avec chacun de ses codes) exercée au moins
-une fois.
+Même standard que le reste du module Lab. Atteint (11 août 2026, Lot 1) : **99%** sur
+les 5 modules G5K combinés (`g5k_client.py` 100%, `g5k_ssh.py` 100%, `runners/g5k.py`
+99%, `worker.py` 100%, `g5k_reference.py` 98%) — chaque fonction publique testée, chaque
+branche d'erreur (`G5KError` avec chacun de ses codes) exercée au moins une fois, chaque
+code d'erreur propagé jusqu'à `run.error_code` vérifié explicitement (pas seulement
+« un code d'erreur générique existe »).
+
+**Niveau 4 (ajouté au Lot 1) — bout en bout via le worker, deux processus simulés.**
+Le niveau qui a trouvé le seul vrai bug applicatif de cette batterie (pas juste des
+lacunes de couverture) : une annulation de run posée par une INSTANCE DJANGO SÉPARÉE de
+`ExperimentRun` (même PK), reproduisant fidèlement `POST .../run/cancel` exécuté dans le
+process web pendant que `manage.py lab_worker` tourne dans son propre process. Aucun
+test à un seul processus/une seule instance ne peut révéler ce genre de bug — c'est le
+niveau à privilégier pour toute future fonctionnalité où le worker et l'API lisent/
+écrivent le même état pendant qu'une opération longue est en cours.

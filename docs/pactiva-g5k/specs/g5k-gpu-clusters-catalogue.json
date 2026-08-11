@@ -1,0 +1,25 @@
+{
+  "_provenance": {
+    "snapshot_date": "2026-08-11",
+    "source": "docs/pactiva-g5k/research/01_VUE_ENSEMBLE_SITES_ACCES.md §2.3 (page officielle <Site>:Hardware par cluster) + docs/pactiva-g5k/specs/g5k-clusters-gpu-sample.json (4 nœuds vérifiés empiriquement en direct via le miroir public reference-repository)",
+    "note": "Catalogue STATIQUE, volontairement NON exhaustif : ne retient que les clusters dont le modèle GPU est identifié SANS AMBIGUÏTÉ dans la recherche documentaire (un seul modèle possible, VRAM connue). Des clusters à modèle ambigu (ex. Nancy 'graffiti' : RTX 2080 Ti OU Quadro RTX 6000 selon le nœud) sont délibérément exclus plutôt que d'inventer une valeur. Le matériel Grid'5000 évolue (nouveaux clusters, retraits) — ce fichier doit être régénéré ou remplacé par une requête dynamique authentifiée (voir docs/pactiva-g5k/07_ARCHITECTURE.md §Lot 3) avant toute décision opérationnelle critique.",
+    "verified_empirically": ["lyon/gemini", "nancy/grouille", "lille/chifflot"]
+  },
+  "clusters": [
+    {"site": "lyon", "cluster": "gemini", "gpu_model": "Tesla V100-SXM2-32GB", "gpu_vram_gb": 32, "gpu_count": 8, "verified": true},
+    {"site": "nancy", "cluster": "grouille", "gpu_model": "A100-PCIE-40GB", "gpu_vram_gb": 40, "gpu_count": 2, "verified": true},
+    {"site": "lille", "cluster": "chifflot", "gpu_model": "Tesla P100-PCIE-16GB", "gpu_vram_gb": 16, "gpu_count": 2, "verified": true, "note": "certains nœuds du cluster peuvent être équipés en V100 selon la doc — seul chifflot-1 a été vérifié empiriquement"},
+    {"site": "nancy", "cluster": "grat", "gpu_model": "A100 (40 GB)", "gpu_vram_gb": 40, "gpu_count": 8, "verified": false},
+    {"site": "nancy", "cluster": "gratouille", "gpu_model": "Tesla V100 (16 GB)", "gpu_vram_gb": 16, "gpu_count": 1, "verified": false},
+    {"site": "nancy", "cluster": "grele", "gpu_model": "GTX 1080 Ti (11 GB)", "gpu_vram_gb": 11, "gpu_count": 2, "verified": false},
+    {"site": "nancy", "cluster": "gres", "gpu_model": "L40S (45 GB)", "gpu_vram_gb": 45, "gpu_count": 2, "verified": false},
+    {"site": "nancy", "cluster": "grue", "gpu_model": "Tesla T4 (15 GB)", "gpu_vram_gb": 15, "gpu_count": 4, "verified": false},
+    {"site": "nancy", "cluster": "gruss", "gpu_model": "A40 (45 GB)", "gpu_vram_gb": 45, "gpu_count": 2, "verified": false},
+    {"site": "lille", "cluster": "chicoree", "gpu_model": "H200 (140 GB)", "gpu_vram_gb": 140, "gpu_count": 4, "verified": false, "note": "job type exotic requis"},
+    {"site": "lille", "cluster": "chuc", "gpu_model": "A100 (40 GB)", "gpu_vram_gb": 40, "gpu_count": 4, "verified": false},
+    {"site": "lyon", "cluster": "sirius", "gpu_model": "A100 (40 GB)", "gpu_vram_gb": 40, "gpu_count": 8, "verified": false},
+    {"site": "lyon", "cluster": "hydra", "gpu_model": "GH200 Grace-Hopper (96 GB)", "gpu_vram_gb": 96, "gpu_count": 1, "verified": false},
+    {"site": "luxembourg", "cluster": "larochette", "gpu_model": "AMD MI210 (64 GB)", "gpu_vram_gb": 64, "gpu_count": 4, "verified": false},
+    {"site": "luxembourg", "cluster": "vianden", "gpu_model": "AMD MI300X (192 GB)", "gpu_vram_gb": 192, "gpu_count": 8, "verified": false, "note": "job type exotic requis, nœud unique"}
+  ]
+}

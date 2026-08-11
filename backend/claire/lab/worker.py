@@ -81,6 +81,10 @@ def execute_run(run: ExperimentRun) -> ExperimentRun:
     except Exception as exc:
         return fail_run(run, getattr(exc, "code", "fetch_failed"), str(exc))
 
+    # `fetch` peut prendre du temps (rsync d'un gros résultat) — même rafraîchissement
+    # que dans `_wait_remote`, pour la même raison : `run` peut avoir été chargé bien
+    # avant qu'une annulation ne soit posée par le process web.
+    run.refresh_from_db(fields=["cancel_requested"])
     if run.cancel_requested:
         run.status = RunStatus.CANCELLED
         run.completed_at = timezone.now()
@@ -101,6 +105,12 @@ def _wait_remote(run: ExperimentRun, backend) -> bool:
         __import__("django.conf", fromlist=["settings"]).settings, "LAB_G5K_MAX_WAIT", 86400
     )
     while time.time() < deadline:
+        # Le worker tourne dans un process séparé de celui qui sert `POST .../cancel`
+        # (`manage.py lab_worker` vs le process web) : sans ce rafraîchissement, `run`
+        # reste l'instance figée chargée une fois par `claim_next_run()`, et une
+        # annulation demandée pendant l'attente d'un job distant de plusieurs heures ne
+        # serait JAMAIS vue avant le prochain redémarrage du worker.
+        run.refresh_from_db(fields=["cancel_requested"])
         if run.cancel_requested:
             try:
                 backend.cancel(run)

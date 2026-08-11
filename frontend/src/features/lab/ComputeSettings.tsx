@@ -3,10 +3,17 @@
 /**
  * Cible de calcul et identifiants Grid'5000.
  *
- * Trois règles visibles dans cet écran :
+ * DEUX secrets distincts, saisis dans le même formulaire mais jamais confondus : le
+ * mot de passe authentifie l'API REST (HTTP Basic), la clé SSH authentifie
+ * exclusivement le transfert de fichiers (rsync) — Grid'5000 désactive
+ * l'authentification par mot de passe en SSH (docs/pactiva-g5k/07_ARCHITECTURE.md §1).
+ * Un identifiant peut donc avoir l'un sans l'autre, et les DEUX résultats de test
+ * restent visibles séparément — jamais un seul badge agrégé qui masquerait lequel des
+ * deux corriger.
  *
- * * le mot de passe **n'est jamais réaffiché** — l'API ne le renvoie pas, et le champ
- *   reste vide même quand un secret existe ;
+ * Règles héritées de la version précédente, inchangées :
+ * * les secrets ne sont **jamais réaffichés** — les champs restent vides même quand un
+ *   secret existe ;
  * * le **test de connexion** est explicite : mieux vaut découvrir un identifiant faux
  *   maintenant qu'après une réservation de quatre heures ;
  * * si le serveur ne peut pas chiffrer, la fonction est **désactivée avec son motif**,
@@ -14,18 +21,30 @@
  */
 
 import { useEffect, useState } from "react";
-import { KeyRound, ShieldAlert, ShieldCheck } from "lucide-react";
+import { KeyRound, ShieldAlert, ShieldCheck, ShieldQuestion } from "lucide-react";
 
 import { Button, Panel } from "@/components/ui/primitives";
 
 import { getCredentials, saveCredential, testCredential } from "./api";
 import type { ComputeCredential } from "./types";
 
+function TestBadge({ label, state }: { label: string; state: boolean | null }) {
+  const Icon = state === true ? ShieldCheck : state === false ? ShieldAlert : ShieldQuestion;
+  const cls = state === true ? "text-success" : state === false ? "text-danger" : "text-ink-muted";
+  return (
+    <span className={`flex items-center gap-1.5 ${cls}`}>
+      <Icon className="h-3.5 w-3.5 shrink-0" aria-hidden />
+      {label} : {state === true ? "opérationnel" : state === false ? "échec" : "non testé"}
+    </span>
+  );
+}
+
 export function ComputeSettings() {
   const [configured, setConfigured] = useState(true);
   const [credentials, setCredentials] = useState<ComputeCredential[]>([]);
   const [login, setLogin] = useState("");
   const [password, setPassword] = useState("");
+  const [sshKey, setSshKey] = useState("");
   const [busy, setBusy] = useState(false);
   const [message, setMessage] = useState<string | null>(null);
 
@@ -49,11 +68,12 @@ export function ComputeSettings() {
     setBusy(true);
     setMessage(null);
     try {
-      await saveCredential({ kind: "g5k", login, password });
-      // Le secret est effacé de l'état dès l'enregistrement : il ne doit pas rester en
-      // mémoire du navigateur plus longtemps que nécessaire.
+      await saveCredential({ kind: "g5k", login, password, sshKey: sshKey || undefined });
+      // Les secrets sont effacés de l'état dès l'enregistrement : ils ne doivent pas
+      // rester en mémoire du navigateur plus longtemps que nécessaire.
       setPassword("");
-      setMessage("Identifiant enregistré (chiffré au repos).");
+      setSshKey("");
+      setMessage("Identifiants enregistrés (chiffrés au repos).");
       await refresh();
     } catch (error) {
       setMessage(error instanceof Error ? error.message : "échec de l'enregistrement");
@@ -68,7 +88,7 @@ export function ComputeSettings() {
     setMessage(null);
     try {
       const result = await testCredential(existing.id);
-      setMessage(result.ok ? `Connexion établie — ${result.detail}` : `Échec — ${result.detail}`);
+      setMessage(result.detail);
       await refresh();
     } catch (error) {
       setMessage(error instanceof Error ? error.message : "échec du test");
@@ -112,7 +132,7 @@ export function ComputeSettings() {
       </label>
 
       <label className="block text-xs">
-        <span className="text-ink-muted">Mot de passe</span>
+        <span className="text-ink-muted">Mot de passe (API)</span>
         <input
           type="password"
           autoComplete="new-password"
@@ -124,8 +144,29 @@ export function ComputeSettings() {
           data-testid="g5k-password"
         />
         <span className="mt-1 block text-[10px] text-ink-muted">
-          Chiffré au repos et jamais réaffiché — pas même à vous. Utilisé uniquement pour
-          soumettre vos jobs, sous votre compte.
+          Chiffré au repos et jamais réaffiché — pas même à vous. Authentifie l&apos;API
+          Grid&apos;5000 (réservation, suivi des runs).
+        </span>
+      </label>
+
+      <label className="block text-xs">
+        <span className="text-ink-muted">Clé SSH privée (transfert de fichiers)</span>
+        <textarea
+          className="mt-1 h-24 w-full rounded border border-line bg-panel-muted p-2 font-mono text-[11px] text-ink"
+          value={sshKey}
+          onChange={(e) => setSshKey(e.target.value)}
+          placeholder={existing?.hasSshKey ? "•••••••• (enregistrée)" : "-----BEGIN OPENSSH PRIVATE KEY-----"}
+          spellCheck={false}
+          disabled={!configured}
+          data-testid="g5k-ssh-key"
+        />
+        <span className="mt-1 block text-[10px] text-ink-muted">
+          Grid&apos;5000 <strong>désactive l&apos;authentification par mot de passe en
+          SSH</strong> — sans cette clé, le transfert des données et des résultats
+          échoue avant même la réservation. Générez une clé <strong>dédiée</strong> à
+          Pactiva (<code>ssh-keygen -t ed25519 -f pactiva-g5k -N &quot;&quot;</code>),
+          ajoutez-la à votre compte Grid&apos;5000, puis collez la clé{" "}
+          <strong>privée</strong> ici — jamais une clé déjà utilisée ailleurs.
         </span>
       </label>
 
@@ -139,7 +180,7 @@ export function ComputeSettings() {
               ? "clé de chiffrement absente côté serveur"
               : !login || !password
                 ? "identifiant et mot de passe requis"
-                : "Enregistrer l'identifiant chiffré"
+                : "Enregistrer les identifiants chiffrés"
           }
           data-testid="g5k-save"
         >
@@ -151,7 +192,7 @@ export function ComputeSettings() {
           disabled={!existing?.hasPassword || busy}
           title={
             existing?.hasPassword
-              ? "Vérifier la connexion à l'API Grid'5000"
+              ? "Vérifier l'API et, si une clé SSH est enregistrée, le transfert de fichiers"
               : "aucun identifiant enregistré à tester"
           }
           data-testid="g5k-test"
@@ -161,15 +202,13 @@ export function ComputeSettings() {
       </div>
 
       {existing?.lastTestedAt && (
-        <p className="flex items-center gap-1.5 text-[11px] text-ink-muted">
-          {existing.lastTestOk ? (
-            <ShieldCheck className="h-3.5 w-3.5 text-success" aria-hidden />
-          ) : (
-            <ShieldAlert className="h-3.5 w-3.5 text-danger" aria-hidden />
-          )}
-          Dernier test : {new Date(existing.lastTestedAt).toLocaleString("fr-FR")} —{" "}
-          {existing.lastTestDetail}
-        </p>
+        <div className="space-y-1 text-[11px]" data-testid="g5k-test-results">
+          <TestBadge label="API" state={existing.lastTestOk} />
+          <TestBadge label="Transfert SSH" state={existing.lastTestSshOk} />
+          <p className="text-ink-muted">
+            Dernier test : {new Date(existing.lastTestedAt).toLocaleString("fr-FR")}
+          </p>
+        </div>
       )}
 
       {message && (

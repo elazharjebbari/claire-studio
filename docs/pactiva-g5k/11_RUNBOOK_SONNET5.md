@@ -120,6 +120,43 @@ l'étape 4. Committer avec un message qui cite les 4 découvertes critiques corr
 
 ---
 
+## Étape 10 — checklist de validation manuelle (identifiants réels)
+
+**Préalable indispensable à toute étape ci-dessous** : cette checklist ne peut être
+suivie qu'une fois qu'un compte Grid'5000 existe réellement (email à
+`support-staff@lists.grid5000.fr` ou parrainage laboratoire) — jusque-là, elle reste un
+document de préparation, pas une action à entreprendre. Aucune étape de ce document n'a
+été exécutée : ni compte, ni réservation, ni job réel n'existent au moment où ce texte
+est écrit (11 août 2026). **Ne PAS créer de compte ni lancer de réservation sans
+confirmation explicite de l'utilisateur** — c'est une action visible sur une plateforme
+partagée, hors du périmètre d'un agent qui ne fait qu'exécuter un plan de tests.
+
+Objectif : valider chaque brique **dans l'ordre du coût croissant** — s'arrêter au
+premier échec plutôt que d'empiler les hypothèses. Chaque étape indique son **critère
+d'arrêt** (ce qui doit être vrai avant de passer à la suivante) et son **impact**
+(aucun / réversible / consomme des ressources partagées).
+
+| # | Étape | Impact | Critère de passage à la suite |
+|---|---|---|---|
+| 10.1 | Enregistrer login + mot de passe dans l'écran Calcul (`ComputeSettings.tsx`), **sans** clé SSH | aucun (chiffré au repos, pas d'appel réseau) | `hasPassword=true` visible après rechargement |
+| 10.2 | Cliquer « Tester la connexion » | 1 requête HTTP `GET` en lecture seule sur `api.grid5000.fr` | badge **API : opérationnel** ; badge **Transfert SSH : non testé** (aucune clé) |
+| 10.3 | Générer une clé dédiée : `ssh-keygen -t ed25519 -f pactiva-g5k -N ""`, l'ajouter au compte Grid'5000 (interface web, section SSH keys), coller la clé **privée** dans le champ dédié, enregistrer | aucun côté Pactiva ; ajoute une clé au compte G5K (réversible, retirable depuis l'interface G5K) | `hasSshKey=true` |
+| 10.4 | Retester la connexion | 1 connexion SSH `access.grid5000.fr` (`BatchMode=yes`, commande `true`) | badge **Transfert SSH : opérationnel** — sinon lire `lastTestDetail` (`g5k_auth_failed` = mot de passe faux, échec SSH = clé pas encore propagée côté G5K, attendre quelques minutes) |
+| 10.5 | Construire un dataset minimal (1-2 documents) dans l'onglet Jeux de données | aucun (local) | dataset `ready` |
+| 10.6 | Créer une expérience **CPU** (`model.family: tfidf_linear`), `compute.target: g5k`, `compute.g5k.site` = un site **peu chargé** (vérifier `https://intranet.grid5000.fr` ou l'outil Monika du site avant de choisir), `resources: "walltime=00:05"`, PAS de sweep | **réserve un nœud réel pendant ≤5 min** | run passe `queued → waiting → running → succeeded` (ou `partial`/`failed` avec un `error_code` cohérent) sans intervention manuelle |
+| 10.7 | Vérifier dans l'UI (liste des runs) que `externalJobId` correspond bien à l'identifiant affiché par `oarstat` / l'interface G5K pour ce job | aucun | même identifiant des deux côtés — confirme que `submit()` renvoie le bon `uid` |
+| 10.8 | Lancer un second run **CPU** similaire avec un `walltime` plus long (≥ 2 min) puis cliquer **Annuler** dans l'UI 10-20 s après le passage en `running` | réserve puis libère un nœud avant terme | run passe à `cancelled` en moins de 2× l'intervalle de sondage courant (`poll_interval`, 5-15 s) — **c'est le test qui valide en conditions réelles le correctif du 11 août 2026 sur `_wait_remote`** (§Journal ci-dessous) : sans ce correctif, le run resterait `running` indéfiniment malgré l'annulation |
+| 10.9 | Vérifier côté Grid'5000 (`oarstat -u <login>` ou l'interface) qu'aucun job ne reste actif après 10.6/10.8 | — | file d'attente Grid'5000 vide pour ce compte — **ne jamais laisser un job orphelin tourner sur une ressource partagée** |
+| 10.10 | (Optionnel, seulement si 10.1-10.9 sont tous verts) Un run **GPU** minimal (`legal-bert-finetune` sur le plus petit jeu de données possible, cluster suggéré par le panneau « Cluster recommandé », `walltime` court) | réserve un GPU réel, ressource la plus contendue de la plateforme | garde-fou GPU (`nvidia-smi`/`torch.cuda.is_available()`) ne se déclenche pas en faux positif ; run se termine `succeeded` ou `partial` avec un `error_code` explicite, jamais un blocage silencieux |
+| 10.11 | Sweep G5K à 4 variantes (`encoders-comparison`) sans `force` | aucun (refusé côté serveur avant toute réservation) | 400 `g5k_sweep_too_large`, aucun job créé côté G5K — vérifier via `oarstat` que rien n'a été réservé |
+| 10.12 | Même sweep avec « Continuer quand même » | réserve jusqu'à 4 nœuds | 4 runs créés, chacun suivi indépendamment dans la liste |
+
+**En cas d'échec à une étape** : ne pas continuer vers la suivante. Le code d'erreur
+affiché (`g5k_auth_failed`, `g5k_ssh_key_missing`, `g5k_transfer_failed`,
+`g5k_unreachable`, `g5k_timeout`) pointe directement vers la brique en cause — voir
+`specs/g5k-error-codes.csv` pour le détail de chacun et `07_ARCHITECTURE.md` pour
+l'architecture des deux secrets indépendants.
+
 ## Journal d'exécution (à tenir à jour pendant l'exécution réelle)
 
 ### Recherche documentaire (11 août 2026)
@@ -178,3 +215,64 @@ existant) : le second secret (clé SSH) vérifié absent de toute sérialisation
 erreur (aucun changement frontend dans ce lot — reporté au Lot 1). Aucune ressource
 Grid'5000 réelle n'a été réservée ; le seul appel réseau réel effectué est la lecture du
 miroir public du reference-repository (sans authentification, sans écriture).
+
+### Lot 1 — UI complète + batterie de tests dense (11 août 2026, session suivante)
+
+**Backend** : catalogue statique de clusters GPU (`g5k_reference.load_static_catalogue`,
+`specs/g5k-gpu-clusters-catalogue.json`, ~15 clusters, 3 vérifiés empiriquement) +
+endpoint `GET .../lab/g5k/clusters` (accessible sans identifiants configurés — catalogue
+informatif, `configured` distingue « informatif » de « prêt à réserver »). 17 nouveaux
+tests (10 `g5k_reference`, 7 vue).
+
+**Frontend** (`08_UX_UI.md`, entièrement mis en œuvre) : `ComputeSettings.tsx` réécrit
+— champ clé SSH + deux badges de test indépendants (API / Transfert SSH, jamais un seul
+booléen agrégé). `ExperimentLauncher.tsx` étendu — panneau « Cluster Grid'5000
+recommandé » (affiché dès qu'un modèle GPU cible `compute.target=g5k`, avant création de
+l'expérience) et avertissement de sweep trop grand avec bouton « Continuer quand même »
+(`force=true`) fidèle au mockup §4. **Vérifié en navigateur réel** (Playwright, backend
++ frontend lancés en local, compte `rita` reviewer, projet `CLAUDETTE Gold v1`) : les
+deux secrets s'enregistrent et se testent indépendamment, le panneau cluster affiche le
+catalogue réel trié par VRAM croissante, le garde-fou sweep se déclenche pour 4 runs et
+« Continuer quand même » force bien le lancement, et le worker (`lab_worker --once`)
+traite les 4 runs jusqu'à un échec propre et lisible (`g5k_transfer_failed`, faux
+identifiants) — **aucune erreur console à aucune étape**. Un bug réel a été trouvé
+pendant cette vérification manuelle (pas par les tests automatisés) : le bouton
+« Lancer » passait `onClick={onLaunch}` directement, ce qui aurait transmis l'événement
+React comme argument `force` (donc `force` toujours *truthy*) — corrigé en
+`onClick={() => onLaunch()}` avant tout commit.
+
+**Batterie de tests dense** (préparation identifiants réels, tâche explicitement
+demandée par l'utilisateur) : `build_run_script` jamais vérifié dans son CONTENU avant
+ce lot (seule son existence de fichier l'était) — 9 nouveaux tests purs, dont un test
+d'injection shell sur `env_name` (protection `shlex.quote`). `execute_run`/`worker.py`
+étendu à 100% de couverture (92 lignes) : succès complet bout en bout (`SUCCEEDED`,
+jamais exercé avant — seul le cas `partial` l'était), propagation du code métier exact
+sur échec de soumission et de rapatriement, construction réelle de `Grid5000Backend`
+dans `_backend_for`.
+
+**⭐ Bug réel trouvé par cette batterie** (pas une simple lacune de couverture) :
+l'annulation coopérative d'un run Grid'5000 en attente ne fonctionnait PAS quand elle
+était demandée depuis un processus différent de celui du worker — exactement le cas
+réel en production, où `POST .../run/cancel` s'exécute dans le process web et
+`manage.py lab_worker` tourne dans un process séparé. `_wait_remote` ne relisait jamais
+`run.cancel_requested` depuis la base pendant sa boucle de sondage ; l'objet `run`
+restait figé à sa valeur de chargement initial par `claim_next_run()`. Concrètement : un
+job Grid'5000 de plusieurs heures cliqué « Annuler » dans l'UI n'aurait jamais été
+interrompu avant son walltime naturel. Reproduit empiriquement AVANT correctif (test
+qui échouait avec `other = ExperimentRun.objects.get(...)` simulant le process web
+séparé), corrigé avec deux `run.refresh_from_db(fields=["cancel_requested"])` (dans la
+boucle de `_wait_remote`, et avant le check final après `fetch`), verrouillé par 2 tests
+permanents. **Ce bug n'aurait jamais pu être trouvé sans écrire spécifiquement un test
+simulant deux processus distincts** — aucun test à un seul processus ne peut le
+révéler, ce qui inclut toute vérification manuelle en local à un seul terminal.
+
+**Couverture finale** : 99% sur les 5 modules G5K combinés (`g5k_client.py` 100%,
+`g5k_ssh.py` 100%, `runners/g5k.py` 99%, `worker.py` 100%, `g5k_reference.py` 98% — les
+2 lignes restantes sont des replis défensifs déjà documentés comme inatteignables par
+construction). Suite complète : pytest backend **729** (+26 depuis le Lot 0), vitest
+frontend **651** (+18), tsc 0 erreur, aucune régression.
+
+**Checklist manuelle** (§Étape 10 ci-dessus) : écrite mais **non exécutée** — aucun
+compte Grid'5000 réel n'existe à ce stade. C'est la partie du travail qui ne peut pas
+être automatisée : elle attend la création d'un compte, hors du périmètre de cette
+session.

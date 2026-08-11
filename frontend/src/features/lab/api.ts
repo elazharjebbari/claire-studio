@@ -5,6 +5,7 @@ import type {
   DatasetSummary,
   EstimateResponse,
   ExperimentSummary,
+  GpuClusterCatalog,
   LaunchResponse,
   PreflightReport,
   PresetCatalog,
@@ -123,16 +124,25 @@ export function saveCredential(payload: {
   kind: string;
   login: string;
   password: string;
+  /** Omise = clé SSH déjà enregistrée conservée telle quelle (le serveur ne l'efface
+   * jamais silencieusement au passage d'une mise à jour du mot de passe). */
+  sshKey?: string;
 }): Promise<ComputeCredential> {
   return apiFetch(`/me/compute-credentials`, { method: "PUT", body: payload });
 }
 
 export function testCredential(
   credentialId: number,
-): Promise<{ ok: boolean; detail: string; testedAt: string }> {
+): Promise<{ ok: boolean; apiOk: boolean; sshOk: boolean | null; detail: string; testedAt: string }> {
   return apiFetch(`/me/compute-credentials/${credentialId}/test`, { method: "POST" });
 }
 
 export function deleteCredential(credentialId: number): Promise<void> {
   return apiFetch(`/me/compute-credentials/${credentialId}`, { method: "DELETE" });
+}
+
+/** Clusters GPU Grid'5000 dont la VRAM convient — catalogue statique, informatif même
+ * sans identifiants configurés (voir docs/pactiva-g5k/07_ARCHITECTURE.md). */
+export function listGpuClusters(slug: string, minVramGb: number): Promise<GpuClusterCatalog> {
+  return apiFetch(`${root(slug)}/g5k/clusters?minVramGb=${minVramGb}`);
 }

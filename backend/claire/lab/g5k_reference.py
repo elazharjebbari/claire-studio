@@ -15,6 +15,13 @@ plus contendus (H100/H200/MI300X, réservés aux LLM) pour ce besoin.
 
 from __future__ import annotations
 
+import json
+import logging
+from functools import lru_cache
+from pathlib import Path
+
+logger = logging.getLogger("claire.lab")
+
 BYTES_PER_GB = 1024**3
 
 
@@ -55,3 +62,56 @@ def gpu_clusters_for(min_vram_gb: float, nodes: dict[str, dict]) -> list[dict]:
         )
     matches.sort(key=lambda m: m["gpuVramGb"])
     return matches
+
+
+def catalogue_file() -> Path:
+    """Chemin du catalogue statique de clusters GPU.
+
+    STATIQUE et délibérément non exhaustif — voir le `_provenance` du fichier lui-même.
+    La Reference API dynamique exige une authentification pour CHAQUE nœud (pas de
+    format de collection vérifié empiriquement sans compte, voir
+    `docs/pactiva-g5k/07_ARCHITECTURE.md` §Lot 3) : ce catalogue, construit à partir de
+    la recherche documentaire (dont 3 clusters vérifiés empiriquement via le miroir
+    public), est le compromis retenu tant qu'aucun compte réel n'existe.
+    """
+    from django.conf import settings
+
+    configured = getattr(settings, "LAB_G5K_GPU_CATALOGUE", None)
+    if configured:
+        return Path(configured)
+    return (
+        Path(settings.BASE_DIR).parent
+        / "docs" / "pactiva-g5k" / "specs" / "g5k-gpu-clusters-catalogue.json"
+    )
+
+
+@lru_cache(maxsize=1)
+def _load_catalogue_cached(path: str) -> dict:
+    try:
+        raw = Path(path).read_text(encoding="utf-8")
+    except OSError:
+        logger.warning("lab_g5k_catalogue_missing path=%s", path)
+        return {"clusters": []}
+    return json.loads(raw)
+
+
+def load_static_catalogue() -> dict[str, dict]:
+    """Charge le catalogue statique et le transforme au format attendu par
+    `gpu_clusters_for` (mêmes clés `gpu_devices`/`model`/`memory` que la Reference API
+    réelle — un seul chemin de calcul pour les deux sources, testé une seule fois)."""
+    data = _load_catalogue_cached(str(catalogue_file()))
+    nodes: dict[str, dict] = {}
+    for entry in data.get("clusters", []):
+        vram_bytes = int(entry["gpu_vram_gb"] * BYTES_PER_GB)
+        gpu_count = int(entry.get("gpu_count", 1))
+        nodes[entry["cluster"]] = {
+            "site": entry["site"],
+            "cluster": entry["cluster"],
+            "node": {
+                "gpu_devices": {
+                    f"gpu{i}": {"model": entry["gpu_model"], "memory": vram_bytes}
+                    for i in range(gpu_count)
+                }
+            },
+        }
+    return nodes

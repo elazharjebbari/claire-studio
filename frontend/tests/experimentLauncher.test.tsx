@@ -22,6 +22,7 @@ vi.mock("@/features/lab/api", () => ({
   createExperiment: vi.fn(),
   estimateExperiment: vi.fn(),
   launchExperiment: vi.fn(),
+  listGpuClusters: vi.fn(),
 }));
 
 const DATASETS = [
@@ -51,6 +52,7 @@ async function setup() {
   const api = await import("@/features/lab/api");
   vi.mocked(api.listDatasets).mockResolvedValue(DATASETS as never);
   vi.mocked(api.listPresets).mockResolvedValue(CATALOG as never);
+  vi.mocked(api.listGpuClusters).mockResolvedValue({ configured: false, clusters: [] } as never);
   const { ExperimentLauncher } = await import("@/features/lab/ExperimentLauncher");
   const onLaunched = vi.fn();
   const user = userEvent.setup();
@@ -158,5 +160,134 @@ describe("ExperimentLauncher — mode expert", () => {
     const textarea = screen.getByTestId("experiment-config-json") as HTMLTextAreaElement;
     expect(textarea.value).toContain("tfidf_linear");
     expect(textarea.value).toContain("ds-1");
+  });
+});
+
+// Un modèle GPU (transformer_finetune/embeddings_head/sequence_labeling) ciblant
+// compute.target === "g5k" — jamais tfidf_linear en local, qui ne concerne ni le
+// panneau ni le garde-fou de sweep (docs/pactiva-g5k/06_ANALYSE_BESOIN_PACTIVA.md §1).
+const GPU_G5K_CONFIG = {
+  task: "T1_primary",
+  model: { family: "transformer_finetune", checkpoint: "nlpaueb/legal-bert-base-uncased" },
+  compute: { target: "g5k" },
+};
+
+async function switchToGpuG5kConfig(user: ReturnType<typeof userEvent.setup>) {
+  await user.click(screen.getByTestId("experiment-mode-expert"));
+  const textarea = screen.getByTestId("experiment-config-json");
+  fireEvent.change(textarea, { target: { value: JSON.stringify(GPU_G5K_CONFIG) } });
+}
+
+describe("ExperimentLauncher — panneau cluster Grid'5000 recommandé", () => {
+  it("reste absent pour un modèle CPU ou une cible locale", async () => {
+    const { api, user } = await setup();
+    await user.click(await screen.findByTestId("preset-baseline-fast"));
+    expect(screen.queryByTestId("gpu-cluster-panel")).not.toBeInTheDocument();
+    expect(api.listGpuClusters).not.toHaveBeenCalled();
+  });
+
+  it("apparaît et liste les clusters compatibles pour un modèle GPU ciblant g5k", async () => {
+    const { api, user } = await setup();
+    vi.mocked(api.listGpuClusters).mockResolvedValue({
+      configured: true,
+      clusters: [
+        { site: "nancy", cluster: "grouille", node: null, gpuModel: "A100", gpuVramGb: 40, gpuCount: 2 },
+        { site: "lille", cluster: "chifflot", node: null, gpuModel: "P100", gpuVramGb: 16, gpuCount: 2 },
+      ],
+    } as never);
+
+    await switchToGpuG5kConfig(user);
+
+    const panel = await screen.findByTestId("gpu-cluster-panel");
+    expect(panel).toBeInTheDocument();
+    const table = await screen.findByTestId("gpu-cluster-table");
+    expect(table.textContent).toContain("grouille");
+    expect(table.textContent).toContain("chifflot");
+    expect(screen.queryByTestId("gpu-cluster-unconfigured")).not.toBeInTheDocument();
+  });
+
+  it("indique explicitement l'absence d'identifiants, sans bloquer la création", async () => {
+    const { api, user } = await setup();
+    vi.mocked(api.listGpuClusters).mockResolvedValue({
+      configured: false,
+      clusters: [
+        { site: "nancy", cluster: "grouille", node: null, gpuModel: "A100", gpuVramGb: 40, gpuCount: 2 },
+      ],
+    } as never);
+
+    await switchToGpuG5kConfig(user);
+
+    expect(await screen.findByTestId("gpu-cluster-unconfigured")).toBeInTheDocument();
+    expect(screen.getByTestId("experiment-create")).not.toBeDisabled();
+  });
+
+  it("affiche un état vide explicite quand aucun cluster ne convient", async () => {
+    const { api, user } = await setup();
+    vi.mocked(api.listGpuClusters).mockResolvedValue({ configured: true, clusters: [] } as never);
+
+    await switchToGpuG5kConfig(user);
+
+    expect(await screen.findByTestId("gpu-cluster-empty")).toBeInTheDocument();
+  });
+});
+
+describe("ExperimentLauncher — garde-fou sweep Grid'5000", () => {
+  it("un sweep trop grand affiche l'avertissement avec l'option de continuer quand même", async () => {
+    const { api, user } = await setup();
+    vi.mocked(api.createExperiment).mockResolvedValue({
+      id: "exp-1", name: "x", task: "T1_primary", dataset: "ds-1",
+      datasetFingerprint: "abc", config: {}, createdAt: "",
+    } as never);
+    vi.mocked(api.estimateExperiment).mockResolvedValue({
+      nRuns: 4, estimatedMinutes: 180, requiresGpu: true,
+    } as never);
+    vi.mocked(api.launchExperiment)
+      .mockRejectedValueOnce(
+        new ApiError(400, "API 400", {
+          code: "g5k_sweep_too_large",
+          detail: "4 runs Grid'5000 séparés — déconseillé. Renvoyer avec force=true pour continuer quand même.",
+        }),
+      )
+      .mockResolvedValueOnce({ runIds: ["run-1", "run-2", "run-3", "run-4"], duplicates: [] } as never);
+
+    await user.click(await screen.findByTestId("preset-baseline-fast"));
+    await user.click(screen.getByTestId("experiment-create"));
+    await user.click(await screen.findByTestId("experiment-launch"));
+
+    const warning = await screen.findByTestId("sweep-too-large-warning");
+    expect(warning.textContent).toMatch(/déconseillé/);
+    expect(screen.queryByTestId("experiment-error")).not.toBeInTheDocument();
+
+    await user.click(screen.getByTestId("sweep-force-launch"));
+
+    await waitFor(() => expect(api.launchExperiment).toHaveBeenCalledTimes(2));
+    expect(api.launchExperiment).toHaveBeenNthCalledWith(1, "demo", "exp-1", false);
+    expect(api.launchExperiment).toHaveBeenNthCalledWith(2, "demo", "exp-1", true);
+    expect(await screen.findByTestId("experiment-launched")).toBeInTheDocument();
+  });
+
+  it("« Modifier la configuration » revient à l'écran de création sans relancer", async () => {
+    const { api, user } = await setup();
+    vi.mocked(api.createExperiment).mockResolvedValue({
+      id: "exp-1", name: "x", task: "T1_primary", dataset: "ds-1",
+      datasetFingerprint: "abc", config: {}, createdAt: "",
+    } as never);
+    vi.mocked(api.estimateExperiment).mockResolvedValue({
+      nRuns: 4, estimatedMinutes: 180, requiresGpu: true,
+    } as never);
+    vi.mocked(api.launchExperiment).mockRejectedValue(
+      new ApiError(400, "API 400", { code: "g5k_sweep_too_large", detail: "déconseillé" }),
+    );
+
+    await user.click(await screen.findByTestId("preset-baseline-fast"));
+    await user.click(screen.getByTestId("experiment-create"));
+    await user.click(await screen.findByTestId("experiment-launch"));
+    await screen.findByTestId("sweep-too-large-warning");
+
+    await user.click(screen.getByText("Modifier la configuration"));
+
+    expect(screen.queryByTestId("sweep-too-large-warning")).not.toBeInTheDocument();
+    expect(screen.getByTestId("experiment-create")).toBeInTheDocument();
+    expect(api.launchExperiment).toHaveBeenCalledTimes(1);
   });
 });

@@ -17,7 +17,7 @@
  */
 
 import { useEffect, useMemo, useState } from "react";
-import { FlaskConical, Loader2, Rocket, TriangleAlert } from "lucide-react";
+import { Cpu, FlaskConical, Loader2, Rocket, TriangleAlert } from "lucide-react";
 
 import { Button, Panel } from "@/components/ui/primitives";
 import { ApiError } from "@/lib/api/client";
@@ -27,18 +27,36 @@ import {
   estimateExperiment,
   launchExperiment,
   listDatasets,
+  listGpuClusters,
   listPresets,
 } from "./api";
-import type { DatasetSummary, EstimateResponse, ExperimentSummary, Preset, PresetCatalog } from "./types";
+import type {
+  DatasetSummary,
+  EstimateResponse,
+  ExperimentSummary,
+  GpuClusterCatalog,
+  Preset,
+  PresetCatalog,
+} from "./types";
 
 type Mode = "guided" | "expert";
 
-function apiErrorDetail(error: unknown): string {
+// Familles de modèles qui s'entraînent réellement sur GPU (docs/pactiva-g5k/06_ANALYSE_BESOIN_PACTIVA.md
+// §1) — les autres (tfidf_linear, majority, position_only, llm_judge) tournent en CPU,
+// jamais concernées par le panneau de cluster ni le garde-fou de sweep.
+const GPU_MODEL_FAMILIES = new Set(["embeddings_head", "transformer_finetune", "sequence_labeling"]);
+// Legal-BERT-base (~440 Mo) tient dans 8 Go de VRAM — c'est le besoin réel documenté,
+// pas une valeur arbitraire (même seuil que le défaut côté API, `views.g5k_clusters`).
+const DEFAULT_MIN_VRAM_GB = 8;
+
+function apiErrorDetail(error: unknown): { detail: string; code: string | null } {
   if (error instanceof ApiError) {
-    const body = error.body as { detail?: string; path?: string } | undefined;
-    if (body?.detail) return body.path ? `${body.path} : ${body.detail}` : body.detail;
+    const body = error.body as { detail?: string; path?: string; code?: string } | undefined;
+    if (body?.detail) {
+      return { detail: body.path ? `${body.path} : ${body.detail}` : body.detail, code: body.code ?? null };
+    }
   }
-  return error instanceof Error ? error.message : "erreur inconnue";
+  return { detail: error instanceof Error ? error.message : "erreur inconnue", code: null };
 }
 
 function baseConfig(preset: Preset | null, datasetId: string): Record<string, unknown> {
@@ -66,7 +84,9 @@ export function ExperimentLauncher({ slug, onLaunched }: { slug: string; onLaunc
   const [estimate, setEstimate] = useState<EstimateResponse | null>(null);
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [errorCode, setErrorCode] = useState<string | null>(null);
   const [launchedRunIds, setLaunchedRunIds] = useState<string[] | null>(null);
+  const [gpuClusters, setGpuClusters] = useState<GpuClusterCatalog | null>(null);
 
   useEffect(() => {
     if (!open) return;
@@ -103,6 +123,34 @@ export function ExperimentLauncher({ slug, onLaunched }: { slug: string; onLaunc
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [mode, presetId, datasetId]);
 
+  // Analyse tolérante : un JSON invalide en mode expert ne doit jamais faire planter
+  // le panneau de recommandation, seulement le laisser silencieux (l'erreur de syntaxe
+  // est déjà signalée ailleurs, au moment de « Créer et estimer »).
+  const parsedConfig = useMemo(() => {
+    try {
+      return JSON.parse(configText) as {
+        model?: { family?: string };
+        compute?: { target?: string };
+      };
+    } catch {
+      return null;
+    }
+  }, [configText]);
+
+  const requiresGpuTarget = Boolean(
+    parsedConfig?.compute?.target === "g5k" &&
+      parsedConfig?.model?.family &&
+      GPU_MODEL_FAMILIES.has(parsedConfig.model.family),
+  );
+
+  useEffect(() => {
+    if (!requiresGpuTarget) {
+      setGpuClusters(null);
+      return;
+    }
+    listGpuClusters(slug, DEFAULT_MIN_VRAM_GB).then(setGpuClusters).catch(() => setGpuClusters(null));
+  }, [requiresGpuTarget, slug]);
+
   const reset = () => {
     setExperiment(null);
     setEstimate(null);
@@ -137,18 +185,21 @@ export function ExperimentLauncher({ slug, onLaunched }: { slug: string; onLaunc
       const est = await estimateExperiment(slug, created.id);
       setEstimate(est);
     } catch (err) {
-      setError(apiErrorDetail(err));
+      const { detail, code } = apiErrorDetail(err);
+      setError(detail);
+      setErrorCode(code);
     } finally {
       setBusy(false);
     }
   };
 
-  const onLaunch = async () => {
+  const onLaunch = async (force = false) => {
     if (!experiment) return;
     setBusy(true);
     setError(null);
+    setErrorCode(null);
     try {
-      const result = await launchExperiment(slug, experiment.id);
+      const result = await launchExperiment(slug, experiment.id, force);
       setLaunchedRunIds(result.runIds);
       if (result.runIds.length === 0 && result.duplicates.length > 0) {
         setError(
@@ -157,7 +208,9 @@ export function ExperimentLauncher({ slug, onLaunched }: { slug: string; onLaunc
       }
       onLaunched();
     } catch (err) {
-      setError(apiErrorDetail(err));
+      const { detail, code } = apiErrorDetail(err);
+      setError(detail);
+      setErrorCode(code);
     } finally {
       setBusy(false);
     }
@@ -292,6 +345,57 @@ export function ExperimentLauncher({ slug, onLaunched }: { slug: string; onLaunc
         </label>
       )}
 
+      {requiresGpuTarget && !experiment && (
+        <div className="rounded border border-line p-3 text-xs" data-testid="gpu-cluster-panel">
+          <header className="mb-2 flex items-center gap-1.5 font-medium text-ink">
+            <Cpu className="h-3.5 w-3.5 text-ink-muted" aria-hidden />
+            Cluster Grid&apos;5000 recommandé
+          </header>
+          {!gpuClusters && <p className="text-ink-muted">chargement…</p>}
+          {gpuClusters && gpuClusters.clusters.length === 0 && (
+            <p className="text-ink-muted" data-testid="gpu-cluster-empty">
+              Aucun cluster connu ne correspond à ce besoin (≥{DEFAULT_MIN_VRAM_GB} Go de VRAM).
+            </p>
+          )}
+          {gpuClusters && gpuClusters.clusters.length > 0 && (
+            <div className="overflow-x-auto">
+              <table className="w-full text-left text-[11px]" data-testid="gpu-cluster-table">
+                <thead className="text-ink-muted">
+                  <tr>
+                    <th className="pr-2 font-normal">Site</th>
+                    <th className="pr-2 font-normal">Cluster</th>
+                    <th className="pr-2 font-normal">GPU</th>
+                    <th className="font-normal">VRAM</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {gpuClusters.clusters.map((c) => (
+                    <tr key={`${c.site}-${c.cluster}`} className="text-ink">
+                      <td className="pr-2">{c.site}</td>
+                      <td className="pr-2">{c.cluster}</td>
+                      <td className="pr-2">
+                        {c.gpuCount}× {c.gpuModel}
+                      </td>
+                      <td>{c.gpuVramGb} Go</td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+              <p className="mt-2 text-[10px] text-ink-muted">
+                Triée par VRAM croissante suffisante — inutile de viser les clusters les plus
+                contendus (H100/H200) pour ce besoin.
+              </p>
+            </div>
+          )}
+          {gpuClusters && !gpuClusters.configured && (
+            <p className="mt-2 text-[10px] text-ink-muted" data-testid="gpu-cluster-unconfigured">
+              Catalogue informatif — enregistrez vos identifiants Grid&apos;5000 (onglet Calcul)
+              pour pouvoir réserver.
+            </p>
+          )}
+        </div>
+      )}
+
       {!experiment && (
         <Button
           icon={<FlaskConical size={14} aria-hidden />}
@@ -319,7 +423,7 @@ export function ExperimentLauncher({ slug, onLaunched }: { slug: string; onLaunc
             <Button
               icon={<Rocket size={14} aria-hidden />}
               loading={busy}
-              onClick={onLaunch}
+              onClick={() => onLaunch()}
               data-testid="experiment-launch"
             >
               Lancer
@@ -343,10 +447,41 @@ export function ExperimentLauncher({ slug, onLaunched }: { slug: string; onLaunc
           <Loader2 className="h-3 w-3 animate-spin" aria-hidden /> en cours…
         </p>
       )}
-      {error && (
-        <p className="text-[11px] text-danger" data-testid="experiment-error" role="alert">
-          {error}
-        </p>
+
+      {/* Grid'5000 déconseille les sweeps en petits jobs séparés (docs/pactiva-g5k/
+          08_UX_UI.md §4) — un avertissement qui explique pourquoi et propose l'option
+          de continuer quand même, jamais un blocage silencieux. */}
+      {errorCode === "g5k_sweep_too_large" && experiment ? (
+        <div
+          className="space-y-2 rounded border border-warning/40 bg-warning/5 p-3 text-xs"
+          data-testid="sweep-too-large-warning"
+          role="alert"
+        >
+          <p className="flex items-start gap-2 text-ink">
+            <TriangleAlert className="mt-0.5 h-3.5 w-3.5 shrink-0 text-warning" aria-hidden />
+            <span>{error}</span>
+          </p>
+          <div className="flex gap-2">
+            <Button
+              variant="outline"
+              size="sm"
+              loading={busy}
+              onClick={() => onLaunch(true)}
+              data-testid="sweep-force-launch"
+            >
+              Continuer quand même
+            </Button>
+            <Button variant="ghost" size="sm" onClick={reset}>
+              Modifier la configuration
+            </Button>
+          </div>
+        </div>
+      ) : (
+        error && (
+          <p className="text-[11px] text-danger" data-testid="experiment-error" role="alert">
+            {error}
+          </p>
+        )
       )}
     </Panel>
   );

@@ -9,10 +9,11 @@ from pathlib import Path
 
 import pytest
 
-from claire.lab.g5k_reference import gpu_clusters_for
+from claire.lab.g5k_reference import gpu_clusters_for, load_static_catalogue
 
 REPO_ROOT = Path(__file__).resolve().parents[2]
 REAL_FIXTURE = REPO_ROOT / "docs" / "pactiva-g5k" / "specs" / "g5k-clusters-gpu-sample.json"
+REAL_CATALOGUE = REPO_ROOT / "docs" / "pactiva-g5k" / "specs" / "g5k-gpu-clusters-catalogue.json"
 
 
 def _synthetic_nodes():
@@ -84,3 +85,42 @@ def test_sur_donnees_grid5000_reelles():
 def test_seuil_au_dela_de_toute_vram_reelle_exclut_tout():
     data = json.loads(REAL_FIXTURE.read_text(encoding="utf-8"))
     assert gpu_clusters_for(48, data["nodes"]) == []  # aucun de nos 4 nœuds n'a 48 Go
+
+
+# --------------------------------------------------------------------------- #
+# Catalogue statique — utilisé tant qu'aucun compte Grid'5000 réel n'existe
+# --------------------------------------------------------------------------- #
+
+def test_load_static_catalogue_replie_sur_liste_vide_si_fichier_absent(settings, tmp_path):
+    settings.LAB_G5K_GPU_CATALOGUE = str(tmp_path / "n-existe-pas.json")
+    assert load_static_catalogue() == {}
+
+
+def test_load_static_catalogue_transforme_au_format_reference_api(settings, tmp_path):
+    path = tmp_path / "catalogue.json"
+    path.write_text(json.dumps({
+        "clusters": [
+            {"site": "nancy", "cluster": "grouille", "gpu_model": "A100", "gpu_vram_gb": 40, "gpu_count": 2},
+        ]
+    }), encoding="utf-8")
+    settings.LAB_G5K_GPU_CATALOGUE = str(path)
+
+    nodes = load_static_catalogue()
+    assert set(nodes) == {"grouille"}
+    assert nodes["grouille"]["site"] == "nancy"
+    gpus = nodes["grouille"]["node"]["gpu_devices"]
+    assert len(gpus) == 2
+    assert all(g["model"] == "A100" and g["memory"] == 40 * 1024**3 for g in gpus.values())
+
+    # Le format produit est directement consommable par gpu_clusters_for — verrouille
+    # qu'un seul chemin de calcul sert les deux sources (dynamique et statique).
+    assert gpu_clusters_for(40, nodes)[0]["cluster"] == "grouille"
+
+
+@pytest.mark.skipif(not REAL_CATALOGUE.exists(), reason="catalogue réel absent du dépôt")
+def test_catalogue_reel_du_depot_est_bien_forme(settings):
+    settings.LAB_G5K_GPU_CATALOGUE = str(REAL_CATALOGUE)
+    nodes = load_static_catalogue()
+    assert "gemini" in nodes  # cluster vérifié empiriquement dans la recherche
+    result = gpu_clusters_for(16, nodes)
+    assert any(r["cluster"] == "gemini" for r in result)

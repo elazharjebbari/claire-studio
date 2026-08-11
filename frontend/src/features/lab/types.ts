@@ -126,11 +126,32 @@ export interface ComputeCredential {
   id: number;
   kind: string;
   login: string;
-  /** Jamais le secret : seulement le fait qu'il existe. */
+  /** Jamais les secrets : seulement le fait qu'ils existent. Deux secrets DISTINCTS —
+   * le mot de passe authentifie l'API, la clé SSH authentifie le transfert de fichiers
+   * (Grid'5000 désactive l'authentification par mot de passe en SSH). */
   hasPassword: boolean;
+  hasSshKey: boolean;
   lastTestedAt: string | null;
   lastTestOk: boolean | null;
+  /** `null` = aucune clé SSH enregistrée (pas testable), distinct d'un test échoué. */
+  lastTestSshOk: boolean | null;
   lastTestDetail: string;
+}
+
+export interface GpuCluster {
+  site: string;
+  cluster: string;
+  node: string | null;
+  gpuModel: string;
+  gpuVramGb: number;
+  gpuCount: number;
+}
+
+export interface GpuClusterCatalog {
+  /** `true` si l'utilisateur a un mot de passe API enregistré — distingue « catalogue
+   * informatif » de « prêt à réserver ». Le catalogue reste visible dans les deux cas. */
+  configured: boolean;
+  clusters: GpuCluster[];
 }
 
 export interface Blocker {

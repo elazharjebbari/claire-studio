@@ -3,10 +3,12 @@ annulation coopérative. Ce module était le moins couvert du Lab (42 %) : `_wai
 n'était jamais exercé, ni le repli « aucun identifiant configuré », ni la boucle elle-même.
 """
 
+import json
 from pathlib import Path
 
 import pytest
 
+from claire.lab.g5k_client import G5KError
 from claire.lab.models import Experiment, ExperimentRun, RunStatus, Task
 from claire.lab.runners.base import ExecutionBackend
 from claire.lab.worker import _wait_remote, execute_run, loop, run_once
@@ -139,6 +141,28 @@ def test_execute_run_cible_g5k_sans_identifiant_echoue_proprement(queued_run):
     assert result.error_code == "credentials_missing"
 
 
+def test_backend_for_construit_un_vrai_grid5000backend_avec_les_deux_secrets(queued_run, monkeypatch):
+    """Seul le repli `credentials_missing` était testé jusqu'ici — jamais le chemin
+    normal de `_backend_for` qui déchiffre les DEUX secrets et construit le backend réel
+    (tous les autres tests G5K de ce fichier monkeypatchent `_backend_for` lui-même)."""
+    from claire.lab.runners.g5k import Grid5000Backend
+    from claire.lab.worker import _backend_for
+
+    _configure_g5k_credential(queued_run, monkeypatch)
+    from claire.lab.models import ComputeCredential
+    from claire.lab import crypto
+
+    ComputeCredential.objects.filter(user=queued_run.experiment.created_by, kind="g5k").update(
+        ssh_key_encrypted=crypto.encrypt_secret("clé-privée-ssh"),
+    )
+
+    backend = _backend_for(queued_run)
+    assert isinstance(backend, Grid5000Backend)
+    assert backend.login == "alice"
+    assert backend.password == "s3cret"
+    assert backend.ssh_key == "clé-privée-ssh"
+
+
 # --------------------------------------------------------------------------- #
 # _wait_remote — sonde Grid'5000
 # --------------------------------------------------------------------------- #
@@ -165,6 +189,43 @@ def test_wait_remote_annulation_cooperative(queued_run, monkeypatch):
     queued_run.save(update_fields=["cancel_requested", "status"])
 
     backend = FakeBackend(states=["running"])
+    ok = _wait_remote(queued_run, backend)
+    assert ok is False
+    assert backend.cancel_called is True
+    queued_run.refresh_from_db()
+    assert queued_run.status == RunStatus.CANCELLED
+
+
+def test_wait_remote_detecte_une_annulation_posee_par_un_autre_processus(queued_run, monkeypatch):
+    """⭐ BUG RÉEL trouvé en préparant cette batterie : le worker (`manage.py lab_worker`)
+    tourne dans un process séparé de celui qui sert `POST .../cancel` (le process web).
+    Sans rafraîchissement explicite, `run` reste l'instance figée chargée une fois par
+    `claim_next_run()` — une annulation demandée pendant l'attente d'un job Grid'5000 de
+    plusieurs heures ne serait jamais vue avant le prochain redémarrage du worker.
+    Reproduit ici en modifiant une INSTANCE SÉPARÉE de `ExperimentRun` (même PK), comme
+    le fait réellement la vue `run_cancel` via `get_object_or_404`."""
+    monkeypatch.setattr("claire.lab.worker.time.sleep", lambda _s: None)
+    monkeypatch.setattr("claire.lab.runners.g5k.poll_interval", lambda _elapsed: 0)
+    queued_run.status = RunStatus.WAITING
+    queued_run.save(update_fields=["status"])
+
+    class CancellingMidWayBackend(FakeBackend):
+        """Au 2ᵉ sondage, une requête HTTP concurrente annule le run — simulée par une
+        instance Django séparée, comme le ferait un vrai process web distinct."""
+
+        def __init__(self):
+            super().__init__(states=["waiting", "running", "running", "stopped"])
+            self.calls = 0
+
+        def poll(self, run):
+            self.calls += 1
+            if self.calls == 2:
+                other = ExperimentRun.objects.get(id=run.id)
+                other.cancel_requested = True
+                other.save(update_fields=["cancel_requested"])
+            return super().poll(run)
+
+    backend = CancellingMidWayBackend()
     ok = _wait_remote(queued_run, backend)
     assert ok is False
     assert backend.cancel_called is True
@@ -239,3 +300,131 @@ def test_execute_run_g5k_bout_en_bout_avec_backend_factice(queued_run, monkeypat
     # `fetch_result=False` : pas de _SENTINEL → ingestion en `partial`, jamais un succès
     # silencieux sur un résultat tronqué par le walltime.
     assert result.status in (RunStatus.FAILED, RunStatus.PARTIAL)
+
+
+def _configure_g5k_credential(run, monkeypatch):
+    """Identifiants factices déchiffrables — les 3 tests ci-dessous exercent
+    `_backend_for` réel (pas un `monkeypatch` direct de `worker._backend_for`), donc un
+    `ComputeCredential` déchiffrable est requis même si le backend distant est ensuite
+    remplacé par un `FakeBackend`."""
+    from cryptography.fernet import Fernet
+
+    from claire.lab import crypto
+    from claire.lab.models import ComputeCredential
+
+    monkeypatch.setenv(crypto.ENV_KEY, Fernet.generate_key().decode())
+    ComputeCredential.objects.create(
+        user=run.experiment.created_by, kind="g5k", login="alice",
+        secret_encrypted=crypto.encrypt_secret("s3cret"),
+    )
+    run.config = {**run.config, "compute": {"target": "g5k"}}
+    run.save(update_fields=["config"])
+
+
+def test_execute_run_g5k_succes_complet_ingere_et_marque_succeeded(queued_run, monkeypatch, tmp_path):
+    """⭐ Le chemin heureux complet, jusqu'ici jamais exercé bout en bout pour G5K : le
+    seul test existant (`..._bout_en_bout_avec_backend_factice`) couvrait uniquement le
+    cas `fetch_result=False` (partiel). Sans ce test, un succès G5K réel pourrait
+    échapper à toute assertion de non-régression."""
+    _configure_g5k_credential(queued_run, monkeypatch)
+    monkeypatch.setattr("claire.lab.worker.time.sleep", lambda _s: None)
+    monkeypatch.setattr("claire.lab.runners.g5k.poll_interval", lambda _elapsed: 0)
+
+    def fake_fetch(self, run, out_dir):
+        Path(out_dir).mkdir(parents=True, exist_ok=True)
+        (Path(out_dir) / "results.json").write_text(
+            json.dumps({"task": "T1_primary", "metrics": {"macro_f1": 0.5}, "environment": {}})
+        )
+        return True  # _SENTINEL présent — fin normale, pas une coupure walltime
+
+    fake = FakeBackend(states=["stopped"], submit_job_id="oar-succes")
+    monkeypatch.setattr(FakeBackend, "fetch", fake_fetch)
+    monkeypatch.setattr("claire.lab.worker._backend_for", lambda run: fake)
+
+    result = execute_run(queued_run)
+    assert result.status == RunStatus.SUCCEEDED
+    assert result.external_job_id == "oar-succes"
+    assert result.metrics["metrics"]["macro_f1"] == 0.5
+
+
+def test_execute_run_propage_le_code_metier_d_un_echec_de_soumission(queued_run, monkeypatch):
+    """Sans clé SSH, `Grid5000Backend.submit` lève `G5KError('g5k_ssh_key_missing', …)`
+    AVANT tout transfert (docs/pactiva-g5k/07_ARCHITECTURE.md §1) — le worker doit
+    afficher CE code précis, pas un `submit_failed` générique qui masquerait la cause
+    réelle (l'utilisateur irait chercher du côté de l'API alors que le problème est la
+    clé SSH absente)."""
+    _configure_g5k_credential(queued_run, monkeypatch)
+
+    class RaisingSubmitBackend(FakeBackend):
+        def submit(self, run, dataset_dir, out_dir):
+            raise G5KError("g5k_ssh_key_missing", "aucune clé SSH enregistrée")
+
+    monkeypatch.setattr("claire.lab.worker._backend_for", lambda run: RaisingSubmitBackend())
+    result = execute_run(queued_run)
+    assert result.status == RunStatus.FAILED
+    assert result.error_code == "g5k_ssh_key_missing"
+
+
+def test_execute_run_propage_le_code_metier_d_un_echec_de_rapatriement(queued_run, monkeypatch):
+    """Un `fetch` qui lève (rsync tombe sur une erreur non tolérée par `allow_failure`,
+    hôte devenu injoignable en cours de rapatriement) doit faire échouer le run avec le
+    code métier du backend (`g5k_transfer_failed`), jamais un `fetch_failed` opaque —
+    même principe que la soumission : le code affiché doit pointer vers la bonne cause."""
+    _configure_g5k_credential(queued_run, monkeypatch)
+    monkeypatch.setattr("claire.lab.worker.time.sleep", lambda _s: None)
+    monkeypatch.setattr("claire.lab.runners.g5k.poll_interval", lambda _elapsed: 0)
+
+    fake = FakeBackend(
+        states=["stopped"], submit_job_id="oar-1",
+        raise_on={"fetch": G5KError("g5k_transfer_failed", "échec du transfert (code 12)")},
+    )
+    monkeypatch.setattr("claire.lab.worker._backend_for", lambda run: fake)
+    result = execute_run(queued_run)
+    assert result.status == RunStatus.FAILED
+    assert result.error_code == "g5k_transfer_failed"
+
+
+def test_execute_run_detecte_une_annulation_posee_pendant_le_fetch(queued_run, monkeypatch):
+    """Même fenêtre de course que dans `_wait_remote`, mais après : le rapatriement
+    rsync peut prendre du temps sur un gros résultat, et une annulation demandée pendant
+    ce rapatriement (par une requête HTTP dans le process web, donc une instance Django
+    séparée) doit être vue au retour — même si le rapatriement a réussi, les résultats
+    ne doivent jamais être ingérés après une annulation."""
+    _configure_g5k_credential(queued_run, monkeypatch)
+    monkeypatch.setattr("claire.lab.worker.time.sleep", lambda _s: None)
+    monkeypatch.setattr("claire.lab.runners.g5k.poll_interval", lambda _elapsed: 0)
+
+    class CancellingFetchBackend(FakeBackend):
+        def fetch(self, run, out_dir):
+            other = ExperimentRun.objects.get(id=run.id)
+            other.cancel_requested = True
+            other.save(update_fields=["cancel_requested"])
+            Path(out_dir).mkdir(parents=True, exist_ok=True)
+            (Path(out_dir) / "results.json").write_text(
+                json.dumps({"task": "T1_primary", "metrics": {"macro_f1": 0.9}, "environment": {}})
+            )
+            return True  # rapatriement réussi malgré tout — ne doit pas être publié
+
+    fake = CancellingFetchBackend(states=["stopped"], submit_job_id="oar-2")
+    monkeypatch.setattr("claire.lab.worker._backend_for", lambda run: fake)
+    result = execute_run(queued_run)
+    assert result.status == RunStatus.CANCELLED
+    assert result.metrics == {}  # jamais ingéré, même si le fetch a réussi
+
+
+def test_execute_run_ne_tente_jamais_fetch_si_wait_remote_a_echoue(queued_run, monkeypatch):
+    """Quand la sonde distante échoue (timeout, erreur réseau, annulation), `execute_run`
+    doit s'arrêter là — un `fetch` après un `_wait_remote` en échec irait chercher des
+    résultats d'un job qui n'a peut-être jamais tourné jusqu'au bout."""
+    _configure_g5k_credential(queued_run, monkeypatch)
+    monkeypatch.setattr("claire.lab.worker.time.sleep", lambda _s: None)
+
+    fake = FakeBackend(submit_job_id="oar-3", raise_on={"poll": RuntimeError("g5k injoignable")})
+    fetch_calls = []
+    monkeypatch.setattr(FakeBackend, "fetch", lambda self, run, out_dir: fetch_calls.append(1))
+    monkeypatch.setattr("claire.lab.worker._backend_for", lambda run: fake)
+
+    result = execute_run(queued_run)
+    assert fetch_calls == []
+    assert result.status == RunStatus.FAILED
+    assert result.error_code == "g5k_unreachable"

@@ -26,6 +26,7 @@ from .models import (
     LabDataset,
     RunStatus,
 )
+from .g5k_reference import gpu_clusters_for, load_static_catalogue
 from .preflight import preflight
 from .presets import load_presets
 from .serializers import (
@@ -175,6 +176,35 @@ def presets(request, slug: str):
     except PermissionDenied as exc:
         return _forbidden(str(exc))
     return Response(load_presets())
+
+
+@api_view(["GET"])
+@permission_classes([IsAuthenticated])
+def g5k_clusters(request, slug: str):
+    """Clusters GPU Grid'5000 compatibles avec une VRAM minimale demandée.
+
+    Catalogue STATIQUE (voir `g5k_reference.catalogue_file` pour pourquoi) — ne
+    nécessite PAS d'identifiants Grid'5000 configurés : même sans compte, un chercheur
+    voit quel cluster viser avant d'en demander un. `configured` indique si l'utilisateur
+    a des identifiants API enregistrés (pour distinguer « catalogue informatif » de
+    « prêt à réserver »), sans jamais bloquer l'affichage.
+    """
+    try:
+        _project_for(request, slug)
+    except PermissionDenied as exc:
+        return _forbidden(str(exc))
+    try:
+        min_vram_gb = float(request.query_params.get("minVramGb", 8))
+    except (TypeError, ValueError):
+        return Response(
+            {"code": "invalid_min_vram", "detail": "minVramGb doit être un nombre"},
+            status=status.HTTP_400_BAD_REQUEST,
+        )
+    configured = ComputeCredential.objects.filter(
+        user=request.user, kind="g5k", secret_encrypted__gt=""
+    ).exists()
+    clusters = gpu_clusters_for(min_vram_gb, load_static_catalogue())
+    return Response({"configured": configured, "clusters": clusters})
 
 
 # --------------------------------------------------------------------------- #
