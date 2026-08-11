@@ -406,7 +406,7 @@ peu fiable sur cette classe. C'est exactement le garde-fou attendu du plan scien
 
 | Élément | État | Raison |
 |---|---|---|
-| Entraînement de transformers sur poids réels | non exécuté | `transformers`/`torch` non installés ; testé sur modèle jouet et par imports paresseux |
+| Entraînement de transformers sur poids réels | **fait le 11/08/2026** — voir section suivante | — |
 | Appel réel à l'API Grid'5000 | non exécuté | aucun compte configuré ; simulé, avec une commande de vérification manuelle dans ce runbook |
 | Tests a11y Playwright | non exécutés | `e2e/a11y.spec.ts` exige un serveur lancé ; les règles d'accessibilité sont en revanche couvertes par les tests vitest (équivalent tabulaire, rôles, libellés) |
 | Figures F5–F12 | non faites | F1–F4 couvrent les résultats déjà mesurés ; les autres dépendent de runs réels |
@@ -428,3 +428,89 @@ ssh $G5K_LOGIN@access.grid5000.fr
 module load conda && conda create -n pactiva-lab python=3.11 && conda activate pactiva-lab
 pip install -e /path/to/research[transformers]
 ```
+
+---
+
+## Audit général et exécution réelle des modèles lourds (11 août 2026)
+
+**Contrainte de plateforme découverte** : `backend/.venv` tourne sous Python 3.13 sur un
+Mac Intel (x86_64) — PyPI n'a **plus aucun wheel `torch`** pour cette combinaison
+(dernière version publiée pour Intel macOS : `torch==2.2.2`, qui exige `numpy<2` et
+`transformers<4.46`). Installer directement dans `backend/.venv` était donc impossible,
+et de toute façon contraire au principe d'architecture (`backend/.venv` doit rester léger,
+jamais de torch dans le process Django).
+
+**Solution retenue, cohérente avec le principe existant** : un venv **dédié** à
+`research/` (Python 3.11, wheels torch disponibles), et un nouveau réglage
+`LAB_RESEARCH_PYTHON` (`claire/lab/runners/local.py` + `config/settings/base.py`,
+lu via `env()`) qui dit à `LocalBackend.submit()` quel interpréteur invoquer en
+sous-processus — repli sur `sys.executable` si absent, donc aucun déploiement existant
+n'est affecté.
+
+```bash
+/usr/local/bin/python3.11 -m venv research/.venv
+research/.venv/bin/pip install -c constraints.txt \
+  "numpy<2" "torch==2.2.2" "transformers<4.46" "sentence-transformers<3.1" "tokenizers<0.20"
+research/.venv/bin/pip install -e "research[sklearn,embeddings,transformers,dev]"
+export LAB_RESEARCH_PYTHON=/…/research/.venv/bin/python   # côté Django
+```
+
+**Exécution réelle, poids réels téléchargés** : `sentence-transformers/all-MiniLM-L6-v2`
+(encodeur) et `prajjwal1/bert-tiny` (fine-tuning). Deux chemins vérifiés :
+1. CLI isolé (`python -m pactiva_lab run`) sur le dataset jouet.
+2. **Intégration Django bout en bout** — dataset réel construit depuis la base
+   (`claudette-gold-v1`, 862 phrases, 6 documents, 2 annotateurs), `queue_run` +
+   `run_once()`, `embeddings_head` (39 s) et `transformer_finetune` (27 s) tous deux
+   `succeeded`, résultats ingérés avec `per_label` (20 thèmes), `confusionMatrix` (20×20,
+   290 paires non nulles), `reliability_curve`.
+
+**Reproductibilité de la graine — vérifiée empiriquement, pas seulement au niveau du
+constructeur** : deux runs à graine identique produisent des `predictions.jsonl`
+**bit-à-bit identiques** (`embeddings_head` avec tête `mlp`, initialisation aléatoire
+réelle ; `transformer_finetune` avec tête de classification réinitialisée à chaque
+`from_pretrained`). Contrôle négatif : une graine différente change bien le résultat
+(macro-F1 0,07467 vs 0,06 sur le même jouet) — sans ce contrôle, une reproductibilité
+« trop parfaite » aurait pu masquer un modèle qui n'apprend simplement rien.
+
+### Bug réel trouvé en pilotant un vrai navigateur contre un vrai run
+
+`RunResults.tsx` lisait `run.metrics` (le `results.json` produit par `pactiva_lab`, donc
+en snake_case Python idiomatique) en snake_case (`metrics.macro_f1`, `run.metrics.human_ceiling`,
+`.per_label`, `.per_fold`, `.reliability_curve`). Mais le middleware de camélisation DRF
+recurse dans **n'importe quel JSONField**, pas seulement les champs de `ModelSerializer` —
+en conditions réelles, MACRO-F1/MICRO-F1/PLAFOND HUMAIN affichaient tous `—`, et F6 (score
+par thème) ne s'affichait pas du tout, malgré un run `succeeded` avec de vrais chiffres.
+La fixture du test correspondant était elle-même en snake_case, donc masquait
+silencieusement le bug côté vitest. Corrigé (`types.ts` + `RunResults.tsx`), verrouillé par
+un test de régression qui affirme l'absence de `—` sur des métriques présentes. Vérifié à
+nouveau en vrai navigateur (Playwright) après le fix : F6/F8/F9/F10 tous corrects sur les
+deux runs réels, plafond humain affiché en référence sur F9.
+
+### Audit de couverture (`pytest --cov`, jamais mesuré avant cette session)
+
+| Module | Avant | Après |
+|---|---:|---:|
+| `claire.lab` (backend) | 71 % | **89 %** |
+| `research/pactiva_lab` | 74 % | **91 %** |
+
+Trous comblés, tous fonctionnels (pas cosmétiques) :
+- `claire/lab/views.py` (27→82 %) — **aucun** test HTTP n'existait ; tout passait par des
+  appels directs aux fonctions pures. Nouveau : `test_lab_views.py` (permissions par rôle,
+  409/403/404, et un test qui verrouille explicitement la camélisation de `compare_runs`).
+- `claire/lab/worker.py` (42→87 %) — `_wait_remote` (sonde Grid'5000 : running/stopped,
+  annulation coopérative, erreur réseau, timeout) n'était jamais exercé. Nouveau :
+  `test_lab_worker.py`, avec un `FakeBackend` piloté à la main (pas de réseau).
+- 3 commandes `manage.py lab_*` (0→92-100 %) — jamais appelées par un test. Nouveau :
+  `test_lab_management_commands.py`.
+- `research/pactiva_lab/models/heavy.py` (36→97 %) — seuls les constructeurs (graine)
+  étaient testés ; `fit`/`predict`/`predict_proba` jamais exécutés. Nouveau :
+  `test_heavy_models.py`, avec les VRAIS petits modèles (pas de mock).
+- `research/pactiva_lab/cli.py` (0→93 %) — le point d'entrée que Django invoque en
+  sous-processus n'était jamais testé au niveau `main(argv)`. Nouveau : `test_cli.py`.
+- `research/pactiva_lab/preprocess/pipeline.py` (68→98 %) — `mask_entities`,
+  `remove_stopwords`, `simple_stem` et la fenêtre de contexte de `build_text` n'étaient
+  exercés par aucun test direct. Nouveau : `test_preprocess.py`.
+
+**Suites finales** : pytest backend **645**, vitest frontend **632**, pytest `research/`
+**90**, `tsc --noEmit` 0 erreur, `check:colors` 0 hex. Non déployé (conformément à la
+consigne de la session).
