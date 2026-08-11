@@ -53,3 +53,9 @@ backend/var/
 /data/preannotations/
 !/data/translations/
 !/data/translations/**
+
+# Artefacts du Lab (datasets et résultats de runs) — volumineux et reproductibles
+# depuis la base : on versionne le CODE qui les produit, jamais les sorties.
+var/lab/
+research/.cache/
+research/**/__pycache__/

@@ -9,6 +9,7 @@ import {
   ListChecks,
   LayoutDashboard,
   FileText,
+  FlaskConical,
   FolderKanban,
   Globe,
   GitCompareArrows,
@@ -62,6 +63,9 @@ function navGroups(slug: string | undefined): NavGroup[] {
       icon: BarChart3,
     });
   if (slug) corpus.push({ href: `/projects/${slug}/gold`, label: "Résolution GOLD", icon: Gavel });
+  // Le Lab (jeux de données figés + expériences) suit l'analyse : c'est la même
+  // matière, vue sous l'angle de la production de résultats scientifiques.
+  if (slug) corpus.push({ href: `/projects/${slug}/lab`, label: "Lab", icon: FlaskConical });
   corpus.push({ href: `/projects`, label: "Mes projets", icon: FolderKanban });
   corpus.push({ href: `/public`, label: "Projets publiés", icon: Globe });
 

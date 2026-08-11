@@ -1,0 +1,100 @@
+@startuml architecture
+' Pactiva Lab — architecture d'ensemble
+' Principe : le calcul scientifique ne vit PAS dans Django.
+
+skinparam componentStyle rectangle
+skinparam defaultTextAlignment center
+skinparam backgroundColor transparent
+
+package "Pactiva (Django)" #E8F0FE {
+  package "existant — réutilisé" {
+    [annotations\nAnnotation · Clause · ClauseTheme] as ANN
+    [projects\nmasi · iaa · gold_scoring] as PROJ
+    [gold\nGoldResolution · export] as GOLD
+    [analysis\nSnapshot · Run · Report\nMetricRegistry] as ANA
+    [corpora\nDocument · Sentence · ReferenceLabel] as COR
+    [imports\nPreAnnotation (4 juges)] as IMP
+  }
+
+  package "claire/lab — NOUVEAU (orchestration seulement)" #FFF4E5 {
+    [selectors.py\nPUR — maturité any/complete/submitted/gold] as SEL
+    [aggregation.py\nPUR — single/consensus/soft] as AGG
+    [splits.py\nPUR — GroupKFold par document] as SPL
+    [builder.py\ndataset + manifeste + empreinte] as BLD
+    [contracts.py\nvalidation JSON Schema] as CTR
+    [services.py\nqueue → dispatch → ingest] as SVC
+    [runners/\nlocal · g5k] as RUN
+    [crypto.py\nFernet — identifiants] as CRY
+  }
+}
+
+package "research/pactiva_lab (Python pur, SANS Django)" #E6F4EA {
+  [cli.py\npython -m pactiva_lab run] as CLI
+  [preprocess/\ndetokenize · normalize · context] as PRE
+  [features/\ntfidf · embeddings · cache] as FEA
+  [models/\nbaselines · transformers\nsequence · llm_judges] as MOD
+  [evaluation/\nmetrics · bootstrap\nceiling · errors] as EVA
+  [reporting/\nfigures SVG/PDF · tables] as REP
+}
+
+package "Frontend (Next.js)" #F3E8FD {
+  [features/analysis\n+ charts/ SVG maison] as UIA
+  [features/lab\ndatasets · experiments · runs] as UIL
+}
+
+cloud "Grid'5000" #FCE8E6 {
+  [API REST\napi.grid5000.fr/stable] as G5KAPI
+  [OAR\nordonnanceur] as OAR
+  [Nœud GPU\nconda + pactiva_lab] as NODE
+  [Group Storage\nHF cache · datasets] as STO
+}
+
+' ── flux de données ──
+ANN --> SEL
+COR --> SEL
+GOLD --> SEL
+IMP --> BLD : baseline juges figée
+PROJ --> AGG : cascade de résolution
+SEL --> AGG
+AGG --> BLD
+SPL --> BLD
+ANA ..> BLD : traçabilité snapshot
+
+BLD --> [dataset/\nJSONL + manifest + splits] as DS #FFFFFF
+DS --> CLI : contrat de FICHIERS\n(traverse le réseau et OAR)
+
+CLI --> PRE
+PRE --> FEA
+FEA --> MOD
+MOD --> EVA
+EVA --> REP
+REP --> [results/\nresults.json + figures] as RES #FFFFFF
+
+RES --> CTR : validation stricte
+CTR --> SVC : ingestion (jamais partielle)
+SVC --> RUN
+RUN --> CLI : cible local
+RUN --> G5KAPI : cible g5k (HTTP Basic)
+CRY --> RUN : identifiants déchiffrés\nen mémoire seulement
+G5KAPI --> OAR
+OAR --> NODE
+NODE --> STO
+NODE ..> CLI : même code, même résultat
+
+SVC --> UIL
+ANA --> UIA
+
+note right of DS
+  **Le contrat est un dossier de fichiers.**
+  C'est ce qui permet l'exécution déportée
+  sans couplage — et rend le paquet
+  publiable tel quel en annexe de l'article.
+end note
+
+note bottom of MOD
+  Django n'importe JAMAIS torch,
+  transformers ni sklearn.
+  Le VPS reste léger et déployable.
+end note
+
+@enduml

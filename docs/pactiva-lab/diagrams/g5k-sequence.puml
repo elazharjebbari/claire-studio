@@ -1,0 +1,101 @@
+@startuml g5k-sequence
+' Séquence complète d'un run déporté sur Grid'5000
+
+skinparam backgroundColor transparent
+skinparam sequenceMessageAlign left
+
+actor Chercheur as U
+participant "UI Lab" as UI
+participant "API Django" as API
+database "PostgreSQL" as DB
+participant "lab worker" as W
+participant "crypto.py" as CRY
+participant "access.grid5000.fr" as GW
+participant "api.grid5000.fr" as G5K
+participant "OAR" as OAR
+participant "Nœud GPU" as NODE
+
+== Préparation (une fois) ==
+U -> UI : saisit login + mot de passe G5K
+UI -> API : PUT /api/me/compute-credentials
+API -> CRY : encrypt_secret(password)
+note right of CRY
+  LAB_CREDENTIALS_KEY absente
+  ⇒ **503, refus d'écrire**
+  Jamais de stockage en clair.
+end note
+CRY --> API : jeton chiffré
+API -> DB : G5KCredential (chiffré)
+U -> UI : [ Tester la connexion ]
+API -> G5K : GET /stable/sites (Basic auth)
+G5K --> API : 200
+API -> DB : lastTestOk = true, lastTestedAt
+note right of API
+  Éviter de découvrir un mot de passe
+  faux APRÈS une réservation de 4 h.
+end note
+
+== Lancement ==
+U -> UI : choisit preset + cible g5k
+UI -> API : POST /experiments/{id}/run
+API -> API : valide config (JSON Schema)
+API -> DB : ExperimentRun(status=queued)
+API --> UI : 202 { runIds }
+
+W -> DB : prend le run en file
+W -> CRY : decrypt (en MÉMOIRE seulement)
+W -> GW : rsync dataset/ + config.json + run.sh
+note right of GW
+  Le script lit les identifiants dans
+  l'environnement du processus,
+  **jamais** depuis un fichier déposé.
+end note
+W -> G5K : POST /stable/sites/nancy/jobs\n{resources, command}
+G5K -> OAR : réservation
+G5K --> W : 201 Created + Location
+W -> DB : externalJobId, status=waiting
+
+== Attente et exécution ==
+loop sondage adaptatif 5 s → 15 s → 60 s
+  W -> G5K : GET /jobs/{id}
+  G5K --> W : state = waiting
+end
+OAR -> NODE : alloue le nœud
+W -> G5K : GET /jobs/{id}
+G5K --> W : state = running
+W -> DB : status=running
+
+NODE -> NODE : module load conda\nsource activate pactiva-lab
+NODE -> NODE : **garde-fou GPU**\nnvidia-smi + torch.cuda.is_available()
+note right of NODE
+  Échec en 3 s si le GPU manque,
+  plutôt que 6 h d'entraînement
+  sur CPU sans le savoir (exit 64/65).
+end note
+NODE -> NODE : python -m pactiva_lab run
+NODE -> NODE : écrit progress.json à chaque pli
+NODE -> NODE : écrit results/ + _SENTINEL
+
+== Rapatriement ==
+W -> G5K : GET /jobs/{id}
+G5K --> W : state = stopped
+W -> GW : rsync results/ ← nœud
+alt _SENTINEL présent
+  W -> W : valide results.json (JSON Schema)
+  W -> DB : status=succeeded, metrics, artifacts
+else _SENTINEL absent
+  W -> DB : status=partial (walltime dépassé)
+  note right of W : Le travail fait n'est PAS perdu.
+end
+W -> UI : notification
+U -> UI : consulte figures + tableaux
+
+== Dégradation ==
+note over W, G5K
+  **Grid'5000 n'est jamais sur le chemin critique.**
+  API injoignable ⇒ error_code=g5k_unreachable,
+  le dataset reste valide et le run est
+  **rejouable en local** en un clic.
+end note
+
+@enduml

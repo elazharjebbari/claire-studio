@@ -455,3 +455,110 @@ registry.register(
     )
 )
 registry.register(MetricDefinition("taxonomy", "1", "Atlas de la taxonomie", _taxonomy))
+
+
+# --------------------------------------------------------------------------- #
+# Métriques du Lab (chantier `docs/pactiva-lab/`)
+#
+# Calculées par `claire.lab.quality` et `claire.lab.agreement` — modules PURS, sans
+# Django, donc testables hors base et rejouables sur un export. Ici on ne fait que les
+# ENREGISTRER : le registre reste la seule porte d'entrée, et le versionnement garantit
+# qu'un rapport produit avant cet ajout reste lisible.
+# --------------------------------------------------------------------------- #
+
+from claire.imports.models import Judge  # noqa: E402
+from claire.lab import agreement as _lab_agreement  # noqa: E402
+from claire.lab import quality as _lab_quality  # noqa: E402
+
+
+def _boundary_agreement(payload: dict) -> dict:
+    """⚠ Remplace `boundaryKappa`, qui vaut 1,0 PAR CONSTRUCTION (chaque phrase porte
+    une ancre de clause). Mesure ici les frontières RECONSTRUITES."""
+    return _lab_quality.boundary_agreement(payload)
+
+
+def _label_distribution(payload: dict) -> dict:
+    return _lab_quality.label_distribution(payload)
+
+
+def _cooccurrence(payload: dict) -> dict:
+    # `unfairIndex` est injecté dans le payload par le snapshot quand les labels
+    # CLAUDETTE sont disponibles ; sans lui la matrice est calculée sans lift.
+    raw = payload.get("unfairIndex") or {}
+    index = {}
+    for key, categories in raw.items():
+        document_id, _, sentence_index = str(key).partition(":")
+        if sentence_index.isdigit():
+            index[(int(document_id), int(sentence_index))] = categories
+    return _lab_quality.cooccurrence(payload, index)
+
+
+def _campaign_readiness(payload: dict) -> dict:
+    return _lab_quality.campaign_readiness(payload)
+
+
+def _alpha_masi(payload: dict) -> dict:
+    return _lab_agreement.alpha_masi_report(payload)
+
+
+def _human_llm_matrix(payload: dict) -> dict:
+    # Ordre d'affichage DÉRIVÉ de la source unique — jamais une liste écrite ici.
+    return _lab_agreement.human_llm_matrix(payload, list(Judge.import_judges()))
+
+
+def _annotator_audit(payload: dict) -> dict:
+    return _lab_agreement.annotator_audit(payload)
+
+
+def _gold_progress(payload: dict) -> dict:
+    return _lab_agreement.gold_progress(payload)
+
+
+registry.register(
+    MetricDefinition(
+        "alpha_masi", "1", "α de Krippendorff (MASI) multi-label", _alpha_masi,
+        unit="phrase", min_support=20, modes=("inter_human",),
+    )
+)
+registry.register(
+    MetricDefinition(
+        "boundary_agreement", "1", "Accord de segmentation (frontières reconstruites)",
+        _boundary_agreement, unit="document", min_support=2, modes=("inter_human",),
+    )
+)
+registry.register(
+    MetricDefinition(
+        "label_distribution", "1", "Distribution des thèmes (longue traîne)",
+        _label_distribution, unit="clause",
+    )
+)
+registry.register(
+    MetricDefinition(
+        "cooccurrence", "1", "Co-occurrence des thèmes et lift d'abusivité",
+        _cooccurrence, unit="clause", min_support=5,
+    )
+)
+registry.register(
+    MetricDefinition(
+        "human_llm_matrix", "1", "Matrice d'accord humains × LLM", _human_llm_matrix,
+        unit="phrase", min_support=20, modes=("inter_human", "human_llm", "inter_llm"),
+    )
+)
+registry.register(
+    MetricDefinition(
+        "annotator_audit", "1", "Audit des annotateurs", _annotator_audit,
+        unit="clause", min_support=50,
+    )
+)
+registry.register(
+    MetricDefinition(
+        "gold_progress", "1", "Avancement de la résolution gold", _gold_progress,
+        unit="phrase", modes=("gold",),
+    )
+)
+registry.register(
+    MetricDefinition(
+        "campaign_readiness", "1", "Prêt pour la science", _campaign_readiness,
+        unit="document",
+    )
+)

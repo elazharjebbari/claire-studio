@@ -127,7 +127,14 @@ def project_iaa_detail(project) -> dict | None:
 
     - globalKappa : mean Cohen's kappa across all annotator pairs/documents.
     - annotatorPairs : number of compared (annotator, annotator) pairs.
-    - boundaryKappa : agreement on clause-start boundaries (segmentation).
+    - boundaryKappa : ⚠️ **DÉPRÉCIÉ** — mesure un ARTEFACT. Le pré-remplissage d'un
+      modèle est déplié PAR PHRASE, donc chaque phrase porte une ancre de clause chez
+      tous les annotateurs : l'accord sur « y a-t-il une ancre ici ? » vaut 1,000 par
+      construction et ne mesure rien. Le vrai accord de segmentation se calcule sur les
+      frontières RECONSTRUITES (plages de thèmes identiques) — voir la métrique
+      `boundary_agreement` (`claire.lab.quality`), qui donne 0,39–0,63 sur les mêmes
+      données. Ce champ est CONSERVÉ pour que les rapports déjà produits restent
+      lisibles ; ne pas le citer dans une publication.
     - perTheme : per-theme kappa with support, plus a "__boundaries__" row.
     """
     statuses = ["submitted", "in_review", "approved"]

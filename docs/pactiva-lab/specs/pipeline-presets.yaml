@@ -1,0 +1,293 @@
+# Presets d'expérience — Pactiva Lab
+# Chaque preset est une configuration conforme à `experiment-config.schema.json`.
+# Chargé par l'API (`GET /lab/presets`) et proposé dans le mode guidé de l'UI.
+#
+# PRINCIPE : les presets encodent le protocole en deux étages du plan scientifique
+# (§5) — on crible avec ce qui est rapide, on confirme avec ce qui est lourd.
+# Ils ne sont PAS une liste de tout ce qui est possible : ce sont les chemins recommandés.
+
+version: 1
+
+presets:
+
+  # ─────────────────────────────────────────────────────────────────────────────
+  # ÉTAGE 1 — criblage : rapide, sans GPU, pour éliminer les axes sans effet
+  # ─────────────────────────────────────────────────────────────────────────────
+
+  - id: baseline-fast
+    label: "Baselines rapides (plancher de référence)"
+    why: >
+      À lancer EN PREMIER sur tout nouveau dataset. Sans plancher, aucun gain n'est
+      interprétable. Tourne en quelques minutes sur CPU.
+    duration_hint: "~3 min CPU"
+    config:
+      task: T1_primary
+      preprocess: { detokenize: regex_rules, case: lower, max_length: 128 }
+      model: { family: tfidf_linear, classifier: logreg, ngram_max: 2, class_weight: balanced }
+      evaluation: { split: { scheme: group_kfold_document, k: 5 }, human_ceiling: true }
+      compute: { target: local }
+
+  - id: position-only
+    label: "Position seule (diagnostic)"
+    why: >
+      Baseline DIAGNOSTIQUE : que prédit la seule position de la phrase dans le document ?
+      Si elle est forte, la question Q2 (rôle du contexte) est déjà à moitié répondue —
+      et cela change la lecture de tous les autres résultats.
+    duration_hint: "~1 min CPU"
+    config:
+      task: T1_primary
+      preprocess: { detokenize: none }
+      model: { family: position_only }
+      evaluation: { split: { scheme: group_kfold_document, k: 5 }, human_ceiling: true }
+      compute: { target: local }
+
+  - id: llm-judges-baseline
+    label: "Les 4 juges LLM (baseline figée)"
+    why: >
+      Ne relance AUCUN modèle : lit les prédictions déjà en base. Comparateur gratuit
+      pour la question Q5 (le supervisé bat-il les LLM ?).
+    duration_hint: "~30 s"
+    config:
+      task: T1_primary
+      preprocess: { detokenize: none }
+      model: { family: llm_judge, judge: fable }
+      evaluation: { split: { scheme: group_kfold_document, k: 5 }, human_ceiling: true }
+      compute: { target: local }
+    sweep:
+      mode: grid
+      axes: { "/model/judge": [fable, claude, codex, mistral] }
+
+  - id: screening-preprocess
+    label: "Criblage des prétraitements"
+    why: >
+      Étage 1 du protocole : teste les axes de prétraitement sur un modèle bon marché.
+      Les axes sans effet ici sont abandonnés avant de toucher au GPU.
+    duration_hint: "~25 min CPU (24 runs)"
+    config:
+      task: T1_primary
+      preprocess: { detokenize: regex_rules, case: lower }
+      model: { family: tfidf_linear, classifier: logreg, class_weight: balanced }
+      evaluation: { split: { scheme: group_kfold_document, k: 5 }, human_ceiling: true }
+      compute: { target: local }
+    sweep:
+      mode: grid
+      max_runs: 24
+      axes:
+        "/preprocess/detokenize": [none, regex_rules]
+        "/preprocess/case": [keep, lower]
+        "/preprocess/stopwords": [none, english]
+        "/preprocess/normalization": [none, lemma]
+        "/preprocess/context/window_before": [0, 1, 2]
+
+  # ─────────────────────────────────────────────────────────────────────────────
+  # ÉTAGE 2 — embeddings gelés : bon rapport qualité/prix, CPU acceptable
+  # ─────────────────────────────────────────────────────────────────────────────
+
+  - id: embeddings-frozen
+    label: "Embeddings gelés + tête légère"
+    why: >
+      Encode une seule fois (cache), puis compare plusieurs têtes quasi gratuitement.
+      Répond à Q4 : le fine-tuning vaut-il son coût ?
+    duration_hint: "~15 min CPU / ~4 min GPU"
+    config:
+      task: T1_primary
+      preprocess: { detokenize: regex_rules, max_length: 256 }
+      model:
+        family: embeddings_head
+        encoder: intfloat/e5-large-v2
+        pooling: mean
+        head: logreg
+        cache_embeddings: true
+      evaluation:
+        split: { scheme: group_kfold_document, k: 5 }
+        human_ceiling: true
+        error_analysis: true
+      compute: { target: local }
+    sweep:
+      mode: grid
+      max_runs: 16
+      axes:
+        "/model/encoder":
+          - sentence-transformers/all-mpnet-base-v2
+          - intfloat/e5-large-v2
+          - BAAI/bge-large-en-v1.5
+          - nlpaueb/legal-bert-base-uncased
+        "/model/head": [logreg, linear_svm, knn, mlp]
+
+  - id: knn-explainable
+    label: "k-NN sur embeddings (explicable par l'exemple)"
+    why: >
+      Valeur propre en AI & Law : la prédiction s'explique par « les k phrases les plus
+      proches, étiquetées ainsi ». Alimente aussi les suggestions de l'atelier.
+    duration_hint: "~5 min CPU (embeddings en cache)"
+    config:
+      task: T1_primary
+      preprocess: { detokenize: regex_rules, max_length: 256 }
+      model: { family: embeddings_head, encoder: intfloat/e5-large-v2, head: knn, knn_k: 5 }
+      evaluation: { split: { scheme: group_kfold_document, k: 5 }, error_analysis: true }
+      compute: { target: local }
+
+  # ─────────────────────────────────────────────────────────────────────────────
+  # ÉTAGE 3 — fine-tuning : GPU, Grid'5000 recommandé
+  # ─────────────────────────────────────────────────────────────────────────────
+
+  - id: legal-bert-finetune
+    label: "Legal-BERT — fine-tuning (T1)"
+    why: "Le modèle de référence du domaine (LexGLUE/UNFAIR-ToS). Résultat principal attendu."
+    duration_hint: "~45 min GPU"
+    config:
+      task: T1_primary
+      preprocess: { detokenize: regex_rules, max_length: 128, context: { window_before: 1, window_after: 1 } }
+      model:
+        family: transformer_finetune
+        checkpoint: nlpaueb/legal-bert-base-uncased
+        epochs: 8
+        batch_size: 16
+        learning_rate: 2.0e-5
+        loss: weighted_ce
+        early_stopping_patience: 3
+      evaluation:
+        split: { scheme: group_kfold_document, k: 5, inner_k: 3 }
+        bootstrap: { enabled: true, n_resamples: 1000 }
+        human_ceiling: true
+        calibration: true
+        error_analysis: true
+        cross_reference_unfair: true
+      compute: { target: g5k, require_gpu: true, g5k: { site: nancy, resources: "gpu=1,walltime=03:00" } }
+
+  - id: multilabel-finetune
+    label: "Multi-label (T2) — l'ensemble des thèmes"
+    why: >
+      La tâche RÉELLE du protocole d'annotation. À comparer au plafond α-MASI (0,635),
+      pas au plafond κ de T1.
+    duration_hint: "~45 min GPU"
+    config:
+      task: T2_multilabel
+      preprocess: { detokenize: regex_rules, max_length: 128, context: { window_before: 1, window_after: 1 } }
+      model:
+        family: transformer_finetune
+        checkpoint: nlpaueb/legal-bert-base-uncased
+        epochs: 10
+        loss: bce
+      evaluation:
+        split: { scheme: group_kfold_document, k: 5, inner_k: 3 }
+        bootstrap: { enabled: true }
+        human_ceiling: true
+        error_analysis: true
+      compute: { target: g5k, require_gpu: true, g5k: { site: nancy, resources: "gpu=1,walltime=03:00" } }
+
+  - id: encoders-comparison
+    label: "Comparaison d'encodeurs (fine-tuning)"
+    why: "Legal-BERT vs généralistes : le domaine juridique paie-t-il ?"
+    duration_hint: "~3 h GPU (4 runs)"
+    config:
+      task: T1_primary
+      preprocess: { detokenize: regex_rules, max_length: 128 }
+      model: { family: transformer_finetune, checkpoint: nlpaueb/legal-bert-base-uncased, epochs: 8 }
+      evaluation: { split: { scheme: group_kfold_document, k: 5 }, bootstrap: { enabled: true }, human_ceiling: true }
+      compute: { target: g5k, require_gpu: true, g5k: { site: nancy, resources: "gpu=1,walltime=06:00" } }
+    sweep:
+      mode: grid
+      max_runs: 4
+      axes:
+        "/model/checkpoint":
+          - nlpaueb/legal-bert-base-uncased
+          - roberta-base
+          - microsoft/deberta-v3-base
+          - answerdotai/ModernBERT-base
+
+  - id: sequence-boundary
+    label: "Segmentation (T3) — étiquetage de séquence"
+    why: >
+      Le point dur : l'accord humain sur les frontières n'est que de 0,39–0,63 en Jaccard.
+      Traite T1 et T3 conjointement (les thèmes viennent par blocs).
+    duration_hint: "~1 h GPU"
+    config:
+      task: T3_boundary
+      preprocess: { detokenize: regex_rules, max_length: 128 }
+      model: { family: sequence_labeling, encoder: nlpaueb/legal-bert-base-uncased, crf: true, doc_chunk_size: 64 }
+      evaluation: { split: { scheme: group_kfold_document, k: 5 }, bootstrap: { enabled: true }, human_ceiling: true }
+      compute: { target: g5k, require_gpu: true }
+
+  # ─────────────────────────────────────────────────────────────────────────────
+  # ABLATIONS ET COURBES — les résultats d'article
+  # ─────────────────────────────────────────────────────────────────────────────
+
+  - id: ablation-context
+    label: "Ablation — effet du contexte (Q2)"
+    why: "Contribution originale : le thème d'une phrase juridique est-il surtout positionnel ?"
+    duration_hint: "~2 h GPU (6 runs)"
+    config:
+      task: T1_primary
+      preprocess: { detokenize: regex_rules, max_length: 256 }
+      model: { family: transformer_finetune, checkpoint: nlpaueb/legal-bert-base-uncased, epochs: 8 }
+      evaluation: { split: { scheme: group_kfold_document, k: 5 }, bootstrap: { enabled: true }, human_ceiling: true }
+      compute: { target: g5k, require_gpu: true, g5k: { resources: "gpu=1,walltime=04:00" } }
+    sweep:
+      mode: ablation
+      max_runs: 6
+      axes:
+        "/preprocess/context/window_before": [0, 1, 2]
+        "/preprocess/context/include_doc_position": [false, true]
+
+  - id: learning-curve
+    label: "Courbe d'apprentissage — combien de documents faut-il ?"
+    why: >
+      LE résultat le plus actionnable du plan : répond empiriquement à « quand peut-on
+      arrêter d'annoter ? ». Aucune donnée nouvelle requise.
+    duration_hint: "~30 min CPU (embeddings) / ~3 h GPU (fine-tuning)"
+    config:
+      task: T1_primary
+      preprocess: { detokenize: regex_rules }
+      model: { family: embeddings_head, encoder: intfloat/e5-large-v2, head: logreg, cache_embeddings: true }
+      evaluation: { split: { scheme: group_kfold_document, k: 5 }, bootstrap: { enabled: true }, human_ceiling: true }
+      compute: { target: local }
+    sweep:
+      mode: learning_curve
+      learning_curve_sizes: [5, 10, 20, 30, 40]
+      repeats: 5
+      max_runs: 25
+
+  - id: ablation-gold-quality
+    label: "Ablation — la qualité du gold paie-t-elle ? (A5)"
+    why: >
+      Entraîner sur `submitted` vs `complete` vs `gold` finalisé. Répond à « l'arbitrage
+      vaut-il son coût ? » — décision stratégique pour la suite de la campagne.
+    duration_hint: "~20 min CPU"
+    note: "Nécessite trois datasets construits avec des maturités différentes."
+    config:
+      task: T1_primary
+      preprocess: { detokenize: regex_rules }
+      model: { family: embeddings_head, encoder: intfloat/e5-large-v2, head: logreg }
+      evaluation: { split: { scheme: group_kfold_document, k: 5 }, human_ceiling: true }
+      compute: { target: local }
+
+  - id: ablation-label-noise
+    label: "Ablation — robustesse au bruit d'étiquetage (A6)"
+    why: "Borne de fiabilité : jusqu'où le modèle tient-il quand le gold se dégrade ?"
+    duration_hint: "~20 min CPU"
+    config:
+      task: T1_primary
+      preprocess: { detokenize: regex_rules }
+      model: { family: embeddings_head, encoder: intfloat/e5-large-v2, head: logreg }
+      evaluation: { split: { scheme: group_kfold_document, k: 5 }, bootstrap: { enabled: true } }
+      compute: { target: local }
+    sweep:
+      mode: ablation
+      repeats: 3
+      axes: { "/evaluation/label_noise": [0.0, 0.05, 0.10, 0.20] }
+
+# ─────────────────────────────────────────────────────────────────────────────
+# Ordre d'exécution recommandé
+# ─────────────────────────────────────────────────────────────────────────────
+recommended_order:
+  - baseline-fast          # sans plancher, rien n'est interprétable
+  - position-only          # diagnostic : que dit la structure seule ?
+  - llm-judges-baseline    # gratuit, déjà en base
+  - screening-preprocess   # élimine les axes sans effet AVANT le GPU
+  - embeddings-frozen      # le bon rapport qualité/prix
+  - learning-curve         # le résultat le plus actionnable
+  - legal-bert-finetune    # le résultat principal
+  - ablation-context       # la contribution originale
+  - multilabel-finetune    # la tâche réelle
+  - sequence-boundary      # le point dur

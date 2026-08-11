@@ -1,0 +1,117 @@
+/** Types de l'API du Lab — miroir de `claire/lab/serializers.py`. */
+
+export type Maturity = "any" | "complete" | "submitted" | "gold";
+export type Aggregation = "single" | "consensus" | "soft";
+export type LabTask = "T1_primary" | "T2_multilabel" | "T3_boundary";
+
+export type RunStatus =
+  | "queued"
+  | "waiting"
+  | "running"
+  | "succeeded"
+  | "partial"
+  | "failed"
+  | "cancelled";
+
+export interface ExcludedRow {
+  document: string | null;
+  annotator: string | null;
+  reason: string;
+  detail: string;
+}
+
+export interface PreflightReport {
+  criteria: { maturity: Maturity; scope: Record<string, unknown>; k: number };
+  nAnnotations: number;
+  nDocuments: number;
+  nSentences: number;
+  documentsByAnnotatorCount: Record<string, number>;
+  nMultiAnnotated: number;
+  nTripleAnnotated: number;
+  coverage: Record<string, string[]>;
+  nearComplete: Array<{ document: string; annotator: string; completeness: number }>;
+  labelDistribution: Record<string, { primary: number; secondary: number; total: number }>;
+  rareThemes: string[];
+  excluded: ExcludedRow[];
+  excludedSummary: Record<string, number>;
+  warnings: Array<{ code: string; message: string }>;
+  splitsPreview: { scheme: string; k: number; feasible: boolean };
+  wouldFingerprint: string;
+}
+
+export interface DatasetSummary {
+  id: string;
+  label: string;
+  maturity: Maturity;
+  aggregation: Aggregation;
+  status: "building" | "ready" | "failed";
+  fingerprint: string;
+  nDocuments: number;
+  nSentences: number;
+  nAnnotations: number;
+  createdAt: string;
+}
+
+export interface RunSummary {
+  id: string;
+  experimentName: string;
+  task: LabTask;
+  status: RunStatus;
+  progress: number;
+  phase: string;
+  macroF1: number | null;
+  errorCode: string;
+  createdAt: string;
+  completedAt: string | null;
+}
+
+export interface RunDetail extends RunSummary {
+  config: Record<string, unknown>;
+  metrics: {
+    task?: string;
+    metrics?: Record<string, number | null | Record<string, unknown>>;
+    per_fold?: Array<Record<string, number>>;
+    per_label?: Array<{ label: string; f1: number; support: number }>;
+    human_ceiling?: { value: number | null; metric?: string; note?: string };
+    errors?: Record<string, unknown>;
+    preprocess?: string;
+  };
+  environment: Record<string, unknown>;
+  externalJobId: string;
+  errorDetail: string;
+  attempt: number;
+}
+
+export interface ComputeCredential {
+  id: number;
+  kind: string;
+  login: string;
+  /** Jamais le secret : seulement le fait qu'il existe. */
+  hasPassword: boolean;
+  lastTestedAt: string | null;
+  lastTestOk: boolean | null;
+  lastTestDetail: string;
+}
+
+export interface Blocker {
+  code: string;
+  message: string;
+  severity: "high" | "medium";
+}
+
+export interface CampaignReadiness {
+  documentsTotal: number;
+  documentsAnnotated: number;
+  documentsMultiAnnotatedSubmitted: number;
+  documentsMultiAnnotatedComplete: number;
+  documentsTripleAnnotated: number;
+  documentsWithGold: number;
+  completeButNotSubmitted: Array<{
+    documentId: number;
+    actorKey: string;
+    validated: number;
+    nSentences: number;
+  }>;
+  targets: { multiAnnotated: number; tripleAnnotated: number; goldFinalized: number };
+  blockers: Blocker[];
+}

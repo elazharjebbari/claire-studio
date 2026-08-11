@@ -1,0 +1,60 @@
+fichier,colonne,type,obligatoire,description,source,note
+sentences.jsonl,document,string,oui,Identifiant externe du document (ex. Atlas),Document.external_id,Clé de groupement pour GroupKFold
+sentences.jsonl,index,integer,oui,Index 0-based de la phrase dans le document,Sentence.index,Contigu 0..n-1 (INV-1)
+sentences.jsonl,text,string,oui,Texte brut tel qu'en base,Sentence.raw_text,Pré-tokenisé CLAUDETTE (espaces avant ponctuation)
+sentences.jsonl,text_detok,string,non,Texte détokenisé,preprocess.detokenize,Absent si detokenize=none
+sentences.jsonl,doc_position,float,oui,Position relative dans le document (0.0 à 1.0),calculé,Trait de la baseline position_only
+sentences.jsonl,n_sentences,integer,oui,Nombre de phrases du document,Document.n_sentences,Permet de recalculer doc_position
+sentences.jsonl,primary,string,oui,Code du thème primaire,ClauseTheme role=primary,Cible de la tâche T1
+sentences.jsonl,themes,array<string>,oui,Ensemble des thèmes (primaire + secondaires),ClauseTheme,Cible de la tâche T2
+sentences.jsonl,boundary,boolean,oui,La phrase ouvre-t-elle un nouveau segment ?,calculé,Cible de T3 — plage de thèmes identiques
+sentences.jsonl,soft,object,non,Distribution des votes par thème,aggregation=soft,Somme = 1.0 ; apprentissage perspectiviste
+sentences.jsonl,annotators,array<string>,oui,Pseudonymes des annotateurs couvrant la phrase,_pseudonym(),Jamais l'identité réelle
+sentences.jsonl,n_annotators,integer,oui,Nombre d'annotateurs,calculé,Sert à l'ablation A8
+sentences.jsonl,agreement,string,non,Classe d'accord,gold_scoring,strict / majority / divergence / empty
+sentences.jsonl,confidence,float,non,Confiance de la résolution,gold_scoring,Soutien pondéré du primaire
+sentences.jsonl,unfair,array<string>,non,Catégories d'abusivité CLAUDETTE,ReferenceLabel.category,Vide si phrase non abusive
+sentences.jsonl,unfair_level,integer,non,Niveau de sévérité,ReferenceLabel.level,ATTENTION : vaut 1 partout en base (source binaire)
+sentences.jsonl,source_maturity,string,oui,Maturité de l'annotation retenue,LabDataset.maturity,any / complete / submitted / gold
+judges.jsonl,document,string,oui,Identifiant externe du document,PreAnnotation.document,
+judges.jsonl,index,integer,oui,Index de la phrase,calculé,Segment LLM déplié par phrase
+judges.jsonl,judge,string,oui,Nom du juge LLM,PreAnnotation.judge,fable / claude / codex / mistral
+judges.jsonl,theme,string,oui,Thème proposé par le juge,PreClause.theme_code,Normalisé via theme_mapping
+judges.jsonl,is_segment_start,boolean,oui,Le juge ouvre-t-il un segment ici ?,PreClause.anchor_index,Baseline pour T3
+reference.jsonl,document,string,oui,Identifiant externe du document,Document.external_id,
+reference.jsonl,index,integer,oui,Index de la phrase,Sentence.index,
+reference.jsonl,category,string,oui,Catégorie d'abusivité,ReferenceLabel.category,A CH CR J LAW LTD TER USE
+reference.jsonl,level,integer,oui,Niveau de sévérité 1-3,ReferenceLabel.level,Vaut 1 partout — à revérifier à la source EUI
+splits.json,scheme,string,oui,Schéma de découpage,figé,Toujours group_kfold_document
+splits.json,k,integer,oui,Nombre de plis,config,Défaut 5
+splits.json,folds,array<array<string>>,oui,Documents de chaque pli,calculé,Figé : deux runs ne sont comparables que sur les mêmes plis
+splits.json,seed,integer,oui,Graine du découpage,config,Rejouable à l'identique
+labels.json,code,string,oui,Code du thème,Theme.code,20 thèmes du scheme claire-themes-v1
+labels.json,label,string,oui,Libellé humain,Theme.label,
+labels.json,support_primary,integer,oui,Occurrences en primaire,calculé,Sert à trier les scores par étiquette
+labels.json,support_secondary,integer,oui,Occurrences en secondaire,calculé,
+labels.json,is_refuge,boolean,oui,Thème-refuge ?,REFUGE_CODES,PREAMBLE_SCOPE MISC_BOILERPLATE — jamais en secondaire
+manifest.json,fingerprint,string,oui,Empreinte SHA-256 de (critères + contenu),calculé,Identité citable du dataset dans l'article
+manifest.json,created_at,string,oui,Horodatage ISO-8601,calculé,
+manifest.json,maturity,string,oui,Critère de maturité,config,
+manifest.json,aggregation,string,oui,Politique d'agrégation,config,
+manifest.json,n_documents,integer,oui,Documents retenus,calculé,
+manifest.json,n_sentences,integer,oui,Phrases retenues,calculé,
+manifest.json,excluded,array<object>,oui,Documents écartés AVEC motif,calculé,JAMAIS de troncature silencieuse
+manifest.json,label_distribution,object,oui,Support par thème,calculé,
+manifest.json,multi_label_rate,float,oui,Part des phrases à plus d'un thème,calculé,~30 % au 11/08/2026
+manifest.json,human_ceiling,object,non,Plafond humain sur les documents multi-annotés,calculé,κ pour T1 alpha-MASI pour T2
+manifest.json,versions,object,oui,Versions du code et du schéma,calculé,Reproductibilité
+results.json,task,string,oui,Tâche évaluée,config,T1_primary T2_multilabel T3_boundary
+results.json,metrics,object,oui,Scores globaux,runner,Voir metrics-catalog.yaml
+results.json,per_fold,array<object>,oui,Scores par pli,runner,Permet la dispersion inter-plis
+results.json,per_label,array<object>,oui,Scores par étiquette avec support,runner,Toujours avec le support
+results.json,confidence_intervals,object,non,IC bootstrap par document,runner,1000 rééchantillonnages par défaut
+results.json,human_ceiling,object,non,Plafond humain de la même tâche,runner,Un score sans plafond est ininterprétable
+results.json,environment,object,oui,Versions matériel graines durées,runner,
+predictions.jsonl,document,string,oui,Identifiant externe du document,runner,
+predictions.jsonl,index,integer,oui,Index de la phrase,runner,
+predictions.jsonl,fold,integer,oui,Pli où la phrase était en test,runner,
+predictions.jsonl,y_true,array<string>,oui,Vérité terrain,dataset,
+predictions.jsonl,y_pred,array<string>,oui,Prédiction du modèle,runner,
+predictions.jsonl,scores,object,non,Probabilité par étiquette,runner,Nécessaire pour la calibration

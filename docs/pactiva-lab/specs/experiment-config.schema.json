@@ -1,0 +1,212 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://pactiva.legal/schemas/lab/experiment-config-1.json",
+  "title": "Pactiva Lab — configuration d'expérience",
+  "description": "Contrat unique entre l'UI, l'API Django et le runner `pactiva_lab`. Toute configuration est validée ici AVANT d'être mise en file : un run ne doit jamais échouer pour une faute de frappe après deux heures de GPU.",
+  "type": "object",
+  "required": ["version", "task", "dataset_id", "preprocess", "model", "evaluation"],
+  "additionalProperties": false,
+  "properties": {
+    "version": { "const": 1 },
+    "name": { "type": "string", "maxLength": 120 },
+    "seed": { "type": "integer", "minimum": 0, "default": 42,
+      "description": "Graine unique pour numpy/torch/random. Rejouée à l'identique lors d'une reproduction." },
+
+    "task": {
+      "enum": ["T1_primary", "T2_multilabel", "T3_boundary"],
+      "description": "T1 mono-label (thème primaire) · T2 multi-label (ensemble de thèmes) · T3 frontière de segment. Les plafonds humains diffèrent : ne jamais agréger les trois en un score unique."
+    },
+
+    "dataset_id": { "type": "string", "format": "uuid" },
+
+    "preprocess": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "detokenize": { "enum": ["none", "moses", "regex_rules"], "default": "regex_rules",
+          "description": "Le corpus CLAUDETTE est pré-tokenisé (« terms and conditions of use »). Les tokenizers de transformers attendent du texte naturel : c'est le prétraitement le plus rentable à tester." },
+        "case": { "enum": ["keep", "lower"], "default": "keep" },
+        "mask_entities": {
+          "type": "array", "uniqueItems": true, "default": [],
+          "items": { "enum": ["url", "email", "money", "date", "section_ref", "company"] },
+          "description": "Évite que le modèle mémorise le nom du service plutôt que le thème."
+        },
+        "stopwords": { "enum": ["none", "english", "legal_custom"], "default": "none",
+          "description": "Pertinent pour TF-IDF uniquement ; nuit généralement aux transformers." },
+        "normalization": { "enum": ["none", "lemma", "stem"], "default": "none" },
+        "context": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "window_before": { "type": "integer", "minimum": 0, "maximum": 5, "default": 0 },
+            "window_after": { "type": "integer", "minimum": 0, "maximum": 5, "default": 0 },
+            "include_doc_position": { "type": "boolean", "default": false },
+            "include_section_header": { "type": "boolean", "default": false },
+            "separator": { "type": "string", "default": " [SEP] " }
+          },
+          "default": {}
+        },
+        "max_length": { "type": "integer", "minimum": 32, "maximum": 2048, "default": 128 }
+      },
+      "default": {}
+    },
+
+    "model": {
+      "type": "object",
+      "required": ["family"],
+      "properties": {
+        "family": {
+          "enum": ["majority", "position_only", "tfidf_linear", "embeddings_head",
+                   "transformer_finetune", "sequence_labeling", "llm_judge"],
+          "description": "`llm_judge` ne relance aucun modèle : il lit les prédictions déjà en base (baseline figée et gratuite)."
+        }
+      },
+      "allOf": [
+        {
+          "if": { "properties": { "family": { "const": "tfidf_linear" } } },
+          "then": {
+            "properties": {
+              "classifier": { "enum": ["logreg", "linear_svm"], "default": "logreg" },
+              "ngram_max": { "type": "integer", "minimum": 1, "maximum": 3, "default": 2 },
+              "min_df": { "type": "integer", "minimum": 1, "default": 2 },
+              "class_weight": { "enum": ["none", "balanced"], "default": "balanced" }
+            }
+          }
+        },
+        {
+          "if": { "properties": { "family": { "const": "embeddings_head" } } },
+          "then": {
+            "required": ["encoder"],
+            "properties": {
+              "encoder": { "type": "string",
+                "examples": ["sentence-transformers/all-mpnet-base-v2", "intfloat/e5-large-v2",
+                             "BAAI/bge-large-en-v1.5", "nlpaueb/legal-bert-base-uncased"] },
+              "pooling": { "enum": ["mean", "cls", "max"], "default": "mean" },
+              "head": { "enum": ["logreg", "linear_svm", "knn", "mlp"], "default": "logreg" },
+              "knn_k": { "type": "integer", "minimum": 1, "maximum": 50, "default": 5 },
+              "cache_embeddings": { "type": "boolean", "default": true,
+                "description": "Encoder une fois, réutiliser partout : rend le criblage de têtes quasi gratuit." }
+            }
+          }
+        },
+        {
+          "if": { "properties": { "family": { "const": "transformer_finetune" } } },
+          "then": {
+            "required": ["checkpoint"],
+            "properties": {
+              "checkpoint": { "type": "string",
+                "examples": ["nlpaueb/legal-bert-base-uncased", "roberta-base",
+                             "microsoft/deberta-v3-base", "answerdotai/ModernBERT-base"] },
+              "epochs": { "type": "integer", "minimum": 1, "maximum": 50, "default": 5 },
+              "batch_size": { "type": "integer", "minimum": 1, "maximum": 256, "default": 16 },
+              "learning_rate": { "type": "number", "exclusiveMinimum": 0, "default": 2e-5 },
+              "warmup_ratio": { "type": "number", "minimum": 0, "maximum": 0.5, "default": 0.1 },
+              "weight_decay": { "type": "number", "minimum": 0, "default": 0.01 },
+              "loss": { "enum": ["ce", "bce", "focal", "weighted_ce"], "default": "bce" },
+              "early_stopping_patience": { "type": "integer", "minimum": 0, "default": 3 },
+              "gradient_accumulation": { "type": "integer", "minimum": 1, "default": 1 },
+              "fp16": { "type": "boolean", "default": true }
+            }
+          }
+        },
+        {
+          "if": { "properties": { "family": { "const": "sequence_labeling" } } },
+          "then": {
+            "properties": {
+              "encoder": { "type": "string", "default": "nlpaueb/legal-bert-base-uncased" },
+              "crf": { "type": "boolean", "default": true },
+              "doc_chunk_size": { "type": "integer", "minimum": 8, "default": 64,
+                "description": "Nombre de phrases par fenêtre de document." }
+            }
+          }
+        },
+        {
+          "if": { "properties": { "family": { "const": "llm_judge" } } },
+          "then": {
+            "required": ["judge"],
+            "properties": { "judge": { "enum": ["fable", "claude", "codex", "mistral"] } }
+          }
+        }
+      ]
+    },
+
+    "evaluation": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "split": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "scheme": { "const": "group_kfold_document",
+              "description": "IMPOSÉ. Un split par phrase ferait fuir des phrases du même contrat entre train et test — les scores seraient gonflés et le résultat non publiable." },
+            "k": { "type": "integer", "minimum": 2, "maximum": 10, "default": 5 },
+            "inner_k": { "type": "integer", "minimum": 0, "maximum": 5, "default": 3,
+              "description": "Validation imbriquée pour le réglage des hyperparamètres. 0 = pas de réglage. Le test n'est JAMAIS utilisé pour sélectionner." }
+          },
+          "default": {}
+        },
+        "bootstrap": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "enabled": { "type": "boolean", "default": true },
+            "n_resamples": { "type": "integer", "minimum": 100, "maximum": 10000, "default": 1000 },
+            "unit": { "const": "document",
+              "description": "Rééchantillonner les documents, pas les phrases (non-indépendance intra-document)." },
+            "confidence": { "type": "number", "minimum": 0.5, "maximum": 0.999, "default": 0.95 }
+          },
+          "default": {}
+        },
+        "human_ceiling": { "type": "boolean", "default": true,
+          "description": "Calcule la performance d'un annotateur pris comme prédiction d'un autre. Un score sans plafond humain est ininterprétable." },
+        "calibration": { "type": "boolean", "default": false },
+        "error_analysis": { "type": "boolean", "default": true },
+        "cross_reference_unfair": { "type": "boolean", "default": true,
+          "description": "Croise les erreurs avec les labels d'abusivité CLAUDETTE." }
+      },
+      "default": {}
+    },
+
+    "sweep": {
+      "type": "object",
+      "description": "Génère plusieurs runs à partir d'une configuration de base. `axes` est un produit cartésien de chemins JSON-pointer.",
+      "additionalProperties": false,
+      "properties": {
+        "mode": { "enum": ["grid", "learning_curve", "ablation"], "default": "grid" },
+        "axes": {
+          "type": "object",
+          "additionalProperties": { "type": "array", "minItems": 1 },
+          "examples": [{ "/preprocess/detokenize": ["none", "regex_rules"],
+                         "/preprocess/context/window_before": [0, 1, 2] }]
+        },
+        "learning_curve_sizes": { "type": "array", "items": { "type": "integer", "minimum": 1 },
+          "default": [5, 10, 20, 30, 40] },
+        "repeats": { "type": "integer", "minimum": 1, "maximum": 20, "default": 3 },
+        "max_runs": { "type": "integer", "minimum": 1, "maximum": 500, "default": 60,
+          "description": "Garde-fou : au-delà, l'API refuse et affiche le décompte. Évite de lancer 400 runs par inadvertance." }
+      }
+    },
+
+    "compute": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "target": { "enum": ["local", "g5k"], "default": "local" },
+        "require_gpu": { "type": "boolean", "default": false },
+        "g5k": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "site": { "enum": ["nancy", "rennes", "grenoble", "lyon", "lille", "sophia", "luxembourg", "nantes", "toulouse"] },
+            "cluster": { "type": ["string", "null"], "default": null },
+            "resources": { "type": "string", "default": "gpu=1,walltime=04:00" },
+            "queue": { "enum": ["default", "production", "besteffort"], "default": "default" },
+            "env_name": { "type": "string", "default": "pactiva-lab" }
+          }
+        }
+      },
+      "default": {}
+    }
+  }
+}

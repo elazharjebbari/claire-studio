@@ -29,6 +29,26 @@
   /* Accent de marque doré (rare) — identique aux deux thèmes. */
   --brand-gold: 186 117 23; /* #BA7517 */
 
+  /*
+   * Palette des GRAPHES (features/analysis/charts). VALIDÉE, pas choisie à l'œil :
+   * bandes de clarté, plancher de chroma, séparation sous déficience de vision des
+   * couleurs (ΔE protan 8,4 · normal 19,8) et contraste ≥ 3:1 sur la surface #141B26.
+   * ⚠ Ne pas modifier sans relancer le validateur de la méthode dataviz.
+   * Les composants ne portent JAMAIS de hex : uniquement var(--viz-*).
+   */
+  --viz-series-1: #3987e5;
+  --viz-series-2: #d95926;
+  --viz-series-3: #199e70;
+  --viz-series-4: #c98500;
+  --viz-surface: rgb(var(--surface-panel));
+  --viz-grid: rgb(var(--surface-border) / 0.6);
+  --viz-axis: rgb(var(--surface-border));
+  --viz-ink: rgb(var(--surface-text));
+  --viz-ink-muted: rgb(var(--surface-text-muted));
+  --viz-threshold: rgb(var(--sem-warning));
+  --viz-positive: rgb(var(--sem-success));
+  --viz-negative: rgb(var(--sem-danger));
+
   --font-sans: var(--font-inter), ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
   --font-display: var(--font-outfit), var(--font-inter), ui-sans-serif, system-ui, sans-serif;
   --font-reading: "Iowan Old Style", Georgia, Cambria, "Times New Roman", serif;
@@ -42,6 +62,15 @@ html.light,
   color-scheme: light;
   --surface-bg: 247 249 252; /* #F7F9FC */
   --surface-bg-elevated: 255 255 255;
+  /* Palette des graphes — mêmes teintes, pas de la surface claire (#FFFFFF).
+     Validée : ΔE protan 9,1 · normal 22,9. Deux teintes sont sous 3:1 sur blanc, d'où
+     le relief obligatoire (étiquettes directes + équivalent tabulaire) que `Figure`
+     fournit systématiquement. */
+  --viz-series-1: #2a78d6;
+  --viz-series-2: #eb6834;
+  --viz-series-3: #1baf7a;
+  --viz-series-4: #eda100;
+
   --surface-panel: 255 255 255;
   --surface-panel-muted: 238 242 248; /* #EEF2F8 */
   --surface-border: 216 224 236; /* #D8E0EC */

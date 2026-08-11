@@ -1,0 +1,26 @@
+[project]
+name = "pactiva-lab"
+version = "0.1.0"
+description = "Entraînement et évaluation des modèles de thèmes de clauses — package AUTONOME (aucune dépendance à Django ni à Pactiva)"
+requires-python = ">=3.11"
+# Le socle ne dépend QUE de la bibliothèque standard : baselines, métriques, bootstrap et
+# rapports tournent partout, y compris sur une frontale Grid'5000 sans environnement
+# scientifique. Les modèles lourds sont des extras, chargés à la demande.
+dependencies = []
+
+[project.optional-dependencies]
+sklearn = ["scikit-learn>=1.4", "numpy>=1.26", "scipy>=1.11"]
+embeddings = ["sentence-transformers>=3.0", "torch>=2.2"]
+transformers = ["transformers>=4.40", "torch>=2.2", "accelerate>=0.30"]
+dev = ["pytest>=8.0"]
+
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[tool.setuptools.packages.find]
+include = ["pactiva_lab*"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+markers = ["slow: nécessite des poids de modèle réels"]

@@ -1,0 +1,75 @@
+@startuml experiment-lifecycle
+' Cycle de vie d'un dataset et d'un run
+
+skinparam backgroundColor transparent
+skinparam state {
+  BackgroundColor<<terminal>> #E6F4EA
+  BackgroundColor<<error>> #FCE8E6
+  BackgroundColor<<wait>> #FEF7E0
+}
+
+title Cycle de vie — Dataset puis Run
+
+state "DATASET" as DATASET {
+  [*] --> preflight : critères saisis
+  preflight : simule SANS créer
+  preflight : renvoie exclusions + motifs
+  preflight --> preflight : l'utilisateur ajuste
+  preflight --> building : [ construire ]
+  building --> ready : manifeste + splits + empreinte
+  building --> failed_ds <<error>> : dataset_empty\ndataset_too_small
+  ready : IMMUABLE\nfingerprint = f(critères, contenu)
+  ready --> [*]
+}
+
+state "RUN" as RUN {
+  [*] --> draft
+  draft : config éditée (guidé ou expert)
+  draft --> draft : validation JSON Schema en direct
+  draft --> queued : [ lancer ]  (202)
+  draft --> refused <<error>> : config_invalid\nsweep_too_large
+
+  queued --> deduped <<terminal>> : (dataset, config)\ndéjà exécuté → run existant
+  queued --> waiting <<wait>> : cible g5k\njob soumis à OAR
+  queued --> running : cible local
+
+  waiting : état DISTINCT de « en cours »
+  waiting : sinon l'utilisateur croit à un blocage
+  waiting --> running : OAR alloue le nœud
+  waiting --> cancelled : [ annuler ] → oardel
+
+  running --> running : heartbeat + progression\n(pli en cours)
+  running --> succeeded <<terminal>> : _SENTINEL présent\n+ results.json valide
+  running --> partial <<wait>> : walltime atteint\nrésultats partiels
+  running --> failed <<error>> : gpu_unavailable\ng5k_unreachable\nresult_schema_invalid
+  running --> cancelled : [ annuler ]
+
+  failed --> queued : retry (≤ 3)
+  partial --> queued : relancer avec walltime +
+
+  succeeded --> ingested <<terminal>> : métriques + artefacts\nvisibles dans l'UI
+}
+
+DATASET --> RUN : dataset_id
+
+note right of waiting
+  Un job Grid'5000 peut rester
+  en file plusieurs heures.
+  Le sondage est adaptatif :
+  5 s → 15 s → 60 s.
+end note
+
+note right of partial
+  Un job tué par le walltime
+  N'EST PAS un échec : le travail
+  déjà fait est ingéré.
+end note
+
+note bottom of ingested
+  L'ingestion est TOUT OU RIEN.
+  Un results.json non conforme
+  fait échouer le run — jamais
+  d'ingestion partielle silencieuse.
+end note
+
+@enduml

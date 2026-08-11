@@ -1,0 +1,227 @@
+# Catalogue des métriques — Analyse & Qualité + Lab
+#
+# Le registre backend (`claire/analysis/metrics.py`) est VERSIONNÉ : on ajoute des
+# métriques, on n'en modifie jamais une existante sans incrémenter sa version.
+# Un rapport produit en juillet doit rester lisible en septembre.
+
+version: 1
+
+# ─────────────────────────────────────────────────────────────────────────────
+existing:                       # déjà en production, NE PAS TOUCHER
+  - code: overview
+    version: "1"
+    label: Vue d'ensemble
+  - code: actor_profiles
+    version: "1"
+    label: Profils des annotateurs
+  - code: quality
+    version: "1"
+    label: Qualité des observations
+    unit: clause
+    min_support: 10
+  - code: pairwise_agreement
+    version: "1"
+    label: Accords multi-annotations
+    unit: phrase
+    min_support: 20
+    modes: [inter_human, human_llm, inter_llm]
+  - code: intra_annotator
+    version: "1"
+    label: Stabilité intra-annotateur
+    unit: phrase
+    modes: [intra_human]
+  - code: gold_analysis
+    version: "1"
+    label: Proximité et readiness Gold
+    unit: phrase
+    modes: [gold]
+  - code: taxonomy
+    version: "1"
+    label: Atlas de la taxonomie
+
+# ─────────────────────────────────────────────────────────────────────────────
+deprecated:
+  - code: boundary_kappa            # exposé aujourd'hui dans project_iaa_detail
+    reason: >
+      Mesure un ARTEFACT : chaque phrase porte une ancre de clause (le pré-remplissage
+      est déplié par phrase), donc le kappa de frontières vaut 1,000 par construction.
+      Le publier serait une erreur factuelle. Remplacé par `boundary_agreement`.
+    replaced_by: boundary_agreement
+    policy: "Conservé et calculable — jamais supprimé (les rapports existants doivent rester lisibles)."
+
+# ─────────────────────────────────────────────────────────────────────────────
+to_add:
+
+  - code: alpha_masi
+    version: "1"
+    label: "α de Krippendorff (MASI) multi-label"
+    unit: phrase
+    min_support: 20
+    figure: F3
+    reuses: claire.projects.masi
+    outputs:
+      alpha_masi: "α multi-label (distance MASI)"
+      alpha_nominal: "α mono-label — CONTRÔLE : l'écart est le coût du multi-label"
+      per_theme: "α par thème, avec support"
+      threshold_ref: "0.667 (acceptable) / 0.800 (fiable) — Passonneau"
+    note: >
+      Rapporter TOUJOURS α_MASI et α_nominal côte à côte. C'est leur ÉCART qui porte le
+      résultat R1 de l'article, pas la valeur absolue.
+
+  - code: boundary_agreement
+    version: "1"
+    label: "Accord de segmentation (frontières reconstruites)"
+    unit: document
+    min_support: 2
+    figure: F4
+    priority: critical
+    outputs:
+      jaccard_per_document: "Jaccard des débuts de segment, par document"
+      jaccard_mean: "moyenne"
+      windowdiff: "métrique de segmentation standard"
+      pk: "métrique de segmentation standard"
+      n_segments_per_annotator: "nombre de segments reconstruits"
+    definition: >
+      Un segment = plage maximale de phrases consécutives portant le MÊME ensemble de
+      thèmes. Une frontière = index de début de segment. Corrige `boundary_kappa`.
+    expected_range: "0.39 – 0.63 (mesuré le 11/08/2026)"
+
+  - code: label_distribution
+    version: "1"
+    label: "Distribution des thèmes (longue traîne)"
+    unit: clause
+    figure: F2
+    outputs:
+      support_per_theme: "occurrences en primaire et en secondaire"
+      share_per_theme: "part relative"
+      entropy: "entropie de la distribution"
+      rare_themes: "thèmes sous un seuil paramétrable (défaut 50)"
+      imbalance_ratio: "max/min"
+    note: "Croiser avec l'accord par thème : les thèmes rares sont aussi les moins fiables."
+
+  - code: cooccurrence
+    version: "1"
+    label: "Co-occurrence des thèmes et lift d'abusivité"
+    unit: clause
+    min_support: 5
+    figure: F12
+    outputs:
+      matrix: "matrice 20×20 de co-occurrence"
+      pmi: "information mutuelle ponctuelle par paire"
+      unfair_lift: "P(abusif | paire) / P(abusif) — croisement ReferenceLabel"
+      rare_combinations: "combinaisons vues 1 seule fois (hapax)"
+    note: >
+      PONT VERS L'OBJECTIF B. Mesuré le 11/08 : lift jusqu'à 7,4× sur certaines paires
+      (LICENSE_IP+TERMINATION), alors que le multi-label BRUT ne donne que 1,09×.
+      C'est l'identité de la combinaison qui porte le signal, pas sa cardinalité.
+
+  - code: human_llm_matrix
+    version: "1"
+    label: "Matrice d'accord humains × LLM"
+    unit: phrase
+    min_support: 20
+    figure: F1
+    outputs:
+      matrix: "accord par paire (3 annotateurs + 4 juges)"
+      kappa_matrix: "idem en kappa"
+      human_mean: "moyenne intra-humains"
+      llm_mean: "moyenne intra-LLM"
+      cross_mean: "moyenne humain↔LLM"
+    note: >
+      Résultat R2 : humain↔humain ~80 % brut (κ 0,769) contre 48–60 % humain↔LLM.
+      L'ordre des juges suit JUDGE_DISPLAY_ORDER (dérivé de `Judge`, jamais réécrit).
+
+  - code: annotator_audit
+    version: "1"
+    label: "Audit des annotateurs"
+    unit: clause
+    min_support: 50
+    access: restricted          # jamais visible par un annotateur sur ses pairs
+    outputs:
+      bias_per_theme: "sur/sous-emploi d'un thème vs les pairs"
+      divergence_from_seed: "taux de divergence au pré-remplissage LLM"
+      validation_rate: "part de clauses explicitement validées"
+      throughput: "phrases par jour"
+      outlier_documents: "documents dont l'accord s'écarte fortement"
+    note: >
+      `divergence_from_seed` mesure le TRAVAIL HUMAIN RÉEL (11/08 : 38–50 % selon
+      l'annotateur). Une valeur proche de 0 signalerait une ratification du LLM.
+
+  - code: gold_progress
+    version: "1"
+    label: "Avancement de la résolution gold"
+    unit: phrase
+    figure: F11
+    outputs:
+      by_auto_level: "auto_1click / auto / manual"
+      by_agreement_class: "strict / majority / divergence / empty"
+      pct_resolved: "par document"
+      finalized: "nombre de résolutions figées"
+      arbitration_backlog: "phrases `manual` en attente, triées par bande de risque"
+
+  - code: campaign_readiness
+    version: "1"
+    label: "Prêt pour la science"
+    unit: document
+    priority: high
+    outputs:
+      documents_total: ""
+      documents_annotated: ""
+      documents_complete: "toutes phrases validées, quel que soit le statut"
+      documents_multi_annotated: "≥2 annotateurs"
+      documents_triple: "≥3 annotateurs"
+      documents_gold_finalized: ""
+      complete_but_not_submitted: "⚠ travail fini INVISIBLE aux calculs standard"
+      alpha_masi_current: ""
+      kappa_current: ""
+      blockers: "liste ordonnée de ce qui bloque l'article"
+    note: >
+      Remplace les requêtes SQL manuelles. `complete_but_not_submitted` valait 10 le
+      11/08/2026 (les annotations de fatima.ouali, validées à 99,9 %).
+
+# ─────────────────────────────────────────────────────────────────────────────
+lab_metrics:                    # calculées par le runner, ingérées comme résultats
+  T1_primary:
+    - accuracy
+    - macro_f1
+    - micro_f1
+    - f1_per_class
+    - confusion_matrix
+    - cohen_kappa_vs_gold
+  T2_multilabel:
+    - micro_f1
+    - macro_f1
+    - f1_per_label
+    - lrap
+    - ranking_loss
+    - hamming_loss
+    - subset_accuracy
+    - alpha_masi_vs_gold
+  T3_boundary:
+    - boundary_precision
+    - boundary_recall
+    - boundary_f1
+    - windowdiff
+    - pk
+    - jaccard
+  calibration:
+    - ece
+    - reliability_curve
+    - risk_coverage_curve
+  robustness:
+    - fold_dispersion
+    - bootstrap_ci
+    - seed_sensitivity
+  cost:
+    - train_seconds
+    - peak_memory_mb
+    - estimated_energy_wh
+
+# ─────────────────────────────────────────────────────────────────────────────
+reporting_rules:
+  - "Tout score est accompagné de son IC à 95 % (bootstrap AU NIVEAU DOCUMENT)."
+  - "Tout score est accompagné du plafond humain de la MÊME tâche."
+  - "Tout score par étiquette est accompagné de son support."
+  - "micro-F1 et macro-F1 sont TOUJOURS rapportés ensemble (longue traîne)."
+  - "Une métrique sous son `min_support` est affichée GRISÉE avec le motif, jamais masquée."
+  - "Une figure ne calcule jamais ses propres chiffres : même source que le tableau associé."

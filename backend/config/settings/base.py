@@ -102,6 +102,7 @@ INSTALLED_APPS = [
     "claire.exports",
     "claire.gold",
     "claire.analysis",
+    "claire.lab",
     "claire.audit",
     "claire.common",
 ]

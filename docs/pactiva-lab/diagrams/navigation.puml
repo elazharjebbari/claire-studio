@@ -1,0 +1,66 @@
+@startuml navigation
+' Navigation UI — Analyse & Qualité (enrichi) et Lab (nouveau)
+
+skinparam backgroundColor transparent
+skinparam rectangle {
+  BackgroundColor<<new>> #FFF4E5
+  BackgroundColor<<existing>> #E8F0FE
+  BackgroundColor<<restricted>> #FCE8E6
+}
+
+rectangle "Barre latérale projet" as NAV {
+  rectangle "Atelier d'annotation" <<existing>> as ATE
+  rectangle "**Analyse & Lab**" as AL
+}
+
+rectangle "/projects/{slug}/analysis" <<existing>> as ANA {
+  rectangle "Vue d'ensemble\n⭐ Prêt pour la science" <<new>> as A1
+  rectangle "Fiabilité\nκ · α-MASI · frontières\n[F1 F3 F4]" <<new>> as A2
+  rectangle "Taxonomie\nlongue traîne · co-occurrence\n[F2 F12]" <<new>> as A3
+  rectangle "Annotateurs\nprofils · audit" <<restricted>> as A4
+  rectangle "Gold\ncascade · avancement [F11]" <<new>> as A5
+  rectangle "Rapports\nsnapshots · PDF" <<existing>> as A6
+}
+
+rectangle "/projects/{slug}/lab" <<new>> as LAB {
+  rectangle "Datasets\nconstruire · preflight · comparer" as L1
+  rectangle "Expériences\nguidé | expert · estimer" as L2
+  rectangle "Runs\nfile · suivi · journaux" as L3
+  rectangle "Résultats\nfigures · erreurs · export" as L4
+  rectangle "Comparer\nN runs, mêmes plis" as L5
+  rectangle "Calcul\ncibles · identifiants G5K" as L6
+}
+
+NAV --> ANA
+NAV --> LAB
+AL --> ANA
+AL --> LAB
+
+A1 ..> A2 : « α-MASI sous le seuil »
+A1 ..> A5 : « 0 gold finalisé »
+A1 ..> L1 : « construire un dataset »
+
+L1 --> L2 : dataset prêt
+L2 --> L3 : lancer
+L3 --> L4 : terminé
+L4 --> L5 : comparer
+L2 ..> L6 : cible g5k sans identifiant\n→ désactivée + lien
+
+A3 ..> A3 : F12 = pont vers l'objectif B\n(hypergraphe de co-occurrence)
+
+note bottom of LAB
+  **Visible pour owner / reviewer uniquement.**
+  Un annotateur n'a rien à faire au Lab, et ne
+  doit jamais découvrir un classement de ses pairs
+  (politique d'indépendance déjà en vigueur).
+end note
+
+note right of A1
+  L'écran qui remplace les requêtes SQL
+  manuelles : chaque ligne rouge ou orange
+  est cliquable et mène aux objets concernés.
+  Son rôle est de dire **ce qui bloque**,
+  pas de féliciter.
+end note
+
+@enduml

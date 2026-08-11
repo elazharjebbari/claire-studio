@@ -19,6 +19,7 @@ from claire.accounts.views import (
     RegisterView,
     VerifyEmailView,
 )
+from claire.lab import views as lab_views
 from claire.analysis.views import (
     AnalysisCatalogView,
     AnalysisHealthView,
@@ -248,5 +249,31 @@ urlpatterns = [
         JoinShareLinkView.as_view(),
         name="share-link-join",
     ),
+    # ── Pactiva Lab (docs/pactiva-lab/) ─────────────────────────────────────
+    # Réservé aux rôles lead/reviewer : un annotateur n'a rien à faire au Lab, et ne
+    # doit jamais y découvrir un classement de ses pairs.
+    path("projects/<slug:slug>/lab/datasets/preflight", lab_views.dataset_preflight,
+         name="lab-dataset-preflight"),
+    path("projects/<slug:slug>/lab/datasets", lab_views.datasets, name="lab-datasets"),
+    path("projects/<slug:slug>/lab/datasets/<uuid:dataset_id>", lab_views.dataset_detail,
+         name="lab-dataset-detail"),
+    path("projects/<slug:slug>/lab/experiments", lab_views.experiments,
+         name="lab-experiments"),
+    path("projects/<slug:slug>/lab/experiments/<uuid:experiment_id>/estimate",
+         lab_views.experiment_estimate, name="lab-experiment-estimate"),
+    path("projects/<slug:slug>/lab/experiments/<uuid:experiment_id>/run",
+         lab_views.experiment_run, name="lab-experiment-run"),
+    path("projects/<slug:slug>/lab/runs", lab_views.runs, name="lab-runs"),
+    path("projects/<slug:slug>/lab/runs/<uuid:run_id>", lab_views.run_detail,
+         name="lab-run-detail"),
+    path("projects/<slug:slug>/lab/runs/<uuid:run_id>/cancel", lab_views.run_cancel,
+         name="lab-run-cancel"),
+    path("projects/<slug:slug>/lab/compare", lab_views.compare_runs, name="lab-compare"),
+    path("me/compute-credentials", lab_views.compute_credentials,
+         name="lab-compute-credentials"),
+    path("me/compute-credentials/<int:credential_id>/test",
+         lab_views.compute_credentials_test, name="lab-compute-credentials-test"),
+    path("me/compute-credentials/<int:credential_id>", lab_views.compute_credential_delete,
+         name="lab-compute-credential-delete"),
     path("", include(router.urls)),
 ]

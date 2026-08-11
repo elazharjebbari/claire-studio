@@ -1,0 +1,183 @@
+# Contrat d'API — module Lab
+# Conventions du projet : camelCase en sortie (djangorestframework-camel-case),
+# erreurs typées {code, detail}, 202 + polling pour tout ce qui est long.
+
+version: 1
+base: /api/projects/{slug}/lab
+
+endpoints:
+
+  # ── Datasets ───────────────────────────────────────────────────────────────
+  - path: /datasets
+    method: GET
+    summary: Liste des datasets du projet
+    query: { page, pageSize, maturity }
+    returns: "PaginatedList<DatasetSummary>"
+
+  - path: /datasets/preflight
+    method: POST
+    summary: "⭐ Simule la construction SANS rien créer"
+    rationale: >
+      Le point d'ergonomie central. Sans lui, on construit à l'aveugle et on découvre
+      APRÈS coup qu'un dataset a perdu 12 documents.
+    body:
+      maturity: "any | complete | submitted | gold"
+      aggregation: "single | consensus | soft"
+      scope: { documentIds: [], annotatorIds: [], minAnnotators: 1, excludePartial: true }
+    returns:
+      nDocuments: int
+      nSentences: int
+      nLabels: int
+      labelDistribution: "{ code: count }"
+      multiLabelRate: float
+      excluded: "[{ document, reason, detail }]   ← JAMAIS silencieux"
+      warnings: "[{ code, message }]  ex. rare_themes_below_threshold"
+      splitsPreview: "{ scheme, k, foldSizes }"
+      wouldFingerprint: "string — permet de détecter un doublon avant construction"
+    status: [200, 400]
+
+  - path: /datasets
+    method: POST
+    summary: Construit un dataset (tâche de fond)
+    body: "identique à preflight + { label }"
+    returns: "{ id, status: 'building', pollUrl }"
+    status: [202, 400, 409]
+    notes:
+      - "409 si un dataset de même empreinte existe déjà (renvoie son id)."
+
+  - path: /datasets/{id}
+    method: GET
+    returns: "Dataset (manifest complet, splits, fingerprint, storagePath)"
+
+  - path: /datasets/{id}/preview
+    method: GET
+    summary: Échantillon de lignes (contrôle visuel du prétraitement)
+    query: { limit: 50, document }
+    returns: "[SentenceRow]"
+
+  - path: /datasets/{id}/download
+    method: GET
+    summary: Archive du dataset (JSONL + manifeste + splits)
+    notes: ["Soumis à la politique d'accès des artefacts. Trace dans ActivityEvent."]
+
+  # ── Expériences ────────────────────────────────────────────────────────────
+  - path: /presets
+    method: GET
+    summary: Presets du catalogue YAML
+    returns: "[Preset]  (id, label, why, durationHint, config, sweep)"
+
+  - path: /experiments
+    method: [GET, POST]
+    body:
+      name: string
+      task: "T1_primary | T2_multilabel | T3_boundary"
+      datasetId: uuid
+      config: "objet validé par experiment-config.schema.json"
+      computeTargetId: "uuid | null"
+    returns: Experiment
+    status: [200, 201, 400]
+    notes:
+      - "400 renvoie les erreurs de schéma AVEC leur chemin JSON-pointer (pour pointer la ligne dans l'éditeur)."
+
+  - path: /experiments/{id}/estimate
+    method: POST
+    summary: Estime coût et volume AVANT lancement
+    returns: { nRuns: int, estimatedMinutes: int, requiresGpu: bool, warnings: [] }
+    notes: ["Refuse si nRuns > sweep.max_runs, avec le décompte."]
+
+  - path: /experiments/{id}/run
+    method: POST
+    summary: Met en file (1 run, ou N si sweep)
+    returns: "{ runIds: [uuid] }"
+    status: [202, 400, 409]
+    notes:
+      - "409 + run existant si (datasetFingerprint, configFingerprint) déjà exécuté — économise des heures de GPU."
+      - "Le paramètre `force: true` outrepasse."
+
+  # ── Runs ───────────────────────────────────────────────────────────────────
+  - path: /runs
+    method: GET
+    query: { status, experimentId, page }
+    returns: "PaginatedList<RunSummary>"
+
+  - path: /runs/{id}
+    method: GET
+    returns:
+      id, status, progress, phase        # phase : "waiting" distinct de "running"
+      metrics: "results.json ingéré"
+      environment: "versions, matériel, graines"
+      externalJobId: "identifiant OAR si g5k"
+      startedAt, completedAt, attempt, errorCode, errorDetail
+
+  - path: /runs/{id}/cancel
+    method: POST
+    status: [202, 409]
+    notes: ["Coopératif en local ; suppression du job côté Grid'5000."]
+
+  - path: /runs/{id}/logs
+    method: GET
+    query: { since, tail }
+    returns: "text/plain (flux)"
+    notes: ["⚠ Les secrets sont masqués côté serveur — comportement TESTÉ."]
+
+  - path: /runs/{id}/artifacts
+    method: GET
+    returns: "[{ id, kind, path, mime, bytes, checksum }]"
+
+  - path: /runs/{id}/artifacts/{artifactId}/download
+    method: GET
+    notes: ["Politique d'accès identique aux artefacts d'analyse."]
+
+  - path: /compare
+    method: POST
+    summary: Compare N runs sur les mêmes plis
+    body: { runIds: [uuid], metric: "macro_f1" }
+    returns:
+      rows: "[{ runId, label, value, ci, humanCeiling }]"
+      comparable: bool
+      incomparableReason: "string | null"
+    notes:
+      - "⚠ REFUSE de comparer des runs dont les splits diffèrent : `comparable=false` + motif.
+         Comparer deux modèles sur des plis différents produit un résultat faux."
+
+# ── Identifiants de calcul (hors périmètre projet : rattachés à l'utilisateur) ──
+user_endpoints:
+  - path: /api/me/compute-credentials
+    method: GET
+    returns: "[{ id, kind: 'g5k', login, hasPassword: true, lastTestedAt, lastTestOk }]"
+    notes: ["JAMAIS de champ `password` en sortie, à aucun niveau de sérialisation."]
+
+  - path: /api/me/compute-credentials
+    method: PUT
+    body: { kind: g5k, login: string, password: string }
+    returns: "{ id, login, hasPassword: true }"
+    status: [200, 400, 503]
+    notes:
+      - "503 si LAB_CREDENTIALS_KEY est absente — REFUS d'écrire, jamais de stockage en clair."
+
+  - path: /api/me/compute-credentials/{id}
+    method: DELETE
+    status: [204]
+
+  - path: /api/me/compute-credentials/{id}/test
+    method: POST
+    summary: Test de connexion réel (GET /stable/sites en Basic auth)
+    returns: { ok: bool, detail: string, testedAt: iso8601 }
+    notes: ["Évite de découvrir un mot de passe faux après une réservation."]
+
+# ── Erreurs typées ─────────────────────────────────────────────────────────────
+error_codes:
+  dataset_empty: "Aucune annotation ne satisfait les critères"
+  dataset_too_small: "Moins de k documents : GroupKFold impossible"
+  dataset_duplicate: "Un dataset de même empreinte existe (id fourni)"
+  config_invalid: "Échec de validation du schéma (chemins fournis)"
+  sweep_too_large: "nRuns dépasse max_runs"
+  run_duplicate: "Même (dataset, config) déjà exécuté"
+  splits_mismatch: "Runs non comparables : plis différents"
+  credentials_missing: "Aucun identifiant Grid'5000 configuré"
+  credentials_key_missing: "LAB_CREDENTIALS_KEY absente côté serveur"
+  g5k_unreachable: "API Grid'5000 injoignable"
+  g5k_auth_failed: "Identifiants Grid'5000 refusés"
+  walltime_exceeded: "Job tué par le walltime — résultats partiels ingérés"
+  gpu_unavailable: "GPU requis mais absent du nœud"
+  result_schema_invalid: "results.json non conforme — aucune ingestion partielle"

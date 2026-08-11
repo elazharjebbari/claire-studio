@@ -20,3 +20,7 @@ factory-boy>=3.3
 hypothesis>=6.0  # tests property-based (batterie multi-annotation)
 reportlab>=4.2   # rapports PDF Analysis Lab
 ruff>=0.4
+
+# Chiffrement des identifiants de calcul (claire/lab/crypto.py) — sans lui, la
+# plateforme REFUSE de stocker un identifiant Grid'5000 plutôt que de l'écrire en clair.
+cryptography>=42.0
