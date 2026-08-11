@@ -1,0 +1,16 @@
+[Unit]
+Description=CLAIRE Studio - Pactiva Lab worker (experiments, local + Grid'5000)
+After=network.target postgresql.service claire-studio.service
+
+[Service]
+User=www-data
+Group=www-data
+WorkingDirectory=/var/www/claire-studio/backend
+EnvironmentFile=/var/www/claire-studio/backend/.env
+ExecStart=/var/www/claire-studio/backend/.venv/bin/python manage.py lab_worker --interval 5
+Restart=always
+RestartSec=3
+TimeoutStopSec=30
+
+[Install]
+WantedBy=multi-user.target

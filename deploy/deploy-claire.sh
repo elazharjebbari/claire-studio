@@ -27,7 +27,7 @@ DOMAIN="${DEPLOY_DOMAIN:-pactiva.legal}"
 VPS_DIR="/var/www/${APP}"
 HEALTH_URL="https://${DOMAIN}/api/v1/health"
 FRONTEND_URL="https://${DOMAIN}/"
-SERVICES="${APP} ${APP}-web ${APP}-analysis-worker"
+SERVICES="${APP} ${APP}-web ${APP}-analysis-worker ${APP}-lab-worker"
 SETTINGS="config.settings.prod"
 BRANCH="$(git rev-parse --abbrev-ref HEAD)"
 SSH="ssh -i ${KEY} -o IdentitiesOnly=yes -o BatchMode=yes ${HOST}"
@@ -111,8 +111,8 @@ $SSH "set -e; cd ${VPS_DIR} && \
   DJANGO_SETTINGS_MODULE=${SETTINGS} .venv/bin/python manage.py migrate --noinput && \
   DJANGO_SETTINGS_MODULE=${SETTINGS} .venv/bin/python manage.py collectstatic --noinput && \
   cd ../frontend && npm ci --no-audit --no-fund && npm run build && \
-  cd .. && cp deploy/systemd/${APP}-analysis-worker.service /etc/systemd/system/ && \
-  systemctl daemon-reload && systemctl enable ${APP}-analysis-worker && \
+  cd .. && cp deploy/systemd/${APP}-analysis-worker.service deploy/systemd/${APP}-lab-worker.service /etc/systemd/system/ && \
+  systemctl daemon-reload && systemctl enable ${APP}-analysis-worker ${APP}-lab-worker && \
   systemctl restart ${SERVICES} && systemctl is-active ${SERVICES}"
 
 check_url() {
@@ -140,6 +140,11 @@ if ! check_url api "$HEALTH_URL" || ! check_url frontend "$FRONTEND_URL"; then
       systemctl restart ${APP}-analysis-worker; \
     else \
       systemctl disable --now ${APP}-analysis-worker || true; \
+    fi && \
+    if [ -f ../deploy/systemd/${APP}-lab-worker.service ]; then \
+      systemctl restart ${APP}-lab-worker; \
+    else \
+      systemctl disable --now ${APP}-lab-worker || true; \
     fi"
   echo "↩ rollback effectué — déploiement ABANDONNÉ."; exit 1
 fi
