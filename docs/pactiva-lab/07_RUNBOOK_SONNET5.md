@@ -514,3 +514,44 @@ Trous comblés, tous fonctionnels (pas cosmétiques) :
 **Suites finales** : pytest backend **645**, vitest frontend **632**, pytest `research/`
 **90**, `tsc --noEmit` 0 erreur, `check:colors` 0 hex. Non déployé (conformément à la
 consigne de la session).
+
+---
+
+## Audit UX et fermeture du trou n°1 (11 août 2026)
+
+Confrontation du plan documenté (`03_UX_UI.md`) au code réel + parcours en vrai
+navigateur (lead/reviewer). Un écart dominait tout le reste : **aucun moyen de créer ou
+lancer une expérience depuis l'UI**. L'onglet « Expériences » ne faisait que lister des
+runs déjà créés à la main via `manage.py shell`/curl — son propre message d'état vide le
+disait explicitement. Côté backend, les trois endpoints (créer/estimer/lancer) étaient
+prêts et testés ; côté conception, **14 presets scientifiques complets** dormaient dans
+`specs/pipeline-presets.yaml` avec un commentaire disant qu'ils seraient « chargés par
+`GET /lab/presets` et proposés dans le mode guidé de l'UI » — endpoint jamais créé,
+fichier jamais lu. Conçu à 100 %, câblé à 0 %.
+
+**Comblé** : `claire/lab/presets.py` (chargement YAML, repli liste vide si absent) +
+`GET /projects/<slug>/lab/presets` + `ExperimentLauncher.tsx` (mode guidé preset+dataset,
+mode expert JSON éditable sur le même objet, flux créer→estimer→lancer en 3 temps parce
+que Experiment et Run sont deux entités distinctes). **Vérifié de bout en bout en vrai
+navigateur contre le vrai backend** : preset choisi → expérience créée → estimation
+affichée → lancée → run réel traité par le worker → visible dans la liste.
+
+Deux trous plus petits comblés au passage : (1) `ReadinessPanel` promettait dans son
+propre commentaire que chaque ligne rouge/orange était cliquable — c'était du texte
+statique ; chaque ligne mène désormais au Lab (avec `minAnnotators` pré-rempli depuis
+l'URL, vérifié : cliquer « ≥2 annotateurs » atterrit sur le DatasetBuilder avec le champ
+déjà à 2) ou au cockpit GOLD. (2) `LocalBackend.submit()` bloquait sur `subprocess.run()`
+: `run.progress` restait à 0 pendant toute l'exécution locale alors que le runner écrivait
+déjà `progress.json` à chaque pli — passé à `Popen` + sonde toutes les 2 s
+(`test_lab_local_backend.py`, mock de `Popen` pour rester rapide), `RunList` affiche
+maintenant une vraie barre au lieu du texte de phase seul.
+
+**Non fait dans ce lot** (documenté comme suite naturelle, pas comme blocage) : F5
+(courbe d'apprentissage) et F7 (ablations) manquent toujours — elles ont besoin d'un
+sweep RÉELLEMENT lancé depuis l'UI, or `ExperimentLauncher` ignore encore `preset.sweep`
+(seule sa `config` de base est utilisée ; lancer un sweep depuis un preset reste à faire).
+F9 (« Humains / modèle / LLM », la figure de conclusion du plan §4.2) n'existe pas non
+plus. Export « pack article » (zip de figures) et regroupement de la nav
+Analyse+Lab : non faits, discutables plutôt que bloquants.
+
+pytest **654** · vitest **645** · tsc 0.
