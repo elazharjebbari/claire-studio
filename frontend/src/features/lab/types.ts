@@ -67,12 +67,16 @@ export interface RunSummary {
 
 export interface RunDetail extends RunSummary {
   config: Record<string, unknown>;
+  // Ce sous-objet vient tel quel du `results.json` de `pactiva_lab` (snake_case,
+  // Python idiomatique — le package ignore tout de Django) puis traverse le
+  // middleware de camélisation DRF avant d'atteindre le front : chaque clé
+  // ressort donc en camelCase, y compris à l'intérieur de ce JSONField générique.
   metrics: {
     task?: string;
     metrics?: Record<string, number | null | Record<string, unknown>>;
-    per_fold?: Array<Record<string, number>>;
-    per_label?: Array<{ label: string; f1: number; support: number }>;
-    human_ceiling?: { value: number | null; metric?: string; note?: string };
+    perFold?: Array<Record<string, number>>;
+    perLabel?: Array<{ label: string; f1: number; support: number }>;
+    humanCeiling?: { value: number | null; metric?: string; note?: string };
     errors?: Record<string, unknown>;
     preprocess?: string;
   };

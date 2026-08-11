@@ -239,3 +239,39 @@ def test_build_model_signale_une_dependance_manquante_avec_la_commande():
 
     with pytest.raises(MissingDependency, match="pip install"):
         _require("module_qui_n_existe_pas", "embeddings")
+
+
+class TestGraineDesModelesLourds:
+    """⭐ Audit de reproductibilité : `EmbeddingsHead`/`TransformerFinetune` n'utilisaient
+    jamais `config["seed"]` — la tête de classification de `TransformerFinetune` aurait
+    été réinitialisée aléatoirement à chaque run, cassant la promesse « même
+    configuration, même résultat » du plan scientifique (§3.4). Les constructeurs
+    seuls (testés ici) n'importent ni torch ni sklearn : testables sans ces dépendances."""
+
+    def test_embeddings_head_stocke_la_graine(self):
+        from pactiva_lab.models.heavy import EmbeddingsHead
+
+        model = EmbeddingsHead({"encoder": "x", "head": "mlp"}, seed=7)
+        assert model.seed == 7
+
+    def test_transformer_finetune_stocke_la_graine(self):
+        from pactiva_lab.models.heavy import TransformerFinetune
+
+        model = TransformerFinetune({"checkpoint": "x"}, seed=7)
+        assert model.seed == 7
+
+    def test_build_model_propage_la_graine_aux_familles_lourdes(self):
+        from pactiva_lab.models.heavy import EmbeddingsHead
+
+        model = build_model({"family": "embeddings_head", "encoder": "x"}, seed=13)
+        assert isinstance(model, EmbeddingsHead)
+        assert model.seed == 13
+
+    def test_build_model_seed_par_defaut_est_42(self):
+        """Cohérent avec `experiment-config.schema.json` (`seed` par défaut 42) — un
+        appelant qui omet la graine doit obtenir la même valeur que le schéma promet."""
+        from pactiva_lab.models.heavy import EmbeddingsHead
+
+        model = build_model({"family": "embeddings_head", "encoder": "x"})
+        assert isinstance(model, EmbeddingsHead)
+        assert model.seed == 42

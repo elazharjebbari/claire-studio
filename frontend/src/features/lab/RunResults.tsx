@@ -56,12 +56,12 @@ export function RunResults({ slug, runId }: { slug: string; runId: string }) {
   }
 
   const metrics = run.metrics?.metrics ?? {};
-  const ceiling = run.metrics?.human_ceiling;
-  const perLabel = run.metrics?.per_label ?? [];
+  const ceiling = run.metrics?.humanCeiling;
+  const perLabel = run.metrics?.perLabel ?? [];
   const errors = run.metrics?.errors as
     | { confusionMatrix?: { labels: string[]; matrix: number[][] } }
     | undefined;
-  const reliabilityCurve = (metrics.reliability_curve as unknown as Array<{
+  const reliabilityCurve = (metrics.reliabilityCurve as unknown as Array<{
     bin: number;
     meanConfidence: number;
     accuracy: number;
@@ -108,8 +108,8 @@ export function RunResults({ slug, runId }: { slug: string; runId: string }) {
         </div>
 
         <div className="mt-3 grid grid-cols-2 gap-3 sm:grid-cols-4" data-testid="run-metrics-kpis">
-          <MetricCell label="macro-F1" value={fmt(metrics.macro_f1 as number)} />
-          <MetricCell label="micro-F1" value={fmt(metrics.micro_f1 as number)} />
+          <MetricCell label="macro-F1" value={fmt(metrics.macroF1 as number)} />
+          <MetricCell label="micro-F1" value={fmt(metrics.microF1 as number)} />
           <MetricCell
             label="plafond humain"
             value={ceiling?.value != null ? fmt(ceiling.value) : "—"}
@@ -126,7 +126,7 @@ export function RunResults({ slug, runId }: { slug: string; runId: string }) {
         <CalibrationFigure buckets={reliabilityCurve} ece={ece} />
       )}
 
-      {run.metrics?.per_fold && run.metrics.per_fold.length > 0 && (
+      {run.metrics?.perFold && run.metrics.perFold.length > 0 && (
         <Panel className="overflow-hidden" data-testid="run-per-fold">
           <div className="border-b border-line px-4 py-3">
             <h3 className="text-sm font-semibold text-ink">Détail par pli</h3>
@@ -140,7 +140,7 @@ export function RunResults({ slug, runId }: { slug: string; runId: string }) {
                 <th scope="col" className="px-3 py-1 text-left">
                   Pli
                 </th>
-                {Object.keys(run.metrics.per_fold[0] ?? {}).map((key) => (
+                {Object.keys(run.metrics.perFold[0] ?? {}).map((key) => (
                   <th key={key} scope="col" className="px-3 py-1 text-right">
                     {key}
                   </th>
@@ -148,7 +148,7 @@ export function RunResults({ slug, runId }: { slug: string; runId: string }) {
               </tr>
             </thead>
             <tbody>
-              {run.metrics.per_fold.map((fold, index) => (
+              {run.metrics.perFold.map((fold, index) => (
                 <tr key={index} className="border-t border-line">
                   <td className="px-3 py-1 text-ink">{index}</td>
                   {Object.values(fold).map((value, i) => (

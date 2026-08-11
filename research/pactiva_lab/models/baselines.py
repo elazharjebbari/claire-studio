@@ -209,13 +209,18 @@ class LlmJudgeBaseline(Model):
         return out
 
 
-def build_model(config: dict, *, judges_index: dict | None = None) -> Model:
+def build_model(config: dict, *, judges_index: dict | None = None, seed: int = 42) -> Model:
     """Fabrique le modèle décrit par la configuration.
 
     Les familles lourdes (`embeddings_head`, `transformer_finetune`, `sequence_labeling`)
     sont importées PARESSEUSEMENT : le socle doit rester utilisable sans torch ni
     scikit-learn, et l'absence d'une dépendance optionnelle doit produire un message
     clair plutôt qu'un ImportError au milieu d'un run.
+
+    `seed` vient de la configuration TOP-NIVEAU (pas de `config["model"]`) : c'est elle
+    qui gouverne la reproductibilité du plan scientifique (§3.4) — sans elle,
+    `TransformerFinetune` réinitialiserait une tête de classification différente à
+    chaque run, et le mélange du DataLoader ne serait pas rejouable.
     """
     family = config.get("family", "majority")
     if family == "majority":
@@ -233,5 +238,5 @@ def build_model(config: dict, *, judges_index: dict | None = None) -> Model:
     if family in ("embeddings_head", "transformer_finetune", "sequence_labeling"):
         from .heavy import build_heavy_model
 
-        return build_heavy_model(family, config)
+        return build_heavy_model(family, config, seed=seed)
     raise ValueError(f"famille de modèle inconnue : {family!r}")

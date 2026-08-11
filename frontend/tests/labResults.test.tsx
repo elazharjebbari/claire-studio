@@ -152,16 +152,21 @@ const RUN: RunDetail = {
   externalJobId: "",
   errorDetail: "",
   attempt: 1,
+  // Reproduit fidèlement ce que le middleware de camélisation DRF livre réellement
+  // (vérifié contre un vrai run exécuté en local, pas deviné) : le `results.json` produit
+  // par `pactiva_lab` est en snake_case Python idiomatique, mais TOUT JSONField traverse
+  // la même camélisation HTTP que le reste de l'API avant d'atteindre le front — une
+  // fixture en snake_case masquerait exactement le bug que ce test doit prévenir.
   metrics: {
     task: "T1_primary",
     preprocess: "detok=regex_rules",
-    metrics: { macro_f1: 0.68, micro_f1: 0.79, ece: 0.12 },
-    per_fold: [{ macro_f1: 0.65 }, { macro_f1: 0.71 }],
-    per_label: [
+    metrics: { macroF1: 0.68, microF1: 0.79, ece: 0.12 },
+    perFold: [{ macroF1: 0.65 }, { macroF1: 0.71 }],
+    perLabel: [
       { label: "PREAMBLE_SCOPE", f1: 0.82, support: 1163 },
       { label: "FEEDBACK", f1: 0.12, support: 31 },
     ],
-    human_ceiling: { value: 0.74, metric: "macro_f1", note: "borne supérieure réaliste" },
+    humanCeiling: { value: 0.74, metric: "macroF1", note: "borne supérieure réaliste" },
     errors: {
       confusionMatrix: { labels: ["A", "B"], matrix: [[8, 2], [1, 9]] },
     },
@@ -179,6 +184,26 @@ describe("RunResults", () => {
     const kpis = screen.getByTestId("run-metrics-kpis");
     expect(kpis.textContent).toContain("0.680");
     expect(kpis.textContent).toContain("0.740");
+  });
+
+  it("⭐ lit les métriques en camelCase, pas en snake_case Python du results.json brut", async () => {
+    // Régression trouvée en pilotant un vrai navigateur contre un vrai run exécuté
+    // localement (torch/sentence-transformers) : le composant lisait `metrics.macro_f1`,
+    // `run.metrics.human_ceiling`, `.per_label`, `.per_fold`, `.reliability_curve` —
+    // mais le middleware DRF camélise récursivement CE JSONField comme le reste de la
+    // réponse HTTP. Résultat en conditions réelles : macro-F1/micro-F1/plafond humain
+    // affichaient tous "—", et F6 (score par thème) ne s'affichait pas du tout, alors
+    // que le run avait réellement produit ces chiffres.
+    const api = await import("@/features/lab/api");
+    vi.mocked(api.getRun).mockResolvedValueOnce(RUN);
+    const { RunResults } = await import("@/features/lab/RunResults");
+    render(<RunResults slug="demo" runId="run-1" />);
+
+    await waitFor(() => expect(screen.getByTestId("run-results")).toBeInTheDocument());
+    const kpis = screen.getByTestId("run-metrics-kpis");
+    expect(kpis.textContent).not.toContain("—");
+    expect(screen.getByTestId("figure-label-scores-table")).toBeInTheDocument();
+    expect(screen.getByTestId("run-per-fold")).toBeInTheDocument();
   });
 
   it("un run en échec explique pourquoi, sans afficher de figures", async () => {

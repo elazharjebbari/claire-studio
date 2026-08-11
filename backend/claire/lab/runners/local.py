@@ -26,6 +26,20 @@ def research_root() -> Path:
     return Path(settings.BASE_DIR).parent / "research"
 
 
+def research_python() -> str:
+    """Interpréteur utilisé pour exécuter `pactiva_lab`.
+
+    Replié par défaut sur `sys.executable` (celui de Django) pour ne rien casser en
+    l'absence de réglage. Mais les deux packages ont des dépendances disjointes par
+    construction (`claire/` ne doit jamais voir torch/sklearn) : sur une machine où
+    l'environnement Django ne peut pas installer les paquets ML lourds — wheel PyPI
+    absent pour sa version de Python/plateforme, par exemple — `LAB_RESEARCH_PYTHON`
+    pointe vers un venv dédié au package `research/`, sans toucher `backend/.venv`.
+    """
+    configured = getattr(settings, "LAB_RESEARCH_PYTHON", None)
+    return str(configured) if configured else sys.executable
+
+
 class LocalBackend(ExecutionBackend):
     kind = "local"
 
@@ -46,7 +60,7 @@ class LocalBackend(ExecutionBackend):
         with (out_dir / "run.log").open("w", encoding="utf-8") as log:
             completed = subprocess.run(
                 [
-                    sys.executable, "-m", "pactiva_lab", "run",
+                    research_python(), "-m", "pactiva_lab", "run",
                     "--config", str(config_path),
                     "--data", str(dataset_dir),
                     "--out", str(out_dir),

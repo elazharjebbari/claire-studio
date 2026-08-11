@@ -76,12 +76,13 @@ class EmbeddingsHead(Model):
 
     name = "embeddings_head"
 
-    def __init__(self, config: dict):
+    def __init__(self, config: dict, seed: int = 42):
         self.encoder_name = config["encoder"]
         self.head_name = config.get("head", "logreg")
         self.pooling = config.get("pooling", "mean")
         self.knn_k = int(config.get("knn_k", 5))
         self.use_cache = bool(config.get("cache_embeddings", True))
+        self.seed = seed
         self._encoder = None
         self._cache = EmbeddingCache() if self.use_cache else None
 
@@ -105,13 +106,21 @@ class EmbeddingsHead(Model):
         from sklearn.neural_network import MLPClassifier
         from sklearn.svm import LinearSVC
 
+        # `random_state=self.seed` partout où l'API le permet (même quand l'algorithme
+        # est déterministe par défaut, comme LogisticRegression pour la plupart des
+        # solveurs) : un audit ne devrait jamais avoir à deviner quelles familles de
+        # modèle respectent la graine et lesquelles l'ignorent silencieusement.
         if self.head_name == "linear_svm":
-            return LinearSVC(class_weight="balanced")
+            return LinearSVC(class_weight="balanced", random_state=self.seed)
         if self.head_name == "knn":
             return KNeighborsClassifier(n_neighbors=self.knn_k)
         if self.head_name == "mlp":
-            return MLPClassifier(hidden_layer_sizes=(256,), max_iter=400, random_state=42)
-        return LogisticRegression(max_iter=2000, class_weight="balanced", n_jobs=-1)
+            return MLPClassifier(
+                hidden_layer_sizes=(256,), max_iter=400, random_state=self.seed
+            )
+        return LogisticRegression(
+            max_iter=2000, class_weight="balanced", n_jobs=-1, random_state=self.seed
+        )
 
     def fit(self, texts, labels, extra=None):
         self.head = self._build_head()
@@ -141,14 +150,23 @@ class TransformerFinetune(Model):
 
     name = "transformer_finetune"
 
-    def __init__(self, config: dict):
+    def __init__(self, config: dict, seed: int = 42):
         self.config = config
         self.checkpoint = config["checkpoint"]
+        self.seed = seed
 
     def fit(self, texts, labels, extra=None):
         torch = _require("torch", "transformers")
         transformers = _require("transformers", "transformers")
         from torch.utils.data import DataLoader, TensorDataset
+
+        # DOIT précéder `from_pretrained` : la tête de classification (jamais présente
+        # dans les poids pré-entraînés) est réinitialisée aléatoirement à chaque appel —
+        # sans cette graine, deux runs de MÊME configuration produiraient des poids de
+        # départ différents, et donc des résultats différents. C'était un manque réel :
+        # `seed` figurait dans la configuration (destiné au rééchantillonnage bootstrap)
+        # sans jamais atteindre ce modèle, jusqu'à l'audit de reproductibilité.
+        torch.manual_seed(self.seed)
 
         cfg = self.config
         self.classes = sorted(set(labels))
@@ -166,9 +184,14 @@ class TransformerFinetune(Model):
             max_length=int(cfg.get("max_length", 128)), return_tensors="pt",
         )
         targets = torch.tensor([index[label] for label in labels])
+        # Générateur EXPLICITE plutôt que l'état RNG global de torch : rejouable même si
+        # d'autres opérations aléatoires ont eu lieu entre-temps dans le même processus
+        # (par exemple un pli précédent d'une validation croisée).
+        shuffle_generator = torch.Generator().manual_seed(self.seed)
         loader = DataLoader(
             TensorDataset(encoded["input_ids"], encoded["attention_mask"], targets),
             batch_size=int(cfg.get("batch_size", 16)), shuffle=True,
+            generator=shuffle_generator,
         )
 
         # Pondération inverse à la fréquence : sans elle, les thèmes rares (FEEDBACK à
@@ -220,10 +243,10 @@ class TransformerFinetune(Model):
         return out
 
 
-def build_heavy_model(family: str, config: dict) -> Model:
+def build_heavy_model(family: str, config: dict, seed: int = 42) -> Model:
     if family == "embeddings_head":
-        return EmbeddingsHead(config)
+        return EmbeddingsHead(config, seed=seed)
     if family in ("transformer_finetune", "sequence_labeling"):
         # L'étiquetage de séquence partage l'encodeur ; le CRF viendra en surcouche.
-        return TransformerFinetune(config)
+        return TransformerFinetune(config, seed=seed)
     raise ValueError(f"famille lourde inconnue : {family!r}")

@@ -100,7 +100,9 @@ def run_experiment(
         if not train_idx or not test_idx:
             continue
 
-        model = build_model(config["model"], judges_index=dataset.judges)
+        model = build_model(
+            config["model"], judges_index=dataset.judges, seed=int(config.get("seed", 42))
+        )
         # T2 et T3 sont ramenés à une cible scalaire pour l'entraînement : les modèles de
         # référence sont mono-label. La reconstruction multi-label se fait à l'évaluation.
         train_targets = [_scalarize(targets[i], task) for i in train_idx]

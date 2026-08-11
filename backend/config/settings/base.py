@@ -74,6 +74,11 @@ FIXTURES_DIR = BASE_DIR / "fixtures"
 TRANSLATIONS_ROOT = Path(
     env("CLAIRE_TRANSLATIONS_ROOT", default=str(DATA_DIR / "translations"))
 )
+# Interpréteur pour `python -m pactiva_lab` (claire/lab/runners/local.py). None (défaut)
+# = celui de Django (sys.executable). À définir explicitement quand `research/` a besoin
+# de dépendances ML lourdes (torch, transformers) que l'environnement Django n'a pas
+# vocation à porter — voir docs/pactiva-lab/02_ARCHITECTURE.md.
+LAB_RESEARCH_PYTHON = env("LAB_RESEARCH_PYTHON", default=None)
 
 INSTALLED_APPS = [
     "django.contrib.admin",

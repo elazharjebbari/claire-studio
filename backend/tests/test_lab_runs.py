@@ -227,6 +227,27 @@ def test_dataset_immuable_apres_creation(lab_project):
         dataset.save()
 
 
+def test_research_python_se_replie_sur_l_interprete_django(settings):
+    """Sans réglage, le sous-processus doit rester celui qui fait tourner Django — ne
+    rien changer sur les déploiements qui n'ont jamais entendu parler de ce réglage."""
+    import sys
+
+    from claire.lab.runners.local import research_python
+
+    settings.LAB_RESEARCH_PYTHON = None
+    assert research_python() == sys.executable
+
+
+def test_research_python_respecte_le_reglage_dedie(settings):
+    """`LAB_RESEARCH_PYTHON` permet un venv dédié à `research/` — utile quand
+    l'interpréteur de Django n'a pas de wheel PyPI pour les dépendances ML lourdes
+    (ex. torch sur une plateforme/version de Python sans build officiel)."""
+    from claire.lab.runners.local import research_python
+
+    settings.LAB_RESEARCH_PYTHON = "/opt/lab-venv/bin/python"
+    assert research_python() == "/opt/lab-venv/bin/python"
+
+
 def test_meme_criteres_meme_empreinte(lab_project):
     """Deux constructions identiques doivent partager l'empreinte : c'est ce qui rend
     un `dataset_id` citable dans l'article."""
