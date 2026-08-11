@@ -426,12 +426,30 @@ def compute_credentials(request):
 
     serializer = ComputeCredentialWriteSerializer(data=request.data)
     serializer.is_valid(raise_exception=True)
+    password = serializer.validated_data.get("password") or ""
     ssh_key = serializer.validated_data.get("ssh_key") or ""
     existing = ComputeCredential.objects.filter(
         user=request.user, kind=serializer.validated_data["kind"]
     ).first()
+
+    if not password and not (existing and existing.secret_encrypted):
+        # Ni mot de passe fourni ni identifiant préexistant : rien à enregistrer. Sans
+        # ce garde-fou explicite, on ne peut PAS distinguer « ajouter seulement la clé
+        # SSH sur un identifiant déjà enregistré » (cas voulu, ci-dessous) d'un premier
+        # enregistrement sans mot de passe (erreur d'usage à signaler clairement).
+        return Response(
+            {"code": "password_required", "detail": "mot de passe requis pour un nouvel enregistrement"},
+            status=status.HTTP_400_BAD_REQUEST,
+        )
+
     try:
-        encrypted = encrypt_secret(serializer.validated_data["password"])
+        if password:
+            encrypted = encrypt_secret(password)
+        else:
+            # Absent de la requête : on NE remplace PAS un mot de passe déjà enregistré
+            # — permet de compléter/mettre à jour SEULEMENT la clé SSH sans le
+            # retaper, symétriquement à la préservation déjà faite pour `ssh_key`.
+            encrypted = existing.secret_encrypted
         if ssh_key:
             ssh_key_encrypted = encrypt_secret(ssh_key)
         else:

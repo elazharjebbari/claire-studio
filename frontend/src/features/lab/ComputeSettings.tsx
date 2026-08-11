@@ -68,7 +68,14 @@ export function ComputeSettings() {
     setBusy(true);
     setMessage(null);
     try {
-      await saveCredential({ kind: "g5k", login, password, sshKey: sshKey || undefined });
+      await saveCredential({
+        kind: "g5k",
+        login,
+        // Vide = préserver le mot de passe déjà enregistré (permet d'ajouter/modifier
+        // SEULEMENT la clé SSH sans le retaper), symétrique au traitement de `sshKey`.
+        password: password || undefined,
+        sshKey: sshKey || undefined,
+      });
       // Les secrets sont effacés de l'état dès l'enregistrement : ils ne doivent pas
       // rester en mémoire du navigateur plus longtemps que nécessaire.
       setPassword("");
@@ -174,11 +181,11 @@ export function ComputeSettings() {
         <Button
           onClick={onSave}
           loading={busy}
-          disabled={!configured || !login || !password}
+          disabled={!configured || !login || (!password && !existing?.hasPassword)}
           title={
             !configured
               ? "clé de chiffrement absente côté serveur"
-              : !login || !password
+              : !login || (!password && !existing?.hasPassword)
                 ? "identifiant et mot de passe requis"
                 : "Enregistrer les identifiants chiffrés"
           }

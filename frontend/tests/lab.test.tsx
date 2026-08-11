@@ -7,6 +7,7 @@
 
 import { afterEach, describe, expect, it, vi } from "vitest";
 import { cleanup, render, screen } from "@testing-library/react";
+import userEvent from "@testing-library/user-event";
 
 import {
   buildLines,
@@ -250,5 +251,45 @@ describe("ComputeSettings", () => {
     expect(notice.textContent).toMatch(/LAB_CREDENTIALS_KEY/);
     // Et le repli est annoncé : l'exécution locale reste disponible.
     expect(notice.textContent).toMatch(/locale/i);
+  });
+
+  it("⭐ un identifiant déjà enregistré permet d'ajouter la clé SSH SANS retaper le mot de passe", async () => {
+    // Bug réel trouvé en prod (11 août 2026) : le bouton restait désactivé tant que le
+    // champ mot de passe était vide, même quand un identifiant existait déjà — rendant
+    // impossible d'ajouter/modifier SEULEMENT la clé SSH.
+    const api = await import("@/features/lab/api");
+    vi.mocked(api.saveCredential).mockResolvedValue({
+      id: 1, kind: "g5k", login: "ajebbari", hasPassword: true, hasSshKey: true,
+      lastTestedAt: null, lastTestOk: null, lastTestSshOk: null, lastTestDetail: "",
+    } as never);
+    const { ComputeSettings } = await import("@/features/lab/ComputeSettings");
+    const user = userEvent.setup();
+    render(<ComputeSettings />);
+
+    const button = await screen.findByTestId("g5k-save");
+    expect(button).not.toBeDisabled(); // mot de passe déjà enregistré (hasPassword: true)
+
+    await user.type(screen.getByTestId("g5k-ssh-key"), "-----BEGIN OPENSSH PRIVATE KEY-----");
+    await user.click(button);
+
+    expect(api.saveCredential).toHaveBeenCalledWith(
+      expect.objectContaining({ password: undefined, sshKey: "-----BEGIN OPENSSH PRIVATE KEY-----" }),
+    );
+  });
+
+  it("un premier enregistrement (rien d'existant) exige toujours un mot de passe", async () => {
+    const api = await import("@/features/lab/api");
+    vi.mocked(api.getCredentials).mockResolvedValueOnce({
+      configured: true,
+      credentials: [],
+    });
+    const { ComputeSettings } = await import("@/features/lab/ComputeSettings");
+    const user = userEvent.setup();
+    render(<ComputeSettings />);
+
+    await user.type(await screen.findByTestId("g5k-login"), "ajebbari");
+    const button = screen.getByTestId("g5k-save");
+    expect(button).toBeDisabled();
+    expect(button.getAttribute("title")).toMatch(/mot de passe requis/i);
   });
 });

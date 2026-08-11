@@ -123,7 +123,9 @@ export function getCredentials(): Promise<{
 export function saveCredential(payload: {
   kind: string;
   login: string;
-  password: string;
+  /** Omis = mot de passe déjà enregistré conservé tel quel — permet d'ajouter/modifier
+   * SEULEMENT la clé SSH sans le retaper. */
+  password?: string;
   /** Omise = clé SSH déjà enregistrée conservée telle quelle (le serveur ne l'efface
    * jamais silencieusement au passage d'une mise à jour du mot de passe). */
   sshKey?: string;

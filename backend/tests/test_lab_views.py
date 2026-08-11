@@ -447,6 +447,52 @@ def test_compute_credentials_put_conserve_la_cle_ssh_si_absente_de_la_requete(
     assert crypto.decrypt_secret(credential.secret_encrypted) == "nouveau-mdp"
 
 
+def test_compute_credentials_put_conserve_le_mot_de_passe_si_absent_de_la_requete(
+    lab_campaign, monkeypatch
+):
+    """⭐ BUG RÉEL trouvé en prod (11 août 2026) : le formulaire exigeait TOUJOURS un mot
+    de passe non vide, rendant impossible d'ajouter/modifier SEULEMENT la clé SSH sur un
+    identifiant déjà enregistré sans retaper le mot de passe — asymétrique avec la
+    préservation déjà en place pour `ssh_key` (test ci-dessus). Corrigé en rendant
+    `password` optionnel, avec la même logique de préservation."""
+    from claire.lab import crypto
+
+    monkeypatch.setenv(crypto.ENV_KEY, Fernet.generate_key().decode())
+    client = _client(lab_campaign["lead"])
+    client.put(
+        f"{API}/me/compute-credentials",
+        {"kind": "g5k", "login": "alice", "password": "s3cret"}, format="json",
+    )
+    resp = client.put(
+        f"{API}/me/compute-credentials",
+        {"kind": "g5k", "login": "alice", "sshKey": "clé-privée"}, format="json",
+    )
+    assert resp.status_code == 200
+    assert resp.json()["hasPassword"] is True
+    assert resp.json()["hasSshKey"] is True
+    credential = ComputeCredential.objects.get(user=lab_campaign["lead"], kind="g5k")
+    assert crypto.decrypt_secret(credential.secret_encrypted) == "s3cret"
+    assert crypto.decrypt_secret(credential.ssh_key_encrypted) == "clé-privée"
+
+
+def test_compute_credentials_put_refuse_sans_mot_de_passe_ni_identifiant_existant(
+    lab_campaign, monkeypatch
+):
+    """Un premier enregistrement sans mot de passe ni identifiant préexistant n'a rien
+    à préserver — refuser explicitement plutôt que de créer un identifiant avec un
+    secret vide chiffré."""
+    from claire.lab import crypto
+
+    monkeypatch.setenv(crypto.ENV_KEY, Fernet.generate_key().decode())
+    resp = _client(lab_campaign["lead"]).put(
+        f"{API}/me/compute-credentials",
+        {"kind": "g5k", "login": "alice", "sshKey": "clé-privée"}, format="json",
+    )
+    assert resp.status_code == 400
+    assert resp.json()["code"] == "password_required"
+    assert ComputeCredential.objects.count() == 0
+
+
 def test_compute_credentials_test_appelle_le_backend_et_persiste_le_resultat(
     lab_campaign, monkeypatch
 ):

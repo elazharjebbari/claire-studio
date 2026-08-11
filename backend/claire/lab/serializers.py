@@ -165,7 +165,12 @@ class ComputeCredentialWriteSerializer(serializers.Serializer):
 
     kind = serializers.ChoiceField(choices=["g5k"], default="g5k")
     login = serializers.CharField(max_length=120)
-    password = serializers.CharField(max_length=500, write_only=True, trim_whitespace=False)
+    # Optionnel comme `ssh_key` : un identifiant déjà enregistré peut être complété
+    # (ajouter la clé SSH) sans redonner le mot de passe — la vue préserve
+    # `secret_encrypted` existant quand ce champ est absent, symétriquement à `ssh_key`.
+    password = serializers.CharField(
+        max_length=500, write_only=True, trim_whitespace=False, required=False, allow_blank=True,
+    )
     ssh_key = serializers.CharField(
         max_length=16000, write_only=True, trim_whitespace=False, required=False, allow_blank=True,
     )
