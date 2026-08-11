@@ -242,3 +242,13 @@ def test_le_socle_ne_depend_pas_de_sklearn_ni_de_torch():
         source = inspect.getsource(module)
         assert "import sklearn" not in source
         assert "import torch" not in source
+
+
+def test_reliability_curve_accompagne_l_ece(toy_dataset, base_config, tmp_path):
+    """⭐ F10 (calibration) a besoin de la COURBE, pas seulement du score agrégé : un
+    ECE unique cache si le modèle est trop sûr, pas assez, ou juste sur une tranche."""
+    result = run_experiment(base_config, toy_dataset, tmp_path / "out")
+    curve = result["metrics"]["reliability_curve"]
+    assert isinstance(curve, list) and curve
+    for bucket in curve:
+        assert {"bin", "meanConfidence", "accuracy", "count"} <= set(bucket)

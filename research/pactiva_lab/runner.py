@@ -283,7 +283,13 @@ def _global_scores(predictions: list[dict], task: str) -> dict:
         _deserialize(row["y_true"], task) == _deserialize(row["y_pred"], task)
         for row in predictions
     ]
-    return {"ece": expected_calibration_error(confidences, correct)}
+    return {
+        "ece": expected_calibration_error(confidences, correct),
+        # La courbe elle-même, pas seulement le score agrégé : un ECE unique cache
+        # SI le modèle est trop sûr de lui, pas assez, ou juste sur une tranche de
+        # confiance — c'est la courbe qui répond, et F10 en a besoin pour exister.
+        "reliability_curve": reliability_curve(confidences, correct),
+    }
 
 
 def _per_label(predictions: list[dict], task: str) -> list[dict]:
