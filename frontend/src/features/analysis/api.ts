@@ -34,20 +34,15 @@ export function createSnapshot(
 }
 
 export function createRun(slug: string, snapshotId: string): Promise<AnalysisRun> {
+  // `metricCodes` est OMIS délibérément : le fixer ici dupliquait la liste des
+  // métriques du backend (`DEFAULT_METRICS`), et c'est exactement cette duplication
+  // qui a fait tourner l'app sans les 8 métriques du chantier Lab pendant deux commits
+  // entiers — les tests passaient (fixtures construites à la main), mais aucun run réel
+  // ne les demandait jamais. Omettre le champ laisse le serveur appliquer sa propre
+  // liste par défaut, qui reste donc la SEULE source de vérité.
   return apiFetch(`${root(slug)}/runs`, {
     method: "POST",
-    body: {
-      snapshotId,
-      metricCodes: [
-        "overview",
-        "actor_profiles",
-        "quality",
-        "pairwise_agreement",
-        "intra_annotator",
-        "gold_analysis",
-        "taxonomy",
-      ],
-    },
+    body: { snapshotId },
   });
 }
 

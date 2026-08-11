@@ -229,6 +229,28 @@ describe("AlphaComparisonFigure", () => {
     const empty = screen.getByTestId("figure-alpha-empty");
     expect(empty.textContent).toMatch(/soumettre au moins deux annotations/i);
   });
+
+  it("⭐ un rapport présent mais À ZÉRO PHRASE MULTI-ANNOTÉE déclenche aussi l'état vide", () => {
+    // Bug réel trouvé en pilotant l'app dans un vrai navigateur (compte à annotation
+    // unique) : le backend renvoie un objet `alphaMasi` complet même à 0 phrase
+    // multi-annotée (alphaMasi/alphaNominal tous deux `null`). S'en tenir à la seule
+    // présence de l'objet remplissait le tableau de trois lignes de tirets, déjouant
+    // l'état vide de `Figure` et affichant un graphique SANS AUCUNE BARRE — lu comme
+    // cassé, pas comme une absence de données.
+    render(
+      <AlphaComparisonFigure
+        report={{
+          alphaMasi: null,
+          alphaNominal: null,
+          multiLabelCost: null,
+          thresholds: { acceptable: 0.667, reliable: 0.8 },
+          perTheme: [],
+          units: 0,
+        }}
+      />,
+    );
+    expect(screen.getByTestId("figure-alpha-empty")).toBeInTheDocument();
+  });
 });
 
 describe("LongTailFigure", () => {
@@ -247,6 +269,25 @@ describe("LongTailFigure", () => {
   it("état vide explicite", () => {
     render(<LongTailFigure themes={[]} />);
     expect(screen.getByTestId("figure-longtail-empty")).toBeInTheDocument();
+  });
+
+  it("⭐ un code de thème long est tronqué sur l'axe, complet dans le tableau", () => {
+    // Bug réel trouvé en pilotant l'app avec de vraies données : le premier bâton du
+    // graphique est proche du bord gauche, et un code pivoté à -45° ("PREAMBLE_SCOPE",
+    // "MODIFICATION_OF_TERMS") s'étend vers le haut-gauche et sortait du cadre SVG —
+    // invisible avec les codes courts des fixtures habituelles.
+    render(
+      <LongTailFigure
+        themes={[{ code: "MODIFICATION_OF_TERMS", primary: 141, secondary: 20, total: 161 }]}
+      />,
+    );
+    // Le SVG affiche une version tronquée (11 caractères max, ellipse comprise)…
+    const svgLabel = screen.getByText("MODIFICATI…");
+    expect(svgLabel).toBeInTheDocument();
+    // …mais le tableau équivalent (et donc l'export CSV) garde le nom complet.
+    expect(screen.getByTestId("figure-longtail-table").textContent).toContain(
+      "MODIFICATION_OF_TERMS",
+    );
   });
 });
 
@@ -319,6 +360,11 @@ describe("GoldCascadeFigure", () => {
       /rien à trancher/i,
     );
   });
+
+  it("⭐ un objet présent mais À ZÉRO PHRASE bascule aussi en état vide", () => {
+    render(<GoldCascadeFigure data={{ byAutoLevel: {}, sentences: 0, decided: 0 }} />);
+    expect(screen.getByTestId("figure-gold-cascade-empty")).toBeInTheDocument();
+  });
 });
 
 describe("CooccurrenceFigure", () => {
@@ -348,5 +394,49 @@ describe("CooccurrenceFigure", () => {
   it("état vide explicite", () => {
     render(<CooccurrenceFigure pairs={[]} />);
     expect(screen.getByTestId("figure-cooccurrence-empty")).toBeInTheDocument();
+  });
+
+  it("⭐ un nom de paire modérément long s'affiche EN ENTIER, sans troncature", () => {
+    // Bug réel trouvé en pilotant l'app avec de vraies données : la colonne
+    // d'étiquettes était fixée à 190px, assez pour "LICENSE_IP + TERMINATION" mais pas
+    // pour "ELIGIBILITY_ACCOUNT + TERMINATION" (34 caractères) — coupé par le bord
+    // gauche du SVG. La largeur se calcule maintenant sur le nom le plus long affiché.
+    render(
+      <CooccurrenceFigure
+        pairs={[
+          { themes: ["ELIGIBILITY_ACCOUNT", "TERMINATION"], count: 16, unfair: 7,
+            unfairRate: 0.44, lift: 4.2 },
+        ]}
+      />,
+    );
+    // Le texte VISIBLE de l'étiquette (hors <title> d'accessibilité, qui dupliquerait
+    // le contenu du nœud) doit porter le nom en entier, sans ellipse.
+    const texts = [
+      ...screen.getByTestId("figure-cooccurrence").querySelectorAll("svg text"),
+    ];
+    const axisLabel = texts.find((t) => t.querySelector("title"))!;
+    expect(axisLabel.childNodes[0]?.textContent).toBe("ELIGIBILITY_ACCOUNT + TERMINATION");
+  });
+
+  it("⭐ au-delà du plafond, tronque sur l'axe mais garde le nom complet ailleurs", () => {
+    const fullName = "MODIFICATION_OF_TERMS + LIMITATION_LIABILITY";
+    render(
+      <CooccurrenceFigure
+        pairs={[{ themes: ["MODIFICATION_OF_TERMS", "LIMITATION_LIABILITY"],
+                  count: 12, unfair: 5, unfairRate: 0.42, lift: 3.8 }]}
+      />,
+    );
+    // Le tableau équivalent (et donc l'export CSV) garde le nom complet.
+    expect(screen.getByTestId("figure-cooccurrence-table").textContent).toContain(fullName);
+    // L'étiquette VISIBLE sur l'axe (le <text>, sans son <title> d'accessibilité) reste
+    // bornée — jamais le nom en entier, aussi long soit-il. Ciblée par la présence d'un
+    // <title> enfant : c'est la seule étiquette de paire (le repère "base" n'en a pas).
+    const texts = [...screen.getByTestId("figure-cooccurrence").querySelectorAll("svg text")];
+    const axisLabel = texts.find((t) => t.querySelector("title"))!;
+    const visibleText = axisLabel.childNodes[0]?.textContent ?? "";
+    expect(visibleText.length).toBeLessThan(fullName.length);
+    expect(visibleText.endsWith("…")).toBe(true);
+    // …tandis que le <title> (survol) porte bien le nom complet.
+    expect(axisLabel.querySelector("title")?.textContent).toBe(fullName);
   });
 });

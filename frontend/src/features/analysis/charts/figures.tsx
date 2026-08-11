@@ -33,15 +33,16 @@ const AUTO_LEVEL_LABEL: Record<string, string> = {
 
 const PAD = { left: 56, right: 16, top: 12, bottom: 34 };
 
-function Grid({ width, height, values, scale }: {
+function Grid({ width, height, values, scale, left = PAD.left, bottom = PAD.bottom }: {
   width: number; height: number; values: number[]; scale: (v: number) => number;
+  left?: number; bottom?: number;
 }) {
   return (
     <g aria-hidden>
       {values.map((value) => (
         <line
           key={value}
-          x1={PAD.left}
+          x1={left}
           x2={width - PAD.right}
           y1={scale(value)}
           y2={scale(value)}
@@ -50,10 +51,10 @@ function Grid({ width, height, values, scale }: {
         />
       ))}
       <line
-        x1={PAD.left}
-        x2={PAD.left}
+        x1={left}
+        x2={left}
         y1={PAD.top}
-        y2={height - PAD.bottom}
+        y2={height - bottom}
         stroke={VIZ_VARS.axis}
         strokeWidth={1}
       />
@@ -61,15 +62,15 @@ function Grid({ width, height, values, scale }: {
   );
 }
 
-function YLabels({ values, scale, format = formatTick }: {
-  values: number[]; scale: (v: number) => number; format?: (v: number) => string;
+function YLabels({ values, scale, format = formatTick, left = PAD.left }: {
+  values: number[]; scale: (v: number) => number; format?: (v: number) => string; left?: number;
 }) {
   return (
     <g aria-hidden>
       {values.map((value) => (
         <text
           key={value}
-          x={PAD.left - 6}
+          x={left - 6}
           y={scale(value) + 3}
           textAnchor="end"
           fontSize={10}
@@ -135,7 +136,13 @@ export function AlphaComparisonFigure({ report }: { report: AlphaReport | null }
         { key: "bande", label: "Interprétation" },
       ]}
       rows={
-        report
+        // Se garder sur `bars.length`, pas sur la seule présence de `report` : le
+        // backend renvoie un objet complet même à 0 phrase multi-annotée (alphaMasi et
+        // alphaNominal tous deux `null`). S'en tenir à `report` remplissait le tableau
+        // de trois lignes de tirets, ce qui déjouait l'état vide de `Figure` (il ne se
+        // déclenche que sur `rows.length === 0`) et affichait un graphique sans aucune
+        // barre — lu comme un graphique cassé, pas comme une absence de données.
+        bars.length > 0 && report
           ? [
               {
                 mesure: "α nominal (mono-label)",
@@ -254,15 +261,26 @@ export interface ThemeRow {
  * échelle linéaire écraserait toute la traîne sur l'axe et rendrait la figure muette
  * — or c'est précisément la traîne qui explique l'écart micro/macro-F1.
  */
+const LONGTAIL_LABEL_MAX_CHARS = 11;
+
 export function LongTailFigure({ themes, rareThreshold = 50 }: {
   themes: ThemeRow[]; rareThreshold?: number;
 }) {
   const width = 720;
-  const height = 300;
+  // Marge basse propre à cette figure (au-delà du PAD partagé). La cause réelle,
+  // trouvée en MESURANT le DOM (getBBox + coins pivotés), pas en devinant une largeur
+  // de police : un code pivoté à -45° s'étend certes vers la gauche, mais surtout
+  // vers le BAS — pour "PREAMBLE_SCOPE" (58×10 avant rotation), le coin le plus bas
+  // atterrissait à y≈320 alors que le SVG s'arrêtait à 300, et le début du texte
+  // ("PREAM…") tombait sous le viewBox, découpé. Deux tentatives de correction par
+  // marge GAUCHE n'avaient donc aucun effet — le mauvais axe.
+  const bottomPad = 70;
+  const height = 260 + bottomPad;
+  const leftPad = PAD.left;
   const sorted = [...themes].sort((a, b) => b.primary - a.primary);
   const domain = extent([1, ...sorted.map((t) => Math.max(1, t.primary))]);
-  const y = scaleLog(domain, { max: PAD.top, min: height - PAD.bottom });
-  const band = scaleBand(Math.max(1, sorted.length), { min: PAD.left, max: width - PAD.right }, 0.25);
+  const y = scaleLog(domain, { max: PAD.top, min: height - bottomPad });
+  const band = scaleBand(Math.max(1, sorted.length), { min: leftPad, max: width - PAD.right }, 0.25);
   const gridValues = logTicks(domain);
 
   return (
@@ -291,12 +309,12 @@ export function LongTailFigure({ themes, rareThreshold = 50 }: {
         { label: `sous ${rareThreshold} occurrences`, color: seriesColor(3) },
       ]}
     >
-      <Grid width={width} height={height} values={gridValues} scale={y} />
-      <YLabels values={gridValues} scale={y} />
+      <Grid width={width} height={height} values={gridValues} scale={y} left={leftPad} bottom={bottomPad} />
+      <YLabels values={gridValues} scale={y} left={leftPad} />
 
       {sorted.map((theme, index) => {
         const top = y(Math.max(1, theme.primary));
-        const bottom = height - PAD.bottom;
+        const bottom = height - bottomPad;
         const isRare = theme.total < rareThreshold;
         return (
           <g key={theme.code}>
@@ -323,13 +341,14 @@ export function LongTailFigure({ themes, rareThreshold = 50 }: {
             )}
             <text
               x={band.position(index) + band.bandwidth / 2}
-              y={height - PAD.bottom + 12}
+              y={height - bottomPad + 12}
               textAnchor="end"
               fontSize={8}
               fill={VIZ_VARS.inkMuted}
-              transform={`rotate(-45 ${band.position(index) + band.bandwidth / 2} ${height - PAD.bottom + 12})`}
+              transform={`rotate(-45 ${band.position(index) + band.bandwidth / 2} ${height - bottomPad + 12})`}
             >
-              {theme.code}
+              {truncateLabel(theme.code, LONGTAIL_LABEL_MAX_CHARS)}
+              <title>{theme.code}</title>
             </text>
           </g>
         );
@@ -635,7 +654,11 @@ export function GoldCascadeFigure({ data }: { data: GoldCascadeData | null }) {
         { key: "part", label: "Part" },
       ]}
       rows={
-        data
+        // Même garde que `AlphaComparisonFigure` : `data` peut être un objet complet
+        // avec `sentences: 0` (aucune résolution gold en cours). S'en tenir à `data`
+        // seul remplirait le tableau de trois lignes à 0/0 %, court-circuitant l'état
+        // vide de `Figure` et affichant une barre vide sans explication.
+        total > 0 && data
           ? AUTO_LEVEL_ORDER.map((level) => ({
               niveau: AUTO_LEVEL_LABEL[level] ?? level,
               phrases: data.byAutoLevel[level] ?? 0,
@@ -709,6 +732,15 @@ export interface CooccurrencePair {
  * cardinalité (1,09× seulement pour mono vs multi-label brut) — un classement rend ce
  * contraste immédiatement lisible, une matrice pleine le noierait dans le bruit.
  */
+// Estimation prudente : les codes de thème sont en MAJUSCULES (plus larges qu'une
+// police mixte), d'où un pas par caractère généreux plutôt que la moyenne habituelle.
+const THEME_LABEL_CHAR_WIDTH = 6.2;
+const THEME_LABEL_MAX_SPACE = 280;
+
+function truncateLabel(label: string, maxChars: number): string {
+  return label.length > maxChars ? `${label.slice(0, Math.max(1, maxChars - 1))}…` : label;
+}
+
 export function CooccurrenceFigure({
   pairs,
   minSupport = 5,
@@ -718,15 +750,32 @@ export function CooccurrenceFigure({
   minSupport?: number;
   cardinalityLift?: number | null;
 }) {
-  const width = 640;
+  const barZone = 380;
   const eligible = pairs
     .filter((p) => p.count >= minSupport && p.lift != null)
     .sort((a, b) => (b.lift ?? 0) - (a.lift ?? 0))
     .slice(0, 8);
   const height = 48 + eligible.length * 26;
 
+  // Largeur de la colonne d'étiquettes calculée sur le nom le plus long AFFICHÉ, pas
+  // fixée en dur : un code de thème long ("ELIGIBILITY_ACCOUNT + TERMINATION", codes
+  // composés jusqu'à 22 caractères chacun) débordait hors du cadre SVG et se faisait
+  // couper par le bord gauche — repéré en pilotant l'app avec de vraies données, jamais
+  // dans les tests (fixtures aux noms courts). Plafonnée : au-delà, on tronque avec une
+  // ellipse — le nom complet reste dans l'infobulle et dans le tableau équivalent.
+  const longestLabel = Math.max(
+    0,
+    ...eligible.map((pair) => pair.themes.join(" + ").length),
+  );
+  const labelSpace = Math.min(
+    THEME_LABEL_MAX_SPACE,
+    Math.max(120, 24 + longestLabel * THEME_LABEL_CHAR_WIDTH),
+  );
+  const maxLabelChars = Math.floor((labelSpace - 24) / THEME_LABEL_CHAR_WIDTH);
+  const width = labelSpace + barZone;
+
   const maxLift = Math.max(1, ...eligible.map((p) => p.lift ?? 0));
-  const x = scaleLinear({ min: 0, max: maxLift }, { min: 190, max: width - 40 });
+  const x = scaleLinear({ min: 0, max: maxLift }, { min: labelSpace, max: width - 40 });
 
   return (
     <Figure
@@ -755,7 +804,14 @@ export function CooccurrenceFigure({
       emptyMessage="Aucune paire de thèmes suffisamment attestée : construisez un jeu de données avec des labels d'abusivité."
       legend={[{ label: "lift d'abusivité", color: seriesColor(0) }]}
     >
-      <line x1={190} x2={190} y1={16} y2={height - 16} stroke={VIZ_VARS.axis} strokeWidth={1} />
+      <line
+        x1={labelSpace}
+        x2={labelSpace}
+        y1={16}
+        y2={height - 16}
+        stroke={VIZ_VARS.axis}
+        strokeWidth={1}
+      />
       <line
         x1={x(1)}
         x2={x(1)}
@@ -771,15 +827,23 @@ export function CooccurrenceFigure({
 
       {eligible.map((pair, index) => {
         const y0 = 24 + index * 26;
-        const barWidth = Math.max(1, x(pair.lift ?? 0) - 190);
+        const barWidth = Math.max(1, x(pair.lift ?? 0) - labelSpace);
+        const fullLabel = pair.themes.join(" + ");
         return (
-          <g key={pair.themes.join("+")}>
-            <text x={186} y={y0 + 13} textAnchor="end" fontSize={10} fill={VIZ_VARS.ink}>
-              {pair.themes.join(" + ")}
+          <g key={fullLabel}>
+            <text
+              x={labelSpace - 4}
+              y={y0 + 13}
+              textAnchor="end"
+              fontSize={10}
+              fill={VIZ_VARS.ink}
+            >
+              {truncateLabel(fullLabel, maxLabelChars)}
+              <title>{fullLabel}</title>
             </text>
-            <rect x={190} y={y0} width={barWidth} height={16} rx={4} fill={seriesColor(0)}>
+            <rect x={labelSpace} y={y0} width={barWidth} height={16} rx={4} fill={seriesColor(0)}>
               <title>
-                {`${pair.themes.join(" + ")} : lift ${pair.lift?.toFixed(2)}× (${pair.unfair}/${pair.count})`}
+                {`${fullLabel} : lift ${pair.lift?.toFixed(2)}× (${pair.unfair}/${pair.count})`}
               </title>
             </rect>
             <text x={x(pair.lift ?? 0) + 6} y={y0 + 13} fontSize={10} fill={VIZ_VARS.inkMuted}>

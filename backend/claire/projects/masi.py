@@ -14,6 +14,7 @@ proposés par chaque juge/annotateur. Seules les phrases avec ≥ 2 jugements co
 
 from __future__ import annotations
 
+from collections import Counter
 from itertools import combinations
 from typing import Iterable, Sequence
 
@@ -68,15 +69,30 @@ def krippendorff_alpha(
         return None
     d_observed = obs_sum / obs_pairs
 
-    # Désaccord attendu : moyenne des distances sur TOUTES les paires de jugements regroupés.
-    pool = [set(x) for u in items for x in u]
-    exp_sum = 0.0
-    exp_pairs = 0
-    for x, y in combinations(pool, 2):
-        exp_sum += distance(x, y)
-        exp_pairs += 1
+    # Désaccord attendu : moyenne des distances sur TOUTES les paires de jugements
+    # regroupés — calculé en O(U²) plutôt qu'en O(N²) (U = ensembles DISTINCTS observés,
+    # N = jugements totaux). Sur un vocabulaire fermé (~20 thèmes), les mêmes
+    # combinaisons reviennent massivement : mesuré en conditions réelles (100 annotations,
+    # 50 documents), la version naïve prenait 155 s ; ce fichier ne dépendait pourtant
+    # que de fixtures minuscules dans ses tests, où la différence ne se voit jamais.
+    # Le regroupement est EXACT, pas une approximation : deux jugements identiques ont
+    # toujours une distance nulle, donc pondérer par fréquence au lieu de les énumérer
+    # individuellement ne change aucun terme de la somme.
+    frequencies = Counter(frozenset(x) for u in items for x in u)
+    unique = list(frequencies.items())
+    n_total = sum(frequencies.values())
+    exp_pairs = n_total * (n_total - 1) // 2
     if exp_pairs == 0:
         return None
+    exp_sum = 0.0
+    for i in range(len(unique)):
+        set_i, count_i = unique[i]
+        for set_j, count_j in unique[i + 1 :]:
+            # Les paires DANS un même groupe (même ensemble, occurrences différentes)
+            # ont une distance nulle par définition — elles comptent dans `exp_pairs`
+            # (déjà inclus dans n_total*(n_total-1)/2) mais n'ajoutent rien à la somme :
+            # inutile de les énumérer.
+            exp_sum += count_i * count_j * distance(set(set_i), set(set_j))
     d_expected = exp_sum / exp_pairs
 
     if d_expected == 0:
