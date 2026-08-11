@@ -14,6 +14,15 @@ import {
 } from "lucide-react";
 import { Disclosure } from "@/components/ui/Disclosure";
 import { Badge, Button, Panel } from "@/components/ui/primitives";
+import { ReadinessPanel } from "@/features/lab/ReadinessPanel";
+import {
+  AgreementMatrixFigure,
+  AlphaComparisonFigure,
+  BoundaryAgreementFigure,
+  CooccurrenceFigure,
+  GoldCascadeFigure,
+  LongTailFigure,
+} from "./charts/figures";
 import {
   useAnalysisReport,
   useAnalysisReports,
@@ -167,9 +176,9 @@ export function AnalysisLab({ slug }: { slug: string }) {
   const [artifactId, setArtifactId] = useState<string | null>(null);
   const [includeDrafts, setIncludeDrafts] = useState(true);
   const artifact = useAnalysisArtifact(slug, artifactId);
-  const [mode, setMode] = useState<"overview" | "quality" | "agreement" | "gold" | "taxonomy">(
-    "overview",
-  );
+  const [mode, setMode] = useState<
+    "overview" | "quality" | "agreement" | "reliability" | "gold" | "taxonomy"
+  >("overview");
   const selectedReport = useAnalysisReport(slug, selectedReportId);
   const comparison = useReportComparison(slug, selectedReportId);
 
@@ -253,7 +262,9 @@ export function AnalysisLab({ slug }: { slug: string }) {
                 setIncludeDrafts(preset.configuration.includeDrafts ?? true);
                 const savedMode = preset.configuration.mode;
                 if (
-                  ["overview", "quality", "agreement", "gold", "taxonomy"].includes(savedMode ?? "")
+                  ["overview", "quality", "agreement", "reliability", "gold", "taxonomy"].includes(
+                    savedMode ?? "",
+                  )
                 ) {
                   setMode(savedMode as typeof mode);
                 }
@@ -401,6 +412,7 @@ export function AnalysisLab({ slug }: { slug: string }) {
                     ["overview", "Vue d’ensemble"],
                     ["quality", "Qualité"],
                     ["agreement", "Accords"],
+                    ["reliability", "Fiabilité"],
                     ["gold", "Gold"],
                     ["taxonomy", "Taxonomie"],
                   ] as const
@@ -421,7 +433,14 @@ export function AnalysisLab({ slug }: { slug: string }) {
                   </button>
                 ))}
               </div>
-              {mode === "overview" && <ActorTable result={result!} />}
+              {mode === "overview" && (
+                <div className="space-y-4">
+                  {result?.campaignReadiness && (
+                    <ReadinessPanel readiness={result.campaignReadiness} />
+                  )}
+                  <ActorTable result={result!} />
+                </div>
+              )}
               {mode === "quality" && result?.quality && (
                 <Panel className="p-4">
                   <h2 className="font-semibold text-ink">Qualité des observations</h2>
@@ -479,32 +498,83 @@ export function AnalysisLab({ slug }: { slug: string }) {
                   </div>
                 </Panel>
               )}
+              {mode === "reliability" && (
+                <div className="space-y-4">
+                  {!result?.alphaMasi && !result?.boundaryAgreement && !result?.humanLlmMatrix && (
+                    <Panel className="p-4 text-xs text-ink-muted">
+                      Ce rapport a été produit avant l&apos;enrichissement Lab : relancez une
+                      analyse pour obtenir les mesures de fiabilité (α-MASI, frontières,
+                      matrice humains × LLM).
+                    </Panel>
+                  )}
+                  {result?.alphaMasi && <AlphaComparisonFigure report={result.alphaMasi} />}
+                  {result?.boundaryAgreement && (
+                    <BoundaryAgreementFigure
+                      rows={result.boundaryAgreement.perDocument}
+                      themeAgreement={result.pairwiseAgreement?.meanKappa ?? null}
+                    />
+                  )}
+                  {result?.humanLlmMatrix && (
+                    <AgreementMatrixFigure
+                      actors={result.humanLlmMatrix.actors}
+                      cells={result.humanLlmMatrix.cells}
+                      humanMean={result.humanLlmMatrix.humanMean}
+                      crossMean={result.humanLlmMatrix.crossMean}
+                    />
+                  )}
+                </div>
+              )}
               {mode === "gold" && result?.goldAnalysis && (
-                <Panel className="p-4">
-                  <h2 className="font-semibold text-ink">Readiness et proximité Gold</h2>
-                  <div className="mt-3 grid grid-cols-2 gap-3 md:grid-cols-3">
-                    <Kpi label="Unités Gold" value={result.goldAnalysis.goldUnits} />
-                    <Kpi label="Décidées" value={result.goldAnalysis.decidedUnits} />
-                    <Kpi label="Readiness" value={percent(result.goldAnalysis.readinessRate)} />
-                  </div>
-                </Panel>
+                <div className="space-y-4">
+                  <Panel className="p-4">
+                    <h2 className="font-semibold text-ink">Readiness et proximité Gold</h2>
+                    <div className="mt-3 grid grid-cols-2 gap-3 md:grid-cols-3">
+                      <Kpi label="Unités Gold" value={result.goldAnalysis.goldUnits} />
+                      <Kpi label="Décidées" value={result.goldAnalysis.decidedUnits} />
+                      <Kpi label="Readiness" value={percent(result.goldAnalysis.readinessRate)} />
+                    </div>
+                  </Panel>
+                  {result.goldProgress && (
+                    <GoldCascadeFigure
+                      data={{
+                        byAutoLevel: result.goldProgress.byAutoLevel,
+                        sentences: result.goldProgress.sentences,
+                        decided: result.goldProgress.decided,
+                      }}
+                    />
+                  )}
+                </div>
               )}
               {mode === "taxonomy" && result?.taxonomy && (
-                <Panel className="p-4">
-                  <h2 className="font-semibold text-ink">Atlas de la taxonomie</h2>
-                  <div className="mt-3 flex flex-wrap gap-2">
-                    {result.taxonomy.primaryThemes.map((theme) => (
-                      <Badge key={theme.theme}>
-                        {theme.theme} · {theme.count}
-                      </Badge>
-                    ))}
-                  </div>
-                  {result.taxonomy.rareThemes.length > 0 && (
-                    <p className="mt-3 text-xs text-ink-muted">
-                      Thèmes à faible support : {result.taxonomy.rareThemes.join(", ")}
-                    </p>
+                <div className="space-y-4">
+                  <Panel className="p-4">
+                    <h2 className="font-semibold text-ink">Atlas de la taxonomie</h2>
+                    <div className="mt-3 flex flex-wrap gap-2">
+                      {result.taxonomy.primaryThemes.map((theme) => (
+                        <Badge key={theme.theme}>
+                          {theme.theme} · {theme.count}
+                        </Badge>
+                      ))}
+                    </div>
+                    {result.taxonomy.rareThemes.length > 0 && (
+                      <p className="mt-3 text-xs text-ink-muted">
+                        Thèmes à faible support : {result.taxonomy.rareThemes.join(", ")}
+                      </p>
+                    )}
+                  </Panel>
+                  {result.labelDistribution && (
+                    <LongTailFigure
+                      themes={result.labelDistribution.themes}
+                      rareThreshold={result.labelDistribution.rareThreshold}
+                    />
                   )}
-                </Panel>
+                  {result.cooccurrence && (
+                    <CooccurrenceFigure
+                      pairs={result.cooccurrence.pairs}
+                      cardinalityLift={result.cooccurrence.cardinalityLift}
+                    />
+                  )}
+                </div>
               )}
             </>
           )}

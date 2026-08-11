@@ -21,6 +21,16 @@ import {
   ticks,
 } from "./scales";
 
+// Ordre FIXE, jamais recalculé à partir des données : un statut qui change de
+// position d'une figure à l'autre romprait la lecture. Suit l'ordre de la cascade
+// (`docs/pactiva/dossier-collaboration` §résolution) : accord unanime → majorité → arbitrage.
+const AUTO_LEVEL_ORDER = ["auto_1click", "auto", "manual"] as const;
+const AUTO_LEVEL_LABEL: Record<string, string> = {
+  auto_1click: "unanime (auto)",
+  auto: "majorité (auto)",
+  manual: "arbitrage",
+};
+
 const PAD = { left: 56, right: 16, top: 12, bottom: 34 };
 
 function Grid({ width, height, values, scale }: {
@@ -573,6 +583,211 @@ export function AgreementMatrixFigure({ actors, cells, humanMean, crossMean }: {
           );
         }),
       )}
+    </Figure>
+  );
+}
+
+// --------------------------------------------------------------------------- //
+// F11 — cascade de résolution gold
+// --------------------------------------------------------------------------- //
+
+export interface GoldCascadeData {
+  byAutoLevel: Record<string, number>;
+  sentences: number;
+  decided: number;
+}
+
+/**
+ * F11 — part de chaque niveau d'auto-résolution (unanime / majorité / arbitrage).
+ *
+ * Barres empilées HORIZONTALES à un seul niveau : montre en un coup d'œil combien
+ * l'humain doit réellement arbitrer, une fois retiré ce que la cascade tranche seule.
+ */
+export function GoldCascadeFigure({ data }: { data: GoldCascadeData | null }) {
+  const width = 640;
+  const height = 140;
+  const barY = 48;
+  const barHeight = 36;
+  const total = data?.sentences ?? 0;
+
+  const segments = data
+    ? AUTO_LEVEL_ORDER.map((level, index) => ({
+        level,
+        count: data.byAutoLevel[level] ?? 0,
+        slot: index,
+      })).filter((segment) => segment.count > 0)
+    : [];
+
+  const x = scaleLinear({ min: 0, max: Math.max(1, total) }, { min: 16, max: width - 16 });
+  let cursor = 0;
+
+  return (
+    <Figure
+      testId="figure-gold-cascade"
+      title="Cascade de résolution gold"
+      subtitle="Part de chaque niveau d'auto-résolution, avant arbitrage humain"
+      caption={data ? `${data.decided}/${data.sentences} phrases décidées` : undefined}
+      width={width}
+      height={height}
+      columns={[
+        { key: "niveau", label: "Niveau" },
+        { key: "phrases", label: "Phrases" },
+        { key: "part", label: "Part" },
+      ]}
+      rows={
+        data
+          ? AUTO_LEVEL_ORDER.map((level) => ({
+              niveau: AUTO_LEVEL_LABEL[level] ?? level,
+              phrases: data.byAutoLevel[level] ?? 0,
+              part: formatPercent((data.byAutoLevel[level] ?? 0) / Math.max(1, total)),
+            }))
+          : []
+      }
+      emptyMessage="Aucune résolution gold en cours : la cascade n'a encore rien à trancher."
+      legend={AUTO_LEVEL_ORDER.map((level, index) => ({
+        label: AUTO_LEVEL_LABEL[level] ?? level,
+        color: seriesColor(index),
+      }))}
+    >
+      {segments.map((segment) => {
+        const start = cursor;
+        cursor += segment.count;
+        const left = x(start);
+        const right = x(cursor);
+        const share = segment.count / Math.max(1, total);
+        return (
+          <g key={segment.level}>
+            {/* Espacement de 2 px entre segments : la surface les sépare, jamais un trait. */}
+            <rect
+              x={left + 1}
+              y={barY}
+              width={Math.max(0, right - left - 2)}
+              height={barHeight}
+              rx={4}
+              fill={seriesColor(segment.slot)}
+            >
+              <title>
+                {`${AUTO_LEVEL_LABEL[segment.level]} : ${segment.count} phrases (${formatPercent(share)})`}
+              </title>
+            </rect>
+            {share > 0.08 && (
+              <text
+                x={(left + right) / 2}
+                y={barY + barHeight / 2 + 4}
+                textAnchor="middle"
+                fontSize={11}
+                fontWeight={600}
+                fill={VIZ_VARS.surface}
+              >
+                {formatPercent(share)}
+              </text>
+            )}
+          </g>
+        );
+      })}
+    </Figure>
+  );
+}
+
+// --------------------------------------------------------------------------- //
+// F12 — co-occurrence des thèmes et lift d'abusivité (pont vers l'objectif B)
+// --------------------------------------------------------------------------- //
+
+export interface CooccurrencePair {
+  themes: string[];
+  count: number;
+  unfair: number;
+  unfairRate: number;
+  lift: number | null;
+}
+
+/**
+ * F12 — paires de thèmes classées par lift d'abusivité.
+ *
+ * Tableau classé plutôt qu'une matrice 20×20 : mesuré le 11/08/2026, l'identité de la
+ * combinaison porte le signal (jusqu'à 7,4× sur `LICENSE_IP+TERMINATION`), pas sa
+ * cardinalité (1,09× seulement pour mono vs multi-label brut) — un classement rend ce
+ * contraste immédiatement lisible, une matrice pleine le noierait dans le bruit.
+ */
+export function CooccurrenceFigure({
+  pairs,
+  minSupport = 5,
+  cardinalityLift,
+}: {
+  pairs: CooccurrencePair[];
+  minSupport?: number;
+  cardinalityLift?: number | null;
+}) {
+  const width = 640;
+  const eligible = pairs
+    .filter((p) => p.count >= minSupport && p.lift != null)
+    .sort((a, b) => (b.lift ?? 0) - (a.lift ?? 0))
+    .slice(0, 8);
+  const height = 48 + eligible.length * 26;
+
+  const maxLift = Math.max(1, ...eligible.map((p) => p.lift ?? 0));
+  const x = scaleLinear({ min: 0, max: maxLift }, { min: 190, max: width - 40 });
+
+  return (
+    <Figure
+      testId="figure-cooccurrence"
+      title="Combinaisons de thèmes les plus liées à l'abusivité"
+      subtitle="Lift = taux d'abusivité de la paire ÷ taux de base"
+      caption={
+        cardinalityLift != null
+          ? `pour comparaison, mono-label vs multi-label brut : lift ${cardinalityLift.toFixed(2)}× seulement`
+          : `paires à ≥${minSupport} occurrences`
+      }
+      width={width}
+      height={Math.max(height, 100)}
+      columns={[
+        { key: "paire", label: "Paire de thèmes" },
+        { key: "lift", label: "Lift" },
+        { key: "taux", label: "Taux d'abusivité" },
+        { key: "n", label: "n" },
+      ]}
+      rows={eligible.map((p) => ({
+        paire: p.themes.join(" + "),
+        lift: p.lift?.toFixed(2) ?? "—",
+        taux: formatPercent(p.unfairRate),
+        n: p.count,
+      }))}
+      emptyMessage="Aucune paire de thèmes suffisamment attestée : construisez un jeu de données avec des labels d'abusivité."
+      legend={[{ label: "lift d'abusivité", color: seriesColor(0) }]}
+    >
+      <line x1={190} x2={190} y1={16} y2={height - 16} stroke={VIZ_VARS.axis} strokeWidth={1} />
+      <line
+        x1={x(1)}
+        x2={x(1)}
+        y1={16}
+        y2={height - 16}
+        stroke={VIZ_VARS.threshold}
+        strokeWidth={1.5}
+        strokeDasharray="4 3"
+      />
+      <text x={x(1)} y={14} textAnchor="middle" fontSize={9} fill={VIZ_VARS.inkMuted}>
+        base
+      </text>
+
+      {eligible.map((pair, index) => {
+        const y0 = 24 + index * 26;
+        const barWidth = Math.max(1, x(pair.lift ?? 0) - 190);
+        return (
+          <g key={pair.themes.join("+")}>
+            <text x={186} y={y0 + 13} textAnchor="end" fontSize={10} fill={VIZ_VARS.ink}>
+              {pair.themes.join(" + ")}
+            </text>
+            <rect x={190} y={y0} width={barWidth} height={16} rx={4} fill={seriesColor(0)}>
+              <title>
+                {`${pair.themes.join(" + ")} : lift ${pair.lift?.toFixed(2)}× (${pair.unfair}/${pair.count})`}
+              </title>
+            </rect>
+            <text x={x(pair.lift ?? 0) + 6} y={y0 + 13} fontSize={10} fill={VIZ_VARS.inkMuted}>
+              {pair.lift?.toFixed(1)}×
+            </text>
+          </g>
+        );
+      })}
     </Figure>
   );
 }

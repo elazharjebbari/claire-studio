@@ -19,8 +19,14 @@ from claire.analysis.models import (
 from claire.analysis.reports import create_report_artifact, render_report_artifact
 from claire.analysis.services import compare_reports, create_report, execute_run, queue_run
 from claire.analysis.snapshots import create_snapshot
-from claire.annotations.models import Annotation, AnnotationStatus, AnnotationVersion, Clause
-from claire.corpora.models import Sentence
+from claire.annotations.models import (
+    Annotation,
+    AnnotationStatus,
+    AnnotationVersion,
+    Clause,
+    ClauseTheme,
+)
+from claire.corpora.models import ReferenceLabel, Sentence
 from claire.gold.models import GoldResolution, GoldSentence
 from claire.imports.models import PreAnnotation, PreClause
 from claire.projects.models import Assignment, MembershipRole, ProjectMembership
@@ -402,3 +408,88 @@ def test_pdf_api_health_and_taxonomy_proposal_permissions(analysis_campaign, tmp
     assert proposal.status_code == 201
     denied = _client(ctx["alice"]).get(f"{API}/projects/{slug}/analysis/taxonomy-proposals")
     assert denied.status_code == 404
+
+
+# --------------------------------------------------------------------------- #
+# Enrichissement Lab (docs/pactiva-lab/) : 8 métriques ajoutées au registre.
+# --------------------------------------------------------------------------- #
+
+def test_lab_metrics_are_computed_by_default(analysis_campaign):
+    """Un run sans metric_codes explicites calcule aussi les 8 métriques du Lab —
+    additivement, sans toucher aux clés existantes."""
+    ctx = analysis_campaign
+    snapshot = create_snapshot(project=ctx["project"], user=ctx["lead"])
+    run = execute_run(snapshot=snapshot, user=ctx["lead"])
+
+    for code in (
+        "alpha_masi",
+        "boundary_agreement",
+        "label_distribution",
+        "cooccurrence",
+        "human_llm_matrix",
+        "annotator_audit",
+        "gold_progress",
+        "campaign_readiness",
+    ):
+        assert code in run.result, code
+    # Les métriques historiques restent présentes et inchangées dans leur forme.
+    assert "quality" in run.result
+    assert "taxonomy" in run.result
+
+
+def test_cooccurrence_metric_reads_unfair_index_from_snapshot(analysis_campaign):
+    """⭐ Le pont vers l'objectif B : une clause multi-thèmes marquée abusive doit
+    apparaître dans `cooccurrence.pairs` avec un lift calculé — ce qui exige que le
+    snapshot embarque `unfairIndex` (ReferenceLabel alignées par phrase)."""
+    ctx = analysis_campaign
+    themes = ctx["project"].scheme.themes
+    Clause.objects.filter(pk=ctx["alice_annotation"].clauses.get().pk).update(
+        theme=themes.get(code="META")
+    )
+    alice_clause = ctx["alice_annotation"].clauses.get()
+    ClauseTheme.objects.create(clause=alice_clause, theme=themes.get(code="META"), role="primary")
+    ClauseTheme.objects.create(
+        clause=alice_clause, theme=themes.get(code="TERMINATION"), role="secondary"
+    )
+    ReferenceLabel.objects.create(
+        sentence=ctx["sentences"][2], category="LTD", level=1, source="claudette"
+    )
+
+    snapshot = create_snapshot(project=ctx["project"], user=ctx["lead"])
+    assert snapshot.payload["unfairIndex"], "unfairIndex doit être présent dans le snapshot"
+
+    run = execute_run(snapshot=snapshot, user=ctx["lead"])
+    cooc = run.result["cooccurrence"]
+    assert cooc["pairs"], "la clause multi-label doit produire au moins une paire"
+    pair = cooc["pairs"][0]
+    assert set(pair["themes"]) == {"META", "TERMINATION"}
+    assert pair["unfair"] == 1
+    assert pair["lift"] is not None
+
+
+def test_boundary_agreement_metric_never_reports_a_kappa_of_one_by_construction(
+    analysis_campaign,
+):
+    """Régression du correctif : sur ce fixture (deux annotateurs, ancres à des index
+    différents), l'accord de segmentation doit rester une vraie mesure — jamais
+    l'artefact 1,0 de l'ancien `boundaryKappa`."""
+    ctx = analysis_campaign
+    snapshot = create_snapshot(project=ctx["project"], user=ctx["lead"])
+    run = execute_run(snapshot=snapshot, user=ctx["lead"])
+
+    boundary = run.result["boundary_agreement"]
+    assert boundary["documentsCompared"] >= 1
+    assert boundary["meanJaccard"] is not None
+    assert "replaces" in boundary and "boundary_kappa" in boundary["replaces"]
+
+
+def test_campaign_readiness_metric_lists_documents_and_blockers(analysis_campaign):
+    ctx = analysis_campaign
+    snapshot = create_snapshot(project=ctx["project"], user=ctx["lead"])
+    run = execute_run(snapshot=snapshot, user=ctx["lead"])
+
+    readiness = run.result["campaign_readiness"]
+    assert readiness["documentsTotal"] == 1
+    assert isinstance(readiness["blockers"], list)
+    # Aucun gold décidé dans ce fixture : c'est un bloquant attendu.
+    assert any(b["code"] == "no_gold_finalized" for b in readiness["blockers"])

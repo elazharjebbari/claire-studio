@@ -26,6 +26,8 @@ import {
   AgreementMatrixFigure,
   AlphaComparisonFigure,
   BoundaryAgreementFigure,
+  CooccurrenceFigure,
+  GoldCascadeFigure,
   LongTailFigure,
 } from "@/features/analysis/charts/figures";
 
@@ -292,5 +294,59 @@ describe("AgreementMatrixFigure", () => {
     const table = screen.getByTestId("figure-matrix-table");
     expect(table.textContent).toContain("human_human");
     expect(table.textContent).toContain("human_llm");
+  });
+});
+
+describe("GoldCascadeFigure", () => {
+  it("affiche la part de chaque niveau de la cascade", () => {
+    render(
+      <GoldCascadeFigure
+        data={{
+          byAutoLevel: { auto_1click: 222, auto: 68, manual: 135 },
+          sentences: 425,
+          decided: 290,
+        }}
+      />,
+    );
+    const table = screen.getByTestId("figure-gold-cascade-table");
+    expect(table.textContent).toContain("unanime (auto)");
+    expect(table.textContent).toContain("arbitrage");
+  });
+
+  it("état vide : la cascade n'a rien à trancher", () => {
+    render(<GoldCascadeFigure data={null} />);
+    expect(screen.getByTestId("figure-gold-cascade-empty").textContent).toMatch(
+      /rien à trancher/i,
+    );
+  });
+});
+
+describe("CooccurrenceFigure", () => {
+  const pairs = [
+    { themes: ["LICENSE_IP", "TERMINATION"], count: 13, unfair: 10, unfairRate: 0.77, lift: 7.4 },
+    { themes: ["META", "PREAMBLE_SCOPE"], count: 45, unfair: 0, unfairRate: 0, lift: 0 },
+  ];
+
+  it("classe les paires par lift, la plus forte en tête", () => {
+    render(<CooccurrenceFigure pairs={pairs} cardinalityLift={1.09} />);
+    const table = screen.getByTestId("figure-cooccurrence-table");
+    const rows = table.querySelectorAll("tbody tr");
+    expect(rows[0]?.textContent).toContain("LICENSE_IP + TERMINATION");
+  });
+
+  it("rapporte le contre-résultat de cardinalité en légende", () => {
+    render(<CooccurrenceFigure pairs={pairs} cardinalityLift={1.09} />);
+    expect(screen.getByTestId("figure-cooccurrence").textContent).toContain("1.09×");
+  });
+
+  it("filtre les paires sous le support minimal", () => {
+    render(<CooccurrenceFigure pairs={pairs} minSupport={20} />);
+    const table = screen.getByTestId("figure-cooccurrence-table");
+    expect(table.textContent).not.toContain("LICENSE_IP");
+  });
+
+  it("état vide explicite", () => {
+    render(<CooccurrenceFigure pairs={[]} />);
+    expect(screen.getByTestId("figure-cooccurrence-empty")).toBeInTheDocument();
   });
 });

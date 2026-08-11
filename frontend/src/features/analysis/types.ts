@@ -42,9 +42,116 @@ export interface ActorProfile {
   themeDistribution: { theme: string; count: number }[];
 }
 
+// -- Chantier Lab (docs/pactiva-lab/) : 8 métriques additives, toutes optionnelles.
+// Un run antérieur à ce chantier ne les porte pas — chaque section de l'UI doit donc
+// se garder sur leur présence, jamais supposer qu'elles existent.
+
+export interface AlphaMasiResult {
+  alphaMasi: number | null;
+  alphaNominal: number | null;
+  multiLabelCost: number | null;
+  band: "reliable" | "acceptable" | "below_threshold" | "unknown";
+  thresholds: { acceptable: number; reliable: number };
+  units: number;
+  perTheme: Array<{ code: string; alpha: number | null; support: number }>;
+  warnings: string[];
+}
+
+export interface BoundaryAgreementResult {
+  perDocument: Array<{
+    documentId: number;
+    nSentences: number;
+    annotators: number;
+    segmentsPerAnnotator: number[];
+    jaccard: number;
+    windowDiff: number;
+    pk: number;
+  }>;
+  meanJaccard: number | null;
+  documentsCompared: number;
+  definition: string;
+  replaces: string;
+  warnings: string[];
+}
+
+export interface LabelDistributionResult {
+  themes: Array<{ code: string; primary: number; secondary: number; total: number; share: number }>;
+  nThemes: number;
+  totalPrimary: number;
+  normalizedEntropy: number;
+  rareThemes: string[];
+  rareThreshold: number;
+  imbalanceRatio: number | null;
+  warnings: string[];
+}
+
+export interface CooccurrenceResult {
+  pairs: Array<{
+    themes: string[];
+    count: number;
+    unfair: number;
+    unfairRate: number;
+    lift: number | null;
+  }>;
+  nPairs: number;
+  nCombinations: number;
+  nHapaxCombinations: number;
+  baseUnfairRate: number;
+  monoLabel: { count: number; unfair: number; rate: number };
+  multiLabel: { count: number; unfair: number; rate: number };
+  cardinalityLift: number | null;
+  warnings: string[];
+}
+
+export interface HumanLlmMatrixResult {
+  actors: Array<{ key: string; kind: "human" | "llm" }>;
+  cells: Array<{ a: string; b: string; agreement: number; n: number; kind: string }>;
+  humanMean: number | null;
+  llmMean: number | null;
+  crossMean: number | null;
+  humanAdvantage: number | null;
+  warnings: string[];
+}
+
+export interface AnnotatorAuditResult {
+  actors: Array<{
+    actorKey: string;
+    clauses: number;
+    documents: number;
+    validated: number;
+    validationRate: number | null;
+    themeBias: Array<{ code: string; actorShare: number; globalShare: number; ratio: number }>;
+  }>;
+  totalClauses: number;
+  workloadImbalance: number | null;
+  documentsCovered: number;
+  warnings: string[];
+}
+
+export interface GoldProgressResult {
+  sentences: number;
+  decided: number;
+  pctDecided: number | null;
+  byAutoLevel: Record<string, number>;
+  byAgreementClass: Record<string, number>;
+  byRiskBand: Record<string, number>;
+  arbitrationBacklog: Array<{ documentId: number; index: number; riskBand: string }>;
+  backlogSize: number;
+  documents: number;
+  warnings: string[];
+}
+
 export interface AnalysisResult {
   overview?: AnalysisOverview;
   actorProfiles?: { actors: ActorProfile[] };
+  alphaMasi?: AlphaMasiResult;
+  boundaryAgreement?: BoundaryAgreementResult;
+  labelDistribution?: LabelDistributionResult;
+  cooccurrence?: CooccurrenceResult;
+  humanLlmMatrix?: HumanLlmMatrixResult;
+  annotatorAudit?: AnnotatorAuditResult;
+  goldProgress?: GoldProgressResult;
+  campaignReadiness?: import("@/features/lab/types").CampaignReadiness;
   quality?: {
     clauses: number;
     multilabelClauses: number;

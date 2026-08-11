@@ -26,6 +26,18 @@ DEFAULT_METRICS = [
     "intra_annotator",
     "gold_analysis",
     "taxonomy",
+    # Chantier Lab (docs/pactiva-lab/) — enrichissement du module Analyse & Qualité.
+    # Additifs : chaque calculateur est PUR et lit le même payload figé, sans requête
+    # supplémentaire ; un run existant recalculé avec ce code obtient simplement des
+    # clés en plus dans `result`, jamais une régression sur les clés déjà là.
+    "alpha_masi",
+    "boundary_agreement",
+    "label_distribution",
+    "cooccurrence",
+    "human_llm_matrix",
+    "annotator_audit",
+    "gold_progress",
+    "campaign_readiness",
 ]
 
 

@@ -13,6 +13,7 @@ from django.utils import timezone
 
 from claire.annotations.models import Annotation, AnnotationStatus, ClauseTheme
 from claire.audit.services import record_event
+from claire.corpora.models import ReferenceLabel
 from claire.gold.models import GoldSentence
 from claire.imports.models import PreAnnotation
 
@@ -235,6 +236,18 @@ def create_snapshot(
             }
         )
 
+    # Labels d'abusivité CLAUDETTE, alignés (document, phrase) — alimente la métrique
+    # `cooccurrence` (lift d'abusivité par paire de thèmes). Clé "docId:index" plutôt
+    # qu'un couple, pour rester un JSON valide (les clés d'objet JSON sont des chaînes).
+    # Nom de boucle distinct du paramètre `label` (le libellé du snapshot) : la
+    # réutiliser masquait silencieusement le paramètre jusqu'à `label.strip()` plus bas.
+    unfair_index: dict[str, list[str]] = {}
+    for reference_label in ReferenceLabel.objects.filter(
+        sentence__document_id__in=visible_document_ids
+    ).select_related("sentence"):
+        key = f"{reference_label.sentence.document_id}:{reference_label.sentence.index}"
+        unfair_index.setdefault(key, []).append(reference_label.category)
+
     captured_at = timezone.now()
     payload = {
         "schemaVersion": SNAPSHOT_SCHEMA_VERSION,
@@ -251,6 +264,7 @@ def create_snapshot(
         "annotationVersions": version_rows,
         "llmAnnotations": llm_rows,
         "goldSentences": gold_rows,
+        "unfairIndex": unfair_index,
     }
     manifest = {
         "schemaVersion": SNAPSHOT_SCHEMA_VERSION,
