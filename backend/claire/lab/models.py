@@ -226,8 +226,12 @@ class RunArtifact(models.Model):
 class ComputeCredential(TimeStampedModel):
     """Identifiants d'une cible de calcul distante.
 
-    Le secret est CHIFFRÉ au repos (`claire.lab.crypto`) et n'est **jamais** renvoyé par
-    l'API, même à son propriétaire. Voir `docs/pactiva-lab/06_GRID5000.md` §4.
+    DEUX secrets distincts, chiffrés séparément (`claire.lab.crypto`), ni l'un ni
+    l'autre jamais renvoyé par l'API, même au propriétaire : `secret_encrypted` (mot
+    de passe, authentifie l'API REST en HTTP Basic) et `ssh_key_encrypted` (clé privée
+    SSH, sert EXCLUSIVEMENT au transfert de fichiers). Ce sont deux mécanismes
+    d'authentification indépendants côté Grid'5000 — l'authentification par mot de
+    passe y est désactivée pour SSH, voir `docs/pactiva-g5k/07_ARCHITECTURE.md` §1.
     """
 
     user = models.ForeignKey(
@@ -236,8 +240,10 @@ class ComputeCredential(TimeStampedModel):
     kind = models.CharField(max_length=8, choices=ComputeKind.choices, default=ComputeKind.G5K)
     login = models.CharField(max_length=120)
     secret_encrypted = models.TextField(blank=True, default="")
+    ssh_key_encrypted = models.TextField(blank=True, default="")
     last_tested_at = models.DateTimeField(null=True, blank=True)
     last_test_ok = models.BooleanField(null=True, blank=True)
+    last_test_ssh_ok = models.BooleanField(null=True, blank=True)
     last_test_detail = models.CharField(max_length=300, blank=True, default="")
 
     class Meta:

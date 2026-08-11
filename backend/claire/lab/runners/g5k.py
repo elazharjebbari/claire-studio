@@ -1,16 +1,16 @@
-"""Exécution sur Grid'5000 — API REST + OAR.
+"""Exécution sur Grid'5000 — API REST (via `python-grid5000`) + transfert SSH/rsync.
 
-Documentation officielle consultée le 11 août 2026 :
-* racine `https://api.grid5000.fr/stable`, **HTTP Basic** depuis l'extérieur ;
-* `POST /sites/{site}/jobs` → 201 Created, URI du job dans l'en-tête `Location` ;
-* `GET /sites/{site}/jobs/{id}` → `state` ∈ {waiting, running, stopped} ;
-* transfert de fichiers par la passerelle `access.grid5000.fr`.
+Deux secrets DISTINCTS (voir `docs/pactiva-g5k/07_ARCHITECTURE.md` §1) :
+* le **mot de passe** authentifie l'API REST (HTTP Basic) — via `g5k_client.py` ;
+* la **clé SSH** authentifie `rsync`/`ssh` — Grid'5000 désactive l'authentification par
+  mot de passe en SSH (`docs/pactiva-g5k/research/01_VUE_ENSEMBLE_SITES_ACCES.md` §3.1).
+  Un run qui nécessite un transfert sans clé SSH configurée échoue explicitement
+  (`g5k_ssh_key_missing`) avant toute tentative, plutôt qu'avec un message SSH cryptique.
 
-Deux contraintes structurent le code :
+Deux contraintes structurent le code (inchangées depuis la conception initiale) :
 
 * **un job peut attendre longtemps en file** → l'état `waiting` est distinct de
-  `running`, et le sondage est adaptatif (inutile d'interroger toutes les 5 s un job en
-  file depuis deux heures) ;
+  `running`, et le sondage est adaptatif ;
 * **le *walltime* est un couperet** → on rapatrie même sans `_SENTINEL`, et on ingère en
   `partial` plutôt que de jeter le travail accompli.
 
@@ -20,32 +20,29 @@ avec un code explicite et reste rejouable en local.
 
 from __future__ import annotations
 
-import json
 import logging
 import shlex
 import subprocess
-import urllib.error
-import urllib.request
-from base64 import b64encode
 from pathlib import Path
 
 from .base import ExecutionBackend, sentinel_present, write_config
+from ..g5k_client import G5KError, build_client
+from ..g5k_client import cancel as g5k_cancel
+from ..g5k_client import poll as g5k_poll
+from ..g5k_client import submit as g5k_submit
+from ..g5k_client import test_connection as g5k_test_connection
+from ..g5k_ssh import ssh_command, temporary_ssh_key
 
 logger = logging.getLogger("claire.lab.g5k")
 
-API_ROOT = "https://api.grid5000.fr/stable"
 GATEWAY = "access.grid5000.fr"
 
 # Sondage adaptatif : dense au début (le job peut démarrer tout de suite), puis espacé.
+# ⚠️ Chaque sonde coûte désormais DEUX requêtes HTTP côté client officiel
+# (`client.sites[site]` résout le site avant `jobs.get()` — vérifié par les tests de
+# g5k_client.py, pas documenté par le wiki) : l'intervalle reste pertinent, mais deux
+# fois plus de charge par sonde qu'avec l'ancien client maison à un seul appel.
 POLL_SCHEDULE = ((60, 5), (600, 15), (None, 60))
-
-
-class G5KError(RuntimeError):
-    """Erreur côté Grid'5000, porteuse d'un code exploitable par l'UI."""
-
-    def __init__(self, code: str, detail: str):
-        self.code = code
-        super().__init__(detail)
 
 
 def poll_interval(elapsed_seconds: float) -> int:
@@ -62,7 +59,10 @@ def build_run_script(*, run_id: str, require_gpu: bool, env_name: str, workdir: 
     Le garde-fou GPU est le point important : sur Grid'5000, un désaccord entre la
     version de `pytorch-cuda` et le CUDA du nœud rend le GPU invisible, et
     l'entraînement se poursuit **six heures sur CPU** sans rien signaler. Mieux vaut
-    échouer en trois secondes avec un code distinct (64/65).
+    échouer en trois secondes avec un code distinct (64/65) — comportement confirmé
+    exactement conforme à la doc officielle (`docs/pactiva-g5k/research/05_MONITORING_ML_GPU.md`
+    §4.3-4.4) : aucun mécanisme fiable de vérification pré-réservation n'existe côté
+    Grid'5000, la vérification post-connexion reste la bonne pratique.
     """
     gpu_guard = ""
     if require_gpu:
@@ -94,43 +94,41 @@ echo "DONE" > results/_SENTINEL
 class Grid5000Backend(ExecutionBackend):
     kind = "g5k"
 
-    def __init__(self, login: str | None = None, password: str | None = None):
+    def __init__(self, login: str | None = None, password: str | None = None,
+                 ssh_key: str | None = None):
         # Les identifiants ne sont détenus qu'en mémoire, le temps de la soumission.
         self.login = login
         self.password = password
+        self.ssh_key = ssh_key
+        self._client = build_client(login, password) if login and password else None
 
-    # -- HTTP ------------------------------------------------------------- #
+    def test_connection(self) -> tuple[bool, bool | None, str]:
+        """Vérifie les DEUX secrets, indépendamment — un utilisateur peut avoir l'un
+        sans l'autre, jamais un seul booléen agrégé trompeur (§7 de l'architecture).
 
-    def _request(self, method: str, url: str, payload: dict | None = None) -> dict:
-        data = json.dumps(payload).encode() if payload is not None else None
-        request = urllib.request.Request(url, data=data, method=method)
-        request.add_header("Content-Type", "application/json")
-        if self.login and self.password:
-            token = b64encode(f"{self.login}:{self.password}".encode()).decode()
-            request.add_header("Authorization", f"Basic {token}")
-        try:
-            with urllib.request.urlopen(request, timeout=30) as response:
-                body = response.read().decode("utf-8")
-                return json.loads(body) if body.strip() else {}
-        except urllib.error.HTTPError as exc:
-            if exc.code in (401, 403):
-                raise G5KError("g5k_auth_failed", "identifiants Grid'5000 refusés") from exc
-            raise G5KError("g5k_http_error", f"HTTP {exc.code} sur {method} {url}") from exc
-        except urllib.error.URLError as exc:
-            raise G5KError("g5k_unreachable", f"API injoignable : {exc.reason}") from exc
-
-    def test_connection(self) -> tuple[bool, str]:
-        """Vérifie les identifiants AVANT de réserver quoi que ce soit.
-
-        Découvrir un mot de passe faux au bout d'une réservation de quatre heures est
-        exactement ce qu'il faut éviter.
+        Renvoie `(api_ok, ssh_ok, detail)`. `ssh_ok` vaut `None` si aucune clé SSH
+        n'est configurée (pas testable, distinct d'un test qui aurait échoué).
         """
+        api_ok, api_detail = g5k_test_connection(self._client) if self._client else (
+            False, "aucun identifiant API configuré"
+        )
+        if not self.ssh_key:
+            return api_ok, None, api_detail
+        ssh_ok, ssh_detail = self._test_ssh()
+        return api_ok, ssh_ok, f"{api_detail} · SSH : {ssh_detail}"
+
+    def _test_ssh(self) -> tuple[bool, str]:
         try:
-            payload = self._request("GET", f"{API_ROOT}/sites")
-        except G5KError as exc:
-            return False, f"{exc.code} : {exc}"
-        sites = [item.get("uid") for item in payload.get("items", [])]
-        return True, f"connexion établie ({len(sites)} sites)"
+            with temporary_ssh_key(self.ssh_key) as key_path:
+                completed = subprocess.run(
+                    [*ssh_command(key_path).split(), f"{self.login}@{GATEWAY}", "true"],
+                    capture_output=True, text=True, timeout=20, check=False,
+                )
+        except subprocess.TimeoutExpired:
+            return False, "délai dépassé"
+        if completed.returncode == 0:
+            return True, "connexion SSH établie"
+        return False, "clé refusée ou hôte injoignable"
 
     # -- Cycle de vie ------------------------------------------------------ #
 
@@ -143,6 +141,13 @@ class Grid5000Backend(ExecutionBackend):
         queue = config.get("queue", "default")
         require_gpu = bool((run.config.get("compute") or {}).get("require_gpu"))
 
+        if not self.ssh_key:
+            raise G5KError(
+                "g5k_ssh_key_missing",
+                "aucune clé SSH enregistrée — le transfert de fichiers est impossible "
+                "(Grid'5000 désactive l'authentification par mot de passe en SSH)",
+            )
+
         out_dir = Path(out_dir)
         write_config(out_dir, run.config)
         script = build_run_script(
@@ -153,28 +158,18 @@ class Grid5000Backend(ExecutionBackend):
         remote = f"{workdir}/runs/{run.id}"
         self._rsync_push(dataset_dir, out_dir, remote)
 
-        payload = {
-            "resources": resources,
-            "command": f"bash {remote}/run.sh",
-            "types": ["besteffort"] if queue == "besteffort" else [],
-        }
-        if queue == "production":
-            payload["queue"] = "production"
-
-        response = self._request("POST", f"{API_ROOT}/sites/{site}/jobs", payload)
-        job_id = str(response.get("uid") or response.get("id") or "")
-        if not job_id:
-            raise G5KError("g5k_submit_failed", f"réponse sans identifiant de job : {response}")
+        types = ["besteffort"] if queue == "besteffort" else []
+        job_id = g5k_submit(
+            self._client, site,
+            resources=resources, command=f"bash {remote}/run.sh",
+            types=types, name=f"pactiva-{run.id}",
+        )
         logger.info("g5k_submitted run=%s job=%s site=%s", run.id, job_id, site)
         return job_id
 
     def poll(self, run) -> str:
         site = ((run.config.get("compute") or {}).get("g5k") or {}).get("site", "nancy")
-        payload = self._request("GET", f"{API_ROOT}/sites/{site}/jobs/{run.external_job_id}")
-        state = payload.get("state", "")
-        # L'API expose waiting/running/stopped ; on les remonte tels quels pour que l'UI
-        # puisse distinguer « en file » de « en cours ».
-        return {"waiting": "waiting", "running": "running"}.get(state, "stopped")
+        return g5k_poll(self._client, site, run.external_job_id)
 
     def fetch(self, run, out_dir: Path) -> bool:
         config = (run.config.get("compute") or {}).get("g5k") or {}
@@ -186,22 +181,27 @@ class Grid5000Backend(ExecutionBackend):
     def cancel(self, run) -> None:
         site = ((run.config.get("compute") or {}).get("g5k") or {}).get("site", "nancy")
         if run.external_job_id:
-            self._request("DELETE", f"{API_ROOT}/sites/{site}/jobs/{run.external_job_id}")
+            g5k_cancel(self._client, site, run.external_job_id)
 
     # -- Transfert --------------------------------------------------------- #
 
     def _rsync_push(self, dataset_dir: Path, out_dir: Path, remote: str) -> None:
         target = f"{self.login}@{GATEWAY}:{remote}/"
-        self._run_rsync(["-az", "--mkpath", f"{dataset_dir}/", f"{target}dataset/"])
-        self._run_rsync(["-az", f"{out_dir}/config.json", f"{out_dir}/run.sh", target])
+        with temporary_ssh_key(self.ssh_key) as key_path:
+            rsh = ssh_command(key_path)
+            self._run_rsync(["-az", "--mkpath", "-e", rsh, f"{dataset_dir}/", f"{target}dataset/"])
+            self._run_rsync(["-az", "-e", rsh, f"{out_dir}/config.json", f"{out_dir}/run.sh", target])
 
     def _rsync_pull(self, remote: str, out_dir: Path) -> None:
         out_dir.mkdir(parents=True, exist_ok=True)
-        # `|| true` implicite : un rapatriement partiel n'est pas une erreur — c'est le
-        # cas nominal quand le walltime a coupé le job.
-        self._run_rsync(
-            ["-az", f"{self.login}@{GATEWAY}:{remote}", f"{out_dir}/"], allow_failure=True
-        )
+        # `allow_failure` : un rapatriement partiel n'est pas une erreur — c'est le cas
+        # nominal quand le walltime a coupé le job.
+        with temporary_ssh_key(self.ssh_key) as key_path:
+            rsh = ssh_command(key_path)
+            self._run_rsync(
+                ["-az", "-e", rsh, f"{self.login}@{GATEWAY}:{remote}", f"{out_dir}/"],
+                allow_failure=True,
+            )
 
     def _run_rsync(self, args: list[str], *, allow_failure: bool = False) -> None:
         completed = subprocess.run(

@@ -241,6 +241,76 @@ def test_cycle_complet_experience_run_annulation(lab_campaign, lab_dataset):
     assert finished_cancel.json()["code"] == "run_finished"
 
 
+def _sweep_config(dataset_id, *, target="local"):
+    """2 axes à 2 valeurs chacun = 4 combinaisons — au-delà du seuil de test (3)."""
+    config = _base_config(dataset_id)
+    config["compute"] = {"target": target}
+    config["sweep"] = {
+        "axes": {
+            "/preprocess/case": ["keep", "lower"],
+            "/preprocess/detokenize": ["none", "regex_rules"],
+        }
+    }
+    return config
+
+
+def test_experiment_run_refuse_un_gros_sweep_g5k_sans_force(lab_campaign, lab_dataset, settings):
+    settings.LAB_G5K_MAX_RUNS_PER_SWEEP = 3
+    slug = lab_campaign["project"].slug
+    client = _client(lab_campaign["lead"])
+    config = _sweep_config(lab_dataset.id, target="g5k")  # 4 variantes > seuil 3
+    created = client.post(
+        f"{API}/projects/{slug}/lab/experiments",
+        {"name": "sweep-g5k", "task": Task.T1, "dataset": str(lab_dataset.id), "config": config},
+        format="json",
+    )
+    experiment_id = created.json()["id"]
+
+    resp = client.post(f"{API}/projects/{slug}/lab/experiments/{experiment_id}/run")
+    assert resp.status_code == 400
+    assert resp.json()["code"] == "g5k_sweep_too_large"
+    assert ExperimentRun.objects.count() == 0  # aucun run créé — refus AVANT toute file
+
+
+def test_experiment_run_g5k_sweep_avec_force_est_accepte(lab_campaign, lab_dataset, settings):
+    settings.LAB_G5K_MAX_RUNS_PER_SWEEP = 3
+    slug = lab_campaign["project"].slug
+    client = _client(lab_campaign["lead"])
+    config = _sweep_config(lab_dataset.id, target="g5k")
+    created = client.post(
+        f"{API}/projects/{slug}/lab/experiments",
+        {"name": "sweep-g5k-force", "task": Task.T1, "dataset": str(lab_dataset.id), "config": config},
+        format="json",
+    )
+    experiment_id = created.json()["id"]
+
+    resp = client.post(
+        f"{API}/projects/{slug}/lab/experiments/{experiment_id}/run", {"force": True}, format="json"
+    )
+    assert resp.status_code == 202
+    assert len(resp.json()["runIds"]) == 4
+
+
+def test_experiment_run_gros_sweep_local_n_est_pas_concerne(lab_campaign, lab_dataset, settings):
+    """⭐ Le garde-fou est spécifique à OAR/Grid'5000 (bonne pratique documentée) — un
+    sweep local ne coûte qu'un sous-processus par variante, jamais une réservation
+    mutualisée : aucune raison de le limiter."""
+    settings.LAB_G5K_MAX_RUNS_PER_SWEEP = 3
+    slug = lab_campaign["project"].slug
+    client = _client(lab_campaign["lead"])
+    config = _sweep_config(lab_dataset.id, target="local")
+    created = client.post(
+        f"{API}/projects/{slug}/lab/experiments",
+        {"name": "sweep-local", "task": Task.T1, "dataset": str(lab_dataset.id), "config": config},
+        format="json",
+    )
+    experiment_id = created.json()["id"]
+
+    resp = client.post(f"{API}/projects/{slug}/lab/experiments/{experiment_id}/run")
+    assert resp.status_code == 202
+    assert len(resp.json()["runIds"]) == 4
+
+
 def test_run_detail_404_pour_un_run_d_un_autre_projet(lab_campaign, lab_dataset):
     experiment = Experiment.objects.create(
         project=lab_campaign["project"], dataset=lab_dataset, created_by=lab_campaign["lead"],
@@ -337,6 +407,46 @@ def test_compute_credentials_put_puis_delete(lab_campaign, monkeypatch):
     assert ComputeCredential.objects.count() == 0
 
 
+def test_compute_credentials_put_accepte_la_cle_ssh(lab_campaign, monkeypatch):
+    from claire.lab import crypto
+
+    monkeypatch.setenv(crypto.ENV_KEY, Fernet.generate_key().decode())
+    resp = _client(lab_campaign["lead"]).put(
+        f"{API}/me/compute-credentials",
+        {"kind": "g5k", "login": "alice", "password": "s3cret", "sshKey": "clé-privée"},
+        format="json",
+    )
+    assert resp.status_code == 200
+    assert resp.json()["hasSshKey"] is True
+    credential = ComputeCredential.objects.get(user=lab_campaign["lead"], kind="g5k")
+    assert crypto.decrypt_secret(credential.ssh_key_encrypted) == "clé-privée"
+
+
+def test_compute_credentials_put_conserve_la_cle_ssh_si_absente_de_la_requete(
+    lab_campaign, monkeypatch
+):
+    """⭐ Changer son mot de passe ne doit JAMAIS effacer silencieusement une clé SSH
+    déjà enregistrée — sinon deux secrets indépendants deviendraient couplés par
+    accident."""
+    from claire.lab import crypto
+
+    monkeypatch.setenv(crypto.ENV_KEY, Fernet.generate_key().decode())
+    client = _client(lab_campaign["lead"])
+    client.put(
+        f"{API}/me/compute-credentials",
+        {"kind": "g5k", "login": "alice", "password": "s3cret", "sshKey": "clé-privée"},
+        format="json",
+    )
+    resp = client.put(
+        f"{API}/me/compute-credentials",
+        {"kind": "g5k", "login": "alice", "password": "nouveau-mdp"}, format="json",
+    )
+    assert resp.json()["hasSshKey"] is True
+    credential = ComputeCredential.objects.get(user=lab_campaign["lead"], kind="g5k")
+    assert crypto.decrypt_secret(credential.ssh_key_encrypted) == "clé-privée"
+    assert crypto.decrypt_secret(credential.secret_encrypted) == "nouveau-mdp"
+
+
 def test_compute_credentials_test_appelle_le_backend_et_persiste_le_resultat(
     lab_campaign, monkeypatch
 ):
@@ -353,16 +463,48 @@ def test_compute_credentials_test_appelle_le_backend_et_persiste_le_resultat(
     )
     monkeypatch.setattr(
         "claire.lab.runners.g5k.Grid5000Backend.test_connection",
-        lambda self: (True, "connexion établie (12 sites)"),
+        lambda self: (True, None, "connexion établie (12 sites)"),
     )
     resp = _client(user).post(f"{API}/me/compute-credentials/{credential.id}/test")
     assert resp.status_code == 200
     body = resp.json()
     assert body["ok"] is True
+    assert body["apiOk"] is True
+    assert body["sshOk"] is None  # aucune clé SSH enregistrée pour ce credential
     assert "12 sites" in body["detail"]
     credential.refresh_from_db()
     assert credential.last_test_ok is True
+    assert credential.last_test_ssh_ok is None
     assert credential.last_tested_at is not None
+
+
+def test_compute_credentials_test_rapporte_api_et_ssh_independamment(
+    lab_campaign, monkeypatch
+):
+    """⭐ Deux secrets distincts (mot de passe API, clé SSH pour rsync — Grid'5000
+    désactive l'authentification par mot de passe en SSH), donc deux résultats de test
+    JAMAIS agrégés en un seul booléen trompeur : un mot de passe correct avec une clé
+    SSH refusée doit rester visible comme tel."""
+    from claire.lab import crypto
+
+    monkeypatch.setenv(crypto.ENV_KEY, Fernet.generate_key().decode())
+    user = lab_campaign["lead"]
+    credential = ComputeCredential.objects.create(
+        user=user, kind="g5k", login="alice",
+        secret_encrypted=crypto.encrypt_secret("s3cret"),
+        ssh_key_encrypted=crypto.encrypt_secret("clé-privée-de-test"),
+    )
+    monkeypatch.setattr(
+        "claire.lab.runners.g5k.Grid5000Backend.test_connection",
+        lambda self: (True, False, "connexion établie (12 sites) · SSH : clé refusée"),
+    )
+    resp = _client(user).post(f"{API}/me/compute-credentials/{credential.id}/test")
+    body = resp.json()
+    assert body["apiOk"] is True
+    assert body["sshOk"] is False
+    credential.refresh_from_db()
+    assert credential.last_test_ok is True
+    assert credential.last_test_ssh_ok is False
 
 
 def test_compute_credential_delete_scope_a_l_utilisateur(lab_campaign, monkeypatch):

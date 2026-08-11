@@ -41,7 +41,9 @@ def _backend_for(run: ExperimentRun):
     from .runners.g5k import Grid5000Backend
 
     return Grid5000Backend(
-        login=credential.login, password=decrypt_secret(credential.secret_encrypted)
+        login=credential.login,
+        password=decrypt_secret(credential.secret_encrypted),
+        ssh_key=decrypt_secret(credential.ssh_key_encrypted) if credential.ssh_key_encrypted else None,
     )
 
 

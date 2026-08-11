@@ -7,6 +7,7 @@ politique d'indépendance déjà en vigueur dans le produit s'applique ici.
 
 from __future__ import annotations
 
+from django.conf import settings
 from django.shortcuts import get_object_or_404
 from rest_framework import status
 from rest_framework.decorators import api_view, permission_classes
@@ -256,6 +257,24 @@ def experiment_run(request, slug: str, experiment_id):
             status=status.HTTP_400_BAD_REQUEST,
         )
 
+    targets_g5k = (experiment.config.get("compute") or {}).get("target") == "g5k"
+    max_sweep = getattr(settings, "LAB_G5K_MAX_RUNS_PER_SWEEP", 3)
+    if targets_g5k and len(variants) > max_sweep and not force:
+        # Grid'5000 déconseille explicitement de soumettre de nombreux petits jobs OAR
+        # (docs/pactiva-g5k/research/02_OAR_KADEPLOY.md §4.3) — un avertissement, pas un
+        # blocage : l'utilisateur peut confirmer avec `force`.
+        return Response(
+            {
+                "code": "g5k_sweep_too_large",
+                "detail": (
+                    f"{len(variants)} runs Grid'5000 séparés — déconseillé par la "
+                    "documentation officielle (préférer une réservation plus large). "
+                    "Renvoyer avec force=true pour continuer quand même."
+                ),
+            },
+            status=status.HTTP_400_BAD_REQUEST,
+        )
+
     run_ids, duplicates = [], []
     for config in variants:
         try:
@@ -377,8 +396,18 @@ def compute_credentials(request):
 
     serializer = ComputeCredentialWriteSerializer(data=request.data)
     serializer.is_valid(raise_exception=True)
+    ssh_key = serializer.validated_data.get("ssh_key") or ""
+    existing = ComputeCredential.objects.filter(
+        user=request.user, kind=serializer.validated_data["kind"]
+    ).first()
     try:
         encrypted = encrypt_secret(serializer.validated_data["password"])
+        if ssh_key:
+            ssh_key_encrypted = encrypt_secret(ssh_key)
+        else:
+            # Absente de la requête : on NE remplace PAS une clé déjà enregistrée —
+            # sinon changer son mot de passe effacerait silencieusement sa clé SSH.
+            ssh_key_encrypted = existing.ssh_key_encrypted if existing else ""
     except CredentialsKeyMissing as exc:
         # 503 et non 500 : la plateforme fonctionne, c'est la configuration serveur qui
         # manque. Et surtout : REFUS d'écrire, jamais de stockage en clair.
@@ -392,8 +421,10 @@ def compute_credentials(request):
         defaults={
             "login": serializer.validated_data["login"],
             "secret_encrypted": encrypted,
+            "ssh_key_encrypted": ssh_key_encrypted,
             "last_tested_at": None,
             "last_test_ok": None,
+            "last_test_ssh_ok": None,
             "last_test_detail": "",
         },
     )
@@ -412,14 +443,27 @@ def compute_credentials_test(request, credential_id: int):
 
     credential = get_object_or_404(ComputeCredential, id=credential_id, user=request.user)
     backend = Grid5000Backend(
-        login=credential.login, password=decrypt_secret(credential.secret_encrypted)
+        login=credential.login,
+        password=decrypt_secret(credential.secret_encrypted),
+        ssh_key=decrypt_secret(credential.ssh_key_encrypted) if credential.ssh_key_encrypted else None,
     )
-    ok, detail = backend.test_connection()
+    api_ok, ssh_ok, detail = backend.test_connection()
     credential.last_tested_at = timezone.now()
-    credential.last_test_ok = ok
+    credential.last_test_ok = api_ok
+    credential.last_test_ssh_ok = ssh_ok
     credential.last_test_detail = detail[:300]
-    credential.save(update_fields=["last_tested_at", "last_test_ok", "last_test_detail"])
-    return Response({"ok": ok, "detail": detail, "tested_at": credential.last_tested_at})
+    credential.save(
+        update_fields=["last_tested_at", "last_test_ok", "last_test_ssh_ok", "last_test_detail"]
+    )
+    return Response(
+        {
+            "ok": api_ok,
+            "apiOk": api_ok,
+            "sshOk": ssh_ok,
+            "detail": detail,
+            "testedAt": credential.last_tested_at,
+        }
+    )
 
 
 @api_view(["DELETE"])

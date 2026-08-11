@@ -23,6 +23,7 @@ from claire.lab.models import ComputeCredential
 from claire.lab.serializers import ComputeCredentialSerializer
 
 SECRET = "mot-de-passe-grid5000-tres-secret"
+SSH_KEY = "-----BEGIN OPENSSH PRIVATE KEY-----\nclé-privée-de-test\n-----END OPENSSH PRIVATE KEY-----"
 
 
 @pytest.fixture
@@ -113,17 +114,24 @@ def test_le_secret_est_absent_de_toute_la_serialisation(with_key, django_user_mo
     à un test qui ne regarde que le premier niveau."""
     user = django_user_model.objects.create_user(username="chercheur", password="x", email="c1@x.test")
     credential = ComputeCredential.objects.create(
-        user=user, kind="g5k", login="ajebbari", secret_encrypted=encrypt_secret(SECRET)
+        user=user, kind="g5k", login="ajebbari",
+        secret_encrypted=encrypt_secret(SECRET),
+        ssh_key_encrypted=encrypt_secret(SSH_KEY),
     )
     data = ComputeCredentialSerializer(credential).data
 
     values = list(_walk(data))
     assert SECRET not in values
     assert credential.secret_encrypted not in values
+    assert SSH_KEY not in values  # ⭐ le second secret (clé SSH) ne fuit pas non plus
+    assert credential.ssh_key_encrypted not in values
     assert "password" not in values
     assert "secret_encrypted" not in values
-    # Ce que l'UI a le droit de savoir : qu'un secret existe.
+    assert "ssh_key" not in values
+    assert "ssh_key_encrypted" not in values
+    # Ce que l'UI a le droit de savoir : que les deux secrets existent, indépendamment.
     assert data["has_password"] is True
+    assert data["has_ssh_key"] is True
     assert data["login"] == "ajebbari"
 
 
@@ -132,10 +140,14 @@ def test_le_repr_du_modele_ne_fuit_pas(with_key, django_user_model):
     """Même en débogage : un `print(credential)` ne doit rien révéler."""
     user = django_user_model.objects.create_user(username="chercheur2", password="x", email="c2@x.test")
     credential = ComputeCredential.objects.create(
-        user=user, kind="g5k", login="ajebbari", secret_encrypted=encrypt_secret(SECRET)
+        user=user, kind="g5k", login="ajebbari",
+        secret_encrypted=encrypt_secret(SECRET),
+        ssh_key_encrypted=encrypt_secret(SSH_KEY),
     )
     assert SECRET not in repr(credential)
+    assert SSH_KEY not in repr(credential)
     assert credential.secret_encrypted not in repr(credential)
+    assert credential.ssh_key_encrypted not in repr(credential)
 
 
 @pytest.mark.django_db

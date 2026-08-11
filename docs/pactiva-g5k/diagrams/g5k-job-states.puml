@@ -1,0 +1,44 @@
+@startuml g5k-job-states
+' États d'un ExperimentRun ciblant Grid'5000 — mapping entre les états OAR (internes,
+' recherche §02_OAR_KADEPLOY.md §2.1) et les états API REST (minuscules, recherche
+' §03_API_REST.md §4.2), et comment RunStatus (notre modèle Django) les reflète.
+
+skinparam backgroundColor transparent
+
+[*] --> queued : queue_run()
+queued --> running : claim_next_run()\n(worker prend le run)
+
+state running {
+  [*] --> Soumission
+  Soumission --> Waiting : POST /jobs → 201\n(état API "waiting")
+  Waiting --> Running_G5K : GET /jobs/{id}\nstate == "running"
+  Waiting --> Waiting : sondage adaptatif\n(5s puis 15s puis 60s)
+  Running_G5K --> Termine : GET /jobs/{id}\nstate != "waiting"/"running"\n(mappé "stopped")
+}
+
+running --> waiting : status intermédiaire\naffiché dans l'UI (Lab)
+waiting --> succeeded : fetch() → _SENTINEL présent
+waiting --> partial : fetch() → _SENTINEL absent\n(walltime a coupé le job)
+waiting --> failed : G5KError (auth/réseau/soumission)\nou timeout local
+running --> cancelled : cancel_requested\n(DELETE /jobs/{id} + annulation coopérative)
+
+succeeded --> [*]
+partial --> [*]
+failed --> [*] : rejouable en local\n(jamais bloquant pour l'article)
+cancelled --> [*]
+
+note right of failed
+  Codes d'erreur explicites (jamais un 500
+  générique) :
+  g5k_auth_failed, g5k_unreachable,
+  g5k_ssh_key_missing, g5k_transfer_failed,
+  g5k_submit_failed, g5k_timeout
+end note
+
+note right of partial
+  Le travail accompli n'est JAMAIS perdu —
+  ingéré avec les plis déjà calculés, jamais
+  traité comme un échec pur.
+end note
+
+@enduml

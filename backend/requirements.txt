@@ -24,3 +24,9 @@ ruff>=0.4
 # Chiffrement des identifiants de calcul (claire/lab/crypto.py) — sans lui, la
 # plateforme REFUSE de stocker un identifiant Grid'5000 plutôt que de l'écrire en clair.
 cryptography>=42.0
+
+# Client Grid'5000 (claire/lab/g5k_client.py) — python-grid5000 est le client Python
+# référencé par la doc officielle (retry intégré, hiérarchie d'exceptions, HATEOAS),
+# préféré à une réimplémentation maison des appels HTTP bruts.
+requests>=2.28
+python-grid5000>=1.2

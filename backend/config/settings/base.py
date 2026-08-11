@@ -79,6 +79,10 @@ TRANSLATIONS_ROOT = Path(
 # de dépendances ML lourdes (torch, transformers) que l'environnement Django n'a pas
 # vocation à porter — voir docs/pactiva-lab/02_ARCHITECTURE.md.
 LAB_RESEARCH_PYTHON = env("LAB_RESEARCH_PYTHON", default=None)
+# Au-delà de ce nombre de runs, un sweep ciblant Grid'5000 est refusé sans `force=true` —
+# Grid'5000 déconseille explicitement de soumettre de nombreux petits jobs OAR séparés,
+# voir docs/pactiva-g5k/research/02_OAR_KADEPLOY.md §4.3.
+LAB_G5K_MAX_RUNS_PER_SWEEP = env.int("LAB_G5K_MAX_RUNS_PER_SWEEP", default=3)
 
 INSTALLED_APPS = [
     "django.contrib.admin",

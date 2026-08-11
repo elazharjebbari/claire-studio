@@ -133,30 +133,39 @@ class ExperimentRunSummarySerializer(serializers.ModelSerializer):
 
 
 class ComputeCredentialSerializer(serializers.ModelSerializer):
-    """Lecture d'un identifiant — SANS le secret.
+    """Lecture d'un identifiant — SANS aucun des deux secrets.
 
-    `has_password` remplace le mot de passe : l'UI a besoin de savoir qu'un secret existe,
-    jamais de le connaître. Aucune méthode de ce sérialiseur ne touche à
-    `secret_encrypted`.
+    `has_password`/`has_ssh_key` remplacent les secrets : l'UI a besoin de savoir
+    qu'ils existent, jamais de les connaître. Deux secrets distincts (mot de passe pour
+    l'API, clé SSH pour rsync — Grid'5000 désactive l'auth par mot de passe en SSH,
+    `docs/pactiva-g5k/07_ARCHITECTURE.md` §1) donc deux résultats de test distincts.
+    Aucune méthode de ce sérialiseur ne touche à `secret_encrypted`/`ssh_key_encrypted`.
     """
 
     has_password = serializers.SerializerMethodField()
+    has_ssh_key = serializers.SerializerMethodField()
 
     class Meta:
         model = ComputeCredential
         fields = [
-            "id", "kind", "login", "has_password", "last_tested_at",
-            "last_test_ok", "last_test_detail",
+            "id", "kind", "login", "has_password", "has_ssh_key", "last_tested_at",
+            "last_test_ok", "last_test_ssh_ok", "last_test_detail",
         ]
         read_only_fields = fields
 
     def get_has_password(self, obj) -> bool:
         return bool(obj.secret_encrypted)
 
+    def get_has_ssh_key(self, obj) -> bool:
+        return bool(obj.ssh_key_encrypted)
+
 
 class ComputeCredentialWriteSerializer(serializers.Serializer):
-    """Écriture seule. Le mot de passe entre, il ne ressort jamais."""
+    """Écriture seule. Ni le mot de passe ni la clé SSH ne ressortent jamais."""
 
     kind = serializers.ChoiceField(choices=["g5k"], default="g5k")
     login = serializers.CharField(max_length=120)
     password = serializers.CharField(max_length=500, write_only=True, trim_whitespace=False)
+    ssh_key = serializers.CharField(
+        max_length=16000, write_only=True, trim_whitespace=False, required=False, allow_blank=True,
+    )

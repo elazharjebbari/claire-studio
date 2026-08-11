@@ -1,0 +1,66 @@
+@startuml g5k-components
+' Composants du sous-système Grid'5000 dans claire/lab/, et leurs dépendances.
+
+skinparam backgroundColor transparent
+skinparam componentStyle rectangle
+
+package "claire/lab/" {
+  [views.py] as VIEWS
+  [services.py] as SERVICES
+  [worker.py] as WORKER
+  [crypto.py] as CRYPTO
+  [models.py] as MODELS
+
+  package "runners/" {
+    [base.py\nExecutionBackend] as BASE
+    [local.py\nLocalBackend] as LOCAL
+    [g5k.py\nGrid5000Backend] as G5K_BACKEND
+  }
+
+  [g5k_client.py\n(NOUVEAU)] as G5K_CLIENT
+  [g5k_reference.py\n(NOUVEAU, pur)] as G5K_REF
+  [g5k_ssh.py\n(NOUVEAU)] as G5K_SSH
+}
+
+package "Dépendances externes" {
+  [python-grid5000] as PYG5K
+  [rsync / ssh] as RSYNC
+}
+
+database "reference-repository\n(miroir public GitHub,\nfixture de dev/test)" as REFREPO
+cloud "api.grid5000.fr" as API
+
+VIEWS --> SERVICES
+VIEWS --> G5K_REF : liste des clusters GPU compatibles
+SERVICES --> WORKER : queue_run / claim_next_run
+WORKER --> BASE
+BASE <|-- LOCAL
+BASE <|-- G5K_BACKEND
+
+G5K_BACKEND --> G5K_CLIENT : submit / poll / cancel
+G5K_BACKEND --> G5K_SSH : transferts (rsync push/pull)
+G5K_CLIENT --> PYG5K
+G5K_SSH --> RSYNC
+G5K_SSH --> CRYPTO : decrypt_secret(ssh_key)
+G5K_CLIENT --> CRYPTO : decrypt_secret(password)
+PYG5K --> API : HTTP Basic
+
+G5K_REF ..> REFREPO : (dev/test, sans compte)
+G5K_REF ..> PYG5K : (prod, avec compte)
+
+MODELS --> CRYPTO : ComputeCredential\n(password_encrypted, ssh_key_encrypted)
+
+note right of G5K_REF
+  Fonction pure : filtre un catalogue de
+  clusters (déjà récupéré) par VRAM GPU
+  minimale. Ne fait AUCUN appel réseau
+  lui-même — testable sans mock HTTP.
+end note
+
+note right of G5K_SSH
+  Fichier de clé temporaire, permissions 0600,
+  suppression garantie (try/finally) — jamais
+  persisté au-delà de la durée du transfert.
+end note
+
+@enduml

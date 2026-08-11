@@ -1,0 +1,9 @@
+code,ou_leve,cause,action_utilisateur,source_recherche
+g5k_auth_failed,test_connection / submit,HTTP 401 de l'API (mot de passe API incorrect ou expire),verifier le mot de passe dans l'ecran Calcul,research/03_API_REST.md §5.6 (Grid5000AuthenticationError)
+g5k_unreachable,test_connection / submit / poll,timeout reseau ou DNS vers api.grid5000.fr,reessayer plus tard ; le run reste rejouable en local,research/03_API_REST.md §5.4 (retry deja tente 5x avant cet echec)
+g5k_ssh_key_missing,submit (avant tout transfert),aucune cle SSH enregistree pour cet utilisateur,generer une cle SSH dediee et l'ajouter dans l'ecran Calcul,research/01_VUE_ENSEMBLE_SITES_ACCES.md §3.1 (mot de passe desactive en SSH)
+g5k_ssh_auth_failed,test_connection (volet SSH) / submit,la cle SSH n'est pas reconnue par access.grid5000.fr,verifier que la cle PUBLIQUE correspondante a bien ete ajoutee au compte G5K,research/01_VUE_ENSEMBLE_SITES_ACCES.md §3.1
+g5k_transfer_failed,submit (rsync push) / fetch (rsync pull),echec rsync (reseau, quota home depasse, chemin distant absent),verifier le quota home (25 Go soft) et l'espace Group Storage,research/04_STOCKAGE_RESEAU.md §1.2
+g5k_submit_failed,submit,reponse API sans champ uid/id exploitable,signaler ; probable evolution du format de reponse cote G5K,research/03_API_REST.md §4.1
+g5k_sweep_too_large,POST /experiments/{id}/run,sweep GPU au-dela du seuil sans force=true,reduire le nombre de variantes ou confirmer explicitement,research/02_OAR_KADEPLOY.md §4.3 (bad practice documentee)
+g5k_timeout,worker (attente distante),le job reste waiting/running au-dela de LAB_G5K_MAX_WAIT,relancer avec un walltime plus long ou changer de cluster,-

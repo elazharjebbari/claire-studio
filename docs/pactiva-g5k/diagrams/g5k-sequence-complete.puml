@@ -1,0 +1,111 @@
+@startuml g5k-sequence-complete
+' Séquence complète d'un run déporté, CORRIGÉE après recherche documentaire réelle :
+' deux secrets distincts (mot de passe API HTTP Basic, clé SSH pour rsync — Grid'5000
+' désactive l'authentification par mot de passe en SSH), client python-grid5000.
+
+skinparam backgroundColor transparent
+skinparam sequenceMessageAlign left
+
+actor Chercheur as U
+participant "UI Lab" as UI
+participant "API Django" as API
+database "PostgreSQL" as DB
+participant "lab worker" as W
+participant "crypto.py" as CRY
+participant "g5k_ssh.py" as SSH
+participant "python-grid5000" as PYG5K
+participant "access.grid5000.fr" as GW
+participant "api.grid5000.fr" as G5K
+participant "OAR" as OAR
+participant "Nœud GPU" as NODE
+
+== Préparation (une fois, par utilisateur) ==
+U -> UI : saisit login + mot de passe G5K (API)
+U -> UI : colle la clé SSH privée DÉDIÉE (rsync/déploiement)
+note right of U
+  Clé SSH générée spécifiquement pour Pactiva
+  (ssh-keygen -t ed25519 -f pactiva-g5k -N "")
+  puis ajoutée au compte G5K — jamais une clé
+  personnelle déjà utilisée ailleurs.
+end note
+UI -> API : PUT /api/me/compute-credentials\n{login, password, sshKey}
+API -> CRY : encrypt_secret(password)\nencrypt_secret(ssh_key)
+note right of CRY
+  LAB_CREDENTIALS_KEY absente ⇒ **503, refus d'écrire**.
+  Deux secrets chiffrés séparément, même clé Fernet.
+end note
+CRY --> API : deux jetons chiffrés
+API -> DB : ComputeCredential (password_encrypted, ssh_key_encrypted)
+
+U -> UI : [ Tester la connexion ]
+API -> PYG5K : GET /stable/sites (Basic auth)
+PYG5K --> API : 200 → api_ok = true
+API -> SSH : ssh -o BatchMode=yes login@access.grid5000.fr true
+SSH --> API : rc=0 → ssh_ok = true
+API -> DB : lastTestedAt, apiOk, sshOk (DEUX indicateurs distincts)
+note right of API
+  Un utilisateur peut avoir l'un sans l'autre —
+  l'UI doit le dire clairement, pas un seul
+  booléen agrégé trompeur.
+end note
+
+== Lancement ==
+U -> UI : choisit preset (GPU) + dataset
+UI -> API : POST /experiments  { config }
+API -> API : validate_config (schema)
+API -> DB : Experiment
+UI -> API : POST /experiments/{id}/run
+API -> API : garde-fou sweep (§3 architecture)\nrefuse si >LAB_G5K_MAX_RUNS_PER_SWEEP sans force=True
+API -> DB : ExperimentRun (status=queued) par variante
+API --> UI : 202 { runIds }
+
+== Exécution (worker, en tâche de fond) ==
+W -> DB : claim_next_run() → status=running
+W -> CRY : decrypt_secret(password), decrypt_secret(ssh_key)
+W -> SSH : write_temp_key(ssh_key, mode=0600)
+SSH --> W : chemin du fichier temporaire
+W -> GW : rsync -e "ssh -i <tmp_key>" dataset+config+run.sh
+GW --> W : OK
+W -> SSH : delete_temp_key()
+note right of SSH
+  try/finally : la clé temporaire est supprimée
+  MÊME si le rsync échoue.
+end note
+
+W -> PYG5K : site.jobs.create({resources, command, types})
+PYG5K -> G5K : POST /sites/{site}/jobs (Basic auth)
+G5K -> OAR : oarsub (thin wrapper)
+OAR --> G5K : job en file
+G5K --> PYG5K : 201 { uid, state: waiting }
+PYG5K --> W : job.uid
+W -> DB : external_job_id, status=waiting
+
+loop sondage adaptatif (5s → 15s → 60s)
+  W -> PYG5K : job.refresh()
+  PYG5K -> G5K : GET /sites/{site}/jobs/{id}
+  G5K --> PYG5K : { state }
+  PYG5K --> W : state
+  W -> DB : status (si changement)
+end
+OAR -> NODE : Launching → Running
+NODE -> NODE : module load conda; activate; garde-fou GPU;\npython -m pactiva_lab run (écrit progress.json à chaque pli)
+
+== Rapatriement ==
+NODE -> NODE : job terminé ou walltime atteint
+W -> SSH : write_temp_key(ssh_key, mode=0600)
+W -> GW : rsync pull results/ (allow_failure=true)
+GW --> W : fichiers (complets ou partiels)
+W -> SSH : delete_temp_key()
+W -> W : sentinel_present(out_dir) ?
+alt _SENTINEL présent
+  W -> API : ingest_results(run, partial=false)
+else _SENTINEL absent (walltime a coupé le job)
+  W -> API : ingest_results(run, partial=true)
+  note right of API
+    Le travail accompli n'est jamais perdu —
+    ingéré en `partial`, pas en `failed`.
+  end note
+end
+API -> DB : status=succeeded|partial, metrics
+
+@enduml
