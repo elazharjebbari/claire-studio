@@ -35,22 +35,34 @@ LABELS = ["TERMINATION", "TERMINATION", "TERMINATION", "FEES", "FEES", "FEES"]
 
 def test_embedding_cache_hit_apres_un_premier_miss(tmp_path):
     cache = EmbeddingCache(root=tmp_path)
-    assert cache.get(ENCODER, TEXTS[:2]) is None
-    assert cache.misses == 1
+    assert cache.get(ENCODER, TEXTS[:2]) == [None, None]
+    assert cache.misses == 2
 
     cache.put(ENCODER, TEXTS[:2], [[0.1, 0.2], [0.3, 0.4]])
     hit = cache.get(ENCODER, TEXTS[:2])
     assert hit == [[0.1, 0.2], [0.3, 0.4]]
-    assert cache.hits == 1
+    assert cache.hits == 2
 
 
-def test_embedding_cache_distingue_deux_jeux_de_textes(tmp_path):
-    """Régression : la clé de cache utilisait autrefois un octet nul comme séparateur —
-    corrigé pour `\\n`. Deux textes contenant des caractères ordinaires ne doivent jamais
-    collisionner."""
+def test_embedding_cache_distingue_deux_textes(tmp_path):
     cache = EmbeddingCache(root=tmp_path)
-    cache.put(ENCODER, ["a", "b"], [[1.0]])
-    assert cache.get(ENCODER, ["a", "b c"]) is None  # pas de collision par concaténation
+    cache.put(ENCODER, ["a"], [[1.0]])
+    assert cache.get(ENCODER, ["b"]) == [None]
+
+
+def test_embedding_cache_hit_partiel_sur_un_lot_qui_se_recouvre(tmp_path):
+    """C'est LE cas réel de la validation croisée : deux plis partagent la plupart de
+    leurs phrases mais ne sont jamais identiques bit à bit. Avant ce correctif, la clé de
+    cache portait sur le lot ENTIER — un seul texte différent invalidait tout, et le
+    corpus entier était ré-encodé à chaque pli (bug réel qui a fait déborder le délai
+    d'un run de production, 12 août 2026)."""
+    cache = EmbeddingCache(root=tmp_path)
+    cache.put(ENCODER, TEXTS[:2], [[0.1], [0.2]])
+
+    result = cache.get(ENCODER, [TEXTS[0], TEXTS[1], TEXTS[2]])
+    assert result == [[0.1], [0.2], None]
+    assert cache.hits == 2
+    assert cache.misses == 1
 
 
 # --------------------------------------------------------------------------- #
@@ -94,6 +106,23 @@ def test_embeddings_head_utilise_le_cache_au_second_appel(tmp_path, monkeypatch)
     b = EmbeddingsHead({"encoder": ENCODER, "head": "mlp"}, seed=42)
     b.fit(TEXTS, LABELS)  # même encodeur : doit frapper le cache écrit par `a`
     assert b._cache.hits >= 1
+
+
+def test_embeddings_head_reencode_seulement_les_phrases_nouvelles_d_un_lot_partiel(
+    tmp_path, monkeypatch,
+):
+    """Le cas réel de la validation croisée : deux plis partagent la plupart de leurs
+    phrases. Un modèle entraîné sur un sous-ensemble ne doit jamais redemander à
+    `sentence-transformers` d'encoder les phrases déjà en cache."""
+    monkeypatch.setenv("PACTIVA_LAB_CACHE", str(tmp_path))
+    a = EmbeddingsHead({"encoder": ENCODER, "head": "logreg"}, seed=42)
+    a.fit(TEXTS[:4], LABELS[:4])
+
+    b = EmbeddingsHead({"encoder": ENCODER, "head": "logreg"}, seed=42)
+    b.fit(TEXTS, LABELS)  # recouvre les 4 premières phrases de `a`, en ajoute 2 nouvelles
+
+    assert b._cache.hits == 4  # les 4 phrases déjà encodées par `a`
+    assert b._cache.misses == 2  # seulement les 2 nouvelles
 
 
 # --------------------------------------------------------------------------- #

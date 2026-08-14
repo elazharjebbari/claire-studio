@@ -83,6 +83,11 @@ LAB_RESEARCH_PYTHON = env("LAB_RESEARCH_PYTHON", default=None)
 # Grid'5000 déconseille explicitement de soumettre de nombreux petits jobs OAR séparés,
 # voir docs/pactiva-g5k/research/02_OAR_KADEPLOY.md §4.3.
 LAB_G5K_MAX_RUNS_PER_SWEEP = env.int("LAB_G5K_MAX_RUNS_PER_SWEEP", default=3)
+# Délai avant de tuer un run local (claire/lab/runners/local.py). 3600 s (l'ancien défaut
+# implicite) suffit à peine pour UN SEUL pli d'un encodeur lourd sans GPU sur ce VPS — un
+# run réel a dépassé ce délai en production (12 août 2026). 7200 s laisse la marge pour
+# les 5 plis d'une validation croisée complète, cache d'embeddings compris.
+LAB_LOCAL_TIMEOUT = env.int("LAB_LOCAL_TIMEOUT", default=7200)
 
 INSTALLED_APPS = [
     "django.contrib.admin",

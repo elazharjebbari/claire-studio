@@ -48,22 +48,35 @@ class EmbeddingCache:
         self.hits = 0
         self.misses = 0
 
-    def _path(self, encoder: str, texts: list[str]) -> Path:
-        digest = hashlib.sha256(
-            (encoder + "\n" + "\n".join(texts)).encode("utf-8")
-        ).hexdigest()
+    def _path(self, encoder: str, text: str) -> Path:
+        digest = hashlib.sha256((encoder + "\n" + text).encode("utf-8")).hexdigest()
         return self.root / f"{digest}.json"
 
-    def get(self, encoder: str, texts: list[str]) -> list[list[float]] | None:
-        path = self._path(encoder, texts)
-        if path.exists():
-            self.hits += 1
-            return json.loads(path.read_text(encoding="utf-8"))
-        self.misses += 1
-        return None
+    def get(self, encoder: str, texts: list[str]) -> list[list[float] | None]:
+        """Un vecteur par texte, `None` pour chaque manque — jamais tout-ou-rien.
+
+        Indexé PAR PHRASE plutôt que par lot entier : en validation croisée, les plis se
+        recouvrent à ~80 % (mêmes phrases, ensembles train/test différents), et un lot
+        entier n'est presque jamais identique bit à bit d'un pli à l'autre. Avec un lot
+        entier comme clé, le cache ne servait donc quasiment jamais — tout le corpus était
+        ré-encodé à chaque pli. C'est ce qui a fait déborder le délai d'un run réel en
+        production (`embeddings-frozen`, 12 août 2026) : un seul pli sur cinq a suffi à
+        dépasser l'heure.
+        """
+        result = []
+        for text in texts:
+            path = self._path(encoder, text)
+            if path.exists():
+                self.hits += 1
+                result.append(json.loads(path.read_text(encoding="utf-8")))
+            else:
+                self.misses += 1
+                result.append(None)
+        return result
 
     def put(self, encoder: str, texts: list[str], vectors: list[list[float]]) -> None:
-        self._path(encoder, texts).write_text(json.dumps(vectors), encoding="utf-8")
+        for text, vector in zip(texts, vectors):
+            self._path(encoder, text).write_text(json.dumps(vector), encoding="utf-8")
 
 
 class EmbeddingsHead(Model):
@@ -87,16 +100,23 @@ class EmbeddingsHead(Model):
         self._cache = EmbeddingCache() if self.use_cache else None
 
     def _encode(self, texts: list[str]) -> list[list[float]]:
-        if self._cache is not None:
-            cached = self._cache.get(self.encoder_name, texts)
-            if cached is not None:
-                return cached
-        st = _require("sentence_transformers", "embeddings")
-        if self._encoder is None:
-            self._encoder = st.SentenceTransformer(self.encoder_name)
-        vectors = self._encoder.encode(texts, show_progress_bar=False).tolist()
-        if self._cache is not None:
-            self._cache.put(self.encoder_name, texts, vectors)
+        if self._cache is None:
+            st = _require("sentence_transformers", "embeddings")
+            if self._encoder is None:
+                self._encoder = st.SentenceTransformer(self.encoder_name)
+            return self._encoder.encode(texts, show_progress_bar=False).tolist()
+
+        vectors = self._cache.get(self.encoder_name, texts)
+        missing = [i for i, v in enumerate(vectors) if v is None]
+        if missing:
+            st = _require("sentence_transformers", "embeddings")
+            if self._encoder is None:
+                self._encoder = st.SentenceTransformer(self.encoder_name)
+            missing_texts = [texts[i] for i in missing]
+            fresh = self._encoder.encode(missing_texts, show_progress_bar=False).tolist()
+            self._cache.put(self.encoder_name, missing_texts, fresh)
+            for i, vector in zip(missing, fresh):
+                vectors[i] = vector
         return vectors
 
     def _build_head(self):
