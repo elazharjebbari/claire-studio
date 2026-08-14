@@ -127,6 +127,29 @@ class TestSubmit:
         assert b'"besteffort"' in body
         assert b'"pactiva-test"' in body
 
+    def test_la_queue_est_toujours_envoyee_explicitement_meme_sans_argument(self):
+        """Bug réel trouvé le 14 août 2026 sur DEUX jobs réels distincts (un CPU sur
+        nantes, un GPU sur lyon) : sans ce champ, OAR tente de résoudre une queue par
+        défaut pour ce compte et échoue avec `queue 'abaca' does not exist` —
+        reproduit indépendamment de notre client via `oarsub` brut. `queue="default"`
+        explicite contourne le problème, vérifié empiriquement sur un vrai job."""
+        with patch.object(
+            requests.Session, "send",
+            side_effect=[_response(200, SITE_PAYLOAD), _response(201, JOB_CREATED_PAYLOAD)],
+        ) as fake_send:
+            submit(_client(), "grenoble", resources="nodes=1", command="x")
+        body = fake_send.call_args_list[1].args[0].body
+        assert b'"queue": "default"' in body
+
+    def test_une_queue_explicite_remplace_le_defaut(self):
+        with patch.object(
+            requests.Session, "send",
+            side_effect=[_response(200, SITE_PAYLOAD), _response(201, JOB_CREATED_PAYLOAD)],
+        ) as fake_send:
+            submit(_client(), "grenoble", resources="nodes=1", command="x", queue="besteffort")
+        body = fake_send.call_args_list[1].args[0].body
+        assert b'"queue": "besteffort"' in body
+
 
 class TestPoll:
     def test_waiting(self):

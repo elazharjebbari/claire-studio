@@ -172,11 +172,20 @@ class Grid5000Backend(ExecutionBackend):
         access_remote = f"{self._access_path(site, workdir)}/runs/{run.id}"
         self._rsync_push(dataset_dir, out_dir, access_remote)
 
+        # Certains clusters récents/spécialisés sont classés "exotic" côté Grid'5000 et
+        # exclus de la sélection par défaut — confirmé le 14 août 2026 en réservant
+        # gemini (lyon, V100 32 Go, pourtant déjà "vérifié" dans notre catalogue) :
+        # `oarsub` a explicitement demandé `-t exotic` ("Filtering out exotic resources
+        # (..., gemini, ...)"). Pas une propriété fixe qu'on peut coder en dur par
+        # cluster (la classification change côté Grid'5000) — un booléen de config,
+        # à activer au besoin plutôt qu'à deviner.
         types = ["besteffort"] if queue == "besteffort" else []
+        if config.get("exotic"):
+            types.append("exotic")
         job_id = g5k_submit(
             self._client, site,
             resources=resources, command=f"bash {node_remote}/run.sh",
-            types=types, name=f"pactiva-{run.id}",
+            types=types, name=f"pactiva-{run.id}", queue=queue,
         )
         logger.info("g5k_submitted run=%s job=%s site=%s", run.id, job_id, site)
         return job_id

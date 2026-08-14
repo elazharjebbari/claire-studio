@@ -146,6 +146,27 @@ class TestSubmit:
         command = fake_submit.call_args.kwargs["command"]
         assert command == f"bash ~/pactiva/runs/{a_run.id}/run.sh"
 
+    def test_transmet_toujours_une_queue_explicite(self, a_run, tmp_path):
+        """Bug réel du 14 août 2026 (voir test_lab_g5k_client.py) : sans `queue`
+        explicite, OAR échoue avec `queue 'abaca' does not exist` pour ce compte."""
+        backend = Grid5000Backend(login="a", password="p", ssh_key="clé")
+        with patch("claire.lab.runners.g5k.g5k_submit", return_value="42") as fake_submit:
+            with patch.object(Grid5000Backend, "_rsync_push"):
+                backend.submit(a_run, tmp_path / "data", tmp_path / "out")
+        assert fake_submit.call_args.kwargs["queue"] == "default"
+
+    def test_exotic_active_ajoute_le_type_exotic(self, a_run, tmp_path):
+        """Bug réel du 14 août 2026 : le cluster gemini (lyon, V100 32 Go), pourtant
+        déjà marqué "vérifié" dans notre catalogue, a été refusé par `oarsub` sans
+        `-t exotic` explicite ("Filtering out exotic resources (..., gemini, ...)")."""
+        a_run.config["compute"]["g5k"]["exotic"] = True
+        a_run.save(update_fields=["config"])
+        backend = Grid5000Backend(login="a", password="p", ssh_key="clé")
+        with patch("claire.lab.runners.g5k.g5k_submit", return_value="42") as fake_submit:
+            with patch.object(Grid5000Backend, "_rsync_push"):
+                backend.submit(a_run, tmp_path / "data", tmp_path / "out")
+        assert "exotic" in fake_submit.call_args.kwargs["types"]
+
 
 class TestPollFetchCancel:
     def test_poll_delegue_au_client(self, a_run):

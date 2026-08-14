@@ -64,11 +64,19 @@ def test_connection(client: Grid5000) -> tuple[bool, str]:
 
 
 def submit(client: Grid5000, site: str, *, resources: str, command: str,
-           types: list[str] | None = None, name: str = "") -> str:
+           types: list[str] | None = None, name: str = "", queue: str = "default") -> str:
     """Soumet un job. Renvoie son identifiant (`uid`), jamais vide (contrairement au
     client maison précédent, une réponse sans `uid` lève ici une `Grid5000*Error`
-    avant même d'atteindre notre code, donc pas besoin de re-vérifier)."""
-    payload = {"resources": resources, "command": command}
+    avant même d'atteindre notre code, donc pas besoin de re-vérifier).
+
+    `queue` est TOUJOURS envoyé explicitement — jamais omis. Bug réel trouvé le 14 août
+    2026 en soumettant deux vrais jobs (un CPU sur nantes, un GPU sur lyon) : sans ce
+    champ, OAR tente de résoudre une queue par défaut pour le compte et échoue avec
+    `queue 'abaca' does not exist` — reproduit indépendamment de notre client via
+    `oarsub` brut, donc pas un bug de notre requête, mais une résolution de queue par
+    défaut cassée pour ce compte sur au moins deux sites distincts. `-q default`
+    explicite contourne le problème (confirmé empiriquement)."""
+    payload = {"resources": resources, "command": command, "queue": queue}
     if types:
         payload["types"] = types
     if name:
