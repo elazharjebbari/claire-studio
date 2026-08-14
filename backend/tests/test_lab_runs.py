@@ -370,10 +370,11 @@ def test_run_zombie_est_repris(experiment):
     run.attempt = 1
     run.save()
 
-    claimed = claim_next_run()
+    claimed, zombie = claim_next_run()
     assert claimed is not None
     assert claimed.id == run.id
     assert claimed.attempt == 2
+    assert zombie is not None and zombie.id == run.id
 
 
 def test_run_zombie_abandonne_apres_trois_tentatives(experiment):
@@ -385,7 +386,8 @@ def test_run_zombie_abandonne_apres_trois_tentatives(experiment):
     run.attempt = 3
     run.save()
 
-    claim_next_run()
+    claimed, zombie = claim_next_run()
+    assert claimed is None  # rien d'autre en file, et cette tentative-ci est abandonnée
     run.refresh_from_db()
     assert run.status == RunStatus.FAILED
     assert run.error_code == "heartbeat_lost"

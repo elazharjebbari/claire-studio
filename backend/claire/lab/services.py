@@ -181,17 +181,29 @@ def queue_run(*, experiment, config: dict | None = None, force: bool = False) ->
     )
 
 
-def claim_next_run() -> ExperimentRun | None:
+def claim_next_run() -> tuple[ExperimentRun | None, ExperimentRun | None]:
     """Prend le prochain run à traiter, en récupérant au passage les zombies.
 
-    Un run `running` sans battement depuis `HEARTBEAT_TIMEOUT` est repris : sans cela,
-    un worker tué laisse le run bloqué pour toujours.
+    Un run `running` OU `waiting` sans battement depuis `HEARTBEAT_TIMEOUT` est repris :
+    sans cela, un worker tué laisse le run bloqué pour toujours. `waiting` compte
+    délibérément — bug réel trouvé le 14 août 2026 (revue avant Palier 6) : c'est
+    justement la phase la plus longue sur une plateforme partagée (le job attend en
+    file OAR avant même de démarrer), et `heartbeat()` y est appelée à chaque sonde
+    (`_wait_remote`, `worker.py`) exactement comme en `running` — un `waiting` figé
+    signale donc la mort du worker tout aussi sûrement.
+
+    Renvoie `(run_a_traiter, zombie_repris)` — le second sert à l'appelant
+    (`worker.run_once`) pour tenter d'annuler le job Grid'5000 sous-jacent APRÈS cette
+    transaction (jamais un appel réseau sous un verrou de ligne) : sans ça, l'ancien
+    `external_job_id` continuerait de tourner sur le cluster, orphelin, pendant que le
+    run repris en soumet un second — un doublon silencieux qui consomme des heures GPU
+    partagées pour rien.
     """
     cutoff = timezone.now() - HEARTBEAT_TIMEOUT
     with transaction.atomic():
         zombie = (
             ExperimentRun.objects.select_for_update(skip_locked=True)
-            .filter(status=RunStatus.RUNNING, heartbeat_at__lt=cutoff)
+            .filter(status__in=[RunStatus.RUNNING, RunStatus.WAITING], heartbeat_at__lt=cutoff)
             .order_by("created_at")
             .first()
         )
@@ -218,13 +230,13 @@ def claim_next_run() -> ExperimentRun | None:
             .first()
         )
         if run is None:
-            return None
+            return None, zombie
         run.status = RunStatus.RUNNING
         run.attempt += 1
         run.started_at = run.started_at or timezone.now()
         run.heartbeat_at = timezone.now()
         run.save(update_fields=["status", "attempt", "started_at", "heartbeat_at"])
-        return run
+        return run, zombie
 
 
 def heartbeat(run: ExperimentRun, *, progress: int | None = None, phase: str = "") -> None:

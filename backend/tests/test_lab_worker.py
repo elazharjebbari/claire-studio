@@ -130,6 +130,100 @@ def test_run_once_transforme_un_crash_en_echec_sans_arreter_le_worker(queued_run
 
 
 # --------------------------------------------------------------------------- #
+# run_once — annulation du job Grid'5000 d'un zombie repris
+# --------------------------------------------------------------------------- #
+
+def _make_g5k_zombie(run, *, status, hours_stale=1, attempt=1, job_id="oar-orphelin"):
+    from datetime import timedelta
+
+    from django.utils import timezone
+
+    run.config = {**run.config, "compute": {"target": "g5k"}}
+    run.status = status
+    run.external_job_id = job_id
+    run.heartbeat_at = timezone.now() - timedelta(hours=hours_stale)
+    run.attempt = attempt
+    run.save()
+    return run
+
+
+@pytest.mark.parametrize("status", [RunStatus.WAITING, RunStatus.RUNNING])
+def test_run_once_annule_le_job_g5k_d_un_zombie_avant_de_le_reprendre(
+    queued_run, monkeypatch, status,
+):
+    """⭐ Bug réel trouvé le 14 août 2026 (revue avant Palier 6) : sans ce nettoyage,
+    l'ancien job Grid'5000 continue de tourner — orphelin, invisible — pendant qu'un
+    second est soumis au prochain passage. Couvre `waiting` ET `running` : les deux
+    comptent désormais comme zombies (`claim_next_run`), `waiting` étant justement la
+    phase la plus longue sur une plateforme partagée."""
+    _make_g5k_zombie(queued_run, status=status)
+    fake = FakeBackend()
+    monkeypatch.setattr("claire.lab.worker._backend_for", lambda run: fake)
+    monkeypatch.setattr("claire.lab.worker.execute_run", lambda run: run)  # isole run_once
+
+    assert run_once() is True
+    assert fake.cancel_called is True
+    queued_run.refresh_from_db()
+    assert queued_run.status == RunStatus.RUNNING  # repris ET reclaimé dans le même passage
+    assert queued_run.attempt == 2
+
+
+def test_run_once_n_annule_rien_pour_un_zombie_local_sans_job_externe(queued_run, monkeypatch):
+    """Un run LOCAL zombie n'a jamais de `external_job_id` — rien à annuler côté
+    Grid'5000, et `_backend_for` ne doit même pas être appelé pour lui."""
+    from datetime import timedelta
+
+    from django.utils import timezone
+
+    queued_run.status = RunStatus.RUNNING
+    queued_run.heartbeat_at = timezone.now() - timedelta(hours=1)
+    queued_run.attempt = 1
+    queued_run.save()
+
+    def boom(run):
+        raise AssertionError("_backend_for ne doit pas être appelé sans external_job_id")
+
+    monkeypatch.setattr("claire.lab.worker._backend_for", boom)
+    monkeypatch.setattr("claire.lab.worker.execute_run", lambda run: run)
+
+    assert run_once() is True  # ne lève pas — la garde a bien évité l'appel
+
+
+def test_run_once_continue_meme_si_l_annulation_du_zombie_echoue(queued_run, monkeypatch):
+    """L'annulation ne doit JAMAIS empêcher la reprise du run — un cluster Grid'5000
+    temporairement injoignable ne doit pas bloquer tout le worker."""
+    _make_g5k_zombie(queued_run, status=RunStatus.RUNNING)
+
+    class FailingBackend(FakeBackend):
+        def cancel(self, run):
+            raise RuntimeError("cluster injoignable")
+
+    monkeypatch.setattr("claire.lab.worker._backend_for", lambda run: FailingBackend())
+    monkeypatch.setattr("claire.lab.worker.execute_run", lambda run: run)
+
+    assert run_once() is True  # ne lève pas malgré l'échec d'annulation
+    queued_run.refresh_from_db()
+    assert queued_run.status == RunStatus.RUNNING  # la reprise a quand même eu lieu
+
+
+def test_run_once_abandonne_apres_trois_tentatives_annule_quand_meme_le_job(queued_run, monkeypatch):
+    """Même un zombie définitivement abandonné (MAX_ATTEMPTS atteint, marqué `failed`)
+    doit voir son job Grid'5000 annulé — l'abandon du SUIVI ne doit jamais devenir un
+    abandon de la RESSOURCE réservée."""
+    _make_g5k_zombie(queued_run, status=RunStatus.RUNNING, attempt=3)
+    fake = FakeBackend()
+    monkeypatch.setattr("claire.lab.worker._backend_for", lambda run: fake)
+
+    # `True` : l'abandon + l'annulation SONT du travail réel — un `False` ici ferait
+    # inutilement dormir la boucle entre deux zombies à nettoyer d'affilée.
+    assert run_once() is True
+    assert fake.cancel_called is True
+    queued_run.refresh_from_db()
+    assert queued_run.status == RunStatus.FAILED
+    assert queued_run.error_code == "heartbeat_lost"
+
+
+# --------------------------------------------------------------------------- #
 # _backend_for — repli local, refus explicite si G5K sans identifiant
 # --------------------------------------------------------------------------- #
 

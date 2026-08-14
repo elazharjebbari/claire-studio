@@ -155,11 +155,37 @@ def _wait_remote(run: ExperimentRun, backend) -> bool:
     return False
 
 
+def _cancel_zombie_external_job(zombie: ExperimentRun) -> None:
+    """Annule le job Grid'5000 sous-jacent d'un run repris comme zombie.
+
+    Bug réel trouvé le 14 août 2026 (revue avant Palier 6) : sans ce nettoyage,
+    l'ancien job continue de tourner sur le cluster — orphelin, invisible — pendant
+    que le run repris en soumet un second au prochain passage. Un doublon silencieux
+    qui consomme des heures GPU partagées pour rien, sur une plateforme où chaque
+    réservation retire une ressource à d'autres équipes.
+    """
+    if not zombie.external_job_id:
+        return  # jamais soumis (échec avant submit), ou run local — rien à annuler
+    try:
+        backend = _backend_for(zombie)
+        backend.cancel(zombie)
+        logger.warning(
+            "g5k_zombie_cancelled run=%s job=%s", zombie.id, zombie.external_job_id,
+        )
+    except Exception:  # pragma: no cover - l'annulation ne doit jamais bloquer la reprise
+        logger.exception(
+            "g5k_zombie_cancel_failed run=%s job=%s — annulation manuelle nécessaire "
+            "(oardel côté Grid'5000)", zombie.id, zombie.external_job_id,
+        )
+
+
 def run_once() -> bool:
     """Traite un run s'il y en a un. Renvoie True si du travail a été fait."""
-    run = claim_next_run()
+    run, zombie = claim_next_run()
+    if zombie is not None:
+        _cancel_zombie_external_job(zombie)
     if run is None:
-        return False
+        return zombie is not None
     logger.info("lab_run_started id=%s attempt=%s", run.id, run.attempt)
     try:
         execute_run(run)
