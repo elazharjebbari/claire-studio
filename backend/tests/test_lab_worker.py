@@ -347,6 +347,95 @@ def test_execute_run_g5k_succes_complet_ingere_et_marque_succeeded(queued_run, m
     assert result.metrics["metrics"]["macro_f1"] == 0.5
 
 
+def test_execute_run_retente_le_rapatriement_si_le_resultat_n_est_pas_encore_visible(
+    queued_run, monkeypatch,
+):
+    """Bug réel trouvé le 14 août 2026 (5 runs G5K sur 8, même sweep) : `results.json`
+    existait bel et bien côté Grid'5000 (vérifié à la main) mais le PREMIER
+    rapatriement ne le voyait pas — une course entre la fin du job côté nœud de calcul
+    et la visibilité NFS de son écriture depuis le frontal d'où part le rsync (deux
+    machines distinctes, cohérence "close-to-open" NFS non instantanée). Une nouvelle
+    tentative quelques secondes plus tard absorbe cette course."""
+    _configure_g5k_credential(queued_run, monkeypatch)
+    monkeypatch.setattr("claire.lab.worker.time.sleep", lambda _s: None)
+    monkeypatch.setattr("claire.lab.runners.g5k.poll_interval", lambda _elapsed: 0)
+
+    calls = {"n": 0}
+
+    def fake_fetch(self, run, out_dir):
+        calls["n"] += 1
+        if calls["n"] < 2:
+            return False  # 1er essai : rien n'est encore visible (course NFS)
+        Path(out_dir).mkdir(parents=True, exist_ok=True)
+        (Path(out_dir) / "results.json").write_text(
+            json.dumps({"task": "T1_primary", "metrics": {"macro_f1": 0.5}, "environment": {}})
+        )
+        return True
+
+    fake = FakeBackend(states=["stopped"], submit_job_id="oar-course")
+    monkeypatch.setattr(FakeBackend, "fetch", fake_fetch)
+    monkeypatch.setattr("claire.lab.worker._backend_for", lambda run: fake)
+
+    result = execute_run(queued_run)
+    assert result.status == RunStatus.SUCCEEDED
+    assert calls["n"] == 2
+
+
+def test_execute_run_ne_retente_pas_indefiniment_un_resultat_genuinement_absent(
+    queued_run, monkeypatch, settings,
+):
+    """Un job réellement coupé par le walltime (jamais de résultat) doit finir par
+    échouer proprement — les nouvelles tentatives ne doivent pas devenir une boucle
+    infinie ni masquer un vrai échec derrière un faux espoir de course NFS."""
+    settings.LAB_FETCH_RETRIES = 3
+    _configure_g5k_credential(queued_run, monkeypatch)
+    monkeypatch.setattr("claire.lab.worker.time.sleep", lambda _s: None)
+    monkeypatch.setattr("claire.lab.runners.g5k.poll_interval", lambda _elapsed: 0)
+
+    calls = {"n": 0}
+
+    def fake_fetch(self, run, out_dir):
+        calls["n"] += 1
+        return False  # jamais de résultat, à aucun essai
+
+    fake = FakeBackend(states=["stopped"], submit_job_id="oar-coupe")
+    monkeypatch.setattr(FakeBackend, "fetch", fake_fetch)
+    monkeypatch.setattr("claire.lab.worker._backend_for", lambda run: fake)
+
+    result = execute_run(queued_run)
+    assert result.status == RunStatus.FAILED
+    assert result.error_code == "result_missing"
+    assert calls["n"] == 3
+
+
+def test_execute_run_ne_retente_pas_si_le_resultat_est_deja_la_au_premier_essai(
+    queued_run, monkeypatch,
+):
+    """Le chemin normal (résultat déjà visible dès le premier rapatriement, l'immense
+    majorité des cas) ne doit JAMAIS attendre inutilement — un seul appel à `fetch`."""
+    _configure_g5k_credential(queued_run, monkeypatch)
+    monkeypatch.setattr("claire.lab.worker.time.sleep", lambda _s: None)
+    monkeypatch.setattr("claire.lab.runners.g5k.poll_interval", lambda _elapsed: 0)
+
+    calls = {"n": 0}
+
+    def fake_fetch(self, run, out_dir):
+        calls["n"] += 1
+        Path(out_dir).mkdir(parents=True, exist_ok=True)
+        (Path(out_dir) / "results.json").write_text(
+            json.dumps({"task": "T1_primary", "metrics": {"macro_f1": 0.5}, "environment": {}})
+        )
+        return True
+
+    fake = FakeBackend(states=["stopped"], submit_job_id="oar-direct")
+    monkeypatch.setattr(FakeBackend, "fetch", fake_fetch)
+    monkeypatch.setattr("claire.lab.worker._backend_for", lambda run: fake)
+
+    result = execute_run(queued_run)
+    assert result.status == RunStatus.SUCCEEDED
+    assert calls["n"] == 1
+
+
 def test_execute_run_propage_le_code_metier_d_un_echec_de_soumission(queued_run, monkeypatch):
     """Sans clé SSH, `Grid5000Backend.submit` lève `G5KError('g5k_ssh_key_missing', …)`
     AVANT tout transfert (docs/pactiva-g5k/07_ARCHITECTURE.md §1) — le worker doit

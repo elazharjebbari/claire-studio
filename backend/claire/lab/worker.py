@@ -10,6 +10,7 @@ import logging
 import time
 from pathlib import Path
 
+from django.conf import settings
 from django.utils import timezone
 
 from .crypto import decrypt_secret
@@ -76,8 +77,23 @@ def execute_run(run: ExperimentRun) -> ExperimentRun:
         if not _wait_remote(run, backend):
             return run
 
+    # Bug réel trouvé le 14 août 2026 (5 runs G5K sur 8, même sweep, même worker) :
+    # `results.json` existait bel et bien côté Grid'5000 (vérifié à la main quelques
+    # minutes après l'échec) mais le PREMIER rapatriement ne le voyait pas — une course
+    # entre la fin du job côté nœud de calcul et la visibilité NFS de son écriture
+    # depuis `access.grid5000.fr` (deux machines distinctes, cohérence "close-to-open"
+    # NFS non instantanée). `_wait_remote` déclenche `fetch()` dès que l'état OAR passe
+    # à "stopped", sans délai de grâce. Quelques nouvelles tentatives espacées
+    # absorbent cette course sans rien coûter dans le cas normal (le fichier est déjà là
+    # au premier essai la plupart du temps).
+    max_attempts = getattr(settings, "LAB_FETCH_RETRIES", 3)
     try:
         complete = backend.fetch(run, out_dir)
+        attempt = 1
+        while not (Path(out_dir) / "results.json").exists() and attempt < max_attempts:
+            time.sleep(3)
+            complete = backend.fetch(run, out_dir)
+            attempt += 1
     except Exception as exc:
         return fail_run(run, getattr(exc, "code", "fetch_failed"), str(exc))
 
