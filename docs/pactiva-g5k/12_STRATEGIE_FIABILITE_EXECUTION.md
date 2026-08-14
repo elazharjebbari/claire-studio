@@ -1,7 +1,12 @@
 # Stratégie de fiabilité — activer les calculs réels sur Grid'5000
 
-Ce document est un **plan d'action**, pas un journal d'exécution : rien ci-dessous n'a
-été exécuté. Il reprend et englobe la checklist tactique déjà écrite
+**Mise à jour du 14 août 2026 : Paliers 1, 2 et 3 exécutés et validés en conditions
+réelles.** Voir le journal en fin de document. Le reste (Paliers 4-6) demeure un plan,
+non exécuté.
+
+Ce document est à l'origine un **plan d'action**, pas un journal d'exécution — sa
+première version (ci-dessous) ne décrivait rien d'encore exécuté. Il reprend et englobe
+la checklist tactique déjà écrite
 (`11_RUNBOOK_SONNET5.md` §Étape 10, étapes 10.5 à 10.12, restées non exécutées) dans
 une stratégie de fiabilité complète — observabilité, garanties de récupération des
 résultats, points d'arrêt explicites — plutôt que de la dupliquer.
@@ -195,3 +200,60 @@ Pendant les paliers 1-6, surveiller en parallèle (pas seulement l'UI Pactiva) :
 - **Nettoyage de la `ForeignKey` `Experiment.compute_target` inutilisée** (notée dans
   `docs/pactiva-lab-ui/04_CIBLE_CALCUL.md`) — une migration de données, à traiter
   séparément, sans rapport avec la fiabilité d'exécution elle-même.
+
+## Journal d'exécution
+
+### 14 août 2026 — Paliers 1, 2, 3
+
+**Préparation** : deux prérequis manquants découverts en vérifiant la checklist §3
+avant de rien réserver — aucun des deux n'était anticipé par la version initiale de ce
+document :
+1. **Aucun environnement Python n'avait jamais été provisionné sur Grid'5000.**
+   `Grid5000Backend` suppose un environnement conda nommé `pactiva-lab` déjà présent sur
+   le site visé — le code ne l'installe jamais lui-même. Provisionné manuellement par
+   site (`module load conda && conda create -n pactiva-lab && pip install -e
+   pactiva-src[sklearn]`), à répéter pour chaque nouveau site utilisé (le `home`
+   Grid'5000 n'est PAS partagé entre sites, voir bug ci-dessous).
+2. **Charge des sites** vérifiée via l'API `sites/<site>/status` avant de choisir
+   (Nantes 88 % libre au moment du test — mais écarté ensuite, voir plus bas).
+
+**Palier 1 — trois tentatives, deux bugs réels corrigés avant le premier succès :**
+
+| Tentative | Site | Résultat | Cause |
+|---|---|---|---|
+| 1 | nantes | Échec à la soumission (500 OAR, `queue 'abaca' does not exist`) | Particularité de configuration côté Nantes, hors de notre contrôle — jamais reproduite ailleurs. Aucune ressource réservée (refusé avant allocation). |
+| 2 | rennes | Job réellement alloué (job OAR `4018437`) puis échec immédiat : `cd: ~/pactiva/runs/<id>: No such file or directory` | **Bug réel n°1** : `RUN_DIR="{workdir}/runs/{id}"` avec un tilde entre guillemets doubles — bash ne l'étend jamais dans ce contexte. Corrigé (`$HOME` substitué en Python), déployé (`1a96d1d`), 2 tests de non-régression. |
+| 3 | nancy | ✅ **Succès complet** (job OAR `6852543`) | — |
+
+En creusant la tentative 1 (avant même de retenter), un second bug a été trouvé par
+sondage direct du frontal `access.grid5000.fr` (lecture seule, coût nul) : **le `home`
+Grid'5000 est propre à CHAQUE site, jamais partagé** — `~` bare sur le frontal pointe son
+propre disque local (974 Mo, écriture refusée), pas le home d'un site. `workdir` bare
+utilisé tel quel comme cible rsync aurait fait échouer le transfert ou poussé les
+fichiers là où aucun nœud n'aurait pu les voir. Corrigé (`_access_path()`, deux chemins
+distincts pour la perspective nœud vs frontal), déployé (`bdf0316`), 5 tests.
+
+**Palier 1, résultat final (site nancy, job `6852543`)** :
+- `queued → waiting → running → succeeded`, **31 secondes de calcul réel** (walltime
+  demandé : 5 min — large marge).
+- `results.json` valide : `macro_f1=0.448`, `kappa=0.481`, empreinte d'environnement
+  complète (`python 3.12.13`, `scikit-learn 1.9.0`, `numpy 2.5.2`, `gpu.available:
+  false` — cohérent, aucun GPU demandé).
+- `externalJobId` UI (`6852543`) confirmé identique à `oarstat -f -j 6852543` côté
+  Grid'5000 (`state = Terminated`, `owner = ejebbari`, `walltime = 0:5:0`).
+- `oarstat -u ejebbari` vide après coup — aucun job orphelin.
+
+**Palier 2 — annulation en vol (site nancy, job `6852549`)** : run relancé avec
+`walltime=00:03`, annulation demandée 2 s après le passage en `running` (au lieu des
+10-20 s prévus — le run était trop rapide pour attendre plus sans risquer de le
+manquer). **Passage à `cancelled` en 2 secondes.** Vérifié côté Grid'5000 :
+`oarstat -f -j 6852549` → `state = Terminated` — confirme que le job a été réellement
+arrêté sur la plateforme, pas seulement marqué annulé côté Pactiva. C'est la validation
+en conditions réelles du correctif du 11 août 2026 sur `_wait_remote`
+(annulation cross-process, `11_RUNBOOK_SONNET5.md` Lot 1).
+
+**Palier 3 — aucun job orphelin** : `oarstat -u ejebbari` vide après les Paliers 1 et 2,
+sur le site nancy. ✅.
+
+**Non exécuté** : Paliers 4 (GPU), 5 (garde-fou de sweep), 6 (le vrai test) — chacun
+nécessite un accord explicite séparé, pas encore demandé à ce stade.
