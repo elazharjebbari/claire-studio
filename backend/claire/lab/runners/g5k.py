@@ -87,6 +87,13 @@ cd "$RUN_DIR"
 
 module load conda 2>/dev/null || true
 source activate {shlex.quote(env_name)} 2>/dev/null || conda activate {shlex.quote(env_name)}
+# Le libstdc++ SYSTÈME du nœud peut être plus ancien que celui qu'attendent numpy/torch
+# installés dans l'environnement conda (`GLIBCXX_3.4.29' not found`, alors même que
+# l'environnement embarque bien une version compatible sous `$CONDA_PREFIX/lib`) — bug
+# réel trouvé le 14 août 2026 sur un vrai nœud GPU (cluster gemini, site lyon) : sans
+# cette ligne, `import torch` plante AVANT même d'atteindre le garde-fou GPU ci-dessous,
+# qui ne verrait donc jamais tourner sa propre vérification.
+export LD_LIBRARY_PATH="${{CONDA_PREFIX:-}}/lib:${{LD_LIBRARY_PATH:-}}"
 export HF_HOME="${{HF_HOME:-$RUN_DIR/.hf}}"
 {gpu_guard}
 python -m pactiva_lab run \\

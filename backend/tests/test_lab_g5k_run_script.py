@@ -95,3 +95,14 @@ def test_env_name_avec_metacaractere_shell_ne_permet_pas_l_injection():
 def test_hf_home_isole_par_run_pour_ne_jamais_partager_le_cache_entre_jobs():
     script = build_run_script(run_id="r42", require_gpu=False, env_name="e", workdir="~/pactiva")
     assert 'export HF_HOME="${HF_HOME:-$RUN_DIR/.hf}"' in script
+
+
+def test_ld_library_path_precede_le_garde_fou_gpu():
+    """Bug réel trouvé le 14 août 2026 sur un vrai nœud GPU (cluster gemini, lyon) :
+    sans ce réglage, `import torch` échoue avec `GLIBCXX_3.4.29' not found` (le
+    libstdc++ SYSTÈME du nœud est plus ancien que celui attendu par l'environnement
+    conda) — AVANT même d'atteindre le garde-fou GPU, qui plante donc lui aussi au lieu
+    de rapporter proprement l'absence de GPU (code 64/65)."""
+    script = build_run_script(run_id="r1", require_gpu=True, env_name="e", workdir="~/pactiva")
+    assert 'export LD_LIBRARY_PATH="${CONDA_PREFIX:-}/lib:${LD_LIBRARY_PATH:-}"' in script
+    assert script.index("LD_LIBRARY_PATH") < script.index("nvidia-smi")
