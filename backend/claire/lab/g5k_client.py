@@ -85,11 +85,36 @@ def submit(client: Grid5000, site: str, *, resources: str, command: str,
     return str(job.uid)
 
 
+# États OAR réellement TERMINAUX (plus rien à attendre du job) — le reste (`waiting`,
+# `hold`, `tolaunch`, `launching`, `suspended`, tout état futur/inconnu) doit rester
+# considéré comme « pas encore fini », jamais `stopped` par défaut.
+#
+# Bug réel trouvé le 14 août 2026 (job Grid'5000 réel, site nancy, job 6852994) :
+# l'ancien mapping ne reconnaissait explicitement que `waiting`/`running`, et traitait
+# TOUT le reste — y compris `toLaunch`/`Launching`, les états transitoires entre la
+# soumission et le vrai démarrage du script — comme `stopped`. `_wait_remote` déclenchait
+# alors `fetch()` quelques secondes après la soumission, bien avant que le job n'ait
+# seulement commencé à s'exécuter : le run échouait en `result_missing` alors que le job,
+# 18 secondes plus tard, terminait réellement avec des résultats valides sur Grid'5000
+# (`oarstat -f` : `state = Terminated, exit_code = 0`, `results.json` complet et
+# cohérent rapatrié manuellement). Le budget de nouvelles tentatives de `fetch()`
+# (`LAB_FETCH_RETRIES`, bug de la course NFS déjà corrigé) ne pouvait rien y faire : le
+# job n'avait tout simplement pas encore tourné.
+_TERMINAL_STATES = {"terminated", "error", "toerror", "finishing"}
+
+
 def poll(client: Grid5000, site: str, job_id: str) -> str:
     """État du job — mappé vers `waiting`/`running`/`stopped` (jamais une valeur brute
-    non prévue par l'UI, cohérent avec le comportement déjà en place)."""
+    non prévue par l'UI, cohérent avec le comportement déjà en place).
+
+    Le défaut est `waiting` (pas `stopped`) pour tout état non explicitement reconnu —
+    voir `_TERMINAL_STATES` ci-dessus pour la raison."""
     job = _wrap("consultation du job", lambda: client.sites[site].jobs.get(job_id))
-    return {"waiting": "waiting", "running": "running"}.get(job.state, "stopped")
+    if job.state == "running":
+        return "running"
+    if job.state in _TERMINAL_STATES:
+        return "stopped"
+    return "waiting"
 
 
 def cancel(client: Grid5000, site: str, job_id: str) -> None:

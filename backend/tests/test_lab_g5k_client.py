@@ -166,17 +166,32 @@ class TestPoll:
         ):
             assert poll(_client(), "grenoble", "1965464") == "running"
 
-    def test_toute_autre_valeur_devient_stopped(self):
-        """⭐ Y compris un état futur non prévu par l'UI (error/terminated observés
-        ailleurs dans la doc, jamais dans un exemple JSON complet) : ne jamais planter,
-        toujours retomber sur `stopped` — c'est `fetch()`/`_SENTINEL` qui distingue
-        ensuite complet de partiel, pas ce mapping."""
-        payload = {**JOB_CREATED_PAYLOAD, "state": "terminated"}
+    @pytest.mark.parametrize("state", ["terminated", "error", "toerror", "finishing"])
+    def test_les_etats_terminaux_oar_deviennent_stopped(self, state):
+        payload = {**JOB_CREATED_PAYLOAD, "state": state}
         with patch.object(
             requests.Session, "send",
             side_effect=[_response(200, SITE_PAYLOAD), _response(200, payload)],
         ):
             assert poll(_client(), "grenoble", "1965464") == "stopped"
+
+    @pytest.mark.parametrize("state", ["hold", "tolaunch", "launching", "suspended", "un_etat_futur_inconnu"])
+    def test_les_etats_transitoires_ou_inconnus_ne_deviennent_jamais_stopped(self, state):
+        """⭐ Bug réel trouvé le 14 août 2026 (job Grid'5000 6852994, site nancy) :
+        l'ancien mapping traitait tout état non explicitement `waiting`/`running` comme
+        `stopped`, y compris `toLaunch`/`Launching` — les états transitoires ENTRE la
+        soumission et le vrai démarrage du script. `_wait_remote` déclenchait alors
+        `fetch()` quelques secondes après la soumission, bien avant que le job n'ait
+        commencé à s'exécuter : échec `result_missing` alors que le job, une fois
+        réellement lancé, terminait avec des résultats valides. Le défaut doit rester
+        « pas encore fini » pour tout état non reconnu comme terminal — jamais
+        `stopped` par optimisme."""
+        payload = {**JOB_CREATED_PAYLOAD, "state": state}
+        with patch.object(
+            requests.Session, "send",
+            side_effect=[_response(200, SITE_PAYLOAD), _response(200, payload)],
+        ):
+            assert poll(_client(), "grenoble", "1965464") == "waiting"
 
 
 class TestCancel:
