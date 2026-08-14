@@ -255,5 +255,59 @@ en conditions réelles du correctif du 11 août 2026 sur `_wait_remote`
 **Palier 3 — aucun job orphelin** : `oarstat -u ejebbari` vide après les Paliers 1 et 2,
 sur le site nancy. ✅.
 
-**Non exécuté** : Paliers 4 (GPU), 5 (garde-fou de sweep), 6 (le vrai test) — chacun
-nécessite un accord explicite séparé, pas encore demandé à ce stade.
+### 14 août 2026 — Palier 4 (GPU minimal)
+
+**Préparation** — deux problèmes supplémentaires trouvés en sondant un vrai nœud GPU
+(cluster gemini, site lyon, V100-SXM2-32GB, avant toute soumission via l'application) :
+
+1. **`queue 'abaca' does not exist`, reproduit ici aussi** (déjà vu au Palier 1 sur
+   nantes) — cette fois via `oarsub` brut sur lyon, confirmant que ce n'est PAS
+   spécifique à un site : c'est une résolution de queue par défaut cassée pour ce
+   compte. Contournée par `-q default` explicite. **Bug réel n°3, corrigé dans le code
+   applicatif** : `g5k_client.submit()` n'envoyait jamais de `queue` dans le payload —
+   ajouté, toujours envoyé désormais (déployé `97c3d02`, 4 tests).
+2. **`gemini` classé "exotic"** côté Grid'5000 malgré son statut "vérifié" dans notre
+   catalogue — `oarsub` a explicitement demandé `-t exotic`. Ajouté un booléen de
+   config `compute.g5k.exotic` (même commit).
+3. **`torch.cuda.is_available()` peut renvoyer `True` sur un GPU que le build PyTorch
+   installé ne sait pas exploiter** — l'environnement initial (`torch==2.13.0+cu130`)
+   détectait la V100 (compute capability 7.0) mais n'embarquait aucun noyau compilé
+   pour cette CC (le build cu130 cible CC ≥7.5). Notre garde-fou GPU applicatif ne
+   teste QUE `is_available()` — il ne l'aurait donc PAS attrapé. Corrigé manuellement
+   pour ce lot en réinstallant `torch==2.13.0+cu126` (confirmé par un vrai produit
+   matriciel exécuté sur la V100, pas seulement `is_available()`) ; **non corrigé dans
+   le code applicatif** — noté en risque résiduel ci-dessous.
+4. **`GLIBCXX_3.4.29' not found`** — le libstdc++ SYSTÈME du nœud est plus ancien que
+   celui qu'attendent numpy/torch de l'environnement conda, même quand l'environnement
+   embarque bien une version compatible. Sans correctif, ce n'est pas seulement le run
+   qui échoue : c'est le GARDE-FOU GPU LUI-MÊME qui plante (il importe torch pour se
+   vérifier), avec une trace Python cryptique au lieu d'un code d'erreur propre.
+   **Bug réel n°4, corrigé dans le code applicatif** : `LD_LIBRARY_PATH` explicite
+   ajouté à `build_run_script()`, avant le garde-fou (déployé `3d25272`, 1 test).
+
+**Palier 4, résultat final (site lyon, cluster gemini, job `2058813`)** — lancé via
+l'application réelle (`queue_run`), preset `legal-bert-finetune` réduit pour la
+validation (1 époque au lieu de 8, `k=2` au lieu de 5, `walltime=00:15` au lieu de
+`03:00`) :
+- `queued → waiting → running → succeeded`, **593 secondes (9,9 min) de calcul réel**
+  sur les 15 min de walltime demandées.
+- `results.json` valide : `macro_f1=0.429`, `kappa=0.531`, `ece=0.163`. Empreinte
+  d'environnement confirmant l'usage RÉEL du GPU (pas un repli silencieux CPU, le
+  risque documenté §5 de l'audit d'origine, `05_MONITORING_ML_GPU.md` §4.3) :
+  `gpu.available: true, device: "Tesla V100-SXM2-32GB"`, `torch: "2.13.0+cu126"`.
+- `externalJobId` confirmé identique côté `oarstat -f -j 2058813`
+  (`state = Terminated`), et surtout : `initial_request` montre
+  `--queue=default ... --type=exotic` — la preuve que les DEUX correctifs (n°3 et n°4)
+  fonctionnent bien via le code applicatif réel, pas seulement en test manuel.
+- `oarstat -u ejebbari` vide après coup — aucun job orphelin.
+
+**Risque résiduel non corrigé** : le garde-fou GPU applicatif (`nvidia-smi` +
+`torch.cuda.is_available()`) ne détecte PAS un désaccord de compute capability
+(bug n°3 ci-dessus) — seulement l'absence totale de GPU. Un futur run sur un cluster
+plus récent que le build PyTorch installé échouerait au moment du calcul réel (erreur
+CUDA "no kernel image"), pas au garde-fou. Non traité dans ce lot : nécessiterait de
+vérifier `torch.cuda.get_device_capability()` contre les CC supportées par le build
+installé, une vérification plus fine que ce que le garde-fou fait aujourd'hui.
+
+**Non exécuté** : Paliers 5 (garde-fou de sweep), 6 (le vrai test) — chacun nécessite
+un accord explicite séparé, pas encore demandé à ce stade.
