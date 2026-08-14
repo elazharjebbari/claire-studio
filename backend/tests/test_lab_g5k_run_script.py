@@ -52,7 +52,26 @@ def test_set_euo_pipefail_pour_qu_un_echec_intermediaire_ne_soit_jamais_silencie
 
 def test_run_id_et_workdir_composent_le_chemin_distant():
     script = build_run_script(run_id="abc-123", require_gpu=False, env_name="e", workdir="~/monworkdir")
-    assert 'RUN_DIR="~/monworkdir/runs/abc-123"' in script
+    assert 'RUN_DIR="$HOME/monworkdir/runs/abc-123"' in script
+
+
+def test_le_tilde_est_jamais_laisse_litteral_entre_guillemets_doubles():
+    """Bug réel trouvé le 14 août 2026 sur un vrai job Grid'5000 (site Rennes) : `~` ne
+    s'étend JAMAIS entre guillemets doubles en bash — `RUN_DIR="~/pactiva/..."` laissait
+    un tilde littéral dans la valeur, et `cd "$RUN_DIR"` échouait avec
+    `No such file or directory` (confirmé dans le stderr OAR du job réel). `$HOME` est
+    une variable, elle s'étend normalement entre guillemets — c'est le remplacement
+    correct, fait ici EN PYTHON avant d'écrire le script plutôt qu'en bash."""
+    script = build_run_script(run_id="r1", require_gpu=False, env_name="e", workdir="~/pactiva")
+    assert '"~' not in script
+    assert 'RUN_DIR="$HOME/pactiva/runs/r1"' in script
+
+
+def test_workdir_sans_tilde_traverse_sans_modification():
+    script = build_run_script(
+        run_id="r1", require_gpu=False, env_name="e", workdir="/mnt/group_storage/pactiva",
+    )
+    assert 'RUN_DIR="/mnt/group_storage/pactiva/runs/r1"' in script
 
 
 def test_env_name_avec_espace_est_protege_par_shlex_quote():

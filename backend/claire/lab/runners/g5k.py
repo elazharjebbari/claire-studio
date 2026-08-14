@@ -73,9 +73,16 @@ import sys, torch
 sys.exit(0 if torch.cuda.is_available() else 1)
 PYCHECK
 """
+    # `~` ne s'étend JAMAIS entre guillemets doubles en bash — `RUN_DIR="~/pactiva/..."`
+    # laisserait un tilde LITTÉRAL dans la valeur, et `cd "$RUN_DIR"` échouerait sur un
+    # répertoire qui n'existe pas. Bug réel trouvé le 14 août 2026 (job Grid'5000 réel,
+    # site Rennes, `cd: ~/pactiva/runs/<id>: No such file or directory` dans le stderr
+    # OAR) — `$HOME` est une variable, elle s'étend normalement entre guillemets, donc on
+    # substitue le tilde EN PYTHON avant d'écrire le script plutôt qu'en bash.
+    node_workdir = f"$HOME{workdir[1:]}" if workdir.startswith("~") else workdir
     return f"""#!/usr/bin/env bash
 set -euo pipefail
-RUN_DIR="{workdir}/runs/{run_id}"
+RUN_DIR="{node_workdir}/runs/{run_id}"
 cd "$RUN_DIR"
 
 module load conda 2>/dev/null || true
