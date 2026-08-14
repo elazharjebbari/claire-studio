@@ -1,8 +1,8 @@
 # Stratégie de fiabilité — activer les calculs réels sur Grid'5000
 
-**Mise à jour du 14 août 2026 : Paliers 1, 2 et 3 exécutés et validés en conditions
-réelles.** Voir le journal en fin de document. Le reste (Paliers 4-6) demeure un plan,
-non exécuté.
+**Mise à jour du 14 août 2026 : Paliers 1 à 5 exécutés et validés en conditions
+réelles.** Voir le journal en fin de document. Seul le Palier 6 (le vrai test, à pleine
+échelle) demeure un plan, non exécuté.
 
 Ce document est à l'origine un **plan d'action**, pas un journal d'exécution — sa
 première version (ci-dessous) ne décrivait rien d'encore exécuté. Il reprend et englobe
@@ -309,5 +309,41 @@ CUDA "no kernel image"), pas au garde-fou. Non traité dans ce lot : nécessiter
 vérifier `torch.cuda.get_device_capability()` contre les CC supportées par le build
 installé, une vérification plus fine que ce que le garde-fou fait aujourd'hui.
 
-**Non exécuté** : Paliers 5 (garde-fou de sweep), 6 (le vrai test) — chacun nécessite
-un accord explicite séparé, pas encore demandé à ce stade.
+### 14 août 2026 — Palier 5 (garde-fou de sweep) — le bug le plus sérieux de la série
+
+**Refus sans force** : sweep de 4 variantes (`/model/ngram_max: [1,2,3,4]`, CPU,
+`tfidf_linear`, cible G5K délibérément choisie légère — la mécanique du garde-fou de
+sweep est indépendante du type de calcul, pas besoin de 4 fine-tunings GPU pour la
+valider) → `400 g5k_sweep_too_large` immédiat, **0 run créé**, `oarstat` confirmé vide.
+Exactement le comportement attendu.
+
+**Avec force=true** : **incident de méthode** (pas un bug applicatif) — le premier
+appel `curl` a réussi côté serveur (4 runs créés) mais sa réponse ne s'est pas affichée
+localement ; en relançant pour comprendre pourquoi, un second appel a créé 4 runs
+supplémentaires (`force=true` contourne délibérément la déduplication par empreinte,
+donc rien n'a bloqué le doublon). Au final 8 runs réels au lieu de 4 — sans
+conséquence sur la validation du garde-fou lui-même (chaque appel a bien créé
+exactement les 4 runs demandés, indépendamment suivis, `ngram_max` correctement
+distribué 1/2/3/4 dans chaque lot).
+
+**Ce que ces 8 runs réels ont révélé, en revanche, est le bug le plus sérieux trouvé
+dans toute cette série** : 5 runs sur 8 ont échoué avec `result_missing` — alors que
+`results.json` ET `_SENTINEL` existaient bel et bien côté Grid'5000 pour l'un d'eux
+(vérifié à la main : le job avait même imprimé ses métriques finales dans son propre
+stdout OAR). **Un résultat réellement calculé, silencieusement porté disparu** —
+exactement le risque que `§4 Garantie de récupération des résultats` de ce document
+existe pour prévenir, désormais confirmé en conditions réelles plutôt qu'hypothétique.
+
+Cause : `_wait_remote` déclenche le rapatriement dès que l'état OAR passe à "stopped",
+sans délai de grâce — alors que le job tourne sur un NŒUD DE CALCUL et que le rsync
+part du FRONTAL `access.grid5000.fr`, deux montages NFS distincts dont la cohérence
+"close-to-open" n'est pas instantanée. **Bug réel n°5, corrigé** : nouvelle tentative
+bornée (3 essais, `LAB_FETCH_RETRIES`) du rapatriement complet tant que `results.json`
+n'apparaît pas localement — déployé (`9853f44`), 3 tests (dont un qui verrouille
+l'absence de coût dans le cas normal : un seul appel quand le résultat est déjà là).
+
+Après correctif : `oarstat -u ejebbari` vide sur nancy ET lyon — aucun job orphelin
+malgré le doublon de méthode et les 5 échecs.
+
+**Non exécuté** : Palier 6 (le vrai test, à pleine échelle) — nécessite un accord
+explicite séparé, pas encore demandé à ce stade.
