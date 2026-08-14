@@ -254,16 +254,33 @@ def heartbeat(run: ExperimentRun, *, progress: int | None = None, phase: str = "
 def ingest_results(run: ExperimentRun, out_dir: Path, *, partial: bool = False) -> ExperimentRun:
     """Valide et ingère les résultats. TOUT OU RIEN.
 
-    Un `results.json` non conforme fait échouer le run plutôt que d'entrer en base à
-    moitié : un résultat partiel silencieux se retrouverait ensuite dans un tableau de
-    l'article sans que personne ne s'en aperçoive.
+    Un résultat non conforme fait échouer le run plutôt que d'entrer en base à moitié :
+    un résultat partiel silencieux se retrouverait ensuite dans un tableau de l'article
+    sans que personne ne s'en aperçoive.
+
+    Bug réel trouvé le 14 août 2026 (test réel de walltime épuisé sur Grid'5000) :
+    cette fonction ne lisait QUE `results.json`, quel que soit `partial` — jamais
+    `results.partial.json`, écrit par le runner APRÈS CHAQUE PLI
+    (`research/pactiva_lab/runner.py::_write_partial`) précisément pour le cas où le
+    walltime coupe le job en cours de route. `results.json` (le fichier complet)
+    n'est écrit qu'à la toute fin de `run_experiment()` — un job coupé avant la fin
+    ne l'écrit JAMAIS. Le mécanisme entier de "ne pas perdre le travail accompli",
+    documenté depuis l'origine dans `runner.py` et `worker.py`, ne fonctionnait donc
+    jamais : tout job réellement tué par le walltime échouait avec `result_missing`,
+    même après 4 plis sur 5 correctement calculés et écrits.
     """
-    results_path = Path(out_dir) / "results.json"
-    if not results_path.exists():
+    out_dir = Path(out_dir)
+    results_path = out_dir / "results.json"
+    partial_path = out_dir / "results.partial.json"
+    if results_path.exists():
+        source_path = results_path
+    elif partial and partial_path.exists():
+        source_path = partial_path
+    else:
         return fail_run(run, "result_missing", f"results.json absent de {out_dir}")
 
     try:
-        payload = json.loads(results_path.read_text(encoding="utf-8"))
+        payload = json.loads(source_path.read_text(encoding="utf-8"))
         validate_results(payload)
     except (json.JSONDecodeError, ResultValidationError) as exc:
         return fail_run(run, "result_schema_invalid", str(exc)[:500])

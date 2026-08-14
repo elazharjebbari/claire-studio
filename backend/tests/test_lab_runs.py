@@ -423,6 +423,62 @@ def test_ingestion_partielle_marquee_partial(experiment, tmp_path):
     assert run.metrics["metrics"]["macro_f1"] == 0.5
 
 
+def test_ingestion_partielle_utilise_results_partial_json_quand_results_json_est_absent(
+    experiment, tmp_path,
+):
+    """⭐ Bug réel trouvé le 14 août 2026 (test réel de walltime épuisé sur Grid'5000) :
+    `results.json` (le fichier COMPLET) n'est écrit qu'à la toute fin de
+    `run_experiment()` — un job réellement tué par le walltime ne l'écrit JAMAIS, seul
+    `results.partial.json` existe (écrit APRÈS CHAQUE PLI). Le test précédent, qui
+    écrivait dans `results.json` pour simuler un cas "partiel", ne reproduisait donc
+    PAS le scénario réel — c'est exactement pour ça que ce bug est passé inaperçu."""
+    run = queue_run(experiment=experiment)
+    out = tmp_path / "out"
+    out.mkdir()
+    (out / "results.partial.json").write_text(
+        json.dumps({
+            "task": "T1_primary", "metrics": {"macro_f1": 0.3}, "environment": {},
+            "per_fold": [{"macro_f1": 0.3}], "partial": True,
+        })
+    )
+
+    ingest_results(run, out, partial=True)
+    run.refresh_from_db()
+    assert run.status == RunStatus.PARTIAL
+    assert run.metrics["metrics"]["macro_f1"] == 0.3
+    assert run.error_code == ""  # jamais `result_missing` — le travail accompli est conservé
+
+
+def test_ingestion_prefere_results_json_complet_si_les_deux_existent(experiment, tmp_path):
+    run = queue_run(experiment=experiment)
+    out = tmp_path / "out"
+    out.mkdir()
+    (out / "results.partial.json").write_text(
+        json.dumps({"task": "T1_primary", "metrics": {"macro_f1": 0.1}, "environment": {}})
+    )
+    (out / "results.json").write_text(
+        json.dumps({"task": "T1_primary", "metrics": {"macro_f1": 0.9}, "environment": {}})
+    )
+
+    ingest_results(run, out, partial=True)
+    run.refresh_from_db()
+    assert run.metrics["metrics"]["macro_f1"] == 0.9
+
+
+def test_ingestion_sans_aucun_resultat_ni_partiel_echoue_toujours(experiment, tmp_path):
+    """Le cas où le walltime coupe le job AVANT même la fin du premier pli : rien à
+    récupérer, `result_missing` reste le bon échec — la nouvelle tentative ne doit
+    jamais inventer un résultat là où il n'y en a aucun."""
+    run = queue_run(experiment=experiment)
+    out = tmp_path / "out"
+    out.mkdir()
+
+    ingest_results(run, out, partial=True)
+    run.refresh_from_db()
+    assert run.status == RunStatus.FAILED
+    assert run.error_code == "result_missing"
+
+
 def test_comparaison_refuse_des_plis_differents(lab_project):
     """⭐ Comparer deux modèles sur des découpages différents produit un écart qui ne
     veut rien dire."""
