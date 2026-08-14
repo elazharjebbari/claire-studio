@@ -52,6 +52,8 @@ export interface DatasetSummary {
   createdAt: string;
 }
 
+export type ComputeTargetKind = "local" | "g5k";
+
 export interface RunSummary {
   id: string;
   experimentName: string;
@@ -63,6 +65,12 @@ export interface RunSummary {
   errorCode: string;
   createdAt: string;
   completedAt: string | null;
+  /** Cible RÉELLEMENT utilisée par le worker (`run.config.compute.target`) — jamais
+   * déduite d'ailleurs, voir `ExperimentRunSummarySerializer.get_compute_target`. */
+  computeTarget: ComputeTargetKind;
+  /** Site Grid'5000 déclaré dans la config (`compute.g5k.site`) — absent si non précisé
+   * ou si la cible est locale. */
+  computeSite: string | null;
 }
 
 export interface RunDetail extends RunSummary {

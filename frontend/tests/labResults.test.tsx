@@ -147,6 +147,8 @@ const RUN: RunDetail = {
   errorCode: "",
   createdAt: "2026-08-11T09:00:00Z",
   completedAt: "2026-08-11T09:05:00Z",
+  computeTarget: "local",
+  computeSite: null,
   config: {},
   environment: {},
   externalJobId: "",
@@ -235,6 +237,80 @@ describe("RunResults", () => {
 // --------------------------------------------------------------------------- //
 // Comparaison de runs depuis la liste
 // --------------------------------------------------------------------------- //
+
+// --------------------------------------------------------------------------- //
+// Cible de calcul — Local vs Grid'5000 (audit UI Lab, 14 août 2026 : rien
+// n'affichait explicitement où une expérience s'exécute)
+// --------------------------------------------------------------------------- //
+
+describe("RunList — colonne Cible", () => {
+  it("distingue un run local d'un run Grid'5000, avec le site s'il est déclaré", async () => {
+    const api = await import("@/features/lab/api");
+    vi.mocked(api.listRuns).mockResolvedValueOnce([
+      { id: "1", experimentName: "tfidf", task: "T1_primary", status: "succeeded",
+        progress: 100, phase: "", macroF1: 0.55, errorCode: "", createdAt: "", completedAt: "",
+        computeTarget: "local", computeSite: null },
+      { id: "2", experimentName: "legal-bert", task: "T1_primary", status: "succeeded",
+        progress: 100, phase: "", macroF1: 0.68, errorCode: "", createdAt: "", completedAt: "",
+        computeTarget: "g5k", computeSite: "nancy" },
+    ] as never);
+    const { RunList } = await import("@/features/lab/RunList");
+    render(<RunList slug="demo" />);
+
+    const row1 = await screen.findByTestId("run-1");
+    expect(row1.textContent).toContain("Local");
+    const row2 = screen.getByTestId("run-2");
+    expect(row2.textContent).toContain("Grid'5000");
+    expect(row2.textContent).toContain("nancy");
+  });
+});
+
+describe("RunResults — badge de cible dans l'en-tête", () => {
+  it("affiche Grid'5000 + le site pour un run exécuté sur la grille", async () => {
+    const api = await import("@/features/lab/api");
+    vi.mocked(api.getRun).mockResolvedValueOnce({
+      ...RUN, computeTarget: "g5k", computeSite: "nancy",
+    } as never);
+    const { RunResults } = await import("@/features/lab/RunResults");
+    render(<RunResults slug="demo" runId="run-1" />);
+
+    const badge = await screen.findByTestId("compute-target-badge");
+    expect(badge.textContent).toContain("Grid'5000");
+    expect(badge.textContent).toContain("nancy");
+  });
+
+  it("affiche Local, sans site, pour un run exécuté sur le VPS", async () => {
+    const api = await import("@/features/lab/api");
+    vi.mocked(api.getRun).mockResolvedValueOnce({ ...RUN } as never); // RUN: computeTarget local
+    const { RunResults } = await import("@/features/lab/RunResults");
+    render(<RunResults slug="demo" runId="run-1" />);
+
+    const badge = await screen.findByTestId("compute-target-badge");
+    expect(badge.textContent).toContain("Local");
+    expect(badge.textContent).not.toContain("Grid'5000");
+  });
+
+  it("⭐ affiche l'identifiant du job OAR quand il existe — seul moyen de croiser avec les outils Grid'5000 en cas de blocage", async () => {
+    const api = await import("@/features/lab/api");
+    vi.mocked(api.getRun).mockResolvedValueOnce({
+      ...RUN, computeTarget: "g5k", computeSite: "nancy", externalJobId: "1234567",
+    } as never);
+    const { RunResults } = await import("@/features/lab/RunResults");
+    render(<RunResults slug="demo" runId="run-1" />);
+
+    expect(await screen.findByTestId("run-external-job-id")).toHaveTextContent("1234567");
+  });
+
+  it("n'affiche rien pour un run local (jamais de job OAR)", async () => {
+    const api = await import("@/features/lab/api");
+    vi.mocked(api.getRun).mockResolvedValueOnce({ ...RUN, externalJobId: "" } as never);
+    const { RunResults } = await import("@/features/lab/RunResults");
+    render(<RunResults slug="demo" runId="run-1" />);
+
+    await screen.findByTestId("run-results");
+    expect(screen.queryByTestId("run-external-job-id")).not.toBeInTheDocument();
+  });
+});
 
 describe("RunList — comparaison", () => {
   const runs = [

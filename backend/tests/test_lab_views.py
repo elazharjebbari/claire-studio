@@ -115,6 +115,40 @@ def test_lead_et_reviewer_peuvent_lister_les_runs(lab_campaign, role_key):
     assert resp.status_code == 200
 
 
+def test_la_liste_des_runs_expose_la_cible_d_execution_reellement_utilisee(
+    lab_campaign, lab_dataset,
+):
+    """`compute_target` doit venir de `run.config["compute"]["target"]` — le SEUL champ
+    que `worker._backend_for()` lit pour décider où le run s'exécute vraiment.
+    `Experiment.compute_target` (une FK vers `ComputeTarget`) existe dans le modèle
+    mais n'intervient à AUCUN moment dans cette décision : l'exposer à la place
+    afficherait parfois une cible différente de celle réellement utilisée."""
+    slug = lab_campaign["project"].slug
+    experiment = Experiment.objects.create(
+        project=lab_campaign["project"], dataset=lab_dataset, created_by=lab_campaign["lead"],
+        name="local", task=Task.T1, config=_base_config(lab_dataset.id),
+    )
+    local_run = ExperimentRun.objects.create(
+        experiment=experiment, config=_base_config(lab_dataset.id), fingerprint="a" * 64,
+        status=RunStatus.QUEUED,
+    )
+    g5k_config = _base_config(lab_dataset.id)
+    g5k_config["compute"] = {"target": "g5k", "g5k": {"site": "nancy"}}
+    g5k_run = ExperimentRun.objects.create(
+        experiment=experiment, config=g5k_config, fingerprint="b" * 64, status=RunStatus.QUEUED,
+    )
+
+    resp = _client(lab_campaign["lead"]).get(f"{API}/projects/{slug}/lab/runs")
+    assert resp.status_code == 200
+    by_id = {row["id"]: row for row in resp.json()}
+
+    assert by_id[str(local_run.id)]["computeTarget"] == "local"
+    assert by_id[str(local_run.id)]["computeSite"] is None
+
+    assert by_id[str(g5k_run.id)]["computeTarget"] == "g5k"
+    assert by_id[str(g5k_run.id)]["computeSite"] == "nancy"
+
+
 # --------------------------------------------------------------------------- #
 # Datasets
 # --------------------------------------------------------------------------- #

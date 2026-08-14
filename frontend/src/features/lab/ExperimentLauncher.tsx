@@ -22,6 +22,7 @@ import { Cpu, FlaskConical, Loader2, Rocket, TriangleAlert } from "lucide-react"
 import { Button, Panel } from "@/components/ui/primitives";
 import { ApiError } from "@/lib/api/client";
 
+import { ComputeTargetBadge } from "./ComputeTargetBadge";
 import {
   createExperiment,
   estimateExperiment,
@@ -57,6 +58,19 @@ function apiErrorDetail(error: unknown): { detail: string; code: string | null }
     }
   }
   return { detail: error instanceof Error ? error.message : "erreur inconnue", code: null };
+}
+
+// Même clé que celle réellement lue par le worker à l'exécution (`compute.target`,
+// jamais `Experiment.compute_target`, voir `ComputeTargetBadge.tsx`) — mais lue ici
+// dans `preset.config`, pas dans un run : c'est ce qui donne cette cible AVANT même
+// de créer l'expérience, pour que le mode guidé ne cache jamais où elle s'exécutera.
+function presetComputeTarget(preset: Preset): { target: "local" | "g5k"; site: string | null } {
+  const compute = (preset.config as { compute?: { target?: string; g5k?: { site?: string } } })
+    .compute;
+  return {
+    target: compute?.target === "g5k" ? "g5k" : "local",
+    site: compute?.g5k?.site ?? null,
+  };
 }
 
 function baseConfig(preset: Preset | null, datasetId: string): Record<string, unknown> {
@@ -321,7 +335,10 @@ export function ExperimentLauncher({ slug, onLaunched }: { slug: string; onLaunc
                 data-testid={`preset-${preset.id}`}
               />
               <span>
-                <span className="font-medium text-ink">{preset.label}</span>
+                <span className="flex flex-wrap items-center gap-2">
+                  <span className="font-medium text-ink">{preset.label}</span>
+                  <ComputeTargetBadge {...presetComputeTarget(preset)} />
+                </span>
                 {preset.durationHint && (
                   <span className="ml-2 text-xs text-ink-muted">{preset.durationHint}</span>
                 )}

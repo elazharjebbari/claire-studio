@@ -42,7 +42,11 @@ const CATALOG = {
     },
     {
       id: "legal-bert-finetune", label: "Legal-BERT fine-tuning", durationHint: "~45 min GPU",
-      config: { task: "T1_primary", model: { family: "transformer_finetune", checkpoint: "nlpaueb/legal-bert-base-uncased" } },
+      config: {
+        task: "T1_primary",
+        model: { family: "transformer_finetune", checkpoint: "nlpaueb/legal-bert-base-uncased" },
+        compute: { target: "g5k", requireGpu: true, g5k: { site: "nancy", resources: "gpu=1,walltime=03:00" } },
+      },
     },
   ],
   recommendedOrder: ["baseline-fast", "legal-bert-finetune"],
@@ -138,6 +142,24 @@ describe("ExperimentLauncher — mode guidé", () => {
     await user.click(screen.getByTestId("experiment-create"));
 
     expect(await screen.findByTestId("experiment-error")).toHaveTextContent("/version : doit valoir 1");
+  });
+});
+
+describe("ExperimentLauncher — cible de calcul visible par preset", () => {
+  // Audit UI Lab (14 août 2026) : avant ce correctif, rien dans la liste des presets
+  // n'indiquait explicitement où l'expérience allait s'exécuter — seulement déductible
+  // du texte libre du hint de durée ("~45 min GPU").
+  it("un preset sans compute.target déclaré affiche « Local »", async () => {
+    await setup();
+    const input = await screen.findByTestId("preset-baseline-fast");
+    expect(input.closest("label")?.textContent).toContain("Local");
+  });
+
+  it("un preset compute.target=g5k affiche « Grid'5000 » et le site déclaré", async () => {
+    await setup();
+    const input = await screen.findByTestId("preset-legal-bert-finetune");
+    expect(input.closest("label")?.textContent).toContain("Grid'5000");
+    expect(input.closest("label")?.textContent).toContain("nancy");
   });
 });
 

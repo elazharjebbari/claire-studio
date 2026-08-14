@@ -19,6 +19,7 @@ import Link from "next/link";
 import { Button, Panel } from "@/components/ui/primitives";
 
 import { RunComparisonFigure } from "./charts";
+import { ComputeTargetBadge } from "./ComputeTargetBadge";
 import { cancelRun, compareRuns, listRuns } from "./api";
 import type { RunStatus, RunSummary } from "./types";
 
@@ -143,6 +144,7 @@ export function RunList({ slug }: { slug: string }) {
               <th scope="col" className="w-6 py-1" />
               <th scope="col" className="py-1 text-left">Expérience</th>
               <th scope="col" className="py-1 text-left">Tâche</th>
+              <th scope="col" className="py-1 text-left">Cible</th>
               <th scope="col" className="py-1 text-left">État</th>
               <th scope="col" className="py-1 text-right">macro-F1</th>
               <th scope="col" className="py-1" />
@@ -180,6 +182,9 @@ export function RunList({ slug }: { slug: string }) {
                     )}
                   </td>
                   <td className="py-1.5 text-ink-muted">{run.task}</td>
+                  <td className="py-1.5">
+                    <ComputeTargetBadge target={run.computeTarget} site={run.computeSite} />
+                  </td>
                   <td className="py-1.5">
                     <span className={`inline-flex items-center gap-1 ${meta.className}`}>
                       <Icon

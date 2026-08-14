@@ -276,3 +276,31 @@ frontend **651** (+18), tsc 0 erreur, aucune régression.
 compte Grid'5000 réel n'existe à ce stade. C'est la partie du travail qui ne peut pas
 être automatisée : elle attend la création d'un compte, hors du périmètre de cette
 session.
+
+### Lot 2 — identifiants réels, déploiement prod, correctifs de fiabilité (11-14 août 2026)
+
+Un compte Grid'5000 réel existe désormais. **Étapes 10.1-10.4 exécutées et vertes en
+production** : identifiant + mot de passe API enregistrés (`ejebbari`, PAS
+`ejebbari@access.grid5000.fr` — piège réel rencontré : l'authentification HTTP Basic de
+l'API Grid'5000 rejette le login suffixé, confirmé par `curl` indépendant), clé SSH
+dédiée générée sans passphrase (`ssh-keygen -t ed25519 -f pactiva-g5k -N ""`) et
+ajoutée au compte G5K — badges **API : opérationnel** et **Transfert SSH : opérationnel**
+tous deux verts sur `pactiva.legal`.
+
+Trois bugs de fiabilité corrigés en route, aucun lié à Grid'5000 lui-même mais tous
+bloquants pour qu'un run (local ou G5K) puisse un jour aboutir en prod :
+1. Aucun service systemd ne consommait la file de runs (`claire-studio-lab-worker`
+   manquant) — tout run, local ou G5K, serait resté `queued` indéfiniment.
+2. `research/` (le package ML) était possédé par `root` sur le VPS (créé via SSH root
+   au provisioning), le worker tournant en `www-data` — écriture de cache refusée.
+3. Le cache d'embeddings était indexé sur le lot ENTIER de phrases plutôt que par phrase
+   individuelle — en validation croisée, aucune réutilisation entre plis, un run local
+   dépassait le délai avant même son 2ᵉ pli sur 5 (voir `docs/pactiva-lab/` pour le
+   détail — hors périmètre G5K mais découvert en vérifiant que les runs aboutissent).
+
+**Étapes 10.5-10.12 restent NON exécutées** — c'est précisément l'objet de
+`12_STRATEGIE_FIABILITE_EXECUTION.md`, qui reprend cette checklist tactique et l'englobe
+dans une stratégie de fiabilité complète (observabilité, garanties de récupération des
+résultats, points d'arrêt explicites). **Aucune réservation Grid'5000 réelle n'a été
+soumise à ce jour** — seuls des tests de connexion en lecture seule (API) et une
+poignée-de-main SSH ont eu lieu, jamais une commande `oarsub`.

@@ -15,6 +15,7 @@ import Link from "next/link";
 import { Badge, Panel } from "@/components/ui/primitives";
 
 import { CalibrationFigure, ConfusionMatrixFigure, LabelScoreFigure } from "./charts";
+import { ComputeTargetBadge } from "./ComputeTargetBadge";
 import { getRun } from "./api";
 import type { RunDetail } from "./types";
 
@@ -98,13 +99,21 @@ export function RunResults({ slug, runId }: { slug: string; runId: string }) {
             <p className="text-xs text-ink-muted">
               {run.task} · {run.metrics?.preprocess ?? ""}
             </p>
+            {run.externalJobId && (
+              <p className="text-xs text-ink-muted" data-testid="run-external-job-id">
+                Job OAR : <span className="font-mono">{run.externalJobId}</span>
+              </p>
+            )}
           </div>
-          {run.status === "partial" && (
-            <Badge className="border-warning/50 text-warning">
-              <AlertTriangle className="mr-1 inline h-3 w-3" aria-hidden />
-              résultats partiels (walltime)
-            </Badge>
-          )}
+          <div className="flex items-center gap-2">
+            <ComputeTargetBadge target={run.computeTarget} site={run.computeSite} />
+            {run.status === "partial" && (
+              <Badge className="border-warning/50 text-warning">
+                <AlertTriangle className="mr-1 inline h-3 w-3" aria-hidden />
+                résultats partiels (walltime)
+              </Badge>
+            )}
+          </div>
         </div>
 
         <div className="mt-3 grid grid-cols-2 gap-3 sm:grid-cols-4" data-testid="run-metrics-kpis">

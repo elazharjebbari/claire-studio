@@ -119,17 +119,32 @@ class ExperimentRunSummarySerializer(serializers.ModelSerializer):
     experiment_name = serializers.CharField(source="experiment.name", read_only=True)
     task = serializers.CharField(source="experiment.task", read_only=True)
     macro_f1 = serializers.SerializerMethodField()
+    compute_target = serializers.SerializerMethodField()
+    compute_site = serializers.SerializerMethodField()
 
     class Meta:
         model = ExperimentRun
         fields = [
             "id", "experiment_name", "task", "status", "progress", "phase",
             "macro_f1", "error_code", "created_at", "completed_at",
+            "compute_target", "compute_site",
         ]
         read_only_fields = fields
 
     def get_macro_f1(self, obj) -> float | None:
         return (obj.metrics or {}).get("metrics", {}).get("macro_f1")
+
+    # Source de vérité de la cible d'exécution RÉELLEMENT utilisée par le worker —
+    # `worker._backend_for()` lit ce même chemin (`run.config["compute"]["target"]`),
+    # PAS `Experiment.compute_target` (une FK vers `ComputeTarget` qui existe dans le
+    # modèle mais n'intervient à aucun moment dans la décision d'exécution). Exposer
+    # l'autre champ ici afficherait parfois une cible différente de celle vraiment
+    # utilisée — un mensonge silencieux pire que l'absence d'indicateur.
+    def get_compute_target(self, obj) -> str:
+        return (obj.config.get("compute") or {}).get("target", "local")
+
+    def get_compute_site(self, obj) -> str | None:
+        return (obj.config.get("compute") or {}).get("g5k", {}).get("site")
 
 
 class ComputeCredentialSerializer(serializers.ModelSerializer):
