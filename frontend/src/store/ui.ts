@@ -28,6 +28,10 @@ interface UiState {
   readingZoom: number;
   /** Lignes élargies : utilise la largeur libérée (ex. inspecteur replié). */
   readingWide: boolean;
+  /** Tiroir de navigation mobile (< md) — transitoire, jamais persisté : doit
+   * repartir fermé à chaque rechargement/navigation, contrairement au repli
+   * desktop qui lui est un choix durable par compte. */
+  mobileNavOpen: boolean;
   toggleTheme: () => void;
   setTheme: (t: ColorTheme) => void;
   setCurrentProject: (slug: string | null) => void;
@@ -37,6 +41,8 @@ interface UiState {
   toggleGutterCategory: () => void;
   setReadingZoom: (z: number) => void;
   toggleReadingWide: () => void;
+  setMobileNavOpen: (open: boolean) => void;
+  toggleMobileNavOpen: () => void;
 }
 
 export const useUiStore = create<UiState>()(
@@ -50,6 +56,7 @@ export const useUiStore = create<UiState>()(
       gutterShowCategory: false,
       readingZoom: 1,
       readingWide: false,
+      mobileNavOpen: false,
       toggleTheme: () => set((s) => ({ theme: s.theme === "dark" ? "light" : "dark" })),
       setTheme: (theme) => set({ theme }),
       setCurrentProject: (currentProjectSlug) => set({ currentProjectSlug }),
@@ -62,6 +69,8 @@ export const useUiStore = create<UiState>()(
       toggleGutterCategory: () => set((s) => ({ gutterShowCategory: !s.gutterShowCategory })),
       setReadingZoom: (z) => set({ readingZoom: Math.max(0.8, Math.min(1.6, z)) }),
       toggleReadingWide: () => set((s) => ({ readingWide: !s.readingWide })),
+      setMobileNavOpen: (mobileNavOpen) => set({ mobileNavOpen }),
+      toggleMobileNavOpen: () => set((s) => ({ mobileNavOpen: !s.mobileNavOpen })),
     }),
     {
       name: "claire.ui",

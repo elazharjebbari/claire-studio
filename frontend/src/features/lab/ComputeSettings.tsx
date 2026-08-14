@@ -150,7 +150,7 @@ export function ComputeSettings() {
           disabled={!configured}
           data-testid="g5k-password"
         />
-        <span className="mt-1 block text-[10px] text-ink-muted">
+        <span className="mt-1 block text-xs text-ink-muted">
           Chiffré au repos et jamais réaffiché — pas même à vous. Authentifie l&apos;API
           Grid&apos;5000 (réservation, suivi des runs).
         </span>
@@ -159,7 +159,7 @@ export function ComputeSettings() {
       <label className="block text-xs">
         <span className="text-ink-muted">Clé SSH privée (transfert de fichiers)</span>
         <textarea
-          className="mt-1 h-24 w-full rounded border border-line bg-panel-muted p-2 font-mono text-[11px] text-ink"
+          className="mt-1 h-24 w-full rounded border border-line bg-panel-muted p-2 font-mono text-xs text-ink"
           value={sshKey}
           onChange={(e) => setSshKey(e.target.value)}
           placeholder={existing?.hasSshKey ? "•••••••• (enregistrée)" : "-----BEGIN OPENSSH PRIVATE KEY-----"}
@@ -167,7 +167,7 @@ export function ComputeSettings() {
           disabled={!configured}
           data-testid="g5k-ssh-key"
         />
-        <span className="mt-1 block text-[10px] text-ink-muted">
+        <span className="mt-1 block text-xs text-ink-muted">
           Grid&apos;5000 <strong>désactive l&apos;authentification par mot de passe en
           SSH</strong> — sans cette clé, le transfert des données et des résultats
           échoue avant même la réservation. Générez une clé <strong>dédiée</strong> à
@@ -209,7 +209,7 @@ export function ComputeSettings() {
       </div>
 
       {existing?.lastTestedAt && (
-        <div className="space-y-1 text-[11px]" data-testid="g5k-test-results">
+        <div className="space-y-1 text-xs" data-testid="g5k-test-results">
           <TestBadge label="API" state={existing.lastTestOk} />
           <TestBadge label="Transfert SSH" state={existing.lastTestSshOk} />
           <p className="text-ink-muted">
@@ -219,7 +219,7 @@ export function ComputeSettings() {
       )}
 
       {message && (
-        <p className="text-[11px] text-ink-muted" role="status" data-testid="compute-message">
+        <p className="text-xs text-ink-muted" role="status" data-testid="compute-message">
           {message}
         </p>
       )}

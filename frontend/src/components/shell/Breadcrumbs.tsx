@@ -35,7 +35,17 @@ const LABELS: Record<string, string> = {
   history: "Historique",
   insights: "Insights",
   gold: "Résolution GOLD",
+  lab: "Lab",
+  runs: "Expériences",
 };
+
+// UUID v4 (identifiant de run, dataset…) : jamais un libellé lisible en soi. Raccourci
+// au même gabarit que les empreintes déjà tronquées ailleurs dans l'app (ex.
+// `LabWorkspace.tsx`, `fingerprint.slice(0, 12)…`) plutôt qu'affiché en entier.
+const UUID_RE = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
+function shortenIfUuid(seg: string): string {
+  return UUID_RE.test(seg) ? `${seg.slice(0, 8)}…` : decodeURIComponent(seg);
+}
 
 interface Crumb {
   label: string;
@@ -44,10 +54,10 @@ interface Crumb {
   noLink?: boolean;
 }
 
-// Segments qui n'existent QUE sous forme dynamique (ex. /history/[id]) : pas de page
-// d'index. Le fil d'Ariane ne doit donc PAS générer de <Link> vers eux, sinon Next.js
-// préfetch /history?_rsc=… → 404. Rendus en texte simple.
-const NO_INDEX_SEGMENTS = new Set(["history"]);
+// Segments qui n'existent QUE sous forme dynamique (ex. /history/[id], /lab/runs/[id]) :
+// pas de page d'index. Le fil d'Ariane ne doit donc PAS générer de <Link> vers eux, sinon
+// Next.js préfetch /history?_rsc=… → 404. Rendus en texte simple.
+const NO_INDEX_SEGMENTS = new Set(["history", "runs"]);
 
 export function Breadcrumbs() {
   const pathname = usePathname();
@@ -75,7 +85,7 @@ export function Breadcrumbs() {
     } else if (segs[0] === "projects" && i === 1) {
       label = project?.name ?? seg; // slug -> nom lisible
     } else {
-      label = LABELS[seg] ?? decodeURIComponent(seg);
+      label = LABELS[seg] ?? shortenIfUuid(seg);
     }
     crumbs.push({ label, href, noLink: NO_INDEX_SEGMENTS.has(seg) });
   });

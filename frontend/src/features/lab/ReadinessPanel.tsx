@@ -58,8 +58,8 @@ export function ReadinessPanel({
         <span
           className={
             isArticleBlocked(lines)
-              ? "text-[11px] font-medium text-danger"
-              : "text-[11px] font-medium text-success"
+              ? "text-xs font-medium text-danger"
+              : "text-xs font-medium text-success"
           }
           data-testid="readiness-verdict"
         >
@@ -102,7 +102,7 @@ export function ReadinessPanel({
                   style={{ width: `${ratio * 100}%` }}
                 />
               </div>
-              {line.hint && <p className="mt-0.5 text-[10px] text-ink-muted">{line.hint}</p>}
+              {line.hint && <p className="mt-0.5 text-xs text-ink-muted">{line.hint}</p>}
             </>
           );
           return (
@@ -148,7 +148,7 @@ export function ReadinessPanel({
       {blockers.length > 0 && (
         <ul className="mt-3 space-y-1" data-testid="readiness-blockers">
           {blockers.map((blocker) => (
-            <li key={blocker.code} className="flex items-start gap-2 text-[11px]">
+            <li key={blocker.code} className="flex items-start gap-2 text-xs">
               <span
                 className={
                   blocker.severity === "high"

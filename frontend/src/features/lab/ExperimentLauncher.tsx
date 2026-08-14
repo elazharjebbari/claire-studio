@@ -323,9 +323,9 @@ export function ExperimentLauncher({ slug, onLaunched }: { slug: string; onLaunc
               <span>
                 <span className="font-medium text-ink">{preset.label}</span>
                 {preset.durationHint && (
-                  <span className="ml-2 text-[10px] text-ink-muted">{preset.durationHint}</span>
+                  <span className="ml-2 text-xs text-ink-muted">{preset.durationHint}</span>
                 )}
-                {preset.why && <span className="block text-[10px] text-ink-muted">{preset.why}</span>}
+                {preset.why && <span className="block text-xs text-ink-muted">{preset.why}</span>}
               </span>
             </label>
           ))}
@@ -336,7 +336,7 @@ export function ExperimentLauncher({ slug, onLaunched }: { slug: string; onLaunc
         <label className="block text-xs">
           <span className="text-ink-muted">Configuration (JSON)</span>
           <textarea
-            className="mt-1 h-64 w-full rounded border border-line bg-panel-muted p-2 font-mono text-[11px] text-ink"
+            className="mt-1 h-64 w-full rounded border border-line bg-panel-muted p-2 font-mono text-xs text-ink"
             value={configText}
             onChange={(e) => setConfigText(e.target.value)}
             spellCheck={false}
@@ -359,7 +359,7 @@ export function ExperimentLauncher({ slug, onLaunched }: { slug: string; onLaunc
           )}
           {gpuClusters && gpuClusters.clusters.length > 0 && (
             <div className="overflow-x-auto">
-              <table className="w-full text-left text-[11px]" data-testid="gpu-cluster-table">
+              <table className="w-full text-left text-xs" data-testid="gpu-cluster-table">
                 <thead className="text-ink-muted">
                   <tr>
                     <th className="pr-2 font-normal">Site</th>
@@ -381,14 +381,14 @@ export function ExperimentLauncher({ slug, onLaunched }: { slug: string; onLaunc
                   ))}
                 </tbody>
               </table>
-              <p className="mt-2 text-[10px] text-ink-muted">
+              <p className="mt-2 text-xs text-ink-muted">
                 Triée par VRAM croissante suffisante — inutile de viser les clusters les plus
                 contendus (H100/H200) pour ce besoin.
               </p>
             </div>
           )}
           {gpuClusters && !gpuClusters.configured && (
-            <p className="mt-2 text-[10px] text-ink-muted" data-testid="gpu-cluster-unconfigured">
+            <p className="mt-2 text-xs text-ink-muted" data-testid="gpu-cluster-unconfigured">
               Catalogue informatif — enregistrez vos identifiants Grid&apos;5000 (onglet Calcul)
               pour pouvoir réserver.
             </p>
@@ -443,7 +443,7 @@ export function ExperimentLauncher({ slug, onLaunched }: { slug: string; onLaunc
       )}
 
       {busy && !experiment && (
-        <p className="flex items-center gap-1.5 text-[11px] text-ink-muted">
+        <p className="flex items-center gap-1.5 text-xs text-ink-muted">
           <Loader2 className="h-3 w-3 animate-spin" aria-hidden /> en cours…
         </p>
       )}
@@ -478,7 +478,7 @@ export function ExperimentLauncher({ slug, onLaunched }: { slug: string; onLaunc
         </div>
       ) : (
         error && (
-          <p className="text-[11px] text-danger" data-testid="experiment-error" role="alert">
+          <p className="text-xs text-danger" data-testid="experiment-error" role="alert">
             {error}
           </p>
         )

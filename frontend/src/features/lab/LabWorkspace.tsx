@@ -106,30 +106,32 @@ function LabWorkspaceInner({ slug }: { slug: string }) {
                 Aucun jeu de données : construisez-en un ci-dessus pour lancer des expériences.
               </p>
             ) : (
-              <table className="w-full text-xs">
-                <thead>
-                  <tr className="text-ink-muted">
-                    <th scope="col" className="py-1 text-left">Libellé</th>
-                    <th scope="col" className="py-1 text-left">Maturité</th>
-                    <th scope="col" className="py-1 text-right">Docs</th>
-                    <th scope="col" className="py-1 text-right">Phrases</th>
-                    <th scope="col" className="py-1 text-left">Empreinte</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {datasets.map((dataset) => (
-                    <tr key={dataset.id} className="border-t border-line">
-                      <td className="py-1 text-ink">{dataset.label || "—"}</td>
-                      <td className="py-1 text-ink-muted">{dataset.maturity}</td>
-                      <td className="py-1 text-right text-ink">{dataset.nDocuments}</td>
-                      <td className="py-1 text-right text-ink">{dataset.nSentences}</td>
-                      <td className="py-1 font-mono text-[10px] text-ink-muted">
-                        {dataset.fingerprint.slice(0, 12)}…
-                      </td>
+              <div className="overflow-x-auto">
+                <table className="w-full text-xs">
+                  <thead>
+                    <tr className="text-ink-muted">
+                      <th scope="col" className="py-1 text-left">Libellé</th>
+                      <th scope="col" className="py-1 text-left">Maturité</th>
+                      <th scope="col" className="py-1 text-right">Docs</th>
+                      <th scope="col" className="py-1 text-right">Phrases</th>
+                      <th scope="col" className="py-1 text-left">Empreinte</th>
                     </tr>
-                  ))}
-                </tbody>
-              </table>
+                  </thead>
+                  <tbody>
+                    {datasets.map((dataset) => (
+                      <tr key={dataset.id} className="border-t border-line">
+                        <td className="py-1 text-ink">{dataset.label || "—"}</td>
+                        <td className="py-1 text-ink-muted">{dataset.maturity}</td>
+                        <td className="py-1 text-right text-ink">{dataset.nDocuments}</td>
+                        <td className="py-1 text-right text-ink">{dataset.nSentences}</td>
+                        <td className="py-1 font-mono text-xs text-ink-muted">
+                          {dataset.fingerprint.slice(0, 12)}…
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
             )}
           </Panel>
         </div>

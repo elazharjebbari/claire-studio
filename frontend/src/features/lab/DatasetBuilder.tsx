@@ -102,7 +102,7 @@ export function DatasetBuilder({
         <h3 className="text-sm font-semibold text-ink">Critères</h3>
 
         <fieldset>
-          <legend className="mb-1 text-[11px] font-semibold uppercase tracking-wide text-ink-muted">
+          <legend className="mb-1 text-xs font-semibold uppercase tracking-wide text-ink-muted">
             Maturité des annotations
           </legend>
           {MATURITIES.map((option) => (
@@ -116,14 +116,14 @@ export function DatasetBuilder({
               />
               <span>
                 <span className="text-ink">{option.label}</span>
-                <span className="block text-[10px] text-ink-muted">{option.hint}</span>
+                <span className="block text-xs text-ink-muted">{option.hint}</span>
               </span>
             </label>
           ))}
         </fieldset>
 
         <fieldset>
-          <legend className="mb-1 text-[11px] font-semibold uppercase tracking-wide text-ink-muted">
+          <legend className="mb-1 text-xs font-semibold uppercase tracking-wide text-ink-muted">
             Agrégation
           </legend>
           {AGGREGATIONS.map((option) => (
@@ -137,7 +137,7 @@ export function DatasetBuilder({
               />
               <span>
                 <span className="text-ink">{option.label}</span>
-                <span className="block text-[10px] text-ink-muted">{option.hint}</span>
+                <span className="block text-xs text-ink-muted">{option.hint}</span>
               </span>
             </label>
           ))}
@@ -159,7 +159,7 @@ export function DatasetBuilder({
             }
             data-testid="completeness-slider"
           />
-          <span className="block text-[10px] text-ink-muted">
+          <span className="block text-xs text-ink-muted">
             Sous 100 %, une annotation finie à un clic près (192/193) est récupérée. La
             tolérance est tracée dans le manifeste.
           </span>
@@ -189,11 +189,11 @@ export function DatasetBuilder({
           Construire
         </Button>
         {blockingReason && (
-          <p className="text-[11px] text-danger" data-testid="dataset-blocked">
+          <p className="text-xs text-danger" data-testid="dataset-blocked">
             {blockingReason}
           </p>
         )}
-        {message && <p className="text-[11px] text-ink-muted">{message}</p>}
+        {message && <p className="text-xs text-ink-muted">{message}</p>}
       </Panel>
 
       <Panel className="p-4" data-testid="preflight-report">
@@ -223,7 +223,7 @@ export function DatasetBuilder({
             {report.warnings.length > 0 && (
               <ul className="mt-3 space-y-1" data-testid="preflight-warnings">
                 {report.warnings.map((warning) => (
-                  <li key={warning.code} className="flex items-start gap-1.5 text-[11px]">
+                  <li key={warning.code} className="flex items-start gap-1.5 text-xs">
                     <AlertTriangle className="mt-0.5 h-3 w-3 shrink-0 text-warning" aria-hidden />
                     <span className="text-ink-muted">{warning.message}</span>
                   </li>
@@ -233,29 +233,31 @@ export function DatasetBuilder({
 
             {report.excluded.length > 0 && (
               <div className="mt-3" data-testid="preflight-excluded">
-                <h4 className="mb-1 text-[11px] font-semibold uppercase tracking-wide text-ink-muted">
+                <h4 className="mb-1 text-xs font-semibold uppercase tracking-wide text-ink-muted">
                   Écartés ({report.excluded.length}) — avec le motif
                 </h4>
-                <table className="w-full text-[11px]">
-                  <thead>
-                    <tr className="text-ink-muted">
-                      <th scope="col" className="py-0.5 text-left">Document</th>
-                      <th scope="col" className="py-0.5 text-left">Annotateur</th>
-                      <th scope="col" className="py-0.5 text-left">Motif</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {report.excluded.slice(0, 12).map((row, index) => (
-                      <tr key={index} className="border-t border-line">
-                        <td className="py-0.5 text-ink">{row.document ?? "—"}</td>
-                        <td className="py-0.5 text-ink-muted">{row.annotator ?? "—"}</td>
-                        <td className="py-0.5 text-ink-muted">{row.detail}</td>
+                <div className="overflow-x-auto">
+                  <table className="w-full text-xs">
+                    <thead>
+                      <tr className="text-ink-muted">
+                        <th scope="col" className="py-0.5 text-left">Document</th>
+                        <th scope="col" className="py-0.5 text-left">Annotateur</th>
+                        <th scope="col" className="py-0.5 text-left">Motif</th>
                       </tr>
-                    ))}
-                  </tbody>
-                </table>
+                    </thead>
+                    <tbody>
+                      {report.excluded.slice(0, 12).map((row, index) => (
+                        <tr key={index} className="border-t border-line">
+                          <td className="py-0.5 text-ink">{row.document ?? "—"}</td>
+                          <td className="py-0.5 text-ink-muted">{row.annotator ?? "—"}</td>
+                          <td className="py-0.5 text-ink-muted">{row.detail}</td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                </div>
                 {report.excluded.length > 12 && (
-                  <p className="mt-1 text-[10px] text-ink-muted">
+                  <p className="mt-1 text-xs text-ink-muted">
                     … et {report.excluded.length - 12} autres.
                   </p>
                 )}
@@ -271,7 +273,7 @@ export function DatasetBuilder({
 function Stat({ label, value, mono }: { label: string; value: string | number; mono?: boolean }) {
   return (
     <div>
-      <dt className="text-[10px] uppercase tracking-wide text-ink-muted">{label}</dt>
+      <dt className="text-xs uppercase tracking-wide text-ink-muted">{label}</dt>
       <dd className={mono ? "font-mono text-sm text-ink" : "text-sm font-semibold text-ink"}>
         {value}
       </dd>

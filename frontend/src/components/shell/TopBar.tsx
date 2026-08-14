@@ -7,7 +7,7 @@
 
 import { useEffect } from "react";
 import Link from "next/link";
-import { BookOpen, Sun, Moon, ShieldCheck } from "lucide-react";
+import { BookOpen, Sun, Moon, ShieldCheck, Menu } from "lucide-react";
 import { useUiStore } from "@/store/ui";
 import { useMe, useProjects } from "@/lib/api/hooks";
 import { isAdminRole } from "@/lib/roles";
@@ -18,6 +18,7 @@ export function TopBar() {
   const theme = useUiStore((s) => s.theme);
   const toggleTheme = useUiStore((s) => s.toggleTheme);
   const setPaletteOpen = useUiStore((s) => s.setCommandPaletteOpen);
+  const toggleMobileNav = useUiStore((s) => s.toggleMobileNavOpen);
   const currentProject = useUiStore((s) => s.currentProjectSlug);
   const setProject = useUiStore((s) => s.setCurrentProject);
   const { data: me } = useMe();
@@ -35,6 +36,15 @@ export function TopBar() {
 
   return (
     <header className="flex h-12 shrink-0 items-center gap-3 border-b border-line bg-elevated px-3">
+      <button
+        type="button"
+        data-testid="app-sidebar-open"
+        onClick={toggleMobileNav}
+        aria-label="Ouvrir la navigation"
+        className="flex items-center justify-center rounded-md p-1.5 text-ink-muted hover:bg-panel-muted hover:text-ink md:hidden"
+      >
+        <Menu size={18} aria-hidden />
+      </button>
       <label className="sr-only" htmlFor="project-select">
         Projet courant
       </label>
@@ -43,7 +53,7 @@ export function TopBar() {
         data-testid="project-select"
         value={currentProject ?? ""}
         onChange={(e) => setProject(e.target.value || null)}
-        className="rounded-md border border-line bg-panel px-2 py-1 text-sm text-ink"
+        className="min-w-0 rounded-md border border-line bg-panel px-2 py-1 text-sm text-ink"
       >
         <option value="">Sélectionner un projet…</option>
         {projects?.results.map((p) => (

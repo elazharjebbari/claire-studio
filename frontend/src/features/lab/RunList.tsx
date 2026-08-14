@@ -136,6 +136,7 @@ export function RunList({ slug }: { slug: string }) {
   return (
     <div className="space-y-4">
       <Panel className="p-4" data-testid="run-list">
+        <div className="overflow-x-auto">
         <table className="w-full text-xs">
           <thead>
             <tr className="text-ink-muted">
@@ -207,10 +208,10 @@ export function RunList({ slug }: { slug: string }) {
                       </div>
                     )}
                     {meta.hint && (
-                      <span className="block text-[10px] text-ink-muted">{meta.hint}</span>
+                      <span className="block text-xs text-ink-muted">{meta.hint}</span>
                     )}
                     {run.status === "failed" && run.errorCode && (
-                      <span className="block text-[10px] text-danger">{run.errorCode}</span>
+                      <span className="block text-xs text-danger">{run.errorCode}</span>
                     )}
                   </td>
                   <td className="py-1.5 text-right font-mono text-ink">
@@ -233,6 +234,7 @@ export function RunList({ slug }: { slug: string }) {
             })}
           </tbody>
         </table>
+        </div>
 
         <div className="mt-3 flex items-center gap-2 border-t border-line pt-3">
           <Button

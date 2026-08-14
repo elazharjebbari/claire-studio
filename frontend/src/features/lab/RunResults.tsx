@@ -117,7 +117,7 @@ export function RunResults({ slug, runId }: { slug: string; runId: string }) {
           />
           <MetricCell label="ECE" value={ece != null ? fmt(ece) : "—"} />
         </div>
-        {ceiling?.note && <p className="mt-2 text-[11px] text-ink-muted">{ceiling.note}</p>}
+        {ceiling?.note && <p className="mt-2 text-xs text-ink-muted">{ceiling.note}</p>}
       </Panel>
 
       {perLabel.length > 0 && <LabelScoreFigure rows={perLabel} />}
@@ -134,32 +134,34 @@ export function RunResults({ slug, runId }: { slug: string; runId: string }) {
               La dispersion entre plis compte autant que la moyenne sur un petit corpus.
             </p>
           </div>
-          <table className="w-full text-xs">
-            <thead>
-              <tr className="text-ink-muted">
-                <th scope="col" className="px-3 py-1 text-left">
-                  Pli
-                </th>
-                {Object.keys(run.metrics.perFold[0] ?? {}).map((key) => (
-                  <th key={key} scope="col" className="px-3 py-1 text-right">
-                    {key}
+          <div className="overflow-x-auto">
+            <table className="w-full text-xs">
+              <thead>
+                <tr className="text-ink-muted">
+                  <th scope="col" className="px-3 py-1 text-left">
+                    Pli
                   </th>
-                ))}
-              </tr>
-            </thead>
-            <tbody>
-              {run.metrics.perFold.map((fold, index) => (
-                <tr key={index} className="border-t border-line">
-                  <td className="px-3 py-1 text-ink">{index}</td>
-                  {Object.values(fold).map((value, i) => (
-                    <td key={i} className="px-3 py-1 text-right font-mono text-ink">
-                      {typeof value === "number" ? value.toFixed(3) : String(value)}
-                    </td>
+                  {Object.keys(run.metrics.perFold[0] ?? {}).map((key) => (
+                    <th key={key} scope="col" className="px-3 py-1 text-right">
+                      {key}
+                    </th>
                   ))}
                 </tr>
-              ))}
-            </tbody>
-          </table>
+              </thead>
+              <tbody>
+                {run.metrics.perFold.map((fold, index) => (
+                  <tr key={index} className="border-t border-line">
+                    <td className="px-3 py-1 text-ink">{index}</td>
+                    {Object.values(fold).map((value, i) => (
+                      <td key={i} className="px-3 py-1 text-right font-mono text-ink">
+                        {typeof value === "number" ? value.toFixed(3) : String(value)}
+                      </td>
+                    ))}
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
         </Panel>
       )}
     </div>
@@ -169,9 +171,9 @@ export function RunResults({ slug, runId }: { slug: string; runId: string }) {
 function MetricCell({ label, value, hint }: { label: string; value: string; hint?: string }) {
   return (
     <div>
-      <dt className="text-[10px] uppercase tracking-wide text-ink-muted">{label}</dt>
+      <dt className="text-xs uppercase tracking-wide text-ink-muted">{label}</dt>
       <dd className="text-lg font-semibold text-ink">{value}</dd>
-      {hint && <p className="text-[10px] text-ink-muted">{hint}</p>}
+      {hint && <p className="text-xs text-ink-muted">{hint}</p>}
     </div>
   );
 }
