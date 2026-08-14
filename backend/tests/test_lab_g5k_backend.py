@@ -88,6 +88,27 @@ class TestConnection:
         assert "refusée" in detail
 
 
+class TestAccessPath:
+    """Bug réel trouvé le 14 août 2026, EN SONDANT le frontal Grid'5000 avant toute
+    réservation (jamais un bug hypothétique) : le `home` Grid'5000 est propre à chaque
+    site, jamais partagé. Sur `access.grid5000.fr`, `~` seul pointe le disque LOCAL du
+    frontal (mkdir y est refusé — vérifié empiriquement, `Permission denied`) ; chaque
+    home de site y est monté sous `~/<site>/`. `workdir` bare (`~/pactiva`) utilisé tel
+    quel comme cible rsync aurait donc soit fait échouer le transfert, soit poussé les
+    fichiers là où AUCUN nœud de calcul ne les aurait jamais vus — un job réel aurait
+    consommé une réservation pour échouer sur "fichier introuvable"."""
+
+    def test_qualifie_un_chemin_relatif_par_le_site(self):
+        assert Grid5000Backend._access_path("nantes", "~/pactiva") == "~/nantes/pactiva"
+
+    def test_tilde_seul_sans_sous_chemin(self):
+        assert Grid5000Backend._access_path("nancy", "~") == "~/nancy"
+
+    def test_laisse_un_chemin_absolu_deja_explicite_intact(self):
+        assert Grid5000Backend._access_path("nantes", "/mnt/group_storage/pactiva") == \
+            "/mnt/group_storage/pactiva"
+
+
 class TestSubmit:
     def test_refuse_sans_cle_ssh_avant_tout_transfert(self, a_run, tmp_path):
         backend = Grid5000Backend(login="a", password="p")  # pas de ssh_key
@@ -105,6 +126,25 @@ class TestSubmit:
         fake_push.assert_called_once()
         assert (out_dir / "run.sh").exists()
         assert fake_submit.call_args.kwargs["resources"] == "gpu=1,walltime=04:00"
+
+    def test_pousse_vers_le_chemin_qualifie_par_site_mais_soumet_la_commande_bare(
+        self, a_run, tmp_path,
+    ):
+        """LE test de non-régression du bug ci-dessus : la commande OAR (exécutée SUR le
+        nœud) doit rester `~/pactiva/...` bare, tandis que la cible rsync (depuis le
+        frontal `access.grid5000.fr`) doit être qualifiée par site — jamais les deux
+        confondus dans un sens ou dans l'autre."""
+        backend = Grid5000Backend(login="a", password="p", ssh_key="clé")
+        out_dir = tmp_path / "out"
+        with patch("claire.lab.runners.g5k.g5k_submit", return_value="42") as fake_submit:
+            with patch.object(Grid5000Backend, "_rsync_push") as fake_push:
+                backend.submit(a_run, tmp_path / "data", out_dir)
+
+        pushed_remote = fake_push.call_args.args[2]
+        assert pushed_remote == f"~/nancy/pactiva/runs/{a_run.id}"
+
+        command = fake_submit.call_args.kwargs["command"]
+        assert command == f"bash ~/pactiva/runs/{a_run.id}/run.sh"
 
 
 class TestPollFetchCancel:
@@ -130,6 +170,14 @@ class TestPollFetchCancel:
         with patch.object(Grid5000Backend, "_rsync_pull"):
             complete = backend.fetch(a_run, out_dir)
         assert complete is False  # walltime a coupé le job — pas une erreur
+
+    def test_fetch_tire_depuis_le_chemin_qualifie_par_site(self, a_run, tmp_path):
+        backend = Grid5000Backend(login="a", password="p", ssh_key="clé")
+        out_dir = tmp_path / "out"
+        with patch.object(Grid5000Backend, "_rsync_pull") as fake_pull:
+            backend.fetch(a_run, out_dir)
+        pulled_remote = fake_pull.call_args.args[0]
+        assert pulled_remote == f"~/nancy/pactiva/runs/{a_run.id}/results/"
 
     def test_cancel_delegue_au_client(self, a_run):
         backend = Grid5000Backend(login="a", password="p")

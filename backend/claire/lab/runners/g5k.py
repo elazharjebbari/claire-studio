@@ -155,13 +155,20 @@ class Grid5000Backend(ExecutionBackend):
         )
         (out_dir / "run.sh").write_text(script, encoding="utf-8")
 
-        remote = f"{workdir}/runs/{run.id}"
-        self._rsync_push(dataset_dir, out_dir, remote)
+        # Deux chemins DISTINCTS pour le même stockage — le `home` Grid'5000 est propre à
+        # chaque site (jamais partagé), voir `_access_path`. `node_remote` est évalué SUR
+        # LE NŒUD (où `~` pointe directement le home du site réservé) ; `access_remote`
+        # est évalué DEPUIS `access.grid5000.fr` pour le rsync (où `~` seul pointe le
+        # disque local du frontal, pas un home de site — confirmé le 14 août 2026 avant
+        # toute réservation : un `mkdir` bare y est refusé, permission denied).
+        node_remote = f"{workdir}/runs/{run.id}"
+        access_remote = f"{self._access_path(site, workdir)}/runs/{run.id}"
+        self._rsync_push(dataset_dir, out_dir, access_remote)
 
         types = ["besteffort"] if queue == "besteffort" else []
         job_id = g5k_submit(
             self._client, site,
-            resources=resources, command=f"bash {remote}/run.sh",
+            resources=resources, command=f"bash {node_remote}/run.sh",
             types=types, name=f"pactiva-{run.id}",
         )
         logger.info("g5k_submitted run=%s job=%s site=%s", run.id, job_id, site)
@@ -173,10 +180,30 @@ class Grid5000Backend(ExecutionBackend):
 
     def fetch(self, run, out_dir: Path) -> bool:
         config = (run.config.get("compute") or {}).get("g5k") or {}
+        site = config.get("site", "nancy")
         workdir = config.get("workdir", "~/pactiva")
-        remote = f"{workdir}/runs/{run.id}/results/"
-        self._rsync_pull(remote, Path(out_dir))
+        access_remote = f"{self._access_path(site, workdir)}/runs/{run.id}/results/"
+        self._rsync_pull(access_remote, Path(out_dir))
         return sentinel_present(out_dir)
+
+    @staticmethod
+    def _access_path(site: str, workdir: str) -> str:
+        """Traduit un chemin tel que vu PAR LE NŒUD (`workdir`, ex. `~/pactiva`) vers son
+        équivalent DEPUIS `access.grid5000.fr` (ex. `~/nantes/pactiva`).
+
+        Le `home` Grid'5000 est propre à chaque site — jamais partagé entre eux
+        (docs/pactiva-g5k/research/04_STOCKAGE_RESEAU.md §1.1). Sur `access.grid5000.fr`,
+        `~` seul pointe vers le disque LOCAL du frontal (quelques centaines de Mo,
+        écriture refusée à un utilisateur standard) ; chaque home de site y est monté en
+        NFS sous `~/<site>/`. Sur un NŒUD réservé au site X, en revanche, `~` pointe
+        DIRECTEMENT le home NFS de ce site (pas de sous-dossier `<site>/` à ajouter — le
+        nœud n'a jamais qu'un seul site à voir). Les deux chemins désignent donc le MÊME
+        stockage NFS, vus depuis deux machines différentes avec des racines différentes.
+        """
+        if not workdir.startswith("~"):
+            return workdir  # chemin absolu déjà explicite — rien à qualifier par site
+        relative = workdir[1:].lstrip("/")
+        return f"~/{site}/{relative}" if relative else f"~/{site}"
 
     def cancel(self, run) -> None:
         site = ((run.config.get("compute") or {}).get("g5k") or {}).get("site", "nancy")
