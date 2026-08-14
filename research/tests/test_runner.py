@@ -67,6 +67,38 @@ def test_annulation_cooperative(toy_dataset, base_config, tmp_path):
 # Les invariants scientifiques
 # --------------------------------------------------------------------------- #
 
+def test_subsample_documents_respecte_le_pool_fourni(toy_dataset):
+    dataset = load_dataset(toy_dataset)
+    pool = ["Atlas", "Google", "Netflix", "9gag"]
+    result = dataset.subsample_documents(2, seed=1, pool=pool)
+    assert len(result) == 2
+    assert set(result) <= set(pool)
+
+
+def test_subsample_documents_deterministe_par_graine(toy_dataset):
+    dataset = load_dataset(toy_dataset)
+    a = dataset.subsample_documents(3, seed=5)
+    b = dataset.subsample_documents(3, seed=5)
+    assert a == b
+
+
+def test_subsample_documents_varie_selon_la_graine(toy_dataset):
+    dataset = load_dataset(toy_dataset)
+    a = dataset.subsample_documents(3, seed=1)
+    b = dataset.subsample_documents(3, seed=2)
+    assert a != b  # deux graines différentes, quasi certain de différer sur 10 documents
+
+
+def test_subsample_documents_plafonne_a_la_taille_du_pool():
+    from pactiva_lab.data import Dataset
+
+    # `Dataset` minimal : seul `documents` (dérivé de `sentences`) importe ici, mais le
+    # dataclass exige les autres champs — valeurs vides, pas de sens hors ce test.
+    ds = Dataset(root=Path("."), manifest={}, splits={}, sentences=[], labels=[], judges={})
+    result = ds.subsample_documents(100, seed=0, pool=["a", "b", "c"])
+    assert result == ["a", "b", "c"]
+
+
 def test_aucun_document_dans_train_et_test(toy_dataset):
     """⭐ L'invariant qui protège l'article : pas de fuite entre les plis."""
     dataset = load_dataset(toy_dataset)
@@ -75,6 +107,102 @@ def test_aucun_document_dans_train_et_test(toy_dataset):
         train_docs = {dataset.sentences[i].document for i in train}
         test_docs = {dataset.sentences[i].document for i in test}
         assert not (train_docs & test_docs)
+
+
+def test_learning_curve_restreint_l_entrainement_sans_toucher_au_test(
+    toy_dataset, base_config, tmp_path, monkeypatch,
+):
+    """⭐ Bug réel trouvé le 14 août 2026 (Palier 6) : `Dataset.subsample_documents`
+    existait mais n'était appelée nulle part — `evaluation.learning_curve` était
+    silencieusement ignoré par le runner, produisant un entraînement pleine taille
+    étiqueté comme un point de courbe d'apprentissage réduit."""
+    from pactiva_lab import runner as runner_module
+
+    seen_train_docs: list[set[str]] = []
+    real_build_model = runner_module.build_model
+
+    def spy_build_model(*args, **kwargs):
+        model = real_build_model(*args, **kwargs)
+        real_fit = model.fit
+
+        def fit(texts, labels, extra=None):
+            seen_train_docs.append({e["document"] for e in (extra or [])})
+            return real_fit(texts, labels, extra)
+
+        model.fit = fit
+        return model
+
+    monkeypatch.setattr(runner_module, "build_model", spy_build_model)
+
+    config = {
+        **base_config,
+        "model": {"family": "majority"},
+        "evaluation": {**base_config["evaluation"], "learning_curve": {"n_documents": 3, "seed": 7}},
+    }
+    result = run_experiment(config, toy_dataset, tmp_path / "out")
+
+    assert len(result["per_fold"]) == 5  # les 5 plis tournent toujours
+    assert seen_train_docs  # le modèle a bien été entraîné
+    for docs in seen_train_docs:
+        assert len(docs) <= 3, f"attendu <=3 documents d'entraînement, obtenu {len(docs)}"
+
+
+def test_learning_curve_ne_fuit_jamais_vers_le_pli_de_test(toy_dataset, base_config, tmp_path, monkeypatch):
+    """L'invariant le plus important : le sous-échantillonnage doit rester scopé au
+    pool d'ENTRAÎNEMENT du pli courant, jamais piocher dans son propre test."""
+    from pactiva_lab.data import load_dataset
+
+    dataset = load_dataset(toy_dataset)
+    from pactiva_lab import runner as runner_module
+
+    seen: list[tuple[set[str], set[str]]] = []
+    real_build_model = runner_module.build_model
+
+    def spy_build_model(*args, **kwargs):
+        model = real_build_model(*args, **kwargs)
+        real_fit = model.fit
+
+        def fit(texts, labels, extra=None):
+            seen.append({e["document"] for e in (extra or [])})
+            return real_fit(texts, labels, extra)
+
+        model.fit = fit
+        return model
+
+    monkeypatch.setattr(runner_module, "build_model", spy_build_model)
+
+    config = {
+        **base_config,
+        "model": {"family": "majority"},
+        # n_documents volontairement GRAND (> taille du pool d'entraînement d'un pli,
+        # 8 documents sur 10 avec k=5) : si le pool n'était pas scopé au pli, un
+        # sous-échantillon de 8 piocherait forcément dans les 2 documents de test.
+        "evaluation": {**base_config["evaluation"], "learning_curve": {"n_documents": 8, "seed": 1}},
+    }
+    run_experiment(config, toy_dataset, tmp_path / "out")
+
+    for fold, train_docs in enumerate(seen):
+        _, test_idx = dataset.fold_indices(fold)
+        test_docs = {dataset.sentences[i].document for i in test_idx}
+        assert not (train_docs & test_docs), f"pli {fold} : fuite train/test"
+
+
+def test_learning_curve_deterministe_a_graine_identique(toy_dataset, base_config, tmp_path):
+    config = {
+        **base_config,
+        "evaluation": {**base_config["evaluation"], "learning_curve": {"n_documents": 4, "seed": 3}},
+    }
+    a = run_experiment(config, toy_dataset, tmp_path / "a")
+    b = run_experiment(config, toy_dataset, tmp_path / "b")
+    assert a["metrics"] == b["metrics"]
+    assert a["per_fold"] == b["per_fold"]
+
+
+def test_learning_curve_absent_du_config_laisse_le_runner_inchange(toy_dataset, base_config, tmp_path):
+    """Non-régression : sans `learning_curve` dans la config, le comportement (et le
+    résultat) doit rester identique à avant ce correctif."""
+    result = run_experiment(base_config, toy_dataset, tmp_path / "out")
+    assert len(result["per_fold"]) == 5
 
 
 def test_les_plis_viennent_du_dataset_pas_du_runner(toy_dataset, base_config, tmp_path):

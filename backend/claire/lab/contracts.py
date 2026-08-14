@@ -110,8 +110,45 @@ def expand_sweep(config: dict) -> list[dict]:
     if not sweep:
         return [config]
 
-    axes = sweep.get("axes") or {}
     max_runs = int(sweep.get("max_runs", 60))
+
+    # Bug réel trouvé le 14 août 2026 (Palier 6, expérience "learning-curve") : ce mode
+    # n'était géré NULLE PART — ni ici, ni côté runner (`research/pactiva_lab`). Sans
+    # `axes`, la branche ci-dessous `if not axes: return [config]` renvoyait
+    # SILENCIEUSEMENT la config de base en un seul run, produisant un résultat étiqueté
+    # « courbe d'apprentissage » qui n'en était pas une — un seul point, jamais la
+    # variation de taille d'entraînement promise. `mode` n'était même pas lu.
+    if sweep.get("mode") == "learning_curve":
+        sizes = sweep.get("learning_curve_sizes") or []
+        _require(
+            isinstance(sizes, list) and sizes,
+            "/sweep/learning_curve_sizes", "liste non vide attendue",
+        )
+        repeats = int(sweep.get("repeats", 1))
+        combos = [(size, repeat) for size in sizes for repeat in range(repeats)]
+        if len(combos) > max_runs:
+            raise ConfigValidationError(
+                "/sweep",
+                f"{len(combos)} runs générés > max_runs={max_runs} : réduire les tailles "
+                "ou les répétitions, ou relever explicitement max_runs",
+            )
+        base_seed = int(config.get("seed", 42))
+        out = []
+        for size, repeat in combos:
+            variant = copy.deepcopy(config)
+            variant.pop("sweep", None)
+            variant.setdefault("evaluation", {})["learning_curve"] = {
+                # Une graine PAR RÉPÉTITION — sans ça, les 5 répétitions au même N
+                # piocheraient EXACTEMENT le même sous-échantillon de documents
+                # (`Dataset.subsample_documents` est déterministe par graine), ce qui
+                # rendrait chaque « répétition » identique aux autres — aucune variance
+                # à mesurer, la moitié du point de la courbe perdue.
+                "n_documents": size, "seed": base_seed + repeat,
+            }
+            out.append(variant)
+        return out
+
+    axes = sweep.get("axes") or {}
     if not axes:
         return [config]
 

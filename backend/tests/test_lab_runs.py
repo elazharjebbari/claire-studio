@@ -114,6 +114,55 @@ def test_sweep_refuse_au_dela_du_plafond_avec_le_decompte():
 
 
 # --------------------------------------------------------------------------- #
+# Sweep — mode "learning_curve"
+# --------------------------------------------------------------------------- #
+
+def test_sweep_learning_curve_produit_taille_x_repetitions_variantes():
+    """⭐ Bug réel trouvé le 14 août 2026 : sans `axes`, l'ancienne implémentation
+    renvoyait SILENCIEUSEMENT la config de base en un seul run — une « courbe
+    d'apprentissage » d'un seul point, jamais la variation de taille promise."""
+    config = base_config(sweep={
+        "mode": "learning_curve",
+        "learning_curve_sizes": [5, 10, 20],
+        "repeats": 3,
+        "max_runs": 9,
+    })
+    variants = expand_sweep(config)
+    assert len(variants) == 9
+    assert all("sweep" not in v for v in variants)
+    sizes = sorted(v["evaluation"]["learning_curve"]["n_documents"] for v in variants)
+    assert sizes == [5, 5, 5, 10, 10, 10, 20, 20, 20]
+
+
+def test_sweep_learning_curve_donne_une_graine_distincte_par_repetition():
+    """Sans ça, les répétitions au même N piocheraient EXACTEMENT le même
+    sous-échantillon de documents (le tirage est déterministe par graine) — aucune
+    variance à mesurer, la moitié du point de la courbe perdue."""
+    config = base_config(seed=42, sweep={
+        "mode": "learning_curve", "learning_curve_sizes": [10], "repeats": 3, "max_runs": 3,
+    })
+    variants = expand_sweep(config)
+    seeds = {v["evaluation"]["learning_curve"]["seed"] for v in variants}
+    assert len(seeds) == 3
+
+
+def test_sweep_learning_curve_refuse_au_dela_du_plafond():
+    config = base_config(sweep={
+        "mode": "learning_curve", "learning_curve_sizes": [5, 10, 20, 30, 40],
+        "repeats": 5, "max_runs": 10,
+    })
+    with pytest.raises(ConfigValidationError) as exc:
+        expand_sweep(config)
+    assert "25 runs" in str(exc.value)
+
+
+def test_sweep_learning_curve_sans_tailles_est_refuse():
+    config = base_config(sweep={"mode": "learning_curve", "repeats": 3})
+    with pytest.raises(ConfigValidationError):
+        expand_sweep(config)
+
+
+# --------------------------------------------------------------------------- #
 # Validation des résultats
 # --------------------------------------------------------------------------- #
 

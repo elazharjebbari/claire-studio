@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+import hashlib
 import json
 from dataclasses import dataclass, field
 from pathlib import Path
@@ -58,13 +59,18 @@ class Dataset:
             (test if sentence.document in test_documents else train).append(position)
         return train, test
 
-    def subsample_documents(self, n: int, *, seed: int = 0) -> list[str]:
+    def subsample_documents(
+        self, n: int, *, seed: int = 0, pool: list[str] | None = None
+    ) -> list[str]:
         """Sous-échantillon reproductible de documents — support de la courbe
         d'apprentissage. Le tirage passe par SHA-256 et non `random`, pour rester stable
-        d'une machine et d'une version de Python à l'autre."""
-        import hashlib
+        d'une machine et d'une version de Python à l'autre.
 
-        documents = self.documents
+        `pool` restreint le tirage à un sous-ensemble de documents (typiquement les
+        documents d'ENTRAÎNEMENT d'un pli donné) — sans lui, une courbe d'apprentissage
+        pourrait piocher des documents qui appartiennent au pli de TEST courant, une
+        fuite entre train et test que `fold_indices` existe justement pour empêcher."""
+        documents = pool if pool is not None else self.documents
         ordered = sorted(
             documents,
             key=lambda d: hashlib.sha256(f"{seed}:{d}".encode()).hexdigest(),

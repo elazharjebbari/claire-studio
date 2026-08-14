@@ -92,6 +92,13 @@ def run_experiment(
     predictions: list[dict] = []
     fold_scores: list[dict] = []
 
+    # Courbe d'apprentissage : restreint l'ENTRAÎNEMENT à N documents par pli, jamais le
+    # test (sinon les points de la courbe ne seraient plus comparables entre eux). Le
+    # tirage est scopé au pool de train DU PLI COURANT (`pool=fold_train_docs`) — piocher
+    # dans l'ensemble du dataset laisserait passer des documents du pli de test courant,
+    # une fuite que `fold_indices` existe justement pour empêcher.
+    learning_curve = (config.get("evaluation") or {}).get("learning_curve")
+
     for fold in range(n_folds):
         if should_cancel and should_cancel():
             raise Cancelled(f"annulé au pli {fold + 1}/{n_folds}")
@@ -99,6 +106,19 @@ def run_experiment(
         train_idx, test_idx = dataset.fold_indices(fold)
         if not train_idx or not test_idx:
             continue
+
+        if learning_curve:
+            fold_train_docs = sorted({dataset.sentences[i].document for i in train_idx})
+            keep_docs = set(
+                dataset.subsample_documents(
+                    int(learning_curve["n_documents"]),
+                    seed=int(learning_curve.get("seed", config.get("seed", 42))),
+                    pool=fold_train_docs,
+                )
+            )
+            train_idx = [i for i in train_idx if dataset.sentences[i].document in keep_docs]
+            if not train_idx:
+                continue
 
         model = build_model(
             config["model"], judges_index=dataset.judges, seed=int(config.get("seed", 42))
