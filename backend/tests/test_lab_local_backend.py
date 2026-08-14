@@ -111,6 +111,37 @@ def test_submit_n_ecrit_pas_deux_fois_le_meme_pourcentage(a_run, tmp_path, monke
     assert fake_heartbeat.call_count == 1
 
 
+def test_submit_isole_hf_home_dans_out_dir(a_run, tmp_path, monkeypatch):
+    """Bug réel trouvé en prod (12 août 2026) : sans `HF_HOME` explicite,
+    `sentence-transformers` retombe sur `~/.cache/huggingface` — sous systemd, `HOME`
+    (celui de l'utilisateur qui exécute le worker) n'est pas forcément inscriptible,
+    et le téléchargement du modèle échoue avec `Permission denied`."""
+    monkeypatch.setattr("claire.lab.runners.local.time.sleep", lambda _s: None)
+    out_dir = tmp_path / "out"
+    out_dir.mkdir()
+
+    with patch("claire.lab.runners.local.subprocess.Popen") as popen:
+        popen.return_value = _fake_process([None, 0])
+        LocalBackend().submit(a_run, tmp_path / "data", out_dir)
+
+    _args, kwargs = popen.call_args
+    assert kwargs["env"]["HF_HOME"] == str(out_dir / ".hf")
+
+
+def test_submit_respecte_un_hf_home_deja_positionne(a_run, tmp_path, monkeypatch):
+    monkeypatch.setenv("HF_HOME", "/deja/configure")
+    monkeypatch.setattr("claire.lab.runners.local.time.sleep", lambda _s: None)
+    out_dir = tmp_path / "out"
+    out_dir.mkdir()
+
+    with patch("claire.lab.runners.local.subprocess.Popen") as popen:
+        popen.return_value = _fake_process([None, 0])
+        LocalBackend().submit(a_run, tmp_path / "data", out_dir)
+
+    _args, kwargs = popen.call_args
+    assert kwargs["env"]["HF_HOME"] == "/deja/configure"
+
+
 def test_submit_depasse_le_delai_leve_timeout_expired(a_run, tmp_path, monkeypatch, settings):
     settings.LAB_LOCAL_TIMEOUT = 0
     monkeypatch.setattr("claire.lab.runners.local.time.sleep", lambda _s: None)

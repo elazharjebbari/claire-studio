@@ -65,6 +65,11 @@ class LocalBackend(ExecutionBackend):
         env["PYTHONPATH"] = os.pathsep.join(
             [p for p in (str(root), env.get("PYTHONPATH", "")) if p]
         )
+        # Isolé par run, dans `out_dir` (déjà garanti inscriptible par l'appelant) plutôt
+        # que le repli par défaut `~/.cache/huggingface` : sous systemd, `HOME` pointe vers
+        # un répertoire hors du contrôle de ce package et pas forcément inscriptible par
+        # l'utilisateur qui exécute le worker. Même convention que le script Grid'5000.
+        env.setdefault("HF_HOME", str(out_dir / ".hf"))
 
         cmd = [
             research_python(), "-m", "pactiva_lab", "run",

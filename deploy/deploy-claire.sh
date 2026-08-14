@@ -115,6 +115,7 @@ $SSH "set -e; cd ${VPS_DIR} && \
   .venv/bin/pip install -q -e '.[sklearn,embeddings,transformers]' && \
   grep -q '^LAB_RESEARCH_PYTHON=' ../backend/.env || \
     echo \"LAB_RESEARCH_PYTHON=${VPS_DIR}/research/.venv/bin/python\" >> ../backend/.env && \
+  chown -R www-data:www-data ${VPS_DIR}/research && \
   cd ../frontend && npm ci --no-audit --no-fund && npm run build && \
   cd .. && cp deploy/systemd/${APP}-analysis-worker.service deploy/systemd/${APP}-lab-worker.service /etc/systemd/system/ && \
   systemctl daemon-reload && systemctl enable ${APP}-analysis-worker ${APP}-lab-worker && \
