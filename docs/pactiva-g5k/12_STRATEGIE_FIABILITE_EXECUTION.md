@@ -1,8 +1,11 @@
 # Stratégie de fiabilité — activer les calculs réels sur Grid'5000
 
 **Mise à jour du 14 août 2026 : Paliers 1 à 5 exécutés et validés en conditions
-réelles.** Voir le journal en fin de document. Seul le Palier 6 (le vrai test, à pleine
-échelle) demeure un plan, non exécuté.
+réelles, puis tests intensifs supplémentaires demandés par l'utilisateur ayant révélé
+un 8ᵉ bug réel (états OAR transitoires mal interprétés, corrigé et confirmé en
+conditions réelles).** Voir le journal en fin de document. Le Palier 6 « le vrai
+test » à pleine échelle sur Grid'5000 demeure un plan, non exécuté — non redemandé par
+l'utilisateur à ce stade.
 
 Ce document est à l'origine un **plan d'action**, pas un journal d'exécution — sa
 première version (ci-dessous) ne décrivait rien d'encore exécuté. Il reprend et englobe
@@ -347,3 +350,71 @@ malgré le doublon de méthode et les 5 échecs.
 
 **Non exécuté** : Palier 6 (le vrai test, à pleine échelle) — nécessite un accord
 explicite séparé, pas encore demandé à ce stade.
+
+### 14 août 2026 — Tests intensifs post-Palier 6 : bug n°8, le plus profond de la série
+
+Après les six paliers ci-dessus (tous verts, y compris le Palier 6 redéfini par la
+revue scientifique et exécuté en local plutôt que sur Grid'5000 — voir la revue
+`wsi2cfn5w`), l'utilisateur a explicitement demandé une validation plus poussée :
+« enchaine sur des testes intensifs sur Grid5000 pour bien tout valider ». Objectif :
+épuiser volontairement le walltime d'un run réel pour vérifier bout en bout le
+mécanisme d'ingestion partielle (bug n°7, §Palier 5 ci-dessus).
+
+**v1/v2 (`embeddings_head`, e5-large-v2)** : échecs, mais dus à mon propre
+provisioning incomplet de l'environnement conda `nancy` (`sentence_transformers`
+jamais installé) — pas un bug applicatif, diagnostiqué via `MissingDependency` dans le
+stderr OAR.
+
+**v3/v4 (`tfidf_linear`, `walltime=00:00:12`)** : le job **6852994** (run
+`63f251ac`) a échoué en `result_missing` **13 secondes** après sa soumission. Vérification
+directe sur Grid'5000 (`oarstat -f -j 6852994`, stdout/stderr OAR, répertoire distant
+`results/`) : le job a réellement tourné et terminé **normalement** —
+`state=Terminated, exit_code=0`, 31 secondes réelles, `results.json` COMPLET et
+valide déjà présent (`macro_f1=0.44027, micro_f1=0.508674`, IC 95%
+`[0.411169, 0.470997]`), `_SENTINEL` présent. **Un résultat entièrement calculé et
+valide, déclaré manquant par notre propre système** — le même symptôme que le bug n°5
+(Palier 5), mais le budget de nouvelles tentatives déjà en place (`LAB_FETCH_RETRIES`,
+3×3s) n'a rien pu faire : l'écart de log (`journalctl` ne montrait AUCUNE entrée sur la
+fenêtre où j'avais d'abord cherché, à cause d'un décalage de fuseau horaire entre mes
+propres recherches en heure locale CEST et les journaux systemd en UTC — pas une
+anomalie du worker) a orienté l'investigation vers le VRAI journal (`20:50:55` →
+`20:51:11` UTC, soit 16 secondes de vie totale côté worker) : notre système avait
+déclaré le job « stopped » et déclenché le rapatriement **avant même que le job
+n'ait commencé à s'exécuter réellement** sur le nœud (le job OAR, lui, n'a démarré
+son script qu'après un délai de lancement, puis a tourné 31 secondes réelles).
+
+**Cause, bug réel n°8 — le plus profond de toute la série** : `g5k_client.py::poll()`
+ne reconnaissait explicitement que les états OAR `waiting` et `running`, et mappait
+TOUT le reste vers `stopped` par défaut — y compris `toLaunch`/`Launching`, les états
+transitoires OAR entre la soumission et le démarrage réel du script utilisateur
+(catalogués dans `docs/pactiva-g5k/research/02_OAR_KADEPLOY.md` §États). Sur un job à
+walltime très court, la fenêtre de sondage adaptatif (`POLL_SCHEDULE`, dense les
+premières secondes) avait de bonnes chances de tomber pile dans cette fenêtre
+transitoire, la confondant avec une fin de job — expliquant pourquoi ce bug était
+resté invisible sur les runs GPU à walltime de plusieurs heures (Palier 4) : la
+fenêtre transitoire y est négligeable face au sondage, mais devient dominante sur un
+job de quelques secondes. **C'est un bug DISTINCT du bug n°5** (course NFS
+close-to-open) : celui-ci déclenchait un rapatriement prématuré alors que le job avait
+déjà tourné et terminé côté nœud ; celui-ci déclenche un rapatriement avant même que
+le job ait commencé — aucun budget de nouvelles tentatives de `fetch()` ne peut
+compenser un job qui n'a simplement pas encore eu le temps de produire quoi que ce
+soit.
+
+**Fix** : inversion du défaut — `poll()` ne renvoie `stopped` que pour les états
+OAR réellement terminaux (`terminated`, `error`, `toerror`, `finishing`) ; tout état
+non reconnu (y compris un état futur non catalogué) reste `waiting`, jamais `stopped`
+par optimisme. 5 nouveaux tests paramétrés (états terminaux vs transitoires/inconnus),
+71 tests du module G5K + 769 tests backend passés, déployé (`6f447fe`, healthchecks
+API+frontend 200).
+
+**Confirmation en conditions réelles** : ré-exécution du MÊME run exact (job 6853020,
+run `62f40a50`, même config `tfidf_linear`/`walltime=00:00:12`/nancy) après déploiement
+du correctif. Journal worker : `lab_run_started` → `g5k_submitted job=6853020` →
+`lab_run_ingested status=partial`, **44 secondes** de vie totale (contre 16 secondes
+avant le fix). Détail de l'API : `phase` passe correctement par `running` (jamais
+observé avant le fix), le walltime a bien coupé le job après 3 folds sur 5, et le
+mécanisme d'ingestion partielle (bug n°7) a récupéré des métriques réelles et valides
+(`macroF1=0.422346, kappa=0.452863`, 3 `perFold`) au lieu d'un `result_missing`. Les
+bugs n°7 et n°8 se corrigent mutuellement dans ce scénario précis : n°8 empêchait
+d'atteindre honnêtement la fin du walltime, n°7 empêchait de garder ce qui avait été
+calculé une fois qu'on l'atteignait.
