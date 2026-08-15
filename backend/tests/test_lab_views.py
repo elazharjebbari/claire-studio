@@ -149,6 +149,37 @@ def test_la_liste_des_runs_expose_la_cible_d_execution_reellement_utilisee(
     assert by_id[str(g5k_run.id)]["computeSite"] == "nancy"
 
 
+def test_la_liste_et_le_detail_exposent_heartbeat_et_annulation_demandee(
+    lab_campaign, lab_dataset,
+):
+    """⭐ Audit UI/UX du suivi des exécutions (15 août 2026) : `heartbeat_at` et
+    `cancel_requested` existent sur le modèle depuis l'origine mais n'atteignaient
+    JAMAIS le frontend (absents des deux sérialiseurs) — aucun moyen client de
+    distinguer un run figé (worker mort) d'un run qui progresse, ni de savoir si un
+    clic « Annuler » a bien été pris en compte avant le changement de statut."""
+    slug = lab_campaign["project"].slug
+    experiment = Experiment.objects.create(
+        project=lab_campaign["project"], dataset=lab_dataset, created_by=lab_campaign["lead"],
+        name="suivi", task=Task.T1, config=_base_config(lab_dataset.id),
+    )
+    from django.utils import timezone
+
+    heartbeat = timezone.now()
+    run = ExperimentRun.objects.create(
+        experiment=experiment, config=_base_config(lab_dataset.id), fingerprint="c" * 64,
+        status=RunStatus.RUNNING, heartbeat_at=heartbeat, cancel_requested=True,
+    )
+
+    list_resp = _client(lab_campaign["lead"]).get(f"{API}/projects/{slug}/lab/runs")
+    row = next(r for r in list_resp.json() if r["id"] == str(run.id))
+    assert row["cancelRequested"] is True
+    assert row["heartbeatAt"] is not None
+
+    detail_resp = _client(lab_campaign["lead"]).get(f"{API}/projects/{slug}/lab/runs/{run.id}")
+    assert detail_resp.json()["cancelRequested"] is True
+    assert detail_resp.json()["heartbeatAt"] is not None
+
+
 # --------------------------------------------------------------------------- #
 # Datasets
 # --------------------------------------------------------------------------- #

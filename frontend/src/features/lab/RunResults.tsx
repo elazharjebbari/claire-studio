@@ -8,47 +8,53 @@
  * de `run.metrics`, exactement ce que le runner a écrit dans `results.json`.
  */
 
-import { useEffect, useState } from "react";
-import { AlertTriangle, ArrowLeft } from "lucide-react";
+import { AlertTriangle, ArrowLeft, RotateCcw } from "lucide-react";
 import Link from "next/link";
+import { useMutation, useQuery } from "@tanstack/react-query";
 
-import { Badge, Panel } from "@/components/ui/primitives";
+import { Badge, Button, Panel, ProgressBar } from "@/components/ui/primitives";
 
 import { CalibrationFigure, ConfusionMatrixFigure, LabelScoreFigure } from "./charts";
 import { ComputeTargetBadge } from "./ComputeTargetBadge";
-import { getRun } from "./api";
-import type { RunDetail } from "./types";
+import { cancelRun, getRun } from "./api";
+import { ACTIVE, LIVE, STATUS_META, elapsedLabel, isProgressLive, isStaleHeartbeat } from "./runStatus";
+import type { RunDetail, RunStatus } from "./types";
 
 function fmt(value: number | null | undefined, digits = 3): string {
   return value == null ? "—" : value.toFixed(digits);
 }
 
+/**
+ * Sondage adaptatif, même principe que `useExportJob` (`lib/api/hooks.ts`) : dense pour
+ * un run LOCAL (`progress` réellement mis à jour toutes les 2 s par le worker), beaucoup
+ * plus espacé pour Grid'5000 — chaque sonde y coûte deux requêtes HTTP côté client
+ * officiel (`g5k_client.py`), et l'état OAR ne change de toute façon pas à la seconde.
+ * Arrêt net dès un statut terminal.
+ */
+function pollIntervalMs(status: RunStatus | undefined, computeTarget: string | undefined): number | false {
+  if (!status || !ACTIVE.includes(status)) return false;
+  return computeTarget === "g5k" ? 20_000 : 2_000;
+}
+
 export function RunResults({ slug, runId }: { slug: string; runId: string }) {
-  const [run, setRun] = useState<RunDetail | null>(null);
-  const [error, setError] = useState<string | null>(null);
+  const { data: run, isPending, isError } = useQuery({
+    queryKey: ["lab", "run", slug, runId],
+    queryFn: () => getRun(slug, runId),
+    refetchInterval: (query) => pollIntervalMs(query.state.data?.status, query.state.data?.computeTarget),
+  });
 
-  useEffect(() => {
-    let cancelled = false;
-    getRun(slug, runId)
-      .then((data) => {
-        if (!cancelled) setRun(data);
-      })
-      .catch(() => {
-        if (!cancelled) setError("Impossible de charger ce run.");
-      });
-    return () => {
-      cancelled = true;
-    };
-  }, [slug, runId]);
+  // Ne dépend d'aucune query cache invalidée ailleurs : `run` vient du MÊME `useQuery`
+  // ci-dessus, qui se rafraîchit tout seul (`refetchInterval`) jusqu'à voir `cancelled`.
+  const cancelMutation = useMutation({ mutationFn: () => cancelRun(slug, runId) });
 
-  if (error) {
+  if (isError) {
     return (
       <Panel className="p-4 text-sm text-danger" data-testid="run-results-error">
-        {error}
+        Impossible de charger ce run.
       </Panel>
     );
   }
-  if (!run) {
+  if (isPending || !run) {
     return (
       <Panel className="p-4 text-xs text-ink-muted" data-testid="run-results-loading">
         Chargement…
@@ -71,13 +77,107 @@ export function RunResults({ slug, runId }: { slug: string; runId: string }) {
   const ece = typeof metrics.ece === "number" ? metrics.ece : null;
 
   if (run.status !== "succeeded" && run.status !== "partial") {
+    const meta = STATUS_META[run.status];
+    const Icon = meta.icon;
+    const now = Date.now();
+    // `live` (progression/phase) est un sous-ensemble STRICT de `canCancel`
+    // (annulable dès `queued`) — un run tout juste `queued` n'a rien à montrer en
+    // progression mais reste annulable, exactement comme dans `RunList` (revue
+    // adversariale du 15 août 2026 : ces deux notions étaient auparavant confondues
+    // sous une seule variable, avec un rendu divergent de celui de `RunList` pour un
+    // run `queued`).
+    const live = LIVE.includes(run.status);
+    const canCancel = ACTIVE.includes(run.status);
+    const stale = live && isStaleHeartbeat(run.heartbeatAt, now);
+    const elapsedId = "run-elapsed-detail";
     return (
-      <Panel className="p-4" data-testid="run-results-not-ready">
-        <p className="text-sm text-ink">
-          Ce run est {run.status === "failed" ? "en échec" : "encore en cours"}.
-        </p>
+      <Panel className="space-y-3 p-4" data-testid="run-results-not-ready">
+        <Link
+          href={`/projects/${slug}/lab?tab=runs`}
+          className="inline-flex items-center gap-1 text-xs text-ink-muted hover:text-ink"
+        >
+          <ArrowLeft className="h-3.5 w-3.5" aria-hidden /> Retour au Lab
+        </Link>
+
+        <div className="flex items-center justify-between gap-2">
+          <div>
+            <h2 className="text-sm font-semibold text-ink">{run.experimentName}</h2>
+            <p className="text-xs text-ink-muted">{run.task}</p>
+          </div>
+          <ComputeTargetBadge target={run.computeTarget} site={run.computeSite} />
+        </div>
+
+        <div className={`flex items-center gap-1.5 text-sm ${meta.className}`}>
+          <Icon className={run.status === "running" ? "h-4 w-4 animate-spin" : "h-4 w-4"} aria-hidden />
+          {meta.label}
+          {live && run.phase ? ` · ${run.phase}` : ""}
+        </div>
+
+        {live && (
+          <div className="space-y-1.5" data-testid="run-live-tracking">
+            <ProgressBar
+              value={run.progress}
+              indeterminate={!isProgressLive(run.computeTarget, run.progress)}
+              label={`Progression de ${run.experimentName}`}
+              className="w-full"
+              testId="run-progress-detail"
+              describedBy={elapsedId}
+            />
+            <p id={elapsedId} className="text-xs text-ink-muted" data-testid="run-elapsed-detail">
+              depuis {elapsedLabel(run.startedAt ?? run.createdAt, now) ?? "…"}
+            </p>
+            {stale && (
+              <p className="flex items-center gap-1 text-xs text-warning" data-testid="run-stale-heartbeat">
+                <AlertTriangle className="h-3 w-3 shrink-0" aria-hidden />
+                Aucune activité détectée depuis {elapsedLabel(run.heartbeatAt, now)} — ce run pourrait
+                être bloqué.
+              </p>
+            )}
+          </div>
+        )}
+
+        {run.attempt > 1 && (
+          // Un token `ink-muted` seul n'est pas assez contrasté pour porter une
+          // information critique (harnais AA, `tests/contrastAA.test.ts`) — un run
+          // repris après incident mérite le même traitement icône + token sémantique
+          // que le battement périmé ci-dessus, pas un fragment noyé dans du texte gris
+          // (revue adversariale du 15 août 2026).
+          <p className="flex items-center gap-1 text-xs text-warning" data-testid="run-attempt-warning">
+            <RotateCcw className="h-3 w-3 shrink-0" aria-hidden />
+            Reprise après incident — tentative {run.attempt}
+          </p>
+        )}
+
+        {canCancel &&
+          (run.cancelRequested ? (
+            <p className="text-xs text-ink-muted" data-testid="run-cancel-pending-detail">
+              annulation en cours…
+            </p>
+          ) : (
+            <Button
+              size="sm"
+              variant="ghost"
+              loading={cancelMutation.isPending}
+              onClick={() => {
+                const warning =
+                  run.computeTarget === "g5k" ? " La réservation Grid'5000 sera libérée." : "";
+                if (window.confirm(`Annuler « ${run.experimentName} » ?${warning}`)) {
+                  cancelMutation.mutate();
+                }
+              }}
+              title="Annuler ce run"
+              data-testid="run-cancel-detail"
+            >
+              Annuler
+            </Button>
+          ))}
+
+        {meta.hint && <p className="text-xs text-ink-muted">{meta.hint}</p>}
         {run.status === "failed" && (
-          <p className="mt-1 text-xs text-danger">{run.errorDetail || run.errorCode}</p>
+          <p className="text-xs text-danger">{run.errorDetail || run.errorCode}</p>
+        )}
+        {run.status === "cancelled" && (
+          <p className="text-xs text-ink-muted">Ce run a été annulé.</p>
         )}
       </Panel>
     );

@@ -71,6 +71,15 @@ export interface RunSummary {
   /** Site Grid'5000 déclaré dans la config (`compute.g5k.site`) — absent si non précisé
    * ou si la cible est locale. */
   computeSite: string | null;
+  /** `null` tant que le worker n'a pas pris le run en charge (encore `queued`). */
+  startedAt: string | null;
+  /** Rafraîchi à CHAQUE cycle de sondage du worker, y compris pendant une attente
+   * Grid'5000 — voir `runStatus.isStaleHeartbeat`. `null` avant la première prise en
+   * charge. */
+  heartbeatAt: string | null;
+  /** `true` dès qu'un `POST .../cancel` a été accepté, AVANT que `status` ne bascule
+   * réellement sur `cancelled` (l'annulation d'un job distant n'est pas instantanée). */
+  cancelRequested: boolean;
 }
 
 export interface RunDetail extends RunSummary {

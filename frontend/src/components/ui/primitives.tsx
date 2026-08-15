@@ -130,6 +130,54 @@ export function Field({
   );
 }
 
+/**
+ * Barre de progression accessible — déterminée (`value` 0-100 réel) ou indéterminée
+ * (`indeterminate`, remplissage figé animé) pour un état « en cours » dont on ne connaît
+ * pas la fraction accomplie (ex. un job Grid'5000 : `progress` reste à 0 tant que le
+ * worker n'a pas rapatrié `results.json`, puis saute directement à 100 — afficher une
+ * barre à 0% figée pendant potentiellement des heures serait trompeur, l'indéterminée
+ * dit honnêtement « ça avance, sans chiffre fiable »).
+ */
+export function ProgressBar({
+  value,
+  indeterminate = false,
+  label,
+  className,
+  testId,
+  describedBy,
+}: {
+  value?: number;
+  indeterminate?: boolean;
+  label: string;
+  className?: string;
+  testId?: string;
+  /** `id` d'un élément qui complète la barre (ex. « depuis 3 min ») — lu à la suite par
+   * un lecteur d'écran, plutôt que deux annonces sans lien explicite entre elles. */
+  describedBy?: string;
+}) {
+  return (
+    <div
+      className={cn("h-1 w-24 overflow-hidden rounded-full bg-panel-muted", className)}
+      role="progressbar"
+      aria-valuenow={indeterminate ? undefined : value}
+      aria-valuemin={0}
+      aria-valuemax={100}
+      aria-label={label}
+      aria-describedby={describedBy}
+      data-indeterminate={indeterminate || undefined}
+      data-testid={testId}
+    >
+      <div
+        className={cn(
+          "h-full rounded-full bg-accent transition-[width]",
+          indeterminate && "w-2/5 motion-safe:animate-pulse",
+        )}
+        style={indeterminate ? undefined : { width: `${value ?? 0}%` }}
+      />
+    </div>
+  );
+}
+
 export function StatusPill({ status }: { status: string }) {
   const tone: Record<string, string> = {
     draft: "border-ink-muted/40 text-ink-muted",

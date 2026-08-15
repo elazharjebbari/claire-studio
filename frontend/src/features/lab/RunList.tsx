@@ -13,43 +13,16 @@
  */
 
 import { useCallback, useEffect, useRef, useState } from "react";
-import { Ban, Clock, Loader2, TriangleAlert, XCircle, CheckCircle2, CircleDashed } from "lucide-react";
+import { useMutation } from "@tanstack/react-query";
 import Link from "next/link";
 
-import { Button, Panel } from "@/components/ui/primitives";
+import { Button, Panel, ProgressBar } from "@/components/ui/primitives";
 
 import { RunComparisonFigure } from "./charts";
 import { ComputeTargetBadge } from "./ComputeTargetBadge";
 import { cancelRun, compareRuns, listRuns } from "./api";
-import type { RunStatus, RunSummary } from "./types";
-
-const RESULTS_READY: RunStatus[] = ["succeeded", "partial", "failed"];
-const COMPARABLE_STATUSES: RunStatus[] = ["succeeded", "partial"];
-
-const STATUS_META: Record<
-  RunStatus,
-  { label: string; icon: typeof Clock; className: string; hint?: string }
-> = {
-  queued: { label: "en file", icon: CircleDashed, className: "text-ink-muted" },
-  waiting: {
-    label: "en attente d'allocation",
-    icon: Clock,
-    className: "text-warning",
-    hint: "réservé sur Grid'5000, en attente d'un nœud",
-  },
-  running: { label: "en cours", icon: Loader2, className: "text-accent" },
-  succeeded: { label: "terminé", icon: CheckCircle2, className: "text-success" },
-  partial: {
-    label: "partiel",
-    icon: TriangleAlert,
-    className: "text-warning",
-    hint: "walltime atteint — les plis calculés sont conservés",
-  },
-  failed: { label: "échec", icon: XCircle, className: "text-danger" },
-  cancelled: { label: "annulé", icon: Ban, className: "text-ink-muted" },
-};
-
-const ACTIVE: RunStatus[] = ["queued", "waiting", "running"];
+import { ACTIVE, COMPARABLE_STATUSES, LIVE, STATUS_META, elapsedLabel, isProgressLive } from "./runStatus";
+import type { RunSummary } from "./types";
 
 interface ComparisonState {
   comparable: boolean;
@@ -113,6 +86,32 @@ export function RunList({ slug }: { slug: string }) {
     }
   };
 
+  // `useMutation` plutôt qu'un `.then()` brut : la queue d'erreurs globale
+  // (`store/apiErrors.ts` + `ApiErrorBanner`) capte automatiquement un échec réseau/API
+  // sur l'annulation — auparavant totalement silencieux (audit UI/UX, 15 août 2026).
+  //
+  // L'état de chargement par ligne vient d'un `Set` local, PAS de
+  // `cancelMutation.variables` : une seule instance de mutation est partagée par toutes
+  // les lignes du tableau, donc `variables` ne reflète que le DERNIER appel — deux
+  // annulations rapprochées sur des runs différents feraient réapparaître le bouton
+  // « Annuler » de la première alors que sa requête est encore en vol (revue
+  // adversariale du 15 août 2026, trouvé indépendamment par les deux réviseurs).
+  const [pendingCancels, setPendingCancels] = useState<Set<string>>(new Set());
+  const cancelMutation = useMutation({
+    mutationFn: (runId: string) => cancelRun(slug, runId),
+    onMutate: (runId: string) => {
+      setPendingCancels((prev) => new Set(prev).add(runId));
+    },
+    onSuccess: refresh,
+    onSettled: (_data, _error, runId) => {
+      setPendingCancels((prev) => {
+        const next = new Set(prev);
+        next.delete(runId);
+        return next;
+      });
+    },
+  });
+
   if (loading) {
     return (
       <Panel className="p-4">
@@ -169,17 +168,16 @@ export function RunList({ slug }: { slug: string }) {
                     )}
                   </td>
                   <td className="py-1.5 text-ink">
-                    {RESULTS_READY.includes(run.status) ? (
-                      <Link
-                        href={`/projects/${slug}/lab/runs/${run.id}`}
-                        className="hover:underline"
-                        data-testid={`run-link-${run.id}`}
-                      >
-                        {run.experimentName}
-                      </Link>
-                    ) : (
-                      run.experimentName
-                    )}
+                    {/* Cliquable pour TOUT statut, y compris en cours — auparavant
+                     * impossible d'ouvrir le détail d'un run non terminé, alors que ce
+                     * détail affiche désormais un suivi vivant (audit du 15 août 2026). */}
+                    <Link
+                      href={`/projects/${slug}/lab/runs/${run.id}`}
+                      className="hover:underline"
+                      data-testid={`run-link-${run.id}`}
+                    >
+                      {run.experimentName}
+                    </Link>
                   </td>
                   <td className="py-1.5 text-ink-muted">{run.task}</td>
                   <td className="py-1.5">
@@ -194,23 +192,26 @@ export function RunList({ slug }: { slug: string }) {
                         aria-hidden
                       />
                       {meta.label}
-                      {run.status === "running" && run.phase ? ` · ${run.phase}` : ""}
+                      {LIVE.includes(run.status) && run.phase ? ` · ${run.phase}` : ""}
                     </span>
-                    {run.status === "running" && (
-                      <div
-                        className="mt-1 h-1 w-24 overflow-hidden rounded-full bg-panel-muted"
-                        role="progressbar"
-                        aria-valuenow={run.progress}
-                        aria-valuemin={0}
-                        aria-valuemax={100}
-                        aria-label={`Progression de ${run.experimentName}`}
-                        data-testid={`run-progress-${run.id}`}
-                      >
-                        <div
-                          className="h-full rounded-full bg-accent transition-[width]"
-                          style={{ width: `${run.progress}%` }}
+                    {LIVE.includes(run.status) && (
+                      <>
+                        <ProgressBar
+                          value={run.progress}
+                          indeterminate={!isProgressLive(run.computeTarget, run.progress)}
+                          label={`Progression de ${run.experimentName}`}
+                          className="mt-1"
+                          testId={`run-progress-${run.id}`}
+                          describedBy={`run-elapsed-${run.id}`}
                         />
-                      </div>
+                        <span
+                          id={`run-elapsed-${run.id}`}
+                          className="block text-xs text-ink-muted"
+                          data-testid={`run-elapsed-${run.id}`}
+                        >
+                          depuis {elapsedLabel(run.startedAt ?? run.createdAt, Date.now()) ?? "…"}
+                        </span>
+                      </>
                     )}
                     {meta.hint && (
                       <span className="block text-xs text-ink-muted">{meta.hint}</span>
@@ -223,16 +224,39 @@ export function RunList({ slug }: { slug: string }) {
                     {run.macroF1 == null ? "—" : run.macroF1.toFixed(3)}
                   </td>
                   <td className="py-1.5 text-right">
-                    {ACTIVE.includes(run.status) && (
-                      <Button
-                        size="sm"
-                        variant="ghost"
-                        onClick={() => cancelRun(slug, run.id).then(refresh)}
-                        title="Annuler ce run"
-                      >
-                        Annuler
-                      </Button>
-                    )}
+                    {ACTIVE.includes(run.status) &&
+                      (run.cancelRequested ? (
+                        // Annulation déjà acceptée côté serveur (le drapeau est posé de
+                        // manière synchrone par `POST .../cancel`, avant même que
+                        // `status` ne bascule sur `cancelled`) — jamais un bouton
+                        // recliquable pendant cette fenêtre, sans quoi un second appel
+                        // redondant part sans que rien n'ait vraiment changé.
+                        <span
+                          className="text-xs text-ink-muted"
+                          data-testid={`run-cancel-pending-${run.id}`}
+                        >
+                          annulation en cours…
+                        </span>
+                      ) : (
+                        <Button
+                          size="sm"
+                          variant="ghost"
+                          loading={pendingCancels.has(run.id)}
+                          onClick={() => {
+                            const warning =
+                              run.computeTarget === "g5k"
+                                ? " La réservation Grid'5000 sera libérée."
+                                : "";
+                            if (window.confirm(`Annuler « ${run.experimentName} » ?${warning}`)) {
+                              cancelMutation.mutate(run.id);
+                            }
+                          }}
+                          title="Annuler ce run"
+                          data-testid={`run-cancel-${run.id}`}
+                        >
+                          Annuler
+                        </Button>
+                      ))}
                   </td>
                 </tr>
               );

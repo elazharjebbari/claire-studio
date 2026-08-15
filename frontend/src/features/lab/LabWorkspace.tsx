@@ -13,6 +13,7 @@ import { Database, FlaskConical, Server } from "lucide-react";
 
 import { Panel } from "@/components/ui/primitives";
 
+import { ActiveRunIndicator } from "./ActiveRunIndicator";
 import { DatasetBuilder } from "./DatasetBuilder";
 import { ExperimentLauncher } from "./ExperimentLauncher";
 import { RunList } from "./RunList";
@@ -66,7 +67,7 @@ function LabWorkspaceInner({ slug }: { slug: string }) {
         </p>
       </header>
 
-      <nav className="flex gap-1 border-b border-line" role="tablist">
+      <nav className="flex items-center gap-1 border-b border-line" role="tablist">
         {TABS.map((item) => {
           const Icon = item.icon;
           const active = tab === item.id;
@@ -89,6 +90,7 @@ function LabWorkspaceInner({ slug }: { slug: string }) {
             </button>
           );
         })}
+        <ActiveRunIndicator slug={slug} />
       </nav>
 
       {tab === "datasets" && (

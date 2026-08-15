@@ -109,8 +109,8 @@ class ExperimentRunSerializer(serializers.ModelSerializer):
         fields = [
             "id", "experiment", "experiment_name", "task", "status", "progress", "phase",
             "config", "fingerprint", "metrics", "environment", "external_job_id",
-            "error_code", "error_detail", "attempt", "started_at", "completed_at",
-            "created_at", "artifacts",
+            "error_code", "error_detail", "attempt", "started_at", "heartbeat_at",
+            "cancel_requested", "completed_at", "created_at", "artifacts",
         ]
         read_only_fields = fields
 
@@ -126,8 +126,8 @@ class ExperimentRunSummarySerializer(serializers.ModelSerializer):
         model = ExperimentRun
         fields = [
             "id", "experiment_name", "task", "status", "progress", "phase",
-            "macro_f1", "error_code", "created_at", "completed_at",
-            "compute_target", "compute_site",
+            "macro_f1", "error_code", "started_at", "heartbeat_at", "cancel_requested",
+            "created_at", "completed_at", "compute_target", "compute_site",
         ]
         read_only_fields = fields
 
