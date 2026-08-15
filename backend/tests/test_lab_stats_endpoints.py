@@ -166,6 +166,36 @@ class TestComparePaired:
         assert resp.status_code == 422
         assert resp.json()["code"] == "predictions_mismatch"
 
+    def test_parametres_degeneres_refuses_en_400_jamais_500(self, lab_campaign, paired_runs):  # noqa: F811
+        # ⭐ n_resamples=0 → percentile d'une liste vide (IndexError) ; négatif →
+        # division par zéro ; non numérique → ValueError. Tous en 400 propre.
+        for body_extra in ({"nResamples": 0}, {"nPermutations": -1}):
+            resp = self._post(lab_campaign, {
+                "runA": str(paired_runs["a"].id), "runB": str(paired_runs["b"].id),
+                **body_extra,
+            })
+            assert resp.status_code == 200, body_extra  # bornés au plancher, pas refusés
+        resp = self._post(lab_campaign, {
+            "runA": str(paired_runs["a"].id), "runB": str(paired_runs["b"].id),
+            "nResamples": "beaucoup",
+        })
+        assert resp.status_code == 400
+        assert resp.json()["code"] == "invalid_params"
+
+    def test_predictions_tronquees_422_jamais_500(self, lab_campaign, paired_runs):  # noqa: F811
+        # ⭐ Job tué pendant l'écriture : le fichier catalogué se termine en pleine ligne.
+        artifact = RunArtifact.objects.get(run=paired_runs["b"])
+        from pathlib import Path
+        truncated = b'{"document": "doc0", "index": 0, "y_true": "A", "y_pr'
+        Path(artifact.path).write_bytes(truncated)
+        artifact.checksum = hashlib.sha256(truncated).hexdigest()
+        artifact.save(update_fields=["checksum"])
+        resp = self._post(lab_campaign, {
+            "runA": str(paired_runs["a"].id), "runB": str(paired_runs["b"].id),
+        })
+        assert resp.status_code == 422
+        assert resp.json()["code"] == "predictions_corrupt"
+
     def test_annotateur_refuse(self, lab_campaign, paired_runs):  # noqa: F811
         slug = lab_campaign["project"].slug
         resp = _client(lab_campaign["ann1"]).post(
@@ -279,10 +309,43 @@ class TestAgreement:
         )
         assert resp.status_code == 200
         body = resp.json()
+        # Matrice et vsGold en LISTES alignées sur `judges` — les dicts clefs par nom
+        # seraient camélisés par le middleware (« gpt_4o » → clé « gpt4O ») et
+        # deviendraient incroisables avec la liste `judges` (revue adversariale).
         assert body["kappa"]["judges"] == ["claude", "fable"]
-        assert body["kappa"]["matrix"]["fable"]["fable"] == 1.0
-        assert body["kappa"]["vsGold"]["fable"] == 1.0
+        fable = body["kappa"]["judges"].index("fable")
+        assert body["kappa"]["matrix"][fable][fable] == 1.0
+        assert body["kappa"]["vsGold"][fable] == 1.0
         assert body["alpha"]["low"] <= body["alpha"]["point"] <= body["alpha"]["high"]
+
+    def test_deux_runs_du_meme_juge_gardent_des_labels_distincts(self, lab_campaign, lab_dataset, tmp_path):  # noqa: F811
+        # ⭐ Sweep relancé avec force : sans suffixe, le second run « fable » écraserait
+        # le premier dans le dict — matrice à N-1 juges sans avertissement.
+        experiment = Experiment.objects.create(
+            project=lab_campaign["project"], dataset=lab_dataset,
+            created_by=lab_campaign["lead"], name="juges-dup", task=Task.T1,
+            config=_base_config(lab_dataset.id), preset="llm-judges-baseline",
+        )
+        runs = []
+        for suffix, correct in (("1", set(DOCUMENTS)), ("2", set(DOCUMENTS[:4]))):
+            config = _base_config(lab_dataset.id)
+            config["model"] = {"family": "llm_judge", "judge": "fable"}
+            run = ExperimentRun.objects.create(
+                experiment=experiment, config=config,
+                fingerprint=suffix.ljust(64, "e"), status=RunStatus.SUCCEEDED,
+            )
+            _write_predictions(tmp_path, run, _rows(correct_in=correct))
+            runs.append(run)
+
+        slug = lab_campaign["project"].slug
+        resp = _client(lab_campaign["lead"]).post(
+            f"{API}/projects/{slug}/lab/agreement",
+            {"runIds": [str(run.id) for run in runs]}, format="json",
+        )
+        assert resp.status_code == 200
+        judges = resp.json()["kappa"]["judges"]
+        assert len(judges) == 2
+        assert len(set(judges)) == 2
 
     def test_moins_de_deux_runs_refuse(self, lab_campaign, paired_runs):  # noqa: F811
         slug = lab_campaign["project"].slug

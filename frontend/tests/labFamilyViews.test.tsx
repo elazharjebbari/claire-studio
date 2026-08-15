@@ -140,8 +140,9 @@ describe("famille résultat principal (legal-bert-finetune)", () => {
   it("⭐ le panneau par classe d'accord rend les 3 classes, divergence en tête d'erreur", async () => {
     await renderRun({ ...BASE, preset: "legal-bert-finetune" });
     const panel = screen.getByTestId("by-agreement-panel");
+    // Libellés FRANÇAIS — jamais les clés anglaises brutes (revue adversariale).
     expect(panel.textContent).toContain("strict");
-    expect(panel.textContent).toContain("majority");
+    expect(panel.textContent).toContain("majorité");
     expect(panel.textContent).toContain("divergence");
     expect(panel.textContent).toContain("62.3 %");
   });

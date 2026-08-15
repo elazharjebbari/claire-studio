@@ -24,7 +24,7 @@ import {
 } from "./api";
 import { RunComparisonFigure } from "./charts";
 import { LabHelpModal } from "./LabHelpModal";
-import { ExperimentIntro, SignificanceNote, VerdictPanel } from "./resultComponents";
+import { CeilingBand, ExperimentIntro, SignificanceNote, VerdictPanel } from "./resultComponents";
 import { fmtCi, fmtMetric } from "./resultFormat";
 import { resultViewFor, type ViewFamily } from "./resultView";
 import {
@@ -42,7 +42,10 @@ import { LearningCurveFigure, type CurveGroup } from "./sweepCharts";
  * « négligeable au criblage » — seuil EXPLORATOIRE, dit tel quel dans l'UI. */
 const EXPLORATORY_EFFECT_FLOOR = 0.005;
 
-const DONE = new Set(["succeeded", "partial"]);
+// `succeeded` seulement : un run partial (walltime) moyenne ses métriques sur des
+// plis INCOMPLETS — le mêler au classement/à la courbe comparerait de l'incomparable
+// (revue adversariale du 15 août 2026). Il est compté à part dans le bandeau.
+const DONE = new Set(["succeeded"]);
 
 export function ExperimentResults({
   slug,
@@ -84,8 +87,11 @@ export function ExperimentResults({
   }
 
   const finished = data.runs.filter((run) => DONE.has(run.status) && run.value != null);
-  const pendingCount = data.runs.filter((run) => !DONE.has(run.status) && run.status !== "failed").length;
+  const partialCount = data.runs.filter((run) => run.status === "partial").length;
   const failedCount = data.runs.filter((run) => run.status === "failed").length;
+  const pendingCount = data.runs.filter(
+    (run) => !DONE.has(run.status) && run.status !== "failed" && run.status !== "partial",
+  ).length;
 
   return (
     <div className="space-y-4" data-testid="experiment-results">
@@ -118,16 +124,23 @@ export function ExperimentResults({
         </div>
         {helpOpen && <LabHelpModal onClose={() => setHelpOpen(false)} />}
         <ExperimentIntro preset={data.preset} />
-        {(pendingCount > 0 || failedCount > 0) && (
+        {(pendingCount > 0 || failedCount > 0 || partialCount > 0) && (
           <p
             className="flex items-center gap-1 text-xs text-warning"
             data-testid="sweep-incomplete"
           >
             <TriangleAlert className="h-3 w-3 shrink-0" aria-hidden />
-            Sweep incomplet : {pendingCount > 0 ? `${pendingCount} run(s) encore en cours` : ""}
-            {pendingCount > 0 && failedCount > 0 ? ", " : ""}
-            {failedCount > 0 ? `${failedCount} en échec (exclus des analyses)` : ""} — les
-            figures portent sur les runs exploitables.
+            Sweep incomplet :{" "}
+            {[
+              pendingCount > 0 ? `${pendingCount} run(s) encore en cours` : null,
+              failedCount > 0 ? `${failedCount} en échec` : null,
+              partialCount > 0
+                ? `${partialCount} partiel(s) (plis incomplets — non comparables)`
+                : null,
+            ]
+              .filter(Boolean)
+              .join(", ")}{" "}
+            — exclus des figures, qui portent sur les runs exploitables.
           </p>
         )}
       </Panel>
@@ -215,6 +228,10 @@ function CurveSection({
             : "Chaque point est un entraînement complet ; la moyenne relie les tailles."
         }
       />
+      <CeilingBand
+        value={data.humanCeiling?.value}
+        ci={data.humanCeiling?.ci as { low: number | null; high: number | null } | undefined}
+      />
       {!isNoise && (
         <p className="text-xs text-ink-muted" data-testid="curve-saturation-note">
           Attention aux plus grandes tailles : le pool d&apos;entraînement par pli est
@@ -277,16 +294,18 @@ function ScreeningSection({
             return (
               <div
                 key={run.id}
-                className={`flex items-center gap-2 text-xs ${survived ? "" : "opacity-50"}`}
+                className="flex items-center gap-2 text-xs"
                 data-testid={`screening-row-${run.id}`}
                 data-survived={survived || undefined}
               >
                 <span className="w-8 shrink-0 text-right font-mono text-ink">
                   {fmtMetric(run.value)}
                 </span>
+                {/* L'atténuation visuelle ne porte que sur la BARRE — jamais sur le
+                  * texte, dont le contraste AA doit tenir (revue adversariale). */}
                 <div className="h-2 w-40 shrink-0 overflow-hidden rounded-full bg-panel-muted">
                   <div
-                    className="h-full rounded-full bg-accent"
+                    className={`h-full rounded-full bg-accent ${survived ? "" : "opacity-40"}`}
                     style={{ width: `${(run.value ?? 0) * 100}%` }}
                   />
                 </div>
@@ -382,14 +401,25 @@ function PairedSection({
 
   return (
     <>
-      {best && (
-        <VerdictPanel>
-          Meilleure variante : {variantLabel(best.config, finished)} à{" "}
-          {fmtMetric(best.value)}
-          {fmtCi(best.ci) ? ` ${fmtCi(best.ci)}` : ""}.
-          {second ? ` Seconde : ${variantLabel(second.config, finished)} à ${fmtMetric(second.value)}.` : ""}
-        </VerdictPanel>
-      )}
+      {best &&
+        (variantLabel(best.config, finished) === "configuration unique" ? (
+          // Sweep de RÉPÉTITIONS (configs identiques) : « meilleure variante » serait un
+          // non-sens — la lecture honnête est la variabilité entre répétitions.
+          <VerdictPanel>
+            {finished.length} répétitions de la même configuration : meilleure valeur{" "}
+            {fmtMetric(best.value)}
+            {fmtCi(best.ci) ? ` ${fmtCi(best.ci)}` : ""}, plus basse{" "}
+            {fmtMetric(ranked[ranked.length - 1]?.value)} — l'écart entre répétitions
+            mesure la sensibilité au hasard, pas un choix à faire.
+          </VerdictPanel>
+        ) : (
+          <VerdictPanel>
+            Meilleure variante : {variantLabel(best.config, finished)} à{" "}
+            {fmtMetric(best.value)}
+            {fmtCi(best.ci) ? ` ${fmtCi(best.ci)}` : ""}.
+            {second ? ` Seconde : ${variantLabel(second.config, finished)} à ${fmtMetric(second.value)}.` : ""}
+          </VerdictPanel>
+        ))}
       {second && (
         <Panel className="p-4" data-testid="paired-test-panel">
           <h3 className="text-sm font-semibold text-ink">
@@ -437,8 +467,12 @@ function JudgesSection({
   data: ExperimentAggregate;
   kappaData: ExperimentAggregate | undefined;
 }) {
-  const source = kappaData ?? data;
-  const finished = source.runs.filter((run) => DONE.has(run.status) && run.value != null);
+  // κ UNIQUEMENT — jamais de repli sur `data` (metric=macro_f1) : des macro-F1
+  // étiquetées « κ » et comparées à κ humain 0,769 seraient des chiffres faux, en
+  // permanence si la requête κ échoue (revue adversariale du 15 août 2026).
+  const finished = (kappaData?.runs ?? []).filter(
+    (run) => DONE.has(run.status) && run.value != null,
+  );
   const ranked = [...finished].sort((a, b) => (b.value ?? 0) - (a.value ?? 0));
   const judgeName = (run: AggregateRun) =>
     String((run.config.model as { judge?: string } | undefined)?.judge ?? run.id.slice(0, 8));
@@ -450,11 +484,20 @@ function JudgesSection({
     retry: false,
   });
 
+  if (!kappaData) {
+    return (
+      <Panel className="p-4 text-xs text-ink-muted" data-testid="judges-kappa-loading">
+        Chargement des κ des juges… (les juges se comparent en κ, pas en macro-F1 —
+        cette page attend la bonne métrique plutôt que d&apos;afficher la mauvaise.)
+      </Panel>
+    );
+  }
+
   const best = ranked[0];
   const verdict = best
     ? `Meilleur juge : ${judgeName(best)} à κ ${fmtMetric(best.value)} — contre un accord ` +
-      `humain de référence κ ${HUMAN_KAPPA}. Ordre attendu par le plan : humains > ` +
-      `supervisé > LLM.`
+      `humain de référence κ ${fmtMetric(HUMAN_KAPPA)}. Ordre attendu par le plan : ` +
+      `humains > supervisé > LLM.`
     : null;
 
   return (
@@ -492,16 +535,19 @@ function JudgesSection({
                 </tr>
               </thead>
               <tbody>
-                {agreement.data.kappa.judges.map((row) => (
+                {/* Matrice en LISTES alignées sur `judges` (le serveur ne renvoie
+                  * jamais de dict clef-par-nom : la camélisation des clés le rendrait
+                  * incroisable avec la liste — revue adversariale). */}
+                {agreement.data.kappa.judges.map((row, i) => (
                   <tr key={row} className="border-t border-line">
                     <td className="px-2 py-1 text-ink">{row}</td>
-                    {agreement.data!.kappa.judges.map((col) => (
+                    {agreement.data!.kappa.judges.map((col, j) => (
                       <td key={col} className="px-2 py-1 text-right font-mono text-ink">
-                        {fmtMetric(agreement.data!.kappa.matrix[row]?.[col])}
+                        {fmtMetric(agreement.data!.kappa.matrix[i]?.[j])}
                       </td>
                     ))}
                     <td className="px-2 py-1 text-right font-mono text-ink">
-                      {fmtMetric(agreement.data!.kappa.vsGold[row])}
+                      {fmtMetric(agreement.data!.kappa.vsGold[i])}
                     </td>
                   </tr>
                 ))}

@@ -261,14 +261,18 @@ describe("ExperimentResults — juges LLM", () => {
     vi.mocked(api.getJudgesAgreement).mockResolvedValue({
       kappa: {
         judges: ["claude", "fable"],
-        matrix: { claude: { claude: 1, fable: 0.61 }, fable: { claude: 0.61, fable: 1 } },
-        vsGold: { claude: 0.44, fable: 0.52 },
+        // Listes alignées sur `judges` — jamais des dicts clefs par nom (camélisation).
+        matrix: [[1, 0.61], [0.61, 1]],
+        vsGold: [0.44, 0.52],
         n: 7621,
       },
       alpha: { point: 0.58, low: 0.52, high: 0.64 },
     });
     await renderExperiment();
 
+    // Le verdict n'apparaît qu'une fois la requête κ résolue — la section REFUSE
+    // d'afficher des macro-F1 étiquetées κ en attendant (revue adversariale).
+    await waitFor(() => expect(screen.getByTestId("verdict-panel")).toBeInTheDocument());
     const verdict = screen.getByTestId("verdict-panel");
     expect(verdict.textContent).toContain("Meilleur juge : fable");
     expect(verdict.textContent).toContain("0.769");

@@ -437,6 +437,20 @@ def krippendorff_alpha_nominal(runs: dict[str, list[dict]]) -> float:
     return round(1.0 - (n - 1) * observed_disagreement / expected_pairs, 6)
 
 
+def _alpha_from_counters(coincidence: Counter, totals: Counter, n: float) -> float:
+    if n <= 1:
+        return 0.0
+    observed_disagreement = sum(
+        value for (a, b), value in coincidence.items() if a != b
+    )
+    expected_pairs = sum(
+        totals[a] * totals[b] for a in totals for b in totals if a != b
+    )
+    if expected_pairs == 0:
+        return 1.0
+    return round(1.0 - (n - 1) * observed_disagreement / expected_pairs, 6)
+
+
 def krippendorff_alpha_ci(
     runs: dict[str, list[dict]],
     *,
@@ -444,28 +458,59 @@ def krippendorff_alpha_ci(
     confidence: float = 0.95,
     seed: int = 42,
 ) -> dict:
-    """IC bootstrap PAR DOCUMENT de l'α — pas d'erreur-type analytique fragile."""
-    point = krippendorff_alpha_nominal(runs)
-    by_document: dict[str, dict[str, list[dict]]] = defaultdict(lambda: defaultdict(list))
-    for name, rows in runs.items():
-        for row in rows:
-            by_document[row["document"]][name].append(row)
-    documents = sorted(by_document)
+    """IC bootstrap PAR DOCUMENT de l'α — pas d'erreur-type analytique fragile.
+
+    Les coïncidences sont ADDITIVES par unité, donc par document : chaque tirage se
+    réduit à une somme de 39 compteurs au lieu de réaligner ~7 600 × N lignes — sans ce
+    chemin, l'endpoint des accords entre juges mettait ~75 s à répondre à l'échelle
+    réelle (revue adversariale du 15 août 2026). Résultats identiques à l'ancienne
+    concaténation (même flux pseudo-aléatoire, même arithmétique — parité testée).
+    """
+    keys, names, preds = _align_many(runs)
+    m = len(names)
+    weight = 1.0 / (m - 1)
+    per_document: dict[str, tuple[Counter, Counter, float]] = {}
+    for i, key in enumerate(keys):
+        document = key[0]
+        if document not in per_document:
+            per_document[document] = (Counter(), Counter(), 0.0)
+        coincidence, totals, _ = per_document[document]
+        ratings = [preds[name][i] for name in names]
+        added = 0.0
+        for a in range(m):
+            for b in range(m):
+                if a == b:
+                    continue
+                coincidence[(ratings[a], ratings[b])] += weight
+                totals[ratings[a]] += weight
+                added += weight
+        per_document[document] = (coincidence, totals, per_document[document][2] + added)
+
+    documents = sorted(per_document)
+    total_coincidence: Counter = Counter()
+    total_totals: Counter = Counter()
+    total_n = 0.0
+    for coincidence, totals, n in per_document.values():
+        total_coincidence.update(coincidence)
+        total_totals.update(totals)
+        total_n += n
+    point = _alpha_from_counters(total_coincidence, total_totals, total_n)
+
     if len(documents) < 2:
         return {"point": point, "low": None, "high": None, "nResamples": 0,
                 "unit": "document", "warning": "insufficient_groups"}
 
     values = []
     for draw in _rng_ints(seed, "alpha-bootstrap", len(documents), n_resamples):
-        sample_runs: dict[str, list[dict]] = defaultdict(list)
-        for copy, i in enumerate(draw):
-            document = documents[i]
-            for name, rows in by_document[document].items():
-                for row in rows:
-                    # Chaque tirage du même document devient une « unité » distincte :
-                    # sans ce suffixe, deux copies s'écraseraient dans l'alignement.
-                    sample_runs[name].append({**row, "document": f"{document}#{copy}"})
-        values.append(krippendorff_alpha_nominal(dict(sample_runs)))
+        sample_coincidence: Counter = Counter()
+        sample_totals: Counter = Counter()
+        sample_n = 0.0
+        for i in draw:
+            coincidence, totals, n = per_document[documents[i]]
+            sample_coincidence.update(coincidence)
+            sample_totals.update(totals)
+            sample_n += n
+        values.append(_alpha_from_counters(sample_coincidence, sample_totals, sample_n))
     values.sort()
     alpha = (1.0 - confidence) / 2.0
     return {

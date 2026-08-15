@@ -3,6 +3,7 @@ LRAP branché pour T2, IC bootstrap sur le plafond humain, statistiques de plis
 complètes — et la non-régression du schéma de `results.json` (contrat additif).
 """
 
+import json
 import sys
 from pathlib import Path
 
@@ -58,6 +59,46 @@ def test_fold_stats_complets_sans_casser_la_dispersion_existante(
     assert stats["n"] == len(result["per_fold"])
     assert stats["min"] <= metrics["macro_f1"] <= stats["max"]
     assert stats["std"] == metrics["macro_f1_dispersion"]
+
+
+def test_label_noise_degrade_l_entrainement_jamais_le_test(toy_dataset, base_config, tmp_path):
+    """⭐ Revue adversariale du 15 août 2026 : le preset ablation-label-noise balayait
+    `/evaluation/label_noise` que le runner IGNORAIT — les « niveaux de bruit »
+    produisaient des runs identiques, et la courbe de dégradation aurait affiché du
+    plat mesuré. Le bruit doit (a) changer le résultat, (b) ne JAMAIS toucher le test,
+    (c) rester déterministe."""
+    clean = run_experiment(base_config, toy_dataset, tmp_path / "clean")
+
+    noisy_config = {
+        **base_config,
+        "evaluation": {**base_config["evaluation"], "label_noise": 0.4},
+    }
+    noisy = run_experiment(noisy_config, toy_dataset, tmp_path / "noisy")
+    noisy_again = run_experiment(noisy_config, toy_dataset, tmp_path / "noisy2")
+
+    # (a) le bruit change réellement l'entraînement (sinon la figure mentirait) ;
+    assert noisy["metrics"]["macro_f1"] != clean["metrics"]["macro_f1"]
+    # (b) les vérités terrain évaluées sont IDENTIQUES : seul l'entraînement est bruité.
+    clean_truth = [
+        (row["document"], row["index"], row["y_true"])
+        for row in map(json.loads, (tmp_path / "clean" / "predictions.jsonl").read_text().splitlines())
+    ]
+    noisy_truth = [
+        (row["document"], row["index"], row["y_true"])
+        for row in map(json.loads, (tmp_path / "noisy" / "predictions.jsonl").read_text().splitlines())
+    ]
+    assert clean_truth == noisy_truth
+    # (c) déterminisme à graine identique.
+    assert noisy["metrics"]["macro_f1"] == noisy_again["metrics"]["macro_f1"]
+
+
+def test_label_noise_zero_est_un_no_op(toy_dataset, base_config, tmp_path):
+    clean = run_experiment(base_config, toy_dataset, tmp_path / "clean")
+    zero = run_experiment(
+        {**base_config, "evaluation": {**base_config["evaluation"], "label_noise": 0.0}},
+        toy_dataset, tmp_path / "zero",
+    )
+    assert zero["metrics"]["macro_f1"] == clean["metrics"]["macro_f1"]
 
 
 def test_non_regression_du_schema_results_json(toy_dataset, base_config, tmp_path):

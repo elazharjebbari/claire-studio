@@ -99,6 +99,12 @@ def run_experiment(
     # dans l'ensemble du dataset laisserait passer des documents du pli de test courant,
     # une fuite que `fold_indices` existe justement pour empêcher.
     learning_curve = (config.get("evaluation") or {}).get("learning_curve")
+    # Bruit d'étiquettes (ablation A6/G5) : corrompt une fraction des étiquettes
+    # d'ENTRAÎNEMENT, jamais le test. Revue adversariale du 15 août 2026 : le preset
+    # ablation-label-noise balayait `/evaluation/label_noise` que le runner IGNORAIT —
+    # les 4 « niveaux de bruit » produisaient des runs identiques, et la courbe de
+    # dégradation aurait affiché du plat mesuré. Pire qu'une absence : une fausse figure.
+    label_noise = float((config.get("evaluation") or {}).get("label_noise") or 0.0)
 
     for fold in range(n_folds):
         if should_cancel and should_cancel():
@@ -127,6 +133,14 @@ def run_experiment(
         # T2 et T3 sont ramenés à une cible scalaire pour l'entraînement : les modèles de
         # référence sont mono-label. La reconstruction multi-label se fait à l'évaluation.
         train_targets = [_scalarize(targets[i], task) for i in train_idx]
+        if label_noise > 0:
+            train_targets = _corrupt_labels(
+                train_targets,
+                [dataset.sentences[i] for i in train_idx],
+                rate=label_noise,
+                seed=int(config.get("seed", 42)),
+                fold=fold,
+            )
         model.fit(
             [texts[i] for i in train_idx], train_targets, [extra[i] for i in train_idx]
         )
@@ -134,10 +148,12 @@ def run_experiment(
         test_texts = [texts[i] for i in test_idx]
         test_extra = [extra[i] for i in test_idx]
         predicted = model.predict(test_texts, test_extra)
+        proba_ok = True
         try:
             scores = model.predict_proba(test_texts, test_extra)
         except Exception:  # pragma: no cover - une tête sans proba ne bloque pas le run
             scores = [{label: 1.0} for label in predicted]
+            proba_ok = False
 
         for position, index in enumerate(test_idx):
             sentence = dataset.sentences[index]
@@ -162,13 +178,16 @@ def run_experiment(
             [_deserialize(p, task) for p in predicted],
             task,
         )
-        if task == "T2_multilabel":
+        if task == "T2_multilabel" and proba_ok:
             # LRAP se calcule ICI, sur les scores COMPLETS de `predict_proba` — les
             # prédictions écrites sur disque ne conservent que le top-5, insuffisant
             # pour un classement. Par pli, donc moyenné (et dispersé) par `_aggregate`
             # comme les autres métriques. C'était la métrique déclarée clé du preset
             # multilabel-finetune… définie dans metrics.py mais jamais appelée
             # (audit du 15 août 2026, docs/pactiva-lab-resultats/01_AUDIT.md §1.2).
+            # `proba_ok` : sur le repli `{label: 1.0}` (tête sans probabilité), un LRAP
+            # « se calculerait » sur des rangs ex æquo dégénérés (> 1 possible, revue
+            # adversariale) — mieux vaut son absence qu'un chiffre faux.
             fold_result["lrap"] = lrap([targets[i] for i in test_idx], scores)
         fold_scores.append(fold_result)
         _write_progress(progress_path, fold + 1, n_folds)
@@ -241,6 +260,38 @@ def run_experiment(
 
 
 # --------------------------------------------------------------------------- #
+
+def _corrupt_labels(train_targets: list, sentences: list, *, rate: float,
+                    seed: int, fold: int) -> list:
+    """Remplace `rate` des étiquettes d'ENTRAÎNEMENT par une autre étiquette du pli.
+
+    Déterministe (SHA-256 en compteur, même famille que le bootstrap) : les phrases
+    corrompues sont choisies par rang de hachage, et l'étiquette de remplacement est la
+    suivante dans l'ordre trié des étiquettes présentes — reproductible d'une machine à
+    l'autre, jamais `random`. Le TEST n'est jamais touché : la dégradation mesurée est
+    celle du modèle, pas celle de l'évaluation.
+    """
+    import hashlib
+
+    labels = sorted({t for t in train_targets if t != ""})
+    if len(labels) < 2:
+        return train_targets
+    n_corrupt = round(rate * len(train_targets))
+    if n_corrupt <= 0:
+        return train_targets
+    ranked = sorted(
+        range(len(train_targets)),
+        key=lambda i: hashlib.sha256(
+            f"{seed}:noise:{fold}:{sentences[i].document}:{sentences[i].index}".encode()
+        ).hexdigest(),
+    )
+    to_corrupt = set(ranked[:n_corrupt])
+    out = list(train_targets)
+    for i in to_corrupt:
+        position = labels.index(out[i]) if out[i] in labels else -1
+        out[i] = labels[(position + 1) % len(labels)]
+    return out
+
 
 def _scalarize(target, task: str):
     if task == "T2_multilabel":

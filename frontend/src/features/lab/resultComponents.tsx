@@ -128,14 +128,19 @@ export function MetricCell({
       <dt className="flex items-center gap-1 text-xs uppercase tracking-wide text-ink-muted">
         {label}
         {definition && (
-          <Info
-            className="h-3 w-3 shrink-0"
-            role="img"
+          // `tabIndex` : la définition doit être atteignable au CLAVIER (l'aria-label
+          // est annoncé au focus), pas seulement au survol — revue adversariale du
+          // 15 août 2026. `title` conserve l'info-bulle souris.
+          <span
+            tabIndex={0}
+            role="note"
             aria-label={definition}
+            title={definition}
+            className="inline-flex rounded focus-visible:outline focus-visible:outline-1 focus-visible:outline-accent"
             data-testid={testId ? `${testId}-definition` : undefined}
           >
-            <title>{definition}</title>
-          </Info>
+            <Info className="h-3 w-3 shrink-0" aria-hidden />
+          </span>
         )}
       </dt>
       <dd className="text-lg font-semibold text-ink">

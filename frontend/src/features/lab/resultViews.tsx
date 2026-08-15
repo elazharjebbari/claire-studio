@@ -136,7 +136,7 @@ export function FamilyKpis({ run, family }: { run: RunDetail; family: ViewFamily
     const micro = num(metrics.microF1);
     const macro = num(metrics.macroF1);
     return (
-      <div className="grid grid-cols-2 gap-3 sm:grid-cols-3" data-testid="run-metrics-kpis">
+      <dl className="grid grid-cols-2 gap-3 sm:grid-cols-3" data-testid="run-metrics-kpis">
         <MetricCell
           label="micro-F1"
           value={micro}
@@ -172,13 +172,13 @@ export function FamilyKpis({ run, family }: { run: RunDetail; family: ViewFamily
           definitionKey="subsetAccuracy"
           testId="kpi-subset"
         />
-      </div>
+      </dl>
     );
   }
 
   if (family === "boundary") {
     return (
-      <div className="grid grid-cols-2 gap-3 sm:grid-cols-4" data-testid="run-metrics-kpis">
+      <dl className="grid grid-cols-2 gap-3 sm:grid-cols-4" data-testid="run-metrics-kpis">
         <MetricCell
           label="WindowDiff"
           value={num(metrics.windowDiff)}
@@ -204,7 +204,7 @@ export function FamilyKpis({ run, family }: { run: RunDetail; family: ViewFamily
           dispersion={foldStats.macroF1?.std}
           testId="kpi-boundary-f1"
         />
-      </div>
+      </dl>
     );
   }
 
@@ -212,7 +212,7 @@ export function FamilyKpis({ run, family }: { run: RunDetail; family: ViewFamily
   // la grille T1 — macro (avec IC), micro, κ, ECE.
   const kappa = num(metrics.kappa);
   return (
-    <div className="grid grid-cols-2 gap-3 sm:grid-cols-4" data-testid="run-metrics-kpis">
+    <dl className="grid grid-cols-2 gap-3 sm:grid-cols-4" data-testid="run-metrics-kpis">
       {macroCell}
       <MetricCell
         label="micro-F1"
@@ -231,7 +231,7 @@ export function FamilyKpis({ run, family }: { run: RunDetail; family: ViewFamily
         />
       )}
       <MetricCell label="ECE" value={num(metrics.ece)} definitionKey="ece" testId="kpi-ece" />
-    </div>
+    </dl>
   );
 }
 
@@ -243,6 +243,9 @@ export function ByAgreementClassPanel({ run }: { run: RunDetail }) {
   const byClass = run.metrics?.errors?.byAgreementClass;
   if (!byClass || Object.keys(byClass).length === 0) return null;
   const ORDER = ["strict", "majority", "divergence"];
+  const LABELS: Record<string, string> = {
+    strict: "strict", majority: "majorité", divergence: "divergence", unknown: "inconnu",
+  };
   const entries = Object.entries(byClass).sort(
     (a, b) => ORDER.indexOf(a[0]) - ORDER.indexOf(b[0]),
   );
@@ -257,7 +260,7 @@ export function ByAgreementClassPanel({ run }: { run: RunDetail }) {
       <div className="mt-3 space-y-2">
         {entries.map(([klass, stats]) => (
           <div key={klass} className="flex items-center gap-2 text-xs">
-            <span className="w-24 shrink-0 text-ink">{klass}</span>
+            <span className="w-24 shrink-0 text-ink">{LABELS[klass] ?? klass}</span>
             <div className="h-2 flex-1 overflow-hidden rounded-full bg-panel-muted">
               <div
                 className="h-full rounded-full bg-accent"

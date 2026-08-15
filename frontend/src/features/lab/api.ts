@@ -179,8 +179,11 @@ export function getExperimentAggregate(
 export interface JudgesAgreement {
   kappa: {
     judges: string[];
-    matrix: Record<string, Record<string, number>>;
-    vsGold: Record<string, number>;
+    /** LISTES alignées sur `judges` — jamais des dicts clefs par nom de juge : la
+     * camélisation DRF transformerait les clés (« gpt_4o » → « gpt4O ») et les
+     * rendrait incroisables avec la liste (revue adversariale du 15 août 2026). */
+    matrix: number[][];
+    vsGold: number[];
     n: number;
   };
   alpha: { point: number; low: number | null; high: number | null };

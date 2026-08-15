@@ -118,8 +118,8 @@ export const EXPERIMENT_INTROS: Record<string, ExperimentIntro> = {
     role:
       "Tableau T3 du papier long, en regard de la fourchette d'accord humain — troisième contribution du papier court (la frontière est le vrai point dur, pas le thème).",
     lire: [
-      "**WindowDiff** et **Pk** pénalisent les frontières décalées ; **plus bas = mieux** (contrairement au F1).",
-      "La bande de référence est une **fourchette** (l'accord humain varie fortement selon les paires d'annotateurs) — un modèle « dans la fourchette » fait aussi bien que des humains entre eux.",
+      "**WindowDiff** pénalise les frontières manquées ou décalées ; **plus bas = mieux** (contrairement au F1).",
+      "La référence humaine est une **fourchette** d'accord Jaccard (0,39 – 0,63 selon les paires) — une échelle différente de WindowDiff : un repère de difficulté de la tâche, pas une cible à croiser.",
     ],
   },
   "knn-explainable": {

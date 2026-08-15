@@ -123,10 +123,15 @@ visé dans `06_PLAN_ACTION.md`, puis cette page en entier.**
 
 | Lot | Statut | Commit(s) | Notes |
 |---|---|---|---|
-| L0 | à faire | — | |
-| L1 | à faire | — | |
-| L2 | à faire | — | |
-| L3 | à faire | — | |
-| L4 | à faire | — | |
-| L5 | à faire | — | |
-| L6 | à faire | — | |
+| L0 | ✅ fait | `071dec6` | stats.py (bootstrap/permutation appariés par document, κ/α juges), LRAP branché, IC du plafond, fold_stats — 121 tests research |
+| L1 | ✅ fait | `cd19049` | chemin rapide T1 (parité testée), stats_bridge (checksum), compare/paired + aggregate + agreement, preset exposé — 783 tests backend |
+| L2 | ✅ fait | `ac5382f` | bug ci corrigé, composants transverses, dispatch pur, contenus source unique + lint éditorial, vue générique enrichie |
+| L3 | ✅ fait | `3a08f2c` | verdicts + KPIs par famille (plancher/principal/T2/T3), plafonds PAR TÂCHE, panneau classes d'accord |
+| L4 | ✅ fait | `55fa2ba` | sweepAnalysis (fitPowerLaw parité Python golden, effets marginaux, règle de survie), LearningCurveFigure, ExperimentResults + route, test apparié auto |
+| L5 | ✅ fait | `41c61f0` | 2 pages centre d'aide (groupe Lab) + lien profond ?s=, LabHelpModal |
+| L6 | ✅ fait | `8eb437d` + revue | regroupement des sweeps dans RunList, garde anti-hex étendue (25 fichiers), revue adversariale finale : 2 HIGH corrigés (label_noise implémenté dans le runner — il était IGNORÉ, la figure aurait affiché du plat mesuré ; α CI accéléré par compteurs par document) + 8 medium (juges κ-only, matrice en listes anti-camélisation, partial exclu des agrégats, dl sémantique, Info focusable, piège de focus modale, contraste criblage, contradiction T3 résolue à la source) |
+
+**Dettes acceptées (revue finale, sévérité basse)** : sélection de comparaison
+persistante sur groupe replié ; `labIntroCollapsed` global (pas par preset) ;
+définitions Info invisibles au clavier pour les voyants (aria-label seul) ; doublon de
+sondage RunList/ActiveRunIndicator (documenté dans le code).

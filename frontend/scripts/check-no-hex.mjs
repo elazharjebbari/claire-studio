@@ -42,6 +42,7 @@ const GUARDED = [
   "src/features/lab/LabHelpModal.tsx",
   "src/features/lab/ActiveRunIndicator.tsx",
   "src/features/lab/ComputeTargetBadge.tsx",
+  "src/features/lab/charts.tsx",
 ];
 
 const HEX = /#[0-9a-fA-F]{3,8}\b/;

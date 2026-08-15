@@ -467,6 +467,22 @@ def compare_paired(request, slug: str):
 
     from .stats_bridge import PredictionsUnavailable, load_stats, read_predictions
 
+    # Bornes DES DEUX CÔTÉS : un plafond pour la latence, un plancher pour éviter les
+    # dégénérés (n_resamples=0 → percentile d'une liste vide, n_permutations<0 →
+    # division par zéro — revue adversariale du 15 août 2026). Une valeur non numérique
+    # est un 400, pas un 500.
+    try:
+        n_resamples = min(max(int(request.data.get("n_resamples", 1000)), 50), MAX_RESAMPLES)
+        n_permutations = min(
+            max(int(request.data.get("n_permutations", 2000)), 50), MAX_PERMUTATIONS
+        )
+    except (TypeError, ValueError):
+        return Response(
+            {"code": "invalid_params",
+             "detail": "n_resamples et n_permutations doivent être des entiers"},
+            status=status.HTTP_400_BAD_REQUEST,
+        )
+
     stats = load_stats()
     try:
         rows_a = read_predictions(run_a)
@@ -474,10 +490,8 @@ def compare_paired(request, slug: str):
         result = stats.paired_tests_t1(
             rows_a, rows_b,
             metric=metric,
-            n_resamples=min(int(request.data.get("n_resamples", 1000)), MAX_RESAMPLES),
-            n_permutations=min(
-                int(request.data.get("n_permutations", 2000)), MAX_PERMUTATIONS
-            ),
+            n_resamples=n_resamples,
+            n_permutations=n_permutations,
         )
     except PredictionsUnavailable as exc:
         return Response(
@@ -602,9 +616,18 @@ def judges_agreement(request, slug: str):
 
     stats = load_stats()
 
+    # Labels UNIQUES : deux runs du même juge (sweep relancé avec force) s'écraseraient
+    # silencieusement dans le dict — matrice à N-1 juges sans avertissement (revue
+    # adversariale du 15 août 2026). Le suffixe court d'id lève l'ambiguïté.
+    seen: set[str] = set()
+
     def label_for(run: ExperimentRun) -> str:
         judge = ((run.config.get("model") or {}).get("judge") or "").strip()
-        return judge or f"{run.experiment.name} ({str(run.id)[:8]})"
+        label = judge or f"{run.experiment.name} ({str(run.id)[:8]})"
+        if label in seen:
+            label = f"{label} ({str(run.id)[:8]})"
+        seen.add(label)
+        return label
 
     try:
         predictions = {label_for(run): read_predictions(run) for run in selected}
@@ -620,7 +643,20 @@ def judges_agreement(request, slug: str):
             {"code": "predictions_mismatch", "detail": str(exc)},
             status=status.HTTP_422_UNPROCESSABLE_ENTITY,
         )
-    return Response({"kappa": kappas, "alpha": alpha})
+    # Matrice et vsGold en LISTES alignées sur `judges`, jamais en dicts clefs par nom :
+    # le middleware camélise les CLÉS des objets JSON (un juge « gpt_4o » deviendrait la
+    # clé « gpt4O ») mais pas les VALEURS du tableau `judges` — le front ne pourrait
+    # plus croiser les deux (revue adversariale du 15 août 2026).
+    judges = kappas["judges"]
+    return Response({
+        "kappa": {
+            "judges": judges,
+            "matrix": [[kappas["matrix"][a][b] for b in judges] for a in judges],
+            "vs_gold": [kappas["vsGold"][name] for name in judges],
+            "n": kappas["n"],
+        },
+        "alpha": alpha,
+    })
 
 
 # --------------------------------------------------------------------------- #

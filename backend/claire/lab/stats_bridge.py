@@ -70,10 +70,17 @@ def read_predictions(run: ExperimentRun) -> list[dict]:
             f"empreinte du fichier {path.name} différente du catalogue — fichier altéré",
         )
     rows = []
-    for line in payload.decode("utf-8").splitlines():
-        line = line.strip()
-        if line:
-            rows.append(json.loads(line))
+    try:
+        for line in payload.decode("utf-8").splitlines():
+            line = line.strip()
+            if line:
+                rows.append(json.loads(line))
+    except (json.JSONDecodeError, UnicodeDecodeError) as exc:
+        # Ligne coupée en plein vol (job tué pendant l'écriture, catalogué partial) :
+        # un 422 au code stable, jamais un 500 (revue adversariale du 15 août 2026).
+        raise PredictionsUnavailable(
+            "predictions_corrupt", f"fichier de prédictions illisible : {exc}"
+        ) from exc
     if not rows:
         raise PredictionsUnavailable("predictions_missing", "fichier de prédictions vide")
     return rows

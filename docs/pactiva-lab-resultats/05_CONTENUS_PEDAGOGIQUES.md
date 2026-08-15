@@ -157,7 +157,7 @@ modérément sur les frontières (Jaccard 0,39–0,63 selon les paires).
 d'accord humain — troisième contribution du papier court (la frontière est le vrai
 point dur, pas le thème).
 **Comment lire cette page.**
-- **WindowDiff** et **Pk** pénalisent les frontières décalées ; **plus bas = mieux**
+- **WindowDiff** pénalise les frontières manquées ou décalées ; **plus bas = mieux**
   (contrairement au F1).
 - La bande de référence est une **fourchette** (l'accord humain varie fortement selon
   les paires d'annotateurs) — un modèle « dans la fourchette » fait aussi bien que des

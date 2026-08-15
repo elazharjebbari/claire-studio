@@ -203,7 +203,7 @@ export function RunResults({ slug, runId }: { slug: string; runId: string }) {
   return (
     <div className="space-y-4" data-testid="run-results">
       <Link
-        href={`/projects/${slug}/lab`}
+        href={`/projects/${slug}/lab?tab=runs`}
         className="inline-flex items-center gap-1 text-xs text-ink-muted hover:text-ink"
       >
         <ArrowLeft className="h-3.5 w-3.5" aria-hidden /> Retour au Lab
@@ -321,7 +321,11 @@ export function RunResults({ slug, runId }: { slug: string; runId: string }) {
                 <tbody>
                   {Object.entries(errorDetails.byAgreementClass).map(([klass, stats]) => (
                     <tr key={klass} className="border-t border-line">
-                      <td className="py-1 text-ink">{klass}</td>
+                      <td className="py-1 text-ink">
+                        {({ strict: "strict", majority: "majorité",
+                            divergence: "divergence", unknown: "inconnu" } as
+                            Record<string, string>)[klass] ?? klass}
+                      </td>
                       <td className="py-1 text-right font-mono text-ink">{stats.n}</td>
                       <td className="py-1 text-right font-mono text-ink">{stats.errors}</td>
                       <td className="py-1 text-right font-mono text-ink">

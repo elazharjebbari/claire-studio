@@ -11,7 +11,7 @@ export const METRIC_GLOSSARY: Record<string, string> = {
     "F1 calculé sur toutes les phrases confondues : les thèmes fréquents dominent. Toujours lire l'écart micro−macro : grand écart = le modèle vit sur les thèmes fréquents.",
   kappa:
     "Accord avec le gold, corrigé de la chance. Permet la seule comparaison directe modèle/humains/LLM (l'accord humain de référence est κ = 0,769).",
-  ci: "L'intervalle dans lequel le score se déplacerait si l'on rejouait l'étude avec d'autres documents du même type. Calculé en rééchantillonnant les documents (jamais les phrases : les phrases d'un même document se ressemblent).",
+  ci: "L'intervalle dans lequel le score se déplacerait si l'on rejouait l'étude avec d'autres documents du même type. Calculé en rééchantillonnant les documents (jamais les phrases : les phrases d'un même document se ressemblent). Un résultat sans IC ne va pas dans l'article.",
   dispersion:
     "Écart-type du score entre les 5 plis de validation croisée. Sur un petit corpus, la dispersion compte autant que la moyenne : ± 0,03 signifie que le hasard du découpage déplace le score de 3 points.",
   ece: "Écart moyen entre la confiance annoncée et la justesse observée. 0 = parfaitement calibré. Un modèle sûr de lui et souvent dans l'erreur (ECE élevé) est dangereux en assistance à l'annotation.",

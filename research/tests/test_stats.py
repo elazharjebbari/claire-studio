@@ -253,6 +253,21 @@ class TestAgreement:
             for b in runs:
                 assert kappas["matrix"][a][b] == kappas["matrix"][b][a]
 
+    def test_alpha_ci_point_egal_au_calcul_nominal(self):
+        # ⭐ Le chemin rapide (compteurs de coïncidences par document sommés) doit rendre
+        # EXACTEMENT l'α du calcul nominal — c'est ce qui autorise l'endpoint des
+        # accords à garder ses 1000 tirages sans plafonner (revue adversariale).
+        per_doc = {f"doc{d}": [("X", "A" if (d * 3 + i) % 4 else "B") for i in range(5)]
+                   for d in range(7)}
+        base = _rows(per_doc)
+        runs = {
+            "j1": base,
+            "j2": _judge(base, ["A" if r["index"] % 2 else "B" for r in base]),
+            "j3": _judge(base, ["B" if r["index"] % 3 else "A" for r in base]),
+        }
+        ci = krippendorff_alpha_ci(runs, n_resamples=100, seed=9)
+        assert ci["point"] == krippendorff_alpha_nominal(runs)
+
     def test_alpha_ci_contient_le_point_et_reste_deterministe(self):
         per_doc = {f"doc{d}": [("X", "A" if (d + i) % 3 else "B") for i in range(4)]
                    for d in range(6)}
