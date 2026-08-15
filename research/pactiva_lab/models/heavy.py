@@ -172,7 +172,17 @@ class TransformerFinetune(Model):
 
     def __init__(self, config: dict, seed: int = 42):
         self.config = config
-        self.checkpoint = config["checkpoint"]
+        # `checkpoint` (vocabulaire transformer_finetune) OU `encoder` (vocabulaire des
+        # familles embeddings/sequence_labeling — « l'étiquetage de séquence partage
+        # l'encodeur »). Bug réel attrapé par la campagne de validation du 15 août 2026 :
+        # le preset sequence-boundary déclarait `encoder:` et le run GPU réel échouait
+        # en KeyError('checkpoint') après une réservation Grid'5000 entière.
+        self.checkpoint = config.get("checkpoint") or config.get("encoder")
+        if not self.checkpoint:
+            raise ValueError(
+                "config du modèle sans `checkpoint` ni `encoder` — un nom de modèle "
+                "pré-entraîné est requis pour le fine-tuning"
+            )
         self.seed = seed
 
     def fit(self, texts, labels, extra=None):

@@ -147,3 +147,29 @@ def test_transformer_finetune_predict_proba_couvre_toutes_les_classes_entrainees
     scores = model.predict_proba(TEXTS[:1])[0]
     assert set(scores) == {"TERMINATION", "FEES"}
     assert sum(scores.values()) == pytest.approx(1.0, abs=1e-4)
+
+
+# --------------------------------------------------------------------------- #
+# TransformerFinetune — résolution du modèle pré-entraîné
+# --------------------------------------------------------------------------- #
+
+def test_transformer_finetune_accepte_checkpoint_ou_encoder():
+    """⭐ Bug réel attrapé par la campagne de validation du 15 août 2026 : le preset
+    sequence-boundary déclarait `encoder:` (vocabulaire des familles embeddings) mais
+    la famille `sequence_labeling` route sur TransformerFinetune, qui n'acceptait que
+    `checkpoint` — KeyError après une réservation Grid'5000 GPU entière."""
+    from pactiva_lab.models.heavy import TransformerFinetune
+
+    assert TransformerFinetune({"checkpoint": "a/b"}).checkpoint == "a/b"
+    assert TransformerFinetune({"encoder": "c/d"}).checkpoint == "c/d"
+    # `checkpoint` prime si les deux sont présents (vocabulaire natif de la famille).
+    assert TransformerFinetune({"checkpoint": "a/b", "encoder": "c/d"}).checkpoint == "a/b"
+
+
+def test_transformer_finetune_refuse_une_config_sans_modele():
+    import pytest
+
+    from pactiva_lab.models.heavy import TransformerFinetune
+
+    with pytest.raises(ValueError, match="checkpoint.*encoder"):
+        TransformerFinetune({})
