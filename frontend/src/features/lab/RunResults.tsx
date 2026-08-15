@@ -8,7 +8,8 @@
  * de `run.metrics`, exactement ce que le runner a écrit dans `results.json`.
  */
 
-import { AlertTriangle, ArrowLeft, RotateCcw } from "lucide-react";
+import { useState } from "react";
+import { AlertTriangle, ArrowLeft, HelpCircle, RotateCcw } from "lucide-react";
 import Link from "next/link";
 import { useMutation, useQuery } from "@tanstack/react-query";
 
@@ -24,6 +25,7 @@ import {
   ExperimentIntro,
   VerdictPanel,
 } from "./resultComponents";
+import { LabHelpModal } from "./LabHelpModal";
 import { AGGREGATED_FAMILIES, resultViewFor } from "./resultView";
 import {
   ByAgreementClassPanel,
@@ -47,6 +49,7 @@ function pollIntervalMs(status: RunStatus | undefined, computeTarget: string | u
 }
 
 export function RunResults({ slug, runId }: { slug: string; runId: string }) {
+  const [helpOpen, setHelpOpen] = useState(false);
   const { data: run, isPending, isError } = useQuery({
     queryKey: ["lab", "run", slug, runId],
     queryFn: () => getRun(slug, runId),
@@ -227,8 +230,19 @@ export function RunResults({ slug, runId }: { slug: string; runId: string }) {
                 résultats partiels (walltime)
               </Badge>
             )}
+            <button
+              type="button"
+              onClick={() => setHelpOpen(true)}
+              className="rounded p-1 text-ink-muted hover:bg-panel-muted hover:text-ink"
+              title="Comment lire cette page"
+              aria-label="Comment lire cette page"
+              data-testid="lab-help-button"
+            >
+              <HelpCircle className="h-4 w-4" aria-hidden />
+            </button>
           </div>
         </div>
+        {helpOpen && <LabHelpModal onClose={() => setHelpOpen(false)} />}
 
         <div className="mt-3">
           <ExperimentIntro preset={run.preset} />

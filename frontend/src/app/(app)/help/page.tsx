@@ -7,7 +7,8 @@
  * fichiers `content/help/*.md` (éditables) référencés par le manifeste.
  */
 
-import { useMemo, useState } from "react";
+import { Suspense, useMemo, useState } from "react";
+import { useSearchParams } from "next/navigation";
 import { cn } from "@/lib/cn";
 import {
   HELP_MANIFEST,
@@ -21,7 +22,23 @@ import { HelpMarkdown } from "@/components/help/HelpMarkdown";
 const DEFAULT_SLUG = HELP_MANIFEST[0]?.slug ?? "introduction";
 
 export default function HelpPage() {
-  const [activeSlug, setActiveSlug] = useState<string>(DEFAULT_SLUG);
+  // `useSearchParams` exige un contexte Suspense — isolé dans un enfant, comme dans
+  // `LabWorkspace` (même motif, même raison).
+  return (
+    <Suspense fallback={<div className="p-4 text-xs text-ink-muted">Chargement…</div>}>
+      <HelpPageInner />
+    </Suspense>
+  );
+}
+
+function HelpPageInner() {
+  const searchParams = useSearchParams();
+  // `?s=<slug>` : lien profond vers une section (utilisé par les modales d'aide, ex.
+  // LabHelpModal → « Lire les métriques ») ; slug inconnu → section par défaut.
+  const requested = searchParams.get("s");
+  const [activeSlug, setActiveSlug] = useState<string>(
+    requested && helpSection(requested) ? requested : DEFAULT_SLUG,
+  );
   const [query, setQuery] = useState("");
 
   const groups = useMemo(() => {

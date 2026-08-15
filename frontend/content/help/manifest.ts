@@ -38,6 +38,8 @@ export const HELP_MANIFEST: HelpSection[] = [
   { slug: "versions-historique", title: "Versions & historique", group: "Collaborer" },
   { slug: "revue", title: "Revue", group: "Collaborer" },
   { slug: "export", title: "Export", group: "Données" },
+  { slug: "lab-experiences", title: "Les expérimentations : le parcours", group: "Lab" },
+  { slug: "lab-metriques", title: "Lire les métriques", group: "Lab" },
   { slug: "traductions", title: "Traductions", group: "Données" },
   { slug: "raccourcis", title: "Raccourcis clavier", group: "Référence" },
   { slug: "faq", title: "FAQ", group: "Référence" },
@@ -50,6 +52,7 @@ export const HELP_GROUP_ORDER: string[] = [
   "Annoter",
   "Collaborer",
   "Données",
+  "Lab",
   "Référence",
 ];
 

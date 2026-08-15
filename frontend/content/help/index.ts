@@ -33,6 +33,8 @@ import exportContent from "./export.md?raw";
 import traductions from "./traductions.md?raw";
 import raccourcis from "./raccourcis.md?raw";
 import faq from "./faq.md?raw";
+import labExperiences from "./lab-experiences.md?raw";
+import labMetriques from "./lab-metriques.md?raw";
 
 /** Map slug → contenu Markdown brut. */
 export const HELP_CONTENT: Record<string, string> = {
@@ -58,6 +60,8 @@ export const HELP_CONTENT: Record<string, string> = {
   traductions,
   raccourcis,
   faq,
+  "lab-experiences": labExperiences,
+  "lab-metriques": labMetriques,
 };
 
 /** Contenu Markdown d'une section, ou undefined si le slug est inconnu. */

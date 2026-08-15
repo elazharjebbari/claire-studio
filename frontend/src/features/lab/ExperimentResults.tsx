@@ -7,7 +7,8 @@
  * combien annoter ? le fine-tuning gagne-t-il ?) n'a de réponse qu'au niveau du sweep.
  */
 
-import { ArrowLeft, TriangleAlert } from "lucide-react";
+import { useState } from "react";
+import { ArrowLeft, HelpCircle, TriangleAlert } from "lucide-react";
 import Link from "next/link";
 import { useQuery } from "@tanstack/react-query";
 
@@ -22,6 +23,7 @@ import {
   type ExperimentAggregate,
 } from "./api";
 import { RunComparisonFigure } from "./charts";
+import { LabHelpModal } from "./LabHelpModal";
 import { ExperimentIntro, SignificanceNote, VerdictPanel } from "./resultComponents";
 import { fmtCi, fmtMetric } from "./resultFormat";
 import { resultViewFor, type ViewFamily } from "./resultView";
@@ -49,6 +51,7 @@ export function ExperimentResults({
   slug: string;
   experimentId: string;
 }) {
+  const [helpOpen, setHelpOpen] = useState(false);
   const { data, isPending, isError } = useQuery({
     queryKey: ["lab", "aggregate", slug, experimentId],
     queryFn: () => getExperimentAggregate(slug, experimentId),
@@ -94,13 +97,26 @@ export function ExperimentResults({
       </Link>
 
       <Panel className="space-y-3 p-4">
-        <div>
-          <h2 className="text-sm font-semibold text-ink">{data.name}</h2>
-          <p className="text-xs text-ink-muted">
-            {data.runs.length} runs · {finished.length} exploitables
-            {failedCount > 0 ? ` · ${failedCount} en échec` : ""}
-          </p>
+        <div className="flex items-start justify-between gap-2">
+          <div>
+            <h2 className="text-sm font-semibold text-ink">{data.name}</h2>
+            <p className="text-xs text-ink-muted">
+              {data.runs.length} runs · {finished.length} exploitables
+              {failedCount > 0 ? ` · ${failedCount} en échec` : ""}
+            </p>
+          </div>
+          <button
+            type="button"
+            onClick={() => setHelpOpen(true)}
+            className="rounded p-1 text-ink-muted hover:bg-panel-muted hover:text-ink"
+            title="Comment lire cette page"
+            aria-label="Comment lire cette page"
+            data-testid="lab-help-button"
+          >
+            <HelpCircle className="h-4 w-4" aria-hidden />
+          </button>
         </div>
+        {helpOpen && <LabHelpModal onClose={() => setHelpOpen(false)} />}
         <ExperimentIntro preset={data.preset} />
         {(pendingCount > 0 || failedCount > 0) && (
           <p
