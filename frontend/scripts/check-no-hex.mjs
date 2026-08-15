@@ -31,6 +31,17 @@ const GUARDED = [
   "src/components/workspace/ModelBoundaryRail.tsx",
   "src/components/workspace/BoundaryEvidence.tsx",
   "src/components/gold/GoldReadingPanel.tsx",
+  // Lab — vues de résultats (lot L6 de docs/pactiva-lab-resultats/ : l'audit avait
+  // montré que le Lab respectait la convention SANS filet — verrouillé désormais).
+  "src/features/lab/RunList.tsx",
+  "src/features/lab/RunResults.tsx",
+  "src/features/lab/ExperimentResults.tsx",
+  "src/features/lab/resultComponents.tsx",
+  "src/features/lab/resultViews.tsx",
+  "src/features/lab/sweepCharts.tsx",
+  "src/features/lab/LabHelpModal.tsx",
+  "src/features/lab/ActiveRunIndicator.tsx",
+  "src/features/lab/ComputeTargetBadge.tsx",
 ];
 
 const HEX = /#[0-9a-fA-F]{3,8}\b/;

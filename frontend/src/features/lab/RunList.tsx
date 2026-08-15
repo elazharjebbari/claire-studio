@@ -14,6 +14,7 @@
 
 import { useCallback, useEffect, useRef, useState } from "react";
 import { useMutation } from "@tanstack/react-query";
+import { ChevronRight } from "lucide-react";
 import Link from "next/link";
 
 import { Button, Panel, ProgressBar } from "@/components/ui/primitives";
@@ -21,6 +22,7 @@ import { Button, Panel, ProgressBar } from "@/components/ui/primitives";
 import { RunComparisonFigure } from "./charts";
 import { ComputeTargetBadge } from "./ComputeTargetBadge";
 import { cancelRun, compareRuns, listRuns } from "./api";
+import { groupRuns } from "./runGroups";
 import { ACTIVE, COMPARABLE_STATUSES, LIVE, STATUS_META, elapsedLabel, isProgressLive } from "./runStatus";
 import type { RunSummary } from "./types";
 
@@ -103,6 +105,9 @@ export function RunList({ slug }: { slug: string }) {
   // « Annuler » de la première alors que sa requête est encore en vol (revue
   // adversariale du 15 août 2026, trouvé indépendamment par les deux réviseurs).
   const [pendingCancels, setPendingCancels] = useState<Set<string>>(new Set());
+  // Groupes de sweep dépliés — repliés par défaut : un criblage de 48 runs se lit
+  // d'abord par sa ligne d'agrégat et sa vue d'ensemble, pas par ses lignes brutes.
+  const [expandedGroups, setExpandedGroups] = useState<Set<string>>(new Set());
   const cancelMutation = useMutation({
     mutationFn: (runId: string) => cancelRun(slug, runId),
     onMutate: (runId: string) => {
@@ -139,28 +144,11 @@ export function RunList({ slug }: { slug: string }) {
 
   const humanCeiling = comparison?.rows.find((r) => r.humanCeiling != null)?.humanCeiling ?? null;
 
-  return (
-    <div className="space-y-4">
-      <Panel className="p-4" data-testid="run-list">
-        <div className="overflow-x-auto">
-        <table className="w-full text-xs">
-          <thead>
-            <tr className="text-ink-muted">
-              <th scope="col" className="w-6 py-1" />
-              <th scope="col" className="py-1 text-left">Expérience</th>
-              <th scope="col" className="py-1 text-left">Tâche</th>
-              <th scope="col" className="py-1 text-left">Cible</th>
-              <th scope="col" className="py-1 text-left">État</th>
-              <th scope="col" className="py-1 text-right">macro-F1</th>
-              <th scope="col" className="py-1" />
-            </tr>
-          </thead>
-          <tbody>
-            {runs.map((run) => {
-              const meta = STATUS_META[run.status];
-              const Icon = meta.icon;
-              const selectable = COMPARABLE_STATUSES.includes(run.status);
-              return (
+  function runRow(run: RunSummary) {
+    const meta = STATUS_META[run.status];
+    const Icon = meta.icon;
+    const selectable = COMPARABLE_STATUSES.includes(run.status);
+    return (
                 <tr key={run.id} className="border-t border-line" data-testid={`run-${run.id}`}>
                   <td className="py-1.5">
                     {selectable && (
@@ -265,7 +253,82 @@ export function RunList({ slug }: { slug: string }) {
                       ))}
                   </td>
                 </tr>
+    );
+  }
+
+  return (
+    <div className="space-y-4">
+      <Panel className="p-4" data-testid="run-list">
+        <div className="overflow-x-auto">
+        <table className="w-full text-xs">
+          <thead>
+            <tr className="text-ink-muted">
+              <th scope="col" className="w-6 py-1" />
+              <th scope="col" className="py-1 text-left">Expérience</th>
+              <th scope="col" className="py-1 text-left">Tâche</th>
+              <th scope="col" className="py-1 text-left">Cible</th>
+              <th scope="col" className="py-1 text-left">État</th>
+              <th scope="col" className="py-1 text-right">macro-F1</th>
+              <th scope="col" className="py-1" />
+            </tr>
+          </thead>
+          <tbody>
+            {groupRuns(runs).flatMap((group) => {
+              if (group.runs.length === 1) return [runRow(group.runs[0]!)];
+              const open = expandedGroups.has(group.experimentId);
+              const header = (
+                <tr
+                  key={`group-${group.experimentId}`}
+                  className="border-t border-line"
+                  data-testid={`run-group-${group.experimentId}`}
+                >
+                  <td className="py-1.5">
+                    <button
+                      type="button"
+                      aria-expanded={open}
+                      aria-label={`${open ? "Replier" : "Déplier"} les runs de ${group.experimentName}`}
+                      onClick={() =>
+                        setExpandedGroups((current) => {
+                          const next = new Set(current);
+                          if (next.has(group.experimentId)) next.delete(group.experimentId);
+                          else next.add(group.experimentId);
+                          return next;
+                        })
+                      }
+                      className="rounded p-0.5 text-ink-muted hover:bg-panel-muted hover:text-ink"
+                      data-testid={`run-group-toggle-${group.experimentId}`}
+                    >
+                      <ChevronRight
+                        className={`h-3.5 w-3.5 transition-transform ${open ? "rotate-90" : ""}`}
+                        aria-hidden
+                      />
+                    </button>
+                  </td>
+                  <td className="py-1.5 text-ink" colSpan={3}>
+                    <Link
+                      href={`/projects/${slug}/lab/experiments/${group.experimentId}`}
+                      className="font-medium hover:underline"
+                      data-testid={`run-group-link-${group.experimentId}`}
+                    >
+                      {group.experimentName}
+                    </Link>{" "}
+                    <span className="text-ink-muted">
+                      · {group.runs.length} runs — vue d&apos;ensemble
+                    </span>
+                  </td>
+                  <td className="py-1.5 text-ink-muted">
+                    {group.activeCount > 0 ? `${group.activeCount} actif(s) · ` : ""}
+                    {group.failedCount > 0 ? `${group.failedCount} échec(s) · ` : ""}
+                    {group.runs.length - group.activeCount - group.failedCount} terminé(s)
+                  </td>
+                  <td className="py-1.5 text-right font-mono text-ink">
+                    {group.bestMacroF1 == null ? "—" : group.bestMacroF1.toFixed(3)}
+                    <span className="ml-1 text-ink-muted">(meilleur)</span>
+                  </td>
+                  <td className="py-1.5" />
+                </tr>
               );
+              return open ? [header, ...group.runs.map(runRow)] : [header];
             })}
           </tbody>
         </table>
