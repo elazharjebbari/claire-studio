@@ -144,7 +144,13 @@ export function Figure({
           <svg
             ref={svgRef}
             viewBox={`0 0 ${width} ${height}`}
-            className="h-auto w-full"
+            // Plafonné à sa largeur de CONCEPTION (`width`) et centré : étiré à la
+            // largeur d'un grand écran, un graphe pensé en 640 px devenait un aplat
+            // clairsemé de ~1000×500+ px — mesuré en prod le 15 août 2026 : trois
+            // figures de 597 à 1123 px de haut, ~2800 px de défilement quasi vide
+            // sur une page de résultats (« scroll dérangeant avec du contenu vide »).
+            className="mx-auto h-auto w-full"
+            style={{ maxWidth: width }}
             role="img"
             aria-labelledby={`${titleId} ${descId}`}
             xmlns="http://www.w3.org/2000/svg"

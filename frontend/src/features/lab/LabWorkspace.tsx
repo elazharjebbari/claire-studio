@@ -59,7 +59,7 @@ function LabWorkspaceInner({ slug }: { slug: string }) {
   }, [slug, tab]);
 
   return (
-    <div className="space-y-4 p-4" data-testid="lab-workspace">
+    <div className="mx-auto w-full max-w-5xl space-y-4 p-4" data-testid="lab-workspace">
       <header>
         <h1 className="text-lg font-semibold text-ink">Lab</h1>
         <p className="text-xs text-ink-muted">

@@ -71,7 +71,10 @@ presets:
       compute: { target: local }
     sweep:
       mode: grid
-      max_runs: 24
+      # 2×2×2×2×3 = 48 combinaisons — le plafond doit les couvrir. Il déclarait 24
+      # (incohérence attrapée par le garde-fou de sweep lors du Palier 5 réel du
+      # 14 août 2026 : 400 sweep_too_large, zéro run créé) ; corrigé le 15 août.
+      max_runs: 48
       axes:
         "/preprocess/detokenize": [none, regex_rules]
         "/preprocess/case": [keep, lower]
