@@ -24,7 +24,7 @@ import {
   ExperimentIntro,
   VerdictPanel,
 } from "./resultComponents";
-import { resultViewFor } from "./resultView";
+import { AGGREGATED_FAMILIES, resultViewFor } from "./resultView";
 import {
   ByAgreementClassPanel,
   FamilyKpis,
@@ -233,6 +233,23 @@ export function RunResults({ slug, runId }: { slug: string; runId: string }) {
         <div className="mt-3">
           <ExperimentIntro preset={run.preset} />
         </div>
+
+        {AGGREGATED_FAMILIES.includes(family) && (
+          // Ce run appartient à un sweep dont la question se répond au niveau de
+          // l'EXPÉRIENCE (classement, courbe, accord des juges) — le chemin y est
+          // affiché AVANT les chiffres du run isolé, qui ne sont qu'une pièce.
+          <p className="mt-3 text-xs" data-testid="aggregate-view-link">
+            <Link
+              href={`/projects/${slug}/lab/experiments/${run.experiment}`}
+              className="text-accent hover:underline"
+            >
+              Voir la vue d&apos;ensemble de l&apos;expérience →
+            </Link>{" "}
+            <span className="text-ink-muted">
+              (la question de ce preset se répond sur le sweep entier, pas sur un run isolé)
+            </span>
+          </p>
+        )}
 
         {verdict && (
           <div className="mt-3">
