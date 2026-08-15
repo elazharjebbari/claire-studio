@@ -102,15 +102,18 @@ class RunArtifactSerializer(serializers.ModelSerializer):
 class ExperimentRunSerializer(serializers.ModelSerializer):
     experiment_name = serializers.CharField(source="experiment.name", read_only=True)
     task = serializers.CharField(source="experiment.task", read_only=True)
+    # Clé de routage des vues de résultats ad-hoc (docs/pactiva-lab-resultats/04 §1) —
+    # le champ vit sur Experiment mais n'atteignait jamais le frontend.
+    preset = serializers.CharField(source="experiment.preset", read_only=True)
     artifacts = RunArtifactSerializer(many=True, read_only=True)
 
     class Meta:
         model = ExperimentRun
         fields = [
-            "id", "experiment", "experiment_name", "task", "status", "progress", "phase",
-            "config", "fingerprint", "metrics", "environment", "external_job_id",
-            "error_code", "error_detail", "attempt", "started_at", "heartbeat_at",
-            "cancel_requested", "completed_at", "created_at", "artifacts",
+            "id", "experiment", "experiment_name", "task", "preset", "status",
+            "progress", "phase", "config", "fingerprint", "metrics", "environment",
+            "external_job_id", "error_code", "error_detail", "attempt", "started_at",
+            "heartbeat_at", "cancel_requested", "completed_at", "created_at", "artifacts",
         ]
         read_only_fields = fields
 
@@ -118,6 +121,7 @@ class ExperimentRunSerializer(serializers.ModelSerializer):
 class ExperimentRunSummarySerializer(serializers.ModelSerializer):
     experiment_name = serializers.CharField(source="experiment.name", read_only=True)
     task = serializers.CharField(source="experiment.task", read_only=True)
+    preset = serializers.CharField(source="experiment.preset", read_only=True)
     macro_f1 = serializers.SerializerMethodField()
     compute_target = serializers.SerializerMethodField()
     compute_site = serializers.SerializerMethodField()
@@ -125,9 +129,10 @@ class ExperimentRunSummarySerializer(serializers.ModelSerializer):
     class Meta:
         model = ExperimentRun
         fields = [
-            "id", "experiment_name", "task", "status", "progress", "phase",
-            "macro_f1", "error_code", "started_at", "heartbeat_at", "cancel_requested",
-            "created_at", "completed_at", "compute_target", "compute_site",
+            "id", "experiment", "experiment_name", "task", "preset", "status",
+            "progress", "phase", "macro_f1", "error_code", "started_at",
+            "heartbeat_at", "cancel_requested", "created_at", "completed_at",
+            "compute_target", "compute_site",
         ]
         read_only_fields = fields
 

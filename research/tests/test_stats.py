@@ -13,6 +13,7 @@ import pytest
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 
+from pactiva_lab.evaluation.metrics import cohen_kappa, micro_f1  # noqa: E402
 from pactiva_lab.evaluation.stats import (  # noqa: E402
     PredictionsMismatch,
     align_by_document,
@@ -20,6 +21,7 @@ from pactiva_lab.evaluation.stats import (  # noqa: E402
     krippendorff_alpha_ci,
     krippendorff_alpha_nominal,
     paired_bootstrap_diff,
+    paired_tests_t1,
     permutation_test_paired,
 )
 
@@ -155,6 +157,58 @@ class TestPermutation:
             permutation_test_paired(a, b, n_permutations=200, seed=3)
             == permutation_test_paired(a, b, n_permutations=200, seed=3)
         )
+
+
+# --------------------------------------------------------------------------- #
+# Chemin rapide T1
+# --------------------------------------------------------------------------- #
+
+class TestPairedTestsT1:
+    def _pair(self):
+        # Prédictions variées sur 8 documents, plusieurs classes, taux d'erreur mêlés.
+        labels = ["A", "B", "C"]
+        per_doc_a, per_doc_b = {}, {}
+        for d in range(8):
+            truths = [labels[(d + i) % 3] for i in range(6)]
+            per_doc_a[f"doc{d}"] = [
+                (t, t if (d + i) % 4 else labels[(d + i + 1) % 3])
+                for i, t in enumerate(truths)
+            ]
+            per_doc_b[f"doc{d}"] = [
+                (t, t if (d + i) % 3 else labels[(d + i + 2) % 3])
+                for i, t in enumerate(truths)
+            ]
+        return _rows(per_doc_a), _rows(per_doc_b)
+
+    @pytest.mark.parametrize("metric_name", ["macro_f1", "micro_f1", "kappa"])
+    def test_parite_exacte_avec_le_chemin_generique(self, metric_name):
+        # ⭐ Le chemin rapide (matrices de confusion sommées) doit rendre EXACTEMENT le
+        # même IC et la même p-value que le chemin générique à graine identique —
+        # arrondis compris. C'est ce qui autorise l'endpoint HTTP à l'utiliser.
+        from pactiva_lab.evaluation.metrics import macro_f1 as generic_macro
+        generic_metric = {
+            "macro_f1": generic_macro,
+            "micro_f1": micro_f1,
+            "kappa": cohen_kappa,
+        }[metric_name]
+        a, b = self._pair()
+        fast = paired_tests_t1(
+            a, b, metric=metric_name, n_resamples=150, n_permutations=200, seed=11
+        )
+        slow_ci = paired_bootstrap_diff(
+            a, b, metric=generic_metric, n_resamples=150, seed=11
+        )
+        slow_p = permutation_test_paired(
+            a, b, metric=generic_metric, n_permutations=200, seed=11
+        )
+        assert fast["delta"] == slow_ci["delta"]
+        assert (fast["low"], fast["high"]) == (slow_ci["low"], slow_ci["high"])
+        assert fast["p_value"] == slow_p["p_value"]
+
+    def test_metrique_inconnue_refusee(self):
+        a, b = self._pair()
+        with pytest.raises(ValueError, match="métrique inconnue"):
+            paired_tests_t1(a, b, metric="ece")
 
 
 # --------------------------------------------------------------------------- #

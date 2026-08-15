@@ -203,6 +203,156 @@ def permutation_test_paired(
 
 
 # --------------------------------------------------------------------------- #
+# Chemin rapide T1 — mêmes résultats, coût par tirage en O(documents × étiquettes)
+# --------------------------------------------------------------------------- #
+
+def _confusion_by_document(aligned: dict[str, list[tuple]]) -> dict[str, tuple[Counter, Counter]]:
+    """Matrices de confusion par document et par run : `Counter[(y_true, y_pred)]`.
+
+    Le point de l'optimisation : macro-F1, micro-F1 et κ se recalculent depuis la SOMME
+    de ces compteurs — un tirage bootstrap devient une addition de 39 compteurs au lieu
+    d'un passage sur ~7 600 phrases. Sans ce chemin, un endpoint HTTP qui enchaîne
+    1 000 tirages + 10 000 permutations mettrait plusieurs minutes à répondre."""
+    out: dict[str, tuple[Counter, Counter]] = {}
+    for document, rows in aligned.items():
+        counter_a: Counter = Counter()
+        counter_b: Counter = Counter()
+        for truth, a, b in rows:
+            counter_a[(truth, a)] += 1
+            counter_b[(truth, b)] += 1
+        out[document] = (counter_a, counter_b)
+    return out
+
+
+def _macro_f1_from_confusion(confusion: Counter) -> float:
+    """Reproduction EXACTE de `metrics.macro_f1` (arrondis compris) depuis une matrice
+    de confusion — la parité bit-à-bit avec le chemin générique est testée."""
+    labels = {t for t, _ in confusion} | {p for _, p in confusion}
+    if not labels:
+        return 0.0
+    truth_totals: Counter = Counter()
+    pred_totals: Counter = Counter()
+    for (t, p), count in confusion.items():
+        truth_totals[t] += count
+        pred_totals[p] += count
+    f1_sum = 0.0
+    for label in labels:
+        tp = confusion.get((label, label), 0)
+        fp = pred_totals[label] - tp
+        fn = truth_totals[label] - tp
+        precision = tp / (tp + fp) if tp + fp else 0.0
+        recall = tp / (tp + fn) if tp + fn else 0.0
+        f1 = 2 * precision * recall / (precision + recall) if precision + recall else 0.0
+        f1_sum += round(f1, 6)
+    return round(f1_sum / len(labels), 6)
+
+
+def _micro_f1_from_confusion(confusion: Counter) -> float:
+    total = sum(confusion.values())
+    if not total:
+        return 0.0
+    diagonal = sum(count for (t, p), count in confusion.items() if t == p)
+    return round(diagonal / total, 6)
+
+
+def _kappa_from_confusion(confusion: Counter) -> float:
+    total = sum(confusion.values())
+    if not total:
+        return 0.0
+    po = sum(count for (t, p), count in confusion.items() if t == p) / total
+    truth_totals: Counter = Counter()
+    pred_totals: Counter = Counter()
+    for (t, p), count in confusion.items():
+        truth_totals[t] += count
+        pred_totals[p] += count
+    pe = sum(
+        (truth_totals[c] / total) * (pred_totals[c] / total)
+        for c in set(truth_totals) | set(pred_totals)
+    )
+    if pe >= 1.0:
+        return 1.0 if po >= 1.0 else 0.0
+    return round((po - pe) / (1 - pe), 6)
+
+
+_CONFUSION_METRICS = {
+    "macro_f1": _macro_f1_from_confusion,
+    "micro_f1": _micro_f1_from_confusion,
+    "kappa": _kappa_from_confusion,
+}
+
+
+def paired_tests_t1(
+    rows_a: list[dict],
+    rows_b: list[dict],
+    *,
+    metric: str = "macro_f1",
+    n_resamples: int = 1000,
+    n_permutations: int = 10000,
+    confidence: float = 0.95,
+    seed: int = 42,
+) -> dict:
+    """Bootstrap apparié ET permutation en un seul passage — tâche T1 uniquement.
+
+    Résultats identiques à `paired_bootstrap_diff` + `permutation_test_paired` avec la
+    même graine (mêmes suites pseudo-aléatoires, mêmes arrondis — parité testée), en
+    temps compatible avec un endpoint HTTP synchrone.
+    """
+    if metric not in _CONFUSION_METRICS:
+        raise ValueError(f"métrique inconnue pour le chemin T1 : {metric}")
+    metric_fn = _CONFUSION_METRICS[metric]
+    aligned = align_by_document(rows_a, rows_b)
+    documents = sorted(aligned)
+    confusions = _confusion_by_document(aligned)
+
+    def delta_of(selection: list[str], swap_bits: list[bool] | None = None) -> float:
+        total_a: Counter = Counter()
+        total_b: Counter = Counter()
+        for i, document in enumerate(selection):
+            counter_a, counter_b = confusions[document]
+            if swap_bits is not None and swap_bits[i]:
+                counter_a, counter_b = counter_b, counter_a
+            total_a.update(counter_a)
+            total_b.update(counter_b)
+        return metric_fn(total_a) - metric_fn(total_b)
+
+    observed = delta_of(documents)
+    base = {
+        "metric": metric,
+        "delta": round(observed, 6),
+        "n_documents": len(documents),
+        "unit": "document",
+        "confidence": confidence,
+    }
+    if len(documents) < 2:
+        return {
+            **base, "low": None, "high": None, "p_value": None,
+            "n_resamples": 0, "n_permutations": 0, "warning": "insufficient_groups",
+        }
+
+    values = []
+    for draw in _rng_ints(seed, "paired-bootstrap", len(documents), n_resamples):
+        values.append(delta_of([documents[i] for i in draw]))
+    values.sort()
+    alpha = (1.0 - confidence) / 2.0
+    low = values[max(0, int(alpha * len(values)))]
+    high = values[min(len(values) - 1, int((1 - alpha) * len(values)))]
+
+    at_least_as_extreme = 0
+    for bits in _rng_bits(seed, "paired-permutation", len(documents), n_permutations):
+        if abs(delta_of(documents, bits)) >= abs(observed) - 1e-12:
+            at_least_as_extreme += 1
+
+    return {
+        **base,
+        "low": round(low, 6),
+        "high": round(high, 6),
+        "n_resamples": len(values),
+        "p_value": round((at_least_as_extreme + 1) / (n_permutations + 1), 6),
+        "n_permutations": n_permutations,
+    }
+
+
+# --------------------------------------------------------------------------- #
 # Accords multi-juges (baseline des juges LLM)
 # --------------------------------------------------------------------------- #
 

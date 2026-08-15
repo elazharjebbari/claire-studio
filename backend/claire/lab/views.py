@@ -25,6 +25,7 @@ from .models import (
     ExperimentRun,
     LabDataset,
     RunStatus,
+    Task,
 )
 from .g5k_reference import gpu_clusters_for, load_static_catalogue
 from .preflight import preflight
@@ -406,6 +407,220 @@ def compare_runs(request, slug: str):
         for run in selected
     ]
     return Response({"comparable": ok, "incomparable_reason": reason or None, "rows": rows})
+
+
+# --------------------------------------------------------------------------- #
+# Statistiques inter-runs (docs/pactiva-lab-resultats/03 §h)
+# --------------------------------------------------------------------------- #
+
+# Métriques admises pour le test apparié T1 — celles reconstructibles depuis une
+# matrice de confusion (chemin rapide de `stats.paired_tests_t1`).
+PAIRED_METRICS = ("macro_f1", "micro_f1", "kappa")
+# Plafonds durs : au-delà, le temps de réponse HTTP se dégrade sans gain statistique
+# (granularité de p à 1/5001 ≈ 0,0002, largement suffisante pour l'article).
+MAX_RESAMPLES = 2000
+MAX_PERMUTATIONS = 5000
+
+
+@api_view(["POST"])
+@permission_classes([IsAuthenticated])
+def compare_paired(request, slug: str):
+    """Test apparié par document entre DEUX runs : Δ, IC bootstrap, p de permutation.
+
+    La preuve confirmatoire du cadre statistique — jamais un t-test sur 5 plis (variance
+    sous-estimée), jamais un McNemar par phrase (phrases non indépendantes).
+    """
+    try:
+        project = _project_for(request, slug)
+    except PermissionDenied as exc:
+        return _forbidden(str(exc))
+
+    metric = request.data.get("metric", "macro_f1")
+    if metric not in PAIRED_METRICS:
+        return Response(
+            {"code": "unsupported_metric",
+             "detail": f"métriques admises : {', '.join(PAIRED_METRICS)}"},
+            status=status.HTTP_422_UNPROCESSABLE_ENTITY,
+        )
+    run_a = get_object_or_404(
+        ExperimentRun.objects.select_related("experiment__dataset"),
+        id=request.data.get("run_a"), experiment__project=project,
+    )
+    run_b = get_object_or_404(
+        ExperimentRun.objects.select_related("experiment__dataset"),
+        id=request.data.get("run_b"), experiment__project=project,
+    )
+    ok, reason = comparable([run_a, run_b])
+    if not ok:
+        return Response(
+            {"code": "runs_not_comparable", "detail": reason},
+            status=status.HTTP_409_CONFLICT,
+        )
+    if run_a.experiment.task != Task.T1:
+        # Le chemin rapide repose sur des matrices de confusion mono-label ; T2/T3
+        # attendront un besoin réel — le dire vaut mieux qu'un calcul lent qui expire.
+        return Response(
+            {"code": "unsupported_task",
+             "detail": "test apparié disponible pour T1_primary uniquement"},
+            status=status.HTTP_422_UNPROCESSABLE_ENTITY,
+        )
+
+    from .stats_bridge import PredictionsUnavailable, load_stats, read_predictions
+
+    stats = load_stats()
+    try:
+        rows_a = read_predictions(run_a)
+        rows_b = read_predictions(run_b)
+        result = stats.paired_tests_t1(
+            rows_a, rows_b,
+            metric=metric,
+            n_resamples=min(int(request.data.get("n_resamples", 1000)), MAX_RESAMPLES),
+            n_permutations=min(
+                int(request.data.get("n_permutations", 2000)), MAX_PERMUTATIONS
+            ),
+        )
+    except PredictionsUnavailable as exc:
+        return Response(
+            {"code": exc.code, "detail": str(exc)},
+            status=status.HTTP_422_UNPROCESSABLE_ENTITY,
+        )
+    except stats.PredictionsMismatch as exc:
+        return Response(
+            {"code": "predictions_mismatch", "detail": str(exc)},
+            status=status.HTTP_422_UNPROCESSABLE_ENTITY,
+        )
+    return Response({
+        **result,
+        "run_a": str(run_a.id),
+        "run_b": str(run_b.id),
+        "label_a": run_a.experiment.name,
+        "label_b": run_b.experiment.name,
+        "test": "paired_bootstrap+permutation",
+    })
+
+
+@api_view(["GET"])
+@permission_classes([IsAuthenticated])
+def experiment_aggregate(request, slug: str, experiment_id):
+    """Vue agrégée d'un sweep : chaque run avec sa valeur, son IC et sa position sur
+    l'axe du sweep quand il en a un (courbe d'apprentissage, bruit d'étiquettes).
+
+    Sert les familles de vues « criblage » et « courbe »
+    (docs/pactiva-lab-resultats/04 §4 D-E) — sans lui, 25 à 48 runs restent une liste
+    plate illisible.
+    """
+    try:
+        project = _project_for(request, slug)
+    except PermissionDenied as exc:
+        return _forbidden(str(exc))
+    experiment = get_object_or_404(Experiment, id=experiment_id, project=project)
+    metric = request.query_params.get("metric", "macro_f1")
+
+    runs = list(
+        ExperimentRun.objects.filter(experiment=experiment).order_by("created_at")
+    )
+
+    def axis_value(config: dict):
+        evaluation = config.get("evaluation") or {}
+        curve = evaluation.get("learning_curve") or {}
+        if "n_documents" in curve:
+            return "learning_curve.n_documents", curve["n_documents"]
+        if "label_noise" in evaluation:
+            return "label_noise", evaluation["label_noise"]
+        return None, None
+
+    axis = None
+    rows = []
+    for run in runs:
+        run_axis, value_on_axis = axis_value(run.config or {})
+        axis = axis or run_axis
+        metrics = (run.metrics or {}).get("metrics", {})
+        rows.append({
+            "id": str(run.id),
+            "status": run.status,
+            "value": metrics.get(metric),
+            "ci": metrics.get(f"{metric}_ci"),
+            "axis_value": value_on_axis,
+            "config": run.config,
+        })
+    ceiling = next(
+        (
+            (run.metrics or {}).get("human_ceiling")
+            for run in runs
+            if (run.metrics or {}).get("human_ceiling")
+        ),
+        None,
+    )
+    return Response({
+        "experiment": str(experiment.id),
+        "name": experiment.name,
+        "preset": experiment.preset,
+        "metric": metric,
+        "axis": axis,
+        "human_ceiling": ceiling,
+        "runs": rows,
+    })
+
+
+@api_view(["POST"])
+@permission_classes([IsAuthenticated])
+def judges_agreement(request, slug: str):
+    """Accords entre N runs de juges : matrice de κ par paire + α de Krippendorff.
+
+    Sert la famille de vues « juges LLM » (fig. F9) — les 4 juges plus, à terme, le
+    supervisé, tous sous le MÊME protocole d'évaluation.
+    """
+    try:
+        project = _project_for(request, slug)
+    except PermissionDenied as exc:
+        return _forbidden(str(exc))
+
+    run_ids = request.data.get("run_ids") or []
+    if not (2 <= len(run_ids) <= 8):
+        return Response(
+            {"code": "invalid_run_count", "detail": "entre 2 et 8 runs attendus"},
+            status=status.HTTP_400_BAD_REQUEST,
+        )
+    selected = list(
+        ExperimentRun.objects.filter(
+            id__in=run_ids, experiment__project=project
+        ).select_related("experiment__dataset")
+    )
+    if len(selected) != len(set(run_ids)):
+        return Response(
+            {"code": "run_not_found", "detail": "un des runs n'existe pas dans ce projet"},
+            status=status.HTTP_404_NOT_FOUND,
+        )
+    ok, reason = comparable(selected)
+    if not ok:
+        return Response(
+            {"code": "runs_not_comparable", "detail": reason},
+            status=status.HTTP_409_CONFLICT,
+        )
+
+    from .stats_bridge import PredictionsUnavailable, load_stats, read_predictions
+
+    stats = load_stats()
+
+    def label_for(run: ExperimentRun) -> str:
+        judge = ((run.config.get("model") or {}).get("judge") or "").strip()
+        return judge or f"{run.experiment.name} ({str(run.id)[:8]})"
+
+    try:
+        predictions = {label_for(run): read_predictions(run) for run in selected}
+        kappas = stats.kappa_pairwise(predictions)
+        alpha = stats.krippendorff_alpha_ci(predictions)
+    except PredictionsUnavailable as exc:
+        return Response(
+            {"code": exc.code, "detail": str(exc)},
+            status=status.HTTP_422_UNPROCESSABLE_ENTITY,
+        )
+    except stats.PredictionsMismatch as exc:
+        return Response(
+            {"code": "predictions_mismatch", "detail": str(exc)},
+            status=status.HTTP_422_UNPROCESSABLE_ENTITY,
+        )
+    return Response({"kappa": kappas, "alpha": alpha})
 
 
 # --------------------------------------------------------------------------- #
