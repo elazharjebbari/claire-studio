@@ -100,6 +100,9 @@ export function compareRuns(
     runId: string;
     label: string;
     value: number | null;
+    /** IC bootstrap par document — le serveur l'a toujours renvoyé, le type l'omettait
+     * et l'UI le jetait (bug documenté, docs/pactiva-lab-resultats/01_AUDIT.md §2). */
+    ci: { low: number | null; high: number | null } | null;
     humanCeiling: number | null;
   }>;
 }> {
@@ -107,6 +110,88 @@ export function compareRuns(
     method: "POST",
     body: { runIds, metric },
   });
+}
+
+export interface PairedTestResult {
+  metric: string;
+  delta: number;
+  low: number | null;
+  high: number | null;
+  pValue: number | null;
+  nDocuments: number;
+  nResamples: number;
+  nPermutations: number;
+  unit: string;
+  confidence: number;
+  runA: string;
+  runB: string;
+  labelA: string;
+  labelB: string;
+  test: string;
+  warning?: string;
+}
+
+/** Test apparié par document entre deux runs (mêmes plis exigés — 409 sinon ; 422 avec
+ * code stable si les prédictions par phrase manquent → l'UI bascule en mode
+ * descriptif, jamais un test silencieusement absent). */
+export function comparePaired(
+  slug: string,
+  runA: string,
+  runB: string,
+  metric = "macro_f1",
+): Promise<PairedTestResult> {
+  return apiFetch(`${root(slug)}/compare/paired`, {
+    method: "POST",
+    body: { runA, runB, metric },
+  });
+}
+
+export interface AggregateRun {
+  id: string;
+  status: string;
+  value: number | null;
+  ci: { point?: number; low: number | null; high: number | null } | null;
+  axisValue: number | null;
+  config: Record<string, unknown>;
+}
+
+export interface ExperimentAggregate {
+  experiment: string;
+  name: string;
+  preset: string;
+  metric: string;
+  axis: string | null;
+  humanCeiling: { value: number | null; ci?: { low: number | null; high: number | null } } | null;
+  runs: AggregateRun[];
+}
+
+/** Vue agrégée d'un sweep — sert les familles « criblage » et « courbe ». */
+export function getExperimentAggregate(
+  slug: string,
+  experimentId: string,
+  metric = "macro_f1",
+): Promise<ExperimentAggregate> {
+  return apiFetch(
+    `${root(slug)}/experiments/${experimentId}/aggregate?metric=${encodeURIComponent(metric)}`,
+  );
+}
+
+export interface JudgesAgreement {
+  kappa: {
+    judges: string[];
+    matrix: Record<string, Record<string, number>>;
+    vsGold: Record<string, number>;
+    n: number;
+  };
+  alpha: { point: number; low: number | null; high: number | null };
+}
+
+/** Accords entre runs de juges : matrice κ par paire + α de Krippendorff avec IC. */
+export function getJudgesAgreement(
+  slug: string,
+  runIds: string[],
+): Promise<JudgesAgreement> {
+  return apiFetch(`${root(slug)}/agreement`, { method: "POST", body: { runIds } });
 }
 
 /**

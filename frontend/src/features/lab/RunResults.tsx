@@ -13,16 +13,21 @@ import Link from "next/link";
 import { useMutation, useQuery } from "@tanstack/react-query";
 
 import { Badge, Button, Panel, ProgressBar } from "@/components/ui/primitives";
+import { Disclosure } from "@/components/ui/Disclosure";
 
 import { CalibrationFigure, ConfusionMatrixFigure, LabelScoreFigure } from "./charts";
 import { ComputeTargetBadge } from "./ComputeTargetBadge";
 import { cancelRun, getRun } from "./api";
+import { metricDefinition } from "./content/metricGlossary";
+import {
+  CeilingBand,
+  ExperimentIntro,
+  MetricCell,
+  VerdictPanel,
+} from "./resultComponents";
+import { fmtCeilingShare, fmtCi, fmtMetric } from "./resultFormat";
 import { ACTIVE, LIVE, STATUS_META, elapsedLabel, isProgressLive, isStaleHeartbeat } from "./runStatus";
 import type { RunDetail, RunStatus } from "./types";
-
-function fmt(value: number | null | undefined, digits = 3): string {
-  return value == null ? "—" : value.toFixed(digits);
-}
 
 /**
  * Sondage adaptatif, même principe que `useExportJob` (`lib/api/hooks.ts`) : dense pour
@@ -183,6 +188,12 @@ export function RunResults({ slug, runId }: { slug: string; runId: string }) {
     );
   }
 
+  const foldStats = metrics.foldStats ?? {};
+  const kappa = typeof metrics.kappa === "number" ? metrics.kappa : null;
+  const macroF1 = typeof metrics.macroF1 === "number" ? metrics.macroF1 : null;
+  const ceilingShare = fmtCeilingShare(macroF1, ceiling?.value);
+  const errorDetails = run.metrics?.errors;
+
   return (
     <div className="space-y-4" data-testid="run-results">
       <Link
@@ -216,23 +227,151 @@ export function RunResults({ slug, runId }: { slug: string; runId: string }) {
           </div>
         </div>
 
-        <div className="mt-3 grid grid-cols-2 gap-3 sm:grid-cols-4" data-testid="run-metrics-kpis">
-          <MetricCell label="macro-F1" value={fmt(metrics.macroF1 as number)} />
-          <MetricCell label="micro-F1" value={fmt(metrics.microF1 as number)} />
-          <MetricCell
-            label="plafond humain"
-            value={ceiling?.value != null ? fmt(ceiling.value) : "—"}
-            hint={ceiling?.metric}
-          />
-          <MetricCell label="ECE" value={ece != null ? fmt(ece) : "—"} />
+        <div className="mt-3">
+          <ExperimentIntro preset={run.preset} />
         </div>
-        {ceiling?.note && <p className="mt-2 text-xs text-ink-muted">{ceiling.note}</p>}
+
+        {macroF1 != null && ceilingShare && (
+          <div className="mt-3">
+            <VerdictPanel>
+              macro-F1 {fmtMetric(macroF1)}
+              {fmtCi(metrics.macroF1Ci) ? ` ${fmtCi(metrics.macroF1Ci)}` : ""} — soit{" "}
+              {ceilingShare}.
+            </VerdictPanel>
+          </div>
+        )}
+
+        <div className="mt-3 grid grid-cols-2 gap-3 sm:grid-cols-4" data-testid="run-metrics-kpis">
+          <MetricCell
+            label="macro-F1"
+            value={macroF1}
+            ci={metrics.macroF1Ci}
+            dispersion={foldStats.macroF1?.std}
+            definitionKey="macroF1"
+            testId="kpi-macro-f1"
+          />
+          <MetricCell
+            label="micro-F1"
+            value={metrics.microF1 as number | null}
+            dispersion={foldStats.microF1?.std}
+            definitionKey="microF1"
+            testId="kpi-micro-f1"
+          />
+          {kappa != null && (
+            <MetricCell
+              label="κ"
+              value={kappa}
+              dispersion={foldStats.kappa?.std}
+              definitionKey="kappa"
+              testId="kpi-kappa"
+            />
+          )}
+          <MetricCell
+            label="ECE"
+            value={ece}
+            definitionKey="ece"
+            testId="kpi-ece"
+          />
+        </div>
+        <div className="mt-3">
+          <CeilingBand
+            value={ceiling?.value}
+            ci={ceiling?.ci}
+            metric={ceiling?.metric}
+            note={ceiling?.note}
+          />
+        </div>
       </Panel>
 
       {perLabel.length > 0 && <LabelScoreFigure rows={perLabel} />}
       {errors?.confusionMatrix && <ConfusionMatrixFigure matrix={errors.confusionMatrix} />}
       {reliabilityCurve.length > 0 && (
         <CalibrationFigure buckets={reliabilityCurve} ece={ece} />
+      )}
+
+      {errorDetails?.byAgreementClass && (
+        <Disclosure
+          summary="Analyse d'erreurs"
+          badge={errorDetails.nErrors ?? null}
+          testId="run-error-analysis"
+        >
+          <div className="space-y-3 text-xs">
+            <div data-testid="errors-by-agreement">
+              <h4 className="mb-1 font-medium text-ink">Erreurs par classe d&apos;accord</h4>
+              <p className="mb-2 text-ink-muted">
+                {metricDefinition("agreementClasses")}
+              </p>
+              <table className="w-full">
+                <thead>
+                  <tr className="text-ink-muted">
+                    <th scope="col" className="py-1 text-left">Classe</th>
+                    <th scope="col" className="py-1 text-right">Phrases</th>
+                    <th scope="col" className="py-1 text-right">Erreurs</th>
+                    <th scope="col" className="py-1 text-right">Taux</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {Object.entries(errorDetails.byAgreementClass).map(([klass, stats]) => (
+                    <tr key={klass} className="border-t border-line">
+                      <td className="py-1 text-ink">{klass}</td>
+                      <td className="py-1 text-right font-mono text-ink">{stats.n}</td>
+                      <td className="py-1 text-right font-mono text-ink">{stats.errors}</td>
+                      <td className="py-1 text-right font-mono text-ink">
+                        {stats.rate == null ? "—" : `${(stats.rate * 100).toFixed(1)} %`}
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+            {typeof errorDetails.unfairErrorRate === "number" && (
+              <p className="text-ink-muted" data-testid="errors-unfair-rate">
+                Taux d&apos;erreur sur les clauses abusives :{" "}
+                <span className="font-mono text-ink">
+                  {(errorDetails.unfairErrorRate * 100).toFixed(1)} %
+                </span>{" "}
+                ({errorDetails.unfairSentences} phrases abusives) — un modèle moins bon
+                sur les clauses abusives serait un problème pratique majeur.
+              </p>
+            )}
+            {(errorDetails.topConfusions?.length ?? 0) > 0 && (
+              <div data-testid="errors-top-confusions">
+                <h4 className="mb-1 font-medium text-ink">Paires les plus confondues</h4>
+                <ul className="space-y-0.5 text-ink-muted">
+                  {errorDetails.topConfusions!.slice(0, 10).map((row, i) => (
+                    <li key={i}>
+                      <span className="font-mono text-ink">{row.true}</span> prédit{" "}
+                      <span className="font-mono text-ink">{row.pred}</span> ·{" "}
+                      {row.count} fois
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            )}
+          </div>
+        </Disclosure>
+      )}
+
+      {Object.keys(run.environment ?? {}).length > 0 && (
+        <Disclosure summary="Environnement & reproductibilité" testId="run-environment">
+          <dl className="grid grid-cols-2 gap-2 text-xs sm:grid-cols-3">
+            {Object.entries(flattenEnvironment(run.environment)).map(([key, value]) => (
+              <div key={key}>
+                <dt className="uppercase tracking-wide text-ink-muted">{key}</dt>
+                <dd className="font-mono text-ink">{value}</dd>
+              </div>
+            ))}
+            {run.metrics?.dataset?.fingerprint && (
+              <div>
+                <dt className="uppercase tracking-wide text-ink-muted">dataset</dt>
+                <dd className="font-mono text-ink">
+                  {String(run.metrics.dataset.fingerprint).slice(0, 12)}… ·{" "}
+                  {run.metrics.dataset.nDocuments} docs
+                </dd>
+              </div>
+            )}
+          </dl>
+        </Disclosure>
       )}
 
       {run.metrics?.perFold && run.metrics.perFold.length > 0 && (
@@ -277,12 +416,17 @@ export function RunResults({ slug, runId }: { slug: string; runId: string }) {
   );
 }
 
-function MetricCell({ label, value, hint }: { label: string; value: string; hint?: string }) {
-  return (
-    <div>
-      <dt className="text-xs uppercase tracking-wide text-ink-muted">{label}</dt>
-      <dd className="text-lg font-semibold text-ink">{value}</dd>
-      {hint && <p className="text-xs text-ink-muted">{hint}</p>}
-    </div>
-  );
+/** Aplatis l'empreinte d'environnement en paires courtes affichables. */
+function flattenEnvironment(environment: Record<string, unknown>): Record<string, string> {
+  const out: Record<string, string> = {};
+  const gpu = environment.gpu as { device?: string | null; available?: boolean } | undefined;
+  if (gpu) out.gpu = gpu.available ? String(gpu.device ?? "disponible") : "aucun (CPU)";
+  if (typeof environment.python === "string") out.python = environment.python;
+  const packages = environment.packages as Record<string, string> | undefined;
+  if (packages?.torch) out.torch = packages.torch;
+  if (packages?.["scikit-learn"]) out["scikit-learn"] = packages["scikit-learn"];
+  if (typeof environment.elapsedSeconds === "number") {
+    out["durée"] = `${Math.round(environment.elapsedSeconds)} s`;
+  }
+  return out;
 }

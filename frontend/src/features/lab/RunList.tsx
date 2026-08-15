@@ -27,7 +27,13 @@ import type { RunSummary } from "./types";
 interface ComparisonState {
   comparable: boolean;
   incomparableReason: string | null;
-  rows: Array<{ runId: string; label: string; value: number | null; humanCeiling: number | null }>;
+  rows: Array<{
+    runId: string;
+    label: string;
+    value: number | null;
+    ci: { low: number | null; high: number | null } | null;
+    humanCeiling: number | null;
+  }>;
 }
 
 export function RunList({ slug }: { slug: string }) {
@@ -297,6 +303,10 @@ export function RunList({ slug }: { slug: string }) {
             runId: row.runId,
             label: row.label,
             value: row.value,
+            // L'IC bootstrap était renvoyé par le serveur depuis toujours, et jeté
+            // ici — la figure sait le tracer (audit 01_AUDIT.md §2, « un résultat
+            // sans IC ne va pas dans l'article »).
+            ci: row.ci ?? null,
           }))}
           humanCeiling={humanCeiling}
         />

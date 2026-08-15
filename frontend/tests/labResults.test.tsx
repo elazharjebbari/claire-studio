@@ -159,7 +159,9 @@ vi.mock("@/features/lab/api", () => ({
 
 const RUN: RunDetail = {
   id: "run-1",
+  experiment: "exp-1",
   experimentName: "legal-bert baseline",
+  preset: "",
   task: "T1_primary",
   status: "succeeded",
   progress: 100,
@@ -209,7 +211,9 @@ describe("RunResults", () => {
     await waitFor(() => expect(screen.getByTestId("run-results")).toBeInTheDocument());
     const kpis = screen.getByTestId("run-metrics-kpis");
     expect(kpis.textContent).toContain("0.680");
-    expect(kpis.textContent).toContain("0.740");
+    // Le plafond vit désormais dans sa bande de référence dédiée (jamais une barre
+    // comparable) — toujours sur la même page que le score, jamais le score seul.
+    expect(screen.getByTestId("ceiling-band").textContent).toContain("0.740");
   });
 
   it("⭐ lit les métriques en camelCase, pas en snake_case Python du results.json brut", async () => {
@@ -396,8 +400,9 @@ describe("RunList — comparaison", () => {
       comparable: true,
       incomparableReason: null,
       rows: [
-        { runId: "1", label: "legal-bert", value: 0.68, humanCeiling: 0.74 },
-        { runId: "2", label: "tfidf", value: 0.55, humanCeiling: 0.74 },
+        { runId: "1", label: "legal-bert", value: 0.68,
+          ci: { low: 0.61, high: 0.73 }, humanCeiling: 0.74 },
+        { runId: "2", label: "tfidf", value: 0.55, ci: null, humanCeiling: 0.74 },
       ],
     });
     const { RunList } = await import("@/features/lab/RunList");

@@ -40,6 +40,9 @@ export interface UiPrefsPanels {
   triageOpen: boolean;
   /** Barre de contrôles du document repliée (gain de place sur petits écrans). */
   docControlsCollapsed: boolean;
+  /** Introductions d'expérience du Lab repliées (une fois lues, l'utilisateur
+   * récupère l'espace — mais elles s'ouvrent par défaut : la pédagogie d'abord). */
+  labIntroCollapsed: boolean;
 }
 
 export interface UiPrefsPrefill {
@@ -72,6 +75,7 @@ export const UI_PREFS_DEFAULTS: UiPrefsV1 = {
     commentsOpen: false,
     triageOpen: false,
     docControlsCollapsed: false,
+    labIntroCollapsed: false,
   },
   // Modèle PRÉ-SÉLECTIONNÉ par défaut (Fable) : le pré-remplissage manuel et le bouton
   // d'auto-pré-annotation sont immédiatement utilisables. L'auto-exécution reste OPT-IN
@@ -140,6 +144,10 @@ export function mergeUiPrefs(
       docControlsCollapsed: asBool(
         (pan as Record<string, unknown>).docControlsCollapsed,
         defaults.panels.docControlsCollapsed,
+      ),
+      labIntroCollapsed: asBool(
+        (pan as Record<string, unknown>).labIntroCollapsed,
+        defaults.panels.labIntroCollapsed,
       ),
     },
     prefill: {

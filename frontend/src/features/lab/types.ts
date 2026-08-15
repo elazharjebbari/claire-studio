@@ -56,7 +56,12 @@ export type ComputeTargetKind = "local" | "g5k";
 
 export interface RunSummary {
   id: string;
+  /** Identifiant de l'expérience parente — regroupement des runs d'un sweep. */
+  experiment: string;
   experimentName: string;
+  /** Preset d'origine de l'expérience (vide pour une expérience libre) — LA clé de
+   * routage des vues de résultats ad-hoc (docs/pactiva-lab-resultats/04 §1). */
+  preset: string;
   task: LabTask;
   status: RunStatus;
   progress: number;
@@ -82,6 +87,30 @@ export interface RunSummary {
   cancelRequested: boolean;
 }
 
+export interface MetricCi {
+  point?: number | null;
+  low: number | null;
+  high: number | null;
+  nResamples?: number;
+  confidence?: number;
+  unit?: string;
+  warning?: string;
+}
+
+export interface FoldStats {
+  mean: number | null;
+  std: number | null;
+  min: number | null;
+  max: number | null;
+  n: number;
+}
+
+export interface AgreementClassStats {
+  n: number;
+  errors: number;
+  rate: number | null;
+}
+
 export interface RunDetail extends RunSummary {
   config: Record<string, unknown>;
   // Ce sous-objet vient tel quel du `results.json` de `pactiva_lab` (snake_case,
@@ -90,11 +119,36 @@ export interface RunDetail extends RunSummary {
   // ressort donc en camelCase, y compris à l'intérieur de ce JSONField générique.
   metrics: {
     task?: string;
-    metrics?: Record<string, number | null | Record<string, unknown>>;
+    metrics?: Record<string, number | null | Record<string, unknown>> & {
+      macroF1Ci?: MetricCi;
+      foldStats?: Record<string, FoldStats>;
+    };
     perFold?: Array<Record<string, number>>;
-    perLabel?: Array<{ label: string; f1: number; support: number }>;
-    humanCeiling?: { value: number | null; metric?: string; note?: string };
-    errors?: Record<string, unknown>;
+    perLabel?: Array<{
+      label: string;
+      f1: number;
+      support: number;
+      precision?: number;
+      recall?: number;
+    }>;
+    humanCeiling?: {
+      value: number | null;
+      metric?: string;
+      note?: string;
+      pairs?: number;
+      ci?: MetricCi;
+    };
+    errors?: Record<string, unknown> & {
+      nErrors?: number;
+      errorRate?: number;
+      unfairErrorRate?: number | null;
+      unfairSentences?: number;
+      byAgreementClass?: Record<string, AgreementClassStats>;
+      topConfusions?: Array<{ true: string; pred: string; count: number }>;
+      lowestConfidenceErrors?: Array<Record<string, unknown>>;
+    };
+    dataset?: { fingerprint?: string; nDocuments?: number; nSentences?: number };
+    environment?: Record<string, unknown>;
     preprocess?: string;
   };
   environment: Record<string, unknown>;

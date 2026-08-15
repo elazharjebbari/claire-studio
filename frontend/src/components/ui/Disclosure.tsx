@@ -24,6 +24,8 @@ export interface DisclosureProps {
   /** Badge optionnel (ex. nombre d'éléments actifs sous le pli). Masqué si null/0. */
   badge?: number | string | null;
   defaultOpen?: boolean;
+  /** Notifié à chaque bascule (ex. mémoriser l'état replié dans les préférences). */
+  onToggle?: (open: boolean) => void;
   /** Démonte le contenu quand replié (par défaut : monté mais masqué). */
   unmountOnClose?: boolean;
   /** data-testid de la racine ; le bouton reçoit `${testId}-summary`, le panneau `${testId}-panel`. */
@@ -37,6 +39,7 @@ export function Disclosure({
   icon,
   badge,
   defaultOpen = false,
+  onToggle,
   unmountOnClose = false,
   testId,
   className,
@@ -57,7 +60,12 @@ export function Disclosure({
         data-testid={testId ? `${testId}-summary` : undefined}
         aria-expanded={open}
         aria-controls={panelId}
-        onClick={() => setOpen((v) => !v)}
+        onClick={() => {
+          // Pas d'effet de bord dans l'updater : StrictMode le rejouerait en double.
+          const next = !open;
+          setOpen(next);
+          onToggle?.(next);
+        }}
         className="flex w-full items-center gap-2 rounded-md px-2 py-1.5 text-left text-[11px] font-semibold uppercase tracking-wide text-ink-muted transition-colors hover:bg-panel-muted hover:text-ink"
       >
         <ChevronRight
