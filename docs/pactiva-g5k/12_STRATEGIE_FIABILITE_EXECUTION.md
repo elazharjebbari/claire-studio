@@ -1,11 +1,13 @@
 # Stratégie de fiabilité — activer les calculs réels sur Grid'5000
 
-**Mise à jour du 14 août 2026 : Paliers 1 à 5 exécutés et validés en conditions
-réelles, puis tests intensifs supplémentaires demandés par l'utilisateur ayant révélé
-un 8ᵉ bug réel (états OAR transitoires mal interprétés, corrigé et confirmé en
-conditions réelles).** Voir le journal en fin de document. Le Palier 6 « le vrai
-test » à pleine échelle sur Grid'5000 demeure un plan, non exécuté — non redemandé par
-l'utilisateur à ce stade.
+**Mise à jour du 15 août 2026 : les 6 Paliers sont exécutés et validés en conditions
+réelles.** Paliers 1-5 (fiabilité technique) + tests intensifs ayant révélé un 8ᵉ bug
+réel (états OAR transitoires mal interprétés) + **Palier 6 « le vrai test »** exécuté
+à pleine échelle sur Grid'5000 (Legal-BERT fine-tuning, GPU V100, lyon/gemini) —
+premier résultat scientifique réel obtenu, révélant au passage un 9ᵉ bug mineur
+(cluster `grouille`/nancy classé exotic, comme `gemini` l'avait été) et une saturation
+réelle de cluster (2 jours de file sur `grouille`, contournée en changeant de
+site/cluster). Voir le journal en fin de document pour le détail complet.
 
 Ce document est à l'origine un **plan d'action**, pas un journal d'exécution — sa
 première version (ci-dessous) ne décrivait rien d'encore exécuté. Il reprend et englobe
@@ -418,3 +420,99 @@ mécanisme d'ingestion partielle (bug n°7) a récupéré des métriques réelle
 bugs n°7 et n°8 se corrigent mutuellement dans ce scénario précis : n°8 empêchait
 d'atteindre honnêtement la fin du walltime, n°7 empêchait de garder ce qui avait été
 calculé une fois qu'on l'atteignait.
+
+### 15 août 2026 — Palier 6 « le vrai test » : Legal-BERT fine-tuning (confirmatoire)
+
+Avant de lancer un fine-tuning GPU à pleine échelle (walltime `03:00`, le premier
+résultat scientifique visé pour l'article JURIX), relecture de `docs/pactiva-lab/` +
+inspection des résultats déjà obtenus par la batterie locale « Palier 6 » (criblage,
+embeddings gelés, courbe d'apprentissage, juges LLM — tous exécutés et verts avant
+compaction de contexte). **Constat inattendu** : le meilleur run *embeddings gelés*
+(e5-large-v2 + SVM linéaire, aucun fine-tuning, coût CPU local) atteint
+`macroF1=0.495306`, quasi identique au plafond humain approximatif calculé par le
+pipeline lui-même (`humanCeiling.value=0.494978`, taux d'accord strict). Signal fort
+qu'un fine-tuning GPU pourrait ne rien gagner.
+
+Décision (validée avec l'utilisateur) : lancer `legal-bert-finetune` quand même, mais
+recadré comme test **confirmatoire** plutôt qu'exploratoire — soit il confirme
+l'absence de gain (résultat négatif publiable, justifie l'usage d'embeddings gelés
+dans l'article pour son rapport coût/bénéfice), soit il révèle un gain que
+l'approximation du plafond humain sous-estimait (le plafond exact demanderait un
+dataset `aggregation='soft'`, pas encore construit).
+
+**Préconditions vérifiées avant soumission** : worker `active`, file `queued`/
+`waiting`/`running` vide (0/0/0), `oarstat -u ejebbari` vide sur nancy et lyon.
+**Aucun déploiement ne sera effectué pendant la fenêtre du run** — le worker redémarre
+inconditionnellement sur chaque `deploy-claire.sh`, ce qui tuerait un job GPU de 3h en
+vol sans annulation côté G5K (point bloquant remonté par la revue de fiabilité
+pré-Palier 6, `wsi2cfn5w`).
+
+**Bug réel n°9 (mineur, même famille que le n°4)** : premier essai de soumission avec
+le cluster A100 explicitement épinglé (`{cluster='grouille'}/gpu=1,walltime=03:00`,
+préféré à un choix GPU non déterministe sur nancy — le catalogue exclut délibérément
+`graffiti`, dont le modèle GPU est ambigu) → échec immédiat `g5k_unreachable`,
+`400 Bad query : "Filtering out exotic resources (grouille)"`. Comme `gemini`/lyon
+(bug n°4), `grouille`/nancy est ÉGALEMENT classé exotic côté Grid'5000 en ce moment —
+non documenté par le catalogue statique (`g5k-gpu-clusters-catalogue.json`, marqué
+« vérifié » mais sans le champ `exotic`), confirmant la mise en garde du fichier
+lui-même : cette classification change côté Grid'5000 et n'est pas une propriété fixe
+par cluster. Corrigé en ajoutant `compute.g5k.exotic: true` — job resoumis avec
+succès (`externalJobId=6853275`, statut `waiting` confirmé immédiatement après
+soumission).
+
+**Run `1baf9943` (nancy/grouille, corrigé) resté bloqué en file` réel — pas un bug** :
+`oarstat -f -j 6853275` : `state = Waiting`, `message = FIFO scheduling OK`, mais
+`scheduled_start = 2026-08-17 08:31:01` — plus de 2 jours après la soumission.
+`grouille` n'a que 2 GPU A100 au total (catalogue), manifestement tous réservés par
+d'autres équipes pour la fenêtre visée. Conforme au playbook §6 de ce document
+(« ne jamais laisser courir indéfiniment ») : run annulé via l'API
+(`POST .../cancel`) plutôt que laissé en attente. Le worker a bien vu
+`cancel_requested`, annulé le job côté OAR (`oarstat -u ejebbari` vide sur nancy après
+coup — aucun orphelin) et libéré le process pour le run suivant — **seule
+observation mineure** : `_wait_remote` n'écrit aucune ligne de log en cas d'annulation
+réussie (seulement en cas d'échec de l'annulation), rendant ce chemin silencieux à
+tort dans `journalctl` ; pas un bug fonctionnel, juste une lacune d'observabilité, non
+corrigée dans ce lot.
+
+**Resoumission sur `lyon`/`gemini`** (déjà validé de bout en bout au Palier 4 : V100
+32 Go × 8, `exotic` requis, `LD_LIBRARY_PATH`/GLIBCXX déjà corrigés) plutôt que de
+retenter nancy à l'aveugle — cluster explicitement épinglé
+(`{cluster='gemini'}/gpu=1,walltime=03:00`) pour éviter les deux autres clusters GPU
+de lyon, non vérifiés (`sirius` A100, `hydra` GH200). Vérification immédiate avant de
+laisser tourner : `oarstat -f -j 2058963` → `state = Running`,
+`start_time = submission_time` (démarrage immédiat, aucune contention), nœud
+`gemini-1.lyon.grid5000.fr`. Run `8ae3bcb9-82ac-43d5-85cb-f1eaa29fc7fd`, transition
+`waiting`→`running` confirmée par notre propre système immédiatement après soumission
+(bug n°8 tient bon sur un job réel, pas seulement sur le job-jouet de 12 secondes qui
+l'avait révélé).
+
+**Résultat — succeeded, ~44 min de bout en bout (30 min de calcul GPU réel sur les
+3h de walltime allouées)** :
+
+| | macroF1 | κ | IC 95% macroF1 |
+|---|---|---|---|
+| Embeddings gelés (e5-large-v2 + SVM, CPU, sans fine-tuning) | 0.4953 | 0.563 | [0.460, 0.540] |
+| **Legal-BERT fine-tuné (GPU, ce run)** | **0.5155** | **0.601** | **[0.482, 0.558]** |
+| Plafond humain (approximation, taux d'accord strict) | 0.4950 | — | — |
+
+**Interprétation scientifique** : le fine-tuning apporte un gain de +0.020 macroF1,
+mais les deux intervalles de confiance à 95% se chevauchent largement — la
+différence n'est PAS statistiquement significative à cette taille d'échantillon
+(39 documents). Les deux approches dépassent légèrement le plafond humain
+approximatif. C'est un résultat confirmatoire honnête, exactement celui anticipé par
+l'analyse pré-run : ni un gain spectaculaire qui justifierait le fine-tuning à lui
+seul, ni un résultat nul pur — un signal faible et statistiquement incertain qui
+penche en faveur des embeddings gelés pour le rapport coût/bénéfice (CPU local,
+quelques minutes contre GPU dédié, 30 min). Empreinte d'environnement confirmant
+l'usage RÉEL du GPU (pas de repli CPU silencieux, le risque documenté §5) :
+`gpu.available: true, device: "Tesla V100-SXM2-32GB", torch: "2.13.0+cu126"` — le
+même build CUDA déjà validé au Palier 4, aucun problème de compatibilité de compute
+capability rencontré sur ce run malgré le risque résiduel documenté à l'époque.
+
+`oarstat -u ejebbari` vide sur lyon ET nancy après coup — aucun job orphelin, malgré
+le double changement de site/cluster de cette session de Palier 6.
+
+**Palier 6 clos.** Premier résultat scientifique réel obtenu sur Grid'5000,
+directement exploitable pour l'article JURIX : les embeddings gelés suffisent à
+approcher le plafond humain sur ce jeu de données, le fine-tuning Legal-BERT
+n'apporte pas de gain statistiquement démontrable à cette échelle d'annotation.
