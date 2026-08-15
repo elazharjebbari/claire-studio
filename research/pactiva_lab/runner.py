@@ -25,6 +25,7 @@ from .evaluation.metrics import (
     cohen_kappa,
     confusion_matrix,
     expected_calibration_error,
+    lrap,
     macro_f1,
     micro_f1,
     multilabel_prf,
@@ -156,13 +157,20 @@ def run_experiment(
                 }
             )
 
-        fold_scores.append(
-            _score(
-                [targets[i] for i in test_idx],
-                [_deserialize(p, task) for p in predicted],
-                task,
-            )
+        fold_result = _score(
+            [targets[i] for i in test_idx],
+            [_deserialize(p, task) for p in predicted],
+            task,
         )
+        if task == "T2_multilabel":
+            # LRAP se calcule ICI, sur les scores COMPLETS de `predict_proba` — les
+            # prédictions écrites sur disque ne conservent que le top-5, insuffisant
+            # pour un classement. Par pli, donc moyenné (et dispersé) par `_aggregate`
+            # comme les autres métriques. C'était la métrique déclarée clé du preset
+            # multilabel-finetune… définie dans metrics.py mais jamais appelée
+            # (audit du 15 août 2026, docs/pactiva-lab-resultats/01_AUDIT.md §1.2).
+            fold_result["lrap"] = lrap([targets[i] for i in test_idx], scores)
+        fold_scores.append(fold_result)
         _write_progress(progress_path, fold + 1, n_folds)
         _write_partial(out_dir, task, fold_scores, started)
 
@@ -288,12 +296,19 @@ def _aggregate(fold_scores: list[dict], task: str) -> dict:
         return {"macro_f1": 0.0, "micro_f1": 0.0}
     keys = sorted({k for row in fold_scores for k in row})
     out = {}
+    fold_stats = {}
     for key in keys:
         values = [row[key] for row in fold_scores if key in row]
         out[key] = round(sum(values) / len(values), 6)
         # La dispersion inter-plis compte autant que la moyenne sur un petit corpus :
         # un écart-type élevé signale un modèle instable qu'une moyenne flatteuse cache.
-        out[f"{key}_dispersion"] = fold_dispersion(values)["std"]
+        # `{key}_dispersion` (le seul std) reste tel quel — contrat de schéma additif,
+        # jamais de champ renommé ; le détail complet (mean/std/min/max/n) part dans
+        # `fold_stats`, dont l'UI a besoin pour afficher la fourchette inter-plis.
+        stats = fold_dispersion(values)
+        out[f"{key}_dispersion"] = stats["std"]
+        fold_stats[key] = stats
+    out["fold_stats"] = fold_stats
     return out
 
 
@@ -342,12 +357,28 @@ def _ceiling(dataset: Dataset, task: str) -> dict:
             "note": "aucune phrase multi-annotée dans ce dataset",
         }
     strict = sum(1 for s in multi if s.agreement == "strict")
+
+    # IC bootstrap PAR DOCUMENT sur le plafond lui-même : le plafond devient une BANDE
+    # de référence, pas une ligne faussement certaine — il est estimé sur le même petit
+    # effectif que les modèles, son incertitude doit se voir au même titre
+    # (docs/pactiva-lab-resultats/03_CADRE_STATISTIQUE.md §d).
+    by_document: dict[str, list] = defaultdict(list)
+    for sentence in multi:
+        by_document[sentence.document].append(sentence)
+
+    def strict_rate_on(documents: list[str]) -> float:
+        rows = [s for d in documents for s in by_document.get(d, [])]
+        if not rows:
+            return 0.0
+        return sum(1 for s in rows if s.agreement == "strict") / len(rows)
+
     return {
         # Proportion d'accord strict = borne haute observable sur le matériau agrégé.
         "value": round(strict / len(multi), 6),
         "metric": "strict_agreement_rate",
         "task": task,
         "pairs": len(multi),
+        "ci": bootstrap_ci(sorted(by_document), strict_rate_on),
         "note": (
             "Approximation calculée sur le dataset AGRÉGÉ (taux d'accord strict). "
             "Le plafond exact demande les votes individuels : construire un dataset "
