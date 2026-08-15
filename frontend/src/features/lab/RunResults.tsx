@@ -22,10 +22,15 @@ import { metricDefinition } from "./content/metricGlossary";
 import {
   CeilingBand,
   ExperimentIntro,
-  MetricCell,
   VerdictPanel,
 } from "./resultComponents";
-import { fmtCeilingShare, fmtCi, fmtMetric } from "./resultFormat";
+import { resultViewFor } from "./resultView";
+import {
+  ByAgreementClassPanel,
+  FamilyKpis,
+  TaskReferenceBand,
+  buildVerdict,
+} from "./resultViews";
 import { ACTIVE, LIVE, STATUS_META, elapsedLabel, isProgressLive, isStaleHeartbeat } from "./runStatus";
 import type { RunDetail, RunStatus } from "./types";
 
@@ -188,10 +193,8 @@ export function RunResults({ slug, runId }: { slug: string; runId: string }) {
     );
   }
 
-  const foldStats = metrics.foldStats ?? {};
-  const kappa = typeof metrics.kappa === "number" ? metrics.kappa : null;
-  const macroF1 = typeof metrics.macroF1 === "number" ? metrics.macroF1 : null;
-  const ceilingShare = fmtCeilingShare(macroF1, ceiling?.value);
+  const family = resultViewFor(run);
+  const verdict = buildVerdict(run, family);
   const errorDetails = run.metrics?.errors;
 
   return (
@@ -231,57 +234,31 @@ export function RunResults({ slug, runId }: { slug: string; runId: string }) {
           <ExperimentIntro preset={run.preset} />
         </div>
 
-        {macroF1 != null && ceilingShare && (
+        {verdict && (
           <div className="mt-3">
-            <VerdictPanel>
-              macro-F1 {fmtMetric(macroF1)}
-              {fmtCi(metrics.macroF1Ci) ? ` ${fmtCi(metrics.macroF1Ci)}` : ""} — soit{" "}
-              {ceilingShare}.
-            </VerdictPanel>
+            <VerdictPanel>{verdict}</VerdictPanel>
           </div>
         )}
 
-        <div className="mt-3 grid grid-cols-2 gap-3 sm:grid-cols-4" data-testid="run-metrics-kpis">
-          <MetricCell
-            label="macro-F1"
-            value={macroF1}
-            ci={metrics.macroF1Ci}
-            dispersion={foldStats.macroF1?.std}
-            definitionKey="macroF1"
-            testId="kpi-macro-f1"
-          />
-          <MetricCell
-            label="micro-F1"
-            value={metrics.microF1 as number | null}
-            dispersion={foldStats.microF1?.std}
-            definitionKey="microF1"
-            testId="kpi-micro-f1"
-          />
-          {kappa != null && (
-            <MetricCell
-              label="κ"
-              value={kappa}
-              dispersion={foldStats.kappa?.std}
-              definitionKey="kappa"
-              testId="kpi-kappa"
-            />
-          )}
-          <MetricCell
-            label="ECE"
-            value={ece}
-            definitionKey="ece"
-            testId="kpi-ece"
-          />
-        </div>
         <div className="mt-3">
+          <FamilyKpis run={run} family={family} />
+        </div>
+        <div className="mt-3 space-y-2">
           <CeilingBand
             value={ceiling?.value}
             ci={ceiling?.ci}
             metric={ceiling?.metric}
             note={ceiling?.note}
           />
+          {(family === "multilabel" || family === "boundary") && (
+            <TaskReferenceBand task={run.task} />
+          )}
         </div>
       </Panel>
+
+      {(family === "flagship" || family === "generic") && (
+        <ByAgreementClassPanel run={run} />
+      )}
 
       {perLabel.length > 0 && <LabelScoreFigure rows={perLabel} />}
       {errors?.confusionMatrix && <ConfusionMatrixFigure matrix={errors.confusionMatrix} />}
