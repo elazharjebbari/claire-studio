@@ -16,6 +16,7 @@ campagne humaine).
 | [`01_ANALYSE_SCIENTIFIQUE.md`](01_ANALYSE_SCIENTIFIQUE.md) | L'analyse de fond : thèse, contributions et preuves requises de chaque papier ; état réel des preuves ; tensions entre dossiers **résolues** ; menaces de validité ; état de la valve mi-août ; chemin critique. |
 | [`02_MATRICE_EXPERIENCES.md`](02_MATRICE_EXPERIENCES.md) | La matrice exhaustive : **chaque tableau et chaque figure** de chaque papier → l'expérience qui le produit → la source versionnée du chiffre → le statut (✅ acquis / 🔧 à implémenter / ▶ à exécuter) → les dépendances. |
 | [`03_PLAN_TECHNIQUE.md`](03_PLAN_TECHNIQUE.md) | Le plan de mise en œuvre : extensions du dataset (votes bruts, gold), nouvelles tâches (`M1_agreement`, `M2_gold_cascade`, `G2_cooccurrence`), presets, programmes, interfaces ad-hoc, batterie de tests, protocole d'exécution « aperçu ». |
+| [`04_RESULTATS_APERCU.md`](04_RESULTATS_APERCU.md) | **Les résultats de la campagne du 16 août** (V0 constatée : 3 paires, 12 docs multi-annotés) : E1 Δ=0,063 [0,031;0,086], matrice 7×7, F8, E3/E4/E5, tableau 5 de G2 (source votes) avec l'inflexion « co-occurrence = signal supervisé faible », D1 positif, G5 borne de robustesse. |
 
 ## Fondements
 
