@@ -16,7 +16,7 @@ embeddings = ["sentence-transformers>=3.0", "torch>=2.2"]
 # échoue sur ce modèle) — les deux découverts par la campagne de validation GPU des
 # 15-16 août 2026 (runs réels en échec sur gemini).
 transformers = ["transformers>=4.40", "torch>=2.2", "accelerate>=0.30",
-                "sentencepiece>=0.2", "tiktoken>=0.7"]
+                "sentencepiece>=0.2", "protobuf>=4.25", "tiktoken>=0.7"]
 dev = ["pytest>=8.0"]
 
 [build-system]
