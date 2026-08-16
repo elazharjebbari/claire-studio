@@ -8,6 +8,32 @@
 
 version: 1
 
+# ─────────────────────────────────────────────────────────────────────────────
+# Blocs thématiques — le registre ORDONNÉ des groupes du lanceur (mode guidé).
+# Chaque preset référence un `theme` ci-dessous ; `papers` ([long|court]) et `stage`
+# (reference|criblage|confirmation|ablation) portent la classification décidée dans
+# docs/pactiva-lab/05_BLOCS_ET_PROGRAMMES.md — servie telle quelle par l'API.
+# ─────────────────────────────────────────────────────────────────────────────
+themes:
+  - id: planchers
+    label: "Planchers de référence"
+    description: "Sans plancher, aucun gain n'est interprétable : les modèles volontairement simples qui ancrent toutes les comparaisons."
+  - id: references-llm
+    label: "Juges LLM"
+    description: "La référence zéro-shot figée, évaluée sous le même protocole que les modèles entraînés."
+  - id: pretraitement
+    label: "Prétraitement & contexte"
+    description: "Ce que le texte d'entrée doit contenir : criblage des axes de prétraitement, ablation du contexte."
+  - id: representations
+    label: "Représentations & encodeurs"
+    description: "Embeddings gelés, fine-tuning, encodeurs juridiques contre généralistes, kNN explicable."
+  - id: donnees-annotation
+    label: "Données & annotation"
+    description: "Combien annoter, la qualité du gold, la robustesse au bruit — les questions de campagne."
+  - id: taches-avancees
+    label: "Tâches avancées (T2/T3)"
+    description: "Multi-étiquettes et frontières : la tâche réelle du papier phare, et le point dur."
+
 presets:
 
   # ─────────────────────────────────────────────────────────────────────────────
@@ -15,6 +41,9 @@ presets:
   # ─────────────────────────────────────────────────────────────────────────────
 
   - id: baseline-fast
+    theme: planchers
+    papers: [long]
+    stage: reference
     label: "Baselines rapides (plancher de référence)"
     why: >
       À lancer EN PREMIER sur tout nouveau dataset. Sans plancher, aucun gain n'est
@@ -28,6 +57,9 @@ presets:
       compute: { target: local }
 
   - id: position-only
+    theme: planchers
+    papers: [long]
+    stage: reference
     label: "Position seule (diagnostic)"
     why: >
       Baseline DIAGNOSTIQUE : que prédit la seule position de la phrase dans le document ?
@@ -42,6 +74,9 @@ presets:
       compute: { target: local }
 
   - id: llm-judges-baseline
+    theme: references-llm
+    papers: [long, court]
+    stage: reference
     label: "Les 4 juges LLM (baseline figée)"
     why: >
       Ne relance AUCUN modèle : lit les prédictions déjà en base. Comparateur gratuit
@@ -58,6 +93,9 @@ presets:
       axes: { "/model/judge": [fable, claude, codex, mistral] }
 
   - id: screening-preprocess
+    theme: pretraitement
+    papers: [long]
+    stage: criblage
     label: "Criblage des prétraitements"
     why: >
       Étage 1 du protocole : teste les axes de prétraitement sur un modèle bon marché.
@@ -87,6 +125,9 @@ presets:
   # ─────────────────────────────────────────────────────────────────────────────
 
   - id: embeddings-frozen
+    theme: representations
+    papers: [long]
+    stage: criblage
     label: "Embeddings gelés + tête légère"
     why: >
       Encode une seule fois (cache), puis compare plusieurs têtes quasi gratuitement.
@@ -118,6 +159,9 @@ presets:
         "/model/head": [logreg, linear_svm, knn, mlp]
 
   - id: knn-explainable
+    theme: representations
+    papers: []
+    stage: reference
     label: "k-NN sur embeddings (explicable par l'exemple)"
     why: >
       Valeur propre en AI & Law : la prédiction s'explique par « les k phrases les plus
@@ -135,6 +179,9 @@ presets:
   # ─────────────────────────────────────────────────────────────────────────────
 
   - id: legal-bert-finetune
+    theme: representations
+    papers: [long]
+    stage: confirmation
     label: "Legal-BERT — fine-tuning (T1)"
     why: "Le modèle de référence du domaine (LexGLUE/UNFAIR-ToS). Résultat principal attendu."
     duration_hint: "~45 min GPU"
@@ -159,6 +206,9 @@ presets:
       compute: { target: g5k, require_gpu: true, g5k: { site: nancy, resources: "gpu=1,walltime=03:00" } }
 
   - id: multilabel-finetune
+    theme: taches-avancees
+    papers: [long, court]
+    stage: confirmation
     label: "Multi-label (T2) — l'ensemble des thèmes"
     why: >
       La tâche RÉELLE du protocole d'annotation. À comparer au plafond α-MASI (0,635),
@@ -180,6 +230,9 @@ presets:
       compute: { target: g5k, require_gpu: true, g5k: { site: nancy, resources: "gpu=1,walltime=03:00" } }
 
   - id: encoders-comparison
+    theme: representations
+    papers: [long]
+    stage: confirmation
     label: "Comparaison d'encodeurs (fine-tuning)"
     why: "Legal-BERT vs généralistes : le domaine juridique paie-t-il ?"
     duration_hint: "~3 h GPU (4 runs)"
@@ -200,6 +253,9 @@ presets:
           - answerdotai/ModernBERT-base
 
   - id: sequence-boundary
+    theme: taches-avancees
+    papers: [long, court]
+    stage: confirmation
     label: "Segmentation (T3) — étiquetage de séquence"
     why: >
       Le point dur : l'accord humain sur les frontières n'est que de 0,39–0,63 en Jaccard.
@@ -217,6 +273,9 @@ presets:
   # ─────────────────────────────────────────────────────────────────────────────
 
   - id: ablation-context
+    theme: pretraitement
+    papers: [long]
+    stage: ablation
     label: "Ablation — effet du contexte (Q2)"
     why: "Contribution originale : le thème d'une phrase juridique est-il surtout positionnel ?"
     duration_hint: "~2 h GPU (6 runs)"
@@ -234,6 +293,9 @@ presets:
         "/preprocess/context/include_doc_position": [false, true]
 
   - id: learning-curve
+    theme: donnees-annotation
+    papers: [long]
+    stage: criblage
     label: "Courbe d'apprentissage — combien de documents faut-il ?"
     why: >
       LE résultat le plus actionnable du plan : répond empiriquement à « quand peut-on
@@ -252,6 +314,9 @@ presets:
       max_runs: 25
 
   - id: ablation-gold-quality
+    theme: donnees-annotation
+    papers: [court]
+    stage: ablation
     label: "Ablation — la qualité du gold paie-t-elle ? (A5)"
     why: >
       Entraîner sur `submitted` vs `complete` vs `gold` finalisé. Répond à « l'arbitrage
@@ -266,6 +331,9 @@ presets:
       compute: { target: local }
 
   - id: ablation-label-noise
+    theme: donnees-annotation
+    papers: [long]
+    stage: ablation
     label: "Ablation — robustesse au bruit d'étiquetage (A6)"
     why: "Borne de fiabilité : jusqu'où le modèle tient-il quand le gold se dégrade ?"
     duration_hint: "~20 min CPU"

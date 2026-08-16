@@ -9,6 +9,7 @@ import type {
   LaunchResponse,
   PreflightReport,
   PresetCatalog,
+  ProgramsResponse,
   RunDetail,
   RunSummary,
 } from "./types";
@@ -51,6 +52,14 @@ export function buildDataset(
 /** Catalogue des presets scientifiques (mode guidé de « Nouvelle expérience »). */
 export function listPresets(slug: string): Promise<PresetCatalog> {
   return apiFetch(`${root(slug)}/presets`);
+}
+
+/** Programmes ciblés (papier long / papier court) + avancement par preset dérivé des
+ * runs réels — filtré par dataset quand fourni (un statut toutes-données-confondues
+ * mentirait sur l'avancement d'une campagne liée à UN dataset). */
+export function getPrograms(slug: string, datasetId?: string): Promise<ProgramsResponse> {
+  const query = datasetId ? `?dataset=${encodeURIComponent(datasetId)}` : "";
+  return apiFetch(`${root(slug)}/programs${query}`);
 }
 
 export function createExperiment(

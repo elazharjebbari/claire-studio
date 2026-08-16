@@ -43,6 +43,8 @@ def _load_cached(path: str) -> dict:
     return {
         "presets": data.get("presets") or [],
         "recommended_order": data.get("recommended_order") or [],
+        # Registre ordonné des blocs thématiques du lanceur (05_BLOCS_ET_PROGRAMMES.md).
+        "themes": data.get("themes") or [],
     }
 
 

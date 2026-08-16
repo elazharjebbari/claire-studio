@@ -1,0 +1,60 @@
+# Programmes d'expériences — les BLOCS CIBLÉS au service des publications.
+#
+# Un programme = une liste ORDONNÉE de presets avec le rôle de chacun dans le papier
+# visé. Les programmes sont déclaratifs et en lecture seule : l'avancement de chaque
+# item est DÉRIVÉ des runs réels (jamais un état séparé à synchroniser — la vérité
+# reste les runs). Décision et analyse : docs/pactiva-lab/05_BLOCS_ET_PROGRAMMES.md.
+#
+# Évolution : éditer ce fichier (sous revue git), jamais de CRUD applicatif.
+
+version: 1
+
+programs:
+  - id: papier-long
+    label: "Papier long — classifieur & hypergraphe"
+    paper: long
+    goal: >
+      « From Reliable Multi-Label Clause Themes to Hypergraph-Based Detection of
+      Unfair Clauses » — la section fiabilité + classifieur supervisé [F1] et les
+      figures F5 à F9. Ordre = protocole deux étages : criblage CPU d'abord, GPU
+      ensuite.
+    items:
+      - preset: baseline-fast
+        role: "Plancher TF-IDF — première ligne du tableau de résultats"
+      - preset: position-only
+        role: "Diagnostic Q2 — ce que la structure seule prédit"
+      - preset: llm-judges-baseline
+        role: "Figure F9 — les 4 juges sous le même protocole"
+      - preset: screening-preprocess
+        role: "Méthodologie — quels axes de prétraitement survivent"
+      - preset: embeddings-frozen
+        role: "Q4 — le terme de comparaison du fine-tuning"
+      - preset: learning-curve
+        role: "Figure F5 — combien de documents annoter"
+      - preset: legal-bert-finetune
+        role: "Résultat principal T1 — % du plafond humain approximé"
+      - preset: ablation-context
+        role: "Figure F7 — la contribution originale (thème positionnel ?)"
+      - preset: multilabel-finetune
+        role: "LE classifieur du papier phare [F1] — T2, plafond α-MASI"
+      - preset: ablation-label-noise
+        role: "Ablation G5 — robustesse du classifieur au bruit d'étiquettes"
+      - preset: sequence-boundary
+        role: "Tableau T3 — le point dur, contre la fourchette humaine"
+
+  - id: papier-court
+    label: "Papier court — la mesure"
+    paper: court
+    goal: >
+      « How Much Does Multi-Label Cost? » — le papier de MESURE (α-MASI, mur du κ,
+      divergence au seed). Le cœur vient du module Analyse & Qualité ; ces
+      expériences Lab en sont les échos chiffrés.
+    items:
+      - preset: llm-judges-baseline
+        role: "Écho R2 — κ des juges contre le mur du κ humain (0,769)"
+      - preset: multilabel-finetune
+        role: "Écho R1 — l'écart micro/macro contre le plafond α-MASI 0,635"
+      - preset: sequence-boundary
+        role: "Contribution 3 — la frontière est le vrai point dur"
+      - preset: ablation-gold-quality
+        role: "Écho E5 — l'arbitrage du gold vaut-il son coût ?"

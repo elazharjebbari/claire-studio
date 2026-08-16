@@ -9,7 +9,7 @@
 
 import { Suspense, useEffect, useState } from "react";
 import { useSearchParams } from "next/navigation";
-import { Database, FlaskConical, Server } from "lucide-react";
+import { BookOpen, Database, FlaskConical, Server } from "lucide-react";
 
 import { Panel } from "@/components/ui/primitives";
 
@@ -18,14 +18,16 @@ import { DatasetBuilder } from "./DatasetBuilder";
 import { ExperimentLauncher } from "./ExperimentLauncher";
 import { RunList } from "./RunList";
 import { ComputeSettings } from "./ComputeSettings";
+import { ProgramsPanel } from "./ProgramsPanel";
 import { listDatasets } from "./api";
 import type { DatasetSummary } from "./types";
 
-type Tab = "datasets" | "runs" | "compute";
+type Tab = "datasets" | "runs" | "programs" | "compute";
 
 const TABS: Array<{ id: Tab; label: string; icon: typeof Database }> = [
   { id: "datasets", label: "Jeux de données", icon: Database },
   { id: "runs", label: "Expériences", icon: FlaskConical },
+  { id: "programs", label: "Programmes", icon: BookOpen },
   { id: "compute", label: "Calcul", icon: Server },
 ];
 
@@ -51,6 +53,8 @@ function LabWorkspaceInner({ slug }: { slug: string }) {
   // lancement : sans ça, il faudrait attendre le sondage à 5 s de `RunList` pour voir
   // le nouveau run apparaître — un délai perceptible juste après avoir cliqué « Lancer ».
   const [runsRefreshKey, setRunsRefreshKey] = useState(0);
+  // Preset pré-armé par l'action « Lancer » d'un programme — consommé par le lanceur.
+  const [launcherPreset, setLauncherPreset] = useState<string | null>(null);
 
   useEffect(() => {
     listDatasets(slug)
@@ -141,9 +145,22 @@ function LabWorkspaceInner({ slug }: { slug: string }) {
 
       {tab === "runs" && (
         <div className="space-y-4">
-          <ExperimentLauncher slug={slug} onLaunched={() => setRunsRefreshKey((k) => k + 1)} />
+          <ExperimentLauncher
+            slug={slug}
+            onLaunched={() => setRunsRefreshKey((k) => k + 1)}
+            initialPresetId={launcherPreset}
+          />
           <RunList key={runsRefreshKey} slug={slug} />
         </div>
+      )}
+      {tab === "programs" && (
+        <ProgramsPanel
+          slug={slug}
+          onLaunchPreset={(presetId) => {
+            setLauncherPreset(presetId);
+            setTab("runs");
+          }}
+        />
       )}
       {tab === "compute" && <ComputeSettings />}
     </div>

@@ -258,6 +258,8 @@ urlpatterns = [
     path("projects/<slug:slug>/lab/datasets/<uuid:dataset_id>", lab_views.dataset_detail,
          name="lab-dataset-detail"),
     path("projects/<slug:slug>/lab/presets", lab_views.presets, name="lab-presets"),
+    path("projects/<slug:slug>/lab/programs", lab_views.experiment_programs,
+         name="lab-programs"),
     path("projects/<slug:slug>/lab/g5k/clusters", lab_views.g5k_clusters, name="lab-g5k-clusters"),
     path("projects/<slug:slug>/lab/experiments", lab_views.experiments,
          name="lab-experiments"),

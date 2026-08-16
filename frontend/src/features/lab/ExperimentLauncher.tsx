@@ -19,7 +19,7 @@
 import { useEffect, useMemo, useState } from "react";
 import { Cpu, FlaskConical, Loader2, Rocket, TriangleAlert } from "lucide-react";
 
-import { Button, Panel } from "@/components/ui/primitives";
+import { Badge, Button, Panel } from "@/components/ui/primitives";
 import { ApiError } from "@/lib/api/client";
 
 import { ComputeTargetBadge } from "./ComputeTargetBadge";
@@ -29,8 +29,16 @@ import {
   launchExperiment,
   listDatasets,
   listGpuClusters,
+  getPrograms,
   listPresets,
 } from "./api";
+import {
+  PAPER_LABELS,
+  STAGE_LABELS,
+  groupPresetsByTheme,
+  presetChip,
+  protocolRank,
+} from "./presetBlocks";
 import type {
   DatasetSummary,
   EstimateResponse,
@@ -38,6 +46,7 @@ import type {
   GpuClusterCatalog,
   Preset,
   PresetCatalog,
+  PresetStatus,
 } from "./types";
 
 type Mode = "guided" | "expert";
@@ -82,10 +91,25 @@ function baseConfig(preset: Preset | null, datasetId: string): Record<string, un
         model: { family: "tfidf_linear" },
         evaluation: { split: { scheme: "group_kfold_document", k: 5 }, humanCeiling: true },
       };
+  // Le bloc `sweep` du preset FAIT PARTIE de la config d'expérience (`expand_sweep`
+  // le lit dans `config.sweep`) — sans cette fusion, un criblage de 48 runs lancé
+  // depuis le mode guidé créait UNE expérience mono-run (bug réel, audit
+  // docs/pactiva-lab/05_BLOCS_ET_PROGRAMMES.md §1.4 : la campagne de validation
+  // était passée par l'API, un utilisateur ne pouvait pas).
+  if (preset?.sweep) config.sweep = preset.sweep;
   return { version: 1, seed: 42, ...config, datasetId };
 }
 
-export function ExperimentLauncher({ slug, onLaunched }: { slug: string; onLaunched: () => void }) {
+export function ExperimentLauncher({
+  slug,
+  onLaunched,
+  initialPresetId,
+}: {
+  slug: string;
+  onLaunched: () => void;
+  /** Pré-arme le lanceur sur un preset (action « Lancer » d'un programme) et l'ouvre. */
+  initialPresetId?: string | null;
+}) {
   const [open, setOpen] = useState(false);
   const [datasets, setDatasets] = useState<DatasetSummary[]>([]);
   const [catalog, setCatalog] = useState<PresetCatalog | null>(null);
@@ -101,6 +125,24 @@ export function ExperimentLauncher({ slug, onLaunched }: { slug: string; onLaunc
   const [errorCode, setErrorCode] = useState<string | null>(null);
   const [launchedRunIds, setLaunchedRunIds] = useState<string[] | null>(null);
   const [gpuClusters, setGpuClusters] = useState<GpuClusterCatalog | null>(null);
+  const [presetStatus, setPresetStatus] = useState<Record<string, PresetStatus>>({});
+
+  // Pré-armement depuis un programme : ouvre le panneau et sélectionne le preset.
+  useEffect(() => {
+    if (initialPresetId) {
+      setOpen(true);
+      setPresetId(initialPresetId);
+    }
+  }, [initialPresetId]);
+
+  // Avancement par preset sur le dataset choisi — dérivé des runs réels, la même
+  // réponse que l'onglet Programmes (aucune seconde source de vérité).
+  useEffect(() => {
+    if (!open || !datasetId) return;
+    getPrograms(slug, datasetId)
+      .then((response) => setPresetStatus(response.presetStatus))
+      .catch(() => setPresetStatus({}));
+  }, [open, slug, datasetId]);
 
   useEffect(() => {
     if (!open) return;
@@ -311,41 +353,92 @@ export function ExperimentLauncher({ slug, onLaunched }: { slug: string; onLaunc
       </div>
 
       {mode === "guided" && !experiment && (
-        <div className="space-y-1.5" data-testid="preset-list">
+        <div className="space-y-3" data-testid="preset-list">
           {orderedPresets.length === 0 && (
             <p className="text-xs text-ink-muted">
               Aucun preset disponible côté serveur — passer en mode expert.
             </p>
           )}
-          {orderedPresets.map((preset) => (
-            <label
-              key={preset.id}
-              className={
-                presetId === preset.id
-                  ? "flex items-start gap-2 rounded border border-accent bg-accent/5 p-2 text-xs"
-                  : "flex items-start gap-2 rounded border border-line p-2 text-xs hover:border-accent/40"
-              }
-            >
-              <input
-                type="radio"
-                name="preset"
-                className="mt-0.5"
-                checked={presetId === preset.id}
-                onChange={() => setPresetId(preset.id)}
-                data-testid={`preset-${preset.id}`}
-              />
-              <span>
-                <span className="flex flex-wrap items-center gap-2">
-                  <span className="font-medium text-ink">{preset.label}</span>
-                  <ComputeTargetBadge {...presetComputeTarget(preset)} />
-                </span>
-                {preset.durationHint && (
-                  <span className="ml-2 text-xs text-ink-muted">{preset.durationHint}</span>
+          {catalog &&
+            groupPresetsByTheme(catalog).map((block) => (
+              <fieldset key={block.theme.id} data-testid={`preset-block-${block.theme.id}`}>
+                <legend className="text-xs font-semibold uppercase tracking-wide text-ink">
+                  {block.theme.label}
+                </legend>
+                {block.theme.description && (
+                  <p className="mb-1.5 text-xs text-ink-muted">{block.theme.description}</p>
                 )}
-                {preset.why && <span className="block text-xs text-ink-muted">{preset.why}</span>}
-              </span>
-            </label>
-          ))}
+                <div className="space-y-1.5">
+                  {block.presets.map((preset) => {
+                    const rank = protocolRank(preset.id, catalog.recommendedOrder);
+                    const chip = presetChip(presetStatus[preset.id]);
+                    return (
+                      <label
+                        key={preset.id}
+                        className={
+                          presetId === preset.id
+                            ? "flex items-start gap-2 rounded border border-accent bg-accent/5 p-2 text-xs"
+                            : "flex items-start gap-2 rounded border border-line p-2 text-xs hover:border-accent/40"
+                        }
+                      >
+                        <input
+                          type="radio"
+                          name="preset"
+                          className="mt-0.5"
+                          checked={presetId === preset.id}
+                          onChange={() => setPresetId(preset.id)}
+                          data-testid={`preset-${preset.id}`}
+                        />
+                        <span className="min-w-0 flex-1">
+                          <span className="flex flex-wrap items-center gap-2">
+                            <span className="font-medium text-ink">{preset.label}</span>
+                            {rank != null && (
+                              <span
+                                className="font-mono text-ink-muted"
+                                title="Rang dans le protocole recommandé"
+                              >
+                                #{rank}
+                              </span>
+                            )}
+                            <ComputeTargetBadge {...presetComputeTarget(preset)} />
+                            {preset.stage && (
+                              <Badge className="border-line text-ink-muted">
+                                {STAGE_LABELS[preset.stage] ?? preset.stage}
+                              </Badge>
+                            )}
+                            {(preset.papers ?? []).map((paper) => (
+                              <Badge key={paper} className="border-accent/50 text-accent">
+                                {PAPER_LABELS[paper] ?? paper}
+                              </Badge>
+                            ))}
+                            <Badge
+                              className={
+                                chip.tone === "success"
+                                  ? "border-success/50 text-success"
+                                  : chip.tone === "accent"
+                                    ? "border-accent/50 text-accent"
+                                    : chip.tone === "danger"
+                                      ? "border-danger/50 text-danger"
+                                      : "border-line text-ink-muted"
+                              }
+                              data-testid={`preset-status-${preset.id}`}
+                            >
+                              {chip.label}
+                            </Badge>
+                          </span>
+                          {preset.durationHint && (
+                            <span className="ml-2 text-xs text-ink-muted">{preset.durationHint}</span>
+                          )}
+                          {preset.why && (
+                            <span className="block text-xs text-ink-muted">{preset.why}</span>
+                          )}
+                        </span>
+                      </label>
+                    );
+                  })}
+                </div>
+              </fieldset>
+            ))}
         </div>
       )}
 

@@ -410,6 +410,60 @@ def compare_runs(request, slug: str):
 
 
 # --------------------------------------------------------------------------- #
+# Programmes d'expériences (docs/pactiva-lab/05_BLOCS_ET_PROGRAMMES.md)
+# --------------------------------------------------------------------------- #
+
+@api_view(["GET"])
+@permission_classes([IsAuthenticated])
+def experiment_programs(request, slug: str):
+    """Programmes déclarés (YAML) + avancement PAR PRESET dérivé des runs réels.
+
+    `presetStatus` couvre TOUS les presets ayant au moins un run (pas seulement ceux
+    des programmes) : le lanceur par blocs thématiques consomme la même réponse pour
+    afficher « jamais lancé / validé / en cours / échec » sans second appel. Filtré
+    par `?dataset=<uuid>` quand fourni — un statut toutes-données-confondues mentirait
+    sur l'avancement d'une campagne liée à UN dataset.
+    """
+    try:
+        project = _project_for(request, slug)
+    except PermissionDenied as exc:
+        return _forbidden(str(exc))
+
+    runs = ExperimentRun.objects.filter(experiment__project=project).exclude(
+        experiment__preset=""
+    ).select_related("experiment")
+    dataset_id = request.query_params.get("dataset")
+    if dataset_id:
+        runs = runs.filter(experiment__dataset_id=dataset_id)
+
+    status_by_preset: dict[str, dict] = {}
+    for run in runs.order_by("created_at"):
+        entry = status_by_preset.setdefault(run.experiment.preset, {
+            "n_runs": 0,
+            "by_status": {},
+            "last_run_at": None,
+            "experiment_id": None,
+            "validated": False,
+        })
+        entry["n_runs"] += 1
+        entry["by_status"][run.status] = entry["by_status"].get(run.status, 0) + 1
+        entry["last_run_at"] = run.created_at
+        # L'expérience la plus récente porte le lien « voir les résultats » (vue
+        # agrégée) — l'itération étant triée par created_at, la dernière gagne.
+        entry["experiment_id"] = str(run.experiment_id)
+        if run.status == RunStatus.SUCCEEDED:
+            entry["validated"] = True
+
+    from .programs import load_programs
+
+    return Response({
+        **load_programs(),
+        "dataset": dataset_id,
+        "preset_status": status_by_preset,
+    })
+
+
+# --------------------------------------------------------------------------- #
 # Statistiques inter-runs (docs/pactiva-lab-resultats/03 §h)
 # --------------------------------------------------------------------------- #
 

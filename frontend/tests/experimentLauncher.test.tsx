@@ -23,6 +23,7 @@ vi.mock("@/features/lab/api", () => ({
   estimateExperiment: vi.fn(),
   launchExperiment: vi.fn(),
   listGpuClusters: vi.fn(),
+  getPrograms: vi.fn(),
 }));
 
 const DATASETS = [
@@ -37,19 +38,31 @@ const CATALOG = {
   presets: [
     {
       id: "baseline-fast", label: "Baselines rapides", why: "sans plancher, rien n'est interprétable",
-      durationHint: "~3 min CPU",
+      durationHint: "~3 min CPU", theme: "planchers", papers: ["long"], stage: "reference",
       config: { task: "T1_primary", model: { family: "tfidf_linear" } },
     },
     {
       id: "legal-bert-finetune", label: "Legal-BERT fine-tuning", durationHint: "~45 min GPU",
+      theme: "representations", papers: ["long"], stage: "confirmation",
       config: {
         task: "T1_primary",
         model: { family: "transformer_finetune", checkpoint: "nlpaueb/legal-bert-base-uncased" },
         compute: { target: "g5k", requireGpu: true, g5k: { site: "nancy", resources: "gpu=1,walltime=03:00" } },
       },
     },
+    {
+      id: "screening-preprocess", label: "Criblage des prétraitements",
+      theme: "pretraitement", papers: ["long"], stage: "criblage",
+      config: { task: "T1_primary", model: { family: "tfidf_linear" } },
+      sweep: { mode: "grid", maxRuns: 48, axes: { "/preprocess/case": ["keep", "lower"] } },
+    },
   ],
-  recommendedOrder: ["baseline-fast", "legal-bert-finetune"],
+  recommendedOrder: ["baseline-fast", "screening-preprocess", "legal-bert-finetune"],
+  themes: [
+    { id: "planchers", label: "Planchers de référence", description: "Les modèles simples qui ancrent tout." },
+    { id: "pretraitement", label: "Prétraitement & contexte" },
+    { id: "representations", label: "Représentations & encodeurs" },
+  ],
 };
 
 async function setup() {
@@ -57,6 +70,9 @@ async function setup() {
   vi.mocked(api.listDatasets).mockResolvedValue(DATASETS as never);
   vi.mocked(api.listPresets).mockResolvedValue(CATALOG as never);
   vi.mocked(api.listGpuClusters).mockResolvedValue({ configured: false, clusters: [] } as never);
+  vi.mocked(api.getPrograms).mockResolvedValue({
+    programs: [], dataset: "ds-1", presetStatus: {},
+  } as never);
   const { ExperimentLauncher } = await import("@/features/lab/ExperimentLauncher");
   const onLaunched = vi.fn();
   const user = userEvent.setup();
@@ -311,5 +327,96 @@ describe("ExperimentLauncher — garde-fou sweep Grid'5000", () => {
     expect(screen.queryByTestId("sweep-too-large-warning")).not.toBeInTheDocument();
     expect(screen.getByTestId("experiment-create")).toBeInTheDocument();
     expect(api.launchExperiment).toHaveBeenCalledTimes(1);
+  });
+});
+
+// --------------------------------------------------------------------------- //
+// Blocs thématiques & programmes (docs/pactiva-lab/05_BLOCS_ET_PROGRAMMES.md)
+// --------------------------------------------------------------------------- //
+
+describe("ExperimentLauncher — blocs thématiques", () => {
+  it("⭐ le mode guidé regroupe les presets par bloc, dans l'ordre du registre", async () => {
+    await setup();
+
+    const list = await screen.findByTestId("preset-list");
+    expect(screen.getByTestId("preset-block-planchers")).toBeInTheDocument();
+    expect(screen.getByTestId("preset-block-pretraitement")).toBeInTheDocument();
+    const html = list.innerHTML;
+    expect(html.indexOf("preset-block-planchers")).toBeLessThan(
+      html.indexOf("preset-block-pretraitement"),
+    );
+    expect(screen.getByTestId("preset-block-planchers").textContent).toContain(
+      "Les modèles simples qui ancrent tout.",
+    );
+  });
+
+  it("⭐ chaque preset affiche rang protocole, étage, papiers et statut dérivé des runs", async () => {
+    // Montage manuel (pas setup()) : setup écraserait le mock de getPrograms.
+    const api = await import("@/features/lab/api");
+    vi.mocked(api.listDatasets).mockResolvedValue(DATASETS as never);
+    vi.mocked(api.listPresets).mockResolvedValue(CATALOG as never);
+    vi.mocked(api.listGpuClusters).mockResolvedValue({ configured: false, clusters: [] } as never);
+    vi.mocked(api.getPrograms).mockResolvedValue({
+      programs: [], dataset: "ds-1",
+      presetStatus: {
+        "baseline-fast": { nRuns: 1, byStatus: { succeeded: 1 }, lastRunAt: "2026-08-15",
+          experimentId: "e1", validated: true },
+      },
+    } as never);
+    const { ExperimentLauncher } = await import("@/features/lab/ExperimentLauncher");
+    const user = userEvent.setup();
+    render(<ExperimentLauncher slug="demo" onLaunched={() => {}} />);
+    await user.click(screen.getByTestId("experiment-launcher-open"));
+
+    await waitFor(() =>
+      expect(screen.getByTestId("preset-status-baseline-fast").textContent).toBe("validé"),
+    );
+    expect(screen.getByTestId("preset-status-screening-preprocess").textContent).toBe(
+      "jamais lancé",
+    );
+    const block = screen.getByTestId("preset-block-planchers");
+    expect(block.textContent).toContain("#1");
+    expect(block.textContent).toContain("référence");
+    expect(block.textContent).toContain("papier long");
+  });
+
+  it("⭐ le sweep du preset est fusionné dans la config — un criblage n'est plus un mono-run", async () => {
+    // Bug réel (audit 05_BLOCS_ET_PROGRAMMES §1.4) : baseConfig() perdait
+    // `preset.sweep` — 48 runs devenaient 1 depuis le mode guidé.
+    const api = await import("@/features/lab/api");
+    const { user } = await setup();
+    await user.click(await screen.findByTestId("preset-screening-preprocess"));
+    // Le JSON n'est visible qu'en mode expert — la bascule préserve la config générée.
+    await user.click(screen.getByTestId("experiment-mode-expert"));
+
+    const json = (screen.getByTestId("experiment-config-json") as HTMLTextAreaElement).value;
+    const config = JSON.parse(json);
+    expect(config.sweep).toEqual({
+      mode: "grid", maxRuns: 48, axes: { "/preprocess/case": ["keep", "lower"] },
+    });
+    // Et un preset SANS sweep n'en reçoit pas un fantôme.
+    await user.click(screen.getByTestId("experiment-mode-guided"));
+    await user.click(screen.getByTestId("preset-baseline-fast"));
+    await user.click(screen.getByTestId("experiment-mode-expert"));
+    const json2 = (screen.getByTestId("experiment-config-json") as HTMLTextAreaElement).value;
+    expect(JSON.parse(json2).sweep).toBeUndefined();
+    void api;
+  });
+
+  it("⭐ initialPresetId ouvre le panneau pré-armé (action « Lancer » d'un programme)", async () => {
+    const api = await import("@/features/lab/api");
+    vi.mocked(api.listDatasets).mockResolvedValue(DATASETS as never);
+    vi.mocked(api.listPresets).mockResolvedValue(CATALOG as never);
+    vi.mocked(api.listGpuClusters).mockResolvedValue({ configured: false, clusters: [] } as never);
+    vi.mocked(api.getPrograms).mockResolvedValue({
+      programs: [], dataset: "ds-1", presetStatus: {},
+    } as never);
+    const { ExperimentLauncher } = await import("@/features/lab/ExperimentLauncher");
+    render(
+      <ExperimentLauncher slug="demo" onLaunched={() => {}} initialPresetId="screening-preprocess" />,
+    );
+
+    const radio = await screen.findByTestId("preset-screening-preprocess");
+    expect(radio).toBeChecked();
   });
 });

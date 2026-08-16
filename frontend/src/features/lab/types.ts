@@ -157,19 +157,66 @@ export interface RunDetail extends RunSummary {
   attempt: number;
 }
 
+export type PaperId = "long" | "court";
+export type PresetStage = "reference" | "criblage" | "confirmation" | "ablation";
+
 export interface Preset {
   id: string;
   label: string;
   why?: string;
   durationHint?: string;
   note?: string;
+  /** Bloc thématique (registre `themes` du catalogue) — classification décidée dans
+   * docs/pactiva-lab/05_BLOCS_ET_PROGRAMMES.md. */
+  theme?: string;
+  /** Papiers servis par ce preset ([] = aucun papier central). */
+  papers?: PaperId[];
+  /** Étage du protocole : référence / criblage / confirmation / ablation. */
+  stage?: PresetStage;
   config: Record<string, unknown>;
   sweep?: { mode: string; maxRuns?: number; axes?: Record<string, unknown[]> };
+}
+
+export interface PresetTheme {
+  id: string;
+  label: string;
+  description?: string;
 }
 
 export interface PresetCatalog {
   presets: Preset[];
   recommendedOrder: string[];
+  /** Registre ORDONNÉ des blocs thématiques du mode guidé. */
+  themes: PresetTheme[];
+}
+
+/** Avancement d'un preset, DÉRIVÉ des runs réels (jamais un état stocké). */
+export interface PresetStatus {
+  nRuns: number;
+  byStatus: Record<string, number>;
+  lastRunAt: string | null;
+  /** Expérience la plus récente pour ce preset×dataset — porte le lien résultats. */
+  experimentId: string | null;
+  validated: boolean;
+}
+
+export interface ProgramItem {
+  preset: string;
+  role: string;
+}
+
+export interface ExperimentProgram {
+  id: string;
+  label: string;
+  paper: PaperId;
+  goal: string;
+  items: ProgramItem[];
+}
+
+export interface ProgramsResponse {
+  programs: ExperimentProgram[];
+  dataset: string | null;
+  presetStatus: Record<string, PresetStatus>;
 }
 
 export interface ExperimentSummary {
