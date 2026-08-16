@@ -295,6 +295,11 @@ export interface CooccurrenceVolets {
     aucPrByScorer: Array<{ scorer: string; aucPr: number }>;
   }>;
   unit?: string;
+  /** `votes` = une couche par annotateur (aperçu pré-gold) ; `aggregated` = couche
+   * agrégée/gold. */
+  source?: string;
+  /** Nombre de couches (document, annotateur) quand source=votes. */
+  nLayers?: number;
   deontic?: string;
   labelNoise?: number;
   /** Scorers sautés faute d'environnement (sklearn absent) — jamais silencieux. */

@@ -706,6 +706,13 @@ def test_gold_export_inline(campaign, auth, settings, tmp_path):
     s0 = next(s for s in atlas["sentences"] if s["index"] == 0)
     assert s0["decided"] is True
     assert s0["arbitration"]["auto_resolved"] is True
+    # ⭐ Couche SOFT (V1.3, réponse à Braun 2023) : le tally (masse par thème) ET les
+    # votes bruts par annotateur sont PUBLIÉS — le désaccord n'est jamais effacé.
+    assert s0["tally"], "tally absent de l'export — la couche soft n'est pas livrable"
+    assert {v["annotator"] for v in s0["votes"]} >= {"g_alice", "g_bob"}
+    for vote in s0["votes"]:
+        assert set(vote) == {"annotator", "primary", "secondaries"}
+    assert atlas["finalized"] is False
 
 
 def test_cockpit_hides_expired_lock(campaign, auth):

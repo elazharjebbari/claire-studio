@@ -81,6 +81,10 @@ def validate_config(config: dict) -> dict:
             model.get("deontic", "none") in ("none", "rule_based"),
             "/model/deontic", "attendu parmi ('none', 'rule_based')",
         )
+        _require(
+            model.get("source", "aggregated") in ("aggregated", "votes"),
+            "/model/source", "attendu parmi ('aggregated', 'votes')",
+        )
 
     task = config["task"]
     expected_family = TASK_FAMILIES.get(task)

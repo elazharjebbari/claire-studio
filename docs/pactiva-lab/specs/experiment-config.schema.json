@@ -135,6 +135,8 @@
             "properties": {
               "unit": { "enum": ["segment", "sentence"], "default": "segment",
                 "description": "Le segment reconstruit (plage de phrases contiguës au même jeu de thèmes) est l'unité du papier ; la phrase sert de contrôle." },
+              "source": { "enum": ["aggregated", "votes"], "default": "aggregated",
+                "description": "`votes` = une couche par annotateur (votes.jsonl) — le protocole de l'aperçu pré-gold : l'agrégation consensus aplatit les secondaires des documents mono-annotateur (plancher ≥ 2 votes) et le multi-label disparaît. `aggregated` = la couche agrégée/gold (cible post-résolution)." },
               "deontic": { "enum": ["none", "rule_based"], "default": "none",
                 "description": "Ablation D1 : couche déontique PRÉDITE (proxy à règles de modaux, déclaré comme tel) ajoutée à l'identité de combinaison." },
               "smoothing": { "type": "number", "minimum": 0, "default": 1.0 }

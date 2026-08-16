@@ -127,15 +127,15 @@ def project_iaa_detail(project) -> dict | None:
 
     - globalKappa : mean Cohen's kappa across all annotator pairs/documents.
     - annotatorPairs : number of compared (annotator, annotator) pairs.
-    - boundaryKappa : ⚠️ **DÉPRÉCIÉ** — mesure un ARTEFACT. Le pré-remplissage d'un
-      modèle est déplié PAR PHRASE, donc chaque phrase porte une ancre de clause chez
-      tous les annotateurs : l'accord sur « y a-t-il une ancre ici ? » vaut 1,000 par
-      construction et ne mesure rien. Le vrai accord de segmentation se calcule sur les
-      frontières RECONSTRUITES (plages de thèmes identiques) — voir la métrique
-      `boundary_agreement` (`claire.lab.quality`), qui donne 0,39–0,63 sur les mêmes
-      données. Ce champ est CONSERVÉ pour que les rapports déjà produits restent
-      lisibles ; ne pas le citer dans une publication.
-    - perTheme : per-theme kappa with support, plus a "__boundaries__" row.
+    - boundaryKappa / boundaryJaccard : accord de segmentation sur les frontières
+      **RECONSTRUITES** (une frontière = la phrase où l'ENSEMBLE de thèmes change).
+      Correctif V1.1 (docs/pactiva-experiences-papiers/02 §3) : l'ancienne version
+      comptait les ANCRES de clause — or le pré-remplissage est déplié par phrase,
+      chaque phrase portait une ancre chez tous les annotateurs, et l'indicateur
+      valait 1,000 par construction. Publier ce chiffre aurait été une erreur
+      factuelle ; le vrai accord est de l'ordre de 0,39–0,63 (Jaccard). Même
+      convention de reconstruction que `claire.lab.quality.segment_starts`.
+    - perTheme : per-theme kappa with support.
     """
     statuses = ["submitted", "in_review", "approved"]
     documents = list(
@@ -152,6 +152,7 @@ def project_iaa_detail(project) -> dict | None:
     theme_kappas: dict[str, list[float]] = defaultdict(list)
     theme_support: dict[str, int] = defaultdict(int)
     boundary_kappas: list[float] = []
+    boundary_jaccards: list[float] = []
     global_pairs: list[float] = []
     pair_count = 0
     # Unités pour l'α de Krippendorff-MASI (multi-label) : par phrase, la liste des
@@ -175,23 +176,31 @@ def project_iaa_detail(project) -> dict | None:
             unit = [set_vectors[a.id][i] for a in anns if set_vectors[a.id][i]]
             if len(unit) >= 2:
                 masi_units.append(unit)
-        starts = {
-            a.id: set(
-                a.clauses.values_list("anchor_sentence__index", flat=True)
-            )
-            for a in anns
-        }
+        # Frontières RECONSTRUITES (V1.1) : une frontière = la phrase où l'ensemble
+        # de thèmes change — jamais les ancres de clause (une par phrase, artefact).
+        starts: dict[int, set[int]] = {}
+        for a in anns:
+            vec = set_vectors[a.id]
+            opened: set[int] = set()
+            previous: set[str] | None = None
+            for idx, current in enumerate(vec):
+                if current and current != previous:
+                    opened.add(idx)
+                previous = current
+            starts[a.id] = opened
         ids = list(vectors)
         for i in range(len(ids)):
             for j in range(i + 1, len(ids)):
                 v1, v2 = vectors[ids[i]], vectors[ids[j]]
                 global_pairs.append(cohen_kappa(v1, v2))
                 pair_count += 1
-                # Frontières (segmentation) : κ par paire sur le vecteur "début de
-                # clause à l'index ?" (booléen par phrase), moyenné ensuite.
                 b1 = [idx in starts[ids[i]] for idx in range(n)]
                 b2 = [idx in starts[ids[j]] for idx in range(n)]
                 boundary_kappas.append(cohen_kappa(b1, b2))
+                union = starts[ids[i]] | starts[ids[j]]
+                boundary_jaccards.append(
+                    len(starts[ids[i]] & starts[ids[j]]) / len(union) if union else 1.0
+                )
                 # Par thème (one‑vs‑rest) : κ par paire + support, moyenné ensuite.
                 for code in set(v for v in v1 + v2 if v):
                     a_lab = [c == code for c in v1]
@@ -204,6 +213,7 @@ def project_iaa_detail(project) -> dict | None:
 
     global_kappa = round(sum(global_pairs) / len(global_pairs), 4)
     boundary_kappa = round(sum(boundary_kappas) / len(boundary_kappas), 4)
+    boundary_jaccard = round(sum(boundary_jaccards) / len(boundary_jaccards), 4)
 
     per_theme = []
     for code, kappas in sorted(theme_kappas.items()):
@@ -224,6 +234,9 @@ def project_iaa_detail(project) -> dict | None:
         "global_kappa": global_kappa,
         "annotator_pairs": pair_count,
         "boundary_kappa": boundary_kappa,
+        # La métrique de segmentation du papier (E3) : Jaccard des frontières
+        # reconstruites, moyenné par paire — attendu 0,39–0,63, jamais 1,0.
+        "boundary_jaccard": boundary_jaccard,
         # α Krippendorff-MASI (multi-label) : indicateur tête de gondole du protocole.
         "alpha_masi": round(masi, 4) if masi is not None else None,
         "per_theme": per_theme,

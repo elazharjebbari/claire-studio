@@ -369,6 +369,9 @@ export function CooccurrencePanels({ run }: { run: RunDetail }) {
           {structure.nHapax ?? "—"} vues une seule fois · taux multi-thèmes{" "}
           {pct(structure.multiThemeRate)} · taux de base d&apos;abusivité{" "}
           {pct(structure.baseRate)}. Unité : {volets.unit ?? "segment"}
+          {volets.source === "votes"
+            ? ` · source : votes bruts (${volets.nLayers ?? "—"} couches annotateur — aperçu pré-gold)`
+            : ""}
           {volets.deontic === "rule_based" ? " · couche déontique (proxy à règles)" : ""}
           {volets.labelNoise ? ` · bruit d'étiquettes ${pct(volets.labelNoise, 0)}` : ""}.
         </p>

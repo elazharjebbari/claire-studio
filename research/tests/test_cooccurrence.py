@@ -167,6 +167,30 @@ class TestRunCooccurrence:
             for segment in document["segments"]
         )
 
+    def test_source_votes_builds_one_layer_per_annotator(self, toy_dataset, tmp_path):
+        """⭐ Le protocole de l'aperçu pré-gold : une couche PAR (document, annotateur).
+        alice couvre les 10 documents, bob 4, carol 1 → 15 couches ; la CV reste par
+        document (les couches d'un même document dans le même pli)."""
+        config = json.loads(json.dumps(G2_CONFIG))
+        config["model"]["source"] = "votes"
+        out = tmp_path / "out"
+        result = run_cooccurrence(config, toy_dataset, out)
+        assert result["cooccurrence"]["source"] == "votes"
+        assert result["cooccurrence"]["nLayers"] == 15
+        lines = [json.loads(l) for l in (out / "segments.jsonl").read_text().splitlines()]
+        assert {l["annotator"] for l in lines} == {"alice", "bob", "carol"}
+        # Chaque segment scoré exactement une fois, clé (document, couche, début).
+        keys = [(l["document"], l["annotator"], l["start"]) for l in lines]
+        assert len(keys) == len(set(keys))
+        assert all(l["scores"].get("rarity") is not None for l in lines)
+
+    def test_source_votes_refused_without_votes(self, toy_dataset, tmp_path):
+        (Path(toy_dataset) / "votes.jsonl").unlink()
+        config = json.loads(json.dumps(G2_CONFIG))
+        config["model"]["source"] = "votes"
+        with pytest.raises(ValueError, match="votes_missing"):
+            run_cooccurrence(config, toy_dataset, tmp_path / "out")
+
     def test_label_noise_degrades_or_shifts_scores(self, toy_dataset, tmp_path):
         config = json.loads(json.dumps(G2_CONFIG))
         config["evaluation"]["label_noise"] = 0.35

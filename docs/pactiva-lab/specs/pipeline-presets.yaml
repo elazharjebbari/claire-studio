@@ -404,12 +404,14 @@ presets:
       combinaison, NPMI min, LOF, IsolationForest, OCSVM) évalués contre les labels
       CLAUDETTE (AUC-PR, precision@k, lift), avec contrôle négatif (cardinalité) et
       référence supervisée assumée (identité de combinaison). CV par document sur les
-      plis figés. Produit l'artefact hypergraphe.
+      plis figés. Produit l'artefact hypergraphe. Source `votes` (une couche par
+      annotateur) : l'agrégation consensus aplatit les secondaires en mono-annotateur
+      et le multi-label disparaîtrait ; à rejouer en `aggregated` sur le gold arbitré.
     duration_hint: "~3 min CPU"
     config:
       task: G2_cooccurrence
       preprocess: { detokenize: none }
-      model: { family: cooccurrence_anomaly, unit: segment, deontic: none }
+      model: { family: cooccurrence_anomaly, unit: segment, source: votes, deontic: none }
       evaluation: { bootstrap: { enabled: true, n_resamples: 1000 } }
       compute: { target: local }
 
@@ -427,7 +429,7 @@ presets:
     config:
       task: G2_cooccurrence
       preprocess: { detokenize: none }
-      model: { family: cooccurrence_anomaly, unit: segment, deontic: none }
+      model: { family: cooccurrence_anomaly, unit: segment, source: votes, deontic: none }
       evaluation: { bootstrap: { enabled: true, n_resamples: 1000 } }
       compute: { target: local }
     sweep:
@@ -450,7 +452,7 @@ presets:
     config:
       task: G2_cooccurrence
       preprocess: { detokenize: none }
-      model: { family: cooccurrence_anomaly, unit: segment, deontic: none }
+      model: { family: cooccurrence_anomaly, unit: segment, source: votes, deontic: none }
       evaluation: { bootstrap: { enabled: true, n_resamples: 1000 } }
       compute: { target: local }
     sweep:

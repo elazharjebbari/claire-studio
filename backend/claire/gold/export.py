@@ -1,7 +1,14 @@
 """Export du gold (scope.gold) — réutilise l'infra ExportJob (async, gating download).
 
-Produit un instantané PAR DOCUMENT : la décision gold de chaque phrase + un bloc additif
-``arbitration`` (auto-résolu, décideur, commentaire). Formats jsonl (défaut) ou csv plat.
+Produit un instantané PAR DOCUMENT en DEUX COUCHES (correctif V1.3,
+docs/pactiva-experiences-papiers/02 §3 — la réponse à Braun 2023) :
+
+* **hard gold** : la décision de chaque phrase + bloc additif ``arbitration`` ;
+* **soft labels** : ``tally`` (masse de poids par thème) et ``votes`` (le vote BRUT de
+  chaque annotateur) — le désaccord est PRÉSERVÉ, jamais effacé par l'adjudication.
+
+Formats jsonl (défaut) ou csv plat (le csv ne porte que la couche hard — les couches
+soft sont des structures, servies par le jsonl).
 """
 
 from __future__ import annotations
@@ -9,13 +16,43 @@ from __future__ import annotations
 import csv
 import datetime as dt
 import json
+from collections import defaultdict
 from pathlib import Path
 
 from django.conf import settings
 
+from claire.annotations.models import Annotation
 from claire.exports.models import ExportStatus
 
 from .models import GoldResolution
+from .services import _annotation_sentence_map, annotation_statuses
+
+
+def _votes_by_index(project, document) -> dict[int, list[dict]]:
+    """Votes bruts par phrase — mêmes statuts et même projection EXACTE que le moteur
+    de résolution (`services._annotation_sentence_map`) : l'export publie ce que la
+    cascade a réellement vu, pas une re-dérivation divergente."""
+    votes: dict[int, list[dict]] = defaultdict(list)
+    annotations = (
+        Annotation.objects.filter(
+            project=project, document=document,
+            status__in=annotation_statuses(project),
+        )
+        .select_related("annotator")
+        .prefetch_related(
+            "clauses__theme_tags__theme", "clauses__anchor_sentence", "clauses__theme"
+        )
+    )
+    for annotation in annotations:
+        for index, (primary, secondaries) in _annotation_sentence_map(annotation).items():
+            votes[index].append(
+                {
+                    "annotator": annotation.annotator.username,
+                    "primary": primary,
+                    "secondaries": list(secondaries),
+                }
+            )
+    return votes
 
 
 def gold_records(project, scope: dict) -> list[dict]:
@@ -31,6 +68,7 @@ def gold_records(project, scope: dict) -> list[dict]:
         doc = res.document
         if wanted and doc.external_id not in wanted:
             continue
+        votes = _votes_by_index(project, doc)
         sentences = []
         for gs in (
             res.sentences.select_related("primary_theme", "decided_by").order_by("index")
@@ -44,6 +82,10 @@ def gold_records(project, scope: dict) -> list[dict]:
                 "auto_level": gs.auto_level,
                 "confidence": gs.confidence,
                 "decided": gs.decided,
+                # Couche SOFT (V1.3) : masse de poids par thème + votes bruts — le
+                # désaccord préservé, la réponse à Braun 2023.
+                "tally": gs.tally or {},
+                "votes": votes.get(gs.index, []),
                 # Bloc additif d'arbitrage (jamais présent dans un snapshot humain).
                 "arbitration": {
                     "auto_resolved": gs.auto_resolved,
@@ -56,6 +98,7 @@ def gold_records(project, scope: dict) -> list[dict]:
             "title": doc.title,
             "status": res.status,
             "pct_resolved": res.pct_resolved,
+            "finalized": res.finalized_at is not None,
             "sentences": sentences,
         })
     return out

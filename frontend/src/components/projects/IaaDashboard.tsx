@@ -83,10 +83,14 @@ export function IaaDashboard({ detail }: { detail: IaaDetail }) {
           </div>
         </div>
         <div className="rounded-md border border-line bg-panel-muted p-3 text-center" data-testid="iaa-boundaries">
-          <div className="text-2xl font-semibold text-ink">{detail.boundaryKappa.toFixed(2)}</div>
-          <div className="text-xs uppercase text-ink-muted">frontières de clause</div>
-          <div className={`text-xs ${kappaStrength(detail.boundaryKappa).tone}`}>
-            {kappaStrength(detail.boundaryKappa).label}
+          <div className="text-2xl font-semibold text-ink">
+            {(detail.boundaryJaccard ?? detail.boundaryKappa).toFixed(2)}
+          </div>
+          <div className="text-xs uppercase text-ink-muted">
+            frontières reconstruites{detail.boundaryJaccard != null ? " (Jaccard)" : ""}
+          </div>
+          <div className="text-xs text-ink-muted">
+            la frontière est plus dure que le thème
           </div>
         </div>
       </div>

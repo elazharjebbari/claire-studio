@@ -57,12 +57,18 @@ class Segment:
     n_sentences: int
     unfair_categories: list[str]
     excerpt: str
+    # Couche d'origine quand source=votes : le nom de l'annotateur. Vide en agrégé.
+    layer: str = ""
     deontic: str = ""
     noisy_themes: frozenset | None = None
 
     @property
     def unfair(self) -> bool:
         return bool(self.unfair_categories)
+
+    @property
+    def key(self) -> tuple:
+        return (self.document, self.layer, self.start)
 
     def combo(self, *, with_deontic: bool) -> tuple:
         themes = self.noisy_themes if self.noisy_themes is not None else self.themes
@@ -111,6 +117,62 @@ def _close_segment(document: str, sentences: list) -> Segment:
         unfair_categories=categories,
         excerpt=excerpt[:200],
     )
+
+
+def build_segments_from_votes(dataset: Dataset, votes: list[dict]) -> list[Segment]:
+    """Segments reconstruits À PARTIR DES VOTES BRUTS : une couche PAR ANNOTATEUR.
+
+    C'est le protocole de l'aperçu pré-gold (docs/pactiva-anomalies-graphe/04 §4) :
+    l'agrégation consensus APLATIT les secondaires des documents mono-annotateur
+    (plancher ≥ 2 votes), donc la couche agrégée ne porte presque plus de multi-label
+    (3,9 % vs ~30 % en brut) — l'hypothèse de co-occurrence n'y est pas testable.
+    Les documents multi-annotés contribuent une couche par annotateur ; la validation
+    croisée reste PAR DOCUMENT (toutes les couches d'un document tombent dans le même
+    pli — aucune fuite).
+    """
+    unfair_by_key = {(s.document, s.index): s.unfair for s in dataset.sentences}
+    text_by_key = {
+        (s.document, s.index): (s.text_detok or s.text) for s in dataset.sentences
+    }
+    layers: dict[tuple[str, str], dict[int, frozenset]] = defaultdict(dict)
+    for row in votes:
+        layers[(row["document"], row["annotator"])][row["index"]] = frozenset(
+            [row["primary"], *row.get("secondaries", [])]
+        )
+
+    segments: list[Segment] = []
+
+    def close(document: str, annotator: str, indices: list[int],
+              themes: frozenset) -> None:
+        categories = sorted(
+            {c for i in indices for c in unfair_by_key.get((document, i), [])}
+        )
+        segments.append(
+            Segment(
+                document=document,
+                start=indices[0],
+                end=indices[-1],
+                themes=themes,
+                n_sentences=len(indices),
+                unfair_categories=categories,
+                excerpt=(text_by_key.get((document, indices[0]), "") or "")[:200],
+                layer=annotator,
+            )
+        )
+
+    for (document, annotator) in sorted(layers):
+        sets = layers[(document, annotator)]
+        current: list[int] = []
+        for index in sorted(sets):
+            if current and (
+                index != current[-1] + 1 or sets[index] != sets[current[0]]
+            ):
+                close(document, annotator, current, sets[current[0]])
+                current = []
+            current.append(index)
+        if current:
+            close(document, annotator, current, sets[current[0]])
+    return segments
 
 
 # --------------------------------------------------------------------------- #
@@ -168,7 +230,8 @@ def corrupt_segments(segments: list[Segment], labels: list[str], *,
     ranked = sorted(
         range(len(segments)),
         key=lambda i: hashlib.sha256(
-            f"{seed}:g2-noise:{fold}:{segments[i].document}:{segments[i].start}".encode()
+            f"{seed}:g2-noise:{fold}:{segments[i].document}:{segments[i].layer}:"
+            f"{segments[i].start}".encode()
         ).hexdigest(),
     )
     for i in ranked[:n_corrupt]:
@@ -297,7 +360,18 @@ def run_cooccurrence(
     label_noise = float(evaluation.get("label_noise") or 0.0)
     precision_at = [int(k) for k in evaluation.get("precision_at", PRECISION_AT_DEFAULT)]
 
-    if unit == "sentence":
+    source = model_config.get("source", "aggregated")
+    if source == "votes":
+        from .data import load_votes
+
+        votes = load_votes(data_dir)
+        if not votes:
+            raise ValueError(
+                "votes_missing : source=votes exige votes.jsonl — reconstruisez le "
+                "dataset (constructions antérieures au 16 août 2026)."
+            )
+        segments = build_segments_from_votes(dataset, votes)
+    elif unit == "sentence":
         segments = [
             Segment(
                 document=s.document, start=s.index, end=s.index,
@@ -376,7 +450,7 @@ def run_cooccurrence(
             "rocAuc": _roc_auc(rows),
             "precisionAt": [],
         }
-        ranking = sorted(rows, key=lambda r: (-r[1], r[0].document, r[0].start))
+        ranking = sorted(rows, key=lambda r: (-r[1], r[0].document, r[0].layer, r[0].start))
         for k in precision_at:
             top = ranking[:k]
             if not top:
@@ -437,6 +511,8 @@ def run_cooccurrence(
             "combinations": combinations,
             "perCategory": per_category,
             "unit": unit,
+            "source": source,
+            "nLayers": len({(s.document, s.layer) for s in segments}),
             "deontic": model_config.get("deontic", "none"),
             "labelNoise": label_noise,
             # JAMAIS silencieux : un environnement sans sklearn saute LOF/IF/OCSVM et
@@ -459,16 +535,17 @@ def run_cooccurrence(
         score_index: dict[tuple, dict[str, float]] = defaultdict(dict)
         for name, rows in scored.items():
             for segment, value in rows:
-                score_index[(segment.document, segment.start)][name] = round(value, 6)
+                score_index[segment.key][name] = round(value, 6)
         for segment in segments:
             handle.write(json.dumps({
                 "document": segment.document,
+                "annotator": segment.layer,
                 "start": segment.start,
                 "end": segment.end,
                 "themes": sorted(segment.themes),
                 "deontic": segment.deontic,
                 "unfair": segment.unfair_categories,
-                "scores": score_index.get((segment.document, segment.start), {}),
+                "scores": score_index.get(segment.key, {}),
             }, ensure_ascii=False) + "\n")
     (out_dir / "environment.json").write_text(
         json.dumps(result["environment"], indent=2), encoding="utf-8"
@@ -670,10 +747,11 @@ def _write_hypergraph(out_dir: Path, by_document: dict[str, list[Segment]],
                         "start": s.start,
                         "end": s.end,
                         "themes": sorted(s.themes),
+                        **({"annotator": s.layer} if s.layer else {}),
                         **({"deontic": s.deontic} if with_deontic else {}),
                         "unfair": s.unfair_categories,
                     }
-                    for s in sorted(segments, key=lambda x: x.start)
+                    for s in sorted(segments, key=lambda x: (x.layer, x.start))
                 ],
             }
             for document, segments in sorted(by_document.items())

@@ -470,9 +470,13 @@ function IaaTab({ slug }: { slug: string }) {
           </div>
         </Panel>
         <Panel className="p-4">
-          <div className="text-xs text-ink-muted">κ frontières (segmentation)</div>
-          <div className={"mt-1 text-2xl font-semibold " + kappaColor(detail?.boundaryKappa)}>
-            {detail?.boundaryKappa != null ? detail.boundaryKappa.toFixed(2) : "—"}
+          <div className="text-xs text-ink-muted">
+            Frontières reconstruites{detail?.boundaryJaccard != null ? " (Jaccard)" : ""}
+          </div>
+          <div className="mt-1 text-2xl font-semibold text-ink">
+            {(detail?.boundaryJaccard ?? detail?.boundaryKappa) != null
+              ? (detail!.boundaryJaccard ?? detail!.boundaryKappa).toFixed(2)
+              : "—"}
           </div>
         </Panel>
         <Panel className="p-4">

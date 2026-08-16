@@ -169,6 +169,7 @@ export const FIXTURE_PROGRESS: ProjectProgress = {
     globalKappa: 0.78,
     annotatorPairs: 3,
     boundaryKappa: 0.71,
+    boundaryJaccard: 0.51,
     // κ par thème (échantillon représentatif : certains thèmes plus consensuels que d'autres).
     perTheme: [
       { code: "META", label: "Méta / dates / adresses", kappa: 0.94, support: 48 },

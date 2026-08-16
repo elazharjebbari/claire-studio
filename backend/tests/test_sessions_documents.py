@@ -230,4 +230,44 @@ def test_iaa_detail_no_double_count_n3(project, document_with_sentences, scheme_
     # Accord parfait sur toutes les paires : moyennes = 1.0 (pas d'effet de bord N>=3).
     assert detail["global_kappa"] == 1.0
     assert detail["boundary_kappa"] == 1.0
+    assert detail["boundary_jaccard"] == 1.0
     assert all(t["kappa"] == 1.0 for t in detail["per_theme"])
+
+
+def test_boundary_agreement_reconstruit_jamais_l_artefact_des_ancres(
+    project, document_with_sentences, scheme_with_themes
+):
+    """⭐ Correctif V1.1 (docs/pactiva-experiences-papiers/02 §3) — le cas RÉEL de la
+    campagne : le pré-remplissage dépose UNE ANCRE PAR PHRASE chez tous les
+    annotateurs. L'ancien calcul (accord sur « y a-t-il une ancre ici ? ») valait donc
+    1,000 par construction. Sur frontières RECONSTRUITES (changements de thème), deux
+    annotateurs qui découpent différemment doivent produire un accord < 1."""
+    from claire.projects.iaa import project_iaa_detail
+
+    document_with_sentences.n_sentences = 5
+    document_with_sentences.save()
+    meta = scheme_with_themes.themes_map["META"]
+    term = scheme_with_themes.themes_map["TERMINATION"]
+    s = {i: document_with_sentences.sentences.get(index=i) for i in range(5)}
+
+    # Annotateur A : blocs META[0-2] TERM[3-4] ; annotateur B : META[0-1] TERM[2-4].
+    # Les DEUX posent une clause sur CHAQUE phrase (dépliage par phrase).
+    blocks = {"a": {3: term}, "b": {2: term}}
+    for name, switch in blocks.items():
+        user = UserFactory(username=f"bound_{name}")
+        annotation = Annotation.objects.create(
+            project=project, document=document_with_sentences, annotator=user,
+            status=AnnotationStatus.SUBMITTED,
+        )
+        current = meta
+        for i in range(5):
+            current = switch.get(i, current)
+            Clause.objects.create(
+                annotation=annotation, anchor_sentence=s[i], theme=current
+            )
+
+    detail = project_iaa_detail(project)
+    assert detail is not None
+    # Frontières reconstruites : A = {0, 3}, B = {0, 2} → Jaccard = 1/3, jamais 1,0.
+    assert detail["boundary_jaccard"] == pytest.approx(1 / 3, abs=1e-4)
+    assert detail["boundary_kappa"] < 1.0

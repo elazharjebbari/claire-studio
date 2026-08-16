@@ -197,8 +197,12 @@ export interface IaaDetail {
   globalKappa: number;
   /** Nombre de paires d'annotateurs comparées. */
   annotatorPairs: number;
-  /** Accord sur les frontières de clause (segmentation). */
+  /** Accord de segmentation (κ) sur les frontières RECONSTRUITES — correctif V1.1 :
+   * l'ancien calcul sur les ancres de clause valait 1,0 par construction. */
   boundaryKappa: number;
+  /** Jaccard des frontières reconstruites, moyenné par paire — la métrique de
+   * segmentation des papiers (attendu 0,39–0,63). Absent des vieux payloads. */
+  boundaryJaccard?: number | null;
   /** α de Krippendorff-MASI (accord multi-label) ; null si non calculable. */
   alphaMasi?: number | null;
   /** κ par thème. */
