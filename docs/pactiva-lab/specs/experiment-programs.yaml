@@ -25,6 +25,8 @@ programs:
         role: "Diagnostic Q2 — ce que la structure seule prédit"
       - preset: llm-judges-baseline
         role: "Figure F9 — les 4 juges sous le même protocole"
+      - preset: iaa-mesure
+        role: "Tableau 2 & figure F8 — fiabilité humaine (α-MASI, par thème, frontières)"
       - preset: screening-preprocess
         role: "Méthodologie — quels axes de prétraitement survivent"
       - preset: embeddings-frozen
@@ -41,6 +43,12 @@ programs:
         role: "Ablation G5 — robustesse du classifieur au bruit d'étiquettes"
       - preset: sequence-boundary
         role: "Tableau T3 — le point dur, contre la fourchette humaine"
+      - preset: cooccurrence-abusivite
+        role: "Tableau 5 [G2] — l'anomalie de co-occurrence contre CLAUDETTE"
+      - preset: cooccurrence-deontique
+        role: "Ablation D1 — le coût de la couche déontique prédite"
+      - preset: cooccurrence-bruit
+        role: "Ablation G5-détection — stabilité des anomalies sous bruit de thèmes"
 
   - id: papier-court
     label: "Papier court — la mesure"
@@ -50,6 +58,10 @@ programs:
       divergence au seed). Le cœur vient du module Analyse & Qualité ; ces
       expériences Lab en sont les échos chiffrés.
     items:
+      - preset: iaa-mesure
+        role: "E1–E4 — le cœur du papier : coût du multi-label, matrice 7×7, frontières, divergence"
+      - preset: gold-cascade
+        role: "E5 — le coût de la cascade (aperçu tant que rien n'est finalisé)"
       - preset: llm-judges-baseline
         role: "Écho R2 — κ des juges contre le mur du κ humain (0,769)"
       - preset: multilabel-finetune

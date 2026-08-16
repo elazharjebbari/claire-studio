@@ -327,6 +327,10 @@ def _register_artifacts(run: ExperimentRun, out_dir: Path) -> None:
         ("predictions.jsonl", ArtifactKind.PREDICTIONS, "application/x-ndjson"),
         ("errors.json", ArtifactKind.ERRORS, "application/json"),
         ("run.log", ArtifactKind.LOG, "text/plain"),
+        # Artefacts de la tâche G2 (docs/pactiva-experiences-papiers/02 §1) :
+        # l'hypergraphe clause–thèmes est un livrable d'article, pas un fichier interne.
+        ("hypergraph.json", ArtifactKind.TABLE, "application/json"),
+        ("segments.jsonl", ArtifactKind.PREDICTIONS, "application/x-ndjson"),
     ):
         path = out_dir / name
         if path.is_file():

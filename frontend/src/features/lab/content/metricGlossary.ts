@@ -28,6 +28,28 @@ export const METRIC_GLOSSARY: Record<string, string> = {
     "La différence entre deux modèles évalués sur LES MÊMES documents, avec l'intervalle de confiance de cette différence et la probabilité d'observer un tel écart par hasard (obtenue en permutant les prédictions document par document). Si l'IC du Δ contient 0 : aucune différence démontrée à cet effectif.",
   agreementClasses:
     "Phrases où tous les annotateurs sont d'accord (strict) / où une majorité se dégage (majorité) / où ils divergent (divergence). Le taux d'erreur du modèle par classe dit s'il échoue là où les humains hésitent aussi.",
+  alphaMasi:
+    "α de Krippendorff avec distance MASI : l'accord sur des ENSEMBLES de thèmes (multi-label). Deux jeux partiellement recouvrants comptent comme accord partiel, pas comme désaccord total. Seuils : ≥ 0,667 acceptable, ≥ 0,8 fiable.",
+  alphaNominal:
+    "α de Krippendorff nominal sur le thème PRIMAIRE seul (projection mono-label) — le terme de comparaison d'E1 : ce que vaudrait l'accord si la tâche était mono-label.",
+  alphaDiff:
+    "α nominal − α-MASI, sur le même matériau : le prix de fiabilité du multi-label. L'IC (bootstrap par document, différence APPARIÉE) dit si ce coût est stable au rééchantillonnage.",
+  gwetAc1:
+    "Accord corrigé de la chance, robuste aux prévalences extrêmes — là où κ s'effondre mécaniquement (thème rare presque toujours absent). À lire EN COMPLÉMENT de l'α par thème, jamais à sa place.",
+  boundaryJaccard:
+    "Recouvrement des positions de début de segment entre deux annotateurs, sur les frontières RECONSTRUITES (plages de thèmes identiques). Le κ « d'ancres » vaut 1,0 par construction et ne mesure rien.",
+  seedDivergence:
+    "Part des phrases où le jeu de thèmes de l'annotateur diffère du juge LLM le plus proche. Borne INFÉRIEURE du travail d'édition réel : le juge de pré-remplissage n'est pas persisté (limite déclarée).",
+  aucPr:
+    "Aire sous la courbe précision-rappel : la qualité du classement des clauses par score d'anomalie, comparée au taux de base (~10 % d'abusives). Plus adaptée que l'AUC-ROC quand la classe positive est rare.",
+  precisionAt:
+    "Sur les k clauses les plus anormales selon le score, la part réellement abusive. C'est la métrique « utilisateur » : que trouve un juriste qui lit le haut de la pile ?",
+  lift:
+    "Precision@k divisée par le taux de base : 3× = le haut de la pile contient trois fois plus d'abusives que le hasard.",
+  npmi:
+    "Information mutuelle normalisée d'une paire de thèmes : −1 = jamais ensemble, 0 = indépendants, +1 = toujours ensemble. Le score npmi_min repère la paire la PLUS atypique d'une clause.",
+  comboIdentity:
+    "P(abusif | combinaison de thèmes) estimé sur l'entraînement — référence SUPERVISÉE : la borne haute de ce que l'identité de combinaison peut donner. Ce n'est PAS un détecteur non supervisé.",
 };
 
 export function metricDefinition(key: string): string | undefined {

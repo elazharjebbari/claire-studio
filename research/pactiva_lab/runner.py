@@ -75,12 +75,31 @@ def run_experiment(
     progress_path: str | Path | None = None,
     should_cancel=None,
 ) -> dict:
+    task = config["task"]
+    # Tâches de mesure et d'anomalie : pas de modèle entraîné par pli — elles ont leur
+    # propre boucle mais écrivent le MÊME contrat de sortie (results.json + _SENTINEL).
+    # Imports paresseux pour éviter tout cycle (ces modules importent `Cancelled` d'ici).
+    if task == "M1_agreement":
+        from .measurement import run_agreement
+
+        return run_agreement(config, data_dir, out_dir,
+                             progress_path=progress_path, should_cancel=should_cancel)
+    if task == "M2_gold_cascade":
+        from .measurement import run_gold_cascade
+
+        return run_gold_cascade(config, data_dir, out_dir,
+                                progress_path=progress_path, should_cancel=should_cancel)
+    if task == "G2_cooccurrence":
+        from .cooccurrence import run_cooccurrence
+
+        return run_cooccurrence(config, data_dir, out_dir,
+                                progress_path=progress_path, should_cancel=should_cancel)
+
     started = time.time()
     out_dir = Path(out_dir)
     out_dir.mkdir(parents=True, exist_ok=True)
 
     dataset = load_dataset(data_dir)
-    task = config["task"]
     preprocess = config.get("preprocess") or {}
     texts = _build_texts(dataset, preprocess)
     targets = _targets(dataset, task)

@@ -11,6 +11,8 @@ en annexe de l'article.
     labels.json       les thèmes, avec leur support
     judges.jsonl      prédictions des 4 juges LLM (baseline figée, déjà en base)
     reference.jsonl   labels d'abusivité CLAUDETTE alignés
+    votes.jsonl       votes BRUTS par annotateur (matière des mesures d'accord M1)
+    gold.jsonl        état de la cascade gold par phrase (matière de M2), si résolutions
     README.md         généré : comment relire ce dataset
 """
 
@@ -25,6 +27,7 @@ from django.db.models import Count, Prefetch, Q
 
 from claire.annotations.models import Annotation, ClauseTheme
 from claire.corpora.models import Document, ReferenceLabel
+from claire.gold.models import GoldSentence
 from claire.imports.models import Judge, PreAnnotation
 
 from .aggregation import aggregate_sentence
@@ -270,6 +273,59 @@ def build_dataset_files(
         for document in [next(d for d in documents.values() if d.id == document_id)]
     ]
 
+    # Votes BRUTS par annotateur — la matière des mesures d'accord (M1). Indépendants de
+    # la politique d'agrégation : c'est ce qui rend l'IAA reproductible sur export daté
+    # (règle des dossiers de papiers : aucun chiffre issu d'une requête ad hoc).
+    vote_rows = [
+        {
+            "document": document_ext,
+            "index": index,
+            "annotator": annotator,
+            "primary": primary,
+            "secondaries": list(secondaries),
+        }
+        for (document_ext, index) in sorted(votes)
+        for annotator, primary, secondaries in sorted(votes[(document_ext, index)])
+    ]
+
+    # État de la cascade gold par phrase (matière de M2) — exporté tel quel, y compris
+    # non finalisé : l'aperçu doit MONTRER « 0 résolution finalisée », pas le masquer.
+    gold_rows: list[dict] = []
+    n_gold_finalized_docs = 0
+    gold_sentences = (
+        GoldSentence.objects.filter(
+            resolution__project=project, resolution__document__in=documents.values()
+        )
+        .select_related("resolution", "resolution__document", "primary_theme")
+        .order_by("resolution__document__external_id", "index")
+    )
+    finalized_docs: set[int] = set()
+    for sentence in gold_sentences:
+        finalized = sentence.resolution.finalized_at is not None
+        if finalized:
+            finalized_docs.add(sentence.resolution.document_id)
+        gold_rows.append(
+            {
+                "document": sentence.resolution.document.external_id,
+                "index": sentence.index,
+                "agreement_class": sentence.agreement_class,
+                "auto_level": sentence.auto_level,
+                "risk_band": sentence.risk_band,
+                "proposed_primary": sentence.proposed_primary,
+                "proposed_secondaries": list(sentence.proposed_secondaries or []),
+                "decided": sentence.decided,
+                "auto_resolved": sentence.auto_resolved,
+                "decided_primary": (
+                    sentence.primary_theme.code if sentence.primary_theme_id else ""
+                ),
+                "decided_secondaries": list(sentence.secondaries or []),
+                "tally": sentence.tally or {},
+                "confidence": sentence.confidence,
+                "finalized": finalized,
+            }
+        )
+    n_gold_finalized_docs = len(finalized_docs)
+
     coverage: dict[str, list[str]] = defaultdict(list)
     for row in kept:
         coverage[row["document"]].append(row["annotator"])
@@ -305,22 +361,43 @@ def build_dataset_files(
         "excludedSummary": summarize_exclusions(excluded),
         "judges": sorted(Judge.import_judges()),
         "nUnfairSentences": len(unfair),
+        "nVotes": len(vote_rows),
+        "nGoldSentences": len(gold_rows),
+        "nGoldFinalizedDocuments": n_gold_finalized_docs,
     }
-    manifest["fingerprint"] = _fingerprint(manifest, rows)
+    manifest["fingerprint"] = _fingerprint(manifest, rows, vote_rows, gold_rows)
 
     if out_dir is not None:
         _write(Path(out_dir), manifest, rows, splits, labels, judge_rows, reference_rows,
-               label_support_primary, label_support_secondary)
+               vote_rows, gold_rows, label_support_primary, label_support_secondary)
 
     return {"manifest": manifest, "splits": splits, "rows": rows, "judges": judge_rows}
 
 
-def _fingerprint(manifest: dict, rows: list[dict]) -> str:
-    """Empreinte de (critères + contenu). Deux constructions identiques la partagent."""
+def _fingerprint(
+    manifest: dict, rows: list[dict], vote_rows: list[dict], gold_rows: list[dict]
+) -> str:
+    """Empreinte de (critères + contenu). Deux constructions identiques la partagent.
+
+    Les votes et l'état gold FONT PARTIE de l'identité : une décision d'arbitrage prise
+    entre deux constructions produit un export différent — donc une empreinte différente —
+    même si les phrases agrégées n'ont pas bougé. Sans cela, la déduplication rendrait
+    un M2 irrejouable sur l'état réellement mesuré.
+    """
     payload = {
         "criteria": manifest["criteria"],
         "rows": [
             (r["document"], r["index"], r["primary"], tuple(r["themes"])) for r in rows
+        ],
+        "votes": [
+            (v["document"], v["index"], v["annotator"], v["primary"],
+             tuple(v["secondaries"]))
+            for v in vote_rows
+        ],
+        "gold": [
+            (g["document"], g["index"], g["auto_level"], g["decided"],
+             g["decided_primary"], tuple(g["decided_secondaries"]), g["finalized"])
+            for g in gold_rows
         ],
     }
     blob = json.dumps(payload, sort_keys=True, ensure_ascii=False, separators=(",", ":"),
@@ -329,7 +406,7 @@ def _fingerprint(manifest: dict, rows: list[dict]) -> str:
 
 
 def _write(out_dir, manifest, rows, splits, labels, judge_rows, reference_rows,
-           support_primary, support_secondary) -> None:
+           vote_rows, gold_rows, support_primary, support_secondary) -> None:
     out_dir.mkdir(parents=True, exist_ok=True)
 
     def jsonl(name: str, items: list[dict]) -> None:
@@ -340,6 +417,8 @@ def _write(out_dir, manifest, rows, splits, labels, judge_rows, reference_rows,
     jsonl("sentences.jsonl", rows)
     jsonl("judges.jsonl", judge_rows)
     jsonl("reference.jsonl", reference_rows)
+    jsonl("votes.jsonl", vote_rows)
+    jsonl("gold.jsonl", gold_rows)
     (out_dir / "manifest.json").write_text(
         json.dumps(manifest, indent=2, ensure_ascii=False), encoding="utf-8"
     )
@@ -393,6 +472,8 @@ def _readme(manifest: dict, splits: dict) -> str:
 | Thèmes | {manifest['nLabels']} |
 | Taux multi-label | {manifest['multiLabelRate']:.1%} |
 | Phrases abusives (CLAUDETTE) | {manifest['nUnfairSentences']} |
+| Votes bruts (annotateur × phrase) | {manifest['nVotes']} |
+| Phrases gold (cascade) | {manifest['nGoldSentences']} (documents finalisés : {manifest['nGoldFinalizedDocuments']}) |
 
 ## Documents écartés
 
@@ -416,6 +497,8 @@ Le détail figure dans `manifest.json` (clé `excluded`), avec le motif de chaqu
 | `sentences.jsonl` | une ligne par phrase étiquetée (cible d'entraînement) |
 | `judges.jsonl` | prédictions des juges LLM ({', '.join(manifest['judges'])}) — baseline figée |
 | `reference.jsonl` | labels d'abusivité CLAUDETTE alignés |
+| `votes.jsonl` | votes bruts par annotateur (matière des mesures d'accord) |
+| `gold.jsonl` | état de la cascade gold par phrase (y compris non finalisé) |
 | `splits.json` | les plis, figés |
 | `labels.json` | les thèmes et leur support |
 | `manifest.json` | ce qui précède, en machine-lisible |

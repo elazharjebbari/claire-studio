@@ -235,6 +235,32 @@ def experiments(request, slug: str):
             {"code": "config_invalid", "detail": str(exc), "path": exc.path},
             status=status.HTTP_400_BAD_REQUEST,
         )
+    # Les tâches de mesure lisent des fichiers que seuls les datasets construits après
+    # le 16 août 2026 contiennent : refuser À LA CRÉATION coûte une seconde, pas un run
+    # qui échoue dans le worker avec le même message.
+    dataset = serializer.validated_data.get("dataset")
+    manifest = (dataset.manifest or {}) if dataset else {}
+    task = config.get("task")
+    if task == "M1_agreement" and not manifest.get("nVotes"):
+        return Response(
+            {
+                "code": "dataset_incompatible",
+                "detail": "M1_agreement exige les votes bruts (votes.jsonl) — "
+                          "reconstruisez le dataset (les constructions antérieures au "
+                          "16 août 2026 ne les exportaient pas).",
+            },
+            status=status.HTTP_400_BAD_REQUEST,
+        )
+    if task == "M2_gold_cascade" and not manifest.get("nGoldSentences"):
+        return Response(
+            {
+                "code": "dataset_incompatible",
+                "detail": "M2_gold_cascade exige au moins une résolution gold exportée "
+                          "(gold.jsonl) — créez une résolution puis reconstruisez le "
+                          "dataset.",
+            },
+            status=status.HTTP_400_BAD_REQUEST,
+        )
     experiment = serializer.save(project=project, created_by=request.user)
     return Response(ExperimentSerializer(experiment).data, status=status.HTTP_201_CREATED)
 
@@ -260,6 +286,7 @@ def experiment_estimate(request, slug: str, experiment_id):
         "majority": 0.2, "position_only": 0.2, "llm_judge": 0.3,
         "tfidf_linear": 1.0, "embeddings_head": 8.0,
         "transformer_finetune": 45.0, "sequence_labeling": 60.0,
+        "measurement": 2.0, "cooccurrence_anomaly": 3.0,
     }.get(family, 5.0)
     return Response(
         {

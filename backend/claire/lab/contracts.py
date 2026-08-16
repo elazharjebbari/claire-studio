@@ -15,11 +15,24 @@ le chemin exact du champ fautif (ce que l'éditeur de configuration affiche à l
 
 from __future__ import annotations
 
-TASKS = ("T1_primary", "T2_multilabel", "T3_boundary")
+TASKS = (
+    "T1_primary", "T2_multilabel", "T3_boundary",
+    # Tâches des papiers (docs/pactiva-experiences-papiers/02) : mesures d'accord (E1–E4),
+    # cascade gold (E5), anomalie de co-occurrence (G2).
+    "M1_agreement", "M2_gold_cascade", "G2_cooccurrence",
+)
 MODEL_FAMILIES = (
     "majority", "position_only", "tfidf_linear", "embeddings_head",
     "transformer_finetune", "sequence_labeling", "llm_judge",
+    "measurement", "cooccurrence_anomaly",
 )
+# Ces tâches n'entraînent aucun modèle : la famille est verrouillée pour que le lanceur
+# ne puisse pas produire une config incohérente (une faute coûte une seconde, pas un run).
+TASK_FAMILIES = {
+    "M1_agreement": "measurement",
+    "M2_gold_cascade": "measurement",
+    "G2_cooccurrence": "cooccurrence_anomaly",
+}
 SPLIT_SCHEME = "group_kfold_document"
 
 
@@ -59,6 +72,30 @@ def validate_config(config: dict) -> dict:
         )
     if family == "llm_judge":
         _require(bool(model.get("judge")), "/model/judge", "requis pour llm_judge")
+    if family == "cooccurrence_anomaly":
+        _require(
+            model.get("unit", "segment") in ("segment", "sentence"),
+            "/model/unit", "attendu parmi ('segment', 'sentence')",
+        )
+        _require(
+            model.get("deontic", "none") in ("none", "rule_based"),
+            "/model/deontic", "attendu parmi ('none', 'rule_based')",
+        )
+
+    task = config["task"]
+    expected_family = TASK_FAMILIES.get(task)
+    if expected_family is not None:
+        _require(
+            family == expected_family,
+            "/model/family",
+            f"la tâche {task} exige la famille {expected_family}",
+        )
+    elif family in set(TASK_FAMILIES.values()):
+        _require(
+            False,
+            "/model/family",
+            f"la famille {family} est réservée aux tâches {sorted(TASK_FAMILIES)}",
+        )
 
     evaluation = config.get("evaluation") or {}
     _require(isinstance(evaluation, dict), "/evaluation", "objet attendu")

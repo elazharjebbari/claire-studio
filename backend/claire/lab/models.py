@@ -50,6 +50,9 @@ class Task(models.TextChoices):
     T1 = "T1_primary", "T1 — thème primaire"
     T2 = "T2_multilabel", "T2 — multi-label"
     T3 = "T3_boundary", "T3 — frontières"
+    M1 = "M1_agreement", "M1 — mesures d'accord (E1–E4)"
+    M2 = "M2_gold_cascade", "M2 — cascade gold (E5)"
+    G2 = "G2_cooccurrence", "G2 — anomalie de co-occurrence"
 
 
 class ComputeKind(models.TextChoices):

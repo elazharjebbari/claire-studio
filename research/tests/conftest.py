@@ -100,6 +100,60 @@ def build_toy_dataset(root: Path, *, k: int = 5, n_annotators: int = 2) -> Path:
                 )
 
     (root / "reference.jsonl").write_text("", encoding="utf-8")
+
+    # Votes bruts (matière de M1) : deux annotateurs sur 4 documents, un troisième sur
+    # Atlas (triple). Le désaccord est déterministe : bob change le primaire d'une
+    # phrase sur 4 et ajoute un secondaire une phrase sur 5 — assez pour que MASI,
+    # nominal, frontières et divergence aient tous quelque chose à mesurer.
+    multi_docs = ["9gag", "Atlas", "Google", "Netflix"]
+    with (root / "votes.jsonl").open("w", encoding="utf-8") as handle:
+        for position, row in enumerate(rows):
+            handle.write(json.dumps({
+                "document": row["document"], "index": row["index"],
+                "annotator": "alice", "primary": row["primary"],
+                "secondaries": [t for t in row["themes"] if t != row["primary"]],
+            }) + "\n")
+            if row["document"] not in multi_docs:
+                continue
+            primary = "PREAMBLE_SCOPE" if position % 4 == 0 else row["primary"]
+            secondaries = [t for t in row["themes"] if t != row["primary"]]
+            if position % 5 == 0 and "FEEDBACK" not in secondaries and primary != "FEEDBACK":
+                secondaries = [*secondaries, "FEEDBACK"]
+            handle.write(json.dumps({
+                "document": row["document"], "index": row["index"],
+                "annotator": "bob", "primary": primary,
+                "secondaries": sorted(secondaries),
+            }) + "\n")
+            if row["document"] == "Atlas":
+                handle.write(json.dumps({
+                    "document": row["document"], "index": row["index"],
+                    "annotator": "carol", "primary": row["primary"],
+                    "secondaries": [],
+                }) + "\n")
+
+    # Cascade gold (matière de M2) sur Atlas : 4 unanimes, 2 majorité, 1 arbitrage qui
+    # CONTREDIT la pluralité, 1 conflit non tranché. Rien de finalisé (comme en prod).
+    atlas = [row for row in rows if row["document"] == "Atlas"]
+    with (root / "gold.jsonl").open("w", encoding="utf-8") as handle:
+        for index, row in enumerate(atlas):
+            if index < 4:
+                tier, decided, primary = "auto_1click", True, row["primary"]
+            elif index < 6:
+                tier, decided, primary = "auto", True, row["primary"]
+            elif index == 6:
+                tier, decided, primary = "manual", True, "ARBITRATION_DISPUTES"
+            else:
+                tier, decided, primary = "manual", False, ""
+            handle.write(json.dumps({
+                "document": "Atlas", "index": row["index"],
+                "agreement_class": {"auto_1click": "strict", "auto": "majority",
+                                    "manual": "divergence"}[tier],
+                "auto_level": tier, "risk_band": "low",
+                "proposed_primary": row["primary"], "proposed_secondaries": [],
+                "decided": decided, "auto_resolved": tier != "manual",
+                "decided_primary": primary, "decided_secondaries": [],
+                "tally": {}, "confidence": 0.8, "finalized": False,
+            }) + "\n")
     (root / "splits.json").write_text(
         json.dumps(
             {

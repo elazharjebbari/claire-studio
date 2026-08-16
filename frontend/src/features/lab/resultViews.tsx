@@ -35,6 +35,18 @@ export const TASK_REFERENCES: Record<
     label: "Accord humain sur les frontières",
     text: "Jaccard 0,39 – 0,63 selon les paires d'annotateurs — une FOURCHETTE, pas un point ; échelle différente de WindowDiff : repère, pas comparaison directe.",
   },
+  M1_agreement: {
+    label: "Seuils d'interprétation de l'α",
+    text: "α ≥ 0,667 acceptable, ≥ 0,8 fiable (Passonneau). Le résultat E1 : le passage au multi-label fait franchir le seuil VERS LE BAS (α-MASI vs α nominal).",
+  },
+  M2_gold_cascade: {
+    label: "Cascade tiérée",
+    text: "Unanime → auto_1click ; majorité ≥ 2/3 → auto ; divergence → arbitrage humain tracé. Les chiffres définitifs d'E5 exigent des résolutions FINALISÉES.",
+  },
+  G2_cooccurrence: {
+    label: "Rare ≠ abusif",
+    text: "Un score d'anomalie ne vaut que CONTRE les labels (AUC-PR, precision@k). Repères mesurés : cardinalité lift 1,09× (nul) ; identité de combinaison jusqu'à 7,4×.",
+  },
 };
 
 /** Bande de référence publiée par tâche — complète (sans remplacer) le plafond calculé
@@ -108,6 +120,49 @@ export function buildVerdict(run: RunDetail, family: ViewFamily): string | null 
         `WindowDiff ${fmtMetric(windowDiff)} (plus bas = mieux). Référence humaine : ` +
         `accord Jaccard entre annotateurs 0,39 – 0,63 — une fourchette, et une échelle ` +
         `différente : repère, pas comparaison directe.`
+      );
+    }
+    case "agreement": {
+      const masi = num(metrics.alphaMasi);
+      const nominal = num(metrics.alphaNominal);
+      if (masi == null || nominal == null) return null;
+      const crossing =
+        nominal >= 0.667 && masi < 0.667
+          ? " Le passage au multi-label fait franchir le seuil d'acceptabilité (0,667) vers le bas."
+          : "";
+      return (
+        `Le multi-label coûte ${fmtSigned(nominal - masi)} point(s) d'α : ` +
+        `α-MASI ${fmtMetric(masi)} contre α nominal ${fmtMetric(nominal)} sur le même ` +
+        `matériau.${crossing} IC par document et par-thème ci-dessous.`
+      );
+    }
+    case "cascade": {
+      const auto = num(metrics.shareAuto1click);
+      const auto2 = num(metrics.shareAuto);
+      const manual = num(metrics.shareManual);
+      if (auto == null || manual == null) return null;
+      const autoTotal = (auto + (auto2 ?? 0)) * 100;
+      return (
+        `${autoTotal.toFixed(1)} % des phrases se résolvent automatiquement ` +
+        `(unanime + majorité ≥ 2/3) ; l'arbitrage humain ne porte que sur ` +
+        `${((manual ?? 0) * 100).toFixed(1)} % de vrais conflits. Chiffres d'aperçu ` +
+        `tant qu'aucune résolution n'est finalisée.`
+      );
+    }
+    case "cooccurrence": {
+      const best = num(metrics.aucPrBestUnsupervised);
+      const base = num(metrics.baseRate);
+      if (best == null || base == null) return null;
+      const scorer = String(metrics.bestUnsupervisedScorer ?? "—");
+      const supervised = num(metrics.aucPrComboIdentity);
+      return (
+        `Meilleur détecteur NON supervisé : ${scorer}, AUC-PR ${fmtMetric(best)} ` +
+        `(taux de base ${fmtMetric(base)})` +
+        (supervised != null
+          ? ` ; référence supervisée (identité de combinaison) : ${fmtMetric(supervised)}.`
+          : ".") +
+        ` Rare ≠ abusif : la lecture honnête passe par le tableau des scorers, ` +
+        `contrôles négatifs compris.`
       );
     }
     default:
@@ -203,6 +258,112 @@ export function FamilyKpis({ run, family }: { run: RunDetail; family: ViewFamily
           ci={metrics.macroF1Ci}
           dispersion={foldStats.macroF1?.std}
           testId="kpi-boundary-f1"
+        />
+      </dl>
+    );
+  }
+
+  if (family === "agreement") {
+    const masi = num(metrics.alphaMasi);
+    const nominal = num(metrics.alphaNominal);
+    return (
+      <dl className="grid grid-cols-2 gap-3 sm:grid-cols-3" data-testid="run-metrics-kpis">
+        <MetricCell
+          label="α-MASI (multi-label)"
+          value={masi}
+          definitionKey="alphaMasi"
+          testId="kpi-alpha-masi"
+        />
+        <MetricCell
+          label="α nominal (mono-label)"
+          value={nominal}
+          definitionKey="alphaNominal"
+          testId="kpi-alpha-nominal"
+        />
+        <MetricCell
+          label="coût du multi-label"
+          value={masi != null && nominal != null ? nominal - masi : null}
+          definitionKey="alphaDiff"
+          hint="α nominal − α-MASI"
+          testId="kpi-alpha-diff"
+        />
+        <MetricCell
+          label="κ meilleure paire"
+          value={num(metrics.kappaBestPair)}
+          definitionKey="kappa"
+          testId="kpi-kappa-best-pair"
+        />
+        <MetricCell
+          label="Jaccard frontières (moyen)"
+          value={num(metrics.boundaryJaccardMean)}
+          definitionKey="boundaryJaccard"
+          hint="frontières RECONSTRUITES"
+          testId="kpi-boundary-jaccard"
+        />
+        <MetricCell
+          label="divergence au juge le plus proche"
+          value={num(metrics.divergenceClosestMean)}
+          definitionKey="seedDivergence"
+          hint="borne inférieure de l'édition"
+          testId="kpi-divergence"
+        />
+      </dl>
+    );
+  }
+
+  if (family === "cascade") {
+    return (
+      <dl className="grid grid-cols-2 gap-3 sm:grid-cols-4" data-testid="run-metrics-kpis">
+        <MetricCell
+          label="unanime (auto 1-clic)"
+          value={num(metrics.shareAuto1click)}
+          testId="kpi-share-auto1click"
+        />
+        <MetricCell
+          label="majorité (auto)"
+          value={num(metrics.shareAuto)}
+          testId="kpi-share-auto"
+        />
+        <MetricCell
+          label="divergence (comité)"
+          value={num(metrics.shareManual)}
+          testId="kpi-share-manual"
+        />
+        <MetricCell
+          label="part décidée"
+          value={num(metrics.pctDecided)}
+          testId="kpi-pct-decided"
+        />
+      </dl>
+    );
+  }
+
+  if (family === "cooccurrence") {
+    return (
+      <dl className="grid grid-cols-2 gap-3 sm:grid-cols-4" data-testid="run-metrics-kpis">
+        <MetricCell
+          label="AUC-PR (meilleur non supervisé)"
+          value={num(metrics.aucPrBestUnsupervised)}
+          definitionKey="aucPr"
+          testId="kpi-auc-pr-best"
+        />
+        <MetricCell
+          label="AUC-PR rareté de combinaison"
+          value={num(metrics.aucPrRarity)}
+          definitionKey="aucPr"
+          testId="kpi-auc-pr-rarity"
+        />
+        <MetricCell
+          label="AUC-PR référence supervisée"
+          value={num(metrics.aucPrComboIdentity)}
+          definitionKey="comboIdentity"
+          hint="borne haute, PAS un détecteur"
+          testId="kpi-auc-pr-supervised"
+        />
+        <MetricCell
+          label="taux de base (abusives)"
+          value={num(metrics.baseRate)}
+          testId="kpi-base-rate"
         />
       </dl>
     );

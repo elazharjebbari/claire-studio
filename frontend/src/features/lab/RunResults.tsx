@@ -26,6 +26,7 @@ import {
   VerdictPanel,
 } from "./resultComponents";
 import { LabHelpModal } from "./LabHelpModal";
+import { AgreementPanels, CascadePanels, CooccurrencePanels } from "./measureViews";
 import { AGGREGATED_FAMILIES, resultViewFor } from "./resultView";
 import {
   ByAgreementClassPanel,
@@ -281,11 +282,17 @@ export function RunResults({ slug, runId }: { slug: string; runId: string }) {
             metric={ceiling?.metric}
             note={ceiling?.note}
           />
-          {(family === "multilabel" || family === "boundary") && (
-            <TaskReferenceBand task={run.task} />
-          )}
+          {(family === "multilabel" ||
+            family === "boundary" ||
+            family === "agreement" ||
+            family === "cascade" ||
+            family === "cooccurrence") && <TaskReferenceBand task={run.task} />}
         </div>
       </Panel>
+
+      {family === "agreement" && <AgreementPanels run={run} />}
+      {family === "cascade" && <CascadePanels run={run} />}
+      {family === "cooccurrence" && <CooccurrencePanels run={run} />}
 
       {(family === "flagship" || family === "generic") && (
         <ByAgreementClassPanel run={run} />

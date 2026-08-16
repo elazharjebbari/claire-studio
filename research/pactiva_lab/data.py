@@ -132,6 +132,42 @@ def load_dataset(root: str | Path) -> Dataset:
     return dataset
 
 
+def load_votes(root: str | Path) -> list[dict]:
+    """Votes bruts par annotateur (`votes.jsonl`) — matière des mesures d'accord (M1).
+
+    Une ligne = {document, index, annotator, primary, secondaries}. Fichier absent →
+    liste vide (les datasets construits avant l'export des votes restent chargeables ;
+    c'est la tâche M1 qui refuse alors de tourner, avec un message explicite — jamais
+    un résultat silencieusement vide).
+    """
+    path = Path(root) / "votes.jsonl"
+    if not path.exists():
+        return []
+    rows: list[dict] = []
+    with path.open(encoding="utf-8") as handle:
+        for line in handle:
+            if line.strip():
+                rows.append(json.loads(line))
+    return rows
+
+
+def load_gold(root: str | Path) -> list[dict]:
+    """État de la cascade gold par phrase (`gold.jsonl`) — matière de M2.
+
+    Exporté y compris NON finalisé : l'aperçu doit montrer « 0 résolution finalisée »,
+    pas le masquer. Fichier absent → liste vide (datasets antérieurs).
+    """
+    path = Path(root) / "gold.jsonl"
+    if not path.exists():
+        return []
+    rows: list[dict] = []
+    with path.open(encoding="utf-8") as handle:
+        for line in handle:
+            if line.strip():
+                rows.append(json.loads(line))
+    return rows
+
+
 def _validate(dataset: Dataset) -> None:
     if not dataset.sentences:
         raise ValueError("dataset vide")

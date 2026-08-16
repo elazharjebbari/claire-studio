@@ -2,7 +2,13 @@
 
 export type Maturity = "any" | "complete" | "submitted" | "gold";
 export type Aggregation = "single" | "consensus" | "soft";
-export type LabTask = "T1_primary" | "T2_multilabel" | "T3_boundary";
+export type LabTask =
+  | "T1_primary"
+  | "T2_multilabel"
+  | "T3_boundary"
+  | "M1_agreement"
+  | "M2_gold_cascade"
+  | "G2_cooccurrence";
 
 export type RunStatus =
   | "queued"
@@ -119,7 +125,9 @@ export interface RunDetail extends RunSummary {
   // ressort donc en camelCase, y compris à l'intérieur de ce JSONField générique.
   metrics: {
     task?: string;
-    metrics?: Record<string, number | null | Record<string, unknown>> & {
+    // `string` : certaines métriques scalaires sont nominales (ex.
+    // `bestUnsupervisedScorer` de G2) — les cellules numériques passent par `num()`.
+    metrics?: Record<string, number | string | null | Record<string, unknown>> & {
       macroF1Ci?: MetricCi;
       foldStats?: Record<string, FoldStats>;
     };
@@ -150,11 +158,148 @@ export interface RunDetail extends RunSummary {
     dataset?: { fingerprint?: string; nDocuments?: number; nSentences?: number };
     environment?: Record<string, unknown>;
     preprocess?: string;
+    /** Volets M1 (mesures d'accord) — présents uniquement sur task=M1_agreement. */
+    agreement?: AgreementVolets;
+    /** Volets M2 (cascade gold) — présents uniquement sur task=M2_gold_cascade. */
+    gold?: GoldCascadeVolets;
+    /** Volets G2 (co-occurrence) — présents uniquement sur task=G2_cooccurrence. */
+    cooccurrence?: CooccurrenceVolets;
   };
   environment: Record<string, unknown>;
   externalJobId: string;
   errorDetail: string;
   attempt: number;
+}
+
+/** Volets de résultats de M1_agreement (`measurement.py`), camelisés par DRF. */
+export interface AgreementVolets {
+  global?: {
+    alphaMasi?: number | null;
+    alphaNominal?: number | null;
+    diff?: number | null;
+    diffLow?: number | null;
+    diffHigh?: number | null;
+    pDirection?: number | null;
+    nUnits?: number;
+    nDocuments?: number;
+    ciMasi?: { point?: number | null; low?: number | null; high?: number | null };
+    ciNominal?: { point?: number | null; low?: number | null; high?: number | null };
+    warning?: string;
+  };
+  perTheme?: Array<{
+    theme: string;
+    support: number;
+    alphaBinary: number | null;
+    gwetAc1: number | null;
+    observedAgreement: number | null;
+  }>;
+  pairs?: Array<{
+    a: string;
+    b: string;
+    kappa: number;
+    rawAgreement: number;
+    jaccardMean: number;
+    nUnits: number;
+    nDocuments: number;
+  }>;
+  matrix?: {
+    raters: string[];
+    kinds: string[];
+    agreement: Array<Array<number | null>>;
+    kappa: Array<Array<number | null>>;
+    nCommon: number[][];
+  };
+  boundaries?: {
+    pairs: Array<{
+      a: string;
+      b: string;
+      jaccardMean: number;
+      documents: Array<{
+        document: string;
+        jaccard: number;
+        nBoundariesA: number;
+        nBoundariesB: number;
+      }>;
+    }>;
+    segments: Array<{ annotator: string; nSegments: number; nSentences: number }>;
+  };
+  divergence?: {
+    annotators: Array<{
+      annotator: string;
+      nSentences: number;
+      byJudge: Array<{
+        judge: string;
+        nCommon: number;
+        divergencePrimary: number;
+        divergenceSet: number;
+      }>;
+      closestJudge: string;
+      closestDivergence: number;
+      perTheme: Array<{ theme: string; support: number; divergence: number }>;
+    }>;
+    closestRateMean: number | null;
+    note?: string;
+  };
+}
+
+/** Volets de résultats de M2_gold_cascade. */
+export interface GoldCascadeVolets {
+  tiers?: Array<{ tier: string; count: number; share: number }>;
+  agreementClasses?: Array<{ agreementClass: string; count: number }>;
+  arbitration?: {
+    changed: number;
+    confirmed: number;
+    noPlurality: number;
+    manualTotal: number;
+    manualDecided: number;
+  };
+  finalizedDocuments?: string[];
+  coverage?: number;
+  note?: string;
+}
+
+/** Volets de résultats de G2_cooccurrence. */
+export interface CooccurrenceVolets {
+  structure?: {
+    nSegments?: number;
+    nSentences?: number;
+    compression?: number | null;
+    nCombinations?: number;
+    nHapax?: number;
+    multiThemeRate?: number | null;
+    baseRate?: number;
+  };
+  scorers?: Array<{
+    scorer: string;
+    kind: "unsupervised" | "control" | "supervised_reference";
+    aucPr: number | null;
+    aucPrCi?: { low?: number | null; high?: number | null };
+    rocAuc: number | null;
+    precisionAt: Array<{ k: number; precision: number; lift: number | null }>;
+  }>;
+  combinations?: {
+    top: Array<{
+      themes: string[];
+      support: number;
+      nUnfair: number;
+      unfairRate: number;
+      lift: number | null;
+      example?: { document: string; start: number; excerpt: string };
+    }>;
+    bottom: Array<{ themes: string[]; support: number; unfairRate: number; lift: number | null }>;
+    minSupport: number;
+  };
+  perCategory?: Array<{
+    category: string;
+    nPositive: number;
+    aucPrByScorer: Array<{ scorer: string; aucPr: number }>;
+  }>;
+  unit?: string;
+  deontic?: string;
+  labelNoise?: number;
+  /** Scorers sautés faute d'environnement (sklearn absent) — jamais silencieux. */
+  skippedScorers?: string[];
+  note?: string;
 }
 
 export type PaperId = "long" | "court";

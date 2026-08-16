@@ -157,6 +157,60 @@ export const EXPERIMENT_INTROS: Record<string, ExperimentIntro> = {
       "La pente de dégradation importe plus que chaque point : une chute douce = un modèle utilisable même si la campagne d'annotation contient des erreurs résiduelles.",
     ],
   },
+  "iaa-mesure": {
+    teste:
+      "Les **mesures d'accord** des papiers, recalculées sur un export daté : le coût du multi-label (α-MASI contre α nominal, sur le même matériau), la matrice annotateurs × juges à vocabulaire constant, l'accord de **frontières reconstruites**, et la divergence de chaque annotateur au juge LLM le plus proche.",
+    role:
+      "Le socle chiffré du papier de mesure (E1 à E4) et du tableau « fiabilité » du papier long : chaque chiffre publié doit sortir d'ici, jamais d'une requête ad hoc.",
+    lire: [
+      "E1 se lit sur la **différence appariée** α nominal − α-MASI : son IC (par document) dit si le coût du multi-label est stable au rééchantillonnage.",
+      "Dans la matrice, comparez humain↔humain et humain↔juge : le « mur du κ » est une **limite des modèles, pas de la tâche**.",
+      "Les intervalles sont larges tant que peu de documents sont multi-annotés — c'est un fait à montrer, pas à masquer.",
+      "La divergence aux juges est une **borne inférieure** du travail d'édition réel (le juge de pré-remplissage n'est pas persisté — limite déclarée).",
+    ],
+  },
+  "gold-cascade": {
+    teste:
+      "Le **coût de la cascade de résolution** : quelle part des phrases se résout automatiquement (unanimité, majorité ≥ 2/3), quelle part exige un arbitrage humain, et ce que cet arbitrage **change** par rapport à un simple vote.",
+    role:
+      "L'expérience E5 du papier de mesure — la rentabilité du protocole de gold, contribution « protocole » du papier.",
+    lire: [
+      "Tant qu'aucune résolution n'est **finalisée**, ces chiffres sont un aperçu : l'état s'affiche tel quel.",
+      "« L'arbitre a contredit la pluralité N fois » est la ligne clé : elle sépare un comité utile d'une simple ratification.",
+    ],
+  },
+  "cooccurrence-abusivite": {
+    teste:
+      "L'hypothèse centrale de la partie graphe : **l'identité des combinaisons de thèmes** d'une clause (pas leur nombre, pas leur rareté brute) porte un signal d'abusivité. Des scores d'anomalie non supervisés sont évalués **contre les labels CLAUDETTE**, en validation croisée par document.",
+    role:
+      "Le tableau 5 du papier long [G2] et l'artefact hypergraphe. Les contrôles négatifs (cardinalité, rareté) y figurent au même rang que les détecteurs — c'est ce qui rend le résultat défendable.",
+    lire: [
+      "**Rare ≠ abusif** : un détecteur ne vaut que s'il bat les contrôles négatifs.",
+      "La « référence supervisée » (identité de combinaison) est une **borne haute**, pas un détecteur — elle dit ce que la structure seule pourrait donner avec supervision.",
+      "Les combinaisons à fort lift (table descriptive) illustrent le motif juridique ; la **mesure de généralisation** est l'AUC-PR en validation croisée.",
+      "Aperçu sur annotations majoritairement mono-annotateur — à rejouer sur le gold arbitré.",
+    ],
+  },
+  "cooccurrence-deontique": {
+    teste:
+      "L'ablation D1 : ajouter une **couche déontique prédite** (obligation / interdiction / permission, proxy à règles de modaux) à l'identité de combinaison améliore-t-elle ou dégrade-t-elle la détection ?",
+    role:
+      "La contribution méthodologique D1 du papier long : personne ne mesure le coût d'une couche déontique **bruitée** dans un graphe d'anomalies juridiques. Un résultat négatif est publiable.",
+    lire: [
+      "Comparez l'AUC-PR avec/sans : l'écart mesure ce que la déontique prédite apporte — ou le bruit qu'elle injecte.",
+      "La couche est un **proxy à règles déclaré** (macro-F1 ~0,6 pour un vrai classifieur) : la conclusion porte sur la méthode de mesure, pas sur la déontique idéale.",
+    ],
+  },
+  "cooccurrence-bruit": {
+    teste:
+      "L'ablation G5 côté détection : on **dégrade les thèmes d'entraînement** (10 à 35 % de corruption, simulant un classifieur amont qui passerait de 0,83 à ~0,60 de macro-F1) et on mesure la stabilité des anomalies détectées.",
+    role:
+      "La borne de fiabilité opérationnelle du pipeline complet : jusqu'où les thèmes peuvent-ils se dégrader avant que la détection ne s'effondre ?",
+    lire: [
+      "La pente compte plus que chaque point : une chute douce = un pipeline utilisable même avec un classifieur imparfait en amont.",
+      "Le test ne touche jamais l'évaluation — seule la « normalité » apprise est bruitée.",
+    ],
+  },
 };
 
 /** Introduction générique pour une expérience libre (mode expert, sans preset). */

@@ -50,7 +50,8 @@ def main(argv: list[str] | None = None) -> int:
     metrics = result["metrics"]
     ceiling = (result.get("human_ceiling") or {}).get("value")
     print(f"tâche      : {result['task']}")
-    print(f"prétrait.  : {result['preprocess']}")
+    if "preprocess" in result:
+        print(f"prétrait.  : {result['preprocess']}")
     print(f"macro-F1   : {metrics.get('macro_f1')}   micro-F1 : {metrics.get('micro_f1')}")
     if ceiling is not None:
         print(f"plafond    : {ceiling}  ({result['human_ceiling'].get('metric')})")

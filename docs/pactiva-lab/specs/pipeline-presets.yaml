@@ -33,6 +33,12 @@ themes:
   - id: taches-avancees
     label: "Tâches avancées (T2/T3)"
     description: "Multi-étiquettes et frontières : la tâche réelle du papier phare, et le point dur."
+  - id: mesure-accord
+    label: "Mesures d'accord & de gold"
+    description: "Les chiffres d'E1–E5 du papier de mesure, recalculés sur export daté : coût du multi-label, matrice annotateurs×juges, frontières reconstruites, cascade gold."
+  - id: graphe-anomalies
+    label: "Hypergraphe & anomalies"
+    description: "La partie graphe du papier long : l'identité des combinaisons de thèmes comme signal d'abusivité, évaluée contre CLAUDETTE — avec ses ablations d'honnêteté."
 
 presets:
 
@@ -348,6 +354,111 @@ presets:
       repeats: 3
       axes: { "/evaluation/label_noise": [0.0, 0.05, 0.10, 0.20] }
 
+  # ─────────────────────────────────────────────────────────────────────────────
+  # MESURES ET GRAPHE — les expériences des papiers (docs/pactiva-experiences-papiers)
+  # ─────────────────────────────────────────────────────────────────────────────
+
+  - id: iaa-mesure
+    theme: mesure-accord
+    papers: [long, court]
+    stage: reference
+    label: "Mesures d'accord (E1–E4)"
+    why: >
+      Le socle chiffré du papier de mesure, recalculé sur export daté (jamais une
+      requête ad hoc) : coût du multi-label (α-MASI vs α nominal, IC bootstrap par
+      document, différence appariée), matrice annotateurs × juges, accord de frontières
+      RECONSTRUITES (jamais le κ d'ancres artefactuel), divergence aux juges.
+      Nécessite un dataset construit après le 16 août (votes.jsonl).
+    duration_hint: "~2 min CPU"
+    config:
+      task: M1_agreement
+      preprocess: { detokenize: none }
+      model: { family: measurement }
+      evaluation: { bootstrap: { enabled: true, n_resamples: 1000 } }
+      compute: { target: local }
+
+  - id: gold-cascade
+    theme: mesure-accord
+    papers: [court]
+    stage: reference
+    label: "Cascade gold (E5) — le coût de l'arbitrage"
+    why: >
+      Parts auto_1click / auto / manual, ce que l'arbitrage humain change par rapport à
+      la pluralité des votes, ambiguïté résiduelle. L'état non finalisé s'affiche tel
+      quel — les chiffres définitifs exigent des résolutions finalisées (plan V2).
+    duration_hint: "~30 s CPU"
+    config:
+      task: M2_gold_cascade
+      preprocess: { detokenize: none }
+      model: { family: measurement }
+      evaluation: { bootstrap: { enabled: false } }
+      compute: { target: local }
+
+  - id: cooccurrence-abusivite
+    theme: graphe-anomalies
+    papers: [long]
+    stage: confirmation
+    label: "Co-occurrence de thèmes → abusivité (G2)"
+    why: >
+      LE tableau de la partie graphe : scores d'anomalie NON supervisés (rareté de
+      combinaison, NPMI min, LOF, IsolationForest, OCSVM) évalués contre les labels
+      CLAUDETTE (AUC-PR, precision@k, lift), avec contrôle négatif (cardinalité) et
+      référence supervisée assumée (identité de combinaison). CV par document sur les
+      plis figés. Produit l'artefact hypergraphe.
+    duration_hint: "~3 min CPU"
+    config:
+      task: G2_cooccurrence
+      preprocess: { detokenize: none }
+      model: { family: cooccurrence_anomaly, unit: segment, deontic: none }
+      evaluation: { bootstrap: { enabled: true, n_resamples: 1000 } }
+      compute: { target: local }
+
+  - id: cooccurrence-deontique
+    theme: graphe-anomalies
+    papers: [long]
+    stage: ablation
+    label: "Ablation D1 — la couche déontique prédite paie-t-elle ?"
+    why: >
+      Transforme la limite « pas de nature déontique donnée » en résultat : une couche
+      déontique PRÉDITE (proxy à règles de modaux, déclaré) est ajoutée à l'identité de
+      combinaison — l'effet (positif OU négatif) est mesuré. Un résultat négatif est
+      publiable : c'est la contribution méthodologique de D1.
+    duration_hint: "~6 min CPU (2 runs)"
+    config:
+      task: G2_cooccurrence
+      preprocess: { detokenize: none }
+      model: { family: cooccurrence_anomaly, unit: segment, deontic: none }
+      evaluation: { bootstrap: { enabled: true, n_resamples: 1000 } }
+      compute: { target: local }
+    sweep:
+      mode: ablation
+      max_runs: 2
+      axes:
+        "/model/deontic": [none, rule_based]
+
+  - id: cooccurrence-bruit
+    theme: graphe-anomalies
+    papers: [long]
+    stage: ablation
+    label: "Ablation G5 — stabilité des anomalies sous bruit de thèmes"
+    why: >
+      Jusqu'où la détection tient-elle quand les thèmes amont se dégradent (simulation
+      macro-F1 0,83 → ~0,60 par corruption de 10–35 % des affectations d'entraînement) ?
+      La borne de fiabilité opérationnelle du pipeline — le pendant détection de
+      l'ablation-label-noise du classifieur.
+    duration_hint: "~12 min CPU (4 runs)"
+    config:
+      task: G2_cooccurrence
+      preprocess: { detokenize: none }
+      model: { family: cooccurrence_anomaly, unit: segment, deontic: none }
+      evaluation: { bootstrap: { enabled: true, n_resamples: 1000 } }
+      compute: { target: local }
+    sweep:
+      mode: ablation
+      max_runs: 4
+      axes:
+        "/evaluation/label_noise": [0.0, 0.10, 0.20, 0.35]
+
 # ─────────────────────────────────────────────────────────────────────────────
 # Ordre d'exécution recommandé
 # ─────────────────────────────────────────────────────────────────────────────
@@ -355,6 +466,7 @@ recommended_order:
   - baseline-fast          # sans plancher, rien n'est interprétable
   - position-only          # diagnostic : que dit la structure seule ?
   - llm-judges-baseline    # gratuit, déjà en base
+  - iaa-mesure             # le socle chiffré des deux papiers (E1–E4)
   - screening-preprocess   # élimine les axes sans effet AVANT le GPU
   - embeddings-frozen      # le bon rapport qualité/prix
   - learning-curve         # le résultat le plus actionnable
@@ -362,3 +474,4 @@ recommended_order:
   - ablation-context       # la contribution originale
   - multilabel-finetune    # la tâche réelle
   - sequence-boundary      # le point dur
+  - cooccurrence-abusivite # la partie graphe du papier long (G2)

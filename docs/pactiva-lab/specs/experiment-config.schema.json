@@ -13,8 +13,9 @@
       "description": "Graine unique pour numpy/torch/random. Rejouée à l'identique lors d'une reproduction." },
 
     "task": {
-      "enum": ["T1_primary", "T2_multilabel", "T3_boundary"],
-      "description": "T1 mono-label (thème primaire) · T2 multi-label (ensemble de thèmes) · T3 frontière de segment. Les plafonds humains diffèrent : ne jamais agréger les trois en un score unique."
+      "enum": ["T1_primary", "T2_multilabel", "T3_boundary",
+               "M1_agreement", "M2_gold_cascade", "G2_cooccurrence"],
+      "description": "T1 mono-label (thème primaire) · T2 multi-label (ensemble de thèmes) · T3 frontière de segment. Les plafonds humains diffèrent : ne jamais agréger les trois en un score unique. M1/M2 = tâches de MESURE (accords E1–E4, cascade gold E5) sans modèle entraîné ; G2 = anomalie de co-occurrence de thèmes évaluée contre l'abusivité CLAUDETTE."
     },
 
     "dataset_id": { "type": "string", "format": "uuid" },
@@ -57,8 +58,9 @@
       "properties": {
         "family": {
           "enum": ["majority", "position_only", "tfidf_linear", "embeddings_head",
-                   "transformer_finetune", "sequence_labeling", "llm_judge"],
-          "description": "`llm_judge` ne relance aucun modèle : il lit les prédictions déjà en base (baseline figée et gratuite)."
+                   "transformer_finetune", "sequence_labeling", "llm_judge",
+                   "measurement", "cooccurrence_anomaly"],
+          "description": "`llm_judge` ne relance aucun modèle : il lit les prédictions déjà en base (baseline figée et gratuite). `measurement` (tâches M1/M2) et `cooccurrence_anomaly` (G2) n'entraînent aucun modèle : elles lisent la matière brute du dataset (votes, gold, thèmes+abusivité)."
         }
       },
       "allOf": [
@@ -125,6 +127,18 @@
           "then": {
             "required": ["judge"],
             "properties": { "judge": { "enum": ["fable", "claude", "codex", "mistral"] } }
+          }
+        },
+        {
+          "if": { "properties": { "family": { "const": "cooccurrence_anomaly" } } },
+          "then": {
+            "properties": {
+              "unit": { "enum": ["segment", "sentence"], "default": "segment",
+                "description": "Le segment reconstruit (plage de phrases contiguës au même jeu de thèmes) est l'unité du papier ; la phrase sert de contrôle." },
+              "deontic": { "enum": ["none", "rule_based"], "default": "none",
+                "description": "Ablation D1 : couche déontique PRÉDITE (proxy à règles de modaux, déclaré comme tel) ajoutée à l'identité de combinaison." },
+              "smoothing": { "type": "number", "minimum": 0, "default": 1.0 }
+            }
           }
         }
       ]

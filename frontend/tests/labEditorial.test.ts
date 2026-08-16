@@ -19,6 +19,9 @@ const ALL_PRESETS = [
   "embeddings-frozen", "learning-curve", "legal-bert-finetune", "ablation-context",
   "multilabel-finetune", "sequence-boundary", "knn-explainable", "encoders-comparison",
   "ablation-gold-quality", "ablation-label-noise",
+  // Expériences des papiers (docs/pactiva-experiences-papiers/02) : mesures + graphe.
+  "iaa-mesure", "gold-cascade", "cooccurrence-abusivite", "cooccurrence-deontique",
+  "cooccurrence-bruit",
 ];
 
 // « significatif » n'est admis qu'accompagné d'un test nommé dans la MÊME entrée —

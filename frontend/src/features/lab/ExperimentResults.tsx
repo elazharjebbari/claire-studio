@@ -63,12 +63,22 @@ export function ExperimentResults({
     ? resultViewFor({ preset: data.preset, task: "T1_primary" })
     : "generic";
   const isJudges = family === "judges";
+  const isCooccurrence = family === "cooccurrence";
 
   // Les juges se comparent en κ (l'unité de la fig. F9) — pas en macro-F1.
   const { data: kappaData } = useQuery({
     queryKey: ["lab", "aggregate-kappa", slug, experimentId],
     queryFn: () => getExperimentAggregate(slug, experimentId, "kappa"),
     enabled: isJudges,
+  });
+
+  // Les sweeps G2 (ablations D1/G5-détection) se comparent en AUC-PR — la macro-F1
+  // n'existe pas dans leurs résultats.
+  const { data: aucData } = useQuery({
+    queryKey: ["lab", "aggregate-aucpr", slug, experimentId],
+    queryFn: () =>
+      getExperimentAggregate(slug, experimentId, "auc_pr_best_unsupervised"),
+    enabled: isCooccurrence,
   });
 
   if (isError) {
@@ -145,7 +155,9 @@ export function ExperimentResults({
         )}
       </Panel>
 
-      {finished.length === 0 ? (
+      {isCooccurrence ? (
+        <CooccurrenceSweepSection slug={slug} aggregate={aucData ?? null} />
+      ) : finished.length === 0 ? (
         <Panel className="p-4 text-xs text-ink-muted" data-testid="sweep-no-results">
           Aucun run exploitable pour l&apos;instant — les analyses apparaîtront dès le
           premier run terminé.
@@ -160,6 +172,96 @@ export function ExperimentResults({
         <PairedSection slug={slug} data={data} finished={finished} />
       )}
     </div>
+  );
+}
+
+// --------------------------------------------------------------------------- //
+// Famille K — sweeps G2 (ablations D1 déontique / G5-détection bruit)
+// --------------------------------------------------------------------------- //
+
+function CooccurrenceSweepSection({
+  slug,
+  aggregate,
+}: {
+  slug: string;
+  aggregate: ExperimentAggregate | null;
+}) {
+  if (!aggregate) {
+    return (
+      <Panel className="p-4 text-xs text-ink-muted" data-testid="cooccurrence-sweep-loading">
+        Chargement de la vue agrégée…
+      </Panel>
+    );
+  }
+  const finished = aggregate.runs.filter(
+    (run) => DONE.has(run.status) && run.value != null,
+  );
+  if (finished.length === 0) {
+    return (
+      <Panel className="p-4 text-xs text-ink-muted" data-testid="sweep-no-results">
+        Aucun run exploitable pour l&apos;instant — les analyses apparaîtront dès le
+        premier run terminé.
+      </Panel>
+    );
+  }
+  const variant = (run: AggregateRun): string => {
+    if (aggregate.axis === "label_noise" && run.axisValue != null) {
+      return `bruit ${(run.axisValue * 100).toFixed(0)} %`;
+    }
+    const model = (run.config?.model ?? {}) as Record<string, unknown>;
+    if (typeof model.deontic === "string") {
+      return model.deontic === "rule_based"
+        ? "avec couche déontique (proxy à règles)"
+        : "sans couche déontique";
+    }
+    return "run";
+  };
+  const ordered = [...finished].sort(
+    (a, b) => (a.axisValue ?? 0) - (b.axisValue ?? 0),
+  );
+  return (
+    <Panel className="overflow-hidden" data-testid="cooccurrence-sweep">
+      <div className="border-b border-line px-4 py-3">
+        <h3 className="text-sm font-semibold text-ink">
+          AUC-PR du meilleur détecteur non supervisé, par variante
+        </h3>
+        <p className="text-xs text-ink-muted">
+          La question de ce sweep se lit ici ; le détail (tableau des scorers, IC par
+          document, combinaisons) est dans chaque run.
+        </p>
+      </div>
+      <table className="w-full text-xs">
+        <thead>
+          <tr className="text-ink-muted">
+            <th scope="col" className="px-3 py-1 text-left">Variante</th>
+            <th scope="col" className="px-3 py-1 text-right">AUC-PR</th>
+            <th scope="col" className="px-3 py-1 text-right">Détail</th>
+          </tr>
+        </thead>
+        <tbody>
+          {ordered.map((run) => (
+            <tr key={run.id} className="border-t border-line" data-testid={`coocc-run-${run.id}`}>
+              <td className="px-3 py-1 text-ink">{variant(run)}</td>
+              <td className="px-3 py-1 text-right font-mono text-ink">
+                {run.value == null ? "—" : fmtMetric(run.value)}
+              </td>
+              <td className="px-3 py-1 text-right">
+                <Link
+                  href={`/projects/${slug}/lab/runs/${run.id}`}
+                  className="text-accent hover:underline"
+                >
+                  ouvrir →
+                </Link>
+              </td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+      <p className="px-4 py-2 text-xs text-ink-muted">
+        Rare ≠ abusif : chaque run rapporte aussi ses contrôles négatifs et la référence
+        supervisée — une variante ne « gagne » que si ses détecteurs battent les deux.
+      </p>
+    </Panel>
   );
 }
 

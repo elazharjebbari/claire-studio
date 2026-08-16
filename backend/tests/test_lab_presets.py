@@ -51,6 +51,42 @@ def test_load_presets_lit_le_fichier_reel_du_depot():
     assert "baseline-fast" in result["recommended_order"]
 
 
+def test_chaque_preset_du_depot_passe_la_validation_de_config():
+    """⭐ Chaque preset du fichier réel doit produire une config VALIDE une fois
+    complété comme le fait le lanceur (version + seed + dataset) — une faute dans le
+    YAML doit casser ICI, pas au premier clic d'un utilisateur. Le sweep éventuel doit
+    aussi se développer sous son plafond `max_runs`."""
+    from claire.lab.contracts import expand_sweep, validate_config
+
+    result = load_presets()
+    assert result["presets"], "le catalogue réel ne doit jamais être vide"
+    for preset in result["presets"]:
+        config = {"version": 1, "seed": 42, **preset["config"]}
+        if preset.get("sweep"):
+            config["sweep"] = preset["sweep"]
+        validate_config(config)
+        variants = expand_sweep(config)
+        assert variants, preset["id"]
+
+
+def test_les_presets_des_papiers_sont_au_catalogue():
+    """Les expériences des deux papiers (docs/pactiva-experiences-papiers/02) sont
+    servies par l'API — avec leur bloc thématique."""
+    result = load_presets()
+    by_id = {p["id"]: p for p in result["presets"]}
+    for preset_id, theme in [
+        ("iaa-mesure", "mesure-accord"),
+        ("gold-cascade", "mesure-accord"),
+        ("cooccurrence-abusivite", "graphe-anomalies"),
+        ("cooccurrence-deontique", "graphe-anomalies"),
+        ("cooccurrence-bruit", "graphe-anomalies"),
+    ]:
+        assert preset_id in by_id, preset_id
+        assert by_id[preset_id]["theme"] == theme
+    theme_ids = {t["id"] for t in result.get("themes", [])}
+    assert {"mesure-accord", "graphe-anomalies"} <= theme_ids
+
+
 def test_load_presets_replie_sur_liste_vide_si_fichier_absent(settings, tmp_path):
     settings.LAB_PRESETS_FILE = str(tmp_path / "n-existe-pas.yaml")
     result = load_presets()

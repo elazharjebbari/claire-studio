@@ -18,6 +18,9 @@ export type ViewFamily =
   | "judges"         // F — juges LLM
   | "multilabel"     // G — T2
   | "boundary"       // H — T3
+  | "agreement"      // I — mesures d'accord M1 (E1–E4 des papiers)
+  | "cascade"        // J — cascade gold M2 (E5)
+  | "cooccurrence"   // K — anomalie de co-occurrence G2 (+ ablations D1/G5)
   | "generic";       // repli : vue générique enrichie
 
 const PRESET_FAMILIES: Record<string, ViewFamily> = {
@@ -35,6 +38,11 @@ const PRESET_FAMILIES: Record<string, ViewFamily> = {
   "encoders-comparison": "paired",
   "ablation-gold-quality": "paired",
   "ablation-label-noise": "curve",
+  "iaa-mesure": "agreement",
+  "gold-cascade": "cascade",
+  "cooccurrence-abusivite": "cooccurrence",
+  "cooccurrence-deontique": "cooccurrence",
+  "cooccurrence-bruit": "cooccurrence",
 };
 
 export function resultViewFor(run: {
@@ -44,10 +52,13 @@ export function resultViewFor(run: {
 }): ViewFamily {
   const preset = (run.preset ?? "").trim();
   if (preset && PRESET_FAMILIES[preset]) return PRESET_FAMILIES[preset];
-  // Sans preset : la tâche reste un routage sûr (les vues G/H ne montrent que des
-  // métriques propres à T2/T3, présentes dans tout résultat de ces tâches).
+  // Sans preset : la tâche reste un routage sûr (les vues G/H/I/J/K ne montrent que
+  // des métriques propres à leur tâche, présentes dans tout résultat de celle-ci).
   if (run.task === "T2_multilabel") return "multilabel";
   if (run.task === "T3_boundary") return "boundary";
+  if (run.task === "M1_agreement") return "agreement";
+  if (run.task === "M2_gold_cascade") return "cascade";
+  if (run.task === "G2_cooccurrence") return "cooccurrence";
   return "generic";
 }
 
