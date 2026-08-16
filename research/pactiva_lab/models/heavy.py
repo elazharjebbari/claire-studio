@@ -206,6 +206,11 @@ class TransformerFinetune(Model):
         model = transformers.AutoModelForSequenceClassification.from_pretrained(
             self.checkpoint, num_labels=len(self.classes)
         )
+        # fp32 FORCÉ : transformers 5 charge au dtype DU CHECKPOINT — celui de
+        # deberta-v3 est en fp16, et l'entraînement plantait en « expected scalar type
+        # Half but found Float » (run GPU réel, campagne de validation du 16 août
+        # 2026). legal-bert/roberta/ModernBERT passaient par chance : checkpoints fp32.
+        model = model.float()
         device = "cuda" if torch.cuda.is_available() else "cpu"
         model.to(device)
 
