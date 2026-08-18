@@ -45,6 +45,11 @@ export function renderEmphasis(text: string): ReactNode {
 /**
  * Introduction d'expérience — ouverte par défaut (la pédagogie d'abord), état replié
  * mémorisé PAR COMPTE (couche prefs serveur, pas localStorage direct).
+ *
+ * Cinq volets (contrat de `ExperimentIntro`, dossier 05 §1) : pourquoi → ce que
+ * teste → rôle → comment lire → notions & métriques. Le dernier vit dans une
+ * disclosure imbriquée : il est long par construction (chaque métrique de la page
+ * avec son sens et sa lecture) et ne doit pas noyer les quatre premiers.
  */
 export function ExperimentIntro({ preset }: { preset: string | null | undefined }) {
   const collapsed = usePrefsStore((s) => s.prefs.panels.labIntroCollapsed);
@@ -59,6 +64,10 @@ export function ExperimentIntro({ preset }: { preset: string | null | undefined 
       testId="experiment-intro"
     >
       <div className="space-y-2 text-xs text-ink-muted">
+        <p data-testid="intro-pourquoi">
+          <span className="font-medium uppercase tracking-wide">Pourquoi cette expérience.</span>{" "}
+          {renderEmphasis(intro.pourquoi)}
+        </p>
         <p>
           <span className="font-medium uppercase tracking-wide">Ce que teste cette expérience.</span>{" "}
           {renderEmphasis(intro.teste)}
@@ -75,6 +84,25 @@ export function ExperimentIntro({ preset }: { preset: string | null | undefined 
             ))}
           </ul>
         </div>
+        {intro.metriques.length > 0 && (
+          <Disclosure
+            summary={`Notions & métriques de cette page (${intro.metriques.length})`}
+            icon={<Info className="h-3.5 w-3.5" aria-hidden />}
+            testId="experiment-intro-metrics"
+          >
+            <dl className="space-y-2">
+              {intro.metriques.map((note) => (
+                <div key={note.nom} className="rounded border border-line p-2">
+                  <dt className="font-medium text-ink">{note.nom}</dt>
+                  <dd className="mt-0.5">
+                    {renderEmphasis(note.sens)}{" "}
+                    <span className="text-ink">{renderEmphasis(note.lecture)}</span>
+                  </dd>
+                </div>
+              ))}
+            </dl>
+          </Disclosure>
+        )}
       </div>
     </Disclosure>
   );

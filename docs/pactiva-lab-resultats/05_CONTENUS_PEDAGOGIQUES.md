@@ -8,11 +8,43 @@ d'aide), à ne pas paraphraser lot par lot.
 
 ## 1. Structure d'une introduction d'expérience (`ExperimentIntro`)
 
-Trois blocs courts, toujours dans cet ordre :
-**Ce que teste cette expérience** (2-3 phrases) · **Son rôle dans la publication**
-(1-2 phrases) · **Comment lire cette page** (2-4 puces).
+Depuis l'enrichissement du 16 août 2026 (§2-bis), **cinq** blocs, toujours dans cet
+ordre :
+1. **Pourquoi cette expérience** (2-3 phrases) — le PROBLÈME auquel elle répond, le
+   piège évité, l'enjeu ; ancré par un exemple chiffré daté quand il existe.
+2. **Ce que teste cette expérience** (2-3 phrases).
+3. **Son rôle dans la publication** (1-2 phrases).
+4. **Comment lire cette page** (2-4 puces).
+5. **Notions & métriques de cette page** — pour CHAQUE métrique ou notion affichée :
+   `nom` · `sens` (ce qu'elle signifie, 1-2 phrases) · `lecture` (comment la lire
+   ICI : seuil, ordre de grandeur attendu, piège). Rendu dans une disclosure
+   imbriquée — long par construction, il ne doit pas noyer les quatre premiers.
+
+Règles propres au bloc 5 :
+- Les notions **transverses** (IC 95 %, dispersion inter-plis, plafond humain
+  approximé, Δ apparié) ont **une seule définition partagée** (constantes
+  `NOTE_*`), réutilisée telle quelle — deux formulations divergentes seraient un
+  bug éditorial (invariant testé).
+- Les exemples chiffrés issus de campagnes sont **datés** (« aperçu du
+  16 août 2026 ») : ils ancrent la lecture mais bougeront ; les références
+  publiées (κ 0,769 · α-MASI 0,635 · Jaccard 0,39–0,63) restent les repères
+  verrouillés du §4.
+- Chaque `sens` et chaque `lecture` est substantiel (> 40 caractères, invariant
+  testé) — jamais un fragment de trois mots.
 
 ## 2. Introductions par expérience
+
+> **§2-bis — Doctrine de source (révision du 16 août 2026).** Ce paragraphe §2
+> conserve les textes des trois blocs historiques (teste / rôle / lire) des
+> 14 presets d'origine. Depuis l'enrichissement (bloc « pourquoi » + bloc
+> « notions & métriques », et 5 presets ajoutés pour les papiers : `iaa-mesure`,
+> `gold-cascade`, `cooccurrence-*`), le **porteur canonique des textes complets
+> est `frontend/src/features/lab/content/experimentIntros.ts`** — versionné,
+> relu en revue de code, et verrouillé par le lint éditorial
+> (`labEditorial.test.ts` : structure, longueurs, formulations interdites du §4,
+> unicité des définitions transverses). Le présent dossier reste la source des
+> RÈGLES (structure §1, glossaire §3, formulations §4) ; il ne duplique plus les
+> textes — une copie qui divergerait silencieusement serait pire qu'une absence.
 
 ### baseline-fast
 **Ce que teste cette expérience.** Un modèle volontairement simple (TF-IDF + classifieur

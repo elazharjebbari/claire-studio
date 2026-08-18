@@ -73,3 +73,107 @@ justesse observée. 0 = parfaitement calibré. Un modèle sûr de lui et souvent
 l'erreur est dangereux en assistance à l'annotation : une suggestion à « 95 % » qui
 n'a raison que 60 % du temps détruit la confiance dans l'outil. La courbe de
 fiabilité montre OÙ le modèle est mal calibré, ce qu'un ECE agrégé cache.
+
+## Les mesures d'accord (expérience « Mesures d'accord », E1–E4)
+
+**α-MASI** — α de Krippendorff avec distance MASI : l'accord sur des **ensembles**
+de thèmes (multi-étiquettes). Deux jeux partiellement recouvrants comptent comme un
+accord partiel — via l'inclusion et le Jaccard — pas comme un désaccord total.
+Seuils de Passonneau : **≥ 0,667 acceptable, ≥ 0,8 fiable**. *Sanity-check du
+protocole : sur des étiquettes mono, α-MASI = α nominal.*
+
+**α nominal (projection mono-label)** — Le même α, calculé sur le seul thème
+**primaire** (distance 0/1) : ce que vaudrait l'accord si la tâche était mono-label.
+C'est le terme de comparaison d'E1 — la différence α nominal − α-MASI est **le coût
+du multi-label**, mesuré sur le même matériau. *Aperçu du 16 août 2026 : 0,688
+contre 0,625, soit Δ = 0,063 [0,031 ; 0,086] en différence appariée par document.*
+
+**Différence appariée (et « stabilité du signe »)** — Les deux α sont recalculés
+sur les **mêmes tirages** bootstrap de documents : l'IC porte sur la différence
+elle-même, pas sur deux intervalles comparés à l'œil. La « stabilité du signe » est
+la part des tirages où le coût s'inverse — 0 % = un coût parfaitement stable. Ce
+n'est pas une p-value de test nul.
+
+**Gwet AC1** — Un accord corrigé de la chance **robuste aux prévalences extrêmes**,
+là où κ et α s'effondrent mécaniquement. Le cas d'usage : un thème quasi absent
+(DMCA, support 27) peut afficher α = −0,32 avec AC1 = 0,99 — les annotateurs sont
+d'accord en pratique (« absent presque partout »), mais le peu de cas positifs les
+divise. **Toujours lire l'α par thème AVEC l'AC1 et le support** ; aucun des trois
+ne suffit seul.
+
+**Jaccard des frontières reconstruites** — L'accord de segmentation entre deux
+annotateurs, mesuré sur les **frontières reconstruites** : une frontière = la phrase
+où l'ensemble de thèmes change. Jamais sur les ancres de clause — le pré-remplissage
+dépose une ancre par phrase chez tout le monde, et cet « accord »-là vaut 1,000 par
+construction (l'artefact que le correctif V1.1 a retiré). *Mesuré : 0,43–0,56 selon
+les paires — la frontière est bien plus dure que le thème (0,69–0,75).*
+
+**Divergence au juge le plus proche** — Pour un annotateur, la part de ses phrases
+dont le jeu de thèmes diffère de chaque juge LLM ; le minimum désigne son « juge le
+plus proche ». C'est une **borne inférieure** du travail d'édition réel (le juge de
+pré-remplissage n'est pas persisté — limite déclarée). *41–52 % mesuré : très loin
+d'une ratification du pré-remplissage.*
+
+## La cascade gold (expérience « Cascade gold », E5)
+
+**Les trois étages** — `auto_1click` : accord **unanime** des annotateurs (même
+primaire, mêmes secondaires) — accepté d'un clic. `auto` : **majorité ≥ 2/3** sur le
+primaire — accepté automatiquement. `manual` : **divergence réelle** — comité
+humain. La somme des deux premiers est la rentabilité du protocole ; la part
+`manual` est le budget d'arbitrage réel.
+
+**« L'arbitre a contredit la pluralité »** — Parmi les conflits tranchés, combien de
+décisions contredisent le vote majoritaire des annotateurs. C'est la ligne qui
+justifie le comité : s'il ne fait que confirmer, un vote 2-1 automatique suffirait.
+
+**Ambiguïté résiduelle** — Les conflits encore non tranchés. Une fois l'arbitrage
+terminé, ce qui reste divergent est la mesure directe de l'**ambiguïté irréductible**
+de la tâche — une statistique mesurée, plus un chiffre postulé.
+
+**Finalisé (gold figé)** — Une résolution finalisée est **immuable** : recalcul sans
+effet, décisions refusées. C'est ce qui rend un dataset gold citable dans un
+article ; tant que rien n'est finalisé, la page affiche « chiffres d'aperçu ».
+
+## La détection par co-occurrence (expériences « Co-occurrence », G2)
+
+**Taux de base** — La part de segments abusifs dans le corpus (~19 % à l'aperçu).
+C'est LA référence de toutes les métriques de détection : un « bon score » se lit
+toujours **contre le taux de base**, pas contre 0,5.
+
+**AUC-PR (average precision)** — L'aire sous la courbe précision-rappel : la qualité
+du **classement** des clauses par score d'anomalie quand la classe positive est
+rare. Un détecteur au niveau du taux de base ne détecte rien ; la référence
+supervisée à 0,589 fait 3,2× mieux que le hasard. Préférée à l'AUC-ROC sur classes
+déséquilibrées.
+
+**precision@k et lift** — Sur les k clauses les plus anormales selon le score, la
+part réellement abusive ; le **lift** la divise par le taux de base (2× = deux fois
+mieux que le hasard). C'est la métrique « utilisateur » : que trouve un juriste qui
+lit le haut de la pile ?
+
+**NPMI (information mutuelle normalisée)** — Pour une paire de thèmes : −1 = jamais
+ensemble, 0 = indépendants, +1 = toujours ensemble. Le score `npmi_min` d'une clause
+est sa paire **la plus atypique** — il cible la co-occurrence pure, pas la rareté
+marginale. Les clauses mono-thème reçoivent 0 (rang le moins anormal).
+
+**Détecteurs, contrôles, référence — trois statuts à ne jamais confondre** — Les
+**détecteurs non supervisés** (rareté de combinaison, NPMI min, LOF, IsolationForest,
+OCSVM) n'utilisent jamais les labels. Le **contrôle négatif** (cardinalité : le
+simple nombre de thèmes) est le détecteur naïf que l'hypothèse doit battre — mesuré
+à un lift de 1,09×, quasi nul. La **référence supervisée** (`combo_identity` :
+P(abusif | combinaison) apprise sur l'entraînement) est une **borne haute** de ce
+que l'identité de combinaison peut donner avec supervision — ce n'est PAS un
+détecteur, et l'écart entre elle et les détecteurs mesure exactement ce que la
+supervision apporte.
+
+**Segments, compression, hapax** — L'unité est le **segment reconstruit** (phrases
+contiguës au même jeu de thèmes) ; la compression dit combien de phrases fusionnent
+par segment. Un **hapax** est une combinaison vue une seule fois : beaucoup d'hapax
+(110 sur 300 à l'aperçu) = les statistiques de combinaisons rares sont fragiles.
+
+**Source `votes` (couches par annotateur)** — Les segments sont construits par
+(document, annotateur) depuis les votes bruts : l'agrégation consensus aplatit les
+thèmes secondaires des documents mono-annotateur, et le multi-étiquettes y
+disparaîtrait (3,9 % contre ~42 % en brut). La validation croisée reste **par
+document** — toutes les couches d'un document tombent dans le même pli, aucune
+fuite. La cible finale reste la couche `aggregated` sur le gold arbitré.

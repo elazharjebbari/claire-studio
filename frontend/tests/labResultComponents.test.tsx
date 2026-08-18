@@ -24,20 +24,38 @@ afterEach(() => {
 });
 
 describe("ExperimentIntro", () => {
-  it("affiche les trois blocs (teste / rôle / lire) pour un preset connu, ouverte par défaut", () => {
+  it("affiche les cinq blocs (pourquoi / teste / rôle / lire / métriques) pour un preset connu, ouverte par défaut", () => {
     render(<ExperimentIntro preset="learning-curve" />);
     const panel = screen.getByTestId("experiment-intro");
     expect(panel).toHaveAttribute("data-open");
+    expect(panel.textContent).toContain("Pourquoi cette expérience");
     expect(panel.textContent).toContain("Ce que teste cette expérience");
     expect(panel.textContent).toContain("Rôle dans la publication");
     expect(panel.textContent).toContain("Comment lire cette page");
     expect(panel.textContent).toContain("quand peut-on arrêter d'annoter");
+    expect(panel.textContent).toContain("Notions & métriques de cette page");
   });
 
-  it("preset inconnu → intro générique (jamais un panneau vide)", () => {
+  it("⭐ le volet métriques déplie le sens ET la lecture de chaque métrique", async () => {
+    const user = userEvent.setup();
+    render(<ExperimentIntro preset="iaa-mesure" />);
+    await user.click(screen.getByTestId("experiment-intro-metrics-summary"));
+    const metrics = screen.getByTestId("experiment-intro-metrics");
+    // Une métrique de M1 avec son sens (définition) et sa lecture (seuils concrets).
+    expect(metrics.textContent).toContain("α-MASI");
+    expect(metrics.textContent).toContain("distance MASI");
+    expect(metrics.textContent).toContain("0,667 acceptable");
+    // Le paradoxe de prévalence — la lecture couplée α + Gwet.
+    expect(metrics.textContent).toContain("Gwet AC1");
+  });
+
+  it("preset inconnu → intro générique (jamais un panneau vide), avec les notions transverses", () => {
     render(<ExperimentIntro preset="je-n-existe-pas" />);
-    expect(screen.getByTestId("experiment-intro").textContent).toContain("expérience");
-    expect(screen.getByTestId("experiment-intro").textContent).toContain("libre");
+    const panel = screen.getByTestId("experiment-intro");
+    expect(panel.textContent).toContain("expérience");
+    expect(panel.textContent).toContain("libre");
+    expect(panel.textContent).toContain("Pourquoi cette expérience");
+    expect(panel.textContent).toContain("Notions & métriques de cette page (4)");
   });
 
   it("⭐ replier l'intro est mémorisé dans les préférences PAR COMPTE", async () => {
