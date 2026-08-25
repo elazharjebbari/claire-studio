@@ -1,0 +1,2043 @@
+{
+ "fingerprint": "f68c4e9edaf8249bedd060e41cd2480429b78f2ca7198329ee5b62539ba8315a",
+ "criteria": {
+  "maturity": "submitted",
+  "aggregation": "consensus",
+  "scope": {
+   "documents": [],
+   "annotators": [],
+   "min_annotators": 0,
+   "exclude_partial": true,
+   "completeness_threshold": 1.0
+  },
+  "k": 5,
+  "seed": 42,
+  "singleAnnotator": null
+ },
+ "supports": {
+  "n_sentences": 9414,
+  "n_documents": 50,
+  "n_votes": 15984,
+  "primary_aggregated": {
+   "LICENSE_IP": 1054,
+   "FEES_PAYMENT": 970,
+   "ACCEPTABLE_USE": 969,
+   "PREAMBLE_SCOPE": 924,
+   "ARBITRATION_DISPUTES": 910,
+   "ELIGIBILITY_ACCOUNT": 869,
+   "LIMITATION_LIABILITY": 517,
+   "USER_CONTENT": 509,
+   "THIRD_PARTY_SERVICES": 452,
+   "WARRANTY_DISCLAIMER": 444,
+   "MISC_BOILERPLATE": 393,
+   "TERMINATION": 364,
+   "MODIFICATION_OF_TERMS": 329,
+   "PRIVACY_DATA": 218,
+   "GOVERNING_LAW": 144,
+   "COMMUNICATIONS": 100,
+   "META": 94,
+   "DMCA": 61,
+   "FEEDBACK": 60,
+   "PROMOTIONS": 33
+  },
+  "all_aggregated": {
+   "LICENSE_IP": 1068,
+   "ACCEPTABLE_USE": 997,
+   "FEES_PAYMENT": 995,
+   "PREAMBLE_SCOPE": 924,
+   "ARBITRATION_DISPUTES": 911,
+   "ELIGIBILITY_ACCOUNT": 871,
+   "LIMITATION_LIABILITY": 576,
+   "USER_CONTENT": 536,
+   "THIRD_PARTY_SERVICES": 462,
+   "WARRANTY_DISCLAIMER": 461,
+   "MISC_BOILERPLATE": 393,
+   "TERMINATION": 376,
+   "MODIFICATION_OF_TERMS": 334,
+   "PRIVACY_DATA": 222,
+   "GOVERNING_LAW": 145,
+   "COMMUNICATIONS": 110,
+   "META": 107,
+   "DMCA": 61,
+   "FEEDBACK": 60,
+   "PROMOTIONS": 34
+  },
+  "primary_votes": {
+   "PREAMBLE_SCOPE": 1769,
+   "LICENSE_IP": 1725,
+   "FEES_PAYMENT": 1530,
+   "ARBITRATION_DISPUTES": 1465,
+   "ACCEPTABLE_USE": 1413,
+   "ELIGIBILITY_ACCOUNT": 1396,
+   "USER_CONTENT": 955,
+   "WARRANTY_DISCLAIMER": 938,
+   "LIMITATION_LIABILITY": 871,
+   "THIRD_PARTY_SERVICES": 784,
+   "TERMINATION": 687,
+   "MISC_BOILERPLATE": 680,
+   "MODIFICATION_OF_TERMS": 568,
+   "PRIVACY_DATA": 438,
+   "GOVERNING_LAW": 246,
+   "META": 175,
+   "COMMUNICATIONS": 113,
+   "FEEDBACK": 89,
+   "DMCA": 88,
+   "PROMOTIONS": 54
+  },
+  "all_votes": {
+   "ACCEPTABLE_USE": 2119,
+   "LICENSE_IP": 2058,
+   "FEES_PAYMENT": 1882,
+   "PREAMBLE_SCOPE": 1769,
+   "ARBITRATION_DISPUTES": 1590,
+   "ELIGIBILITY_ACCOUNT": 1485,
+   "USER_CONTENT": 1410,
+   "LIMITATION_LIABILITY": 1306,
+   "WARRANTY_DISCLAIMER": 1115,
+   "THIRD_PARTY_SERVICES": 1006,
+   "TERMINATION": 852,
+   "MODIFICATION_OF_TERMS": 701,
+   "MISC_BOILERPLATE": 680,
+   "PRIVACY_DATA": 647,
+   "META": 459,
+   "GOVERNING_LAW": 385,
+   "COMMUNICATIONS": 270,
+   "DMCA": 141,
+   "FEEDBACK": 108,
+   "PROMOTIONS": 85
+  },
+  "imbalance_ratio": 31.939393939393938,
+  "entropy_normalized": 0.9011496140084974,
+  "gini": 0.4143934565540684,
+  "top5_share": 0.5127469725940089,
+  "themes_under_50": [
+   "PROMOTIONS"
+  ],
+  "themes_under_100": [
+   "META",
+   "FEEDBACK",
+   "DMCA",
+   "PROMOTIONS"
+  ],
+  "themes_under_300": [
+   "PRIVACY_DATA",
+   "GOVERNING_LAW",
+   "META",
+   "FEEDBACK",
+   "COMMUNICATIONS",
+   "DMCA",
+   "PROMOTIONS"
+  ],
+  "multi_label_rate_agg": 0.023688,
+  "cardinality_votes": {
+   "1": 12258,
+   "2": 3385,
+   "3": 326,
+   "4": 13,
+   "5": 2
+  },
+  "multi_label_rate_votes": 0.23310810810810811
+ },
+ "segments": {
+  "n_segments": 2496,
+  "n_combos": 79,
+  "hapax": 30,
+  "top_combos": [
+   [
+    [
+     "PREAMBLE_SCOPE"
+    ],
+    250
+   ],
+   [
+    [
+     "LICENSE_IP"
+    ],
+    229
+   ],
+   [
+    [
+     "ACCEPTABLE_USE"
+    ],
+    181
+   ],
+   [
+    [
+     "LIMITATION_LIABILITY"
+    ],
+    178
+   ],
+   [
+    [
+     "ELIGIBILITY_ACCOUNT"
+    ],
+    178
+   ],
+   [
+    [
+     "USER_CONTENT"
+    ],
+    143
+   ],
+   [
+    [
+     "MISC_BOILERPLATE"
+    ],
+    140
+   ],
+   [
+    [
+     "FEES_PAYMENT"
+    ],
+    132
+   ],
+   [
+    [
+     "WARRANTY_DISCLAIMER"
+    ],
+    128
+   ],
+   [
+    [
+     "THIRD_PARTY_SERVICES"
+    ],
+    111
+   ],
+   [
+    [
+     "MODIFICATION_OF_TERMS"
+    ],
+    109
+   ],
+   [
+    [
+     "TERMINATION"
+    ],
+    101
+   ],
+   [
+    [
+     "ARBITRATION_DISPUTES"
+    ],
+    96
+   ],
+   [
+    [
+     "PRIVACY_DATA"
+    ],
+    81
+   ],
+   [
+    [
+     "META"
+    ],
+    69
+   ]
+  ]
+ },
+ "coverage": {
+  "docs_by_n_annotators": {
+   "1": 17,
+   "2": 25,
+   "3": 8
+  },
+  "votes_by_annotator": {
+   "zahra.boulaich": 9236,
+   "fatima.ouali": 5514,
+   "elazhar.jebbari": 1234
+  }
+ },
+ "confusion": {
+  "n_multi_annotated_sentences": 5336,
+  "n_multi_annotated_docs": 33,
+  "agree_pairs_by_theme": {
+   "ARBITRATION_DISPUTES": 631,
+   "LICENSE_IP": 619,
+   "FEES_PAYMENT": 608,
+   "ELIGIBILITY_ACCOUNT": 519,
+   "PREAMBLE_SCOPE": 486,
+   "ACCEPTABLE_USE": 477,
+   "WARRANTY_DISCLAIMER": 378,
+   "LIMITATION_LIABILITY": 306,
+   "TERMINATION": 283,
+   "THIRD_PARTY_SERVICES": 266,
+   "MODIFICATION_OF_TERMS": 229,
+   "USER_CONTENT": 218,
+   "MISC_BOILERPLATE": 180,
+   "PRIVACY_DATA": 128,
+   "GOVERNING_LAW": 83,
+   "META": 54,
+   "PROMOTIONS": 8,
+   "COMMUNICATIONS": 7,
+   "FEEDBACK": 6,
+   "DMCA": 2
+  },
+  "disagree_pairs": [
+   [
+    [
+     "MISC_BOILERPLATE",
+     "PREAMBLE_SCOPE"
+    ],
+    143
+   ],
+   [
+    [
+     "LICENSE_IP",
+     "USER_CONTENT"
+    ],
+    114
+   ],
+   [
+    [
+     "DMCA",
+     "LICENSE_IP"
+    ],
+    92
+   ],
+   [
+    [
+     "ACCEPTABLE_USE",
+     "ELIGIBILITY_ACCOUNT"
+    ],
+    90
+   ],
+   [
+    [
+     "ACCEPTABLE_USE",
+     "USER_CONTENT"
+    ],
+    77
+   ],
+   [
+    [
+     "FEES_PAYMENT",
+     "PREAMBLE_SCOPE"
+    ],
+    77
+   ],
+   [
+    [
+     "FEES_PAYMENT",
+     "TERMINATION"
+    ],
+    67
+   ],
+   [
+    [
+     "LIMITATION_LIABILITY",
+     "WARRANTY_DISCLAIMER"
+    ],
+    66
+   ],
+   [
+    [
+     "ACCEPTABLE_USE",
+     "PREAMBLE_SCOPE"
+    ],
+    62
+   ],
+   [
+    [
+     "LICENSE_IP",
+     "PREAMBLE_SCOPE"
+    ],
+    56
+   ],
+   [
+    [
+     "ELIGIBILITY_ACCOUNT",
+     "FEES_PAYMENT"
+    ],
+    51
+   ],
+   [
+    [
+     "ELIGIBILITY_ACCOUNT",
+     "PREAMBLE_SCOPE"
+    ],
+    50
+   ],
+   [
+    [
+     "USER_CONTENT",
+     "WARRANTY_DISCLAIMER"
+    ],
+    49
+   ],
+   [
+    [
+     "MODIFICATION_OF_TERMS",
+     "PREAMBLE_SCOPE"
+    ],
+    47
+   ],
+   [
+    [
+     "ACCEPTABLE_USE",
+     "LICENSE_IP"
+    ],
+    46
+   ],
+   [
+    [
+     "PREAMBLE_SCOPE",
+     "WARRANTY_DISCLAIMER"
+    ],
+    46
+   ],
+   [
+    [
+     "ARBITRATION_DISPUTES",
+     "GOVERNING_LAW"
+    ],
+    45
+   ],
+   [
+    [
+     "PREAMBLE_SCOPE",
+     "PRIVACY_DATA"
+    ],
+    40
+   ],
+   [
+    [
+     "META",
+     "PREAMBLE_SCOPE"
+    ],
+    38
+   ],
+   [
+    [
+     "META",
+     "MISC_BOILERPLATE"
+    ],
+    38
+   ],
+   [
+    [
+     "ELIGIBILITY_ACCOUNT",
+     "MISC_BOILERPLATE"
+    ],
+    38
+   ],
+   [
+    [
+     "FEEDBACK",
+     "USER_CONTENT"
+    ],
+    38
+   ],
+   [
+    [
+     "LIMITATION_LIABILITY",
+     "THIRD_PARTY_SERVICES"
+    ],
+    37
+   ],
+   [
+    [
+     "THIRD_PARTY_SERVICES",
+     "WARRANTY_DISCLAIMER"
+    ],
+    34
+   ],
+   [
+    [
+     "ELIGIBILITY_ACCOUNT",
+     "PRIVACY_DATA"
+    ],
+    31
+   ],
+   [
+    [
+     "PRIVACY_DATA",
+     "USER_CONTENT"
+    ],
+    31
+   ],
+   [
+    [
+     "ACCEPTABLE_USE",
+     "MISC_BOILERPLATE"
+    ],
+    30
+   ],
+   [
+    [
+     "LIMITATION_LIABILITY",
+     "USER_CONTENT"
+    ],
+    29
+   ],
+   [
+    [
+     "PREAMBLE_SCOPE",
+     "USER_CONTENT"
+    ],
+    29
+   ],
+   [
+    [
+     "ARBITRATION_DISPUTES",
+     "LIMITATION_LIABILITY"
+    ],
+    29
+   ],
+   [
+    [
+     "LIMITATION_LIABILITY",
+     "PREAMBLE_SCOPE"
+    ],
+    24
+   ],
+   [
+    [
+     "LICENSE_IP",
+     "THIRD_PARTY_SERVICES"
+    ],
+    24
+   ],
+   [
+    [
+     "ELIGIBILITY_ACCOUNT",
+     "USER_CONTENT"
+    ],
+    21
+   ],
+   [
+    [
+     "THIRD_PARTY_SERVICES",
+     "USER_CONTENT"
+    ],
+    21
+   ],
+   [
+    [
+     "LIMITATION_LIABILITY",
+     "MISC_BOILERPLATE"
+    ],
+    20
+   ],
+   [
+    [
+     "ELIGIBILITY_ACCOUNT",
+     "LICENSE_IP"
+    ],
+    19
+   ],
+   [
+    [
+     "FEEDBACK",
+     "LICENSE_IP"
+    ],
+    18
+   ],
+   [
+    [
+     "FEES_PAYMENT",
+     "MODIFICATION_OF_TERMS"
+    ],
+    17
+   ],
+   [
+    [
+     "ACCEPTABLE_USE",
+     "LIMITATION_LIABILITY"
+    ],
+    17
+   ],
+   [
+    [
+     "MISC_BOILERPLATE",
+     "PRIVACY_DATA"
+    ],
+    16
+   ],
+   [
+    [
+     "ELIGIBILITY_ACCOUNT",
+     "THIRD_PARTY_SERVICES"
+    ],
+    16
+   ],
+   [
+    [
+     "ELIGIBILITY_ACCOUNT",
+     "LIMITATION_LIABILITY"
+    ],
+    15
+   ],
+   [
+    [
+     "ARBITRATION_DISPUTES",
+     "PREAMBLE_SCOPE"
+    ],
+    15
+   ],
+   [
+    [
+     "PRIVACY_DATA",
+     "THIRD_PARTY_SERVICES"
+    ],
+    14
+   ],
+   [
+    [
+     "PREAMBLE_SCOPE",
+     "THIRD_PARTY_SERVICES"
+    ],
+    14
+   ],
+   [
+    [
+     "ELIGIBILITY_ACCOUNT",
+     "TERMINATION"
+    ],
+    13
+   ],
+   [
+    [
+     "FEES_PAYMENT",
+     "LIMITATION_LIABILITY"
+    ],
+    13
+   ],
+   [
+    [
+     "GOVERNING_LAW",
+     "PREAMBLE_SCOPE"
+    ],
+    13
+   ],
+   [
+    [
+     "MISC_BOILERPLATE",
+     "WARRANTY_DISCLAIMER"
+    ],
+    12
+   ],
+   [
+    [
+     "ELIGIBILITY_ACCOUNT",
+     "WARRANTY_DISCLAIMER"
+    ],
+    12
+   ],
+   [
+    [
+     "COMMUNICATIONS",
+     "MISC_BOILERPLATE"
+    ],
+    12
+   ],
+   [
+    [
+     "FEES_PAYMENT",
+     "THIRD_PARTY_SERVICES"
+    ],
+    12
+   ],
+   [
+    [
+     "LICENSE_IP",
+     "TERMINATION"
+    ],
+    11
+   ],
+   [
+    [
+     "ARBITRATION_DISPUTES",
+     "MISC_BOILERPLATE"
+    ],
+    11
+   ],
+   [
+    [
+     "COMMUNICATIONS",
+     "PREAMBLE_SCOPE"
+    ],
+    11
+   ],
+   [
+    [
+     "MISC_BOILERPLATE",
+     "THIRD_PARTY_SERVICES"
+    ],
+    11
+   ],
+   [
+    [
+     "MODIFICATION_OF_TERMS",
+     "TERMINATION"
+    ],
+    10
+   ],
+   [
+    [
+     "ARBITRATION_DISPUTES",
+     "FEES_PAYMENT"
+    ],
+    10
+   ],
+   [
+    [
+     "GOVERNING_LAW",
+     "MISC_BOILERPLATE"
+    ],
+    10
+   ],
+   [
+    [
+     "ACCEPTABLE_USE",
+     "TERMINATION"
+    ],
+    9
+   ]
+  ],
+  "partial_overlap_pairs": [
+   [
+    [
+     "LICENSE_IP"
+    ],
+    211
+   ],
+   [
+    [
+     "ELIGIBILITY_ACCOUNT"
+    ],
+    174
+   ],
+   [
+    [
+     "ACCEPTABLE_USE"
+    ],
+    158
+   ],
+   [
+    [
+     "ARBITRATION_DISPUTES"
+    ],
+    116
+   ],
+   [
+    [
+     "FEES_PAYMENT"
+    ],
+    109
+   ],
+   [
+    [
+     "THIRD_PARTY_SERVICES"
+    ],
+    86
+   ],
+   [
+    [
+     "WARRANTY_DISCLAIMER"
+    ],
+    83
+   ],
+   [
+    [
+     "LICENSE_IP",
+     "USER_CONTENT"
+    ],
+    71
+   ],
+   [
+    [
+     "USER_CONTENT"
+    ],
+    71
+   ],
+   [
+    [
+     "LIMITATION_LIABILITY"
+    ],
+    69
+   ],
+   [
+    [
+     "FEES_PAYMENT",
+     "PREAMBLE_SCOPE"
+    ],
+    62
+   ],
+   [
+    [
+     "TERMINATION"
+    ],
+    61
+   ],
+   [
+    [
+     "ACCEPTABLE_USE",
+     "ELIGIBILITY_ACCOUNT"
+    ],
+    61
+   ],
+   [
+    [
+     "PREAMBLE_SCOPE"
+    ],
+    53
+   ],
+   [
+    [
+     "MODIFICATION_OF_TERMS"
+    ],
+    40
+   ],
+   [
+    [
+     "ACCEPTABLE_USE",
+     "USER_CONTENT"
+    ],
+    40
+   ],
+   [
+    [
+     "FEES_PAYMENT",
+     "TERMINATION"
+    ],
+    38
+   ],
+   [
+    [
+     "DMCA",
+     "LICENSE_IP"
+    ],
+    32
+   ],
+   [
+    [
+     "LIMITATION_LIABILITY",
+     "WARRANTY_DISCLAIMER"
+    ],
+    30
+   ],
+   [
+    [
+     "LICENSE_IP",
+     "PREAMBLE_SCOPE"
+    ],
+    27
+   ],
+   [
+    [
+     "LIMITATION_LIABILITY",
+     "THIRD_PARTY_SERVICES"
+    ],
+    23
+   ],
+   [
+    [
+     "ELIGIBILITY_ACCOUNT",
+     "FEES_PAYMENT"
+    ],
+    23
+   ],
+   [
+    [
+     "PRIVACY_DATA"
+    ],
+    23
+   ],
+   [
+    [
+     "USER_CONTENT",
+     "WARRANTY_DISCLAIMER"
+    ],
+    21
+   ],
+   [
+    [
+     "ARBITRATION_DISPUTES",
+     "GOVERNING_LAW"
+    ],
+    21
+   ],
+   [
+    [
+     "LIMITATION_LIABILITY",
+     "USER_CONTENT"
+    ],
+    20
+   ],
+   [
+    [
+     "ACCEPTABLE_USE",
+     "PREAMBLE_SCOPE"
+    ],
+    20
+   ],
+   [
+    [
+     "ACCEPTABLE_USE",
+     "LICENSE_IP"
+    ],
+    19
+   ],
+   [
+    [
+     "PREAMBLE_SCOPE",
+     "WARRANTY_DISCLAIMER"
+    ],
+    19
+   ],
+   [
+    [
+     "META",
+     "PREAMBLE_SCOPE"
+    ],
+    19
+   ]
+  ],
+  "total_pairs": 7804,
+  "total_disagree": 2316,
+  "confusability_index": {
+   "COMMUNICATIONS|FEEDBACK": {
+    "disagree": 4,
+    "index": 0.23529411764705882
+   },
+   "MISC_BOILERPLATE|PREAMBLE_SCOPE": {
+    "disagree": 143,
+    "index": 0.17676143386897405
+   },
+   "FEEDBACK|USER_CONTENT": {
+    "disagree": 38,
+    "index": 0.1450381679389313
+   },
+   "META|MISC_BOILERPLATE": {
+    "disagree": 38,
+    "index": 0.13970588235294118
+   },
+   "DMCA|LICENSE_IP": {
+    "disagree": 92,
+    "index": 0.12903225806451613
+   },
+   "LICENSE_IP|USER_CONTENT": {
+    "disagree": 114,
+    "index": 0.11987381703470032
+   },
+   "ACCEPTABLE_USE|USER_CONTENT": {
+    "disagree": 77,
+    "index": 0.09974093264248704
+   },
+   "LIMITATION_LIABILITY|WARRANTY_DISCLAIMER": {
+    "disagree": 66,
+    "index": 0.088
+   },
+   "ACCEPTABLE_USE|ELIGIBILITY_ACCOUNT": {
+    "disagree": 90,
+    "index": 0.08287292817679558
+   },
+   "PRIVACY_DATA|USER_CONTENT": {
+    "disagree": 31,
+    "index": 0.08222811671087533
+   },
+   "USER_CONTENT|WARRANTY_DISCLAIMER": {
+    "disagree": 49,
+    "index": 0.07596899224806201
+   },
+   "COMMUNICATIONS|META": {
+    "disagree": 5,
+    "index": 0.07575757575757576
+   },
+   "FEES_PAYMENT|TERMINATION": {
+    "disagree": 67,
+    "index": 0.06993736951983298
+   },
+   "FEES_PAYMENT|PREAMBLE_SCOPE": {
+    "disagree": 77,
+    "index": 0.06575576430401367
+   },
+   "META|PREAMBLE_SCOPE": {
+    "disagree": 38,
+    "index": 0.0657439446366782
+   },
+   "COMMUNICATIONS|PROMOTIONS": {
+    "disagree": 1,
+    "index": 0.0625
+   },
+   "MODIFICATION_OF_TERMS|PREAMBLE_SCOPE": {
+    "disagree": 47,
+    "index": 0.06167979002624672
+   },
+   "PREAMBLE_SCOPE|PRIVACY_DATA": {
+    "disagree": 40,
+    "index": 0.06116207951070336
+   },
+   "LIMITATION_LIABILITY|THIRD_PARTY_SERVICES": {
+    "disagree": 37,
+    "index": 0.060755336617405585
+   },
+   "ACCEPTABLE_USE|PREAMBLE_SCOPE": {
+    "disagree": 62,
+    "index": 0.06048780487804878
+   },
+   "COMMUNICATIONS|MISC_BOILERPLATE": {
+    "disagree": 12,
+    "index": 0.06030150753768844
+   },
+   "ARBITRATION_DISPUTES|GOVERNING_LAW": {
+    "disagree": 45,
+    "index": 0.05928853754940711
+   },
+   "COMMUNICATIONS|PRIVACY_DATA": {
+    "disagree": 8,
+    "index": 0.055944055944055944
+   },
+   "LIMITATION_LIABILITY|USER_CONTENT": {
+    "disagree": 29,
+    "index": 0.05244122965641953
+   },
+   "ELIGIBILITY_ACCOUNT|MISC_BOILERPLATE": {
+    "disagree": 38,
+    "index": 0.051560379918588875
+   },
+   "PREAMBLE_SCOPE|WARRANTY_DISCLAIMER": {
+    "disagree": 46,
+    "index": 0.05054945054945055
+   },
+   "THIRD_PARTY_SERVICES|WARRANTY_DISCLAIMER": {
+    "disagree": 34,
+    "index": 0.05014749262536873
+   },
+   "MISC_BOILERPLATE|PRIVACY_DATA": {
+    "disagree": 16,
+    "index": 0.04938271604938271
+   },
+   "LICENSE_IP|PREAMBLE_SCOPE": {
+    "disagree": 56,
+    "index": 0.04823428079242033
+   },
+   "ELIGIBILITY_ACCOUNT|PREAMBLE_SCOPE": {
+    "disagree": 50,
+    "index": 0.04739336492890995
+   },
+   "ELIGIBILITY_ACCOUNT|PRIVACY_DATA": {
+    "disagree": 31,
+    "index": 0.045722713864306784
+   },
+   "ACCEPTABLE_USE|MISC_BOILERPLATE": {
+    "disagree": 30,
+    "index": 0.043668122270742356
+   },
+   "ELIGIBILITY_ACCOUNT|FEES_PAYMENT": {
+    "disagree": 51,
+    "index": 0.0432937181663837
+   },
+   "THIRD_PARTY_SERVICES|USER_CONTENT": {
+    "disagree": 21,
+    "index": 0.041584158415841586
+   },
+   "ACCEPTABLE_USE|LICENSE_IP": {
+    "disagree": 46,
+    "index": 0.040280210157618214
+   },
+   "PREAMBLE_SCOPE|USER_CONTENT": {
+    "disagree": 29,
+    "index": 0.03956343792633015
+   },
+   "LIMITATION_LIABILITY|MISC_BOILERPLATE": {
+    "disagree": 20,
+    "index": 0.039525691699604744
+   },
+   "GOVERNING_LAW|MISC_BOILERPLATE": {
+    "disagree": 10,
+    "index": 0.03663003663003663
+   },
+   "PRIVACY_DATA|THIRD_PARTY_SERVICES": {
+    "disagree": 14,
+    "index": 0.03431372549019608
+   },
+   "FEEDBACK|MISC_BOILERPLATE": {
+    "disagree": 6,
+    "index": 0.03125
+   }
+  }
+ },
+ "alpha": {
+  "alpha_masi_sets": 0.6128188207967222,
+  "alpha_nominal_primary": 0.6795609249962498
+ },
+ "per_theme": {
+  "ACCEPTABLE_USE": {
+   "alpha_binary": 0.654,
+   "gwet_ac1": 0.9103,
+   "support_multi_sentences": 842,
+   "support_votes": 2119,
+   "support_agg_primary": 969
+  },
+  "ARBITRATION_DISPUTES": {
+   "alpha_binary": 0.8583,
+   "gwet_ac1": 0.973,
+   "support_multi_sentences": 575,
+   "support_votes": 1590,
+   "support_agg_primary": 910
+  },
+  "COMMUNICATIONS": {
+   "alpha_binary": 0.3283,
+   "gwet_ac1": 0.9799,
+   "support_multi_sentences": 141,
+   "support_votes": 270,
+   "support_agg_primary": 100
+  },
+  "DMCA": {
+   "alpha_binary": 0.2397,
+   "gwet_ac1": 0.989,
+   "support_multi_sentences": 78,
+   "support_votes": 141,
+   "support_agg_primary": 61
+  },
+  "ELIGIBILITY_ACCOUNT": {
+   "alpha_binary": 0.6987,
+   "gwet_ac1": 0.9477,
+   "support_multi_sentences": 621,
+   "support_votes": 1485,
+   "support_agg_primary": 869
+  },
+  "FEEDBACK": {
+   "alpha_binary": 0.0994,
+   "gwet_ac1": 0.9917,
+   "support_multi_sentences": 61,
+   "support_votes": 108,
+   "support_agg_primary": 60
+  },
+  "FEES_PAYMENT": {
+   "alpha_binary": 0.8503,
+   "gwet_ac1": 0.9643,
+   "support_multi_sentences": 656,
+   "support_votes": 1882,
+   "support_agg_primary": 970
+  },
+  "GOVERNING_LAW": {
+   "alpha_binary": 0.5867,
+   "gwet_ac1": 0.9819,
+   "support_multi_sentences": 174,
+   "support_votes": 385,
+   "support_agg_primary": 144
+  },
+  "LICENSE_IP": {
+   "alpha_binary": 0.7895,
+   "gwet_ac1": 0.9435,
+   "support_multi_sentences": 794,
+   "support_votes": 2058,
+   "support_agg_primary": 1054
+  },
+  "LIMITATION_LIABILITY": {
+   "alpha_binary": 0.6681,
+   "gwet_ac1": 0.9557,
+   "support_multi_sentences": 552,
+   "support_votes": 1306,
+   "support_agg_primary": 517
+  },
+  "META": {
+   "alpha_binary": 0.5353,
+   "gwet_ac1": 0.9761,
+   "support_multi_sentences": 206,
+   "support_votes": 459,
+   "support_agg_primary": 94
+  },
+  "MISC_BOILERPLATE": {
+   "alpha_binary": 0.4554,
+   "gwet_ac1": 0.948,
+   "support_multi_sentences": 401,
+   "support_votes": 680,
+   "support_agg_primary": 393
+  },
+  "MODIFICATION_OF_TERMS": {
+   "alpha_binary": 0.8129,
+   "gwet_ac1": 0.9833,
+   "support_multi_sentences": 289,
+   "support_votes": 701,
+   "support_agg_primary": 329
+  },
+  "PREAMBLE_SCOPE": {
+   "alpha_binary": 0.5614,
+   "gwet_ac1": 0.8836,
+   "support_multi_sentences": 897,
+   "support_votes": 1769,
+   "support_agg_primary": 924
+  },
+  "PRIVACY_DATA": {
+   "alpha_binary": 0.578,
+   "gwet_ac1": 0.9592,
+   "support_multi_sentences": 349,
+   "support_votes": 647,
+   "support_agg_primary": 218
+  },
+  "PROMOTIONS": {
+   "alpha_binary": 0.7958,
+   "gwet_ac1": 0.998,
+   "support_multi_sentences": 28,
+   "support_votes": 85,
+   "support_agg_primary": 33
+  },
+  "TERMINATION": {
+   "alpha_binary": 0.7753,
+   "gwet_ac1": 0.9772,
+   "support_multi_sentences": 341,
+   "support_votes": 852,
+   "support_agg_primary": 364
+  },
+  "THIRD_PARTY_SERVICES": {
+   "alpha_binary": 0.6813,
+   "gwet_ac1": 0.9531,
+   "support_multi_sentences": 459,
+   "support_votes": 1006,
+   "support_agg_primary": 452
+  },
+  "USER_CONTENT": {
+   "alpha_binary": 0.4952,
+   "gwet_ac1": 0.9122,
+   "support_multi_sentences": 661,
+   "support_votes": 1410,
+   "support_agg_primary": 509
+  },
+  "WARRANTY_DISCLAIMER": {
+   "alpha_binary": 0.7451,
+   "gwet_ac1": 0.9586,
+   "support_multi_sentences": 512,
+   "support_votes": 1115,
+   "support_agg_primary": 444
+  }
+ },
+ "judge_confusion": {
+  "pairs": [
+   [
+    "ARBITRATION_DISPUTES",
+    "DISPUTE_ARBITRATION",
+    2968
+   ],
+   [
+    "LICENSE_IP",
+    "LICENSE_IP",
+    2965
+   ],
+   [
+    "FEES_PAYMENT",
+    "PAYMENT_BILLING",
+    2680
+   ],
+   [
+    "ACCEPTABLE_USE",
+    "ACCEPTABLE_USE",
+    2401
+   ],
+   [
+    "ELIGIBILITY_ACCOUNT",
+    "ELIGIBILITY_ACCOUNT",
+    2081
+   ],
+   [
+    "PREAMBLE_SCOPE",
+    "PREAMBLE_SCOPE",
+    1740
+   ],
+   [
+    "USER_CONTENT",
+    "USER_CONTENT",
+    1348
+   ],
+   [
+    "WARRANTY_DISCLAIMER",
+    "WARRANTY_DISCLAIMER",
+    1281
+   ],
+   [
+    "THIRD_PARTY_SERVICES",
+    "THIRD_PARTY",
+    1252
+   ],
+   [
+    "LIMITATION_LIABILITY",
+    "LIABILITY_LIMITATION",
+    1101
+   ],
+   [
+    "MISC_BOILERPLATE",
+    "MISC_BOILERPLATE",
+    953
+   ],
+   [
+    "TERMINATION",
+    "TERMINATION",
+    931
+   ],
+   [
+    "MODIFICATION_OF_TERMS",
+    "MODIFICATION_OF_TERMS",
+    756
+   ],
+   [
+    "FEES_PAYMENT",
+    "SUBSCRIPTION_RENEWAL",
+    569
+   ],
+   [
+    "PRIVACY_DATA",
+    "PRIVACY_DATA",
+    509
+   ],
+   [
+    "PREAMBLE_SCOPE",
+    "DEFINITIONS",
+    397
+   ],
+   [
+    "PREAMBLE_SCOPE",
+    "MISC_BOILERPLATE",
+    371
+   ],
+   [
+    "ACCEPTABLE_USE",
+    "LICENSE_IP",
+    359
+   ],
+   [
+    "GOVERNING_LAW",
+    "GOVERNING_LAW",
+    333
+   ],
+   [
+    "LICENSE_IP",
+    "USER_CONTENT",
+    331
+   ],
+   [
+    "ACCEPTABLE_USE",
+    "USER_CONTENT",
+    298
+   ],
+   [
+    "USER_CONTENT",
+    "LICENSE_IP",
+    263
+   ],
+   [
+    "ACCEPTABLE_USE",
+    "PREAMBLE_SCOPE",
+    254
+   ],
+   [
+    "MODIFICATION_OF_TERMS",
+    "PREAMBLE_SCOPE",
+    246
+   ],
+   [
+    "META",
+    "META",
+    227
+   ],
+   [
+    "ELIGIBILITY_ACCOUNT",
+    "PAYMENT_BILLING",
+    221
+   ],
+   [
+    "LIMITATION_LIABILITY",
+    "WARRANTY_DISCLAIMER",
+    211
+   ],
+   [
+    "DMCA",
+    "LICENSE_IP",
+    207
+   ],
+   [
+    "LICENSE_IP",
+    "PREAMBLE_SCOPE",
+    203
+   ],
+   [
+    "ELIGIBILITY_ACCOUNT",
+    "PREAMBLE_SCOPE",
+    196
+   ],
+   [
+    "ELIGIBILITY_ACCOUNT",
+    "ACCEPTABLE_USE",
+    182
+   ],
+   [
+    "ARBITRATION_DISPUTES",
+    "GOVERNING_LAW",
+    182
+   ],
+   [
+    "MISC_BOILERPLATE",
+    "PREAMBLE_SCOPE",
+    181
+   ],
+   [
+    "LIMITATION_LIABILITY",
+    "INDEMNIFICATION",
+    162
+   ],
+   [
+    "PREAMBLE_SCOPE",
+    "WARRANTY_DISCLAIMER",
+    161
+   ],
+   [
+    "LICENSE_IP",
+    "ACCEPTABLE_USE",
+    151
+   ],
+   [
+    "PREAMBLE_SCOPE",
+    "LICENSE_IP",
+    150
+   ],
+   [
+    "ARBITRATION_DISPUTES",
+    "MISC_BOILERPLATE",
+    132
+   ],
+   [
+    "ELIGIBILITY_ACCOUNT",
+    "THIRD_PARTY",
+    130
+   ],
+   [
+    "ELIGIBILITY_ACCOUNT",
+    "USER_CONTENT",
+    128
+   ],
+   [
+    "COMMUNICATIONS",
+    "MISC_BOILERPLATE",
+    119
+   ],
+   [
+    "ELIGIBILITY_ACCOUNT",
+    "PRIVACY_DATA",
+    118
+   ],
+   [
+    "PREAMBLE_SCOPE",
+    "THIRD_PARTY",
+    114
+   ],
+   [
+    "ACCEPTABLE_USE",
+    "MISC_BOILERPLATE",
+    112
+   ],
+   [
+    "PREAMBLE_SCOPE",
+    "META",
+    110
+   ],
+   [
+    "ACCEPTABLE_USE",
+    "ELIGIBILITY_ACCOUNT",
+    110
+   ],
+   [
+    "TERMINATION",
+    "PAYMENT_BILLING",
+    108
+   ],
+   [
+    "THIRD_PARTY_SERVICES",
+    "PREAMBLE_SCOPE",
+    108
+   ],
+   [
+    "USER_CONTENT",
+    "ACCEPTABLE_USE",
+    104
+   ],
+   [
+    "FEES_PAYMENT",
+    "TERMINATION",
+    104
+   ],
+   [
+    "PREAMBLE_SCOPE",
+    "USER_CONTENT",
+    98
+   ],
+   [
+    "PRIVACY_DATA",
+    "USER_CONTENT",
+    97
+   ],
+   [
+    "LICENSE_IP",
+    "MISC_BOILERPLATE",
+    96
+   ],
+   [
+    "LICENSE_IP",
+    "THIRD_PARTY",
+    96
+   ],
+   [
+    "LIMITATION_LIABILITY",
+    "PREAMBLE_SCOPE",
+    95
+   ],
+   [
+    "LIMITATION_LIABILITY",
+    "USER_CONTENT",
+    95
+   ],
+   [
+    "WARRANTY_DISCLAIMER",
+    "PREAMBLE_SCOPE",
+    94
+   ],
+   [
+    "FEES_PAYMENT",
+    "PREAMBLE_SCOPE",
+    94
+   ],
+   [
+    "ARBITRATION_DISPUTES",
+    "LIABILITY_LIMITATION",
+    91
+   ],
+   [
+    "ACCEPTABLE_USE",
+    "PRIVACY_DATA",
+    90
+   ],
+   [
+    "PREAMBLE_SCOPE",
+    "PRIVACY_DATA",
+    88
+   ],
+   [
+    "TERMINATION",
+    "PREAMBLE_SCOPE",
+    85
+   ],
+   [
+    "ELIGIBILITY_ACCOUNT",
+    "MISC_BOILERPLATE",
+    84
+   ],
+   [
+    "THIRD_PARTY_SERVICES",
+    "LICENSE_IP",
+    81
+   ],
+   [
+    "MODIFICATION_OF_TERMS",
+    "MISC_BOILERPLATE",
+    80
+   ],
+   [
+    "ARBITRATION_DISPUTES",
+    "PREAMBLE_SCOPE",
+    78
+   ],
+   [
+    "PREAMBLE_SCOPE",
+    "MODIFICATION_OF_TERMS",
+    78
+   ],
+   [
+    "LIMITATION_LIABILITY",
+    "THIRD_PARTY",
+    77
+   ],
+   [
+    "WARRANTY_DISCLAIMER",
+    "LIABILITY_LIMITATION",
+    76
+   ],
+   [
+    "PREAMBLE_SCOPE",
+    "ACCEPTABLE_USE",
+    73
+   ],
+   [
+    "FEEDBACK",
+    "USER_CONTENT",
+    73
+   ],
+   [
+    "PROMOTIONS",
+    "PAYMENT_BILLING",
+    73
+   ],
+   [
+    "PREAMBLE_SCOPE",
+    "ELIGIBILITY_ACCOUNT",
+    69
+   ],
+   [
+    "COMMUNICATIONS",
+    "PRIVACY_DATA",
+    69
+   ],
+   [
+    "THIRD_PARTY_SERVICES",
+    "PAYMENT_BILLING",
+    69
+   ],
+   [
+    "ELIGIBILITY_ACCOUNT",
+    "SUBSCRIPTION_RENEWAL",
+    69
+   ],
+   [
+    "ELIGIBILITY_ACCOUNT",
+    "LICENSE_IP",
+    67
+   ],
+   [
+    "MISC_BOILERPLATE",
+    "PRIVACY_DATA",
+    65
+   ],
+   [
+    "MISC_BOILERPLATE",
+    "META",
+    65
+   ],
+   [
+    "ACCEPTABLE_USE",
+    "WARRANTY_DISCLAIMER",
+    65
+   ]
+  ],
+  "n": 37656
+ },
+ "claudette": {
+  "n_unfair_sentences": 1032,
+  "base_rate": 0.10962396430847673,
+  "per_theme": {
+   "LIMITATION_LIABILITY": {
+    "n": 576,
+    "n_unfair": 222,
+    "p_unfair": 0.3854,
+    "lift": 3.52
+   },
+   "MODIFICATION_OF_TERMS": {
+    "n": 334,
+    "n_unfair": 163,
+    "p_unfair": 0.488,
+    "lift": 4.45
+   },
+   "TERMINATION": {
+    "n": 376,
+    "n_unfair": 145,
+    "p_unfair": 0.3856,
+    "lift": 3.52
+   },
+   "ARBITRATION_DISPUTES": {
+    "n": 911,
+    "n_unfair": 114,
+    "p_unfair": 0.1251,
+    "lift": 1.14
+   },
+   "PREAMBLE_SCOPE": {
+    "n": 924,
+    "n_unfair": 81,
+    "p_unfair": 0.0877,
+    "lift": 0.8
+   },
+   "GOVERNING_LAW": {
+    "n": 145,
+    "n_unfair": 63,
+    "p_unfair": 0.4345,
+    "lift": 3.96
+   },
+   "FEES_PAYMENT": {
+    "n": 995,
+    "n_unfair": 62,
+    "p_unfair": 0.0623,
+    "lift": 0.57
+   },
+   "USER_CONTENT": {
+    "n": 536,
+    "n_unfair": 51,
+    "p_unfair": 0.0951,
+    "lift": 0.87
+   },
+   "ACCEPTABLE_USE": {
+    "n": 997,
+    "n_unfair": 40,
+    "p_unfair": 0.0401,
+    "lift": 0.37
+   },
+   "LICENSE_IP": {
+    "n": 1068,
+    "n_unfair": 37,
+    "p_unfair": 0.0346,
+    "lift": 0.32
+   },
+   "ELIGIBILITY_ACCOUNT": {
+    "n": 871,
+    "n_unfair": 31,
+    "p_unfair": 0.0356,
+    "lift": 0.32
+   },
+   "THIRD_PARTY_SERVICES": {
+    "n": 462,
+    "n_unfair": 27,
+    "p_unfair": 0.0584,
+    "lift": 0.53
+   },
+   "WARRANTY_DISCLAIMER": {
+    "n": 461,
+    "n_unfair": 18,
+    "p_unfair": 0.039,
+    "lift": 0.36
+   },
+   "PRIVACY_DATA": {
+    "n": 222,
+    "n_unfair": 12,
+    "p_unfair": 0.0541,
+    "lift": 0.49
+   },
+   "DMCA": {
+    "n": 61,
+    "n_unfair": 5,
+    "p_unfair": 0.082,
+    "lift": 0.75
+   },
+   "MISC_BOILERPLATE": {
+    "n": 393,
+    "n_unfair": 4,
+    "p_unfair": 0.0102,
+    "lift": 0.09
+   },
+   "PROMOTIONS": {
+    "n": 34,
+    "n_unfair": 3,
+    "p_unfair": 0.0882,
+    "lift": 0.8
+   },
+   "COMMUNICATIONS": {
+    "n": 110,
+    "n_unfair": 1,
+    "p_unfair": 0.0091,
+    "lift": 0.08
+   },
+   "META": {
+    "n": 107,
+    "n_unfair": 0,
+    "p_unfair": 0.0,
+    "lift": 0.0
+   },
+   "FEEDBACK": {
+    "n": 60,
+    "n_unfair": 0,
+    "p_unfair": 0.0,
+    "lift": 0.0
+   }
+  },
+  "theme_x_category": [
+   [
+    "LIMITATION_LIABILITY",
+    "LTD",
+    219
+   ],
+   [
+    "TERMINATION",
+    "TER",
+    125
+   ],
+   [
+    "MODIFICATION_OF_TERMS",
+    "CH",
+    114
+   ],
+   [
+    "PREAMBLE_SCOPE",
+    "USE",
+    60
+   ],
+   [
+    "ARBITRATION_DISPUTES",
+    "J",
+    57
+   ],
+   [
+    "GOVERNING_LAW",
+    "LAW",
+    54
+   ],
+   [
+    "ARBITRATION_DISPUTES",
+    "A",
+    43
+   ],
+   [
+    "MODIFICATION_OF_TERMS",
+    "USE",
+    39
+   ],
+   [
+    "USER_CONTENT",
+    "CR",
+    39
+   ],
+   [
+    "FEES_PAYMENT",
+    "CH",
+    36
+   ],
+   [
+    "TERMINATION",
+    "CR",
+    27
+   ],
+   [
+    "MODIFICATION_OF_TERMS",
+    "TER",
+    25
+   ],
+   [
+    "THIRD_PARTY_SERVICES",
+    "LTD",
+    24
+   ],
+   [
+    "ACCEPTABLE_USE",
+    "TER",
+    23
+   ],
+   [
+    "ELIGIBILITY_ACCOUNT",
+    "TER",
+    20
+   ],
+   [
+    "LICENSE_IP",
+    "TER",
+    19
+   ],
+   [
+    "WARRANTY_DISCLAIMER",
+    "LTD",
+    16
+   ],
+   [
+    "ARBITRATION_DISPUTES",
+    "LAW",
+    16
+   ],
+   [
+    "ACCEPTABLE_USE",
+    "CR",
+    14
+   ],
+   [
+    "FEES_PAYMENT",
+    "TER",
+    14
+   ],
+   [
+    "TERMINATION",
+    "LTD",
+    14
+   ],
+   [
+    "PREAMBLE_SCOPE",
+    "CH",
+    13
+   ],
+   [
+    "GOVERNING_LAW",
+    "J",
+    12
+   ],
+   [
+    "ELIGIBILITY_ACCOUNT",
+    "CR",
+    12
+   ],
+   [
+    "USER_CONTENT",
+    "LTD",
+    11
+   ],
+   [
+    "FEES_PAYMENT",
+    "LTD",
+    10
+   ],
+   [
+    "PRIVACY_DATA",
+    "USE",
+    8
+   ],
+   [
+    "MODIFICATION_OF_TERMS",
+    "CR",
+    7
+   ],
+   [
+    "LICENSE_IP",
+    "CH",
+    7
+   ],
+   [
+    "LICENSE_IP",
+    "CR",
+    6
+   ],
+   [
+    "USER_CONTENT",
+    "TER",
+    6
+   ],
+   [
+    "PREAMBLE_SCOPE",
+    "CR",
+    6
+   ],
+   [
+    "ACCEPTABLE_USE",
+    "LTD",
+    6
+   ],
+   [
+    "TERMINATION",
+    "CH",
+    5
+   ],
+   [
+    "MODIFICATION_OF_TERMS",
+    "LTD",
+    5
+   ],
+   [
+    "FEES_PAYMENT",
+    "CR",
+    5
+   ],
+   [
+    "ACCEPTABLE_USE",
+    "CH",
+    5
+   ],
+   [
+    "PREAMBLE_SCOPE",
+    "TER",
+    4
+   ],
+   [
+    "LICENSE_IP",
+    "LTD",
+    4
+   ],
+   [
+    "DMCA",
+    "TER",
+    4
+   ],
+   [
+    "ELIGIBILITY_ACCOUNT",
+    "LTD",
+    4
+   ],
+   [
+    "USER_CONTENT",
+    "CH",
+    4
+   ],
+   [
+    "LIMITATION_LIABILITY",
+    "CR",
+    4
+   ],
+   [
+    "LIMITATION_LIABILITY",
+    "TER",
+    3
+   ],
+   [
+    "FEES_PAYMENT",
+    "USE",
+    3
+   ],
+   [
+    "LIMITATION_LIABILITY",
+    "CH",
+    2
+   ],
+   [
+    "ARBITRATION_DISPUTES",
+    "USE",
+    2
+   ],
+   [
+    "PRIVACY_DATA",
+    "LTD",
+    2
+   ],
+   [
+    "ELIGIBILITY_ACCOUNT",
+    "CH",
+    2
+   ],
+   [
+    "DMCA",
+    "CR",
+    2
+   ],
+   [
+    "LICENSE_IP",
+    "USE",
+    2
+   ],
+   [
+    "PROMOTIONS",
+    "LTD",
+    2
+   ],
+   [
+    "ACCEPTABLE_USE",
+    "USE",
+    1
+   ],
+   [
+    "WARRANTY_DISCLAIMER",
+    "TER",
+    1
+   ],
+   [
+    "GOVERNING_LAW",
+    "A",
+    1
+   ],
+   [
+    "FEES_PAYMENT",
+    "LAW",
+    1
+   ],
+   [
+    "MISC_BOILERPLATE",
+    "CR",
+    1
+   ],
+   [
+    "ARBITRATION_DISPUTES",
+    "LTD",
+    1
+   ],
+   [
+    "ELIGIBILITY_ACCOUNT",
+    "USE",
+    1
+   ],
+   [
+    "PREAMBLE_SCOPE",
+    "LTD",
+    1
+   ]
+  ],
+  "mi_primary_unfair": 0.06717201687184315,
+  "mi_combo_unfair": 0.07556683742794874,
+  "h_unfair": 0.34572842074202587
+ }
+}
