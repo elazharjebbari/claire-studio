@@ -1,0 +1,464 @@
+{
+ "T20-statuquo": {
+  "n_classes": 20,
+  "alpha_masi": {
+   "point": 0.658076,
+   "low": 0.625618,
+   "high": 0.691375,
+   "nResamples": 1000,
+   "nDocuments": 50,
+   "unit": "document",
+   "confidence": 0.95
+  },
+  "alpha_nominal_primary": {
+   "point": 0.731536,
+   "low": 0.702806,
+   "high": 0.764763,
+   "nResamples": 1000,
+   "nDocuments": 50,
+   "unit": "document",
+   "confidence": 0.95
+  },
+  "disagree_pairs": 7010,
+  "agree_pairs": 21232,
+  "disagree_rate": 0.2482,
+  "per_class_alpha": {
+   "DMCA": {
+    "alpha": 0.1041,
+    "ac1": 0.9884
+   },
+   "FEEDBACK": {
+    "alpha": 0.1252,
+    "ac1": 0.9923
+   },
+   "COMMUNICATIONS": {
+    "alpha": 0.1841,
+    "ac1": 0.9789
+   },
+   "PROMOTIONS": {
+    "alpha": 0.2396,
+    "ac1": 0.9949
+   },
+   "META": {
+    "alpha": 0.5113,
+    "ac1": 0.9772
+   },
+   "MISC_BOILERPLATE": {
+    "alpha": 0.5332,
+    "ac1": 0.948
+   },
+   "USER_CONTENT": {
+    "alpha": 0.5989,
+    "ac1": 0.9294
+   },
+   "PREAMBLE_SCOPE": {
+    "alpha": 0.6086,
+    "ac1": 0.9232
+   },
+   "PRIVACY_DATA": {
+    "alpha": 0.6197,
+    "ac1": 0.9714
+   },
+   "GOVERNING_LAW": {
+    "alpha": 0.632,
+    "ac1": 0.9837
+   },
+   "ACCEPTABLE_USE": {
+    "alpha": 0.6802,
+    "ac1": 0.9138
+   },
+   "LIMITATION_LIABILITY": {
+    "alpha": 0.7275,
+    "ac1": 0.9572
+   },
+   "WARRANTY_DISCLAIMER": {
+    "alpha": 0.7344,
+    "ac1": 0.9616
+   },
+   "THIRD_PARTY_SERVICES": {
+    "alpha": 0.7366,
+    "ac1": 0.9686
+   },
+   "TERMINATION": {
+    "alpha": 0.7485,
+    "ac1": 0.9735
+   },
+   "ELIGIBILITY_ACCOUNT": {
+    "alpha": 0.7555,
+    "ac1": 0.9542
+   },
+   "LICENSE_IP": {
+    "alpha": 0.7718,
+    "ac1": 0.9319
+   },
+   "MODIFICATION_OF_TERMS": {
+    "alpha": 0.8133,
+    "ac1": 0.9827
+   },
+   "FEES_PAYMENT": {
+    "alpha": 0.864,
+    "ac1": 0.9641
+   },
+   "ARBITRATION_DISPUTES": {
+    "alpha": 0.8977,
+    "ac1": 0.9787
+   }
+  },
+  "min_alpha_class": [
+   "DMCA",
+   0.1041
+  ],
+  "supports": {
+   "LICENSE_IP": 1188,
+   "FEES_PAYMENT": 1051,
+   "ARBITRATION_DISPUTES": 846,
+   "ACCEPTABLE_USE": 836,
+   "ELIGIBILITY_ACCOUNT": 757,
+   "PREAMBLE_SCOPE": 677,
+   "MISC_BOILERPLATE": 586,
+   "WARRANTY_DISCLAIMER": 582,
+   "USER_CONTENT": 581,
+   "LIMITATION_LIABILITY": 495,
+   "THIRD_PARTY_SERVICES": 448,
+   "TERMINATION": 380,
+   "MODIFICATION_OF_TERMS": 365,
+   "PRIVACY_DATA": 269,
+   "GOVERNING_LAW": 163,
+   "META": 128,
+   "COMMUNICATIONS": 28,
+   "FEEDBACK": 16,
+   "PROMOTIONS": 10,
+   "DMCA": 8
+  },
+  "min_support": 8,
+  "imbalance_ratio": 148.5,
+  "entropy_normalized": 0.8924,
+  "classes_under_300": [
+   "COMMUNICATIONS",
+   "DMCA",
+   "FEEDBACK",
+   "GOVERNING_LAW",
+   "META",
+   "PRIVACY_DATA",
+   "PROMOTIONS"
+  ],
+  "multi_label_rate_votes": 0.1636,
+  "mi_primary_unfair": 0.0735,
+  "mi_combo_unfair": 0.0984,
+  "ap_lodo_primary": 0.3343,
+  "ap_lodo_combo": 0.4127,
+  "base_rate": 0.1096,
+  "judge_human_primary_acc": 0.458
+ },
+ "T14-fiabilite": {
+  "n_classes": 14,
+  "alpha_masi": {
+   "point": 0.693208,
+   "low": 0.663408,
+   "high": 0.726599,
+   "nResamples": 1000,
+   "nDocuments": 50,
+   "unit": "document",
+   "confidence": 0.95
+  },
+  "alpha_nominal_primary": {
+   "point": 0.768414,
+   "low": 0.737174,
+   "high": 0.800318,
+   "nResamples": 1000,
+   "nDocuments": 50,
+   "unit": "document",
+   "confidence": 0.95
+  },
+  "disagree_pairs": 5929,
+  "agree_pairs": 22313,
+  "disagree_rate": 0.2099,
+  "per_class_alpha": {
+   "COMMUNICATIONS": {
+    "alpha": 0.1924,
+    "ac1": 0.9737
+   },
+   "USER_CONTENT": {
+    "alpha": 0.5989,
+    "ac1": 0.9294
+   },
+   "PRIVACY_DATA": {
+    "alpha": 0.6197,
+    "ac1": 0.9714
+   },
+   "ACCEPTABLE_USE": {
+    "alpha": 0.6802,
+    "ac1": 0.9138
+   },
+   "PREAMBLE_SCOPE": {
+    "alpha": 0.6976,
+    "ac1": 0.8863
+   },
+   "LIMITATION_LIABILITY": {
+    "alpha": 0.7275,
+    "ac1": 0.9572
+   },
+   "WARRANTY_DISCLAIMER": {
+    "alpha": 0.7344,
+    "ac1": 0.9616
+   },
+   "THIRD_PARTY_SERVICES": {
+    "alpha": 0.7366,
+    "ac1": 0.9686
+   },
+   "TERMINATION": {
+    "alpha": 0.7485,
+    "ac1": 0.9735
+   },
+   "ELIGIBILITY_ACCOUNT": {
+    "alpha": 0.7555,
+    "ac1": 0.9542
+   },
+   "LICENSE_IP": {
+    "alpha": 0.7841,
+    "ac1": 0.9319
+   },
+   "MODIFICATION_OF_TERMS": {
+    "alpha": 0.8133,
+    "ac1": 0.9827
+   },
+   "FEES_PAYMENT": {
+    "alpha": 0.864,
+    "ac1": 0.9641
+   },
+   "ARBITRATION_DISPUTES": {
+    "alpha": 0.8934,
+    "ac1": 0.973
+   }
+  },
+  "min_alpha_class": [
+   "COMMUNICATIONS",
+   0.1924
+  ],
+  "supports": {
+   "PREAMBLE_SCOPE": 1391,
+   "LICENSE_IP": 1212,
+   "FEES_PAYMENT": 1051,
+   "ARBITRATION_DISPUTES": 1009,
+   "ACCEPTABLE_USE": 836,
+   "ELIGIBILITY_ACCOUNT": 757,
+   "WARRANTY_DISCLAIMER": 582,
+   "USER_CONTENT": 581,
+   "LIMITATION_LIABILITY": 495,
+   "THIRD_PARTY_SERVICES": 448,
+   "TERMINATION": 380,
+   "MODIFICATION_OF_TERMS": 365,
+   "PRIVACY_DATA": 269,
+   "COMMUNICATIONS": 38
+  },
+  "min_support": 38,
+  "imbalance_ratio": 36.6,
+  "entropy_normalized": 0.9365,
+  "classes_under_300": [
+   "COMMUNICATIONS",
+   "PRIVACY_DATA"
+  ],
+  "multi_label_rate_votes": 0.1546,
+  "mi_primary_unfair": 0.0621,
+  "mi_combo_unfair": 0.087,
+  "ap_lodo_primary": 0.3082,
+  "ap_lodo_combo": 0.3837,
+  "base_rate": 0.1096,
+  "judge_human_primary_acc": 0.4804
+ },
+ "T11-fonctionnel-strate": {
+  "n_classes": 11,
+  "alpha_masi": {
+   "point": 0.725014,
+   "low": 0.69116,
+   "high": 0.760265,
+   "nResamples": 1000,
+   "nDocuments": 50,
+   "unit": "document",
+   "confidence": 0.95
+  },
+  "alpha_nominal_primary": {
+   "point": 0.794027,
+   "low": 0.764722,
+   "high": 0.828371,
+   "nResamples": 1000,
+   "nDocuments": 50,
+   "unit": "document",
+   "confidence": 0.95
+  },
+  "disagree_pairs": 5085,
+  "agree_pairs": 23157,
+  "disagree_rate": 0.1801,
+  "per_class_alpha": {
+   "PRIVACY_DATA": {
+    "alpha": 0.6197,
+    "ac1": 0.9714
+   },
+   "FRAMEWORK": {
+    "alpha": 0.6913,
+    "ac1": 0.8731
+   },
+   "LIMITATION_LIABILITY": {
+    "alpha": 0.7275,
+    "ac1": 0.9572
+   },
+   "WARRANTY_DISCLAIMER": {
+    "alpha": 0.7344,
+    "ac1": 0.9616
+   },
+   "THIRD_PARTY_SERVICES": {
+    "alpha": 0.7366,
+    "ac1": 0.9686
+   },
+   "ACCOUNT_USE": {
+    "alpha": 0.7379,
+    "ac1": 0.8769
+   },
+   "TERMINATION": {
+    "alpha": 0.7485,
+    "ac1": 0.9735
+   },
+   "CONTENT_IP": {
+    "alpha": 0.7886,
+    "ac1": 0.8984
+   },
+   "MODIFICATION_OF_TERMS": {
+    "alpha": 0.8133,
+    "ac1": 0.9827
+   },
+   "FEES_PAYMENT": {
+    "alpha": 0.864,
+    "ac1": 0.9641
+   },
+   "DISPUTES_LAW": {
+    "alpha": 0.8934,
+    "ac1": 0.973
+   }
+  },
+  "min_alpha_class": [
+   "PRIVACY_DATA",
+   0.6197
+  ],
+  "supports": {
+   "CONTENT_IP": 1793,
+   "ACCOUNT_USE": 1593,
+   "FRAMEWORK": 1429,
+   "FEES_PAYMENT": 1051,
+   "DISPUTES_LAW": 1009,
+   "WARRANTY_DISCLAIMER": 582,
+   "LIMITATION_LIABILITY": 495,
+   "THIRD_PARTY_SERVICES": 448,
+   "TERMINATION": 380,
+   "MODIFICATION_OF_TERMS": 365,
+   "PRIVACY_DATA": 269
+  },
+  "min_support": 269,
+  "imbalance_ratio": 6.7,
+  "entropy_normalized": 0.9241,
+  "classes_under_300": [
+   "PRIVACY_DATA"
+  ],
+  "multi_label_rate_votes": 0.1312,
+  "mi_primary_unfair": 0.06,
+  "mi_combo_unfair": 0.0845,
+  "ap_lodo_primary": 0.3028,
+  "ap_lodo_combo": 0.3843,
+  "base_rate": 0.1096,
+  "judge_human_primary_acc": 0.5025
+ },
+ "T10-fonctionnel": {
+  "n_classes": 10,
+  "alpha_masi": {
+   "point": 0.736514,
+   "low": 0.703482,
+   "high": 0.771393,
+   "nResamples": 1000,
+   "nDocuments": 50,
+   "unit": "document",
+   "confidence": 0.95
+  },
+  "alpha_nominal_primary": {
+   "point": 0.799761,
+   "low": 0.769111,
+   "high": 0.834041,
+   "nResamples": 1000,
+   "nDocuments": 50,
+   "unit": "document",
+   "confidence": 0.95
+  },
+  "disagree_pairs": 4908,
+  "agree_pairs": 23334,
+  "disagree_rate": 0.1738,
+  "per_class_alpha": {
+   "PRIVACY_DATA": {
+    "alpha": 0.6197,
+    "ac1": 0.9714
+   },
+   "FRAMEWORK": {
+    "alpha": 0.6913,
+    "ac1": 0.8731
+   },
+   "THIRD_PARTY_SERVICES": {
+    "alpha": 0.7366,
+    "ac1": 0.9686
+   },
+   "ACCOUNT_USE": {
+    "alpha": 0.7379,
+    "ac1": 0.8769
+   },
+   "TERMINATION": {
+    "alpha": 0.7485,
+    "ac1": 0.9735
+   },
+   "CONTENT_IP": {
+    "alpha": 0.7886,
+    "ac1": 0.8984
+   },
+   "RISK_ALLOCATION": {
+    "alpha": 0.8065,
+    "ac1": 0.943
+   },
+   "MODIFICATION_OF_TERMS": {
+    "alpha": 0.8133,
+    "ac1": 0.9827
+   },
+   "FEES_PAYMENT": {
+    "alpha": 0.864,
+    "ac1": 0.9641
+   },
+   "DISPUTES_LAW": {
+    "alpha": 0.8934,
+    "ac1": 0.973
+   }
+  },
+  "min_alpha_class": [
+   "PRIVACY_DATA",
+   0.6197
+  ],
+  "supports": {
+   "CONTENT_IP": 1793,
+   "ACCOUNT_USE": 1593,
+   "FRAMEWORK": 1429,
+   "RISK_ALLOCATION": 1077,
+   "FEES_PAYMENT": 1051,
+   "DISPUTES_LAW": 1009,
+   "THIRD_PARTY_SERVICES": 448,
+   "TERMINATION": 380,
+   "MODIFICATION_OF_TERMS": 365,
+   "PRIVACY_DATA": 269
+  },
+  "min_support": 269,
+  "imbalance_ratio": 6.7,
+  "entropy_normalized": 0.928,
+  "classes_under_300": [
+   "PRIVACY_DATA"
+  ],
+  "multi_label_rate_votes": 0.1232,
+  "mi_primary_unfair": 0.0496,
+  "mi_combo_unfair": 0.0724,
+  "ap_lodo_primary": 0.2774,
+  "ap_lodo_combo": 0.357,
+  "base_rate": 0.1096,
+  "judge_human_primary_acc": 0.5067
+ }
+}

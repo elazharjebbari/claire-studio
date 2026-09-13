@@ -1,0 +1,2698 @@
+{
+ "genere_le": "2026-09-13",
+ "annotation": {
+  "summary": {
+   "total": 150,
+   "by_status": {
+    "submitted": 150
+   },
+   "by_annotator": {
+    "elazhar.jebbari": {
+     "submitted": 50
+    },
+    "fatima.ouali": {
+     "submitted": 50
+    },
+    "zahra.boulaich": {
+     "submitted": 50
+    }
+   }
+  },
+  "docs_by_n_annotators": {
+   "3": 50
+  }
+ },
+ "documents": {
+  "total": 50,
+  "total_sentences": 9414,
+  "with_reference": 50,
+  "reference_by_category": {
+   "USE": 117,
+   "CH": 188,
+   "TER": 236,
+   "LTD": 296,
+   "CR": 118,
+   "LAW": 70,
+   "A": 44,
+   "J": 68
+  },
+  "reference_sentences": 1032,
+  "n_reference_labels": 1137
+ },
+ "preannotations": {
+  "total": 200,
+  "by_judge": {
+   "claude": 50,
+   "codex": 50,
+   "fable": 50,
+   "mistral": 50
+  },
+  "docs_covered": 50
+ },
+ "gold": {
+  "resolutions": 3,
+  "finalized": 0,
+  "sentences": 425,
+  "decided": 0,
+  "auto_resolved": 0,
+  "by_agreement_class": {
+   "majority": 128,
+   "strict": 174,
+   "divergence": 30,
+   "empty": 93
+  },
+  "by_auto_level": {
+   "auto": 128,
+   "auto_1click": 174,
+   "manual": 123
+  },
+  "arbitration_events": 0,
+  "resolutions_detail": [
+   {
+    "document": "9gag",
+    "finalized": null,
+    "n_sentences": 139,
+    "decided": 0
+   },
+   {
+    "document": "Academia",
+    "finalized": null,
+    "n_sentences": 193,
+    "decided": 0
+   },
+   {
+    "document": "Google",
+    "finalized": null,
+    "n_sentences": 93,
+    "decided": 0
+   }
+  ]
+ },
+ "datasets": [
+  {
+   "id": "ce161c38-20f1-4dde-81be-f8f4646e8cf5",
+   "label": "",
+   "created": "2026-09-13 02:18:42",
+   "status": "ready",
+   "maturity": "submitted",
+   "aggregation": "consensus",
+   "scope": {
+    "documents": [],
+    "annotators": [],
+    "min_annotators": 3,
+    "exclude_partial": true,
+    "completeness_threshold": 1.0
+   },
+   "fingerprint": "815a0996de425cdd",
+   "n_documents": 24,
+   "n_sentences": 4676,
+   "n_annotations": 72,
+   "manifest": {
+    "nVotes": 14028,
+    "nLabels": 20,
+    "multiLabelRate": 0.068007,
+    "nGoldSentences": 425,
+    "excludedSummary": {
+     "below_maturity": 1,
+     "below_min_annotators": 52
+    },
+    "nUnfairSentences": 490,
+    "nGoldFinalizedDocuments": 0
+   }
+  },
+  {
+   "id": "89622b95-ad9b-4354-9c62-0f6d9d713331",
+   "label": "",
+   "created": "2026-08-24 21:37:09",
+   "status": "ready",
+   "maturity": "submitted",
+   "aggregation": "consensus",
+   "scope": {
+    "documents": [],
+    "annotators": [],
+    "min_annotators": 0,
+    "exclude_partial": true,
+    "completeness_threshold": 1.0
+   },
+   "fingerprint": "f68c4e9edaf8249b",
+   "n_documents": 50,
+   "n_sentences": 9414,
+   "n_annotations": 91,
+   "manifest": {
+    "nVotes": 15984,
+    "nLabels": 20,
+    "multiLabelRate": 0.023688,
+    "nGoldSentences": 425,
+    "excludedSummary": {
+     "no_clause": 2,
+     "below_maturity": 7
+    },
+    "nUnfairSentences": 1032,
+    "nGoldFinalizedDocuments": 0
+   }
+  },
+  {
+   "id": "f9011da1-08fe-400e-afe4-acc43c75999b",
+   "label": "",
+   "created": "2026-08-24 21:36:47",
+   "status": "ready",
+   "maturity": "submitted",
+   "aggregation": "consensus",
+   "scope": {
+    "documents": [],
+    "annotators": [],
+    "min_annotators": 2,
+    "exclude_partial": true,
+    "completeness_threshold": 1.0
+   },
+   "fingerprint": "13aa1fbfdb09987f",
+   "n_documents": 33,
+   "n_sentences": 5336,
+   "n_annotations": 74,
+   "manifest": {
+    "nVotes": 11906,
+    "nLabels": 20,
+    "multiLabelRate": 0.041792,
+    "nGoldSentences": 425,
+    "excludedSummary": {
+     "no_clause": 2,
+     "below_maturity": 7,
+     "below_min_annotators": 17
+    },
+    "nUnfairSentences": 592,
+    "nGoldFinalizedDocuments": 0
+   }
+  },
+  {
+   "id": "5dccdafa-17bd-4747-9dff-87ba1ad0f872",
+   "label": "papiers-apercu-any-16aout",
+   "created": "2026-08-16 08:58:13",
+   "status": "ready",
+   "maturity": "any",
+   "aggregation": "consensus",
+   "scope": {},
+   "fingerprint": "ae7e79236786fc87",
+   "n_documents": 39,
+   "n_sentences": 7621,
+   "n_annotations": 54,
+   "manifest": {
+    "nVotes": 9805,
+    "nLabels": 20,
+    "multiLabelRate": 0.012203,
+    "nGoldSentences": 425,
+    "excludedSummary": {
+     "partial_annotation": 8
+    },
+    "nUnfairSentences": 843,
+    "nGoldFinalizedDocuments": 0
+   }
+  },
+  {
+   "id": "2543d44f-2b8e-401b-b1b5-3483f3c8804d",
+   "label": "papiers-apercu-submitted-16aout",
+   "created": "2026-08-16 08:58:08",
+   "status": "ready",
+   "maturity": "submitted",
+   "aggregation": "consensus",
+   "scope": {},
+   "fingerprint": "ee4541b69374baa6",
+   "n_documents": 39,
+   "n_sentences": 7621,
+   "n_annotations": 54,
+   "manifest": {
+    "nVotes": 9805,
+    "nLabels": 20,
+    "multiLabelRate": 0.012203,
+    "nGoldSentences": 425,
+    "excludedSummary": {
+     "below_maturity": 8
+    },
+    "nUnfairSentences": 843,
+    "nGoldFinalizedDocuments": 0
+   }
+  },
+  {
+   "id": "74c33b45-330a-48e7-8370-94336c4b6b8d",
+   "label": "papiers-apercu-complete-16aout",
+   "created": "2026-08-16 08:58:02",
+   "status": "ready",
+   "maturity": "complete",
+   "aggregation": "consensus",
+   "scope": {},
+   "fingerprint": "807673044897c77c",
+   "n_documents": 39,
+   "n_sentences": 7621,
+   "n_annotations": 54,
+   "manifest": {
+    "nVotes": 9805,
+    "nLabels": 20,
+    "multiLabelRate": 0.012203,
+    "nGoldSentences": 425,
+    "excludedSummary": {
+     "below_maturity": 8
+    },
+    "nUnfairSentences": 843,
+    "nGoldFinalizedDocuments": 0
+   }
+  },
+  {
+   "id": "d22e8722-fe44-4903-81f2-6cefbc6e3bba",
+   "label": "",
+   "created": "2026-08-14 13:13:26",
+   "status": "ready",
+   "maturity": "complete",
+   "aggregation": "consensus",
+   "scope": {
+    "documents": [],
+    "annotators": [],
+    "min_annotators": 0,
+    "exclude_partial": true,
+    "completeness_threshold": 1.0
+   },
+   "fingerprint": "e59441d03e880999",
+   "n_documents": 39,
+   "n_sentences": 7621,
+   "n_annotations": 54,
+   "manifest": {
+    "nLabels": 20,
+    "multiLabelRate": 0.012203,
+    "excludedSummary": {
+     "below_maturity": 8
+    },
+    "nUnfairSentences": 843
+   }
+  },
+  {
+   "id": "86b127f2-ac71-496e-899f-7d4fc913e0bd",
+   "label": "",
+   "created": "2026-08-11 21:31:15",
+   "status": "ready",
+   "maturity": "complete",
+   "aggregation": "consensus",
+   "scope": {
+    "documents": [],
+    "annotators": [],
+    "min_annotators": 0,
+    "exclude_partial": true,
+    "completeness_threshold": 1.0
+   },
+   "fingerprint": "622d7a590a5b0ee2",
+   "n_documents": 36,
+   "n_sentences": 7239,
+   "n_annotations": 44,
+   "manifest": {
+    "nLabels": 20,
+    "multiLabelRate": 0.007183,
+    "excludedSummary": {
+     "below_maturity": 8
+    },
+    "nUnfairSentences": 797
+   }
+  }
+ ],
+ "run_summary": {
+  "total": 261,
+  "by_status": {
+   "succeeded": 238,
+   "failed": 20,
+   "cancelled": 2,
+   "partial": 1
+  },
+  "by_compute": {
+   "None/None": 261
+  },
+  "by_preset": {
+   "cooccurrence-bruit": 8,
+   "cooccurrence-deontique": 2,
+   "cooccurrence-abusivite": 2,
+   "ablation-gold-quality": 3,
+   "gold-cascade": 1,
+   "iaa-mesure": 2,
+   "encoders-comparison": 8,
+   "sequence-boundary": 3,
+   "ablation-context": 6,
+   "multilabel-finetune": 1,
+   "legal-bert-finetune": 5,
+   "screening-preprocess": 48,
+   "learning-curve": 25,
+   "embeddings-frozen": 16,
+   "ablation-label-noise": 4,
+   "knn-explainable": 1,
+   "llm-judges-baseline": 4,
+   "position-only": 1,
+   "baseline-fast": 5,
+   "": 116
+  }
+ },
+ "runs": [
+  {
+   "preset": "cooccurrence-bruit",
+   "status": "succeeded",
+   "env": "vps",
+   "created": "2026-08-16 09:24:13",
+   "job": "",
+   "docs": 39,
+   "macro_f1": null
+  },
+  {
+   "preset": "cooccurrence-bruit",
+   "status": "succeeded",
+   "env": "vps",
+   "created": "2026-08-16 09:24:13",
+   "job": "",
+   "docs": 39,
+   "macro_f1": null
+  },
+  {
+   "preset": "cooccurrence-bruit",
+   "status": "succeeded",
+   "env": "vps",
+   "created": "2026-08-16 09:24:13",
+   "job": "",
+   "docs": 39,
+   "macro_f1": null
+  },
+  {
+   "preset": "cooccurrence-bruit",
+   "status": "succeeded",
+   "env": "vps",
+   "created": "2026-08-16 09:24:13",
+   "job": "",
+   "docs": 39,
+   "macro_f1": null
+  },
+  {
+   "preset": "cooccurrence-deontique",
+   "status": "succeeded",
+   "env": "vps",
+   "created": "2026-08-16 09:24:13",
+   "job": "",
+   "docs": 39,
+   "macro_f1": null
+  },
+  {
+   "preset": "cooccurrence-abusivite",
+   "status": "succeeded",
+   "env": "vps",
+   "created": "2026-08-16 09:24:13",
+   "job": "",
+   "docs": 39,
+   "macro_f1": null
+  },
+  {
+   "preset": "ablation-gold-quality",
+   "status": "succeeded",
+   "env": "vps",
+   "created": "2026-08-16 08:58:16",
+   "job": "",
+   "docs": 39,
+   "macro_f1": 0.468958
+  },
+  {
+   "preset": "ablation-gold-quality",
+   "status": "succeeded",
+   "env": "vps",
+   "created": "2026-08-16 08:58:16",
+   "job": "",
+   "docs": 39,
+   "macro_f1": 0.468958
+  },
+  {
+   "preset": "cooccurrence-bruit",
+   "status": "succeeded",
+   "env": "vps",
+   "created": "2026-08-16 08:58:16",
+   "job": "",
+   "docs": 39,
+   "macro_f1": null
+  },
+  {
+   "preset": "cooccurrence-bruit",
+   "status": "succeeded",
+   "env": "vps",
+   "created": "2026-08-16 08:58:16",
+   "job": "",
+   "docs": 39,
+   "macro_f1": null
+  },
+  {
+   "preset": "cooccurrence-bruit",
+   "status": "succeeded",
+   "env": "vps",
+   "created": "2026-08-16 08:58:16",
+   "job": "",
+   "docs": 39,
+   "macro_f1": null
+  },
+  {
+   "preset": "cooccurrence-bruit",
+   "status": "succeeded",
+   "env": "vps",
+   "created": "2026-08-16 08:58:16",
+   "job": "",
+   "docs": 39,
+   "macro_f1": null
+  },
+  {
+   "preset": "cooccurrence-deontique",
+   "status": "succeeded",
+   "env": "vps",
+   "created": "2026-08-16 08:58:16",
+   "job": "",
+   "docs": 39,
+   "macro_f1": null
+  },
+  {
+   "preset": "cooccurrence-abusivite",
+   "status": "succeeded",
+   "env": "vps",
+   "created": "2026-08-16 08:58:16",
+   "job": "",
+   "docs": 39,
+   "macro_f1": null
+  },
+  {
+   "preset": "gold-cascade",
+   "status": "succeeded",
+   "env": "vps",
+   "created": "2026-08-16 08:58:16",
+   "job": "",
+   "docs": 39,
+   "macro_f1": null
+  },
+  {
+   "preset": "iaa-mesure",
+   "status": "succeeded",
+   "env": "vps",
+   "created": "2026-08-16 08:58:16",
+   "job": "",
+   "docs": 39,
+   "macro_f1": null
+  },
+  {
+   "preset": "iaa-mesure",
+   "status": "succeeded",
+   "env": "vps",
+   "created": "2026-08-16 08:58:16",
+   "job": "",
+   "docs": 39,
+   "macro_f1": null
+  },
+  {
+   "preset": "encoders-comparison",
+   "status": "succeeded",
+   "env": "g5k_gpu",
+   "created": "2026-08-16 05:16:00",
+   "job": "2059801",
+   "docs": 39,
+   "macro_f1": 0.489818
+  },
+  {
+   "preset": "encoders-comparison",
+   "status": "failed",
+   "env": "inconnu",
+   "created": "2026-08-16 05:07:19",
+   "job": "2059800",
+   "docs": null,
+   "macro_f1": null
+  },
+  {
+   "preset": "encoders-comparison",
+   "status": "failed",
+   "env": "inconnu",
+   "created": "2026-08-16 04:45:48",
+   "job": "2059799",
+   "docs": null,
+   "macro_f1": null
+  },
+  {
+   "preset": "sequence-boundary",
+   "status": "succeeded",
+   "env": "g5k_gpu",
+   "created": "2026-08-16 04:45:47",
+   "job": "2059798",
+   "docs": 39,
+   "macro_f1": 0.351672
+  },
+  {
+   "preset": "encoders-comparison",
+   "status": "failed",
+   "env": "inconnu",
+   "created": "2026-08-16 04:39:19",
+   "job": "2059797",
+   "docs": null,
+   "macro_f1": null
+  },
+  {
+   "preset": "sequence-boundary",
+   "status": "failed",
+   "env": "inconnu",
+   "created": "2026-08-16 04:39:19",
+   "job": "2059796",
+   "docs": null,
+   "macro_f1": null
+  },
+  {
+   "preset": "encoders-comparison",
+   "status": "succeeded",
+   "env": "g5k_gpu",
+   "created": "2026-08-15 16:54:26",
+   "job": "2059795",
+   "docs": 39,
+   "macro_f1": 0.491511
+  },
+  {
+   "preset": "encoders-comparison",
+   "status": "failed",
+   "env": "inconnu",
+   "created": "2026-08-15 16:54:26",
+   "job": "2059794",
+   "docs": null,
+   "macro_f1": null
+  },
+  {
+   "preset": "encoders-comparison",
+   "status": "succeeded",
+   "env": "g5k_gpu",
+   "created": "2026-08-15 16:54:26",
+   "job": "2059793",
+   "docs": 39,
+   "macro_f1": 0.503693
+  },
+  {
+   "preset": "encoders-comparison",
+   "status": "succeeded",
+   "env": "g5k_gpu",
+   "created": "2026-08-15 16:54:26",
+   "job": "2059792",
+   "docs": 39,
+   "macro_f1": 0.493354
+  },
+  {
+   "preset": "ablation-context",
+   "status": "succeeded",
+   "env": "g5k_gpu",
+   "created": "2026-08-15 16:54:25",
+   "job": "2059791",
+   "docs": 39,
+   "macro_f1": 0.513204
+  },
+  {
+   "preset": "ablation-context",
+   "status": "succeeded",
+   "env": "g5k_gpu",
+   "created": "2026-08-15 16:54:25",
+   "job": "2059790",
+   "docs": 39,
+   "macro_f1": 0.499611
+  },
+  {
+   "preset": "ablation-context",
+   "status": "succeeded",
+   "env": "g5k_gpu",
+   "created": "2026-08-15 16:54:25",
+   "job": "2059789",
+   "docs": 39,
+   "macro_f1": 0.511571
+  },
+  {
+   "preset": "ablation-context",
+   "status": "succeeded",
+   "env": "g5k_gpu",
+   "created": "2026-08-15 16:54:25",
+   "job": "2059788",
+   "docs": 39,
+   "macro_f1": 0.516575
+  },
+  {
+   "preset": "ablation-context",
+   "status": "succeeded",
+   "env": "g5k_gpu",
+   "created": "2026-08-15 16:54:25",
+   "job": "2059787",
+   "docs": 39,
+   "macro_f1": 0.497263
+  },
+  {
+   "preset": "ablation-context",
+   "status": "succeeded",
+   "env": "g5k_gpu",
+   "created": "2026-08-15 16:54:25",
+   "job": "2059778",
+   "docs": 39,
+   "macro_f1": 0.493354
+  },
+  {
+   "preset": "sequence-boundary",
+   "status": "failed",
+   "env": "inconnu",
+   "created": "2026-08-15 16:54:25",
+   "job": "2059777",
+   "docs": null,
+   "macro_f1": null
+  },
+  {
+   "preset": "multilabel-finetune",
+   "status": "succeeded",
+   "env": "g5k_gpu",
+   "created": "2026-08-15 16:54:24",
+   "job": "2059775",
+   "docs": 39,
+   "macro_f1": 0.51523
+  },
+  {
+   "preset": "legal-bert-finetune",
+   "status": "succeeded",
+   "env": "g5k_gpu",
+   "created": "2026-08-15 16:54:24",
+   "job": "2059773",
+   "docs": 39,
+   "macro_f1": 0.5155
+  },
+  {
+   "preset": "ablation-gold-quality",
+   "status": "succeeded",
+   "env": "vps",
+   "created": "2026-08-15 16:54:23",
+   "job": "",
+   "docs": 39,
+   "macro_f1": 0.468958
+  },
+  {
+   "preset": "screening-preprocess",
+   "status": "succeeded",
+   "env": "vps",
+   "created": "2026-08-15 16:54:23",
+   "job": "",
+   "docs": 39,
+   "macro_f1": 0.457767
+  },
+  {
+   "preset": "screening-preprocess",
+   "status": "succeeded",
+   "env": "vps",
+   "created": "2026-08-15 16:54:23",
+   "job": "",
+   "docs": 39,
+   "macro_f1": 0.47153
+  },
+  {
+   "preset": "screening-preprocess",
+   "status": "succeeded",
+   "env": "vps",
+   "created": "2026-08-15 16:54:23",
+   "job": "",
+   "docs": 39,
+   "macro_f1": 0.43597
+  },
+  {
+   "preset": "screening-preprocess",
+   "status": "succeeded",
+   "env": "vps",
+   "created": "2026-08-15 16:54:23",
+   "job": "",
+   "docs": 39,
+   "macro_f1": 0.455735
+  },
+  {
+   "preset": "screening-preprocess",
+   "status": "succeeded",
+   "env": "vps",
+   "created": "2026-08-15 16:54:23",
+   "job": "",
+   "docs": 39,
+   "macro_f1": 0.466082
+  },
+  {
+   "preset": "screening-preprocess",
+   "status": "succeeded",
+   "env": "vps",
+   "created": "2026-08-15 16:54:23",
+   "job": "",
+   "docs": 39,
+   "macro_f1": 0.431298
+  },
+  {
+   "preset": "screening-preprocess",
+   "status": "succeeded",
+   "env": "vps",
+   "created": "2026-08-15 16:54:23",
+   "job": "",
+   "docs": 39,
+   "macro_f1": 0.466767
+  },
+  {
+   "preset": "screening-preprocess",
+   "status": "succeeded",
+   "env": "vps",
+   "created": "2026-08-15 16:54:23",
+   "job": "",
+   "docs": 39,
+   "macro_f1": 0.472393
+  },
+  {
+   "preset": "screening-preprocess",
+   "status": "succeeded",
+   "env": "vps",
+   "created": "2026-08-15 16:54:23",
+   "job": "",
+   "docs": 39,
+   "macro_f1": 0.44404
+  },
+  {
+   "preset": "screening-preprocess",
+   "status": "succeeded",
+   "env": "vps",
+   "created": "2026-08-15 16:54:23",
+   "job": "",
+   "docs": 39,
+   "macro_f1": 0.455931
+  },
+  {
+   "preset": "screening-preprocess",
+   "status": "succeeded",
+   "env": "vps",
+   "created": "2026-08-15 16:54:23",
+   "job": "",
+   "docs": 39,
+   "macro_f1": 0.470435
+  },
+  {
+   "preset": "screening-preprocess",
+   "status": "succeeded",
+   "env": "vps",
+   "created": "2026-08-15 16:54:23",
+   "job": "",
+   "docs": 39,
+   "macro_f1": 0.436189
+  },
+  {
+   "preset": "screening-preprocess",
+   "status": "succeeded",
+   "env": "vps",
+   "created": "2026-08-15 16:54:23",
+   "job": "",
+   "docs": 39,
+   "macro_f1": 0.460814
+  },
+  {
+   "preset": "screening-preprocess",
+   "status": "succeeded",
+   "env": "vps",
+   "created": "2026-08-15 16:54:23",
+   "job": "",
+   "docs": 39,
+   "macro_f1": 0.476307
+  },
+  {
+   "preset": "screening-preprocess",
+   "status": "succeeded",
+   "env": "vps",
+   "created": "2026-08-15 16:54:23",
+   "job": "",
+   "docs": 39,
+   "macro_f1": 0.441881
+  },
+  {
+   "preset": "screening-preprocess",
+   "status": "succeeded",
+   "env": "vps",
+   "created": "2026-08-15 16:54:23",
+   "job": "",
+   "docs": 39,
+   "macro_f1": 0.456601
+  },
+  {
+   "preset": "screening-preprocess",
+   "status": "succeeded",
+   "env": "vps",
+   "created": "2026-08-15 16:54:23",
+   "job": "",
+   "docs": 39,
+   "macro_f1": 0.473228
+  },
+  {
+   "preset": "screening-preprocess",
+   "status": "succeeded",
+   "env": "vps",
+   "created": "2026-08-15 16:54:23",
+   "job": "",
+   "docs": 39,
+   "macro_f1": 0.440794
+  },
+  {
+   "preset": "screening-preprocess",
+   "status": "succeeded",
+   "env": "vps",
+   "created": "2026-08-15 16:54:23",
+   "job": "",
+   "docs": 39,
+   "macro_f1": 0.459557
+  },
+  {
+   "preset": "screening-preprocess",
+   "status": "succeeded",
+   "env": "vps",
+   "created": "2026-08-15 16:54:23",
+   "job": "",
+   "docs": 39,
+   "macro_f1": 0.473791
+  },
+  {
+   "preset": "screening-preprocess",
+   "status": "succeeded",
+   "env": "vps",
+   "created": "2026-08-15 16:54:23",
+   "job": "",
+   "docs": 39,
+   "macro_f1": 0.447648
+  },
+  {
+   "preset": "screening-preprocess",
+   "status": "succeeded",
+   "env": "vps",
+   "created": "2026-08-15 16:54:23",
+   "job": "",
+   "docs": 39,
+   "macro_f1": 0.453669
+  },
+  {
+   "preset": "screening-preprocess",
+   "status": "succeeded",
+   "env": "vps",
+   "created": "2026-08-15 16:54:23",
+   "job": "",
+   "docs": 39,
+   "macro_f1": 0.471942
+  },
+  {
+   "preset": "screening-preprocess",
+   "status": "succeeded",
+   "env": "vps",
+   "created": "2026-08-15 16:54:23",
+   "job": "",
+   "docs": 39,
+   "macro_f1": 0.442871
+  },
+  {
+   "preset": "screening-preprocess",
+   "status": "succeeded",
+   "env": "vps",
+   "created": "2026-08-15 16:54:23",
+   "job": "",
+   "docs": 39,
+   "macro_f1": 0.457767
+  },
+  {
+   "preset": "screening-preprocess",
+   "status": "succeeded",
+   "env": "vps",
+   "created": "2026-08-15 16:54:23",
+   "job": "",
+   "docs": 39,
+   "macro_f1": 0.47153
+  },
+  {
+   "preset": "screening-preprocess",
+   "status": "succeeded",
+   "env": "vps",
+   "created": "2026-08-15 16:54:23",
+   "job": "",
+   "docs": 39,
+   "macro_f1": 0.43597
+  },
+  {
+   "preset": "screening-preprocess",
+   "status": "succeeded",
+   "env": "vps",
+   "created": "2026-08-15 16:54:23",
+   "job": "",
+   "docs": 39,
+   "macro_f1": 0.455735
+  },
+  {
+   "preset": "screening-preprocess",
+   "status": "succeeded",
+   "env": "vps",
+   "created": "2026-08-15 16:54:23",
+   "job": "",
+   "docs": 39,
+   "macro_f1": 0.466082
+  },
+  {
+   "preset": "screening-preprocess",
+   "status": "succeeded",
+   "env": "vps",
+   "created": "2026-08-15 16:54:23",
+   "job": "",
+   "docs": 39,
+   "macro_f1": 0.431298
+  },
+  {
+   "preset": "screening-preprocess",
+   "status": "succeeded",
+   "env": "vps",
+   "created": "2026-08-15 16:54:23",
+   "job": "",
+   "docs": 39,
+   "macro_f1": 0.466767
+  },
+  {
+   "preset": "screening-preprocess",
+   "status": "succeeded",
+   "env": "vps",
+   "created": "2026-08-15 16:54:23",
+   "job": "",
+   "docs": 39,
+   "macro_f1": 0.472393
+  },
+  {
+   "preset": "screening-preprocess",
+   "status": "succeeded",
+   "env": "vps",
+   "created": "2026-08-15 16:54:23",
+   "job": "",
+   "docs": 39,
+   "macro_f1": 0.44404
+  },
+  {
+   "preset": "screening-preprocess",
+   "status": "succeeded",
+   "env": "vps",
+   "created": "2026-08-15 16:54:23",
+   "job": "",
+   "docs": 39,
+   "macro_f1": 0.455931
+  },
+  {
+   "preset": "screening-preprocess",
+   "status": "succeeded",
+   "env": "vps",
+   "created": "2026-08-15 16:54:23",
+   "job": "",
+   "docs": 39,
+   "macro_f1": 0.470435
+  },
+  {
+   "preset": "screening-preprocess",
+   "status": "succeeded",
+   "env": "vps",
+   "created": "2026-08-15 16:54:23",
+   "job": "",
+   "docs": 39,
+   "macro_f1": 0.436189
+  },
+  {
+   "preset": "screening-preprocess",
+   "status": "succeeded",
+   "env": "vps",
+   "created": "2026-08-15 16:54:23",
+   "job": "",
+   "docs": 39,
+   "macro_f1": 0.460814
+  },
+  {
+   "preset": "screening-preprocess",
+   "status": "succeeded",
+   "env": "vps",
+   "created": "2026-08-15 16:54:23",
+   "job": "",
+   "docs": 39,
+   "macro_f1": 0.476307
+  },
+  {
+   "preset": "screening-preprocess",
+   "status": "succeeded",
+   "env": "vps",
+   "created": "2026-08-15 16:54:23",
+   "job": "",
+   "docs": 39,
+   "macro_f1": 0.441881
+  },
+  {
+   "preset": "screening-preprocess",
+   "status": "succeeded",
+   "env": "vps",
+   "created": "2026-08-15 16:54:23",
+   "job": "",
+   "docs": 39,
+   "macro_f1": 0.456601
+  },
+  {
+   "preset": "screening-preprocess",
+   "status": "succeeded",
+   "env": "vps",
+   "created": "2026-08-15 16:54:23",
+   "job": "",
+   "docs": 39,
+   "macro_f1": 0.473228
+  },
+  {
+   "preset": "screening-preprocess",
+   "status": "succeeded",
+   "env": "vps",
+   "created": "2026-08-15 16:54:23",
+   "job": "",
+   "docs": 39,
+   "macro_f1": 0.440794
+  },
+  {
+   "preset": "screening-preprocess",
+   "status": "succeeded",
+   "env": "vps",
+   "created": "2026-08-15 16:54:23",
+   "job": "",
+   "docs": 39,
+   "macro_f1": 0.459557
+  },
+  {
+   "preset": "screening-preprocess",
+   "status": "succeeded",
+   "env": "vps",
+   "created": "2026-08-15 16:54:23",
+   "job": "",
+   "docs": 39,
+   "macro_f1": 0.473791
+  },
+  {
+   "preset": "screening-preprocess",
+   "status": "succeeded",
+   "env": "vps",
+   "created": "2026-08-15 16:54:23",
+   "job": "",
+   "docs": 39,
+   "macro_f1": 0.447648
+  },
+  {
+   "preset": "screening-preprocess",
+   "status": "succeeded",
+   "env": "vps",
+   "created": "2026-08-15 16:54:23",
+   "job": "",
+   "docs": 39,
+   "macro_f1": 0.453669
+  },
+  {
+   "preset": "screening-preprocess",
+   "status": "succeeded",
+   "env": "vps",
+   "created": "2026-08-15 16:54:23",
+   "job": "",
+   "docs": 39,
+   "macro_f1": 0.471942
+  },
+  {
+   "preset": "screening-preprocess",
+   "status": "succeeded",
+   "env": "vps",
+   "created": "2026-08-15 16:54:23",
+   "job": "",
+   "docs": 39,
+   "macro_f1": 0.442871
+  },
+  {
+   "preset": "learning-curve",
+   "status": "succeeded",
+   "env": "vps",
+   "created": "2026-08-15 16:54:22",
+   "job": "",
+   "docs": 39,
+   "macro_f1": 0.468958
+  },
+  {
+   "preset": "learning-curve",
+   "status": "succeeded",
+   "env": "vps",
+   "created": "2026-08-15 16:54:22",
+   "job": "",
+   "docs": 39,
+   "macro_f1": 0.468958
+  },
+  {
+   "preset": "learning-curve",
+   "status": "succeeded",
+   "env": "vps",
+   "created": "2026-08-15 16:54:22",
+   "job": "",
+   "docs": 39,
+   "macro_f1": 0.468958
+  },
+  {
+   "preset": "learning-curve",
+   "status": "succeeded",
+   "env": "vps",
+   "created": "2026-08-15 16:54:22",
+   "job": "",
+   "docs": 39,
+   "macro_f1": 0.468958
+  },
+  {
+   "preset": "learning-curve",
+   "status": "succeeded",
+   "env": "vps",
+   "created": "2026-08-15 16:54:22",
+   "job": "",
+   "docs": 39,
+   "macro_f1": 0.468958
+  },
+  {
+   "preset": "learning-curve",
+   "status": "succeeded",
+   "env": "vps",
+   "created": "2026-08-15 16:54:22",
+   "job": "",
+   "docs": 39,
+   "macro_f1": 0.466983
+  },
+  {
+   "preset": "learning-curve",
+   "status": "succeeded",
+   "env": "vps",
+   "created": "2026-08-15 16:54:22",
+   "job": "",
+   "docs": 39,
+   "macro_f1": 0.469118
+  },
+  {
+   "preset": "learning-curve",
+   "status": "succeeded",
+   "env": "vps",
+   "created": "2026-08-15 16:54:22",
+   "job": "",
+   "docs": 39,
+   "macro_f1": 0.471916
+  },
+  {
+   "preset": "learning-curve",
+   "status": "succeeded",
+   "env": "vps",
+   "created": "2026-08-15 16:54:22",
+   "job": "",
+   "docs": 39,
+   "macro_f1": 0.467781
+  },
+  {
+   "preset": "learning-curve",
+   "status": "succeeded",
+   "env": "vps",
+   "created": "2026-08-15 16:54:22",
+   "job": "",
+   "docs": 39,
+   "macro_f1": 0.471146
+  },
+  {
+   "preset": "learning-curve",
+   "status": "succeeded",
+   "env": "vps",
+   "created": "2026-08-15 16:54:22",
+   "job": "",
+   "docs": 39,
+   "macro_f1": 0.454411
+  },
+  {
+   "preset": "learning-curve",
+   "status": "succeeded",
+   "env": "vps",
+   "created": "2026-08-15 16:54:22",
+   "job": "",
+   "docs": 39,
+   "macro_f1": 0.457658
+  },
+  {
+   "preset": "learning-curve",
+   "status": "succeeded",
+   "env": "vps",
+   "created": "2026-08-15 16:54:22",
+   "job": "",
+   "docs": 39,
+   "macro_f1": 0.467863
+  },
+  {
+   "preset": "learning-curve",
+   "status": "succeeded",
+   "env": "vps",
+   "created": "2026-08-15 16:54:22",
+   "job": "",
+   "docs": 39,
+   "macro_f1": 0.462221
+  },
+  {
+   "preset": "learning-curve",
+   "status": "succeeded",
+   "env": "vps",
+   "created": "2026-08-15 16:54:22",
+   "job": "",
+   "docs": 39,
+   "macro_f1": 0.45964
+  },
+  {
+   "preset": "learning-curve",
+   "status": "succeeded",
+   "env": "vps",
+   "created": "2026-08-15 16:54:22",
+   "job": "",
+   "docs": 39,
+   "macro_f1": 0.435416
+  },
+  {
+   "preset": "learning-curve",
+   "status": "succeeded",
+   "env": "vps",
+   "created": "2026-08-15 16:54:22",
+   "job": "",
+   "docs": 39,
+   "macro_f1": 0.44633
+  },
+  {
+   "preset": "learning-curve",
+   "status": "succeeded",
+   "env": "vps",
+   "created": "2026-08-15 16:54:22",
+   "job": "",
+   "docs": 39,
+   "macro_f1": 0.435118
+  },
+  {
+   "preset": "learning-curve",
+   "status": "succeeded",
+   "env": "vps",
+   "created": "2026-08-15 16:54:22",
+   "job": "",
+   "docs": 39,
+   "macro_f1": 0.448484
+  },
+  {
+   "preset": "learning-curve",
+   "status": "succeeded",
+   "env": "vps",
+   "created": "2026-08-15 16:54:22",
+   "job": "",
+   "docs": 39,
+   "macro_f1": 0.430877
+  },
+  {
+   "preset": "learning-curve",
+   "status": "succeeded",
+   "env": "vps",
+   "created": "2026-08-15 16:54:22",
+   "job": "",
+   "docs": 39,
+   "macro_f1": 0.395367
+  },
+  {
+   "preset": "learning-curve",
+   "status": "succeeded",
+   "env": "vps",
+   "created": "2026-08-15 16:54:22",
+   "job": "",
+   "docs": 39,
+   "macro_f1": 0.421895
+  },
+  {
+   "preset": "learning-curve",
+   "status": "succeeded",
+   "env": "vps",
+   "created": "2026-08-15 16:54:22",
+   "job": "",
+   "docs": 39,
+   "macro_f1": 0.354697
+  },
+  {
+   "preset": "learning-curve",
+   "status": "succeeded",
+   "env": "vps",
+   "created": "2026-08-15 16:54:22",
+   "job": "",
+   "docs": 39,
+   "macro_f1": 0.423344
+  },
+  {
+   "preset": "learning-curve",
+   "status": "succeeded",
+   "env": "vps",
+   "created": "2026-08-15 16:54:22",
+   "job": "",
+   "docs": 39,
+   "macro_f1": 0.403584
+  },
+  {
+   "preset": "embeddings-frozen",
+   "status": "succeeded",
+   "env": "vps",
+   "created": "2026-08-15 16:54:22",
+   "job": "",
+   "docs": 39,
+   "macro_f1": 0.4147
+  },
+  {
+   "preset": "embeddings-frozen",
+   "status": "succeeded",
+   "env": "vps",
+   "created": "2026-08-15 16:54:22",
+   "job": "",
+   "docs": 39,
+   "macro_f1": 0.424687
+  },
+  {
+   "preset": "embeddings-frozen",
+   "status": "succeeded",
+   "env": "vps",
+   "created": "2026-08-15 16:54:22",
+   "job": "",
+   "docs": 39,
+   "macro_f1": 0.421191
+  },
+  {
+   "preset": "embeddings-frozen",
+   "status": "succeeded",
+   "env": "vps",
+   "created": "2026-08-15 16:54:22",
+   "job": "",
+   "docs": 39,
+   "macro_f1": 0.429741
+  },
+  {
+   "preset": "embeddings-frozen",
+   "status": "succeeded",
+   "env": "vps",
+   "created": "2026-08-15 16:54:22",
+   "job": "",
+   "docs": 39,
+   "macro_f1": 0.388664
+  },
+  {
+   "preset": "embeddings-frozen",
+   "status": "succeeded",
+   "env": "vps",
+   "created": "2026-08-15 16:54:22",
+   "job": "",
+   "docs": 39,
+   "macro_f1": 0.460824
+  },
+  {
+   "preset": "embeddings-frozen",
+   "status": "succeeded",
+   "env": "vps",
+   "created": "2026-08-15 16:54:22",
+   "job": "",
+   "docs": 39,
+   "macro_f1": 0.457099
+  },
+  {
+   "preset": "embeddings-frozen",
+   "status": "succeeded",
+   "env": "vps",
+   "created": "2026-08-15 16:54:22",
+   "job": "",
+   "docs": 39,
+   "macro_f1": 0.448463
+  },
+  {
+   "preset": "embeddings-frozen",
+   "status": "succeeded",
+   "env": "vps",
+   "created": "2026-08-15 16:54:22",
+   "job": "",
+   "docs": 39,
+   "macro_f1": 0.400527
+  },
+  {
+   "preset": "embeddings-frozen",
+   "status": "succeeded",
+   "env": "vps",
+   "created": "2026-08-15 16:54:22",
+   "job": "",
+   "docs": 39,
+   "macro_f1": 0.479152
+  },
+  {
+   "preset": "embeddings-frozen",
+   "status": "succeeded",
+   "env": "vps",
+   "created": "2026-08-15 16:54:22",
+   "job": "",
+   "docs": 39,
+   "macro_f1": 0.495306
+  },
+  {
+   "preset": "embeddings-frozen",
+   "status": "succeeded",
+   "env": "vps",
+   "created": "2026-08-15 16:54:22",
+   "job": "",
+   "docs": 39,
+   "macro_f1": 0.465749
+  },
+  {
+   "preset": "embeddings-frozen",
+   "status": "succeeded",
+   "env": "vps",
+   "created": "2026-08-15 16:54:22",
+   "job": "",
+   "docs": 39,
+   "macro_f1": 0.453035
+  },
+  {
+   "preset": "embeddings-frozen",
+   "status": "succeeded",
+   "env": "vps",
+   "created": "2026-08-15 16:54:22",
+   "job": "",
+   "docs": 39,
+   "macro_f1": 0.4749
+  },
+  {
+   "preset": "embeddings-frozen",
+   "status": "succeeded",
+   "env": "vps",
+   "created": "2026-08-15 16:54:22",
+   "job": "",
+   "docs": 39,
+   "macro_f1": 0.468997
+  },
+  {
+   "preset": "embeddings-frozen",
+   "status": "succeeded",
+   "env": "vps",
+   "created": "2026-08-15 16:54:22",
+   "job": "",
+   "docs": 39,
+   "macro_f1": 0.475784
+  },
+  {
+   "preset": "ablation-label-noise",
+   "status": "succeeded",
+   "env": "vps",
+   "created": "2026-08-15 16:54:21",
+   "job": "",
+   "docs": 39,
+   "macro_f1": 0.403819
+  },
+  {
+   "preset": "ablation-label-noise",
+   "status": "succeeded",
+   "env": "vps",
+   "created": "2026-08-15 16:54:21",
+   "job": "",
+   "docs": 39,
+   "macro_f1": 0.44165
+  },
+  {
+   "preset": "ablation-label-noise",
+   "status": "succeeded",
+   "env": "vps",
+   "created": "2026-08-15 16:54:21",
+   "job": "",
+   "docs": 39,
+   "macro_f1": 0.454221
+  },
+  {
+   "preset": "ablation-label-noise",
+   "status": "succeeded",
+   "env": "vps",
+   "created": "2026-08-15 16:54:21",
+   "job": "",
+   "docs": 39,
+   "macro_f1": 0.468958
+  },
+  {
+   "preset": "knn-explainable",
+   "status": "succeeded",
+   "env": "vps",
+   "created": "2026-08-15 16:54:21",
+   "job": "",
+   "docs": 39,
+   "macro_f1": 0.457099
+  },
+  {
+   "preset": "llm-judges-baseline",
+   "status": "succeeded",
+   "env": "vps",
+   "created": "2026-08-15 16:54:20",
+   "job": "",
+   "docs": 39,
+   "macro_f1": 0.192597
+  },
+  {
+   "preset": "llm-judges-baseline",
+   "status": "succeeded",
+   "env": "vps",
+   "created": "2026-08-15 16:54:20",
+   "job": "",
+   "docs": 39,
+   "macro_f1": 0.194897
+  },
+  {
+   "preset": "llm-judges-baseline",
+   "status": "succeeded",
+   "env": "vps",
+   "created": "2026-08-15 16:54:20",
+   "job": "",
+   "docs": 39,
+   "macro_f1": 0.317312
+  },
+  {
+   "preset": "llm-judges-baseline",
+   "status": "succeeded",
+   "env": "vps",
+   "created": "2026-08-15 16:54:20",
+   "job": "",
+   "docs": 39,
+   "macro_f1": 0.304537
+  },
+  {
+   "preset": "position-only",
+   "status": "succeeded",
+   "env": "vps",
+   "created": "2026-08-15 16:54:20",
+   "job": "",
+   "docs": 39,
+   "macro_f1": 0.0895
+  },
+  {
+   "preset": "baseline-fast",
+   "status": "succeeded",
+   "env": "vps",
+   "created": "2026-08-15 16:54:19",
+   "job": "",
+   "docs": 39,
+   "macro_f1": 0.441669
+  },
+  {
+   "preset": "legal-bert-finetune",
+   "status": "succeeded",
+   "env": "g5k_gpu",
+   "created": "2026-08-15 08:59:21",
+   "job": "2058963",
+   "docs": 39,
+   "macro_f1": 0.5155
+  },
+  {
+   "preset": "legal-bert-finetune",
+   "status": "cancelled",
+   "env": "inconnu",
+   "created": "2026-08-15 02:01:11",
+   "job": "6853275",
+   "docs": null,
+   "macro_f1": null
+  },
+  {
+   "preset": "legal-bert-finetune",
+   "status": "failed",
+   "env": "inconnu",
+   "created": "2026-08-15 01:59:34",
+   "job": "",
+   "docs": null,
+   "macro_f1": null
+  },
+  {
+   "preset": "",
+   "status": "partial",
+   "env": "g5k_cpu",
+   "created": "2026-08-14 21:14:09",
+   "job": "6853020",
+   "docs": null,
+   "macro_f1": 0.422346
+  },
+  {
+   "preset": "",
+   "status": "failed",
+   "env": "inconnu",
+   "created": "2026-08-14 20:50:51",
+   "job": "6852994",
+   "docs": null,
+   "macro_f1": null
+  },
+  {
+   "preset": "",
+   "status": "failed",
+   "env": "inconnu",
+   "created": "2026-08-14 20:45:33",
+   "job": "6852987",
+   "docs": null,
+   "macro_f1": null
+  },
+  {
+   "preset": "",
+   "status": "failed",
+   "env": "inconnu",
+   "created": "2026-08-14 20:40:33",
+   "job": "6852979",
+   "docs": null,
+   "macro_f1": null
+  },
+  {
+   "preset": "",
+   "status": "failed",
+   "env": "inconnu",
+   "created": "2026-08-14 19:59:40",
+   "job": "6852942",
+   "docs": null,
+   "macro_f1": null
+  },
+  {
+   "preset": "",
+   "status": "succeeded",
+   "env": "vps",
+   "created": "2026-08-14 19:46:11",
+   "job": "",
+   "docs": 39,
+   "macro_f1": 0.468958
+  },
+  {
+   "preset": "",
+   "status": "succeeded",
+   "env": "vps",
+   "created": "2026-08-14 19:46:11",
+   "job": "",
+   "docs": 39,
+   "macro_f1": 0.468958
+  },
+  {
+   "preset": "",
+   "status": "succeeded",
+   "env": "vps",
+   "created": "2026-08-14 19:46:11",
+   "job": "",
+   "docs": 39,
+   "macro_f1": 0.468958
+  },
+  {
+   "preset": "",
+   "status": "succeeded",
+   "env": "vps",
+   "created": "2026-08-14 19:46:11",
+   "job": "",
+   "docs": 39,
+   "macro_f1": 0.468958
+  },
+  {
+   "preset": "",
+   "status": "succeeded",
+   "env": "vps",
+   "created": "2026-08-14 19:46:11",
+   "job": "",
+   "docs": 39,
+   "macro_f1": 0.468958
+  },
+  {
+   "preset": "",
+   "status": "succeeded",
+   "env": "vps",
+   "created": "2026-08-14 19:46:11",
+   "job": "",
+   "docs": 39,
+   "macro_f1": 0.466983
+  },
+  {
+   "preset": "",
+   "status": "succeeded",
+   "env": "vps",
+   "created": "2026-08-14 19:46:11",
+   "job": "",
+   "docs": 39,
+   "macro_f1": 0.469118
+  },
+  {
+   "preset": "",
+   "status": "succeeded",
+   "env": "vps",
+   "created": "2026-08-14 19:46:11",
+   "job": "",
+   "docs": 39,
+   "macro_f1": 0.471916
+  },
+  {
+   "preset": "",
+   "status": "succeeded",
+   "env": "vps",
+   "created": "2026-08-14 19:46:11",
+   "job": "",
+   "docs": 39,
+   "macro_f1": 0.467781
+  },
+  {
+   "preset": "",
+   "status": "succeeded",
+   "env": "vps",
+   "created": "2026-08-14 19:46:11",
+   "job": "",
+   "docs": 39,
+   "macro_f1": 0.471146
+  },
+  {
+   "preset": "",
+   "status": "succeeded",
+   "env": "vps",
+   "created": "2026-08-14 19:46:11",
+   "job": "",
+   "docs": 39,
+   "macro_f1": 0.454411
+  },
+  {
+   "preset": "",
+   "status": "succeeded",
+   "env": "vps",
+   "created": "2026-08-14 19:46:11",
+   "job": "",
+   "docs": 39,
+   "macro_f1": 0.457658
+  },
+  {
+   "preset": "",
+   "status": "succeeded",
+   "env": "vps",
+   "created": "2026-08-14 19:46:11",
+   "job": "",
+   "docs": 39,
+   "macro_f1": 0.467863
+  },
+  {
+   "preset": "",
+   "status": "succeeded",
+   "env": "vps",
+   "created": "2026-08-14 19:46:11",
+   "job": "",
+   "docs": 39,
+   "macro_f1": 0.462221
+  },
+  {
+   "preset": "",
+   "status": "succeeded",
+   "env": "vps",
+   "created": "2026-08-14 19:46:10",
+   "job": "",
+   "docs": 39,
+   "macro_f1": 0.45964
+  },
+  {
+   "preset": "",
+   "status": "succeeded",
+   "env": "vps",
+   "created": "2026-08-14 19:46:10",
+   "job": "",
+   "docs": 39,
+   "macro_f1": 0.435416
+  },
+  {
+   "preset": "",
+   "status": "succeeded",
+   "env": "vps",
+   "created": "2026-08-14 19:46:10",
+   "job": "",
+   "docs": 39,
+   "macro_f1": 0.44633
+  },
+  {
+   "preset": "",
+   "status": "succeeded",
+   "env": "vps",
+   "created": "2026-08-14 19:46:10",
+   "job": "",
+   "docs": 39,
+   "macro_f1": 0.435118
+  },
+  {
+   "preset": "",
+   "status": "succeeded",
+   "env": "vps",
+   "created": "2026-08-14 19:46:10",
+   "job": "",
+   "docs": 39,
+   "macro_f1": 0.448484
+  },
+  {
+   "preset": "",
+   "status": "succeeded",
+   "env": "vps",
+   "created": "2026-08-14 19:46:10",
+   "job": "",
+   "docs": 39,
+   "macro_f1": 0.430877
+  },
+  {
+   "preset": "",
+   "status": "succeeded",
+   "env": "vps",
+   "created": "2026-08-14 19:46:10",
+   "job": "",
+   "docs": 39,
+   "macro_f1": 0.395367
+  },
+  {
+   "preset": "",
+   "status": "succeeded",
+   "env": "vps",
+   "created": "2026-08-14 19:46:10",
+   "job": "",
+   "docs": 39,
+   "macro_f1": 0.421895
+  },
+  {
+   "preset": "",
+   "status": "succeeded",
+   "env": "vps",
+   "created": "2026-08-14 19:46:10",
+   "job": "",
+   "docs": 39,
+   "macro_f1": 0.354697
+  },
+  {
+   "preset": "",
+   "status": "succeeded",
+   "env": "vps",
+   "created": "2026-08-14 19:46:10",
+   "job": "",
+   "docs": 39,
+   "macro_f1": 0.423344
+  },
+  {
+   "preset": "",
+   "status": "succeeded",
+   "env": "vps",
+   "created": "2026-08-14 19:46:10",
+   "job": "",
+   "docs": 39,
+   "macro_f1": 0.403584
+  },
+  {
+   "preset": "",
+   "status": "succeeded",
+   "env": "vps",
+   "created": "2026-08-14 17:53:31",
+   "job": "",
+   "docs": 39,
+   "macro_f1": 0.4147
+  },
+  {
+   "preset": "",
+   "status": "succeeded",
+   "env": "vps",
+   "created": "2026-08-14 17:53:31",
+   "job": "",
+   "docs": 39,
+   "macro_f1": 0.424687
+  },
+  {
+   "preset": "",
+   "status": "succeeded",
+   "env": "vps",
+   "created": "2026-08-14 17:53:31",
+   "job": "",
+   "docs": 39,
+   "macro_f1": 0.421191
+  },
+  {
+   "preset": "",
+   "status": "succeeded",
+   "env": "vps",
+   "created": "2026-08-14 17:53:31",
+   "job": "",
+   "docs": 39,
+   "macro_f1": 0.429741
+  },
+  {
+   "preset": "",
+   "status": "succeeded",
+   "env": "vps",
+   "created": "2026-08-14 17:53:31",
+   "job": "",
+   "docs": 39,
+   "macro_f1": 0.388664
+  },
+  {
+   "preset": "",
+   "status": "succeeded",
+   "env": "vps",
+   "created": "2026-08-14 17:53:31",
+   "job": "",
+   "docs": 39,
+   "macro_f1": 0.460824
+  },
+  {
+   "preset": "",
+   "status": "succeeded",
+   "env": "vps",
+   "created": "2026-08-14 17:53:31",
+   "job": "",
+   "docs": 39,
+   "macro_f1": 0.457099
+  },
+  {
+   "preset": "",
+   "status": "succeeded",
+   "env": "vps",
+   "created": "2026-08-14 17:53:31",
+   "job": "",
+   "docs": 39,
+   "macro_f1": 0.448463
+  },
+  {
+   "preset": "",
+   "status": "succeeded",
+   "env": "vps",
+   "created": "2026-08-14 17:53:31",
+   "job": "",
+   "docs": 39,
+   "macro_f1": 0.400527
+  },
+  {
+   "preset": "",
+   "status": "succeeded",
+   "env": "vps",
+   "created": "2026-08-14 17:53:31",
+   "job": "",
+   "docs": 39,
+   "macro_f1": 0.479152
+  },
+  {
+   "preset": "",
+   "status": "succeeded",
+   "env": "vps",
+   "created": "2026-08-14 17:53:31",
+   "job": "",
+   "docs": 39,
+   "macro_f1": 0.495306
+  },
+  {
+   "preset": "",
+   "status": "succeeded",
+   "env": "vps",
+   "created": "2026-08-14 17:53:31",
+   "job": "",
+   "docs": 39,
+   "macro_f1": 0.465749
+  },
+  {
+   "preset": "",
+   "status": "succeeded",
+   "env": "vps",
+   "created": "2026-08-14 17:53:31",
+   "job": "",
+   "docs": 39,
+   "macro_f1": 0.452791
+  },
+  {
+   "preset": "",
+   "status": "succeeded",
+   "env": "vps",
+   "created": "2026-08-14 17:53:31",
+   "job": "",
+   "docs": 39,
+   "macro_f1": 0.4749
+  },
+  {
+   "preset": "",
+   "status": "succeeded",
+   "env": "vps",
+   "created": "2026-08-14 17:53:31",
+   "job": "",
+   "docs": 39,
+   "macro_f1": 0.468997
+  },
+  {
+   "preset": "",
+   "status": "succeeded",
+   "env": "vps",
+   "created": "2026-08-14 17:53:31",
+   "job": "",
+   "docs": 39,
+   "macro_f1": 0.475784
+  },
+  {
+   "preset": "",
+   "status": "succeeded",
+   "env": "vps",
+   "created": "2026-08-14 17:53:12",
+   "job": "",
+   "docs": 39,
+   "macro_f1": 0.457767
+  },
+  {
+   "preset": "",
+   "status": "succeeded",
+   "env": "vps",
+   "created": "2026-08-14 17:53:12",
+   "job": "",
+   "docs": 39,
+   "macro_f1": 0.47153
+  },
+  {
+   "preset": "",
+   "status": "succeeded",
+   "env": "vps",
+   "created": "2026-08-14 17:53:12",
+   "job": "",
+   "docs": 39,
+   "macro_f1": 0.43597
+  },
+  {
+   "preset": "",
+   "status": "succeeded",
+   "env": "vps",
+   "created": "2026-08-14 17:53:12",
+   "job": "",
+   "docs": 39,
+   "macro_f1": 0.455735
+  },
+  {
+   "preset": "",
+   "status": "succeeded",
+   "env": "vps",
+   "created": "2026-08-14 17:53:12",
+   "job": "",
+   "docs": 39,
+   "macro_f1": 0.466082
+  },
+  {
+   "preset": "",
+   "status": "succeeded",
+   "env": "vps",
+   "created": "2026-08-14 17:53:12",
+   "job": "",
+   "docs": 39,
+   "macro_f1": 0.431298
+  },
+  {
+   "preset": "",
+   "status": "succeeded",
+   "env": "vps",
+   "created": "2026-08-14 17:53:12",
+   "job": "",
+   "docs": 39,
+   "macro_f1": 0.466767
+  },
+  {
+   "preset": "",
+   "status": "succeeded",
+   "env": "vps",
+   "created": "2026-08-14 17:53:12",
+   "job": "",
+   "docs": 39,
+   "macro_f1": 0.472393
+  },
+  {
+   "preset": "",
+   "status": "succeeded",
+   "env": "vps",
+   "created": "2026-08-14 17:53:12",
+   "job": "",
+   "docs": 39,
+   "macro_f1": 0.44404
+  },
+  {
+   "preset": "",
+   "status": "succeeded",
+   "env": "vps",
+   "created": "2026-08-14 17:53:12",
+   "job": "",
+   "docs": 39,
+   "macro_f1": 0.455931
+  },
+  {
+   "preset": "",
+   "status": "succeeded",
+   "env": "vps",
+   "created": "2026-08-14 17:53:12",
+   "job": "",
+   "docs": 39,
+   "macro_f1": 0.470435
+  },
+  {
+   "preset": "",
+   "status": "succeeded",
+   "env": "vps",
+   "created": "2026-08-14 17:53:12",
+   "job": "",
+   "docs": 39,
+   "macro_f1": 0.436189
+  },
+  {
+   "preset": "",
+   "status": "succeeded",
+   "env": "vps",
+   "created": "2026-08-14 17:53:12",
+   "job": "",
+   "docs": 39,
+   "macro_f1": 0.460814
+  },
+  {
+   "preset": "",
+   "status": "succeeded",
+   "env": "vps",
+   "created": "2026-08-14 17:53:12",
+   "job": "",
+   "docs": 39,
+   "macro_f1": 0.476307
+  },
+  {
+   "preset": "",
+   "status": "succeeded",
+   "env": "vps",
+   "created": "2026-08-14 17:53:12",
+   "job": "",
+   "docs": 39,
+   "macro_f1": 0.441881
+  },
+  {
+   "preset": "",
+   "status": "succeeded",
+   "env": "vps",
+   "created": "2026-08-14 17:53:12",
+   "job": "",
+   "docs": 39,
+   "macro_f1": 0.456601
+  },
+  {
+   "preset": "",
+   "status": "succeeded",
+   "env": "vps",
+   "created": "2026-08-14 17:53:12",
+   "job": "",
+   "docs": 39,
+   "macro_f1": 0.473228
+  },
+  {
+   "preset": "",
+   "status": "succeeded",
+   "env": "vps",
+   "created": "2026-08-14 17:53:12",
+   "job": "",
+   "docs": 39,
+   "macro_f1": 0.440794
+  },
+  {
+   "preset": "",
+   "status": "succeeded",
+   "env": "vps",
+   "created": "2026-08-14 17:53:12",
+   "job": "",
+   "docs": 39,
+   "macro_f1": 0.459557
+  },
+  {
+   "preset": "",
+   "status": "succeeded",
+   "env": "vps",
+   "created": "2026-08-14 17:53:12",
+   "job": "",
+   "docs": 39,
+   "macro_f1": 0.473791
+  },
+  {
+   "preset": "",
+   "status": "succeeded",
+   "env": "vps",
+   "created": "2026-08-14 17:53:12",
+   "job": "",
+   "docs": 39,
+   "macro_f1": 0.447648
+  },
+  {
+   "preset": "",
+   "status": "succeeded",
+   "env": "vps",
+   "created": "2026-08-14 17:53:12",
+   "job": "",
+   "docs": 39,
+   "macro_f1": 0.453669
+  },
+  {
+   "preset": "",
+   "status": "succeeded",
+   "env": "vps",
+   "created": "2026-08-14 17:53:12",
+   "job": "",
+   "docs": 39,
+   "macro_f1": 0.471942
+  },
+  {
+   "preset": "",
+   "status": "succeeded",
+   "env": "vps",
+   "created": "2026-08-14 17:53:12",
+   "job": "",
+   "docs": 39,
+   "macro_f1": 0.442871
+  },
+  {
+   "preset": "",
+   "status": "succeeded",
+   "env": "vps",
+   "created": "2026-08-14 17:53:12",
+   "job": "",
+   "docs": 39,
+   "macro_f1": 0.457767
+  },
+  {
+   "preset": "",
+   "status": "succeeded",
+   "env": "vps",
+   "created": "2026-08-14 17:53:12",
+   "job": "",
+   "docs": 39,
+   "macro_f1": 0.47153
+  },
+  {
+   "preset": "",
+   "status": "succeeded",
+   "env": "vps",
+   "created": "2026-08-14 17:53:12",
+   "job": "",
+   "docs": 39,
+   "macro_f1": 0.43597
+  },
+  {
+   "preset": "",
+   "status": "succeeded",
+   "env": "vps",
+   "created": "2026-08-14 17:53:12",
+   "job": "",
+   "docs": 39,
+   "macro_f1": 0.455735
+  },
+  {
+   "preset": "",
+   "status": "succeeded",
+   "env": "vps",
+   "created": "2026-08-14 17:53:12",
+   "job": "",
+   "docs": 39,
+   "macro_f1": 0.466082
+  },
+  {
+   "preset": "",
+   "status": "succeeded",
+   "env": "vps",
+   "created": "2026-08-14 17:53:12",
+   "job": "",
+   "docs": 39,
+   "macro_f1": 0.431298
+  },
+  {
+   "preset": "",
+   "status": "succeeded",
+   "env": "vps",
+   "created": "2026-08-14 17:53:12",
+   "job": "",
+   "docs": 39,
+   "macro_f1": 0.466767
+  },
+  {
+   "preset": "",
+   "status": "succeeded",
+   "env": "vps",
+   "created": "2026-08-14 17:53:12",
+   "job": "",
+   "docs": 39,
+   "macro_f1": 0.472393
+  },
+  {
+   "preset": "",
+   "status": "succeeded",
+   "env": "vps",
+   "created": "2026-08-14 17:53:12",
+   "job": "",
+   "docs": 39,
+   "macro_f1": 0.44404
+  },
+  {
+   "preset": "",
+   "status": "succeeded",
+   "env": "vps",
+   "created": "2026-08-14 17:53:12",
+   "job": "",
+   "docs": 39,
+   "macro_f1": 0.455931
+  },
+  {
+   "preset": "",
+   "status": "succeeded",
+   "env": "vps",
+   "created": "2026-08-14 17:53:12",
+   "job": "",
+   "docs": 39,
+   "macro_f1": 0.470435
+  },
+  {
+   "preset": "",
+   "status": "succeeded",
+   "env": "vps",
+   "created": "2026-08-14 17:53:12",
+   "job": "",
+   "docs": 39,
+   "macro_f1": 0.436189
+  },
+  {
+   "preset": "",
+   "status": "succeeded",
+   "env": "vps",
+   "created": "2026-08-14 17:53:12",
+   "job": "",
+   "docs": 39,
+   "macro_f1": 0.460814
+  },
+  {
+   "preset": "",
+   "status": "succeeded",
+   "env": "vps",
+   "created": "2026-08-14 17:53:12",
+   "job": "",
+   "docs": 39,
+   "macro_f1": 0.476307
+  },
+  {
+   "preset": "",
+   "status": "succeeded",
+   "env": "vps",
+   "created": "2026-08-14 17:53:12",
+   "job": "",
+   "docs": 39,
+   "macro_f1": 0.441881
+  },
+  {
+   "preset": "",
+   "status": "succeeded",
+   "env": "vps",
+   "created": "2026-08-14 17:53:12",
+   "job": "",
+   "docs": 39,
+   "macro_f1": 0.456601
+  },
+  {
+   "preset": "",
+   "status": "succeeded",
+   "env": "vps",
+   "created": "2026-08-14 17:53:12",
+   "job": "",
+   "docs": 39,
+   "macro_f1": 0.473228
+  },
+  {
+   "preset": "",
+   "status": "succeeded",
+   "env": "vps",
+   "created": "2026-08-14 17:53:12",
+   "job": "",
+   "docs": 39,
+   "macro_f1": 0.440794
+  },
+  {
+   "preset": "",
+   "status": "succeeded",
+   "env": "vps",
+   "created": "2026-08-14 17:53:12",
+   "job": "",
+   "docs": 39,
+   "macro_f1": 0.459557
+  },
+  {
+   "preset": "",
+   "status": "succeeded",
+   "env": "vps",
+   "created": "2026-08-14 17:53:12",
+   "job": "",
+   "docs": 39,
+   "macro_f1": 0.473791
+  },
+  {
+   "preset": "",
+   "status": "succeeded",
+   "env": "vps",
+   "created": "2026-08-14 17:53:12",
+   "job": "",
+   "docs": 39,
+   "macro_f1": 0.447648
+  },
+  {
+   "preset": "",
+   "status": "succeeded",
+   "env": "vps",
+   "created": "2026-08-14 17:53:12",
+   "job": "",
+   "docs": 39,
+   "macro_f1": 0.453669
+  },
+  {
+   "preset": "",
+   "status": "succeeded",
+   "env": "vps",
+   "created": "2026-08-14 17:53:12",
+   "job": "",
+   "docs": 39,
+   "macro_f1": 0.471942
+  },
+  {
+   "preset": "",
+   "status": "succeeded",
+   "env": "vps",
+   "created": "2026-08-14 17:53:12",
+   "job": "",
+   "docs": 39,
+   "macro_f1": 0.442871
+  },
+  {
+   "preset": "",
+   "status": "succeeded",
+   "env": "vps",
+   "created": "2026-08-14 17:52:20",
+   "job": "",
+   "docs": 39,
+   "macro_f1": 0.192597
+  },
+  {
+   "preset": "",
+   "status": "succeeded",
+   "env": "vps",
+   "created": "2026-08-14 17:52:20",
+   "job": "",
+   "docs": 39,
+   "macro_f1": 0.194897
+  },
+  {
+   "preset": "",
+   "status": "succeeded",
+   "env": "vps",
+   "created": "2026-08-14 17:52:20",
+   "job": "",
+   "docs": 39,
+   "macro_f1": 0.317312
+  },
+  {
+   "preset": "",
+   "status": "succeeded",
+   "env": "vps",
+   "created": "2026-08-14 17:52:20",
+   "job": "",
+   "docs": 39,
+   "macro_f1": 0.304537
+  },
+  {
+   "preset": "",
+   "status": "succeeded",
+   "env": "g5k_cpu",
+   "created": "2026-08-14 16:11:57",
+   "job": "6852690",
+   "docs": 36,
+   "macro_f1": 0.441204
+  },
+  {
+   "preset": "",
+   "status": "succeeded",
+   "env": "g5k_cpu",
+   "created": "2026-08-14 16:11:57",
+   "job": "6852689",
+   "docs": 36,
+   "macro_f1": 0.44006
+  },
+  {
+   "preset": "",
+   "status": "failed",
+   "env": "inconnu",
+   "created": "2026-08-14 16:11:57",
+   "job": "6852688",
+   "docs": null,
+   "macro_f1": null
+  },
+  {
+   "preset": "",
+   "status": "succeeded",
+   "env": "g5k_cpu",
+   "created": "2026-08-14 16:11:57",
+   "job": "6852684",
+   "docs": 36,
+   "macro_f1": 0.44027
+  },
+  {
+   "preset": "",
+   "status": "failed",
+   "env": "inconnu",
+   "created": "2026-08-14 16:11:46",
+   "job": "6852682",
+   "docs": null,
+   "macro_f1": null
+  },
+  {
+   "preset": "",
+   "status": "succeeded",
+   "env": "g5k_cpu",
+   "created": "2026-08-14 16:11:46",
+   "job": "6852678",
+   "docs": 36,
+   "macro_f1": 0.44006
+  },
+  {
+   "preset": "",
+   "status": "failed",
+   "env": "inconnu",
+   "created": "2026-08-14 16:11:46",
+   "job": "6852676",
+   "docs": null,
+   "macro_f1": null
+  },
+  {
+   "preset": "",
+   "status": "failed",
+   "env": "inconnu",
+   "created": "2026-08-14 16:11:46",
+   "job": "6852674",
+   "docs": null,
+   "macro_f1": null
+  },
+  {
+   "preset": "legal-bert-finetune",
+   "status": "succeeded",
+   "env": "g5k_gpu",
+   "created": "2026-08-14 15:48:23",
+   "job": "2058813",
+   "docs": 36,
+   "macro_f1": 0.428992
+  },
+  {
+   "preset": "baseline-fast",
+   "status": "cancelled",
+   "env": "inconnu",
+   "created": "2026-08-14 14:29:26",
+   "job": "6852549",
+   "docs": null,
+   "macro_f1": null
+  },
+  {
+   "preset": "baseline-fast",
+   "status": "succeeded",
+   "env": "g5k_cpu",
+   "created": "2026-08-14 14:27:19",
+   "job": "6852543",
+   "docs": 36,
+   "macro_f1": 0.447738
+  },
+  {
+   "preset": "baseline-fast",
+   "status": "failed",
+   "env": "inconnu",
+   "created": "2026-08-14 14:10:46",
+   "job": "4018437",
+   "docs": null,
+   "macro_f1": null
+  },
+  {
+   "preset": "baseline-fast",
+   "status": "failed",
+   "env": "inconnu",
+   "created": "2026-08-14 14:09:45",
+   "job": "",
+   "docs": null,
+   "macro_f1": null
+  },
+  {
+   "preset": "",
+   "status": "succeeded",
+   "env": "vps",
+   "created": "2026-08-14 13:14:16",
+   "job": "",
+   "docs": 39,
+   "macro_f1": 0.468958
+  },
+  {
+   "preset": "",
+   "status": "succeeded",
+   "env": "vps",
+   "created": "2026-08-14 12:12:24",
+   "job": "",
+   "docs": 36,
+   "macro_f1": 0.464082
+  },
+  {
+   "preset": "",
+   "status": "succeeded",
+   "env": "vps",
+   "created": "2026-08-14 11:33:34",
+   "job": "",
+   "docs": 36,
+   "macro_f1": 0.464082
+  },
+  {
+   "preset": "",
+   "status": "failed",
+   "env": "inconnu",
+   "created": "2026-08-14 10:39:02",
+   "job": "",
+   "docs": null,
+   "macro_f1": null
+  },
+  {
+   "preset": "",
+   "status": "failed",
+   "env": "inconnu",
+   "created": "2026-08-12 08:37:34",
+   "job": "",
+   "docs": null,
+   "macro_f1": null
+  },
+  {
+   "preset": "",
+   "status": "failed",
+   "env": "inconnu",
+   "created": "2026-08-11 22:04:12",
+   "job": "",
+   "docs": null,
+   "macro_f1": null
+  },
+  {
+   "preset": "",
+   "status": "succeeded",
+   "env": "vps",
+   "created": "2026-08-11 22:01:42",
+   "job": "",
+   "docs": 36,
+   "macro_f1": 0.44027
+  },
+  {
+   "preset": "",
+   "status": "succeeded",
+   "env": "vps",
+   "created": "2026-08-11 22:00:03",
+   "job": "",
+   "docs": 36,
+   "macro_f1": 0.091715
+  },
+  {
+   "preset": "",
+   "status": "succeeded",
+   "env": "vps",
+   "created": "2026-08-11 21:58:25",
+   "job": "",
+   "docs": 36,
+   "macro_f1": 0.289666
+  },
+  {
+   "preset": "",
+   "status": "succeeded",
+   "env": "vps",
+   "created": "2026-08-11 21:31:48",
+   "job": "",
+   "docs": 36,
+   "macro_f1": 0.447738
+  }
+ ]
+}
