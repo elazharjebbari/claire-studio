@@ -21,11 +21,15 @@ import { AGREEMENT_META, RISK_META, AUTO_META } from "@/lib/gold/styling";
 import { llmJudgeLabel } from "@/lib/llmJudges";
 import type { GoldSentenceRow } from "@/lib/gold/types";
 import type { DisplayLang } from "@/lib/prefs/schema";
+import { CANONICAL_TAXONOMY, type TaxonomyId } from "@/lib/taxonomy";
+import { CategoryChip } from "@/components/taxonomy/CategoryChip";
 
 export interface GoldInspectorProps {
   sentence: GoldSentenceRow | null;
   /** VO / bilingue / FR — même réglage que le panneau de lecture. */
   displayLang?: DisplayLang;
+  /** Grille de lecture des thèmes (affichage seulement : on décide toujours en T20). */
+  taxonomy?: TaxonomyId;
   canDecide: boolean;
   pending: boolean;
   onDecide: (
@@ -53,6 +57,7 @@ export function candidatePrimaries(s: GoldSentenceRow): string[] {
 export function GoldInspectorPanel({
   sentence,
   displayLang = "orig",
+  taxonomy = CANONICAL_TAXONOMY,
   canDecide,
   pending,
   onDecide,
@@ -128,10 +133,12 @@ export function GoldInspectorPanel({
                 {a.displayName.slice(0, 1).toUpperCase()}
               </span>
               <span className="min-w-0 truncate text-ink-muted">{a.displayName}</span>
-              <span className="ml-auto font-mono text-ink">{a.primary}</span>
-              {a.secondaries.length > 0 && (
-                <span className="font-mono text-[11px] text-ink-muted">+{a.secondaries.join(",")}</span>
-              )}
+              <span className="ml-auto flex flex-wrap items-center justify-end gap-1">
+                <CategoryChip theme={a.primary} taxonomy={taxonomy} render="label" />
+                {a.secondaries.map((s) => (
+                  <CategoryChip key={s} theme={s} taxonomy={taxonomy} render="label" />
+                ))}
+              </span>
             </li>
           ))}
         </ul>
@@ -160,11 +167,12 @@ export function GoldInspectorPanel({
           {sentence.decided ? (sentence.autoResolved ? "Auto-résolu" : "Décidé") : "Décider le gold"}
         </div>
         {sentence.decided && (
-          <div className="mb-2 text-[12px] text-ink">
-            Gold : <span className="font-mono">{sentence.primary}</span>
-            {sentence.secondaries.length > 0 && (
-              <span className="font-mono text-ink-muted"> +{sentence.secondaries.join(",")}</span>
-            )}
+          <div className="mb-2 flex flex-wrap items-center gap-1 text-[12px] text-ink">
+            Gold :
+            <CategoryChip theme={sentence.primary} taxonomy={taxonomy} render="label" />
+            {sentence.secondaries.map((s) => (
+              <CategoryChip key={s} theme={s} taxonomy={taxonomy} render="label" />
+            ))}
             {!sentence.autoResolved && sentence.decidedByName && (
               <span className="text-ink-muted"> · {sentence.decidedByName}</span>
             )}
@@ -188,6 +196,16 @@ export function GoldInspectorPanel({
                   Aucun consensus : les annotateurs sont à égalité. La proposition affichée
                   n'est qu'un départage alphabétique — <strong>choisissez explicitement</strong>.
                 </span>
+              </p>
+            )}
+
+            {taxonomy !== CANONICAL_TAXONOMY && (
+              <p
+                data-testid="gold-decide-canonical-note"
+                className="text-[11px] text-ink-muted"
+              >
+                Les boutons de décision restent en <strong>T20</strong> (la taxonomie annotée) :
+                une macro-catégorie n'est pas une étiquette, c'est une lecture.
               </p>
             )}
 

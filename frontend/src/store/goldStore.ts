@@ -10,6 +10,7 @@
 import { create } from "zustand";
 
 import type { DisplayLang } from "@/lib/prefs/schema";
+import type { TaxonomyId } from "@/lib/taxonomy";
 
 /** `todo` = la file de travail réelle (non décidées).
  *
@@ -30,6 +31,10 @@ interface GoldUiState {
    *  préférence de compte `overlays.displayLang` — un arbitre qui lit en français
    *  dans l'atelier d'annotation retrouve le français ici, et réciproquement. */
   displayLang: DisplayLang;
+  /** Grille de lecture des thèmes : T20 (canonique) ou une fusion projetée.
+   *  Comme la langue, c'est un réglage de LECTURE : rien n'est écrit, rien n'est
+   *  dupliqué, et l'arbitrage continue de s'écrire en T20. */
+  taxonomy: TaxonomyId;
 
   init: (docKey: string) => void;
   select: (index: number | null) => void;
@@ -37,6 +42,7 @@ interface GoldUiState {
   setFilter: (filter: GoldFilter) => void;
   setParkY: (y: number | null) => void;
   setDisplayLang: (lang: DisplayLang) => void;
+  setTaxonomy: (taxonomy: TaxonomyId) => void;
 }
 
 export const useGoldStore = create<GoldUiState>((set, get) => ({
@@ -46,6 +52,7 @@ export const useGoldStore = create<GoldUiState>((set, get) => ({
   filter: "all",
   parkY: null,
   displayLang: "orig",
+  taxonomy: "T20",
 
   init: (docKey) => {
     // Réinitialise la sélection/survol en changeant de document (pas de fuite).
@@ -59,4 +66,5 @@ export const useGoldStore = create<GoldUiState>((set, get) => ({
   setFilter: (filter) => set({ filter }),
   setParkY: (parkY) => set({ parkY }),
   setDisplayLang: (displayLang) => set({ displayLang }),
+  setTaxonomy: (taxonomy) => set({ taxonomy }),
 }));

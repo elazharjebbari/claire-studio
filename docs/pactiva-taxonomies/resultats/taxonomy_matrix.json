@@ -1,0 +1,2425 @@
+{
+ "provenance": {
+  "dataset_fingerprint": "7116e627f528c5572457e79d9e53d2e71bfc21e3a20aacb43e9d3072cfb70e2e",
+  "dataset_documents": 50,
+  "dataset_sentences": 9414,
+  "taxonomy_spec_version": 1,
+  "taxonomy_spec_fingerprint": "f6cdd2715df021779fc6b11c640c276a8980c21959e42171570f41988686ace4",
+  "n_resamples": 1000,
+  "seed": 42
+ },
+ "cells": [
+  {
+   "taxonomy": "T20",
+   "population": "all",
+   "n_classes": 20,
+   "raw": {
+    "n_units": 9414,
+    "n_documents": 50,
+    "alpha_masi": 0.658076,
+    "alpha_masi_ci": null,
+    "alpha_nominal": 0.731536,
+    "multilabel_cost": 0.07346,
+    "multilabel_cost_ci": [
+     0.061269,
+     0.087388
+    ],
+    "sign_stability": 1,
+    "pairs": 28242,
+    "disagreements": 7010,
+    "disagreement_rate": 0.2482,
+    "n_classes": 20,
+    "per_class": {
+     "ACCEPTABLE_USE": {
+      "alpha": 0.6802,
+      "ac1": 0.9138,
+      "support_units": 1686
+     },
+     "ARBITRATION_DISPUTES": {
+      "alpha": 0.8977,
+      "ac1": 0.9787,
+      "support_units": 1045
+     },
+     "COMMUNICATIONS": {
+      "alpha": 0.1841,
+      "ac1": 0.9789,
+      "support_units": 292
+     },
+     "DMCA": {
+      "alpha": 0.1041,
+      "ac1": 0.9884,
+      "support_units": 162
+     },
+     "ELIGIBILITY_ACCOUNT": {
+      "alpha": 0.7555,
+      "ac1": 0.9542,
+      "support_units": 1104
+     },
+     "FEEDBACK": {
+      "alpha": 0.1252,
+      "ac1": 0.9923,
+      "support_units": 108
+     },
+     "FEES_PAYMENT": {
+      "alpha": 0.864,
+      "ac1": 0.9641,
+      "support_units": 1322
+     },
+     "GOVERNING_LAW": {
+      "alpha": 0.632,
+      "ac1": 0.9837,
+      "support_units": 333
+     },
+     "LICENSE_IP": {
+      "alpha": 0.7718,
+      "ac1": 0.9319,
+      "support_units": 1622
+     },
+     "LIMITATION_LIABILITY": {
+      "alpha": 0.7275,
+      "ac1": 0.9572,
+      "support_units": 963
+     },
+     "META": {
+      "alpha": 0.5113,
+      "ac1": 0.9772,
+      "support_units": 400
+     },
+     "MISC_BOILERPLATE": {
+      "alpha": 0.5332,
+      "ac1": 0.948,
+      "support_units": 833
+     },
+     "MODIFICATION_OF_TERMS": {
+      "alpha": 0.8133,
+      "ac1": 0.9827,
+      "support_units": 537
+     },
+     "PREAMBLE_SCOPE": {
+      "alpha": 0.6086,
+      "ac1": 0.9232,
+      "support_units": 1401
+     },
+     "PRIVACY_DATA": {
+      "alpha": 0.6197,
+      "ac1": 0.9714,
+      "support_units": 559
+     },
+     "PROMOTIONS": {
+      "alpha": 0.2396,
+      "ac1": 0.9949,
+      "support_units": 72
+     },
+     "TERMINATION": {
+      "alpha": 0.7485,
+      "ac1": 0.9735,
+      "support_units": 654
+     },
+     "THIRD_PARTY_SERVICES": {
+      "alpha": 0.7366,
+      "ac1": 0.9686,
+      "support_units": 765
+     },
+     "USER_CONTENT": {
+      "alpha": 0.5989,
+      "ac1": 0.9294,
+      "support_units": 1219
+     },
+     "WARRANTY_DISCLAIMER": {
+      "alpha": 0.7344,
+      "ac1": 0.9616,
+      "support_units": 895
+     }
+    },
+    "min_class_alpha": [
+     "DMCA",
+     0.1041
+    ]
+   },
+   "consensus": {
+    "n": 9414,
+    "supports": {
+     "LICENSE_IP": 1179,
+     "FEES_PAYMENT": 1043,
+     "ACCEPTABLE_USE": 927,
+     "ARBITRATION_DISPUTES": 857,
+     "ELIGIBILITY_ACCOUNT": 804,
+     "PREAMBLE_SCOPE": 665,
+     "USER_CONTENT": 535,
+     "WARRANTY_DISCLAIMER": 529,
+     "MISC_BOILERPLATE": 522,
+     "LIMITATION_LIABILITY": 507,
+     "THIRD_PARTY_SERVICES": 434,
+     "TERMINATION": 373,
+     "MODIFICATION_OF_TERMS": 361,
+     "PRIVACY_DATA": 260,
+     "GOVERNING_LAW": 167,
+     "META": 123,
+     "COMMUNICATIONS": 68,
+     "FEEDBACK": 38,
+     "DMCA": 12,
+     "PROMOTIONS": 10
+    },
+    "multilabel_rate": 0.0509,
+    "unfairness": {
+     "n": 9414,
+     "base_rate": 0.1096,
+     "mi_primary": 0.0729,
+     "mi_combo": 0.0978,
+     "ap_primary": 0.3268,
+     "ap_combo": 0.4038,
+     "lift_by_class": {
+      "LIMITATION_LIABILITY": 3.47,
+      "MODIFICATION_OF_TERMS": 4.25,
+      "TERMINATION": 3.57,
+      "GOVERNING_LAW": 4.81,
+      "ARBITRATION_DISPUTES": 0.94,
+      "PREAMBLE_SCOPE": 0.88,
+      "FEES_PAYMENT": 0.51,
+      "USER_CONTENT": 0.95,
+      "LICENSE_IP": 0.29,
+      "ELIGIBILITY_ACCOUNT": 0.4,
+      "ACCEPTABLE_USE": 0.31,
+      "THIRD_PARTY_SERVICES": 0.57,
+      "WARRANTY_DISCLAIMER": 0.34,
+      "PRIVACY_DATA": 0.39,
+      "MISC_BOILERPLATE": 0.09,
+      "COMMUNICATIONS": 0.13,
+      "META": 0.0,
+      "FEEDBACK": 0.0
+     }
+    }
+   },
+   "gold": {
+    "n_sentences": 9414,
+    "n_decided": 9414,
+    "auto_levels": {
+     "auto": 4546,
+     "auto_1click": 4406,
+     "manual": 462
+    },
+    "agreement_classes": {
+     "majority": 4546,
+     "strict": 4406,
+     "divergence": 462
+    },
+    "distribution": {
+     "LICENSE_IP": 1166,
+     "FEES_PAYMENT": 1039,
+     "ARBITRATION_DISPUTES": 854,
+     "ACCEPTABLE_USE": 853,
+     "ELIGIBILITY_ACCOUNT": 775,
+     "PREAMBLE_SCOPE": 687,
+     "WARRANTY_DISCLAIMER": 576,
+     "USER_CONTENT": 565,
+     "LIMITATION_LIABILITY": 512,
+     "MISC_BOILERPLATE": 499,
+     "THIRD_PARTY_SERVICES": 442,
+     "TERMINATION": 388,
+     "MODIFICATION_OF_TERMS": 374,
+     "PRIVACY_DATA": 277,
+     "GOVERNING_LAW": 166,
+     "META": 132,
+     "COMMUNICATIONS": 58,
+     "FEEDBACK": 32,
+     "PROMOTIONS": 11,
+     "DMCA": 8
+    },
+    "multilabel_rate": 0.0509,
+    "unfairness": {
+     "n": 9414,
+     "base_rate": 0.1096,
+     "mi_primary": 0.0768,
+     "mi_combo": 0.1013,
+     "ap_primary": 0.3396,
+     "ap_combo": 0.418,
+     "lift_by_class": {
+      "LIMITATION_LIABILITY": 3.42,
+      "MODIFICATION_OF_TERMS": 4.24,
+      "TERMINATION": 3.71,
+      "GOVERNING_LAW": 4.84,
+      "ARBITRATION_DISPUTES": 0.94,
+      "PREAMBLE_SCOPE": 0.85,
+      "USER_CONTENT": 0.98,
+      "FEES_PAYMENT": 0.48,
+      "LICENSE_IP": 0.27,
+      "ELIGIBILITY_ACCOUNT": 0.36,
+      "THIRD_PARTY_SERVICES": 0.56,
+      "WARRANTY_DISCLAIMER": 0.35,
+      "ACCEPTABLE_USE": 0.21,
+      "PRIVACY_DATA": 0.4,
+      "MISC_BOILERPLATE": 0.07,
+      "META": 0.0,
+      "FEEDBACK": 0.0,
+      "COMMUNICATIONS": 0.0
+     }
+    }
+   }
+  },
+  {
+   "taxonomy": "T14",
+   "population": "all",
+   "n_classes": 14,
+   "raw": {
+    "n_units": 9414,
+    "n_documents": 50,
+    "alpha_masi": 0.693208,
+    "alpha_masi_ci": null,
+    "alpha_nominal": 0.768414,
+    "multilabel_cost": 0.075206,
+    "multilabel_cost_ci": [
+     0.063419,
+     0.08867
+    ],
+    "sign_stability": 1,
+    "pairs": 28242,
+    "disagreements": 5929,
+    "disagreement_rate": 0.2099,
+    "n_classes": 14,
+    "per_class": {
+     "ACCEPTABLE_USE": {
+      "alpha": 0.6802,
+      "ac1": 0.9138,
+      "support_units": 1686
+     },
+     "ARBITRATION_DISPUTES": {
+      "alpha": 0.8934,
+      "ac1": 0.973,
+      "support_units": 1258
+     },
+     "COMMUNICATIONS": {
+      "alpha": 0.1924,
+      "ac1": 0.9737,
+      "support_units": 362
+     },
+     "ELIGIBILITY_ACCOUNT": {
+      "alpha": 0.7555,
+      "ac1": 0.9542,
+      "support_units": 1104
+     },
+     "FEES_PAYMENT": {
+      "alpha": 0.864,
+      "ac1": 0.9641,
+      "support_units": 1322
+     },
+     "LICENSE_IP": {
+      "alpha": 0.7841,
+      "ac1": 0.9319,
+      "support_units": 1694
+     },
+     "LIMITATION_LIABILITY": {
+      "alpha": 0.7275,
+      "ac1": 0.9572,
+      "support_units": 963
+     },
+     "MODIFICATION_OF_TERMS": {
+      "alpha": 0.8133,
+      "ac1": 0.9827,
+      "support_units": 537
+     },
+     "PREAMBLE_SCOPE": {
+      "alpha": 0.6976,
+      "ac1": 0.8863,
+      "support_units": 2205
+     },
+     "PRIVACY_DATA": {
+      "alpha": 0.6197,
+      "ac1": 0.9714,
+      "support_units": 559
+     },
+     "TERMINATION": {
+      "alpha": 0.7485,
+      "ac1": 0.9735,
+      "support_units": 654
+     },
+     "THIRD_PARTY_SERVICES": {
+      "alpha": 0.7366,
+      "ac1": 0.9686,
+      "support_units": 765
+     },
+     "USER_CONTENT": {
+      "alpha": 0.5989,
+      "ac1": 0.9294,
+      "support_units": 1219
+     },
+     "WARRANTY_DISCLAIMER": {
+      "alpha": 0.7344,
+      "ac1": 0.9616,
+      "support_units": 895
+     }
+    },
+    "min_class_alpha": [
+     "COMMUNICATIONS",
+     0.1924
+    ]
+   },
+   "consensus": {
+    "n": 9414,
+    "supports": {
+     "PREAMBLE_SCOPE": 1310,
+     "LICENSE_IP": 1229,
+     "FEES_PAYMENT": 1043,
+     "ARBITRATION_DISPUTES": 1024,
+     "ACCEPTABLE_USE": 927,
+     "ELIGIBILITY_ACCOUNT": 804,
+     "USER_CONTENT": 535,
+     "WARRANTY_DISCLAIMER": 529,
+     "LIMITATION_LIABILITY": 507,
+     "THIRD_PARTY_SERVICES": 434,
+     "TERMINATION": 373,
+     "MODIFICATION_OF_TERMS": 361,
+     "PRIVACY_DATA": 260,
+     "COMMUNICATIONS": 78
+    },
+    "multilabel_rate": 0.0501,
+    "unfairness": {
+     "n": 9414,
+     "base_rate": 0.1096,
+     "mi_primary": 0.0615,
+     "mi_combo": 0.0867,
+     "ap_primary": 0.2988,
+     "ap_combo": 0.376,
+     "lift_by_class": {
+      "LIMITATION_LIABILITY": 3.47,
+      "ARBITRATION_DISPUTES": 1.57,
+      "MODIFICATION_OF_TERMS": 4.25,
+      "TERMINATION": 3.57,
+      "PREAMBLE_SCOPE": 0.48,
+      "FEES_PAYMENT": 0.51,
+      "USER_CONTENT": 0.95,
+      "LICENSE_IP": 0.3,
+      "ELIGIBILITY_ACCOUNT": 0.4,
+      "ACCEPTABLE_USE": 0.31,
+      "THIRD_PARTY_SERVICES": 0.57,
+      "WARRANTY_DISCLAIMER": 0.34,
+      "PRIVACY_DATA": 0.39,
+      "COMMUNICATIONS": 0.12
+     }
+    }
+   },
+   "gold": {
+    "n_sentences": 9414,
+    "n_decided": 9414,
+    "auto_levels": {
+     "auto": 4546,
+     "auto_1click": 4406,
+     "manual": 462
+    },
+    "agreement_classes": {
+     "majority": 4546,
+     "strict": 4406,
+     "divergence": 462
+    },
+    "distribution": {
+     "PREAMBLE_SCOPE": 1318,
+     "LICENSE_IP": 1206,
+     "FEES_PAYMENT": 1039,
+     "ARBITRATION_DISPUTES": 1020,
+     "ACCEPTABLE_USE": 853,
+     "ELIGIBILITY_ACCOUNT": 775,
+     "WARRANTY_DISCLAIMER": 576,
+     "USER_CONTENT": 565,
+     "LIMITATION_LIABILITY": 512,
+     "THIRD_PARTY_SERVICES": 442,
+     "TERMINATION": 388,
+     "MODIFICATION_OF_TERMS": 374,
+     "PRIVACY_DATA": 277,
+     "COMMUNICATIONS": 69
+    },
+    "multilabel_rate": 0.0501,
+    "unfairness": {
+     "n": 9414,
+     "base_rate": 0.1096,
+     "mi_primary": 0.0657,
+     "mi_combo": 0.0901,
+     "ap_primary": 0.3099,
+     "ap_combo": 0.3914,
+     "lift_by_class": {
+      "LIMITATION_LIABILITY": 3.42,
+      "ARBITRATION_DISPUTES": 1.57,
+      "MODIFICATION_OF_TERMS": 4.24,
+      "TERMINATION": 3.71,
+      "PREAMBLE_SCOPE": 0.47,
+      "USER_CONTENT": 0.98,
+      "FEES_PAYMENT": 0.48,
+      "LICENSE_IP": 0.27,
+      "ELIGIBILITY_ACCOUNT": 0.36,
+      "THIRD_PARTY_SERVICES": 0.56,
+      "WARRANTY_DISCLAIMER": 0.35,
+      "ACCEPTABLE_USE": 0.21,
+      "PRIVACY_DATA": 0.4,
+      "COMMUNICATIONS": 0.0
+     }
+    }
+   },
+   "vs_canonical": {
+    "delta": 0.0351,
+    "ci": [
+     0.0302,
+     0.0413
+    ],
+    "sign_stability": 1.0,
+    "n_resamples": 1000,
+    "n_documents": 50
+   }
+  },
+  {
+   "taxonomy": "T11",
+   "population": "all",
+   "n_classes": 11,
+   "raw": {
+    "n_units": 9414,
+    "n_documents": 50,
+    "alpha_masi": 0.725014,
+    "alpha_masi_ci": null,
+    "alpha_nominal": 0.794027,
+    "multilabel_cost": 0.069013,
+    "multilabel_cost_ci": [
+     0.057903,
+     0.081724
+    ],
+    "sign_stability": 1,
+    "pairs": 28242,
+    "disagreements": 5085,
+    "disagreement_rate": 0.1801,
+    "n_classes": 11,
+    "per_class": {
+     "ACCOUNT_USE": {
+      "alpha": 0.7379,
+      "ac1": 0.8769,
+      "support_units": 2529
+     },
+     "CONTENT_IP": {
+      "alpha": 0.7886,
+      "ac1": 0.8984,
+      "support_units": 2424
+     },
+     "DISPUTES_LAW": {
+      "alpha": 0.8934,
+      "ac1": 0.973,
+      "support_units": 1258
+     },
+     "FEES_PAYMENT": {
+      "alpha": 0.864,
+      "ac1": 0.9641,
+      "support_units": 1322
+     },
+     "FRAMEWORK": {
+      "alpha": 0.6913,
+      "ac1": 0.8731,
+      "support_units": 2398
+     },
+     "LIMITATION_LIABILITY": {
+      "alpha": 0.7275,
+      "ac1": 0.9572,
+      "support_units": 963
+     },
+     "MODIFICATION_OF_TERMS": {
+      "alpha": 0.8133,
+      "ac1": 0.9827,
+      "support_units": 537
+     },
+     "PRIVACY_DATA": {
+      "alpha": 0.6197,
+      "ac1": 0.9714,
+      "support_units": 559
+     },
+     "TERMINATION": {
+      "alpha": 0.7485,
+      "ac1": 0.9735,
+      "support_units": 654
+     },
+     "THIRD_PARTY_SERVICES": {
+      "alpha": 0.7366,
+      "ac1": 0.9686,
+      "support_units": 765
+     },
+     "WARRANTY_DISCLAIMER": {
+      "alpha": 0.7344,
+      "ac1": 0.9616,
+      "support_units": 895
+     }
+    },
+    "min_class_alpha": [
+     "PRIVACY_DATA",
+     0.6197
+    ]
+   },
+   "consensus": {
+    "n": 9414,
+    "supports": {
+     "CONTENT_IP": 1764,
+     "ACCOUNT_USE": 1731,
+     "FRAMEWORK": 1388,
+     "FEES_PAYMENT": 1043,
+     "DISPUTES_LAW": 1024,
+     "WARRANTY_DISCLAIMER": 529,
+     "LIMITATION_LIABILITY": 507,
+     "THIRD_PARTY_SERVICES": 434,
+     "TERMINATION": 373,
+     "MODIFICATION_OF_TERMS": 361,
+     "PRIVACY_DATA": 260
+    },
+    "multilabel_rate": 0.0423,
+    "unfairness": {
+     "n": 9414,
+     "base_rate": 0.1096,
+     "mi_primary": 0.0595,
+     "mi_combo": 0.0839,
+     "ap_primary": 0.292,
+     "ap_combo": 0.3757,
+     "lift_by_class": {
+      "LIMITATION_LIABILITY": 3.47,
+      "DISPUTES_LAW": 1.57,
+      "MODIFICATION_OF_TERMS": 4.25,
+      "TERMINATION": 3.57,
+      "CONTENT_IP": 0.5,
+      "FRAMEWORK": 0.46,
+      "ACCOUNT_USE": 0.35,
+      "FEES_PAYMENT": 0.51,
+      "THIRD_PARTY_SERVICES": 0.57,
+      "WARRANTY_DISCLAIMER": 0.34,
+      "PRIVACY_DATA": 0.39
+     }
+    }
+   },
+   "gold": {
+    "n_sentences": 9414,
+    "n_decided": 9414,
+    "auto_levels": {
+     "auto": 4546,
+     "auto_1click": 4406,
+     "manual": 462
+    },
+    "agreement_classes": {
+     "majority": 4546,
+     "strict": 4406,
+     "divergence": 462
+    },
+    "distribution": {
+     "CONTENT_IP": 1771,
+     "ACCOUNT_USE": 1628,
+     "FRAMEWORK": 1387,
+     "FEES_PAYMENT": 1039,
+     "DISPUTES_LAW": 1020,
+     "WARRANTY_DISCLAIMER": 576,
+     "LIMITATION_LIABILITY": 512,
+     "THIRD_PARTY_SERVICES": 442,
+     "TERMINATION": 388,
+     "MODIFICATION_OF_TERMS": 374,
+     "PRIVACY_DATA": 277
+    },
+    "multilabel_rate": 0.0426,
+    "unfairness": {
+     "n": 9414,
+     "base_rate": 0.1096,
+     "mi_primary": 0.0629,
+     "mi_combo": 0.0871,
+     "ap_primary": 0.3035,
+     "ap_combo": 0.3934,
+     "lift_by_class": {
+      "LIMITATION_LIABILITY": 3.42,
+      "DISPUTES_LAW": 1.57,
+      "MODIFICATION_OF_TERMS": 4.24,
+      "TERMINATION": 3.71,
+      "CONTENT_IP": 0.5,
+      "FRAMEWORK": 0.45,
+      "FEES_PAYMENT": 0.48,
+      "ACCOUNT_USE": 0.29,
+      "THIRD_PARTY_SERVICES": 0.56,
+      "WARRANTY_DISCLAIMER": 0.35,
+      "PRIVACY_DATA": 0.4
+     }
+    }
+   },
+   "vs_canonical": {
+    "delta": 0.0669,
+    "ci": [
+     0.0585,
+     0.0772
+    ],
+    "sign_stability": 1.0,
+    "n_resamples": 1000,
+    "n_documents": 50
+   }
+  },
+  {
+   "taxonomy": "T10",
+   "population": "all",
+   "n_classes": 10,
+   "raw": {
+    "n_units": 9414,
+    "n_documents": 50,
+    "alpha_masi": 0.736514,
+    "alpha_masi_ci": null,
+    "alpha_nominal": 0.799761,
+    "multilabel_cost": 0.063248,
+    "multilabel_cost_ci": [
+     0.052125,
+     0.075598
+    ],
+    "sign_stability": 1,
+    "pairs": 28242,
+    "disagreements": 4908,
+    "disagreement_rate": 0.1738,
+    "n_classes": 10,
+    "per_class": {
+     "ACCOUNT_USE": {
+      "alpha": 0.7379,
+      "ac1": 0.8769,
+      "support_units": 2529
+     },
+     "CONTENT_IP": {
+      "alpha": 0.7886,
+      "ac1": 0.8984,
+      "support_units": 2424
+     },
+     "DISPUTES_LAW": {
+      "alpha": 0.8934,
+      "ac1": 0.973,
+      "support_units": 1258
+     },
+     "FEES_PAYMENT": {
+      "alpha": 0.864,
+      "ac1": 0.9641,
+      "support_units": 1322
+     },
+     "FRAMEWORK": {
+      "alpha": 0.6913,
+      "ac1": 0.8731,
+      "support_units": 2398
+     },
+     "MODIFICATION_OF_TERMS": {
+      "alpha": 0.8133,
+      "ac1": 0.9827,
+      "support_units": 537
+     },
+     "PRIVACY_DATA": {
+      "alpha": 0.6197,
+      "ac1": 0.9714,
+      "support_units": 559
+     },
+     "RISK_ALLOCATION": {
+      "alpha": 0.8065,
+      "ac1": 0.943,
+      "support_units": 1552
+     },
+     "TERMINATION": {
+      "alpha": 0.7485,
+      "ac1": 0.9735,
+      "support_units": 654
+     },
+     "THIRD_PARTY_SERVICES": {
+      "alpha": 0.7366,
+      "ac1": 0.9686,
+      "support_units": 765
+     }
+    },
+    "min_class_alpha": [
+     "PRIVACY_DATA",
+     0.6197
+    ]
+   },
+   "consensus": {
+    "n": 9414,
+    "supports": {
+     "CONTENT_IP": 1764,
+     "ACCOUNT_USE": 1731,
+     "FRAMEWORK": 1388,
+     "FEES_PAYMENT": 1043,
+     "RISK_ALLOCATION": 1036,
+     "DISPUTES_LAW": 1024,
+     "THIRD_PARTY_SERVICES": 434,
+     "TERMINATION": 373,
+     "MODIFICATION_OF_TERMS": 361,
+     "PRIVACY_DATA": 260
+    },
+    "multilabel_rate": 0.0386,
+    "unfairness": {
+     "n": 9414,
+     "base_rate": 0.1096,
+     "mi_primary": 0.0484,
+     "mi_combo": 0.0714,
+     "ap_primary": 0.2709,
+     "ap_combo": 0.3531,
+     "lift_by_class": {
+      "RISK_ALLOCATION": 1.88,
+      "DISPUTES_LAW": 1.57,
+      "MODIFICATION_OF_TERMS": 4.25,
+      "TERMINATION": 3.57,
+      "CONTENT_IP": 0.5,
+      "FRAMEWORK": 0.46,
+      "ACCOUNT_USE": 0.35,
+      "FEES_PAYMENT": 0.51,
+      "THIRD_PARTY_SERVICES": 0.57,
+      "PRIVACY_DATA": 0.39
+     }
+    }
+   },
+   "gold": {
+    "n_sentences": 9414,
+    "n_decided": 9414,
+    "auto_levels": {
+     "auto": 4546,
+     "auto_1click": 4406,
+     "manual": 462
+    },
+    "agreement_classes": {
+     "majority": 4546,
+     "strict": 4406,
+     "divergence": 462
+    },
+    "distribution": {
+     "CONTENT_IP": 1771,
+     "ACCOUNT_USE": 1628,
+     "FRAMEWORK": 1387,
+     "RISK_ALLOCATION": 1088,
+     "FEES_PAYMENT": 1039,
+     "DISPUTES_LAW": 1020,
+     "THIRD_PARTY_SERVICES": 442,
+     "TERMINATION": 388,
+     "MODIFICATION_OF_TERMS": 374,
+     "PRIVACY_DATA": 277
+    },
+    "multilabel_rate": 0.0389,
+    "unfairness": {
+     "n": 9414,
+     "base_rate": 0.1096,
+     "mi_primary": 0.0515,
+     "mi_combo": 0.074,
+     "ap_primary": 0.2761,
+     "ap_combo": 0.3628,
+     "lift_by_class": {
+      "RISK_ALLOCATION": 1.79,
+      "DISPUTES_LAW": 1.57,
+      "MODIFICATION_OF_TERMS": 4.24,
+      "TERMINATION": 3.71,
+      "CONTENT_IP": 0.5,
+      "FRAMEWORK": 0.45,
+      "FEES_PAYMENT": 0.48,
+      "ACCOUNT_USE": 0.29,
+      "THIRD_PARTY_SERVICES": 0.56,
+      "PRIVACY_DATA": 0.4
+     }
+    }
+   },
+   "vs_canonical": {
+    "delta": 0.0784,
+    "ci": [
+     0.0686,
+     0.0893
+    ],
+    "sign_stability": 1.0,
+    "n_resamples": 1000,
+    "n_documents": 50
+   }
+  },
+  {
+   "taxonomy": "T20",
+   "population": "designSet",
+   "n_classes": 20,
+   "raw": {
+    "n_units": 5336,
+    "n_documents": 33,
+    "alpha_masi": 0.653562,
+    "alpha_masi_ci": null,
+    "alpha_nominal": 0.720576,
+    "multilabel_cost": 0.067015,
+    "multilabel_cost_ci": [
+     0.050726,
+     0.086172
+    ],
+    "sign_stability": 1,
+    "pairs": 16008,
+    "disagreements": 4144,
+    "disagreement_rate": 0.2589,
+    "n_classes": 20,
+    "per_class": {
+     "ACCEPTABLE_USE": {
+      "alpha": 0.6776,
+      "ac1": 0.9221,
+      "support_units": 868
+     },
+     "ARBITRATION_DISPUTES": {
+      "alpha": 0.8889,
+      "ac1": 0.9776,
+      "support_units": 578
+     },
+     "COMMUNICATIONS": {
+      "alpha": 0.218,
+      "ac1": 0.9817,
+      "support_units": 145
+     },
+     "DMCA": {
+      "alpha": 0.1473,
+      "ac1": 0.9901,
+      "support_units": 78
+     },
+     "ELIGIBILITY_ACCOUNT": {
+      "alpha": 0.761,
+      "ac1": 0.9531,
+      "support_units": 647
+     },
+     "FEEDBACK": {
+      "alpha": 0.1122,
+      "ac1": 0.9923,
+      "support_units": 61
+     },
+     "FEES_PAYMENT": {
+      "alpha": 0.8564,
+      "ac1": 0.9668,
+      "support_units": 673
+     },
+     "GOVERNING_LAW": {
+      "alpha": 0.6328,
+      "ac1": 0.9837,
+      "support_units": 191
+     },
+     "LICENSE_IP": {
+      "alpha": 0.7856,
+      "ac1": 0.9388,
+      "support_units": 868
+     },
+     "LIMITATION_LIABILITY": {
+      "alpha": 0.7161,
+      "ac1": 0.9523,
+      "support_units": 584
+     },
+     "META": {
+      "alpha": 0.5359,
+      "ac1": 0.9788,
+      "support_units": 214
+     },
+     "MISC_BOILERPLATE": {
+      "alpha": 0.5281,
+      "ac1": 0.9449,
+      "support_units": 509
+     },
+     "MODIFICATION_OF_TERMS": {
+      "alpha": 0.8192,
+      "ac1": 0.9828,
+      "support_units": 312
+     },
+     "PREAMBLE_SCOPE": {
+      "alpha": 0.5772,
+      "ac1": 0.9057,
+      "support_units": 912
+     },
+     "PRIVACY_DATA": {
+      "alpha": 0.6091,
+      "ac1": 0.9665,
+      "support_units": 359
+     },
+     "PROMOTIONS": {
+      "alpha": 0.3761,
+      "ac1": 0.9965,
+      "support_units": 28
+     },
+     "TERMINATION": {
+      "alpha": 0.7855,
+      "ac1": 0.9764,
+      "support_units": 370
+     },
+     "THIRD_PARTY_SERVICES": {
+      "alpha": 0.6966,
+      "ac1": 0.9628,
+      "support_units": 468
+     },
+     "USER_CONTENT": {
+      "alpha": 0.5804,
+      "ac1": 0.9269,
+      "support_units": 687
+     },
+     "WARRANTY_DISCLAIMER": {
+      "alpha": 0.7544,
+      "ac1": 0.959,
+      "support_units": 563
+     }
+    },
+    "min_class_alpha": [
+     "FEEDBACK",
+     0.1122
+    ]
+   },
+   "consensus": {
+    "n": 5336,
+    "supports": {
+     "LICENSE_IP": 648,
+     "FEES_PAYMENT": 502,
+     "ACCEPTABLE_USE": 486,
+     "ELIGIBILITY_ACCOUNT": 483,
+     "ARBITRATION_DISPUTES": 476,
+     "PREAMBLE_SCOPE": 427,
+     "WARRANTY_DISCLAIMER": 342,
+     "LIMITATION_LIABILITY": 305,
+     "USER_CONTENT": 301,
+     "MISC_BOILERPLATE": 286,
+     "THIRD_PARTY_SERVICES": 233,
+     "TERMINATION": 227,
+     "MODIFICATION_OF_TERMS": 218,
+     "PRIVACY_DATA": 169,
+     "GOVERNING_LAW": 88,
+     "META": 70,
+     "COMMUNICATIONS": 42,
+     "FEEDBACK": 21,
+     "PROMOTIONS": 8,
+     "DMCA": 4
+    },
+    "multilabel_rate": 0.0605,
+    "unfairness": {
+     "n": 5336,
+     "base_rate": 0.1109,
+     "mi_primary": 0.0815,
+     "mi_combo": 0.106,
+     "ap_primary": 0.345,
+     "ap_combo": 0.4139,
+     "lift_by_class": {
+      "LIMITATION_LIABILITY": 3.55,
+      "MODIFICATION_OF_TERMS": 4.01,
+      "TERMINATION": 3.41,
+      "ARBITRATION_DISPUTES": 1.06,
+      "GOVERNING_LAW": 5.33,
+      "PREAMBLE_SCOPE": 0.89,
+      "USER_CONTENT": 0.93,
+      "FEES_PAYMENT": 0.54,
+      "LICENSE_IP": 0.25,
+      "ACCEPTABLE_USE": 0.28,
+      "THIRD_PARTY_SERVICES": 0.58,
+      "ELIGIBILITY_ACCOUNT": 0.22,
+      "WARRANTY_DISCLAIMER": 0.24,
+      "PRIVACY_DATA": 0.43,
+      "MISC_BOILERPLATE": 0.0,
+      "META": 0.0,
+      "FEEDBACK": 0.0,
+      "COMMUNICATIONS": 0.0
+     }
+    }
+   },
+   "gold": {
+    "n_sentences": 5336,
+    "n_decided": 5336,
+    "auto_levels": {
+     "auto": 2538,
+     "auto_1click": 2492,
+     "manual": 306
+    },
+    "agreement_classes": {
+     "majority": 2538,
+     "strict": 2492,
+     "divergence": 306
+    },
+    "distribution": {
+     "LICENSE_IP": 636,
+     "FEES_PAYMENT": 498,
+     "ARBITRATION_DISPUTES": 474,
+     "ELIGIBILITY_ACCOUNT": 462,
+     "PREAMBLE_SCOPE": 446,
+     "ACCEPTABLE_USE": 445,
+     "WARRANTY_DISCLAIMER": 363,
+     "LIMITATION_LIABILITY": 315,
+     "USER_CONTENT": 314,
+     "MISC_BOILERPLATE": 269,
+     "TERMINATION": 242,
+     "THIRD_PARTY_SERVICES": 236,
+     "MODIFICATION_OF_TERMS": 228,
+     "PRIVACY_DATA": 181,
+     "GOVERNING_LAW": 87,
+     "META": 75,
+     "COMMUNICATIONS": 37,
+     "FEEDBACK": 17,
+     "PROMOTIONS": 9,
+     "DMCA": 2
+    },
+    "multilabel_rate": 0.0605,
+    "unfairness": {
+     "n": 5336,
+     "base_rate": 0.1109,
+     "mi_primary": 0.0831,
+     "mi_combo": 0.1075,
+     "ap_primary": 0.3442,
+     "ap_combo": 0.4129,
+     "lift_by_class": {
+      "LIMITATION_LIABILITY": 3.41,
+      "MODIFICATION_OF_TERMS": 3.99,
+      "TERMINATION": 3.39,
+      "ARBITRATION_DISPUTES": 1.06,
+      "GOVERNING_LAW": 5.39,
+      "PREAMBLE_SCOPE": 0.85,
+      "USER_CONTENT": 0.98,
+      "FEES_PAYMENT": 0.51,
+      "LICENSE_IP": 0.21,
+      "THIRD_PARTY_SERVICES": 0.57,
+      "ELIGIBILITY_ACCOUNT": 0.21,
+      "WARRANTY_DISCLAIMER": 0.25,
+      "ACCEPTABLE_USE": 0.2,
+      "PRIVACY_DATA": 0.4,
+      "MISC_BOILERPLATE": 0.0,
+      "META": 0.0,
+      "COMMUNICATIONS": 0.0
+     }
+    }
+   }
+  },
+  {
+   "taxonomy": "T14",
+   "population": "designSet",
+   "n_classes": 14,
+   "raw": {
+    "n_units": 5336,
+    "n_documents": 33,
+    "alpha_masi": 0.69091,
+    "alpha_masi_ci": null,
+    "alpha_nominal": 0.76143,
+    "multilabel_cost": 0.07052,
+    "multilabel_cost_ci": [
+     0.054797,
+     0.088641
+    ],
+    "sign_stability": 1,
+    "pairs": 16008,
+    "disagreements": 3461,
+    "disagreement_rate": 0.2162,
+    "n_classes": 14,
+    "per_class": {
+     "ACCEPTABLE_USE": {
+      "alpha": 0.6776,
+      "ac1": 0.9221,
+      "support_units": 868
+     },
+     "ARBITRATION_DISPUTES": {
+      "alpha": 0.8857,
+      "ac1": 0.9718,
+      "support_units": 704
+     },
+     "COMMUNICATIONS": {
+      "alpha": 0.2469,
+      "ac1": 0.9781,
+      "support_units": 172
+     },
+     "ELIGIBILITY_ACCOUNT": {
+      "alpha": 0.761,
+      "ac1": 0.9531,
+      "support_units": 647
+     },
+     "FEES_PAYMENT": {
+      "alpha": 0.8564,
+      "ac1": 0.9668,
+      "support_units": 673
+     },
+     "LICENSE_IP": {
+      "alpha": 0.7998,
+      "ac1": 0.9395,
+      "support_units": 908
+     },
+     "LIMITATION_LIABILITY": {
+      "alpha": 0.7161,
+      "ac1": 0.9523,
+      "support_units": 584
+     },
+     "MODIFICATION_OF_TERMS": {
+      "alpha": 0.8192,
+      "ac1": 0.9828,
+      "support_units": 312
+     },
+     "PREAMBLE_SCOPE": {
+      "alpha": 0.6898,
+      "ac1": 0.8731,
+      "support_units": 1360
+     },
+     "PRIVACY_DATA": {
+      "alpha": 0.6091,
+      "ac1": 0.9665,
+      "support_units": 359
+     },
+     "TERMINATION": {
+      "alpha": 0.7855,
+      "ac1": 0.9764,
+      "support_units": 370
+     },
+     "THIRD_PARTY_SERVICES": {
+      "alpha": 0.6966,
+      "ac1": 0.9628,
+      "support_units": 468
+     },
+     "USER_CONTENT": {
+      "alpha": 0.5804,
+      "ac1": 0.9269,
+      "support_units": 687
+     },
+     "WARRANTY_DISCLAIMER": {
+      "alpha": 0.7544,
+      "ac1": 0.959,
+      "support_units": 563
+     }
+    },
+    "min_class_alpha": [
+     "COMMUNICATIONS",
+     0.2469
+    ]
+   },
+   "consensus": {
+    "n": 5336,
+    "supports": {
+     "PREAMBLE_SCOPE": 783,
+     "LICENSE_IP": 673,
+     "ARBITRATION_DISPUTES": 564,
+     "FEES_PAYMENT": 502,
+     "ACCEPTABLE_USE": 486,
+     "ELIGIBILITY_ACCOUNT": 483,
+     "WARRANTY_DISCLAIMER": 342,
+     "LIMITATION_LIABILITY": 305,
+     "USER_CONTENT": 301,
+     "THIRD_PARTY_SERVICES": 233,
+     "TERMINATION": 227,
+     "MODIFICATION_OF_TERMS": 218,
+     "PRIVACY_DATA": 169,
+     "COMMUNICATIONS": 50
+    },
+    "multilabel_rate": 0.0592,
+    "unfairness": {
+     "n": 5336,
+     "base_rate": 0.1109,
+     "mi_primary": 0.068,
+     "mi_combo": 0.0925,
+     "ap_primary": 0.3046,
+     "ap_combo": 0.3729,
+     "lift_by_class": {
+      "LIMITATION_LIABILITY": 3.55,
+      "ARBITRATION_DISPUTES": 1.73,
+      "MODIFICATION_OF_TERMS": 4.01,
+      "TERMINATION": 3.41,
+      "PREAMBLE_SCOPE": 0.48,
+      "USER_CONTENT": 0.93,
+      "FEES_PAYMENT": 0.54,
+      "LICENSE_IP": 0.25,
+      "ACCEPTABLE_USE": 0.28,
+      "THIRD_PARTY_SERVICES": 0.58,
+      "ELIGIBILITY_ACCOUNT": 0.22,
+      "WARRANTY_DISCLAIMER": 0.24,
+      "PRIVACY_DATA": 0.43,
+      "COMMUNICATIONS": 0.0
+     }
+    }
+   },
+   "gold": {
+    "n_sentences": 5336,
+    "n_decided": 5336,
+    "auto_levels": {
+     "auto": 2538,
+     "auto_1click": 2492,
+     "manual": 306
+    },
+    "agreement_classes": {
+     "majority": 2538,
+     "strict": 2492,
+     "divergence": 306
+    },
+    "distribution": {
+     "PREAMBLE_SCOPE": 790,
+     "LICENSE_IP": 655,
+     "ARBITRATION_DISPUTES": 561,
+     "FEES_PAYMENT": 498,
+     "ELIGIBILITY_ACCOUNT": 462,
+     "ACCEPTABLE_USE": 445,
+     "WARRANTY_DISCLAIMER": 363,
+     "LIMITATION_LIABILITY": 315,
+     "USER_CONTENT": 314,
+     "TERMINATION": 242,
+     "THIRD_PARTY_SERVICES": 236,
+     "MODIFICATION_OF_TERMS": 228,
+     "PRIVACY_DATA": 181,
+     "COMMUNICATIONS": 46
+    },
+    "multilabel_rate": 0.0592,
+    "unfairness": {
+     "n": 5336,
+     "base_rate": 0.1109,
+     "mi_primary": 0.0701,
+     "mi_combo": 0.0943,
+     "ap_primary": 0.2982,
+     "ap_combo": 0.372,
+     "lift_by_class": {
+      "LIMITATION_LIABILITY": 3.41,
+      "ARBITRATION_DISPUTES": 1.74,
+      "MODIFICATION_OF_TERMS": 3.99,
+      "TERMINATION": 3.39,
+      "PREAMBLE_SCOPE": 0.48,
+      "USER_CONTENT": 0.98,
+      "FEES_PAYMENT": 0.51,
+      "LICENSE_IP": 0.21,
+      "THIRD_PARTY_SERVICES": 0.57,
+      "ELIGIBILITY_ACCOUNT": 0.21,
+      "WARRANTY_DISCLAIMER": 0.25,
+      "ACCEPTABLE_USE": 0.2,
+      "PRIVACY_DATA": 0.4,
+      "COMMUNICATIONS": 0.0
+     }
+    }
+   },
+   "vs_canonical": {
+    "delta": 0.0373,
+    "ci": [
+     0.0301,
+     0.0475
+    ],
+    "sign_stability": 1.0,
+    "n_resamples": 1000,
+    "n_documents": 33
+   }
+  },
+  {
+   "taxonomy": "T11",
+   "population": "designSet",
+   "n_classes": 11,
+   "raw": {
+    "n_units": 5336,
+    "n_documents": 33,
+    "alpha_masi": 0.719216,
+    "alpha_masi_ci": null,
+    "alpha_nominal": 0.786067,
+    "multilabel_cost": 0.066851,
+    "multilabel_cost_ci": [
+     0.052214,
+     0.083234
+    ],
+    "sign_stability": 1,
+    "pairs": 16008,
+    "disagreements": 3001,
+    "disagreement_rate": 0.1875,
+    "n_classes": 11,
+    "per_class": {
+     "ACCOUNT_USE": {
+      "alpha": 0.7411,
+      "ac1": 0.8851,
+      "support_units": 1355
+     },
+     "CONTENT_IP": {
+      "alpha": 0.7757,
+      "ac1": 0.8951,
+      "support_units": 1354
+     },
+     "DISPUTES_LAW": {
+      "alpha": 0.8857,
+      "ac1": 0.9718,
+      "support_units": 704
+     },
+     "FEES_PAYMENT": {
+      "alpha": 0.8564,
+      "ac1": 0.9668,
+      "support_units": 673
+     },
+     "FRAMEWORK": {
+      "alpha": 0.6875,
+      "ac1": 0.8623,
+      "support_units": 1446
+     },
+     "LIMITATION_LIABILITY": {
+      "alpha": 0.7161,
+      "ac1": 0.9523,
+      "support_units": 584
+     },
+     "MODIFICATION_OF_TERMS": {
+      "alpha": 0.8192,
+      "ac1": 0.9828,
+      "support_units": 312
+     },
+     "PRIVACY_DATA": {
+      "alpha": 0.6091,
+      "ac1": 0.9665,
+      "support_units": 359
+     },
+     "TERMINATION": {
+      "alpha": 0.7855,
+      "ac1": 0.9764,
+      "support_units": 370
+     },
+     "THIRD_PARTY_SERVICES": {
+      "alpha": 0.6966,
+      "ac1": 0.9628,
+      "support_units": 468
+     },
+     "WARRANTY_DISCLAIMER": {
+      "alpha": 0.7544,
+      "ac1": 0.959,
+      "support_units": 563
+     }
+    },
+    "min_class_alpha": [
+     "PRIVACY_DATA",
+     0.6091
+    ]
+   },
+   "consensus": {
+    "n": 5336,
+    "supports": {
+     "CONTENT_IP": 974,
+     "ACCOUNT_USE": 969,
+     "FRAMEWORK": 833,
+     "DISPUTES_LAW": 564,
+     "FEES_PAYMENT": 502,
+     "WARRANTY_DISCLAIMER": 342,
+     "LIMITATION_LIABILITY": 305,
+     "THIRD_PARTY_SERVICES": 233,
+     "TERMINATION": 227,
+     "MODIFICATION_OF_TERMS": 218,
+     "PRIVACY_DATA": 169
+    },
+    "multilabel_rate": 0.0495,
+    "unfairness": {
+     "n": 5336,
+     "base_rate": 0.1109,
+     "mi_primary": 0.0655,
+     "mi_combo": 0.0897,
+     "ap_primary": 0.2982,
+     "ap_combo": 0.3727,
+     "lift_by_class": {
+      "LIMITATION_LIABILITY": 3.55,
+      "DISPUTES_LAW": 1.73,
+      "MODIFICATION_OF_TERMS": 4.01,
+      "TERMINATION": 3.41,
+      "CONTENT_IP": 0.46,
+      "FRAMEWORK": 0.45,
+      "FEES_PAYMENT": 0.54,
+      "ACCOUNT_USE": 0.25,
+      "THIRD_PARTY_SERVICES": 0.58,
+      "WARRANTY_DISCLAIMER": 0.24,
+      "PRIVACY_DATA": 0.43
+     }
+    }
+   },
+   "gold": {
+    "n_sentences": 5336,
+    "n_decided": 5336,
+    "auto_levels": {
+     "auto": 2538,
+     "auto_1click": 2492,
+     "manual": 306
+    },
+    "agreement_classes": {
+     "majority": 2538,
+     "strict": 2492,
+     "divergence": 306
+    },
+    "distribution": {
+     "CONTENT_IP": 969,
+     "ACCOUNT_USE": 907,
+     "FRAMEWORK": 836,
+     "DISPUTES_LAW": 561,
+     "FEES_PAYMENT": 498,
+     "WARRANTY_DISCLAIMER": 363,
+     "LIMITATION_LIABILITY": 315,
+     "TERMINATION": 242,
+     "THIRD_PARTY_SERVICES": 236,
+     "MODIFICATION_OF_TERMS": 228,
+     "PRIVACY_DATA": 181
+    },
+    "multilabel_rate": 0.0499,
+    "unfairness": {
+     "n": 5336,
+     "base_rate": 0.1109,
+     "mi_primary": 0.0668,
+     "mi_combo": 0.0909,
+     "ap_primary": 0.2914,
+     "ap_combo": 0.3707,
+     "lift_by_class": {
+      "LIMITATION_LIABILITY": 3.41,
+      "DISPUTES_LAW": 1.74,
+      "MODIFICATION_OF_TERMS": 3.99,
+      "TERMINATION": 3.39,
+      "CONTENT_IP": 0.46,
+      "FRAMEWORK": 0.45,
+      "FEES_PAYMENT": 0.51,
+      "ACCOUNT_USE": 0.21,
+      "THIRD_PARTY_SERVICES": 0.57,
+      "WARRANTY_DISCLAIMER": 0.25,
+      "PRIVACY_DATA": 0.4
+     }
+    }
+   },
+   "vs_canonical": {
+    "delta": 0.0657,
+    "ci": [
+     0.0548,
+     0.0785
+    ],
+    "sign_stability": 1.0,
+    "n_resamples": 1000,
+    "n_documents": 33
+   }
+  },
+  {
+   "taxonomy": "T10",
+   "population": "designSet",
+   "n_classes": 10,
+   "raw": {
+    "n_units": 5336,
+    "n_documents": 33,
+    "alpha_masi": 0.731978,
+    "alpha_masi_ci": null,
+    "alpha_nominal": 0.792578,
+    "multilabel_cost": 0.0606,
+    "multilabel_cost_ci": [
+     0.045992,
+     0.077163
+    ],
+    "sign_stability": 1,
+    "pairs": 16008,
+    "disagreements": 2885,
+    "disagreement_rate": 0.1802,
+    "n_classes": 10,
+    "per_class": {
+     "ACCOUNT_USE": {
+      "alpha": 0.7411,
+      "ac1": 0.8851,
+      "support_units": 1355
+     },
+     "CONTENT_IP": {
+      "alpha": 0.7757,
+      "ac1": 0.8951,
+      "support_units": 1354
+     },
+     "DISPUTES_LAW": {
+      "alpha": 0.8857,
+      "ac1": 0.9718,
+      "support_units": 704
+     },
+     "FEES_PAYMENT": {
+      "alpha": 0.8564,
+      "ac1": 0.9668,
+      "support_units": 673
+     },
+     "FRAMEWORK": {
+      "alpha": 0.6875,
+      "ac1": 0.8623,
+      "support_units": 1446
+     },
+     "MODIFICATION_OF_TERMS": {
+      "alpha": 0.8192,
+      "ac1": 0.9828,
+      "support_units": 312
+     },
+     "PRIVACY_DATA": {
+      "alpha": 0.6091,
+      "ac1": 0.9665,
+      "support_units": 359
+     },
+     "RISK_ALLOCATION": {
+      "alpha": 0.8157,
+      "ac1": 0.9401,
+      "support_units": 943
+     },
+     "TERMINATION": {
+      "alpha": 0.7855,
+      "ac1": 0.9764,
+      "support_units": 370
+     },
+     "THIRD_PARTY_SERVICES": {
+      "alpha": 0.6966,
+      "ac1": 0.9628,
+      "support_units": 468
+     }
+    },
+    "min_class_alpha": [
+     "PRIVACY_DATA",
+     0.6091
+    ]
+   },
+   "consensus": {
+    "n": 5336,
+    "supports": {
+     "CONTENT_IP": 974,
+     "ACCOUNT_USE": 969,
+     "FRAMEWORK": 833,
+     "RISK_ALLOCATION": 647,
+     "DISPUTES_LAW": 564,
+     "FEES_PAYMENT": 502,
+     "THIRD_PARTY_SERVICES": 233,
+     "TERMINATION": 227,
+     "MODIFICATION_OF_TERMS": 218,
+     "PRIVACY_DATA": 169
+    },
+    "multilabel_rate": 0.0439,
+    "unfairness": {
+     "n": 5336,
+     "base_rate": 0.1109,
+     "mi_primary": 0.051,
+     "mi_combo": 0.0727,
+     "ap_primary": 0.2626,
+     "ap_combo": 0.3303,
+     "lift_by_class": {
+      "RISK_ALLOCATION": 1.8,
+      "DISPUTES_LAW": 1.73,
+      "MODIFICATION_OF_TERMS": 4.01,
+      "TERMINATION": 3.41,
+      "CONTENT_IP": 0.46,
+      "FRAMEWORK": 0.45,
+      "FEES_PAYMENT": 0.54,
+      "ACCOUNT_USE": 0.25,
+      "THIRD_PARTY_SERVICES": 0.58,
+      "PRIVACY_DATA": 0.43
+     }
+    }
+   },
+   "gold": {
+    "n_sentences": 5336,
+    "n_decided": 5336,
+    "auto_levels": {
+     "auto": 2538,
+     "auto_1click": 2492,
+     "manual": 306
+    },
+    "agreement_classes": {
+     "majority": 2538,
+     "strict": 2492,
+     "divergence": 306
+    },
+    "distribution": {
+     "CONTENT_IP": 969,
+     "ACCOUNT_USE": 907,
+     "FRAMEWORK": 836,
+     "RISK_ALLOCATION": 678,
+     "DISPUTES_LAW": 561,
+     "FEES_PAYMENT": 498,
+     "TERMINATION": 242,
+     "THIRD_PARTY_SERVICES": 236,
+     "MODIFICATION_OF_TERMS": 228,
+     "PRIVACY_DATA": 181
+    },
+    "multilabel_rate": 0.0442,
+    "unfairness": {
+     "n": 5336,
+     "base_rate": 0.1109,
+     "mi_primary": 0.0527,
+     "mi_combo": 0.0744,
+     "ap_primary": 0.2605,
+     "ap_combo": 0.3369,
+     "lift_by_class": {
+      "RISK_ALLOCATION": 1.71,
+      "DISPUTES_LAW": 1.74,
+      "MODIFICATION_OF_TERMS": 3.99,
+      "TERMINATION": 3.39,
+      "CONTENT_IP": 0.46,
+      "FRAMEWORK": 0.45,
+      "FEES_PAYMENT": 0.51,
+      "ACCOUNT_USE": 0.21,
+      "THIRD_PARTY_SERVICES": 0.57,
+      "PRIVACY_DATA": 0.4
+     }
+    }
+   },
+   "vs_canonical": {
+    "delta": 0.0784,
+    "ci": [
+     0.0659,
+     0.094
+    ],
+    "sign_stability": 1.0,
+    "n_resamples": 1000,
+    "n_documents": 33
+   }
+  },
+  {
+   "taxonomy": "T20",
+   "population": "holdout",
+   "n_classes": 20,
+   "raw": {
+    "n_units": 4078,
+    "n_documents": 17,
+    "alpha_masi": 0.663478,
+    "alpha_masi_ci": null,
+    "alpha_nominal": 0.745462,
+    "multilabel_cost": 0.081984,
+    "multilabel_cost_ci": [
+     0.063015,
+     0.100458
+    ],
+    "sign_stability": 1,
+    "pairs": 12234,
+    "disagreements": 2866,
+    "disagreement_rate": 0.2343,
+    "n_classes": 20,
+    "per_class": {
+     "ACCEPTABLE_USE": {
+      "alpha": 0.6818,
+      "ac1": 0.9024,
+      "support_units": 818
+     },
+     "ARBITRATION_DISPUTES": {
+      "alpha": 0.9085,
+      "ac1": 0.9801,
+      "support_units": 467
+     },
+     "COMMUNICATIONS": {
+      "alpha": 0.1479,
+      "ac1": 0.9753,
+      "support_units": 147
+     },
+     "DMCA": {
+      "alpha": 0.0598,
+      "ac1": 0.9861,
+      "support_units": 84
+     },
+     "ELIGIBILITY_ACCOUNT": {
+      "alpha": 0.7475,
+      "ac1": 0.9556,
+      "support_units": 457
+     },
+     "FEEDBACK": {
+      "alpha": 0.1417,
+      "ac1": 0.9922,
+      "support_units": 47
+     },
+     "FEES_PAYMENT": {
+      "alpha": 0.8713,
+      "ac1": 0.9605,
+      "support_units": 649
+     },
+     "GOVERNING_LAW": {
+      "alpha": 0.6309,
+      "ac1": 0.9838,
+      "support_units": 142
+     },
+     "LICENSE_IP": {
+      "alpha": 0.7549,
+      "ac1": 0.9225,
+      "support_units": 754
+     },
+     "LIMITATION_LIABILITY": {
+      "alpha": 0.7446,
+      "ac1": 0.9636,
+      "support_units": 379
+     },
+     "META": {
+      "alpha": 0.4809,
+      "ac1": 0.975,
+      "support_units": 186
+     },
+     "MISC_BOILERPLATE": {
+      "alpha": 0.5404,
+      "ac1": 0.952,
+      "support_units": 324
+     },
+     "MODIFICATION_OF_TERMS": {
+      "alpha": 0.8052,
+      "ac1": 0.9827,
+      "support_units": 225
+     },
+     "PREAMBLE_SCOPE": {
+      "alpha": 0.6602,
+      "ac1": 0.9449,
+      "support_units": 489
+     },
+     "PRIVACY_DATA": {
+      "alpha": 0.6377,
+      "ac1": 0.9776,
+      "support_units": 200
+     },
+     "PROMOTIONS": {
+      "alpha": 0.1165,
+      "ac1": 0.9927,
+      "support_units": 44
+     },
+     "TERMINATION": {
+      "alpha": 0.6955,
+      "ac1": 0.9698,
+      "support_units": 284
+     },
+     "THIRD_PARTY_SERVICES": {
+      "alpha": 0.792,
+      "ac1": 0.9761,
+      "support_units": 297
+     },
+     "USER_CONTENT": {
+      "alpha": 0.6227,
+      "ac1": 0.9326,
+      "support_units": 532
+     },
+     "WARRANTY_DISCLAIMER": {
+      "alpha": 0.697,
+      "ac1": 0.9648,
+      "support_units": 332
+     }
+    },
+    "min_class_alpha": [
+     "DMCA",
+     0.0598
+    ]
+   },
+   "consensus": {
+    "n": 4078,
+    "supports": {
+     "FEES_PAYMENT": 541,
+     "LICENSE_IP": 531,
+     "ACCEPTABLE_USE": 441,
+     "ARBITRATION_DISPUTES": 381,
+     "ELIGIBILITY_ACCOUNT": 321,
+     "PREAMBLE_SCOPE": 238,
+     "MISC_BOILERPLATE": 236,
+     "USER_CONTENT": 234,
+     "LIMITATION_LIABILITY": 202,
+     "THIRD_PARTY_SERVICES": 201,
+     "WARRANTY_DISCLAIMER": 187,
+     "TERMINATION": 146,
+     "MODIFICATION_OF_TERMS": 143,
+     "PRIVACY_DATA": 91,
+     "GOVERNING_LAW": 79,
+     "META": 53,
+     "COMMUNICATIONS": 26,
+     "FEEDBACK": 17,
+     "DMCA": 8,
+     "PROMOTIONS": 2
+    },
+    "multilabel_rate": 0.0383,
+    "unfairness": {
+     "n": 4078,
+     "base_rate": 0.1079,
+     "mi_primary": 0.0656,
+     "mi_combo": 0.0937,
+     "ap_primary": 0.3091,
+     "ap_combo": 0.3873,
+     "lift_by_class": {
+      "LIMITATION_LIABILITY": 3.35,
+      "MODIFICATION_OF_TERMS": 4.6,
+      "TERMINATION": 3.81,
+      "GOVERNING_LAW": 4.22,
+      "ARBITRATION_DISPUTES": 0.78,
+      "FEES_PAYMENT": 0.48,
+      "USER_CONTENT": 0.99,
+      "ELIGIBILITY_ACCOUNT": 0.66,
+      "PREAMBLE_SCOPE": 0.86,
+      "LICENSE_IP": 0.35,
+      "ACCEPTABLE_USE": 0.34,
+      "THIRD_PARTY_SERVICES": 0.55,
+      "WARRANTY_DISCLAIMER": 0.55,
+      "MISC_BOILERPLATE": 0.2,
+      "PRIVACY_DATA": 0.31,
+      "COMMUNICATIONS": 0.36,
+      "META": 0.0
+     }
+    }
+   },
+   "gold": {
+    "n_sentences": 4078,
+    "n_decided": 4078,
+    "auto_levels": {
+     "auto_1click": 1914,
+     "auto": 2008,
+     "manual": 156
+    },
+    "agreement_classes": {
+     "strict": 1914,
+     "majority": 2008,
+     "divergence": 156
+    },
+    "distribution": {
+     "FEES_PAYMENT": 541,
+     "LICENSE_IP": 530,
+     "ACCEPTABLE_USE": 408,
+     "ARBITRATION_DISPUTES": 380,
+     "ELIGIBILITY_ACCOUNT": 313,
+     "USER_CONTENT": 251,
+     "PREAMBLE_SCOPE": 241,
+     "MISC_BOILERPLATE": 230,
+     "WARRANTY_DISCLAIMER": 213,
+     "THIRD_PARTY_SERVICES": 206,
+     "LIMITATION_LIABILITY": 197,
+     "MODIFICATION_OF_TERMS": 146,
+     "TERMINATION": 146,
+     "PRIVACY_DATA": 96,
+     "GOVERNING_LAW": 79,
+     "META": 57,
+     "COMMUNICATIONS": 21,
+     "FEEDBACK": 15,
+     "DMCA": 6,
+     "PROMOTIONS": 2
+    },
+    "multilabel_rate": 0.0383,
+    "unfairness": {
+     "n": 4078,
+     "base_rate": 0.1079,
+     "mi_primary": 0.0722,
+     "mi_combo": 0.0991,
+     "ap_primary": 0.3194,
+     "ap_combo": 0.3893,
+     "lift_by_class": {
+      "MODIFICATION_OF_TERMS": 4.63,
+      "LIMITATION_LIABILITY": 3.43,
+      "TERMINATION": 4.25,
+      "GOVERNING_LAW": 4.22,
+      "ARBITRATION_DISPUTES": 0.78,
+      "FEES_PAYMENT": 0.46,
+      "USER_CONTENT": 1.0,
+      "PREAMBLE_SCOPE": 0.85,
+      "ELIGIBILITY_ACCOUNT": 0.59,
+      "LICENSE_IP": 0.35,
+      "THIRD_PARTY_SERVICES": 0.54,
+      "WARRANTY_DISCLAIMER": 0.52,
+      "ACCEPTABLE_USE": 0.23,
+      "MISC_BOILERPLATE": 0.16,
+      "PRIVACY_DATA": 0.39,
+      "META": 0.0,
+      "COMMUNICATIONS": 0.0
+     }
+    }
+   }
+  },
+  {
+   "taxonomy": "T14",
+   "population": "holdout",
+   "n_classes": 14,
+   "raw": {
+    "n_units": 4078,
+    "n_documents": 17,
+    "alpha_masi": 0.695676,
+    "alpha_masi_ci": null,
+    "alpha_nominal": 0.777054,
+    "multilabel_cost": 0.081378,
+    "multilabel_cost_ci": [
+     0.062369,
+     0.101101
+    ],
+    "sign_stability": 1,
+    "pairs": 12234,
+    "disagreements": 2468,
+    "disagreement_rate": 0.2017,
+    "n_classes": 14,
+    "per_class": {
+     "ACCEPTABLE_USE": {
+      "alpha": 0.6818,
+      "ac1": 0.9024,
+      "support_units": 818
+     },
+     "ARBITRATION_DISPUTES": {
+      "alpha": 0.903,
+      "ac1": 0.9746,
+      "support_units": 554
+     },
+     "COMMUNICATIONS": {
+      "alpha": 0.136,
+      "ac1": 0.9678,
+      "support_units": 190
+     },
+     "ELIGIBILITY_ACCOUNT": {
+      "alpha": 0.7475,
+      "ac1": 0.9556,
+      "support_units": 457
+     },
+     "FEES_PAYMENT": {
+      "alpha": 0.8713,
+      "ac1": 0.9605,
+      "support_units": 649
+     },
+     "LICENSE_IP": {
+      "alpha": 0.765,
+      "ac1": 0.9218,
+      "support_units": 786
+     },
+     "LIMITATION_LIABILITY": {
+      "alpha": 0.7446,
+      "ac1": 0.9636,
+      "support_units": 379
+     },
+     "MODIFICATION_OF_TERMS": {
+      "alpha": 0.8052,
+      "ac1": 0.9827,
+      "support_units": 225
+     },
+     "PREAMBLE_SCOPE": {
+      "alpha": 0.7084,
+      "ac1": 0.9028,
+      "support_units": 845
+     },
+     "PRIVACY_DATA": {
+      "alpha": 0.6377,
+      "ac1": 0.9776,
+      "support_units": 200
+     },
+     "TERMINATION": {
+      "alpha": 0.6955,
+      "ac1": 0.9698,
+      "support_units": 284
+     },
+     "THIRD_PARTY_SERVICES": {
+      "alpha": 0.792,
+      "ac1": 0.9761,
+      "support_units": 297
+     },
+     "USER_CONTENT": {
+      "alpha": 0.6227,
+      "ac1": 0.9326,
+      "support_units": 532
+     },
+     "WARRANTY_DISCLAIMER": {
+      "alpha": 0.697,
+      "ac1": 0.9648,
+      "support_units": 332
+     }
+    },
+    "min_class_alpha": [
+     "COMMUNICATIONS",
+     0.136
+    ]
+   },
+   "consensus": {
+    "n": 4078,
+    "supports": {
+     "LICENSE_IP": 556,
+     "FEES_PAYMENT": 541,
+     "PREAMBLE_SCOPE": 527,
+     "ARBITRATION_DISPUTES": 460,
+     "ACCEPTABLE_USE": 441,
+     "ELIGIBILITY_ACCOUNT": 321,
+     "USER_CONTENT": 234,
+     "LIMITATION_LIABILITY": 202,
+     "THIRD_PARTY_SERVICES": 201,
+     "WARRANTY_DISCLAIMER": 187,
+     "TERMINATION": 146,
+     "MODIFICATION_OF_TERMS": 143,
+     "PRIVACY_DATA": 91,
+     "COMMUNICATIONS": 28
+    },
+    "multilabel_rate": 0.0383,
+    "unfairness": {
+     "n": 4078,
+     "base_rate": 0.1079,
+     "mi_primary": 0.0557,
+     "mi_combo": 0.0843,
+     "ap_primary": 0.3004,
+     "ap_combo": 0.3819,
+     "lift_by_class": {
+      "LIMITATION_LIABILITY": 3.35,
+      "MODIFICATION_OF_TERMS": 4.6,
+      "ARBITRATION_DISPUTES": 1.37,
+      "TERMINATION": 3.81,
+      "FEES_PAYMENT": 0.48,
+      "PREAMBLE_SCOPE": 0.47,
+      "USER_CONTENT": 0.99,
+      "ELIGIBILITY_ACCOUNT": 0.66,
+      "LICENSE_IP": 0.37,
+      "ACCEPTABLE_USE": 0.34,
+      "THIRD_PARTY_SERVICES": 0.55,
+      "WARRANTY_DISCLAIMER": 0.55,
+      "PRIVACY_DATA": 0.31,
+      "COMMUNICATIONS": 0.33
+     }
+    }
+   },
+   "gold": {
+    "n_sentences": 4078,
+    "n_decided": 4078,
+    "auto_levels": {
+     "auto_1click": 1914,
+     "auto": 2008,
+     "manual": 156
+    },
+    "agreement_classes": {
+     "strict": 1914,
+     "majority": 2008,
+     "divergence": 156
+    },
+    "distribution": {
+     "LICENSE_IP": 551,
+     "FEES_PAYMENT": 541,
+     "PREAMBLE_SCOPE": 528,
+     "ARBITRATION_DISPUTES": 459,
+     "ACCEPTABLE_USE": 408,
+     "ELIGIBILITY_ACCOUNT": 313,
+     "USER_CONTENT": 251,
+     "WARRANTY_DISCLAIMER": 213,
+     "THIRD_PARTY_SERVICES": 206,
+     "LIMITATION_LIABILITY": 197,
+     "MODIFICATION_OF_TERMS": 146,
+     "TERMINATION": 146,
+     "PRIVACY_DATA": 96,
+     "COMMUNICATIONS": 23
+    },
+    "multilabel_rate": 0.0383,
+    "unfairness": {
+     "n": 4078,
+     "base_rate": 0.1079,
+     "mi_primary": 0.0625,
+     "mi_combo": 0.0895,
+     "ap_primary": 0.3137,
+     "ap_combo": 0.3878,
+     "lift_by_class": {
+      "MODIFICATION_OF_TERMS": 4.63,
+      "LIMITATION_LIABILITY": 3.43,
+      "ARBITRATION_DISPUTES": 1.37,
+      "TERMINATION": 4.25,
+      "FEES_PAYMENT": 0.46,
+      "USER_CONTENT": 1.0,
+      "PREAMBLE_SCOPE": 0.46,
+      "LICENSE_IP": 0.35,
+      "ELIGIBILITY_ACCOUNT": 0.59,
+      "THIRD_PARTY_SERVICES": 0.54,
+      "WARRANTY_DISCLAIMER": 0.52,
+      "ACCEPTABLE_USE": 0.23,
+      "PRIVACY_DATA": 0.39,
+      "COMMUNICATIONS": 0.0
+     }
+    }
+   },
+   "vs_canonical": {
+    "delta": 0.0322,
+    "ci": [
+     0.0261,
+     0.0392
+    ],
+    "sign_stability": 1.0,
+    "n_resamples": 1000,
+    "n_documents": 17
+   }
+  },
+  {
+   "taxonomy": "T11",
+   "population": "holdout",
+   "n_classes": 11,
+   "raw": {
+    "n_units": 4078,
+    "n_documents": 17,
+    "alpha_masi": 0.732221,
+    "alpha_masi_ci": null,
+    "alpha_nominal": 0.804103,
+    "multilabel_cost": 0.071882,
+    "multilabel_cost_ci": [
+     0.054027,
+     0.092622
+    ],
+    "sign_stability": 1,
+    "pairs": 12234,
+    "disagreements": 2084,
+    "disagreement_rate": 0.1703,
+    "n_classes": 11,
+    "per_class": {
+     "ACCOUNT_USE": {
+      "alpha": 0.7336,
+      "ac1": 0.8658,
+      "support_units": 1174
+     },
+     "CONTENT_IP": {
+      "alpha": 0.8047,
+      "ac1": 0.9028,
+      "support_units": 1070
+     },
+     "DISPUTES_LAW": {
+      "alpha": 0.903,
+      "ac1": 0.9746,
+      "support_units": 554
+     },
+     "FEES_PAYMENT": {
+      "alpha": 0.8713,
+      "ac1": 0.9605,
+      "support_units": 649
+     },
+     "FRAMEWORK": {
+      "alpha": 0.696,
+      "ac1": 0.8867,
+      "support_units": 952
+     },
+     "LIMITATION_LIABILITY": {
+      "alpha": 0.7446,
+      "ac1": 0.9636,
+      "support_units": 379
+     },
+     "MODIFICATION_OF_TERMS": {
+      "alpha": 0.8052,
+      "ac1": 0.9827,
+      "support_units": 225
+     },
+     "PRIVACY_DATA": {
+      "alpha": 0.6377,
+      "ac1": 0.9776,
+      "support_units": 200
+     },
+     "TERMINATION": {
+      "alpha": 0.6955,
+      "ac1": 0.9698,
+      "support_units": 284
+     },
+     "THIRD_PARTY_SERVICES": {
+      "alpha": 0.792,
+      "ac1": 0.9761,
+      "support_units": 297
+     },
+     "WARRANTY_DISCLAIMER": {
+      "alpha": 0.697,
+      "ac1": 0.9648,
+      "support_units": 332
+     }
+    },
+    "min_class_alpha": [
+     "PRIVACY_DATA",
+     0.6377
+    ]
+   },
+   "consensus": {
+    "n": 4078,
+    "supports": {
+     "CONTENT_IP": 790,
+     "ACCOUNT_USE": 762,
+     "FRAMEWORK": 555,
+     "FEES_PAYMENT": 541,
+     "DISPUTES_LAW": 460,
+     "LIMITATION_LIABILITY": 202,
+     "THIRD_PARTY_SERVICES": 201,
+     "WARRANTY_DISCLAIMER": 187,
+     "TERMINATION": 146,
+     "MODIFICATION_OF_TERMS": 143,
+     "PRIVACY_DATA": 91
+    },
+    "multilabel_rate": 0.0329,
+    "unfairness": {
+     "n": 4078,
+     "base_rate": 0.1079,
+     "mi_primary": 0.0536,
+     "mi_combo": 0.0809,
+     "ap_primary": 0.2901,
+     "ap_combo": 0.3822,
+     "lift_by_class": {
+      "LIMITATION_LIABILITY": 3.35,
+      "MODIFICATION_OF_TERMS": 4.6,
+      "DISPUTES_LAW": 1.37,
+      "TERMINATION": 3.81,
+      "CONTENT_IP": 0.55,
+      "ACCOUNT_USE": 0.47,
+      "FRAMEWORK": 0.47,
+      "FEES_PAYMENT": 0.48,
+      "THIRD_PARTY_SERVICES": 0.55,
+      "WARRANTY_DISCLAIMER": 0.55,
+      "PRIVACY_DATA": 0.31
+     }
+    }
+   },
+   "gold": {
+    "n_sentences": 4078,
+    "n_decided": 4078,
+    "auto_levels": {
+     "auto_1click": 1914,
+     "auto": 2008,
+     "manual": 156
+    },
+    "agreement_classes": {
+     "strict": 1914,
+     "majority": 2008,
+     "divergence": 156
+    },
+    "distribution": {
+     "CONTENT_IP": 802,
+     "ACCOUNT_USE": 721,
+     "FRAMEWORK": 551,
+     "FEES_PAYMENT": 541,
+     "DISPUTES_LAW": 459,
+     "WARRANTY_DISCLAIMER": 213,
+     "THIRD_PARTY_SERVICES": 206,
+     "LIMITATION_LIABILITY": 197,
+     "MODIFICATION_OF_TERMS": 146,
+     "TERMINATION": 146,
+     "PRIVACY_DATA": 96
+    },
+    "multilabel_rate": 0.0331,
+    "unfairness": {
+     "n": 4078,
+     "base_rate": 0.1079,
+     "mi_primary": 0.0598,
+     "mi_combo": 0.0861,
+     "ap_primary": 0.3061,
+     "ap_combo": 0.3899,
+     "lift_by_class": {
+      "MODIFICATION_OF_TERMS": 4.63,
+      "LIMITATION_LIABILITY": 3.43,
+      "DISPUTES_LAW": 1.37,
+      "TERMINATION": 4.25,
+      "CONTENT_IP": 0.55,
+      "ACCOUNT_USE": 0.39,
+      "FEES_PAYMENT": 0.46,
+      "FRAMEWORK": 0.44,
+      "THIRD_PARTY_SERVICES": 0.54,
+      "WARRANTY_DISCLAIMER": 0.52,
+      "PRIVACY_DATA": 0.39
+     }
+    }
+   },
+   "vs_canonical": {
+    "delta": 0.0687,
+    "ci": [
+     0.0542,
+     0.0846
+    ],
+    "sign_stability": 1.0,
+    "n_resamples": 1000,
+    "n_documents": 17
+   }
+  },
+  {
+   "taxonomy": "T10",
+   "population": "holdout",
+   "n_classes": 10,
+   "raw": {
+    "n_units": 4078,
+    "n_documents": 17,
+    "alpha_masi": 0.74202,
+    "alpha_masi_ci": null,
+    "alpha_nominal": 0.808767,
+    "multilabel_cost": 0.066747,
+    "multilabel_cost_ci": [
+     0.048934,
+     0.085499
+    ],
+    "sign_stability": 1,
+    "pairs": 12234,
+    "disagreements": 2023,
+    "disagreement_rate": 0.1654,
+    "n_classes": 10,
+    "per_class": {
+     "ACCOUNT_USE": {
+      "alpha": 0.7336,
+      "ac1": 0.8658,
+      "support_units": 1174
+     },
+     "CONTENT_IP": {
+      "alpha": 0.8047,
+      "ac1": 0.9028,
+      "support_units": 1070
+     },
+     "DISPUTES_LAW": {
+      "alpha": 0.903,
+      "ac1": 0.9746,
+      "support_units": 554
+     },
+     "FEES_PAYMENT": {
+      "alpha": 0.8713,
+      "ac1": 0.9605,
+      "support_units": 649
+     },
+     "FRAMEWORK": {
+      "alpha": 0.696,
+      "ac1": 0.8867,
+      "support_units": 952
+     },
+     "MODIFICATION_OF_TERMS": {
+      "alpha": 0.8052,
+      "ac1": 0.9827,
+      "support_units": 225
+     },
+     "PRIVACY_DATA": {
+      "alpha": 0.6377,
+      "ac1": 0.9776,
+      "support_units": 200
+     },
+     "RISK_ALLOCATION": {
+      "alpha": 0.7911,
+      "ac1": 0.9466,
+      "support_units": 609
+     },
+     "TERMINATION": {
+      "alpha": 0.6955,
+      "ac1": 0.9698,
+      "support_units": 284
+     },
+     "THIRD_PARTY_SERVICES": {
+      "alpha": 0.792,
+      "ac1": 0.9761,
+      "support_units": 297
+     }
+    },
+    "min_class_alpha": [
+     "PRIVACY_DATA",
+     0.6377
+    ]
+   },
+   "consensus": {
+    "n": 4078,
+    "supports": {
+     "CONTENT_IP": 790,
+     "ACCOUNT_USE": 762,
+     "FRAMEWORK": 555,
+     "FEES_PAYMENT": 541,
+     "DISPUTES_LAW": 460,
+     "RISK_ALLOCATION": 389,
+     "THIRD_PARTY_SERVICES": 201,
+     "TERMINATION": 146,
+     "MODIFICATION_OF_TERMS": 143,
+     "PRIVACY_DATA": 91
+    },
+    "multilabel_rate": 0.0316,
+    "unfairness": {
+     "n": 4078,
+     "base_rate": 0.1079,
+     "mi_primary": 0.0465,
+     "mi_combo": 0.0731,
+     "ap_primary": 0.2773,
+     "ap_combo": 0.3714,
+     "lift_by_class": {
+      "RISK_ALLOCATION": 2.0,
+      "MODIFICATION_OF_TERMS": 4.6,
+      "DISPUTES_LAW": 1.37,
+      "TERMINATION": 3.81,
+      "CONTENT_IP": 0.55,
+      "ACCOUNT_USE": 0.47,
+      "FRAMEWORK": 0.47,
+      "FEES_PAYMENT": 0.48,
+      "THIRD_PARTY_SERVICES": 0.55,
+      "PRIVACY_DATA": 0.31
+     }
+    }
+   },
+   "gold": {
+    "n_sentences": 4078,
+    "n_decided": 4078,
+    "auto_levels": {
+     "auto_1click": 1914,
+     "auto": 2008,
+     "manual": 156
+    },
+    "agreement_classes": {
+     "strict": 1914,
+     "majority": 2008,
+     "divergence": 156
+    },
+    "distribution": {
+     "CONTENT_IP": 802,
+     "ACCOUNT_USE": 721,
+     "FRAMEWORK": 551,
+     "FEES_PAYMENT": 541,
+     "DISPUTES_LAW": 459,
+     "RISK_ALLOCATION": 410,
+     "THIRD_PARTY_SERVICES": 206,
+     "MODIFICATION_OF_TERMS": 146,
+     "TERMINATION": 146,
+     "PRIVACY_DATA": 96
+    },
+    "multilabel_rate": 0.0319,
+    "unfairness": {
+     "n": 4078,
+     "base_rate": 0.1079,
+     "mi_primary": 0.0516,
+     "mi_combo": 0.0767,
+     "ap_primary": 0.2876,
+     "ap_combo": 0.3752,
+     "lift_by_class": {
+      "RISK_ALLOCATION": 1.92,
+      "MODIFICATION_OF_TERMS": 4.63,
+      "DISPUTES_LAW": 1.37,
+      "TERMINATION": 4.25,
+      "CONTENT_IP": 0.55,
+      "ACCOUNT_USE": 0.39,
+      "FEES_PAYMENT": 0.46,
+      "FRAMEWORK": 0.44,
+      "THIRD_PARTY_SERVICES": 0.54,
+      "PRIVACY_DATA": 0.39
+     }
+    }
+   },
+   "vs_canonical": {
+    "delta": 0.0785,
+    "ci": [
+     0.0603,
+     0.0946
+    ],
+    "sign_stability": 1.0,
+    "n_resamples": 1000,
+    "n_documents": 17
+   }
+  }
+ ]
+}

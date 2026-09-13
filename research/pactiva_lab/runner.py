@@ -18,6 +18,7 @@ from collections import defaultdict
 from pathlib import Path
 
 from .data import Dataset, load_dataset
+from .taxonomy import spec_fingerprint, taxonomy_of
 from .env import capture_environment
 from .evaluation.bootstrap import bootstrap_ci, fold_dispersion
 from .evaluation.ceiling import human_ceiling
@@ -99,7 +100,9 @@ def run_experiment(
     out_dir = Path(out_dir)
     out_dir.mkdir(parents=True, exist_ok=True)
 
-    dataset = load_dataset(data_dir)
+    # Taxonomie de traitement : projection AU CHARGEMENT (les fichiers restent en T20).
+    # Les plis étant inchangés, deux runs de taxonomies différentes sont appariés.
+    dataset = load_dataset(data_dir, taxonomy=taxonomy_of(config))
     preprocess = config.get("preprocess") or {}
     texts = _build_texts(dataset, preprocess)
     targets = _targets(dataset, task)

@@ -13,6 +13,8 @@ import { useGoldStore } from "@/store/goldStore";
 import { blockKey, needsAttention } from "@/lib/gold/blocks";
 import type { GoldSentenceRow } from "@/lib/gold/types";
 import type { DisplayLang } from "@/lib/prefs/schema";
+import { CANONICAL_TAXONOMY, type TaxonomyId } from "@/lib/taxonomy";
+import { presentTheme } from "@/lib/taxonomy/presentation";
 
 function accentClass(s: GoldSentenceRow): string {
   if (s.decided) return s.autoResolved ? "border-l-info" : "border-l-success";
@@ -25,6 +27,8 @@ export interface GoldReadingProps {
   sentences: GoldSentenceRow[];
   /** VO / bilingue / FR — la traduction voyage avec la phrase (`textFr`). */
   displayLang?: DisplayLang;
+  /** Grille de lecture des thèmes (affichage seulement). */
+  taxonomy?: TaxonomyId;
   canDecide: boolean;
   onValidate: (index: number, clientY: number) => void;
 }
@@ -32,6 +36,7 @@ export interface GoldReadingProps {
 export function GoldReadingPanel({
   sentences,
   displayLang = "orig",
+  taxonomy = CANONICAL_TAXONOMY,
   canDecide,
   onValidate,
 }: GoldReadingProps) {
@@ -83,7 +88,10 @@ export function GoldReadingPanel({
             <div key={s.index}>
               {startsBlock && s.decided && (
                 <div className="mb-0.5 ml-3 mt-1 text-[10px] font-medium uppercase tracking-wide text-ink-muted">
-                  {s.autoResolved ? "Auto" : "Décidé"} · <span className="font-mono">{s.primary}</span>
+                  {s.autoResolved ? "Auto" : "Décidé"} ·{" "}
+                  <span style={{ color: presentTheme(s.primary, taxonomy).color }}>
+                    {presentTheme(s.primary, taxonomy).label}
+                  </span>
                 </div>
               )}
               <div

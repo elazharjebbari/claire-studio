@@ -8,7 +8,7 @@
 
 import { useEffect, useMemo, useRef, useState } from "react";
 import Link from "next/link";
-import { Gavel, Lock, Unlock, Sparkles, ChevronLeft, ArrowRight, HelpCircle, Clock, Send, RotateCcw, Users, AlertTriangle } from "lucide-react";
+import { Gavel, Lock, Unlock, Sparkles, ChevronLeft, ArrowRight, HelpCircle, Clock, Send, RotateCcw, Users, AlertTriangle, Layers } from "lucide-react";
 import { ResizablePanels } from "@/components/workspace/ResizablePanels";
 import { Button } from "@/components/ui/primitives";
 import { GoldHelpModal } from "./GoldHelpModal";
@@ -27,6 +27,8 @@ import { useUiStore } from "@/store/ui";
 import { useGoldStore } from "@/store/goldStore";
 import { usePrefsStore } from "@/store/prefs";
 import { LangSwitch } from "@/components/workspace/LangSwitch";
+import { TaxonomySwitch } from "@/components/taxonomy/TaxonomySwitch";
+import { CANONICAL_TAXONOMY, getTaxonomy } from "@/lib/taxonomy";
 import { useDocumentTranslations } from "@/lib/api/hooks";
 import { nextTodo, prevTodo, nextUndecided, outlineStats } from "@/lib/gold/blocks";
 import { candidatePrimaries } from "./GoldInspectorPanel";
@@ -44,6 +46,8 @@ export function GoldWorkspace({ slug, documentId }: { slug: string; documentId: 
   const selectedIndex = useGoldStore((s) => s.selectedIndex);
   const displayLang = useGoldStore((s) => s.displayLang);
   const setDisplayLang = useGoldStore((s) => s.setDisplayLang);
+  const taxonomy = useGoldStore((s) => s.taxonomy);
+  const setTaxonomy = useGoldStore((s) => s.setTaxonomy);
 
   useEffect(() => setProject(slug), [slug, setProject]);
   useEffect(() => initStore(documentId), [documentId, initStore]);
@@ -221,6 +225,9 @@ export function GoldWorkspace({ slug, documentId }: { slug: string; documentId: 
         <div className="ml-auto flex items-center gap-2">
           {/* Bascule de langue : n'apparaît que si le document a une traduction —
               un contrôle inerte serait une promesse non tenue. */}
+          {/* Grille de lecture des thèmes. La décision, elle, reste en T20 : voir le
+              bandeau ci-dessous quand une projection est active. */}
+          <TaxonomySwitch testIdPrefix="gold-taxonomy" value={taxonomy} onChange={setTaxonomy} />
           {hasTranslations && (
             <LangSwitch
               testIdPrefix="gold-lang"
@@ -314,6 +321,19 @@ export function GoldWorkspace({ slug, documentId }: { slug: string; documentId: 
           )}
         </div>
       )}
+      {taxonomy !== CANONICAL_TAXONOMY && (
+        <div
+          data-testid="gold-taxonomy-banner"
+          className="flex flex-wrap items-center gap-2 border-b border-line bg-info/10 px-4 py-2 text-[13px] text-info"
+        >
+          <Layers size={14} aria-hidden />
+          <span>
+            Lecture en <strong>{getTaxonomy(taxonomy).label}</strong> — les thèmes affichés sont
+            des <strong>projections</strong> des annotations. Les décisions restent écrites en{" "}
+            <strong>T20</strong>, la taxonomie annotée : rien n'est dupliqué ni altéré.
+          </span>
+        </div>
+      )}
       {(decideError || lock.error) && (
         <div
           data-testid="gold-error-banner"
@@ -359,6 +379,7 @@ export function GoldWorkspace({ slug, documentId }: { slug: string; documentId: 
             <GoldReadingPanel
               sentences={sentences}
               displayLang={displayLang}
+              taxonomy={taxonomy}
               canDecide={canDecide}
               onValidate={(index, clientY) => {
                 const s = sentences.find((x) => x.index === index);
@@ -370,6 +391,7 @@ export function GoldWorkspace({ slug, documentId }: { slug: string; documentId: 
             <GoldInspectorPanel
               sentence={selected}
               displayLang={displayLang}
+              taxonomy={taxonomy}
               canDecide={canDecide}
               pending={decide.isPending}
               onDecide={(index, primary, secondaries, clientY, comment) =>

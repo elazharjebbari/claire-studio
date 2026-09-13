@@ -18,6 +18,9 @@ import {
   type LucideIcon,
 } from "lucide-react";
 import { useGoldStore, type GoldFilter } from "@/store/goldStore";
+import { CANONICAL_TAXONOMY, type TaxonomyId } from "@/lib/taxonomy";
+import { presentTheme } from "@/lib/taxonomy/presentation";
+import { TaxonomyLegend } from "@/components/taxonomy/TaxonomyLegend";
 import { needsAttention, nextTodo, prevTodo, outlineStats } from "@/lib/gold/blocks";
 import type { GoldSentenceRow } from "@/lib/gold/types";
 
@@ -37,7 +40,13 @@ const FILTERS: { key: GoldFilter; label: string }[] = [
   { key: "todo", label: "À trancher" },
 ];
 
-export function GoldOutlinePanel({ sentences }: { sentences: GoldSentenceRow[] }) {
+export function GoldOutlinePanel({
+  sentences,
+  taxonomy = CANONICAL_TAXONOMY,
+}: {
+  sentences: GoldSentenceRow[];
+  taxonomy?: TaxonomyId;
+}) {
   const selectedIndex = useGoldStore((s) => s.selectedIndex);
   const filter = useGoldStore((s) => s.filter);
   const select = useGoldStore((s) => s.select);
@@ -47,6 +56,15 @@ export function GoldOutlinePanel({ sentences }: { sentences: GoldSentenceRow[] }
   const listRef = useRef<HTMLUListElement>(null);
 
   const stats = outlineStats(sentences);
+  // Effectifs par catégorie projetée : rend la légende quantitative sur CE document.
+  const countsByCategory = sentences.reduce<Record<string, number>>((acc, s) => {
+    const code = s.decided ? s.primary : s.proposedPrimary;
+    if (code) {
+      const projected = presentTheme(code, taxonomy).code;
+      acc[projected] = (acc[projected] ?? 0) + 1;
+    }
+    return acc;
+  }, {});
   const visible = sentences.filter((s) => {
     if (filter === "conflicts") return needsAttention(s);
     if (filter === "todo") return !s.decided;
@@ -121,6 +139,12 @@ export function GoldOutlinePanel({ sentences }: { sentences: GoldSentenceRow[] }
         </div>
       </div>
 
+      {taxonomy !== CANONICAL_TAXONOMY && (
+        <div className="border-b border-line px-2 py-1.5">
+          <TaxonomyLegend taxonomy={taxonomy} counts={countsByCategory} />
+        </div>
+      )}
+
       <ul ref={listRef} className="flex-1 overflow-y-auto p-1.5" data-testid="gold-outline-list">
         {visible.map((s) => {
           const selected = s.index === selectedIndex;
@@ -145,7 +169,12 @@ export function GoldOutlinePanel({ sentences }: { sentences: GoldSentenceRow[] }
                 <st.Icon size={12} className={`shrink-0 ${st.cls}`} aria-hidden />
                 <span className="w-5 shrink-0 font-mono text-[10px] text-ink-muted">{s.index}</span>
                 <span className="min-w-0 flex-1 truncate text-ink">
-                  {s.decided ? s.primary : s.proposedPrimary || "—"}
+                  {/* Libellé LISIBLE dans la taxonomie de lecture (le code T20 reste la
+                      donnée : seule la présentation change). */}
+                  {(() => {
+                    const code = s.decided ? s.primary : s.proposedPrimary;
+                    return code ? presentTheme(code, taxonomy).label : "—";
+                  })()}
                 </span>
               </button>
             </li>

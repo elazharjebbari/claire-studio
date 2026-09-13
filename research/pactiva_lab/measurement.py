@@ -21,6 +21,12 @@ from collections import Counter, defaultdict
 from pathlib import Path
 
 from .data import load_dataset, load_gold, load_votes
+from .taxonomy import (
+    filter_population,
+    population_of,
+    spec_fingerprint,
+    taxonomy_of,
+)
 from .env import capture_environment
 from .evaluation.agreement import (
     alpha_masi_vs_nominal,
@@ -86,8 +92,10 @@ def run_agreement(
     out_dir = Path(out_dir)
     out_dir.mkdir(parents=True, exist_ok=True)
 
-    dataset = load_dataset(data_dir)
-    votes = load_votes(data_dir)
+    taxonomy = taxonomy_of(config)
+    population = population_of(config)
+    dataset = load_dataset(data_dir, taxonomy=taxonomy)
+    votes = filter_population(load_votes(data_dir, taxonomy=taxonomy), population)
     if not votes:
         raise ValueError(
             "votes_missing : ce dataset ne contient pas votes.jsonl — reconstruisez-le "
@@ -282,6 +290,12 @@ def run_agreement(
             "fingerprint": dataset.manifest.get("fingerprint"),
             "nDocuments": dataset.manifest.get("nDocuments"),
             "nSentences": len(dataset.sentences),
+            # Traçabilité de PROJECTION : sans ces trois champs, un chiffre est ambigu
+            # (« α-MASI 0,72 » ne veut rien dire sans dire en quelle taxonomie, sur quelle
+            # population, et avec quelle version de mappings).
+            "taxonomy": dataset.taxonomy,
+            "population": population or "all",
+            "taxonomySpec": spec_fingerprint()[:16],
         },
         "metrics": metrics,
         "agreement": {
@@ -479,8 +493,10 @@ def run_gold_cascade(
     out_dir = Path(out_dir)
     out_dir.mkdir(parents=True, exist_ok=True)
 
-    dataset = load_dataset(data_dir)
-    gold = load_gold(data_dir)
+    taxonomy = taxonomy_of(config)
+    population = population_of(config)
+    dataset = load_dataset(data_dir, taxonomy=taxonomy)
+    gold = filter_population(load_gold(data_dir, taxonomy=taxonomy), population)
     if not gold:
         raise ValueError(
             "gold_missing : aucune phrase de résolution gold dans ce dataset — créez au "
@@ -539,6 +555,12 @@ def run_gold_cascade(
             "fingerprint": dataset.manifest.get("fingerprint"),
             "nDocuments": dataset.manifest.get("nDocuments"),
             "nSentences": len(dataset.sentences),
+            # Traçabilité de PROJECTION : sans ces trois champs, un chiffre est ambigu
+            # (« α-MASI 0,72 » ne veut rien dire sans dire en quelle taxonomie, sur quelle
+            # population, et avec quelle version de mappings).
+            "taxonomy": dataset.taxonomy,
+            "population": population or "all",
+            "taxonomySpec": spec_fingerprint()[:16],
         },
         "metrics": metrics,
         "gold": {

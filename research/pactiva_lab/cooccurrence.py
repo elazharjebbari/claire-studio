@@ -31,6 +31,7 @@ from dataclasses import dataclass, field
 from pathlib import Path
 
 from .data import Dataset, load_dataset
+from .taxonomy import population_of, spec_fingerprint, taxonomy_of
 from .env import capture_environment
 
 PRECISION_AT_DEFAULT = (10, 20, 50)
@@ -350,7 +351,11 @@ def run_cooccurrence(
     out_dir = Path(out_dir)
     out_dir.mkdir(parents=True, exist_ok=True)
 
-    dataset = load_dataset(data_dir)
+    # Taxonomie de traitement : c'est ICI que se mesure le coût de la fusion en signal
+    # d'abusivité — l'identité de combinaison de thèmes change quand les thèmes fusionnent.
+    taxonomy = taxonomy_of(config)
+    population = population_of(config)
+    dataset = load_dataset(data_dir, taxonomy=taxonomy)
     model_config = config.get("model") or {}
     evaluation = config.get("evaluation") or {}
     seed = int(config.get("seed", 42))
@@ -360,11 +365,24 @@ def run_cooccurrence(
     label_noise = float(evaluation.get("label_noise") or 0.0)
     precision_at = [int(k) for k in evaluation.get("precision_at", PRECISION_AT_DEFAULT)]
 
+    # Restriction de population (corpus complet / conception / hold-out) : appliquée aux
+    # PHRASES avant construction des segments, pour que la validation croisée par document
+    # ne voie que les documents autorisés.
+    if population:
+        from .taxonomy import population_documents
+
+        allowed = population_documents(population)
+        dataset.sentences = [s for s in dataset.sentences if s.document in allowed]
+        dataset.splits = {
+            **dataset.splits,
+            "folds": [[d for d in fold if d in allowed] for fold in dataset.splits["folds"]],
+        }
+
     source = model_config.get("source", "aggregated")
     if source == "votes":
         from .data import load_votes
 
-        votes = load_votes(data_dir)
+        votes = load_votes(data_dir, taxonomy=taxonomy)
         if not votes:
             raise ValueError(
                 "votes_missing : source=votes exige votes.jsonl — reconstruisez le "
@@ -503,6 +521,9 @@ def run_cooccurrence(
             "fingerprint": dataset.manifest.get("fingerprint"),
             "nDocuments": dataset.manifest.get("nDocuments"),
             "nSentences": len(dataset.sentences),
+            "taxonomy": dataset.taxonomy,
+            "population": population or "all",
+            "taxonomySpec": spec_fingerprint()[:16],
         },
         "metrics": metrics,
         "cooccurrence": {
