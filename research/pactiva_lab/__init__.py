@@ -20,3 +20,9 @@ Trois invariants scientifiques sont imposés par le code, pas par la discipline 
 """
 
 __version__ = "0.1.0"
+
+# Capacités déclarées par CETTE version du package. Le runner refuse une configuration
+# qui exige une capacité absente : sur un déploiement distant (Grid'5000) synchronisé à la
+# main, un package périmé IGNORERAIT silencieusement `data.taxonomy` et produirait des
+# résultats étiquetés T11 mais calculés en T20 — une fausse figure indétectable.
+CAPABILITIES = frozenset({"taxonomy_projection", "population_filter"})

@@ -12,6 +12,24 @@ import pytest
 from pactiva_lab import taxonomy as tx
 
 
+def test_spec_is_resolvable_when_package_is_deployed_standalone(tmp_path, monkeypatch):
+    """⭐ Sur Grid'5000 le package vit SEUL (pas d'arborescence frontend) : la
+    spécification doit rester résoluble, sinon tout run distant échoue — y compris en T20,
+    puisque la projection interroge la spécification pour connaître la taxonomie canonique."""
+    copy = tmp_path / "taxonomies.json"
+    copy.write_text(tx.spec_path().read_text(encoding="utf-8"), encoding="utf-8")
+    monkeypatch.setenv("PACTIVA_TAXONOMY_SPEC", str(copy))
+    tx.load_spec.cache_clear()
+    tx.spec_fingerprint.cache_clear()
+    try:
+        assert tx.spec_path() == copy
+        assert tx.load_spec()["canonical"] == "T20"
+    finally:
+        monkeypatch.delenv("PACTIVA_TAXONOMY_SPEC", raising=False)
+        tx.load_spec.cache_clear()
+        tx.spec_fingerprint.cache_clear()
+
+
 def test_spec_is_versioned_and_fingerprinted():
     spec = tx.load_spec()
     assert spec["specVersion"] >= 1
@@ -144,6 +162,6 @@ def test_spec_is_valid_json_without_duplicate_category_codes():
         codes = [c["code"] for c in taxonomy["categories"]]
         assert len(codes) == len(set(codes)), taxonomy["id"]
     # Le fichier reste lisible/diffable (pas de minification accidentelle).
-    raw = tx.SPEC_PATH.read_text(encoding="utf-8")
+    raw = tx.spec_path().read_text(encoding="utf-8")
     assert raw.count("\n") > 50
     json.loads(raw)

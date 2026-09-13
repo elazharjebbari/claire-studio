@@ -19,27 +19,61 @@ from __future__ import annotations
 
 import hashlib
 import json
+import os
 from functools import lru_cache
 from pathlib import Path
 
-# Le dépôt est la source : on remonte depuis research/pactiva_lab/ jusqu'à la racine.
-SPEC_PATH = (
-    Path(__file__).resolve().parents[2]
-    / "frontend" / "src" / "lib" / "taxonomy" / "taxonomies.json"
-)
+def _spec_candidates() -> list:
+    """Où chercher la spécification, par ordre de priorité.
+
+    Le package doit fonctionner DANS le dépôt (développement, CI) comme DÉPLOYÉ SEUL
+    (Grid'5000 : `~/pactiva-src/pactiva_lab/` sans arborescence frontend). Sans cette
+    résolution multi-chemins, tout run distant échouerait au premier appel de projection
+    — y compris un run T20, puisque `project_theme` interroge la spécification pour
+    connaître la taxonomie canonique.
+    """
+    candidates = []
+    override = os.environ.get("PACTIVA_TAXONOMY_SPEC")
+    if override:
+        candidates.append(Path(override))
+    # 1. Dépôt complet : research/pactiva_lab/ → racine → frontend/…
+    candidates.append(
+        Path(__file__).resolve().parents[2]
+        / "frontend" / "src" / "lib" / "taxonomy" / "taxonomies.json"
+    )
+    # 2. Copie DÉPLOYÉE à côté du package (posée par `scripts/sync_g5k.sh`, jamais
+    #    éditée à la main : c'est un artefact de transfert, pas une seconde source).
+    candidates.append(Path(__file__).resolve().parent / "taxonomies.json")
+    return candidates
+
+
+def spec_path() -> Path:
+    for candidate in _spec_candidates():
+        if candidate.is_file():
+            return candidate
+    raise FileNotFoundError(
+        "spécification de taxonomie introuvable. Cherché : "
+        + " ; ".join(str(c) for c in _spec_candidates())
+        + ". Sur un déploiement autonome (Grid'5000), synchronisez le package avec "
+        "`scripts/sync_g5k.sh`, qui dépose la spécification à côté du package."
+    )
+
+
+# Compat : conservé pour les appelants existants (résolu à l'import, jamais lu ici).
+SPEC_PATH = _spec_candidates()[1]
 
 
 @lru_cache(maxsize=1)
 def load_spec(path: str | None = None) -> dict:
     """Spécification complète (mémoïsée). `path` permet de tester une spec alternative."""
-    target = Path(path) if path else SPEC_PATH
+    target = Path(path) if path else spec_path()
     return json.loads(target.read_text(encoding="utf-8"))
 
 
 @lru_cache(maxsize=1)
 def spec_fingerprint() -> str:
     """SHA-256 des octets de la spécification — à journaliser avec tout résultat publié."""
-    return hashlib.sha256(SPEC_PATH.read_bytes()).hexdigest()
+    return hashlib.sha256(spec_path().read_bytes()).hexdigest()
 
 
 def canonical_id() -> str:

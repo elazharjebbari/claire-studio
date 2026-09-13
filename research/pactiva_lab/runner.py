@@ -68,6 +68,31 @@ def _build_texts(dataset: Dataset, preprocess: dict) -> list[str]:
     ]
 
 
+def assert_capabilities(config: dict) -> None:
+    """Refuse une configuration que CETTE version du package ne sait pas honorer.
+
+    Le cas qui motive ce garde-fou est réel : le package déployé sur Grid'5000 est
+    synchronisé à la main. Un package d'août ignorerait `data.taxonomy` sans broncher et
+    renverrait des chiffres T20 sous une étiquette T11. Échouer en une seconde avec un
+    message explicite vaut infiniment mieux qu'une figure fausse."""
+    from . import CAPABILITIES
+
+    data = config.get("data") or {}
+    required = set()
+    if data.get("taxonomy") and data["taxonomy"] != "T20":
+        required.add("taxonomy_projection")
+    if data.get("population"):
+        required.add("population_filter")
+    missing = required - CAPABILITIES
+    if missing:
+        raise RuntimeError(
+            "capability_missing : cette version du package ne supporte pas "
+            f"{sorted(missing)} — la configuration demande "
+            f"taxonomy={data.get('taxonomy')!r}, population={data.get('population')!r}. "
+            "Synchronisez le package (scripts/sync_g5k.sh) avant de relancer."
+        )
+
+
 def run_experiment(
     config: dict,
     data_dir: str | Path,
@@ -76,6 +101,7 @@ def run_experiment(
     progress_path: str | Path | None = None,
     should_cancel=None,
 ) -> dict:
+    assert_capabilities(config)
     task = config["task"]
     # Tâches de mesure et d'anomalie : pas de modèle entraîné par pli — elles ont leur
     # propre boucle mais écrivent le MÊME contrat de sortie (results.json + _SENTINEL).
