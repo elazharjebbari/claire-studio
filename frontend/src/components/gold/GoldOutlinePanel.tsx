@@ -18,7 +18,7 @@ import {
   type LucideIcon,
 } from "lucide-react";
 import { useGoldStore, type GoldFilter } from "@/store/goldStore";
-import { needsAttention, nextConflict, prevConflict, outlineStats } from "@/lib/gold/blocks";
+import { needsAttention, nextTodo, prevTodo, outlineStats } from "@/lib/gold/blocks";
 import type { GoldSentenceRow } from "@/lib/gold/types";
 
 /** Statut → icône de FORME distincte + classe + libellé (encodage non-couleur-seule, §B). */
@@ -34,7 +34,7 @@ function statusMeta(s: GoldSentenceRow): { Icon: LucideIcon; cls: string; label:
 const FILTERS: { key: GoldFilter; label: string }[] = [
   { key: "all", label: "Tout" },
   { key: "conflicts", label: "Conflits" },
-  { key: "undecided", label: "À faire" },
+  { key: "todo", label: "À trancher" },
 ];
 
 export function GoldOutlinePanel({ sentences }: { sentences: GoldSentenceRow[] }) {
@@ -49,13 +49,16 @@ export function GoldOutlinePanel({ sentences }: { sentences: GoldSentenceRow[] }
   const stats = outlineStats(sentences);
   const visible = sentences.filter((s) => {
     if (filter === "conflicts") return needsAttention(s);
-    if (filter === "undecided") return !s.decided;
+    if (filter === "todo") return !s.decided;
     return true;
   });
 
   function jump(dir: 1 | -1) {
+    // Saut vers la FILE DE TRAVAIL (non décidées) et non vers les « conflits » : après
+    // auto-résolution, la quasi-totalité des désaccords est déjà tranchée — sauter dessus
+    // ferait traverser des milliers de phrases sans rien à y faire.
     const from = selectedIndex ?? (dir === 1 ? -1 : sentences.length);
-    const target = dir === 1 ? nextConflict(sentences, from) : prevConflict(sentences, from);
+    const target = dir === 1 ? nextTodo(sentences, from) : prevTodo(sentences, from);
     if (target != null) {
       setParkY(null); // navigation explicite = centrage simple (pas de curseur collant)
       select(target);
@@ -75,8 +78,8 @@ export function GoldOutlinePanel({ sentences }: { sentences: GoldSentenceRow[] }
       <div className="border-b border-line p-3">
         <div className="mb-2 grid grid-cols-3 gap-1 text-center">
           <Stat n={stats.decided} total={stats.total} label="décidées" tone="text-success" />
-          <Stat n={stats.conflicts} label="conflits" tone="text-danger" />
-          <Stat n={stats.pending} label="à faire" tone="text-warning" />
+          <Stat n={stats.pending} label="à trancher" tone="text-warning" />
+          <Stat n={stats.ties} label="sans consensus" tone="text-danger" />
         </div>
         <div className="flex items-center gap-1">
           <div className="flex flex-1 rounded-md border border-line p-0.5" role="tablist">
@@ -97,8 +100,8 @@ export function GoldOutlinePanel({ sentences }: { sentences: GoldSentenceRow[] }
           </div>
           <button
             type="button"
-            aria-label="Conflit précédent"
-            title="Conflit précédent"
+            aria-label="Précédente à trancher (p)"
+            title="Précédente à trancher — raccourci p"
             data-testid="gold-jump-prev"
             onClick={() => jump(-1)}
             className="rounded border border-line p-1 text-ink-muted hover:bg-panel-muted"
@@ -107,8 +110,8 @@ export function GoldOutlinePanel({ sentences }: { sentences: GoldSentenceRow[] }
           </button>
           <button
             type="button"
-            aria-label="Conflit suivant"
-            title="Conflit suivant"
+            aria-label="Suivante à trancher (n)"
+            title="Suivante à trancher — raccourci n"
             data-testid="gold-jump-next"
             onClick={() => jump(1)}
             className="rounded border border-line p-1 text-ink-muted hover:bg-panel-muted"

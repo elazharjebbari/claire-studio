@@ -9,7 +9,12 @@
 
 import { create } from "zustand";
 
-export type GoldFilter = "all" | "conflicts" | "undecided";
+/** `todo` = la file de travail réelle (non décidées).
+ *
+ *  Le filtre par défaut reste `all` : on n'arbitre pas une clause hors-sol, l'arbitre doit
+ *  lire le contrat autour d'elle. C'est la NAVIGATION (n/p, flèches de saut) qui vise la
+ *  file de travail — le filtre `todo` reste disponible pour une revue en fin de parcours. */
+export type GoldFilter = "all" | "conflicts" | "todo";
 
 interface GoldUiState {
   /** external_id du document en cours (garde anti-fuite entre documents). */

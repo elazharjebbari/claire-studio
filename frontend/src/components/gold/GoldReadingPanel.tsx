@@ -37,7 +37,7 @@ export function GoldReadingPanel({ sentences, canDecide, onValidate }: GoldReadi
 
   const visible = sentences.filter((s) => {
     if (filter === "conflicts") return needsAttention(s);
-    if (filter === "undecided") return !s.decided;
+    if (filter === "todo") return !s.decided;
     return true;
   });
 
@@ -64,8 +64,13 @@ export function GoldReadingPanel({ sentences, canDecide, onValidate }: GoldReadi
           const prev = visible[i - 1];
           const startsBlock = !prev || blockKey(prev) !== blockKey(s) || prev.index !== s.index - 1;
           const selected = s.index === selectedIndex;
-          // Valider n'a de sens que s'il existe une proposition à adopter.
-          const showValidate = canDecide && !s.decided && !!s.proposedPrimary;
+          // Valider en 1 clic n'a de sens QUE pour une proposition qui reflète un accord.
+          // Sur une égalité (départage alphabétique) ou un cas « manuel », adopter d'un clic
+          // écrirait un thème arbitraire : l'arbitre doit choisir explicitement dans
+          // l'inspecteur. Mesuré sur la campagne : les 462 cas manuels sont TOUS des égalités.
+          const arbitraryProposal = s.tie === true || s.autoLevel === "manual";
+          const showValidate =
+            canDecide && !s.decided && !!s.proposedPrimary && !arbitraryProposal;
           return (
             <div key={s.index}>
               {startsBlock && s.decided && (
@@ -107,6 +112,14 @@ export function GoldReadingPanel({ sentences, canDecide, onValidate }: GoldReadi
                   <span className="mt-0.5 inline-flex h-4 w-4 shrink-0 items-center justify-center">
                     {s.decided ? (
                       <Check size={11} className="text-success" aria-hidden />
+                    ) : arbitraryProposal && canDecide ? (
+                      // À trancher explicitement : aucune proposition légitime à adopter.
+                      <Scale
+                        size={11}
+                        className="text-danger"
+                        role="img"
+                        aria-label="À trancher : aucune proposition ne fait consensus"
+                      />
                     ) : (
                       <Lock size={10} className="text-ink-muted" aria-hidden />
                     )}

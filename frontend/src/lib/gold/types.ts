@@ -103,6 +103,11 @@ export interface GoldSentenceRow {
   humanDissent: boolean;
   proposedPrimary: string;
   proposedSecondaries: string[];
+  /** Égalité en tête du décompte : la « proposition » n'est qu'un départage alphabétique,
+   *  jamais un consensus — aucune validation en 1 clic ne doit être proposée. */
+  tie?: boolean;
+  /** Nombre d'annotateurs ayant réellement couvert la phrase (1 ⇒ aucun accord constatable). */
+  nCovering?: number;
   decided: boolean;
   autoResolved: boolean;
   primary: string;

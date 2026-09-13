@@ -88,13 +88,15 @@ describe("navigation", () => {
 });
 
 describe("outlineStats", () => {
-  it("compte décidées/conflits/à faire (conflits = désaccord entre annotateurs)", () => {
+  it("compte décidées/conflits/à trancher/sans consensus", () => {
     const st = outlineStats([
       s({ index: 0, decided: true, agreementClass: "strict" }),
-      s({ index: 1, agreementClass: "divergence" }),
+      s({ index: 1, agreementClass: "divergence", tie: true }),
       // strict + humanDissent (déprécié) → PAS un conflit.
       s({ index: 2, agreementClass: "strict", humanDissent: true }),
     ]);
-    expect(st).toEqual({ total: 3, decided: 1, conflicts: 1, pending: 2 });
+    // `pending` = la file de travail réelle ; `ties` = les cas où AUCUNE proposition ne
+    // fait consensus (la « proposition » du moteur n'y est qu'un départage alphabétique).
+    expect(st).toEqual({ total: 3, decided: 1, conflicts: 1, pending: 2, ties: 1 });
   });
 });

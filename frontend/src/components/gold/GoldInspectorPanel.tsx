@@ -2,15 +2,21 @@
 
 /**
  * Inspecteur GOLD (panneau droit) — pour la phrase sélectionnée : ce que CHAQUE annotateur
- * et CHAQUE LLM ont proposé, la proposition du moteur (classe d'accord, risque, confiance,
- * signal humain≠LLM), et les contrôles de DÉCISION (adopter un candidat / valider). Lecture
- * seule si le verrou n'est pas détenu.
+ * et CHAQUE LLM ont proposé, la proposition du moteur (classe d'accord, risque, confiance),
+ * et les contrôles de DÉCISION. Lecture seule si le verrou n'est pas détenu.
+ *
+ * Deux chemins de décision, volontairement distincts :
+ *  - VOIE RAPIDE : adopter l'un des thèmes votés, numéroté (raccourcis 1..9), ordre stable ;
+ *  - VOIE COMPLÈTE (`GoldDecisionComposer`) : n'importe quel thème du schéma, secondaires
+ *    éditables et justification — indispensable sur les égalités 1-1-1, où aucun des trois
+ *    votes ne fait consensus et où les trois annotateurs peuvent tous s'être trompés.
  */
 
-import { useMemo } from "react";
-import { Check, Bot, Sparkles } from "lucide-react";
-import { Panel } from "@/components/ui/primitives";
-import { readableTextColor } from "@/lib/tokens";
+import { useMemo, useState } from "react";
+import { Check, Bot, Sparkles, Scale, UserX } from "lucide-react";
+import { Disclosure } from "@/components/ui/Disclosure";
+import { GoldDecisionComposer } from "./GoldDecisionComposer";
+import { getThemeToken, readableTextColor } from "@/lib/tokens";
 import { AGREEMENT_META, RISK_META, AUTO_META } from "@/lib/gold/styling";
 import { llmJudgeLabel } from "@/lib/llmJudges";
 import type { GoldSentenceRow } from "@/lib/gold/types";
@@ -19,22 +25,26 @@ export interface GoldInspectorProps {
   sentence: GoldSentenceRow | null;
   canDecide: boolean;
   pending: boolean;
-  onDecide: (index: number, primary: string, secondaries: string[], clientY: number) => void;
+  onDecide: (
+    index: number,
+    primary: string,
+    secondaries: string[],
+    clientY: number,
+    comment?: string,
+  ) => void;
 }
 
-function candidatePrimaries(s: GoldSentenceRow): string[] {
+export function candidatePrimaries(s: GoldSentenceRow): string[] {
   // Candidats = propositions des ANNOTATEURS uniquement (la résolution reste entre eux).
-  const seen = new Set<string>();
-  const out: string[] = [];
-  const add = (c: string) => {
-    if (c && !seen.has(c)) {
-      seen.add(c);
-      out.push(c);
-    }
-  };
-  add(s.proposedPrimary);
-  s.annotators.forEach((a) => add(a.primary));
-  return out;
+  // Ordre ALPHABÉTIQUE et non l'ordre des votes : les raccourcis 1..9 doivent désigner la
+  // même chose tant que les candidats ne changent pas, et l'ordre des votes varie d'une
+  // phrase à l'autre (une cible qui se déplace fait commettre des erreurs en rafale).
+  const codes = new Set<string>();
+  for (const a of s.annotators) {
+    if (a.primary) codes.add(a.primary);
+  }
+  if (s.proposedPrimary) codes.add(s.proposedPrimary);
+  return [...codes].sort();
 }
 
 export function GoldInspectorPanel({ sentence, canDecide, pending, onDecide }: GoldInspectorProps) {
@@ -80,7 +90,15 @@ export function GoldInspectorPanel({ sentence, canDecide, pending, onDecide }: G
         <div className="mb-1 text-[11px] uppercase tracking-wide text-ink-muted">Annotateurs</div>
         <ul className="flex flex-col gap-1" data-testid="gold-annot-votes">
           {sentence.annotators.length === 0 && (
-            <li className="text-[12px] text-ink-muted">Aucun annotateur n'a couvert cette phrase.</li>
+            <li className="flex items-center gap-1.5 text-[12px] text-warning" data-testid="gold-uncovered">
+              <UserX size={13} aria-hidden /> Aucun annotateur n'a couvert cette phrase — composez
+              la décision ci-dessous.
+            </li>
+          )}
+          {sentence.annotators.length === 1 && (
+            <li className="flex items-center gap-1.5 text-[12px] text-warning" data-testid="gold-solitary">
+              <UserX size={13} aria-hidden /> Un seul annotateur : aucun accord constatable.
+            </li>
           )}
           {sentence.annotators.map((a) => (
             <li key={a.voterId} className="flex items-center gap-2 text-[13px]">
@@ -139,29 +157,81 @@ export function GoldInspectorPanel({ sentence, canDecide, pending, onDecide }: G
             Lecture seule (verrou non détenu).
           </div>
         ) : (
-          <div className="flex flex-wrap gap-1.5" data-testid="gold-decide-candidates">
-            {candidates.map((code) => {
-              const isGold = sentence.decided && sentence.primary === code;
-              return (
-                <button
-                  key={code}
-                  type="button"
-                  data-testid={`gold-decide-${code}`}
-                  disabled={pending}
-                  onClick={(e) =>
-                    onDecide(sentence.index, code, sentence.proposedSecondaries, e.clientY)
-                  }
-                  className={`inline-flex items-center gap-1 rounded-md border px-2 py-1 text-[12px] font-medium transition-colors disabled:opacity-50 ${
-                    isGold
-                      ? "border-success/50 bg-success/15 text-success"
-                      : "border-line bg-panel text-ink hover:bg-panel-muted"
-                  }`}
-                >
-                  {isGold && <Check size={12} aria-hidden />}
-                  <span className="font-mono">{code}</span>
-                </button>
-              );
-            })}
+          <div className="flex flex-col gap-2">
+            {/* Avertissement d'ÉGALITÉ : sans lui, la « proposition » du moteur ressemble
+                à un consensus alors que c'est un départage alphabétique. */}
+            {sentence.tie && (
+              <p
+                data-testid="gold-tie-warning"
+                className="flex items-start gap-1.5 rounded-md border border-danger/40 bg-danger/10 px-2 py-1 text-[12px] text-danger"
+              >
+                <Scale size={13} className="mt-0.5 shrink-0" aria-hidden />
+                <span>
+                  Aucun consensus : les annotateurs sont à égalité. La proposition affichée
+                  n'est qu'un départage alphabétique — <strong>choisissez explicitement</strong>.
+                </span>
+              </p>
+            )}
+
+            {/* Voie rapide : adopter un thème voté (numéroté = raccourcis clavier 1..9). */}
+            <div className="flex flex-wrap gap-1.5" data-testid="gold-decide-candidates">
+              {candidates.map((code, i) => {
+                const isGold = sentence.decided && sentence.primary === code;
+                const token = getThemeToken(code);
+                return (
+                  <button
+                    key={code}
+                    type="button"
+                    data-testid={`gold-decide-${code}`}
+                    disabled={pending}
+                    title={`${token.label} — raccourci ${i + 1}`}
+                    onClick={(e) =>
+                      onDecide(sentence.index, code, sentence.proposedSecondaries, e.clientY)
+                    }
+                    className={`inline-flex items-center gap-1.5 rounded-md border px-2 py-1 text-[12px] font-medium transition-colors disabled:opacity-50 ${
+                      isGold
+                        ? "border-success/50 bg-success/15 text-success"
+                        : "border-line bg-panel text-ink hover:bg-panel-muted"
+                    }`}
+                  >
+                    {isGold && <Check size={12} aria-hidden />}
+                    {i < 9 && (
+                      <kbd
+                        aria-hidden
+                        className="rounded border border-line bg-panel-muted px-1 font-mono text-[10px] text-ink-muted"
+                      >
+                        {i + 1}
+                      </kbd>
+                    )}
+                    <span
+                      className="h-2 w-2 shrink-0 rounded-full"
+                      style={{ backgroundColor: token.color }}
+                      aria-hidden
+                    />
+                    <span>{token.label}</span>
+                  </button>
+                );
+              })}
+            </div>
+
+            {/* Voie complète : tout le schéma + secondaires + justification. Repliée par
+                défaut, ouverte d'office quand aucun candidat n'existe (phrase non couverte)
+                ou quand aucune proposition ne fait consensus. */}
+            <Disclosure
+              testId="gold-compose"
+              icon={<Sparkles size={13} aria-hidden />}
+              summary="Composer la décision (autre thème, secondaires, justification)"
+              defaultOpen={candidates.length === 0 || sentence.tie === true}
+            >
+              <GoldDecisionComposer
+                sentence={sentence}
+                disabled={pending}
+                pending={pending}
+                onSubmit={(primary, secondaries, comment) =>
+                  onDecide(sentence.index, primary, secondaries, 0, comment)
+                }
+              />
+            </Disclosure>
           </div>
         )}
       </div>

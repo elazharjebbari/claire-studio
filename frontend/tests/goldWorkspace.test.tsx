@@ -116,6 +116,22 @@ describe("GoldWorkspace", () => {
     expect(screen.queryByTestId("gold-auto-resolve")).not.toBeInTheDocument();
   });
 
+  it("⭐ AFFICHE le refus du serveur au lieu d'un saut silencieux du curseur", async () => {
+    server.use(
+      http.post(`${BASE}/projects/:slug/gold/:externalId/decide`, () =>
+        HttpResponse.json(
+          { detail: "Document en cours d'arbitrage par Zahra Boulaich." },
+          { status: 409 },
+        ),
+      ),
+    );
+    render(<GoldWorkspace slug="claudette-gold-v1" documentId="Atlas" />, { wrapper: wrapper() });
+    await waitFor(() => expect(screen.getByTestId("gold-lock-mine")).toBeInTheDocument());
+    fireEvent.click(await screen.findByTestId("gold-decide-PRIVACY"));
+    const banner = await screen.findByTestId("gold-error-banner");
+    expect(banner).toHaveTextContent("Zahra Boulaich");
+  });
+
   it("⭐ NOMME les participants manquants (un compteur seul rend le blocage indiagnosticable)", async () => {
     server.use(
       http.get(`${BASE}/projects/:slug/gold/:externalId`, () =>

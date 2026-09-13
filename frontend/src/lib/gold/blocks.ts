@@ -87,21 +87,47 @@ export function nextUndecided(sentences: GoldSentenceRow[], from: number): numbe
   return findIndex(sentences, from, 1, (s) => !s.decided);
 }
 
+export function prevUndecided(sentences: GoldSentenceRow[], from: number): number | null {
+  return findIndex(sentences, from, -1, (s) => !s.decided);
+}
+
+/** Phrase « à trancher à la main » : non décidée APRÈS auto-résolution.
+ *
+ * C'est le critère de la FILE DE TRAVAIL, et il porte sur l'ÉTAT (`decided`), jamais sur
+ * `autoLevel` qui n'est qu'une propriété du score : une phrase `auto` non appliquée
+ * (configuration, complétude) doit rester dans la file. Sur la campagne, après
+ * auto-résolution, cela désigne exactement les 462 arbitrages réels — contre ~5 000
+ * phrases si l'on naviguait sur `agreementClass !== "strict"`. */
+export function isTodo(s: GoldSentenceRow): boolean {
+  return !s.decided;
+}
+
+export function nextTodo(sentences: GoldSentenceRow[], from: number): number | null {
+  return findIndex(sentences, from, 1, isTodo);
+}
+
+export function prevTodo(sentences: GoldSentenceRow[], from: number): number | null {
+  return findIndex(sentences, from, -1, isTodo);
+}
+
 export interface OutlineStats {
   total: number;
   decided: number;
-  conflicts: number; // phrases à trancher
-  pending: number; // non décidées
+  conflicts: number; // désaccord entre annotateurs (y compris déjà auto-résolu)
+  pending: number; // non décidées = la FILE DE TRAVAIL réelle
+  ties: number; // égalités non tranchées : aucune proposition ne fait consensus
 }
 
 export function outlineStats(sentences: GoldSentenceRow[]): OutlineStats {
   let decided = 0;
   let conflicts = 0;
   let pending = 0;
+  let ties = 0;
   for (const s of sentences) {
     if (s.decided) decided++;
     else pending++;
     if (needsAttention(s)) conflicts++;
+    if (!s.decided && s.tie) ties++;
   }
-  return { total: sentences.length, decided, conflicts, pending };
+  return { total: sentences.length, decided, conflicts, pending, ties };
 }

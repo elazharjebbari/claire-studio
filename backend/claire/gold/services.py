@@ -38,6 +38,13 @@ from .models import (
 )
 
 AUTO_LEVELS = ("auto_1click", "auto")
+# Une phrase couverte par UN SEUL annotateur est classée « accord strict » par le moteur
+# (il n'y a personne pour être en désaccord) et serait auto-résolue avec une confiance de
+# 1,0 — un gold faux mais plausible. La POLITIQUE exige donc DEUX voix pour constater un
+# accord… mais seulement SI deux voix étaient attendues : une campagne légitimement
+# mono-annotateur n'a aucun conflit à résoudre, et son gold EST cette annotation.
+# Le moteur PUR reste inchangé (parité TS↔PY et cas d'or intacts).
+MIN_COVERING_FOR_AUTO = 2
 LOCK_LEASE_SECONDS = 90  # bail du verrou d'arbitrage ; heartbeat conseillé toutes les 20 s
 
 
@@ -312,8 +319,12 @@ def recompute_document(
     allow_auto = {"auto_1click": flags["absolute_agreement"], "auto": flags["majority"]}
     promote_secondaries = secondary_policy(project) == "required"
     # Pas d'auto-résolution tant que TOUS les annotateurs n'ont pas soumis (calcul prématuré).
-    if not resolution_readiness(project, document)["ready"]:
+    readiness = resolution_readiness(project, document)
+    if not readiness["ready"]:
         allow_auto = {"auto_1click": False, "auto": False}
+    # Seuil de voix requis pour qu'un « accord » en soit un (cf. MIN_COVERING_FOR_AUTO) :
+    # ramené à 1 quand une seule voix est attendue sur ce document.
+    min_covering = MIN_COVERING_FOR_AUTO if readiness["expected"] >= 2 else 1
     data = data or build_document_data(project, document)
     n = data["n"]
     theme_by_code = {t.code: t for t in Theme.objects.filter(scheme=project.scheme)}
@@ -359,7 +370,16 @@ def recompute_document(
                 pass  # décision humaine : sacrée
             else:
                 primary_theme = theme_by_code.get(score.primary) if score.primary else None
-                auto_ok = score.auto_level in AUTO_LEVELS and allow_auto.get(score.auto_level, True)
+                # Nombre d'ANNOTATEURS ayant réellement couvert la phrase (les LLM ne sont
+                # jamais parties au conflit — ils ne comptent donc pas ici).
+                n_covering = sum(
+                    1 for v in s["votes"] if not v.is_llm and v.primary is not None
+                )
+                auto_ok = (
+                    score.auto_level in AUTO_LEVELS
+                    and allow_auto.get(score.auto_level, True)
+                    and n_covering >= min_covering
+                )
                 if auto_ok and primary_theme is not None:
                     gs.decided = True
                     gs.auto_resolved = True
@@ -399,6 +419,19 @@ def resolve_and_payload(project, document, user=None) -> dict:
     return document_payload(resolution, data=data, user=user)
 
 
+def _is_tie(tally) -> bool:
+    """Plusieurs thèmes à égalité en tête du décompte des annotateurs ?
+
+    Quand c'est le cas, `proposed_primary` est le vainqueur ALPHABÉTIQUE (départage
+    déterministe du moteur pur) : l'afficher comme une proposition validable d'un clic
+    ferait écrire un gold arbitraire. PUR — aucune dépendance base."""
+    if not isinstance(tally, dict) or len(tally) < 2:
+        return False
+    values = list(tally.values())
+    top = max(values)
+    return sum(1 for v in values if v == top) > 1
+
+
 def document_payload(resolution: GoldResolution, *, data: dict | None = None, user=None) -> dict:
     project, document = resolution.project, resolution.document
     data = data or build_document_data(project, document)
@@ -428,6 +461,15 @@ def document_payload(resolution: GoldResolution, *, data: dict | None = None, us
             "decided_by": gs.decided_by_id if gs else None,
             "decided_by_name": display_name(gs.decided_by) if (gs and gs.decided_by) else "",
             "comment": gs.comment if gs else "",
+            # Couverture RÉELLE par des annotateurs (dérivée, jamais stockée) : une phrase
+            # vue par un seul annotateur n'est pas un « accord », et le moteur la classerait
+            # pourtant « strict » — l'arbitre doit le voir (cf. MIN_COVERING_FOR_AUTO).
+            "n_covering": len(s["human_details"]),
+            # ÉGALITÉ en tête du décompte : la « proposition » n'est alors qu'un départage
+            # LEXICOGRAPHIQUE (déterminisme du moteur), surtout pas un consensus. L'UI doit
+            # refuser la validation en 1 clic dans ce cas. Mesuré sur la campagne : les 462
+            # cas manuels sont TOUS des égalités (3 annotateurs, 3 thèmes différents).
+            "tie": _is_tie(gs.tally if gs else None),
         })
     readiness = resolution_readiness(project, document)
     decided = sum(1 for r in rows if r["decided"])
@@ -547,42 +589,65 @@ def assert_not_finalized(resolution) -> None:
 
 
 def finalize_resolution(resolution, actor) -> GoldResolution:
-    """Soumet (finalise) la résolution : exige complétude + toutes les phrases décidées."""
+    """Soumet (finalise) la résolution : exige complétude + toutes les phrases décidées.
+
+    Sous verrou de ligne et exclusivité d'arbitrage, comme `decide_sentence` : figer le gold
+    est l'écriture la plus conséquente du module (elle rend tout le reste immuable) ; la
+    laisser hors transaction permettait à un tiers de geler le document sous les doigts de
+    l'arbitre en train de travailler. Idempotent : une résolution déjà finalisée est
+    renvoyée telle quelle, sans réécrire sa date ni tracer un second événement."""
     from claire.common.exceptions import Conflict
 
     project, document = resolution.project, resolution.document
     assert_resolution_ready(project, document)
     n = document.n_sentences or 0
-    # Borné à index < n : une décision orpheline hors-bornes (document rétréci, la phrase
-    # décidée survit à l'élagage) ne doit pas faire passer le seuil « toutes décidées ».
-    decided = resolution.sentences.filter(decided=True, index__lt=n).count()
-    if n == 0 or decided < n:
-        raise Conflict("Toutes les phrases doivent être décidées avant de soumettre la résolution.")
-    resolution.finalized_at = timezone.now()
-    resolution.status = ResolutionStatus.RESOLVED
-    resolution.save(update_fields=["finalized_at", "status", "updated_at"])
-    ArbitrationEvent.objects.create(
-        resolution=resolution, index=None, actor=actor,
-        verb=ArbitrationVerb.FINALIZE, payload={"decided": decided},
-    )
+    with transaction.atomic():
+        locked_res = GoldResolution.objects.select_for_update().get(pk=resolution.pk)
+        if locked_res.finalized_at is not None:
+            return locked_res  # déjà figé : ne pas réécrire la date de finalisation
+        _assert_holder(locked_res, actor)
+        # Borné à index < n : une décision orpheline hors-bornes (document rétréci, la
+        # phrase décidée survit à l'élagage) ne doit pas faire passer le seuil.
+        decided = locked_res.sentences.filter(decided=True, index__lt=n).count()
+        if n == 0 or decided < n:
+            raise Conflict(
+                "Toutes les phrases doivent être décidées avant de soumettre la résolution."
+            )
+        locked_res.finalized_at = timezone.now()
+        locked_res.status = ResolutionStatus.RESOLVED
+        locked_res.save(update_fields=["finalized_at", "status", "updated_at"])
+        ArbitrationEvent.objects.create(
+            resolution=locked_res, index=None, actor=actor,
+            verb=ArbitrationVerb.FINALIZE, payload={"decided": decided},
+        )
+    resolution.refresh_from_db()
     return resolution
 
 
 def reopen_resolution(resolution, actor) -> GoldResolution:
     """Rouvre une résolution finalisée (corrections) : dégèle ET réaligne le statut stocké
-    (sinon il resterait « resolved » jusqu'à un recompute, faussant l'export et le cockpit)."""
+    (sinon il resterait « resolved » jusqu'à un recompute, faussant l'export et le cockpit).
+
+    Sous verrou de ligne, comme la finalisation : dégeler est l'opération symétrique et
+    doit être sérialisée vis-à-vis d'elle."""
     document = resolution.document
     n = document.n_sentences or 0
-    decided = resolution.sentences.filter(decided=True, index__lt=n).count()
-    resolution.finalized_at = None
-    resolution.pct_resolved = round(decided / n, 4) if n else 0.0
-    resolution.status = (
-        ResolutionStatus.IN_PROGRESS if decided > 0 else ResolutionStatus.UNRESOLVED
-    )
-    resolution.save(update_fields=["finalized_at", "pct_resolved", "status", "updated_at"])
-    ArbitrationEvent.objects.create(
-        resolution=resolution, index=None, actor=actor, verb=ArbitrationVerb.REOPEN, payload={},
-    )
+    with transaction.atomic():
+        locked_res = GoldResolution.objects.select_for_update().get(pk=resolution.pk)
+        decided = locked_res.sentences.filter(decided=True, index__lt=n).count()
+        locked_res.finalized_at = None
+        locked_res.pct_resolved = round(decided / n, 4) if n else 0.0
+        locked_res.status = (
+            ResolutionStatus.IN_PROGRESS if decided > 0 else ResolutionStatus.UNRESOLVED
+        )
+        locked_res.save(
+            update_fields=["finalized_at", "pct_resolved", "status", "updated_at"]
+        )
+        ArbitrationEvent.objects.create(
+            resolution=locked_res, index=None, actor=actor,
+            verb=ArbitrationVerb.REOPEN, payload={},
+        )
+    resolution.refresh_from_db()
     return resolution
 
 

@@ -8,7 +8,7 @@
 
 import { useEffect, useMemo, useRef, useState } from "react";
 import Link from "next/link";
-import { Gavel, Lock, Unlock, Sparkles, ChevronLeft, ArrowRight, HelpCircle, Clock, Send, RotateCcw, Users } from "lucide-react";
+import { Gavel, Lock, Unlock, Sparkles, ChevronLeft, ArrowRight, HelpCircle, Clock, Send, RotateCcw, Users, AlertTriangle } from "lucide-react";
 import { ResizablePanels } from "@/components/workspace/ResizablePanels";
 import { Button } from "@/components/ui/primitives";
 import { GoldHelpModal } from "./GoldHelpModal";
@@ -25,7 +25,9 @@ import {
 import { isAdminRole } from "@/lib/roles";
 import { useUiStore } from "@/store/ui";
 import { useGoldStore } from "@/store/goldStore";
-import { nextUndecided } from "@/lib/gold/blocks";
+import { nextTodo, prevTodo, nextUndecided, outlineStats } from "@/lib/gold/blocks";
+import { candidatePrimaries } from "./GoldInspectorPanel";
+import { useGoldShortcuts } from "./useGoldShortcuts";
 import { useArbitrationLock } from "./useArbitrationLock";
 import { GoldOutlinePanel } from "./GoldOutlinePanel";
 import { GoldReadingPanel } from "./GoldReadingPanel";
@@ -42,6 +44,11 @@ export function GoldWorkspace({ slug, documentId }: { slug: string; documentId: 
   useEffect(() => initStore(documentId), [documentId, initStore]);
 
   const [helpOpen, setHelpOpen] = useState(false);
+  // Dernier refus serveur, rendu à l'écran : les messages 409/423 sont rédigés côté
+  // serveur (ils nomment le détenteur du verrou ou les annotateurs manquants) mais
+  // n'étaient affichés nulle part — l'arbitre voyait seulement son curseur reculer.
+  const [decideError, setDecideError] = useState<string | null>(null);
+  const [confirmFinalize, setConfirmFinalize] = useState(false);
   const { data: detail, isLoading, error } = useGoldDocument(slug, documentId);
   const decide = useDecideGold(slug, documentId);
   const autoResolve = useAutoResolveGold(slug, documentId);
@@ -74,22 +81,70 @@ export function GoldWorkspace({ slug, documentId }: { slug: string; documentId: 
 
   const committingRef = useRef(false);
   const canDecide = ready && lock.heldByMe && !decide.isPending;
+  const stats = useMemo(() => outlineStats(sentences), [sentences]);
 
-  async function commit(index: number, primary: string, secondaries: string[], clientY: number) {
+  // Raccourcis clavier (spec 02-raccourcis.csv) : n/p naviguent la file de travail,
+  // 1..9 adoptent le k-ième candidat, Entrée adopte la proposition — jamais sur une
+  // égalité, où la proposition n'est qu'un départage alphabétique.
+  useGoldShortcuts({
+    canDecide,
+    onNext: () => {
+      const target = nextTodo(sentences, selectedIndex ?? -1);
+      if (target != null) {
+        setParkY(null);
+        select(target);
+      }
+    },
+    onPrev: () => {
+      const target = prevTodo(sentences, selectedIndex ?? sentences.length);
+      if (target != null) {
+        setParkY(null);
+        select(target);
+      }
+    },
+    onAdoptCandidate: (position) => {
+      if (!selected) return;
+      const code = candidatePrimaries(selected)[position];
+      if (code) void commit(selected.index, code, selected.proposedSecondaries, 0);
+    },
+    onAcceptProposal: () => {
+      // Refus explicite sur une égalité : adopter « la proposition » y écrirait un thème
+      // choisi par ordre alphabétique (mesuré : 462/462 des cas manuels sont des égalités).
+      if (!selected || selected.tie || !selected.proposedPrimary) return;
+      void commit(selected.index, selected.proposedPrimary, selected.proposedSecondaries, 0);
+    },
+    onShowHelp: () => setHelpOpen(true),
+  });
+
+  async function commit(
+    index: number,
+    primary: string,
+    secondaries: string[],
+    clientY: number,
+    comment?: string,
+  ) {
     if (!primary || committingRef.current) return; // primary requis + anti-double-clic
     committingRef.current = true;
     // Curseur collant : avance optimiste vers la prochaine non décidée + parking sur clientY.
+    // clientY = 0 (décision composée, hors rail) ⇒ pas de parking, centrage simple.
     const next = nextUndecided(sentences, index);
-    setParkY(clientY);
+    setParkY(clientY > 0 ? clientY : null);
     if (next != null) select(next);
     try {
-      await decide.mutateAsync({ index, primary, secondaries });
+      await decide.mutateAsync({ index, primary, secondaries, comment });
+      setDecideError(null);
     } catch (e) {
-      // Échec (409 verrou repris, 423 gel, 400…) : annuler l'avance optimiste.
+      // Échec (409 verrou repris, 423 gel, 400…) : annuler l'avance optimiste ET DIRE POURQUOI.
       setParkY(null);
       select(index);
-      if (e instanceof ApiError && (e.status === 409 || e.status === 423)) {
-        lock.reacquire(); // resynchronise l'état réel du verrou
+      if (e instanceof ApiError) {
+        const detail = (e.body as { detail?: string } | undefined)?.detail;
+        setDecideError(detail || e.message || "Décision refusée par le serveur.");
+        if (e.status === 409 || e.status === 423) {
+          lock.reacquire(); // resynchronise l'état réel du verrou
+        }
+      } else {
+        setDecideError("Décision non enregistrée (réseau indisponible).");
       }
     } finally {
       committingRef.current = false;
@@ -121,6 +176,16 @@ export function GoldWorkspace({ slug, documentId }: { slug: string; documentId: 
         <span className="text-sm font-semibold text-ink">{detail.document.title}</span>
         <span className="font-mono text-[11px] text-ink-muted">{detail.document.externalId}</span>
         <span className="ml-2 font-mono text-[11px] text-ink-muted">{pct}% résolu</span>
+        {ready && !detail.finalized && (
+          <span
+            data-testid="gold-todo-counter"
+            aria-live="polite"
+            className="rounded-full border border-warning/40 bg-warning/10 px-2 py-0.5 text-[11px] font-medium text-warning"
+          >
+            {stats.pending} à trancher
+            {stats.ties > 0 && ` · ${stats.ties} sans consensus`}
+          </span>
+        )}
 
         <div className="ml-auto flex items-center gap-2">
           <button
@@ -151,9 +216,10 @@ export function GoldWorkspace({ slug, documentId }: { slug: string; documentId: 
                 <Button
                   variant="primary"
                   data-testid="gold-finalize"
+                  disabled={!lock.heldByMe}
                   loading={finalize.isPending}
                   icon={<Send size={14} />}
-                  onClick={() => finalize.mutate()}
+                  onClick={() => setConfirmFinalize(true)}
                   title="Soumettre la résolution (toutes les phrases sont décidées)"
                 >
                   Soumettre la résolution
@@ -205,6 +271,35 @@ export function GoldWorkspace({ slug, documentId }: { slug: string; documentId: 
           )}
         </div>
       )}
+      {(decideError || lock.error) && (
+        <div
+          data-testid="gold-error-banner"
+          role="alert"
+          className="flex items-center gap-2 border-b border-line bg-danger/10 px-4 py-2 text-[13px] text-danger"
+        >
+          <AlertTriangle size={14} aria-hidden />
+          <span>{decideError ?? lock.error}</span>
+          {lock.error && !lock.heldByMe && (
+            <button
+              type="button"
+              data-testid="gold-error-reacquire"
+              onClick={() => lock.reacquire()}
+              className="rounded border border-danger/40 px-2 py-0.5 text-[12px] hover:bg-danger/10"
+            >
+              Reprendre la main
+            </button>
+          )}
+          <button
+            type="button"
+            aria-label="Masquer ce message"
+            data-testid="gold-error-dismiss"
+            onClick={() => setDecideError(null)}
+            className="ml-auto text-[12px] underline-offset-2 hover:underline"
+          >
+            Masquer
+          </button>
+        </div>
+      )}
       {detail.finalized && (
         <div
           data-testid="gold-resolved-banner"
@@ -232,13 +327,49 @@ export function GoldWorkspace({ slug, documentId }: { slug: string; documentId: 
               sentence={selected}
               canDecide={canDecide}
               pending={decide.isPending}
-              onDecide={(index, primary, secondaries, clientY) =>
-                commit(index, primary, secondaries, clientY)
+              onDecide={(index, primary, secondaries, clientY, comment) =>
+                commit(index, primary, secondaries, clientY, comment)
               }
             />
           }
         />
       </div>
+
+      {confirmFinalize && (
+        <div
+          role="dialog"
+          aria-modal="true"
+          aria-labelledby="gold-finalize-title"
+          data-testid="gold-finalize-confirm"
+          className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-4"
+        >
+          <div className="w-full max-w-md rounded-lg border border-line bg-panel p-4 shadow-xl">
+            <h2 id="gold-finalize-title" className="mb-2 text-sm font-semibold text-ink">
+              Figer le gold de « {detail.document.title} » ?
+            </h2>
+            <p className="mb-3 text-[13px] text-ink-muted">
+              {stats.decided} phrase(s) décidée(s) seront <strong>figées</strong> : plus aucune
+              modification ne sera possible sans rouvrir la résolution (réservé aux leads).
+            </p>
+            <div className="flex justify-end gap-2">
+              <Button variant="subtle" data-testid="gold-finalize-cancel" onClick={() => setConfirmFinalize(false)}>
+                Annuler
+              </Button>
+              <Button
+                variant="primary"
+                data-testid="gold-finalize-confirm-ok"
+                loading={finalize.isPending}
+                onClick={() => {
+                  setConfirmFinalize(false);
+                  finalize.mutate();
+                }}
+              >
+                Figer le gold
+              </Button>
+            </div>
+          </div>
+        </div>
+      )}
 
       {helpOpen && <GoldHelpModal onClose={() => setHelpOpen(false)} />}
     </div>
