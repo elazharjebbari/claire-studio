@@ -44,14 +44,21 @@ module load conda 2>/dev/null || true
 source activate {ENV_NAME} 2>/dev/null || conda activate {ENV_NAME}
 export HF_HOME="$HOME/.cache/huggingface"
 export HF_HUB_DISABLE_TELEMETRY=1
+# Le transfert Xet (protocole de déduplication par blocs de HuggingFace) renvoie 404
+# sur les frontales Grid'5000 — constaté le 13 septembre 2026 sur lyon ET nancy,
+# alors que l'API HTTP classique répond 200. On force donc le transfert HTTP.
+export HF_HUB_DISABLE_XET=1
 python - <<'PYFETCH'
 from huggingface_hub import snapshot_download
 for repo in {list(CHECKPOINTS)!r}:
-    try:
-        path = snapshot_download(repo)
-        print(f"OK   {{repo}} -> {{path}}")
-    except Exception as exc:
-        print(f"FAIL {{repo}} : {{type(exc).__name__}} {{exc}}"[:200])
+    for attempt in (1, 2):
+        try:
+            path = snapshot_download(repo, max_workers=1)
+            print(f"OK   {{repo}} -> {{path}}")
+            break
+        except Exception as exc:
+            if attempt == 2:
+                print(f"FAIL {{repo}} : {{type(exc).__name__}} {{exc}}"[:200])
 PYFETCH
 echo "cache: $(du -sh $HOME/.cache/huggingface 2>/dev/null | cut -f1)"
 """

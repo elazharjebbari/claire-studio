@@ -895,7 +895,8 @@ def main() -> None:
 
     # RQ4 — construite à partir des runs du Lab (le runner entraîne, la campagne qualifie).
     if args.model_runs:
-        from rq4_models import e41_baselines, e42_learning_curve, e43_error_analysis
+        from rq4_models import (e41_baselines, e42_learning_curve, e43_error_analysis,
+                                e44_legalbert, e45_multilabel)
 
         runs_dir = Path(args.model_runs)
         human = next(
@@ -912,9 +913,13 @@ def main() -> None:
             (e41_baselines, {"human_reference": human_reference}),
             (e42_learning_curve, {}),
             (e43_error_analysis, {}),
+            (e44_legalbert, {"human_reference": human_reference}),
+            (e45_multilabel, {}),
         ):
             result = builder(runs_dir, manifest, gold_state, **kwargs)
-            if args.only and not result["id"].startswith(args.only):
+            # Les expériences GPU renvoient `None` tant que leurs runs Grid'5000 ne sont
+            # pas exportés : une expérience absente est honnête, une expérience vide non.
+            if result is None or (args.only and not result["id"].startswith(args.only)):
                 continue
             experiments.append(result)
             blocked = [g["id"] for g in result["gates"] if g["blocking"] and not g["passed"]]

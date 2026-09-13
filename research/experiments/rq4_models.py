@@ -58,7 +58,7 @@ def e41_baselines(runs_dir, manifest, gold_state, human_reference):
         protocol="Même dataset, mêmes plis (validation croisée à 5 plis GROUPÉS PAR DOCUMENT), même graine : seules les étiquettes changent de taxonomie. Deux familles : position seule (plancher diagnostique, aucun texte) et TF-IDF + régression logistique (plancher lexical). La comparaison au plafond humain utilise la référence leave-one-annotator-out de E1.5, mesurée par la même procédure.",
         metrics_declared=["macro_f1", "micro_f1", "kappa", "ecart_au_plafond_humain"],
         limits=[
-            "Planchers CPU uniquement : les encodeurs juridiques fine-tunés (GPU) ne sont pas inclus dans cette campagne.",
+            "Planchers CPU uniquement : les encodeurs juridiques fine-tunés font l'objet d'une expérience distincte (E4.4), absente de la campagne tant que ses runs Grid'5000 ne sont pas exportés.",
             "Les macro-F1 de T20 et T11 ne sont PAS directement comparables (moyennes sur des ensembles de classes différents) : l'écart s'interprète comme une différence d'apprenabilité, pas comme un gain de performance à tâche constante.",
         ],
         depends_on=["E1.5", "E2.1"],
@@ -225,6 +225,128 @@ def e43_error_analysis(runs_dir, manifest, gold_state):
             "elles se concentrent là où la tâche est objectivement ambiguë, ce qui suggère que la "
             "marge de progression réelle est plus étroite que le taux d'erreur global ne le laisse "
             "croire — une partie de ces « erreurs » sont des désaccords légitimes."
+        ),
+        gates=gates,
+    )
+
+
+# =========================================================================== #
+def e44_legalbert(runs_dir, manifest, gold_state, human_reference=None):
+    """Le résultat principal du papier long : un encodeur juridique fine-tuné.
+
+    Renvoie `None` tant que les runs Grid'5000 ne sont pas exportés — une expérience
+    absente est honnête, une expérience vide ne l'est pas.
+    """
+    t20 = run_summary(read_run(runs_dir, "legalbert_T20"))
+    t11 = run_summary(read_run(runs_dir, "legalbert_T11"))
+    if not (t20 and t11):
+        return None
+
+    exp = Experiment(
+        id="E4.4", rq="RQ4", title="Legal-BERT fine-tuné : T20 contre T11",
+        question="Un encodeur pré-entraîné sur du texte juridique confirme-t-il que la taxonomie fusionnée est plus apprenable, ou l'écart observé sur les planchers lexicaux n'était-il qu'un artefact de capacité du modèle ?",
+        hypothesis="L'écart T20→T11 se réduit avec la capacité du modèle (un encodeur contextuel absorbe une part de l'ambiguïté que TF-IDF subit) mais ne disparaît pas : une partie du gain vient des étiquettes elles-mêmes, pas du modèle.",
+        protocol="Fine-tuning de `nlpaueb/legal-bert-base-uncased` sur GPU Grid'5000 (V100), plis groupés PAR DOCUMENT (k=5), graine 42, contexte d'une phrase avant/après, perte pondérée par les effectifs de classe, arrêt précoce (patience 3). Seules les étiquettes changent entre les deux conditions : même dataset, mêmes plis, même graine.",
+        metrics_declared=["macro_f1", "micro_f1", "kappa", "ecart_au_plafond_humain"],
+        limits=[
+            "Les macro-F1 de T20 et T11 ne sont PAS directement comparables (moyennes sur des ensembles de classes de tailles différentes) : l'écart se lit comme une différence d'apprenabilité, jamais comme un gain de performance à tâche constante.",
+            "Un seul encodeur : la comparaison aux généralistes (RoBERTa, DeBERTa, ModernBERT) reste à faire.",
+            "L'arrêt précoce utilise le pli de test faute de pli de validation interne : la performance rapportée est donc légèrement optimiste.",
+        ],
+        depends_on=["E4.1", "E2.1"],
+    )
+    human_kappa = (human_reference or {}).get("kappa")
+    gap = round(human_kappa - t11["kappa"], 4) if human_kappa and t11.get("kappa") else None
+    gates = standard_gates(manifest=manifest, gold_state=gold_state,
+                           split_scheme="group_kfold_document", seed=SEED,
+                           requires_model=True)
+    return envelope(
+        exp,
+        summary=(f"Legal-BERT passe de {t20['macroF1']:.3f} de macro-F1 en T20 "
+                 f"({t20['nClasses']} classes) à {t11['macroF1']:.3f} en T11 "
+                 f"({t11['nClasses']} classes)."),
+        data={"datasetFingerprint": manifest.get("fingerprint"),
+              "taxonomy": "T20 et T11", "labelSource": "consensus (agrégation Lab)",
+              "populations": ["all"]},
+        config={"seed": SEED, "split": "group_kfold_document (k=5)",
+                "checkpoint": "nlpaueb/legal-bert-base-uncased",
+                "epochs": 8, "batchSize": 16, "learningRate": 2e-5,
+                "loss": "weighted_ce", "earlyStoppingPatience": 3,
+                "compute": "Grid'5000 — lyon, cluster gemini (V100 32 Go)"},
+        metrics=[
+            metric("macro_f1_T20", "macro-F1 (T20)", t20["macroF1"], ci=t20["ci"]),
+            metric("macro_f1_T11", "macro-F1 (T11)", t11["macroF1"], ci=t11["ci"]),
+            metric("kappa_T20", "κ (T20)", t20["kappa"]),
+            metric("kappa_T11", "κ (T11)", t11["kappa"]),
+            metric("human_kappa", "κ référence humaine", human_kappa,
+                   note="leave-one-annotator-out (E1.5)"),
+            metric("gap_to_human", "Écart au plafond humain (κ)", gap, higher_is_better=False),
+        ],
+        results={"runs": {"legalbert_T20": t20, "legalbert_T11": t11},
+                 "humanReference": human_reference},
+        uncertainty="IC 95 % bootstrap par document (1 000 rééchantillonnages) sur la macro-F1 ; dispersion inter-plis rapportée par run.",
+        interpretation=(
+            f"Sur l'encodeur juridique, la macro-F1 passe de {t20['macroF1']:.3f} (T20) à "
+            f"{t11['macroF1']:.3f} (T11). "
+            + ("La fusion reste donc favorable à un modèle capacitif : le gain n'est pas "
+               "un simple artefact du plancher lexical. "
+               if t11["macroF1"] > t20["macroF1"] else
+               "L'écart s'inverse ou s'annule sur un modèle capacitif : le gain observé sur "
+               "TF-IDF tenait pour une part à la faiblesse du modèle, pas aux étiquettes. ")
+            + (f"Il reste {gap} point de κ sous la référence humaine ({human_kappa:.3f})."
+               if gap else "")
+        ),
+        gates=gates,
+    )
+
+
+# =========================================================================== #
+def e45_multilabel(runs_dir, manifest, gold_state):
+    """La tâche RÉELLE du protocole d'annotation — à comparer au plafond α-MASI."""
+    run = read_run(runs_dir, "legalbert_multilabel_T11")
+    if not run:
+        return None
+    m = run.get("metrics") or {}
+    summary = run_summary(run)
+
+    exp = Experiment(
+        id="E4.5", rq="RQ4", title="Multi-label : la tâche réellement annotée",
+        question="Un modèle apprend-il la tâche telle qu'elle a été annotée — plusieurs thèmes par phrase — et non sa réduction à un thème principal ?",
+        hypothesis="La performance multi-label est nettement inférieure à la performance mono-label, dans des proportions comparables à l'écart entre le plafond α-MASI et le plafond κ : la difficulté vient de la tâche, pas du modèle.",
+        protocol="Fine-tuning de `nlpaueb/legal-bert-base-uncased` en sortie sigmoïde (perte BCE), 10 époques, plis groupés PAR DOCUMENT (k=5), graine 42. La référence de comparaison est le plafond α-MASI (0,635), JAMAIS le plafond κ mono-label : les deux ne mesurent pas la même tâche.",
+        metrics_declared=["macro_f1", "micro_f1"],
+        limits=[
+            "Seuil de décision fixé globalement, non calibré par classe : une calibration par thème relèverait la macro-F1 sur les classes rares.",
+            "Les thèmes secondaires absorbés par leur primaire lors de la projection T11 disparaissent : le nombre d'étiquettes par phrase est mécaniquement plus faible qu'en T20.",
+        ],
+        depends_on=["E1.1", "E4.4"],
+    )
+    gates = standard_gates(manifest=manifest, gold_state=gold_state,
+                           split_scheme="group_kfold_document", seed=SEED,
+                           requires_model=True)
+    return envelope(
+        exp,
+        summary=f"En multi-label T11, la macro-F1 atteint {summary['macroF1']:.3f} (micro-F1 {summary['microF1']:.3f}).",
+        data={"datasetFingerprint": manifest.get("fingerprint"), "taxonomy": "T11",
+              "labelSource": "consensus (agrégation Lab)", "populations": ["all"]},
+        config={"seed": SEED, "split": "group_kfold_document (k=5)",
+                "checkpoint": "nlpaueb/legal-bert-base-uncased", "epochs": 10,
+                "loss": "bce", "task": "T2_multilabel",
+                "compute": "Grid'5000 — lyon, cluster gemini (V100 32 Go)"},
+        metrics=[
+            metric("macro_f1", "macro-F1 multi-label", summary["macroF1"], ci=summary["ci"]),
+            metric("micro_f1", "micro-F1 multi-label", summary["microF1"]),
+            metric("alpha_masi_ceiling", "Plafond α-MASI (référence humaine)", 0.635,
+                   note="accord inter-annotateurs sur la tâche multi-label"),
+        ],
+        results={"run": summary, "foldStats": m.get("fold_stats")},
+        uncertainty="IC 95 % bootstrap par document sur la macro-F1.",
+        interpretation=(
+            f"La tâche réellement annotée — plusieurs thèmes par phrase — est sensiblement "
+            f"plus dure que sa réduction mono-label : {summary['macroF1']:.3f} de macro-F1. "
+            "Ce chiffre se lit contre le plafond α-MASI (0,635), pas contre le plafond κ : "
+            "comparer une performance multi-label à un accord mono-label surestimerait "
+            "mécaniquement l'écart restant à combler."
         ),
         gates=gates,
     )
