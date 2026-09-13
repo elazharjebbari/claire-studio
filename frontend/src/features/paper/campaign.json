@@ -1,0 +1,3453 @@
+{
+ "campaignVersion": 1,
+ "rqLabels": {
+  "RQ1": "Fiabilité de l'annotation thématique",
+  "RQ2": "Granularité de la taxonomie",
+  "RQ3": "Humains contre modèles de langue",
+  "RQ4": "Modèles compacts"
+ },
+ "dataset": {
+  "fingerprint": "7116e627f528c5572457e79d9e53d2e71bfc21e3a20aacb43e9d3072cfb70e2e",
+  "documents": 50,
+  "sentences": 9414,
+  "annotations": 150
+ },
+ "goldState": {
+  "resolutions": 50,
+  "finalized": 0,
+  "sentences": 9414,
+  "decided": 9414,
+  "undecided": 0,
+  "humanDecisions": 462
+ },
+ "experiments": [
+  {
+   "id": "E1.1",
+   "rq": "RQ1",
+   "title": "Le coût du multi-étiquetage",
+   "question": "Que coûte, en accord inter-annotateurs, le passage d'une tâche mono-label à une tâche multi-label ?",
+   "hypothesis": "L'accord sur les JEUX de thèmes (α-MASI) est significativement inférieur à l'accord sur le seul thème primaire (α nominal) ; l'écart est stable au rééchantillonnage des documents.",
+   "protocol": "α de Krippendorff avec distance MASI sur les jeux complets, contre α nominal sur la projection mono-label, calculés sur les MÊMES unités. La différence est appariée : les deux α sont recalculés sur chaque tirage bootstrap de documents, donc l'intervalle porte sur la différence elle-même.",
+   "metricsDeclared": [
+    "alpha_masi",
+    "alpha_nominal",
+    "diff",
+    "sign_stability"
+   ],
+   "limits": [
+    "Les seuils de Passonneau (0,667 / 0,8) sont des conventions de la littérature, pas des vérités mesurées."
+   ],
+   "dependsOn": [],
+   "summary": "Le multi-étiquetage coûte 0.073 point d'α sur le corpus complet ; l'accord multi-label reste sous le seuil d'acceptabilité en T20.",
+   "data": {
+    "datasetFingerprint": "7116e627f528c5572457e79d9e53d2e71bfc21e3a20aacb43e9d3072cfb70e2e",
+    "taxonomy": "T20",
+    "labelSource": "annotations brutes (3 annotateurs)",
+    "populations": [
+     "all",
+     "designSet",
+     "holdout"
+    ]
+   },
+   "config": {
+    "seed": 42,
+    "nResamples": 1000,
+    "distance": "MASI (Passonneau)",
+    "bootstrapUnit": "document"
+   },
+   "metrics": [
+    {
+     "key": "alpha_masi",
+     "label": "α-MASI (corpus complet)",
+     "value": 0.658076,
+     "ci": null,
+     "unit": "",
+     "note": "seuil d'acceptabilité 0,667",
+     "higherIsBetter": true
+    },
+    {
+     "key": "alpha_nominal",
+     "label": "α nominal (corpus complet)",
+     "value": 0.731536,
+     "ci": null,
+     "unit": "",
+     "note": "",
+     "higherIsBetter": true
+    },
+    {
+     "key": "diff",
+     "label": "Coût du multi-label",
+     "value": 0.07346,
+     "ci": [
+      0.061269,
+      0.087388
+     ],
+     "unit": "",
+     "note": "",
+     "higherIsBetter": false
+    }
+   ],
+   "results": {
+    "all": {
+     "label": "Corpus complet (50 documents)",
+     "alphaMasi": 0.658076,
+     "alphaNominal": 0.731536,
+     "diff": 0.07346,
+     "ci": [
+      0.061269,
+      0.087388
+     ],
+     "signStability": 1,
+     "nDocuments": 50,
+     "acceptable": false
+    },
+    "designSet": {
+     "label": "Conception (33 documents)",
+     "alphaMasi": 0.653562,
+     "alphaNominal": 0.720576,
+     "diff": 0.067015,
+     "ci": [
+      0.050726,
+      0.086172
+     ],
+     "signStability": 1,
+     "nDocuments": 33,
+     "acceptable": false
+    },
+    "holdout": {
+     "label": "Validation (17 documents)",
+     "alphaMasi": 0.663478,
+     "alphaNominal": 0.745462,
+     "diff": 0.081984,
+     "ci": [
+      0.063015,
+      0.100458
+     ],
+     "signStability": 1,
+     "nDocuments": 17,
+     "acceptable": false
+    }
+   },
+   "uncertainty": "IC 95 % bootstrap par document (1000 tirages) ; signe stable sur 100 % des tirages.",
+   "interpretation": "Annoter en multi-étiquettes coûte 0.073 point d'α par rapport à une tâche mono-label sur le MÊME matériau, et ce coût ne s'inverse sur aucun rééchantillon. Avec α-MASI = 0.658, la taxonomie d'annotation reste SOUS le seuil d'acceptabilité de Passonneau : c'est le point de départ de RQ2.",
+   "gates": [
+    {
+     "id": "dataset_frozen",
+     "label": "Dataset figé et daté",
+     "passed": true,
+     "detail": "empreinte 7116e627f528c557…",
+     "blocking": true
+    },
+    {
+     "id": "not_partial_snapshot",
+     "label": "Corpus complet (50 documents × 3 annotateurs)",
+     "passed": true,
+     "detail": "50 documents, 150 annotations soumises",
+     "blocking": true
+    },
+    {
+     "id": "taxonomy_spec_frozen",
+     "label": "Mappings de taxonomie figés et versionnés",
+     "passed": true,
+     "detail": "spécification v1, empreinte f6cdd2715df02177…",
+     "blocking": true
+    },
+    {
+     "id": "seed_recorded",
+     "label": "Graine enregistrée",
+     "passed": true,
+     "detail": "seed=42",
+     "blocking": true
+    },
+    {
+     "id": "code_version_recorded",
+     "label": "Version du code enregistrée",
+     "passed": true,
+     "detail": "69bbe460d4a4 (dépôt MODIFIÉ : non reproductible en l'état)",
+     "blocking": false
+    },
+    {
+     "id": "same_population",
+     "label": "Comparaisons faites à population constante",
+     "passed": true,
+     "detail": "chaque comparaison est interne à une population (jamais entre populations)",
+     "blocking": true
+    }
+   ],
+   "status": "validated",
+   "artifacts": [],
+   "provenance": {
+    "codeVersion": "69bbe460d4a4c60cdb221755001d2af325954234",
+    "codeClean": false,
+    "taxonomySpecVersion": 1,
+    "taxonomySpecFingerprint": "f6cdd2715df02177",
+    "python": "3.12.13",
+    "platform": "macOS-26.3.1-x86_64-i386-64bit",
+    "executedAt": "2026-09-13T20:31:24+00:00"
+   }
+  },
+  {
+   "id": "E1.2",
+   "rq": "RQ1",
+   "title": "Fiabilité thème par thème",
+   "question": "Quels thèmes sont réellement annotables, et lesquels s'effondrent ?",
+   "hypothesis": "La fiabilité n'est pas uniformément basse : elle est bimodale — les thèmes institutionnels s'annotent bien, la queue rare et les zones de recouvrement sémantique s'effondrent.",
+   "protocol": "Pour chaque thème : α de Krippendorff binaire (présence dans le jeu, distance nominale) ET AC1 de Gwet, qui résiste aux prévalences extrêmes. Les deux sont lus ensemble avec le support — aucun ne suffit seul.",
+   "metricsDeclared": [
+    "alpha_binary",
+    "gwet_ac1",
+    "support"
+   ],
+   "limits": [
+    "L'α binaire s'effondre mécaniquement sur les thèmes quasi absents : c'est le paradoxe de prévalence, d'où la lecture couplée avec l'AC1."
+   ],
+   "dependsOn": [],
+   "summary": "4 thèmes sur 20 sont sous α = 0,40 — inexploitables tels quels.",
+   "data": {
+    "datasetFingerprint": "7116e627f528c5572457e79d9e53d2e71bfc21e3a20aacb43e9d3072cfb70e2e",
+    "taxonomy": "T20",
+    "labelSource": "annotations brutes",
+    "populations": [
+     "all"
+    ]
+   },
+   "config": {
+    "seed": 42,
+    "measures": [
+     "alpha_binaire_un_contre_tous",
+     "gwet_ac1"
+    ]
+   },
+   "metrics": [
+    {
+     "key": "n_unusable",
+     "label": "Thèmes sous α = 0,40",
+     "value": 4,
+     "ci": null,
+     "unit": "",
+     "note": "",
+     "higherIsBetter": false
+    },
+    {
+     "key": "alpha_min",
+     "label": "α minimal",
+     "value": 0.1041,
+     "ci": null,
+     "unit": "",
+     "note": "DMCA",
+     "higherIsBetter": true
+    },
+    {
+     "key": "alpha_max",
+     "label": "α maximal",
+     "value": 0.8977,
+     "ci": null,
+     "unit": "",
+     "note": "ARBITRATION_DISPUTES",
+     "higherIsBetter": true
+    }
+   ],
+   "results": {
+    "perTheme": [
+     {
+      "theme": "DMCA",
+      "alpha": 0.1041,
+      "ac1": 0.9884,
+      "support": 162
+     },
+     {
+      "theme": "FEEDBACK",
+      "alpha": 0.1252,
+      "ac1": 0.9923,
+      "support": 108
+     },
+     {
+      "theme": "COMMUNICATIONS",
+      "alpha": 0.1841,
+      "ac1": 0.9789,
+      "support": 292
+     },
+     {
+      "theme": "PROMOTIONS",
+      "alpha": 0.2396,
+      "ac1": 0.9949,
+      "support": 72
+     },
+     {
+      "theme": "META",
+      "alpha": 0.5113,
+      "ac1": 0.9772,
+      "support": 400
+     },
+     {
+      "theme": "MISC_BOILERPLATE",
+      "alpha": 0.5332,
+      "ac1": 0.948,
+      "support": 833
+     },
+     {
+      "theme": "USER_CONTENT",
+      "alpha": 0.5989,
+      "ac1": 0.9294,
+      "support": 1219
+     },
+     {
+      "theme": "PREAMBLE_SCOPE",
+      "alpha": 0.6086,
+      "ac1": 0.9232,
+      "support": 1401
+     },
+     {
+      "theme": "PRIVACY_DATA",
+      "alpha": 0.6197,
+      "ac1": 0.9714,
+      "support": 559
+     },
+     {
+      "theme": "GOVERNING_LAW",
+      "alpha": 0.632,
+      "ac1": 0.9837,
+      "support": 333
+     },
+     {
+      "theme": "ACCEPTABLE_USE",
+      "alpha": 0.6802,
+      "ac1": 0.9138,
+      "support": 1686
+     },
+     {
+      "theme": "LIMITATION_LIABILITY",
+      "alpha": 0.7275,
+      "ac1": 0.9572,
+      "support": 963
+     },
+     {
+      "theme": "WARRANTY_DISCLAIMER",
+      "alpha": 0.7344,
+      "ac1": 0.9616,
+      "support": 895
+     },
+     {
+      "theme": "THIRD_PARTY_SERVICES",
+      "alpha": 0.7366,
+      "ac1": 0.9686,
+      "support": 765
+     },
+     {
+      "theme": "TERMINATION",
+      "alpha": 0.7485,
+      "ac1": 0.9735,
+      "support": 654
+     },
+     {
+      "theme": "ELIGIBILITY_ACCOUNT",
+      "alpha": 0.7555,
+      "ac1": 0.9542,
+      "support": 1104
+     },
+     {
+      "theme": "LICENSE_IP",
+      "alpha": 0.7718,
+      "ac1": 0.9319,
+      "support": 1622
+     },
+     {
+      "theme": "MODIFICATION_OF_TERMS",
+      "alpha": 0.8133,
+      "ac1": 0.9827,
+      "support": 537
+     },
+     {
+      "theme": "FEES_PAYMENT",
+      "alpha": 0.864,
+      "ac1": 0.9641,
+      "support": 1322
+     },
+     {
+      "theme": "ARBITRATION_DISPUTES",
+      "alpha": 0.8977,
+      "ac1": 0.9787,
+      "support": 1045
+     }
+    ],
+    "unusable": [
+     "DMCA",
+     "FEEDBACK",
+     "COMMUNICATIONS",
+     "PROMOTIONS"
+    ]
+   },
+   "uncertainty": "Valeurs ponctuelles ; les thèmes à faible support sont instables par construction (lire l'AC1 et le support avec l'α).",
+   "interpretation": "La fiabilité est BIMODALE, pas uniformément basse : DMCA (0.10), FEEDBACK (0.13), COMMUNICATIONS (0.18) s'effondrent, quand MODIFICATION_OF_TERMS (0.81), FEES_PAYMENT (0.86), ARBITRATION_DISPUTES (0.90) s'annotent de façon fiable. Le « mur du κ » est donc LOCALISÉ — c'est ce qui rend une fusion ciblée pertinente plutôt qu'un abandon du multi-label.",
+   "gates": [
+    {
+     "id": "dataset_frozen",
+     "label": "Dataset figé et daté",
+     "passed": true,
+     "detail": "empreinte 7116e627f528c557…",
+     "blocking": true
+    },
+    {
+     "id": "not_partial_snapshot",
+     "label": "Corpus complet (50 documents × 3 annotateurs)",
+     "passed": true,
+     "detail": "50 documents, 150 annotations soumises",
+     "blocking": true
+    },
+    {
+     "id": "taxonomy_spec_frozen",
+     "label": "Mappings de taxonomie figés et versionnés",
+     "passed": true,
+     "detail": "spécification v1, empreinte f6cdd2715df02177…",
+     "blocking": true
+    },
+    {
+     "id": "seed_recorded",
+     "label": "Graine enregistrée",
+     "passed": true,
+     "detail": "seed=42",
+     "blocking": true
+    },
+    {
+     "id": "code_version_recorded",
+     "label": "Version du code enregistrée",
+     "passed": true,
+     "detail": "69bbe460d4a4 (dépôt MODIFIÉ : non reproductible en l'état)",
+     "blocking": false
+    }
+   ],
+   "status": "validated",
+   "artifacts": [],
+   "provenance": {
+    "codeVersion": "69bbe460d4a4c60cdb221755001d2af325954234",
+    "codeClean": false,
+    "taxonomySpecVersion": 1,
+    "taxonomySpecFingerprint": "f6cdd2715df02177",
+    "python": "3.12.13",
+    "platform": "macOS-26.3.1-x86_64-i386-64bit",
+    "executedAt": "2026-09-13T20:31:26+00:00"
+   }
+  },
+  {
+   "id": "E1.3",
+   "rq": "RQ1",
+   "title": "Accord sur les frontières de blocs",
+   "question": "Les annotateurs s'accordent-ils sur OÙ commence et finit une clause, et non seulement sur son thème ?",
+   "hypothesis": "La segmentation est nettement plus difficile que la thématisation : l'accord sur les frontières est très inférieur à l'accord sur les thèmes.",
+   "protocol": "Frontières RECONSTRUITES : une frontière est une phrase où le jeu de thèmes change. Jamais les ancres de clause — le pré-remplissage en dépose une par phrase chez tout le monde, et cet « accord » vaut 1,0 par construction. Jaccard des ensembles de frontières, par paire d'annotateurs.",
+   "metricsDeclared": [
+    "jaccard_par_paire",
+    "n_frontieres"
+   ],
+   "limits": [
+    "Le Jaccard pénalise un décalage d'une phrase autant qu'une frontière manquée : c'est une mesure stricte."
+   ],
+   "dependsOn": [],
+   "summary": "Jaccard des frontières entre 0.371 et 0.471 — bien en dessous de l'accord thématique.",
+   "data": {
+    "datasetFingerprint": "7116e627f528c5572457e79d9e53d2e71bfc21e3a20aacb43e9d3072cfb70e2e",
+    "taxonomy": "T20",
+    "labelSource": "annotations brutes",
+    "populations": [
+     "all"
+    ]
+   },
+   "config": {
+    "seed": 42,
+    "boundaryDefinition": "changement du jeu de thèmes (reconstruite)"
+   },
+   "metrics": [
+    {
+     "key": "jaccard_min",
+     "label": "Jaccard minimal",
+     "value": 0.3712,
+     "ci": null,
+     "unit": "",
+     "note": "",
+     "higherIsBetter": true
+    },
+    {
+     "key": "jaccard_max",
+     "label": "Jaccard maximal",
+     "value": 0.4707,
+     "ci": null,
+     "unit": "",
+     "note": "",
+     "higherIsBetter": true
+    }
+   ],
+   "results": {
+    "pairs": [
+     {
+      "a": "elazhar.jebbari",
+      "b": "fatima.ouali",
+      "jaccard": 0.4707,
+      "nA": 2163,
+      "nB": 3083
+     },
+     {
+      "a": "elazhar.jebbari",
+      "b": "zahra.boulaich",
+      "jaccard": 0.3712,
+      "nA": 2163,
+      "nB": 4121
+     },
+     {
+      "a": "fatima.ouali",
+      "b": "zahra.boulaich",
+      "jaccard": 0.442,
+      "nA": 3083,
+      "nB": 4121
+     }
+    ],
+    "boundariesByAnnotator": {
+     "elazhar.jebbari": 2163,
+     "fatima.ouali": 3083,
+     "zahra.boulaich": 4121
+    }
+   },
+   "uncertainty": "Valeurs ponctuelles par paire ; l'écart du nombre de frontières entre annotateurs est lui-même un résultat.",
+   "interpretation": "La frontière est le POINT DUR de la tâche : l'accord y est de 0.37–0.47 là où l'accord thématique dépasse 0,65. L'écart du nombre de frontières posées (de 2163 à 4121) montre que les annotateurs ne segmentent pas à la même granularité — un résultat à documenter, pas à corriger après coup.",
+   "gates": [
+    {
+     "id": "dataset_frozen",
+     "label": "Dataset figé et daté",
+     "passed": true,
+     "detail": "empreinte 7116e627f528c557…",
+     "blocking": true
+    },
+    {
+     "id": "not_partial_snapshot",
+     "label": "Corpus complet (50 documents × 3 annotateurs)",
+     "passed": true,
+     "detail": "50 documents, 150 annotations soumises",
+     "blocking": true
+    },
+    {
+     "id": "taxonomy_spec_frozen",
+     "label": "Mappings de taxonomie figés et versionnés",
+     "passed": true,
+     "detail": "spécification v1, empreinte f6cdd2715df02177…",
+     "blocking": true
+    },
+    {
+     "id": "seed_recorded",
+     "label": "Graine enregistrée",
+     "passed": true,
+     "detail": "seed=42",
+     "blocking": true
+    },
+    {
+     "id": "code_version_recorded",
+     "label": "Version du code enregistrée",
+     "passed": true,
+     "detail": "69bbe460d4a4 (dépôt MODIFIÉ : non reproductible en l'état)",
+     "blocking": false
+    }
+   ],
+   "status": "validated",
+   "artifacts": [],
+   "provenance": {
+    "codeVersion": "69bbe460d4a4c60cdb221755001d2af325954234",
+    "codeClean": false,
+    "taxonomySpecVersion": 1,
+    "taxonomySpecFingerprint": "f6cdd2715df02177",
+    "python": "3.12.13",
+    "platform": "macOS-26.3.1-x86_64-i386-64bit",
+    "executedAt": "2026-09-13T20:31:27+00:00"
+   }
+  },
+  {
+   "id": "E1.4",
+   "rq": "RQ1",
+   "title": "Cascade de résolution et ambiguïté résiduelle",
+   "question": "Quelle part du gold se résout automatiquement, et que reste-t-il d'irréductiblement ambigu ?",
+   "hypothesis": "La grande majorité des phrases se résout sans intervention (accord strict ou majorité) ; le reste mesure l'ambiguïté réelle de la tâche.",
+   "protocol": "Trois étages : accord unanime (1 clic), majorité ≥ 2/3 (auto), divergence réelle (comité humain). L'ambiguïté résiduelle est la part arbitrée à la main, qui est une statistique MESURÉE et non un chiffre postulé.",
+   "metricsDeclared": [
+    "share_auto_1click",
+    "share_auto",
+    "share_manual"
+   ],
+   "limits": [
+    "Tant que les résolutions ne sont pas figées, ces parts peuvent encore changer."
+   ],
+   "dependsOn": [],
+   "summary": "95.1 % du gold se résout automatiquement ; 462 phrases ont exigé un arbitrage humain.",
+   "data": {
+    "datasetFingerprint": "7116e627f528c5572457e79d9e53d2e71bfc21e3a20aacb43e9d3072cfb70e2e",
+    "taxonomy": "T20",
+    "labelSource": "GOLD",
+    "populations": [
+     "all"
+    ]
+   },
+   "config": {
+    "seed": 42,
+    "cascade": "unanime → majorité ≥ 2/3 → comité humain"
+   },
+   "metrics": [
+    {
+     "key": "share_auto_1click",
+     "label": "Accord unanime (1 clic)",
+     "value": 0.468,
+     "ci": null,
+     "unit": "part",
+     "note": "",
+     "higherIsBetter": true
+    },
+    {
+     "key": "share_auto",
+     "label": "Majorité ≥ 2/3 (auto)",
+     "value": 0.4829,
+     "ci": null,
+     "unit": "part",
+     "note": "",
+     "higherIsBetter": true
+    },
+    {
+     "key": "share_manual",
+     "label": "Arbitrage humain requis",
+     "value": 0.0491,
+     "ci": null,
+     "unit": "part",
+     "note": "mesure directe de l'ambiguïté irréductible",
+     "higherIsBetter": false
+    }
+   ],
+   "results": {
+    "levels": {
+     "auto": 4546,
+     "auto_1click": 4406,
+     "manual": 462
+    },
+    "agreementClasses": {
+     "majority": 4546,
+     "strict": 4406,
+     "divergence": 462
+    },
+    "humanDecisions": 462,
+    "nSentences": 9414,
+    "finalized": 0,
+    "resolutions": 50
+   },
+   "uncertainty": "Comptages exacts sur l'état du gold à la date d'exécution.",
+   "interpretation": "L'ambiguïté résiduelle de la tâche est de 4.9 % des phrases (462 sur 9414) : c'est la part que trois annotateurs ne parviennent pas à trancher par accord ou majorité, et qui a demandé une décision humaine explicite. Ce n'est pas un défaut du protocole — c'est une mesure de la difficulté intrinsèque du matériau juridique.",
+   "gates": [
+    {
+     "id": "dataset_frozen",
+     "label": "Dataset figé et daté",
+     "passed": true,
+     "detail": "empreinte 7116e627f528c557…",
+     "blocking": true
+    },
+    {
+     "id": "not_partial_snapshot",
+     "label": "Corpus complet (50 documents × 3 annotateurs)",
+     "passed": true,
+     "detail": "50 documents, 150 annotations soumises",
+     "blocking": true
+    },
+    {
+     "id": "taxonomy_spec_frozen",
+     "label": "Mappings de taxonomie figés et versionnés",
+     "passed": true,
+     "detail": "spécification v1, empreinte f6cdd2715df02177…",
+     "blocking": true
+    },
+    {
+     "id": "seed_recorded",
+     "label": "Graine enregistrée",
+     "passed": true,
+     "detail": "seed=42",
+     "blocking": true
+    },
+    {
+     "id": "code_version_recorded",
+     "label": "Version du code enregistrée",
+     "passed": true,
+     "detail": "69bbe460d4a4 (dépôt MODIFIÉ : non reproductible en l'état)",
+     "blocking": false
+    },
+    {
+     "id": "gold_finalized",
+     "label": "GOLD figé (résolutions finalisées)",
+     "passed": false,
+     "detail": "0/50 résolutions finalisées — le gold reste modifiable, donc le chiffre peut changer",
+     "blocking": true
+    },
+    {
+     "id": "gold_complete",
+     "label": "GOLD complet (aucune phrase en attente)",
+     "passed": true,
+     "detail": "0 phrase(s) non tranchée(s)",
+     "blocking": true
+    }
+   ],
+   "status": "preliminary",
+   "artifacts": [],
+   "provenance": {
+    "codeVersion": "69bbe460d4a4c60cdb221755001d2af325954234",
+    "codeClean": false,
+    "taxonomySpecVersion": 1,
+    "taxonomySpecFingerprint": "f6cdd2715df02177",
+    "python": "3.12.13",
+    "platform": "macOS-26.3.1-x86_64-i386-64bit",
+    "executedAt": "2026-09-13T20:31:27+00:00"
+   }
+  },
+  {
+   "id": "E1.5",
+   "rq": "RQ1",
+   "title": "Référence humaine (leave-one-annotator-out)",
+   "question": "Quel score obtiendrait un annotateur humain évalué comme on évalue un modèle ?",
+   "hypothesis": "La performance d'un humain contre le consensus de ses pairs constitue le plafond réaliste de toute automatisation.",
+   "protocol": "Pour chaque annotateur, on le retire et on le traite comme un « système » : sa prédiction est comparée au vote majoritaire des DEUX autres. Exactitude et κ de Cohen. C'est l'exacte procédure appliquée aux modèles, donc la seule comparaison honnête.",
+   "metricsDeclared": [
+    "accuracy",
+    "kappa"
+   ],
+   "limits": [
+    "Avec trois annotateurs, la référence est le vote de deux personnes seulement : elle est elle-même bruitée."
+   ],
+   "dependsOn": [],
+   "summary": "Un annotateur humain atteint 0.871 d'exactitude (κ 0.859) contre ses pairs : c'est le plafond réaliste.",
+   "data": {
+    "datasetFingerprint": "7116e627f528c5572457e79d9e53d2e71bfc21e3a20aacb43e9d3072cfb70e2e",
+    "taxonomy": "T20",
+    "labelSource": "annotations brutes (référence = majorité des pairs)",
+    "populations": [
+     "all"
+    ]
+   },
+   "config": {
+    "seed": 42,
+    "procedure": "leave-one-annotator-out, référence = majorité stricte des 2 pairs"
+   },
+   "metrics": [
+    {
+     "key": "accuracy_mean",
+     "label": "Exactitude humaine moyenne",
+     "value": 0.8705,
+     "ci": null,
+     "unit": "",
+     "note": "",
+     "higherIsBetter": true
+    },
+    {
+     "key": "kappa_mean",
+     "label": "κ humain moyen",
+     "value": 0.8594,
+     "ci": null,
+     "unit": "",
+     "note": "",
+     "higherIsBetter": true
+    }
+   ],
+   "results": {
+    "perAnnotator": {
+     "elazhar.jebbari": {
+      "n": 6613,
+      "accuracy": 0.9285,
+      "kappa": 0.9221
+     },
+     "fatima.ouali": {
+      "n": 6992,
+      "accuracy": 0.8781,
+      "kappa": 0.8676
+     },
+     "zahra.boulaich": {
+      "n": 7627,
+      "accuracy": 0.805,
+      "kappa": 0.7884
+     }
+    }
+   },
+   "uncertainty": "Trois points de mesure (un par annotateur) : la dispersion entre eux est le meilleur indicateur d'incertitude disponible.",
+   "interpretation": "Évalué exactement comme un modèle, un annotateur humain obtient 0.871 d'exactitude et κ = 0.859 contre le consensus de ses pairs. C'est la borne à laquelle comparer les modèles et les juges LLM : un système qui l'approche a appris tout ce qui est apprenable de ce matériau, et un système qui la dépasserait signalerait un problème de protocole, pas une prouesse.",
+   "gates": [
+    {
+     "id": "dataset_frozen",
+     "label": "Dataset figé et daté",
+     "passed": true,
+     "detail": "empreinte 7116e627f528c557…",
+     "blocking": true
+    },
+    {
+     "id": "not_partial_snapshot",
+     "label": "Corpus complet (50 documents × 3 annotateurs)",
+     "passed": true,
+     "detail": "50 documents, 150 annotations soumises",
+     "blocking": true
+    },
+    {
+     "id": "taxonomy_spec_frozen",
+     "label": "Mappings de taxonomie figés et versionnés",
+     "passed": true,
+     "detail": "spécification v1, empreinte f6cdd2715df02177…",
+     "blocking": true
+    },
+    {
+     "id": "seed_recorded",
+     "label": "Graine enregistrée",
+     "passed": true,
+     "detail": "seed=42",
+     "blocking": true
+    },
+    {
+     "id": "code_version_recorded",
+     "label": "Version du code enregistrée",
+     "passed": true,
+     "detail": "69bbe460d4a4 (dépôt MODIFIÉ : non reproductible en l'état)",
+     "blocking": false
+    },
+    {
+     "id": "split_document_level",
+     "label": "Découpe au niveau DOCUMENT (jamais par phrase)",
+     "passed": true,
+     "detail": "schéma « group_kfold_document »",
+     "blocking": true
+    },
+    {
+     "id": "no_train_test_leak",
+     "label": "Aucune fuite entraînement/test",
+     "passed": true,
+     "detail": "garanti par le groupement par document",
+     "blocking": true
+    }
+   ],
+   "status": "validated",
+   "artifacts": [],
+   "provenance": {
+    "codeVersion": "69bbe460d4a4c60cdb221755001d2af325954234",
+    "codeClean": false,
+    "taxonomySpecVersion": 1,
+    "taxonomySpecFingerprint": "f6cdd2715df02177",
+    "python": "3.12.13",
+    "platform": "macOS-26.3.1-x86_64-i386-64bit",
+    "executedAt": "2026-09-13T20:31:28+00:00"
+   }
+  },
+  {
+   "id": "E2.1",
+   "rq": "RQ2",
+   "title": "Comparaison T20 / T14 / T11 / T10",
+   "question": "Une taxonomie plus grossière rend-elle l'annotation significativement plus fiable, et à quel prix ?",
+   "hypothesis": "Fusionner le long des grappes de confusion mesurées fait franchir le seuil d'acceptabilité, avec une perte de signal d'abusivité faible tant qu'on ne fusionne pas à travers les strates.",
+   "protocol": "Les quatre taxonomies sont des PROJECTIONS du même dataset : mêmes documents, mêmes plis, donc comparaison appariée par construction. α-MASI et sa différence appariée contre T20 (bootstrap par document), taux de désaccord, et signal d'abusivité (average precision en leave-one-document-out de P(abusif | combinaison), contre la référence CLAUDETTE jamais projetée).",
+   "metricsDeclared": [
+    "alpha_masi",
+    "delta_vs_T20",
+    "disagreement_rate",
+    "ap_abusivite"
+   ],
+   "limits": [
+    "L'AP LODO est une borne d'information, pas l'AUC-PR d'un détecteur entraîné : elle s'interprète en relatif entre taxonomies."
+   ],
+   "dependsOn": [
+    "E1.1"
+   ],
+   "summary": "T11 porte l'accord de 0.658 à 0.725 (au-dessus du seuil) pour une perte de signal d'abusivité de 5.9 %.",
+   "data": {
+    "datasetFingerprint": "7116e627f528c5572457e79d9e53d2e71bfc21e3a20aacb43e9d3072cfb70e2e",
+    "taxonomy": "T20→T14/T11/T10",
+    "labelSource": "annotations brutes + GOLD (abusivité)",
+    "populations": [
+     "all",
+     "designSet",
+     "holdout"
+    ]
+   },
+   "config": {
+    "seed": 42,
+    "nResamples": 1000,
+    "taxonomySpec": "f6cdd2715df02177",
+    "pairedComparison": "mêmes documents, mêmes tirages bootstrap"
+   },
+   "metrics": [
+    {
+     "key": "alpha_T20",
+     "label": "α-MASI T20",
+     "value": 0.658076,
+     "ci": null,
+     "unit": "",
+     "note": "",
+     "higherIsBetter": true
+    },
+    {
+     "key": "alpha_T11",
+     "label": "α-MASI T11",
+     "value": 0.725014,
+     "ci": [
+      0.0582,
+      0.0766
+     ],
+     "unit": "",
+     "note": "Δ apparié contre T20",
+     "higherIsBetter": true
+    },
+    {
+     "key": "delta_T11",
+     "label": "Gain de T11",
+     "value": 0.0669,
+     "ci": [
+      0.0582,
+      0.0766
+     ],
+     "unit": "",
+     "note": "",
+     "higherIsBetter": true
+    },
+    {
+     "key": "ap_cost_T11",
+     "label": "Coût en signal d'abusivité",
+     "value": 0.0589,
+     "ci": null,
+     "unit": "relatif",
+     "note": "",
+     "higherIsBetter": false
+    }
+   ],
+   "results": {
+    "all": {
+     "label": "Corpus complet (50 documents)",
+     "taxonomies": {
+      "T20": {
+       "nClasses": 20,
+       "alphaMasi": 0.658076,
+       "alphaNominal": 0.731536,
+       "disagreementRate": 0.2482,
+       "apAbusivity": 0.418,
+       "baseRate": 0.1096,
+       "acceptable": false
+      },
+      "T14": {
+       "nClasses": 14,
+       "alphaMasi": 0.693208,
+       "alphaNominal": 0.768414,
+       "disagreementRate": 0.2099,
+       "apAbusivity": 0.3914,
+       "baseRate": 0.1096,
+       "acceptable": true,
+       "vsCanonical": {
+        "delta": 0.0351,
+        "ci": [
+         0.03,
+         0.042
+        ],
+        "signStability": 1.0,
+        "nDocuments": 50
+       }
+      },
+      "T11": {
+       "nClasses": 11,
+       "alphaMasi": 0.725014,
+       "alphaNominal": 0.794027,
+       "disagreementRate": 0.1801,
+       "apAbusivity": 0.3934,
+       "baseRate": 0.1096,
+       "acceptable": true,
+       "vsCanonical": {
+        "delta": 0.0669,
+        "ci": [
+         0.0582,
+         0.0766
+        ],
+        "signStability": 1.0,
+        "nDocuments": 50
+       }
+      },
+      "T10": {
+       "nClasses": 10,
+       "alphaMasi": 0.736514,
+       "alphaNominal": 0.799761,
+       "disagreementRate": 0.1738,
+       "apAbusivity": 0.3628,
+       "baseRate": 0.1096,
+       "acceptable": true,
+       "vsCanonical": {
+        "delta": 0.0784,
+        "ci": [
+         0.0682,
+         0.0902
+        ],
+        "signStability": 1.0,
+        "nDocuments": 50
+       }
+      }
+     }
+    },
+    "designSet": {
+     "label": "Conception (33 documents)",
+     "taxonomies": {
+      "T20": {
+       "nClasses": 20,
+       "alphaMasi": 0.653562,
+       "alphaNominal": 0.720576,
+       "disagreementRate": 0.2589,
+       "apAbusivity": 0.4129,
+       "baseRate": 0.1109,
+       "acceptable": false
+      },
+      "T14": {
+       "nClasses": 14,
+       "alphaMasi": 0.69091,
+       "alphaNominal": 0.76143,
+       "disagreementRate": 0.2162,
+       "apAbusivity": 0.372,
+       "baseRate": 0.1109,
+       "acceptable": true,
+       "vsCanonical": {
+        "delta": 0.0373,
+        "ci": [
+         0.0298,
+         0.0466
+        ],
+        "signStability": 1.0,
+        "nDocuments": 33
+       }
+      },
+      "T11": {
+       "nClasses": 11,
+       "alphaMasi": 0.719216,
+       "alphaNominal": 0.786067,
+       "disagreementRate": 0.1875,
+       "apAbusivity": 0.3707,
+       "baseRate": 0.1109,
+       "acceptable": true,
+       "vsCanonical": {
+        "delta": 0.0657,
+        "ci": [
+         0.0548,
+         0.0792
+        ],
+        "signStability": 1.0,
+        "nDocuments": 33
+       }
+      },
+      "T10": {
+       "nClasses": 10,
+       "alphaMasi": 0.731978,
+       "alphaNominal": 0.792578,
+       "disagreementRate": 0.1802,
+       "apAbusivity": 0.3369,
+       "baseRate": 0.1109,
+       "acceptable": true,
+       "vsCanonical": {
+        "delta": 0.0784,
+        "ci": [
+         0.0662,
+         0.0941
+        ],
+        "signStability": 1.0,
+        "nDocuments": 33
+       }
+      }
+     }
+    },
+    "holdout": {
+     "label": "Validation (17 documents)",
+     "taxonomies": {
+      "T20": {
+       "nClasses": 20,
+       "alphaMasi": 0.663478,
+       "alphaNominal": 0.745462,
+       "disagreementRate": 0.2343,
+       "apAbusivity": 0.3893,
+       "baseRate": 0.1079,
+       "acceptable": false
+      },
+      "T14": {
+       "nClasses": 14,
+       "alphaMasi": 0.695676,
+       "alphaNominal": 0.777054,
+       "disagreementRate": 0.2017,
+       "apAbusivity": 0.3878,
+       "baseRate": 0.1079,
+       "acceptable": true,
+       "vsCanonical": {
+        "delta": 0.0322,
+        "ci": [
+         0.0259,
+         0.0394
+        ],
+        "signStability": 1.0,
+        "nDocuments": 17
+       }
+      },
+      "T11": {
+       "nClasses": 11,
+       "alphaMasi": 0.732221,
+       "alphaNominal": 0.804103,
+       "disagreementRate": 0.1703,
+       "apAbusivity": 0.3899,
+       "baseRate": 0.1079,
+       "acceptable": true,
+       "vsCanonical": {
+        "delta": 0.0687,
+        "ci": [
+         0.0547,
+         0.0846
+        ],
+        "signStability": 1.0,
+        "nDocuments": 17
+       }
+      },
+      "T10": {
+       "nClasses": 10,
+       "alphaMasi": 0.74202,
+       "alphaNominal": 0.808767,
+       "disagreementRate": 0.1654,
+       "apAbusivity": 0.3752,
+       "baseRate": 0.1079,
+       "acceptable": true,
+       "vsCanonical": {
+        "delta": 0.0785,
+        "ci": [
+         0.0628,
+         0.0952
+        ],
+        "signStability": 1.0,
+        "nDocuments": 17
+       }
+      }
+     }
+    }
+   },
+   "uncertainty": "IC 95 % bootstrap par document (1000 tirages) sur la DIFFÉRENCE ; stabilité de signe rapportée par cellule.",
+   "interpretation": "T11 fait franchir le seuil d'acceptabilité que T20 n'atteint pas (0.658 → 0.725, gain +0.0669 [0.0582 ; 0.0766]), pour une perte de signal d'abusivité de 5.9 %. T10 gagne un peu plus d'accord mais perd nettement plus de signal : c'est la preuve que le garde-fou des strates n'est pas un principe esthétique.",
+   "gates": [
+    {
+     "id": "dataset_frozen",
+     "label": "Dataset figé et daté",
+     "passed": true,
+     "detail": "empreinte 7116e627f528c557…",
+     "blocking": true
+    },
+    {
+     "id": "not_partial_snapshot",
+     "label": "Corpus complet (50 documents × 3 annotateurs)",
+     "passed": true,
+     "detail": "50 documents, 150 annotations soumises",
+     "blocking": true
+    },
+    {
+     "id": "taxonomy_spec_frozen",
+     "label": "Mappings de taxonomie figés et versionnés",
+     "passed": true,
+     "detail": "spécification v1, empreinte f6cdd2715df02177…",
+     "blocking": true
+    },
+    {
+     "id": "seed_recorded",
+     "label": "Graine enregistrée",
+     "passed": true,
+     "detail": "seed=42",
+     "blocking": true
+    },
+    {
+     "id": "code_version_recorded",
+     "label": "Version du code enregistrée",
+     "passed": true,
+     "detail": "69bbe460d4a4 (dépôt MODIFIÉ : non reproductible en l'état)",
+     "blocking": false
+    },
+    {
+     "id": "gold_finalized",
+     "label": "GOLD figé (résolutions finalisées)",
+     "passed": false,
+     "detail": "0/50 résolutions finalisées — le gold reste modifiable, donc le chiffre peut changer",
+     "blocking": true
+    },
+    {
+     "id": "gold_complete",
+     "label": "GOLD complet (aucune phrase en attente)",
+     "passed": true,
+     "detail": "0 phrase(s) non tranchée(s)",
+     "blocking": true
+    },
+    {
+     "id": "same_population",
+     "label": "Comparaisons faites à population constante",
+     "passed": true,
+     "detail": "chaque comparaison est interne à une population (jamais entre populations)",
+     "blocking": true
+    }
+   ],
+   "status": "preliminary",
+   "artifacts": [],
+   "provenance": {
+    "codeVersion": "69bbe460d4a4c60cdb221755001d2af325954234",
+    "codeClean": false,
+    "taxonomySpecVersion": 1,
+    "taxonomySpecFingerprint": "f6cdd2715df02177",
+    "python": "3.12.13",
+    "platform": "macOS-26.3.1-x86_64-i386-64bit",
+    "executedAt": "2026-09-13T20:32:59+00:00"
+   }
+  },
+  {
+   "id": "E2.2",
+   "rq": "RQ2",
+   "title": "Validation des taxonomies sur le hold-out",
+   "question": "Le gain de fiabilité de T11 est-il un artefact des documents qui ont servi à concevoir les fusions ?",
+   "hypothesis": "Si le gain se reproduit sur les documents qui n'ont pas servi à la conception, il n'est pas un surajustement.",
+   "protocol": "La partition est FIGÉE dans la spécification de taxonomie : 33 documents de conception (multi-annotés au moment du choix des fusions) contre 17 documents de validation (qui n'ont fourni aucune paire d'annotateurs à ce moment-là). Le même Δ apparié est mesuré séparément sur chaque population — jamais entre les deux.",
+   "metricsDeclared": [
+    "delta_design",
+    "delta_holdout"
+   ],
+   "limits": [
+    "Le hold-out n'est que PARTIELLEMENT aveugle : aveugle pour la structure des fusions (dérivée des désaccords, absents de ces documents à l'époque), non aveugle pour les supports et les strates d'abusivité, calculés sur les 50.",
+    "Vérification faite : recalculés sur les 33 seuls, ces critères donnent la même décision.",
+    "Sur ces 17 documents, la 2ᵉ et la 3ᵉ annotation sont postérieures à la conception : indépendance oui, aveuglement non."
+   ],
+   "dependsOn": [
+    "E2.1"
+   ],
+   "summary": "Le gain de T11 se reproduit sur le hold-out : +0.0687 contre +0.0657 en conception.",
+   "data": {
+    "datasetFingerprint": "7116e627f528c5572457e79d9e53d2e71bfc21e3a20aacb43e9d3072cfb70e2e",
+    "taxonomy": "T20→T11 (et T14/T10)",
+    "labelSource": "annotations brutes",
+    "populations": [
+     "designSet",
+     "holdout"
+    ],
+    "partitionId": "holdout-17-v1"
+   },
+   "config": {
+    "seed": 42,
+    "nResamples": 1000,
+    "partition": "figée dans la spécification de taxonomie"
+   },
+   "metrics": [
+    {
+     "key": "delta_design",
+     "label": "Gain T11 — conception (33 doc.)",
+     "value": 0.0657,
+     "ci": [
+      0.0544,
+      0.0786
+     ],
+     "unit": "",
+     "note": "",
+     "higherIsBetter": true
+    },
+    {
+     "key": "delta_holdout",
+     "label": "Gain T11 — validation (17 doc.)",
+     "value": 0.0687,
+     "ci": [
+      0.0542,
+      0.0852
+     ],
+     "unit": "",
+     "note": "",
+     "higherIsBetter": true
+    }
+   ],
+   "results": {
+    "perPopulation": {
+     "designSet": {
+      "label": "Conception (33)",
+      "documents": 33,
+      "T14": {
+       "delta": 0.0373,
+       "ci": [
+        0.0301,
+        0.0475
+       ],
+       "signStability": 1.0,
+       "nDocuments": 33
+      },
+      "T11": {
+       "delta": 0.0657,
+       "ci": [
+        0.0544,
+        0.0786
+       ],
+       "signStability": 1.0,
+       "nDocuments": 33
+      },
+      "T10": {
+       "delta": 0.0784,
+       "ci": [
+        0.0664,
+        0.0933
+       ],
+       "signStability": 1.0,
+       "nDocuments": 33
+      }
+     },
+     "holdout": {
+      "label": "Validation (17)",
+      "documents": 17,
+      "T14": {
+       "delta": 0.0322,
+       "ci": [
+        0.0258,
+        0.0395
+       ],
+       "signStability": 1.0,
+       "nDocuments": 17
+      },
+      "T11": {
+       "delta": 0.0687,
+       "ci": [
+        0.0542,
+        0.0852
+       ],
+       "signStability": 1.0,
+       "nDocuments": 17
+      },
+      "T10": {
+       "delta": 0.0785,
+       "ci": [
+        0.0627,
+        0.0955
+       ],
+       "signStability": 1.0,
+       "nDocuments": 17
+      }
+     }
+    },
+    "replicates": true
+   },
+   "uncertainty": "IC 95 % bootstrap par document, calculés SÉPARÉMENT sur chaque population (1000 tirages).",
+   "interpretation": "Le gain mesuré hors des données de conception (+0.0687 [0.0542 ; 0.0852]) est au moins aussi élevé que sur les données de conception (+0.0657). Aucun surajustement décelable : la fusion capture une propriété du matériau juridique, pas une particularité des 33 documents qui ont servi à la calibrer.",
+   "gates": [
+    {
+     "id": "dataset_frozen",
+     "label": "Dataset figé et daté",
+     "passed": true,
+     "detail": "empreinte 7116e627f528c557…",
+     "blocking": true
+    },
+    {
+     "id": "not_partial_snapshot",
+     "label": "Corpus complet (50 documents × 3 annotateurs)",
+     "passed": true,
+     "detail": "50 documents, 150 annotations soumises",
+     "blocking": true
+    },
+    {
+     "id": "taxonomy_spec_frozen",
+     "label": "Mappings de taxonomie figés et versionnés",
+     "passed": true,
+     "detail": "spécification v1, empreinte f6cdd2715df02177…",
+     "blocking": true
+    },
+    {
+     "id": "seed_recorded",
+     "label": "Graine enregistrée",
+     "passed": true,
+     "detail": "seed=42",
+     "blocking": true
+    },
+    {
+     "id": "code_version_recorded",
+     "label": "Version du code enregistrée",
+     "passed": true,
+     "detail": "69bbe460d4a4 (dépôt MODIFIÉ : non reproductible en l'état)",
+     "blocking": false
+    },
+    {
+     "id": "same_population",
+     "label": "Comparaisons faites à population constante",
+     "passed": true,
+     "detail": "chaque comparaison est interne à une population (jamais entre populations)",
+     "blocking": true
+    }
+   ],
+   "status": "validated",
+   "artifacts": [],
+   "provenance": {
+    "codeVersion": "69bbe460d4a4c60cdb221755001d2af325954234",
+    "codeClean": false,
+    "taxonomySpecVersion": 1,
+    "taxonomySpecFingerprint": "f6cdd2715df02177",
+    "python": "3.12.13",
+    "platform": "macOS-26.3.1-x86_64-i386-64bit",
+    "executedAt": "2026-09-13T20:33:27+00:00"
+   }
+  },
+  {
+   "id": "E2.3",
+   "rq": "RQ2",
+   "title": "Compromis fiabilité ↔ conservation du signal juridique",
+   "question": "Jusqu'où peut-on fusionner sans détruire le signal que la détection de clauses abusives exploite ?",
+   "hypothesis": "Fusionner le long des grappes de confusion coûte peu de signal ; fusionner à travers les strates d'abusivité en coûte beaucoup.",
+   "protocol": "Pour chaque taxonomie : gain d'accord (Δ α-MASI apparié) contre coût en signal (perte relative d'average precision LODO de P(abusif | combinaison), gold comme source d'étiquettes, référence CLAUDETTE jamais projetée). Le rapport gain/coût départage les schémas.",
+   "metricsDeclared": [
+    "delta_alpha",
+    "ap_loss_relative",
+    "efficiency"
+   ],
+   "limits": [
+    "Le signal est mesuré par une borne d'information, pas par un détecteur entraîné."
+   ],
+   "dependsOn": [
+    "E2.1"
+   ],
+   "summary": "T11 rend 1.13 point d'accord par point de signal perdu, contre 0.59 pour T10.",
+   "data": {
+    "datasetFingerprint": "7116e627f528c5572457e79d9e53d2e71bfc21e3a20aacb43e9d3072cfb70e2e",
+    "taxonomy": "les quatre",
+    "labelSource": "GOLD + référence CLAUDETTE",
+    "populations": [
+     "all"
+    ]
+   },
+   "config": {
+    "seed": 42,
+    "signalMeasure": "AP LODO de P(abusif | combinaison)"
+   },
+   "metrics": [
+    {
+     "key": "efficiency_T11",
+     "label": "Rendement de T11",
+     "value": 1.13,
+     "ci": null,
+     "unit": "",
+     "note": "Δ accord par unité de signal perdu",
+     "higherIsBetter": true
+    },
+    {
+     "key": "efficiency_T10",
+     "label": "Rendement de T10",
+     "value": 0.59,
+     "ci": null,
+     "unit": "",
+     "note": "",
+     "higherIsBetter": true
+    },
+    {
+     "key": "ap_loss_T11",
+     "label": "Perte de signal T11",
+     "value": 0.059,
+     "ci": null,
+     "unit": "relatif",
+     "note": "",
+     "higherIsBetter": false
+    },
+    {
+     "key": "ap_loss_T10",
+     "label": "Perte de signal T10",
+     "value": 0.1321,
+     "ci": null,
+     "unit": "relatif",
+     "note": "",
+     "higherIsBetter": false
+    }
+   ],
+   "results": {
+    "rows": [
+     {
+      "taxonomy": "T20",
+      "nClasses": 20,
+      "deltaAlpha": 0.0,
+      "ci": [
+       0.0,
+       0.0
+      ],
+      "apAbusivity": 0.418,
+      "apLossRelative": 0.0,
+      "efficiency": null
+     },
+     {
+      "taxonomy": "T14",
+      "nClasses": 14,
+      "deltaAlpha": 0.0351,
+      "ci": [
+       0.0296,
+       0.041
+      ],
+      "apAbusivity": 0.3914,
+      "apLossRelative": 0.0636,
+      "efficiency": 0.55
+     },
+     {
+      "taxonomy": "T11",
+      "nClasses": 11,
+      "deltaAlpha": 0.0669,
+      "ci": [
+       0.0578,
+       0.0764
+      ],
+      "apAbusivity": 0.3934,
+      "apLossRelative": 0.059,
+      "efficiency": 1.13
+     },
+     {
+      "taxonomy": "T10",
+      "nClasses": 10,
+      "deltaAlpha": 0.0784,
+      "ci": [
+       0.0676,
+       0.0898
+      ],
+      "apAbusivity": 0.3628,
+      "apLossRelative": 0.1321,
+      "efficiency": 0.59
+     }
+    ],
+    "referenceAp": 0.418
+   },
+   "uncertainty": "Le gain d'accord porte un IC bootstrap ; la perte de signal est une valeur ponctuelle en LODO.",
+   "interpretation": "T11 et T10 gagnent des quantités d'accord comparables, mais T10 perd 2.2 fois plus de signal d'abusivité. La seule fusion qui les sépare — limitation de responsabilité avec exclusion de garantie — réunit deux thèmes aux profils d'abusivité opposés. Le compromis n'est donc pas monotone : il existe un point d'arrêt, et T11 est ce point.",
+   "gates": [
+    {
+     "id": "dataset_frozen",
+     "label": "Dataset figé et daté",
+     "passed": true,
+     "detail": "empreinte 7116e627f528c557…",
+     "blocking": true
+    },
+    {
+     "id": "not_partial_snapshot",
+     "label": "Corpus complet (50 documents × 3 annotateurs)",
+     "passed": true,
+     "detail": "50 documents, 150 annotations soumises",
+     "blocking": true
+    },
+    {
+     "id": "taxonomy_spec_frozen",
+     "label": "Mappings de taxonomie figés et versionnés",
+     "passed": true,
+     "detail": "spécification v1, empreinte f6cdd2715df02177…",
+     "blocking": true
+    },
+    {
+     "id": "seed_recorded",
+     "label": "Graine enregistrée",
+     "passed": true,
+     "detail": "seed=42",
+     "blocking": true
+    },
+    {
+     "id": "code_version_recorded",
+     "label": "Version du code enregistrée",
+     "passed": true,
+     "detail": "69bbe460d4a4 (dépôt MODIFIÉ : non reproductible en l'état)",
+     "blocking": false
+    },
+    {
+     "id": "gold_finalized",
+     "label": "GOLD figé (résolutions finalisées)",
+     "passed": false,
+     "detail": "0/50 résolutions finalisées — le gold reste modifiable, donc le chiffre peut changer",
+     "blocking": true
+    },
+    {
+     "id": "gold_complete",
+     "label": "GOLD complet (aucune phrase en attente)",
+     "passed": true,
+     "detail": "0 phrase(s) non tranchée(s)",
+     "blocking": true
+    }
+   ],
+   "status": "preliminary",
+   "artifacts": [],
+   "provenance": {
+    "codeVersion": "69bbe460d4a4c60cdb221755001d2af325954234",
+    "codeClean": false,
+    "taxonomySpecVersion": 1,
+    "taxonomySpecFingerprint": "f6cdd2715df02177",
+    "python": "3.12.13",
+    "platform": "macOS-26.3.1-x86_64-i386-64bit",
+    "executedAt": "2026-09-13T20:33:53+00:00"
+   }
+  },
+  {
+   "id": "E3.1",
+   "rq": "RQ3",
+   "title": "Matrice d'accord annotateurs × juges LLM",
+   "question": "Les modèles de langue s'accordent-ils avec les annotateurs humains autant que les humains entre eux ?",
+   "hypothesis": "L'accord humain↔humain domine strictement l'accord humain↔LLM ; les LLM se ressemblent davantage entre eux qu'ils ne ressemblent aux humains.",
+   "protocol": "κ de Cohen à vocabulaire constant sur toutes les phrases couvertes par les deux parties, pour chaque paire (annotateur, annotateur), (annotateur, juge) et (juge, juge).",
+   "metricsDeclared": [
+    "kappa_human_human",
+    "kappa_human_llm",
+    "kappa_llm_llm"
+   ],
+   "limits": [
+    "Les juges sont évalués sur leur pré-annotation figée, pas sur un appel LLM refait à la demande."
+   ],
+   "dependsOn": [],
+   "summary": "Accord humain↔humain 0.679–0.795 ; humain↔LLM jamais au-dessus de 0.594.",
+   "data": {
+    "datasetFingerprint": "7116e627f528c5572457e79d9e53d2e71bfc21e3a20aacb43e9d3072cfb70e2e",
+    "taxonomy": "T20",
+    "labelSource": "annotations brutes + pré-annotations LLM figées",
+    "populations": [
+     "all"
+    ]
+   },
+   "config": {
+    "seed": 42,
+    "measure": "κ de Cohen, vocabulaire constant"
+   },
+   "metrics": [
+    {
+     "key": "kappa_hh_min",
+     "label": "κ humain↔humain (min)",
+     "value": 0.6788,
+     "ci": null,
+     "unit": "",
+     "note": "",
+     "higherIsBetter": true
+    },
+    {
+     "key": "kappa_hh_max",
+     "label": "κ humain↔humain (max)",
+     "value": 0.7949,
+     "ci": null,
+     "unit": "",
+     "note": "",
+     "higherIsBetter": true
+    },
+    {
+     "key": "kappa_hl_max",
+     "label": "κ humain↔LLM (max)",
+     "value": 0.5936,
+     "ci": null,
+     "unit": "",
+     "note": "",
+     "higherIsBetter": true
+    },
+    {
+     "key": "kappa_ll_max",
+     "label": "κ LLM↔LLM (max)",
+     "value": 0.8002,
+     "ci": null,
+     "unit": "",
+     "note": "",
+     "higherIsBetter": true
+    }
+   ],
+   "results": {
+    "actors": [
+     "elazhar.jebbari",
+     "fatima.ouali",
+     "zahra.boulaich",
+     "claude",
+     "codex",
+     "fable",
+     "mistral"
+    ],
+    "kinds": {
+     "elazhar.jebbari": "annotator",
+     "fatima.ouali": "annotator",
+     "zahra.boulaich": "annotator",
+     "claude": "judge",
+     "codex": "judge",
+     "fable": "judge",
+     "mistral": "judge"
+    },
+    "matrix": [
+     [
+      1.0,
+      0.7949,
+      0.7217,
+      0.5335,
+      0.2646,
+      0.5936,
+      0.342
+     ],
+     [
+      0.7949,
+      1.0,
+      0.6788,
+      0.4436,
+      0.2388,
+      0.5411,
+      0.2969
+     ],
+     [
+      0.7217,
+      0.6788,
+      1.0,
+      0.4881,
+      0.3001,
+      0.4468,
+      0.2911
+     ],
+     [
+      0.5335,
+      0.4436,
+      0.4881,
+      1.0,
+      0.4361,
+      0.8002,
+      0.5403
+     ],
+     [
+      0.2646,
+      0.2388,
+      0.3001,
+      0.4361,
+      1.0,
+      0.4476,
+      0.2964
+     ],
+     [
+      0.5936,
+      0.5411,
+      0.4468,
+      0.8002,
+      0.4476,
+      1.0,
+      0.5264
+     ],
+     [
+      0.342,
+      0.2969,
+      0.2911,
+      0.5403,
+      0.2964,
+      0.5264,
+      1.0
+     ]
+    ],
+    "cells": {
+     "elazhar.jebbari|fatima.ouali": {
+      "kappa": 0.7949,
+      "n": 9414
+     },
+     "elazhar.jebbari|zahra.boulaich": {
+      "kappa": 0.7217,
+      "n": 9414
+     },
+     "elazhar.jebbari|claude": {
+      "kappa": 0.5335,
+      "n": 9414
+     },
+     "elazhar.jebbari|codex": {
+      "kappa": 0.2646,
+      "n": 9414
+     },
+     "elazhar.jebbari|fable": {
+      "kappa": 0.5936,
+      "n": 9414
+     },
+     "elazhar.jebbari|mistral": {
+      "kappa": 0.342,
+      "n": 9414
+     },
+     "fatima.ouali|elazhar.jebbari": {
+      "kappa": 0.7949,
+      "n": 9414
+     },
+     "fatima.ouali|zahra.boulaich": {
+      "kappa": 0.6788,
+      "n": 9414
+     },
+     "fatima.ouali|claude": {
+      "kappa": 0.4436,
+      "n": 9414
+     },
+     "fatima.ouali|codex": {
+      "kappa": 0.2388,
+      "n": 9414
+     },
+     "fatima.ouali|fable": {
+      "kappa": 0.5411,
+      "n": 9414
+     },
+     "fatima.ouali|mistral": {
+      "kappa": 0.2969,
+      "n": 9414
+     },
+     "zahra.boulaich|elazhar.jebbari": {
+      "kappa": 0.7217,
+      "n": 9414
+     },
+     "zahra.boulaich|fatima.ouali": {
+      "kappa": 0.6788,
+      "n": 9414
+     },
+     "zahra.boulaich|claude": {
+      "kappa": 0.4881,
+      "n": 9414
+     },
+     "zahra.boulaich|codex": {
+      "kappa": 0.3001,
+      "n": 9414
+     },
+     "zahra.boulaich|fable": {
+      "kappa": 0.4468,
+      "n": 9414
+     },
+     "zahra.boulaich|mistral": {
+      "kappa": 0.2911,
+      "n": 9414
+     },
+     "claude|elazhar.jebbari": {
+      "kappa": 0.5335,
+      "n": 9414
+     },
+     "claude|fatima.ouali": {
+      "kappa": 0.4436,
+      "n": 9414
+     },
+     "claude|zahra.boulaich": {
+      "kappa": 0.4881,
+      "n": 9414
+     },
+     "claude|codex": {
+      "kappa": 0.4361,
+      "n": 9414
+     },
+     "claude|fable": {
+      "kappa": 0.8002,
+      "n": 9414
+     },
+     "claude|mistral": {
+      "kappa": 0.5403,
+      "n": 9414
+     },
+     "codex|elazhar.jebbari": {
+      "kappa": 0.2646,
+      "n": 9414
+     },
+     "codex|fatima.ouali": {
+      "kappa": 0.2388,
+      "n": 9414
+     },
+     "codex|zahra.boulaich": {
+      "kappa": 0.3001,
+      "n": 9414
+     },
+     "codex|claude": {
+      "kappa": 0.4361,
+      "n": 9414
+     },
+     "codex|fable": {
+      "kappa": 0.4476,
+      "n": 9414
+     },
+     "codex|mistral": {
+      "kappa": 0.2964,
+      "n": 9414
+     },
+     "fable|elazhar.jebbari": {
+      "kappa": 0.5936,
+      "n": 9414
+     },
+     "fable|fatima.ouali": {
+      "kappa": 0.5411,
+      "n": 9414
+     },
+     "fable|zahra.boulaich": {
+      "kappa": 0.4468,
+      "n": 9414
+     },
+     "fable|claude": {
+      "kappa": 0.8002,
+      "n": 9414
+     },
+     "fable|codex": {
+      "kappa": 0.4476,
+      "n": 9414
+     },
+     "fable|mistral": {
+      "kappa": 0.5264,
+      "n": 9414
+     },
+     "mistral|elazhar.jebbari": {
+      "kappa": 0.342,
+      "n": 9414
+     },
+     "mistral|fatima.ouali": {
+      "kappa": 0.2969,
+      "n": 9414
+     },
+     "mistral|zahra.boulaich": {
+      "kappa": 0.2911,
+      "n": 9414
+     },
+     "mistral|claude": {
+      "kappa": 0.5403,
+      "n": 9414
+     },
+     "mistral|codex": {
+      "kappa": 0.2964,
+      "n": 9414
+     },
+     "mistral|fable": {
+      "kappa": 0.5264,
+      "n": 9414
+     }
+    }
+   },
+   "uncertainty": "Valeurs ponctuelles ; les effectifs par paire sont rapportés dans `cells`.",
+   "interpretation": "L'accord entre humains (0.679–0.795) domine strictement l'accord entre un humain et un modèle (au mieux 0.594). Deux modèles s'accordent entre eux jusqu'à 0.800 : les LLM partagent une façon de découper le contrat qui leur est propre et qui n'est pas celle des juristes. Ce n'est donc pas un simple écart de performance — c'est un écart de convention.",
+   "gates": [
+    {
+     "id": "dataset_frozen",
+     "label": "Dataset figé et daté",
+     "passed": true,
+     "detail": "empreinte 7116e627f528c557…",
+     "blocking": true
+    },
+    {
+     "id": "not_partial_snapshot",
+     "label": "Corpus complet (50 documents × 3 annotateurs)",
+     "passed": true,
+     "detail": "50 documents, 150 annotations soumises",
+     "blocking": true
+    },
+    {
+     "id": "taxonomy_spec_frozen",
+     "label": "Mappings de taxonomie figés et versionnés",
+     "passed": true,
+     "detail": "spécification v1, empreinte f6cdd2715df02177…",
+     "blocking": true
+    },
+    {
+     "id": "seed_recorded",
+     "label": "Graine enregistrée",
+     "passed": true,
+     "detail": "seed=42",
+     "blocking": true
+    },
+    {
+     "id": "code_version_recorded",
+     "label": "Version du code enregistrée",
+     "passed": true,
+     "detail": "69bbe460d4a4 (dépôt MODIFIÉ : non reproductible en l'état)",
+     "blocking": false
+    }
+   ],
+   "status": "validated",
+   "artifacts": [],
+   "provenance": {
+    "codeVersion": "69bbe460d4a4c60cdb221755001d2af325954234",
+    "codeClean": false,
+    "taxonomySpecVersion": 1,
+    "taxonomySpecFingerprint": "f6cdd2715df02177",
+    "python": "3.12.13",
+    "platform": "macOS-26.3.1-x86_64-i386-64bit",
+    "executedAt": "2026-09-13T20:33:54+00:00"
+   }
+  },
+  {
+   "id": "E3.2",
+   "rq": "RQ3",
+   "title": "Divergence au pré-remplissage",
+   "question": "Quelle part du travail d'annotation consiste à corriger la proposition du modèle ?",
+   "hypothesis": "Les annotateurs modifient une part substantielle des propositions : l'annotation n'est pas une ratification.",
+   "protocol": "Pour chaque annotateur, part de ses phrases dont le thème diffère de chaque juge ; le minimum désigne son « juge le plus proche » et constitue une BORNE INFÉRIEURE du travail d'édition réel (le juge ayant servi au pré-remplissage n'est pas persisté).",
+   "metricsDeclared": [
+    "divergence_min",
+    "divergence_par_juge"
+   ],
+   "limits": [
+    "Borne inférieure : le juge de pré-remplissage n'étant pas tracé, la divergence réelle est supérieure."
+   ],
+   "dependsOn": [],
+   "summary": "Chaque annotateur diverge de 38.5 à 48.6 % du juge le plus proche.",
+   "data": {
+    "datasetFingerprint": "7116e627f528c5572457e79d9e53d2e71bfc21e3a20aacb43e9d3072cfb70e2e",
+    "taxonomy": "T20",
+    "labelSource": "annotations brutes contre pré-annotations LLM",
+    "populations": [
+     "all"
+    ]
+   },
+   "config": {
+    "seed": 42,
+    "measure": "part de phrases au thème différent"
+   },
+   "metrics": [
+    {
+     "key": "divergence_min",
+     "label": "Divergence minimale",
+     "value": 0.3854,
+     "ci": null,
+     "unit": "",
+     "note": "",
+     "higherIsBetter": null
+    },
+    {
+     "key": "divergence_max",
+     "label": "Divergence maximale",
+     "value": 0.4864,
+     "ci": null,
+     "unit": "",
+     "note": "",
+     "higherIsBetter": null
+    }
+   ],
+   "results": {
+    "perAnnotator": {
+     "elazhar.jebbari": {
+      "byJudge": {
+       "claude": 0.4424,
+       "codex": 0.697,
+       "fable": 0.3854,
+       "mistral": 0.6263
+      },
+      "closest": "fable",
+      "divergence": 0.3854
+     },
+     "fatima.ouali": {
+      "byJudge": {
+       "claude": 0.5296,
+       "codex": 0.7217,
+       "fable": 0.4369,
+       "mistral": 0.6716
+      },
+      "closest": "fable",
+      "divergence": 0.4369
+     },
+     "zahra.boulaich": {
+      "byJudge": {
+       "claude": 0.4864,
+       "codex": 0.6531,
+       "fable": 0.526,
+       "mistral": 0.6774
+      },
+      "closest": "claude",
+      "divergence": 0.4864
+     }
+    }
+   },
+   "uncertainty": "Borne INFÉRIEURE par construction : le juge ayant réellement servi au pré-remplissage n'est pas persisté.",
+   "interpretation": "Même en la comparant au modèle qui lui ressemble le plus, chaque annotateur modifie 39 à 49 % des propositions. L'annotation assistée n'est donc pas une ratification du modèle : le travail humain reste déterminant, et le corpus n'est pas un décalque des sorties LLM.",
+   "gates": [
+    {
+     "id": "dataset_frozen",
+     "label": "Dataset figé et daté",
+     "passed": true,
+     "detail": "empreinte 7116e627f528c557…",
+     "blocking": true
+    },
+    {
+     "id": "not_partial_snapshot",
+     "label": "Corpus complet (50 documents × 3 annotateurs)",
+     "passed": true,
+     "detail": "50 documents, 150 annotations soumises",
+     "blocking": true
+    },
+    {
+     "id": "taxonomy_spec_frozen",
+     "label": "Mappings de taxonomie figés et versionnés",
+     "passed": true,
+     "detail": "spécification v1, empreinte f6cdd2715df02177…",
+     "blocking": true
+    },
+    {
+     "id": "seed_recorded",
+     "label": "Graine enregistrée",
+     "passed": true,
+     "detail": "seed=42",
+     "blocking": true
+    },
+    {
+     "id": "code_version_recorded",
+     "label": "Version du code enregistrée",
+     "passed": true,
+     "detail": "69bbe460d4a4 (dépôt MODIFIÉ : non reproductible en l'état)",
+     "blocking": false
+    }
+   ],
+   "status": "validated",
+   "artifacts": [],
+   "provenance": {
+    "codeVersion": "69bbe460d4a4c60cdb221755001d2af325954234",
+    "codeClean": false,
+    "taxonomySpecVersion": 1,
+    "taxonomySpecFingerprint": "f6cdd2715df02177",
+    "python": "3.12.13",
+    "platform": "macOS-26.3.1-x86_64-i386-64bit",
+    "executedAt": "2026-09-13T20:33:55+00:00"
+   }
+  },
+  {
+   "id": "E3.3",
+   "rq": "RQ3",
+   "title": "Benchmark des quatre juges contre le GOLD",
+   "question": "Quelle performance atteignent les modèles de langue quand on les évalue contre la référence arbitrée ?",
+   "hypothesis": "Les juges restent nettement en dessous de la référence humaine, et leur classement est stable entre taxonomies.",
+   "protocol": "Chaque juge est évalué contre le thème du GOLD, comme un système de classification : exactitude, macro-F1 et κ de Cohen. Mesuré en T20 et en T11 pour vérifier que le classement ne dépend pas de la granularité.",
+   "metricsDeclared": [
+    "accuracy",
+    "macro_f1",
+    "kappa"
+   ],
+   "limits": [
+    "Les pré-annotations sont figées : ce benchmark mesure une sortie historique, pas l'état de l'art actuel de ces modèles."
+   ],
+   "dependsOn": [
+    "E1.5"
+   ],
+   "summary": "Le meilleur juge (fable) atteint 0.601 d'exactitude contre le GOLD en T20.",
+   "data": {
+    "datasetFingerprint": "7116e627f528c5572457e79d9e53d2e71bfc21e3a20aacb43e9d3072cfb70e2e",
+    "taxonomy": "T20 et T11",
+    "labelSource": "GOLD (référence) contre pré-annotations LLM",
+    "populations": [
+     "all"
+    ]
+   },
+   "config": {
+    "seed": 42,
+    "metrics": [
+     "accuracy",
+     "macro_f1",
+     "cohen_kappa"
+    ]
+   },
+   "metrics": [
+    {
+     "key": "best_accuracy",
+     "label": "Meilleure exactitude (T20)",
+     "value": 0.6014,
+     "ci": null,
+     "unit": "",
+     "note": "fable",
+     "higherIsBetter": true
+    },
+    {
+     "key": "best_kappa",
+     "label": "Meilleur κ (T20)",
+     "value": 0.5805,
+     "ci": null,
+     "unit": "",
+     "note": "fable",
+     "higherIsBetter": true
+    }
+   ],
+   "results": {
+    "perTaxonomy": {
+     "T20": [
+      {
+       "judge": "fable",
+       "n": 9414,
+       "accuracy": 0.6014,
+       "macroF1": 0.3897,
+       "kappa": 0.5805
+      },
+      {
+       "judge": "claude",
+       "n": 9414,
+       "accuracy": 0.539,
+       "macroF1": 0.3406,
+       "kappa": 0.5147
+      },
+      {
+       "judge": "mistral",
+       "n": 9414,
+       "accuracy": 0.3583,
+       "macroF1": 0.2188,
+       "kappa": 0.3272
+      },
+      {
+       "judge": "codex",
+       "n": 9414,
+       "accuracy": 0.3053,
+       "macroF1": 0.1732,
+       "kappa": 0.2659
+      }
+     ],
+     "T11": [
+      {
+       "judge": "fable",
+       "n": 9414,
+       "accuracy": 0.6294,
+       "macroF1": 0.3667,
+       "kappa": 0.5908
+      },
+      {
+       "judge": "claude",
+       "n": 9414,
+       "accuracy": 0.5758,
+       "macroF1": 0.3318,
+       "kappa": 0.5308
+      },
+      {
+       "judge": "mistral",
+       "n": 9414,
+       "accuracy": 0.4126,
+       "macroF1": 0.2244,
+       "kappa": 0.3533
+      },
+      {
+       "judge": "codex",
+       "n": 9414,
+       "accuracy": 0.375,
+       "macroF1": 0.1806,
+       "kappa": 0.3016
+      }
+     ]
+    },
+    "rankingStable": true
+   },
+   "uncertainty": "Valeurs ponctuelles sur l'ensemble des phrases du gold ; effectifs rapportés par juge.",
+   "interpretation": "Contre la référence arbitrée, le meilleur des quatre juges atteint 0.601 d'exactitude (κ = 0.581), très en dessous de la référence humaine mesurée en E1.5. Le classement des juges ne change pas entre T20 et T11 : la hiérarchie entre modèles n'est donc pas un artefact de granularité.",
+   "gates": [
+    {
+     "id": "dataset_frozen",
+     "label": "Dataset figé et daté",
+     "passed": true,
+     "detail": "empreinte 7116e627f528c557…",
+     "blocking": true
+    },
+    {
+     "id": "not_partial_snapshot",
+     "label": "Corpus complet (50 documents × 3 annotateurs)",
+     "passed": true,
+     "detail": "50 documents, 150 annotations soumises",
+     "blocking": true
+    },
+    {
+     "id": "taxonomy_spec_frozen",
+     "label": "Mappings de taxonomie figés et versionnés",
+     "passed": true,
+     "detail": "spécification v1, empreinte f6cdd2715df02177…",
+     "blocking": true
+    },
+    {
+     "id": "seed_recorded",
+     "label": "Graine enregistrée",
+     "passed": true,
+     "detail": "seed=42",
+     "blocking": true
+    },
+    {
+     "id": "code_version_recorded",
+     "label": "Version du code enregistrée",
+     "passed": true,
+     "detail": "69bbe460d4a4 (dépôt MODIFIÉ : non reproductible en l'état)",
+     "blocking": false
+    },
+    {
+     "id": "gold_finalized",
+     "label": "GOLD figé (résolutions finalisées)",
+     "passed": false,
+     "detail": "0/50 résolutions finalisées — le gold reste modifiable, donc le chiffre peut changer",
+     "blocking": true
+    },
+    {
+     "id": "gold_complete",
+     "label": "GOLD complet (aucune phrase en attente)",
+     "passed": true,
+     "detail": "0 phrase(s) non tranchée(s)",
+     "blocking": true
+    }
+   ],
+   "status": "preliminary",
+   "artifacts": [],
+   "provenance": {
+    "codeVersion": "69bbe460d4a4c60cdb221755001d2af325954234",
+    "codeClean": false,
+    "taxonomySpecVersion": 1,
+    "taxonomySpecFingerprint": "f6cdd2715df02177",
+    "python": "3.12.13",
+    "platform": "macOS-26.3.1-x86_64-i386-64bit",
+    "executedAt": "2026-09-13T20:33:56+00:00"
+   }
+  },
+  {
+   "id": "E4.1",
+   "rq": "RQ4",
+   "title": "Modèles compacts : planchers et effet de la taxonomie",
+   "question": "Un modèle compact apprend-il mieux la taxonomie fusionnée que la taxonomie d'annotation, et où se situe-t-il par rapport à un annotateur humain ?",
+   "hypothesis": "La fusion améliore substantiellement l'apprenabilité (classes plus massives, frontières moins contradictoires) ; l'écart au plafond humain reste important dans les deux cas.",
+   "protocol": "Même dataset, mêmes plis (validation croisée à 5 plis GROUPÉS PAR DOCUMENT), même graine : seules les étiquettes changent de taxonomie. Deux familles : position seule (plancher diagnostique, aucun texte) et TF-IDF + régression logistique (plancher lexical). La comparaison au plafond humain utilise la référence leave-one-annotator-out de E1.5, mesurée par la même procédure.",
+   "metricsDeclared": [
+    "macro_f1",
+    "micro_f1",
+    "kappa",
+    "ecart_au_plafond_humain"
+   ],
+   "limits": [
+    "Planchers CPU uniquement : les encodeurs juridiques fine-tunés (GPU) ne sont pas inclus dans cette campagne.",
+    "Les macro-F1 de T20 et T11 ne sont PAS directement comparables (moyennes sur des ensembles de classes différents) : l'écart s'interprète comme une différence d'apprenabilité, pas comme un gain de performance à tâche constante."
+   ],
+   "dependsOn": [
+    "E1.5",
+    "E2.1"
+   ],
+   "summary": "TF-IDF passe de 0.483 (T20) à 0.597 (T11) ; il reste à 0.2894 point de κ du plafond humain.",
+   "data": {
+    "datasetFingerprint": "7116e627f528c5572457e79d9e53d2e71bfc21e3a20aacb43e9d3072cfb70e2e",
+    "taxonomy": "T20 et T11",
+    "labelSource": "consensus (agrégation Lab)",
+    "populations": [
+     "all"
+    ]
+   },
+   "config": {
+    "seed": 42,
+    "split": "group_kfold_document (k=5)",
+    "models": [
+     "position_only",
+     "tfidf_linear + logreg (bigrammes, class_weight=balanced)"
+    ],
+    "preprocess": "détokenisation par règles, minuscules, longueur max 128"
+   },
+   "metrics": [
+    {
+     "key": "macro_f1_T20",
+     "label": "macro-F1 TF-IDF (T20)",
+     "value": 0.483408,
+     "ci": [
+      0.463623,
+      0.508169
+     ],
+     "unit": "",
+     "note": "",
+     "higherIsBetter": true
+    },
+    {
+     "key": "macro_f1_T11",
+     "label": "macro-F1 TF-IDF (T11)",
+     "value": 0.596799,
+     "ci": [
+      0.578634,
+      0.619123
+     ],
+     "unit": "",
+     "note": "",
+     "higherIsBetter": true
+    },
+    {
+     "key": "kappa_T11",
+     "label": "κ TF-IDF (T11)",
+     "value": 0.569958,
+     "ci": null,
+     "unit": "",
+     "note": "",
+     "higherIsBetter": true
+    },
+    {
+     "key": "human_kappa",
+     "label": "κ référence humaine",
+     "value": 0.8594,
+     "ci": null,
+     "unit": "",
+     "note": "leave-one-annotator-out (E1.5)",
+     "higherIsBetter": true
+    },
+    {
+     "key": "gap_to_human",
+     "label": "Écart au plafond humain (κ)",
+     "value": 0.2894,
+     "ci": null,
+     "unit": "",
+     "note": "",
+     "higherIsBetter": false
+    }
+   ],
+   "results": {
+    "runs": {
+     "position_T20": {
+      "macroF1": 0.107802,
+      "microF1": 0.241832,
+      "kappa": 0.161049,
+      "ci": [
+       0.094847,
+       0.124472
+      ],
+      "dispersion": 0.016842,
+      "taxonomy": "T20",
+      "family": "position_only",
+      "nClasses": 20
+     },
+     "position_T11": {
+      "macroF1": 0.144594,
+      "microF1": 0.320739,
+      "kappa": 0.192048,
+      "ci": [
+       0.133127,
+       0.160364
+      ],
+      "dispersion": 0.013568,
+      "taxonomy": "T11",
+      "family": "position_only",
+      "nClasses": 11
+     },
+     "tfidf_T20": {
+      "macroF1": 0.483408,
+      "microF1": 0.565119,
+      "kappa": 0.530653,
+      "ci": [
+       0.463623,
+       0.508169
+      ],
+      "dispersion": 0.009912,
+      "taxonomy": "T20",
+      "family": "tfidf_linear",
+      "nClasses": 20
+     },
+     "tfidf_T11": {
+      "macroF1": 0.596799,
+      "microF1": 0.622182,
+      "kappa": 0.569958,
+      "ci": [
+       0.578634,
+       0.619123
+      ],
+      "dispersion": 0.009011,
+      "taxonomy": "T11",
+      "family": "tfidf_linear",
+      "nClasses": 11
+     }
+    },
+    "humanReference": {
+     "accuracy": 0.8705,
+     "kappa": 0.8594
+    }
+   },
+   "uncertainty": "IC 95 % bootstrap par document sur la macro-F1 ; dispersion inter-plis rapportée par run.",
+   "interpretation": "Le plancher de position seule (0.108 en T20) confirme que la structure du document ne suffit pas : le texte est nécessaire. Un simple TF-IDF atteint 0.597 de macro-F1 en T11 contre 0.483 en T20 — la taxonomie fusionnée est nettement plus apprenable, ce qui était attendu (classes plus massives, frontières moins contradictoires) mais n'avait jamais été mesuré ici. Il reste néanmoins 0.2894 point de κ sous la référence humaine (0.859) : l'écart à combler est réel.",
+   "gates": [
+    {
+     "id": "dataset_frozen",
+     "label": "Dataset figé et daté",
+     "passed": true,
+     "detail": "empreinte 7116e627f528c557…",
+     "blocking": true
+    },
+    {
+     "id": "not_partial_snapshot",
+     "label": "Corpus complet (50 documents × 3 annotateurs)",
+     "passed": true,
+     "detail": "50 documents, 150 annotations soumises",
+     "blocking": true
+    },
+    {
+     "id": "taxonomy_spec_frozen",
+     "label": "Mappings de taxonomie figés et versionnés",
+     "passed": true,
+     "detail": "spécification v1, empreinte f6cdd2715df02177…",
+     "blocking": true
+    },
+    {
+     "id": "seed_recorded",
+     "label": "Graine enregistrée",
+     "passed": true,
+     "detail": "seed=42",
+     "blocking": true
+    },
+    {
+     "id": "code_version_recorded",
+     "label": "Version du code enregistrée",
+     "passed": true,
+     "detail": "69bbe460d4a4 (dépôt MODIFIÉ : non reproductible en l'état)",
+     "blocking": false
+    },
+    {
+     "id": "split_document_level",
+     "label": "Découpe au niveau DOCUMENT (jamais par phrase)",
+     "passed": true,
+     "detail": "schéma « group_kfold_document »",
+     "blocking": true
+    },
+    {
+     "id": "no_train_test_leak",
+     "label": "Aucune fuite entraînement/test",
+     "passed": true,
+     "detail": "garanti par le groupement par document",
+     "blocking": true
+    }
+   ],
+   "status": "validated",
+   "artifacts": [],
+   "provenance": {
+    "codeVersion": "69bbe460d4a4c60cdb221755001d2af325954234",
+    "codeClean": false,
+    "taxonomySpecVersion": 1,
+    "taxonomySpecFingerprint": "f6cdd2715df02177",
+    "python": "3.12.13",
+    "platform": "macOS-26.3.1-x86_64-i386-64bit",
+    "executedAt": "2026-09-13T20:33:56+00:00"
+   }
+  },
+  {
+   "id": "E4.2",
+   "rq": "RQ4",
+   "title": "Courbe d'apprentissage : combien de documents annoter ?",
+   "question": "À partir de combien de documents annotés le gain marginal devient-il négligeable ?",
+   "hypothesis": "La performance croît puis plafonne : au-delà d'un certain nombre de documents, annoter davantage rapporte peu.",
+   "protocol": "Le nombre de documents d'ENTRAÎNEMENT est restreint par pli (jamais le test, sinon les points ne seraient plus comparables) ; le tirage est scopé au pool d'entraînement du pli courant, ce qui interdit toute fuite depuis le pli de test.",
+   "metricsDeclared": [
+    "macro_f1_par_taille",
+    "gain_marginal"
+   ],
+   "limits": [
+    "Mesurée avec TF-IDF : un modèle plus capacitif aurait une courbe différente et plafonnerait plus tard.",
+    "Les dernières tailles approchent la taille du pool d'entraînement : leur variabilité est réduite artificiellement."
+   ],
+   "dependsOn": [
+    "E4.1"
+   ],
+   "summary": "De 8 à 40 documents, la macro-F1 passe de 0.538 à 0.597 ; le gain marginal est divisé par 6 sur la plage.",
+   "data": {
+    "datasetFingerprint": "7116e627f528c5572457e79d9e53d2e71bfc21e3a20aacb43e9d3072cfb70e2e",
+    "taxonomy": "T11",
+    "labelSource": "consensus",
+    "populations": [
+     "all"
+    ]
+   },
+   "config": {
+    "seed": 42,
+    "split": "group_kfold_document (k=5)",
+    "model": "tfidf_linear + logreg",
+    "sizes": [
+     8,
+     16,
+     24,
+     32,
+     40
+    ],
+    "restriction": "documents d'ENTRAÎNEMENT uniquement, tirés dans le pool du pli"
+   },
+   "metrics": [
+    {
+     "key": "macro_f1_min",
+     "label": "macro-F1 à 8 documents",
+     "value": 0.537906,
+     "ci": null,
+     "unit": "",
+     "note": "",
+     "higherIsBetter": true
+    },
+    {
+     "key": "macro_f1_max",
+     "label": "macro-F1 à 40 documents",
+     "value": 0.596799,
+     "ci": null,
+     "unit": "",
+     "note": "",
+     "higherIsBetter": true
+    },
+    {
+     "key": "marginal_gain_last",
+     "label": "Gain marginal par document (fin de courbe)",
+     "value": 0.00065,
+     "ci": null,
+     "unit": "",
+     "note": "",
+     "higherIsBetter": false
+    }
+   ],
+   "results": {
+    "points": [
+     {
+      "nDocuments": 8,
+      "macroF1": 0.537906,
+      "microF1": 0.569509,
+      "kappa": 0.506771
+     },
+     {
+      "nDocuments": 16,
+      "macroF1": 0.569142,
+      "microF1": 0.595416,
+      "kappa": 0.5389
+     },
+     {
+      "nDocuments": 24,
+      "macroF1": 0.58111,
+      "microF1": 0.605833,
+      "kappa": 0.550655
+     },
+     {
+      "nDocuments": 32,
+      "macroF1": 0.591616,
+      "microF1": 0.616446,
+      "kappa": 0.563283
+     },
+     {
+      "nDocuments": 40,
+      "macroF1": 0.596799,
+      "microF1": 0.622182,
+      "kappa": 0.569958
+     }
+    ],
+    "marginalGains": [
+     {
+      "from": 8,
+      "to": 16,
+      "gain": 0.0312,
+      "gainPerDocument": 0.0039
+     },
+     {
+      "from": 16,
+      "to": 24,
+      "gain": 0.012,
+      "gainPerDocument": 0.0015
+     },
+     {
+      "from": 24,
+      "to": 32,
+      "gain": 0.0105,
+      "gainPerDocument": 0.00131
+     },
+     {
+      "from": 32,
+      "to": 40,
+      "gain": 0.0052,
+      "gainPerDocument": 0.00065
+     }
+    ]
+   },
+   "uncertainty": "Un point par taille (pas de répétition sur plusieurs tirages) : la courbe montre une tendance, pas un intervalle.",
+   "interpretation": "Le gain marginal s'effondre : 0.00390 point de macro-F1 par document au début de la courbe contre 0.00065 à la fin. Passé une trentaine de documents, annoter davantage rapporte très peu à ce modèle — l'effort marginal se justifie mieux sur la QUALITÉ de l'annotation (double annotation, arbitrage) que sur sa quantité.",
+   "gates": [
+    {
+     "id": "dataset_frozen",
+     "label": "Dataset figé et daté",
+     "passed": true,
+     "detail": "empreinte 7116e627f528c557…",
+     "blocking": true
+    },
+    {
+     "id": "not_partial_snapshot",
+     "label": "Corpus complet (50 documents × 3 annotateurs)",
+     "passed": true,
+     "detail": "50 documents, 150 annotations soumises",
+     "blocking": true
+    },
+    {
+     "id": "taxonomy_spec_frozen",
+     "label": "Mappings de taxonomie figés et versionnés",
+     "passed": true,
+     "detail": "spécification v1, empreinte f6cdd2715df02177…",
+     "blocking": true
+    },
+    {
+     "id": "seed_recorded",
+     "label": "Graine enregistrée",
+     "passed": true,
+     "detail": "seed=42",
+     "blocking": true
+    },
+    {
+     "id": "code_version_recorded",
+     "label": "Version du code enregistrée",
+     "passed": true,
+     "detail": "69bbe460d4a4 (dépôt MODIFIÉ : non reproductible en l'état)",
+     "blocking": false
+    },
+    {
+     "id": "split_document_level",
+     "label": "Découpe au niveau DOCUMENT (jamais par phrase)",
+     "passed": true,
+     "detail": "schéma « group_kfold_document »",
+     "blocking": true
+    },
+    {
+     "id": "no_train_test_leak",
+     "label": "Aucune fuite entraînement/test",
+     "passed": true,
+     "detail": "garanti par le groupement par document",
+     "blocking": true
+    }
+   ],
+   "status": "validated",
+   "artifacts": [],
+   "provenance": {
+    "codeVersion": "69bbe460d4a4c60cdb221755001d2af325954234",
+    "codeClean": false,
+    "taxonomySpecVersion": 1,
+    "taxonomySpecFingerprint": "f6cdd2715df02177",
+    "python": "3.12.13",
+    "platform": "macOS-26.3.1-x86_64-i386-64bit",
+    "executedAt": "2026-09-13T20:33:57+00:00"
+   }
+  },
+  {
+   "id": "E4.3",
+   "rq": "RQ4",
+   "title": "Analyse des erreurs : où et pourquoi le modèle échoue",
+   "question": "Les erreurs du modèle se concentrent-elles là où les annotateurs eux-mêmes divergent ?",
+   "hypothesis": "Le taux d'erreur croît avec le désaccord humain : un modèle échoue surtout là où la tâche est objectivement ambiguë.",
+   "protocol": "Sur le meilleur modèle compact (TF-IDF en T11), décomposition du taux d'erreur par CLASSE D'ACCORD de la phrase (accord strict / majorité / divergence), confusions les plus fréquentes, et erreurs de plus faible confiance pour inspection qualitative.",
+   "metricsDeclared": [
+    "error_rate",
+    "error_rate_par_classe_accord",
+    "top_confusions"
+   ],
+   "limits": [
+    "L'analyse porte sur un modèle lexical : un modèle contextuel se tromperait ailleurs.",
+    "Les erreurs sur les phrases en divergence ne sont pas nécessairement des erreurs : la référence y est elle-même incertaine."
+   ],
+   "dependsOn": [
+    "E4.1"
+   ],
+   "summary": "Le taux d'erreur passe de 26.8% sur les phrases en accord strict à 66.9% sur les phrases en divergence.",
+   "data": {
+    "datasetFingerprint": "7116e627f528c5572457e79d9e53d2e71bfc21e3a20aacb43e9d3072cfb70e2e",
+    "taxonomy": "T11",
+    "labelSource": "consensus",
+    "populations": [
+     "all"
+    ]
+   },
+   "config": {
+    "seed": 42,
+    "model": "tfidf_linear + logreg (T11)",
+    "split": "group_kfold_document (k=5)"
+   },
+   "metrics": [
+    {
+     "key": "error_rate",
+     "label": "Taux d'erreur global",
+     "value": 0.377842,
+     "ci": null,
+     "unit": "",
+     "note": "",
+     "higherIsBetter": false
+    },
+    {
+     "key": "error_rate_strict",
+     "label": "Erreur — accord strict",
+     "value": 0.268498,
+     "ci": null,
+     "unit": "",
+     "note": "",
+     "higherIsBetter": false
+    },
+    {
+     "key": "error_rate_divergence",
+     "label": "Erreur — divergence",
+     "value": 0.668831,
+     "ci": null,
+     "unit": "",
+     "note": "",
+     "higherIsBetter": false
+    },
+    {
+     "key": "unfair_error_rate",
+     "label": "Erreur sur les phrases abusives",
+     "value": 0.328488,
+     "ci": null,
+     "unit": "",
+     "note": "phrases portant une étiquette CLAUDETTE",
+     "higherIsBetter": false
+    }
+   ],
+   "results": {
+    "byAgreementClass": {
+     "divergence": {
+      "n": 462,
+      "errors": 309,
+      "rate": 0.668831
+     },
+     "majority": {
+      "n": 4546,
+      "errors": 2065,
+      "rate": 0.454245
+     },
+     "strict": {
+      "n": 4406,
+      "errors": 1183,
+      "rate": 0.268498
+     }
+    },
+    "topConfusions": [
+     {
+      "true": "CONTENT_IP",
+      "pred": "ACCOUNT_USE",
+      "count": 224
+     },
+     {
+      "true": "ACCOUNT_USE",
+      "pred": "CONTENT_IP",
+      "count": 169
+     },
+     {
+      "true": "FRAMEWORK",
+      "pred": "ACCOUNT_USE",
+      "count": 132
+     },
+     {
+      "true": "ACCOUNT_USE",
+      "pred": "FRAMEWORK",
+      "count": 118
+     },
+     {
+      "true": "CONTENT_IP",
+      "pred": "FRAMEWORK",
+      "count": 114
+     },
+     {
+      "true": "FRAMEWORK",
+      "pred": "CONTENT_IP",
+      "count": 103
+     },
+     {
+      "true": "ACCOUNT_USE",
+      "pred": "TERMINATION",
+      "count": 89
+     },
+     {
+      "true": "FRAMEWORK",
+      "pred": "PRIVACY_DATA",
+      "count": 87
+     },
+     {
+      "true": "ACCOUNT_USE",
+      "pred": "PRIVACY_DATA",
+      "count": 86
+     },
+     {
+      "true": "CONTENT_IP",
+      "pred": "PRIVACY_DATA",
+      "count": 84
+     }
+    ],
+    "confusionMatrix": {
+     "labels": [
+      "ACCOUNT_USE",
+      "CONTENT_IP",
+      "DISPUTES_LAW",
+      "FEES_PAYMENT",
+      "FRAMEWORK",
+      "LIMITATION_LIABILITY",
+      "MODIFICATION_OF_TERMS",
+      "PRIVACY_DATA",
+      "TERMINATION",
+      "THIRD_PARTY_SERVICES",
+      "WARRANTY_DISCLAIMER"
+     ],
+     "matrix": [
+      [
+       1030,
+       169,
+       21,
+       76,
+       118,
+       53,
+       25,
+       86,
+       89,
+       34,
+       30
+      ],
+      [
+       224,
+       1080,
+       14,
+       46,
+       114,
+       35,
+       24,
+       84,
+       61,
+       46,
+       36
+      ],
+      [
+       37,
+       13,
+       840,
+       23,
+       48,
+       22,
+       11,
+       13,
+       12,
+       3,
+       2
+      ],
+      [
+       76,
+       33,
+       11,
+       659,
+       75,
+       18,
+       31,
+       32,
+       64,
+       28,
+       16
+      ],
+      [
+       132,
+       103,
+       52,
+       81,
+       763,
+       14,
+       46,
+       87,
+       30,
+       45,
+       35
+      ],
+      [
+       39,
+       18,
+       4,
+       12,
+       19,
+       345,
+       3,
+       3,
+       6,
+       39,
+       19
+      ],
+      [
+       15,
+       7,
+       3,
+       11,
+       36,
+       6,
+       239,
+       7,
+       33,
+       1,
+       3
+      ],
+      [
+       40,
+       28,
+       2,
+       15,
+       13,
+       3,
+       1,
+       141,
+       7,
+       3,
+       7
+      ],
+      [
+       28,
+       15,
+       5,
+       45,
+       25,
+       19,
+       13,
+       8,
+       214,
+       0,
+       1
+      ],
+      [
+       30,
+       26,
+       4,
+       11,
+       45,
+       21,
+       3,
+       16,
+       4,
+       259,
+       15
+      ],
+      [
+       54,
+       38,
+       4,
+       21,
+       23,
+       47,
+       9,
+       11,
+       7,
+       28,
+       287
+      ]
+     ]
+    },
+    "lowestConfidenceErrors": [
+     {
+      "document": "9gag",
+      "index": 122,
+      "fold": 2,
+      "y_true": "CONTENT_IP",
+      "y_pred": "DISPUTES_LAW",
+      "confidence": 0.093161,
+      "scores": {
+       "DISPUTES_LAW": 0.093161,
+       "FRAMEWORK": 0.091488,
+       "MODIFICATION_OF_TERMS": 0.090595,
+       "ACCOUNT_USE": 0.090595,
+       "FEES_PAYMENT": 0.090595
+      },
+      "unfair": [],
+      "agreement": "majority"
+     },
+     {
+      "document": "Fitbit",
+      "index": 157,
+      "fold": 1,
+      "y_true": "FRAMEWORK",
+      "y_pred": "DISPUTES_LAW",
+      "confidence": 0.093913,
+      "scores": {
+       "DISPUTES_LAW": 0.093913,
+       "FRAMEWORK": 0.093384,
+       "CONTENT_IP": 0.090953,
+       "MODIFICATION_OF_TERMS": 0.090219,
+       "LIMITATION_LIABILITY": 0.090219
+      },
+      "unfair": [],
+      "agreement": "strict"
+     },
+     {
+      "document": "Airbnb",
+      "index": 321,
+      "fold": 3,
+      "y_true": "DISPUTES_LAW",
+      "y_pred": "FEES_PAYMENT",
+      "confidence": 0.095855,
+      "scores": {
+       "FEES_PAYMENT": 0.095855,
+       "DISPUTES_LAW": 0.094778,
+       "CONTENT_IP": 0.09425,
+       "ACCOUNT_USE": 0.092418,
+       "FRAMEWORK": 0.092309
+      },
+      "unfair": [],
+      "agreement": "strict"
+     },
+     {
+      "document": "Amazon",
+      "index": 13,
+      "fold": 3,
+      "y_true": "CONTENT_IP",
+      "y_pred": "ACCOUNT_USE",
+      "confidence": 0.095999,
+      "scores": {
+       "ACCOUNT_USE": 0.095999,
+       "FRAMEWORK": 0.09592,
+       "PRIVACY_DATA": 0.095542,
+       "FEES_PAYMENT": 0.094546,
+       "CONTENT_IP": 0.093508
+      },
+      "unfair": [],
+      "agreement": "majority"
+     },
+     {
+      "document": "Microsoft",
+      "index": 541,
+      "fold": 4,
+      "y_true": "LIMITATION_LIABILITY",
+      "y_pred": "FEES_PAYMENT",
+      "confidence": 0.096187,
+      "scores": {
+       "FEES_PAYMENT": 0.096187,
+       "LIMITATION_LIABILITY": 0.095101,
+       "MODIFICATION_OF_TERMS": 0.092004,
+       "FRAMEWORK": 0.091529,
+       "ACCOUNT_USE": 0.091405
+      },
+      "unfair": [],
+      "agreement": "majority"
+     },
+     {
+      "document": "Spotify",
+      "index": 183,
+      "fold": 0,
+      "y_true": "FEES_PAYMENT",
+      "y_pred": "FRAMEWORK",
+      "confidence": 0.096205,
+      "scores": {
+       "FRAMEWORK": 0.096205,
+       "CONTENT_IP": 0.094141,
+       "DISPUTES_LAW": 0.093384,
+       "FEES_PAYMENT": 0.092475,
+       "THIRD_PARTY_SERVICES": 0.091583
+      },
+      "unfair": [],
+      "agreement": "strict"
+     },
+     {
+      "document": "Yahoo",
+      "index": 60,
+      "fold": 2,
+      "y_true": "FRAMEWORK",
+      "y_pred": "WARRANTY_DISCLAIMER",
+      "confidence": 0.096579,
+      "scores": {
+       "WARRANTY_DISCLAIMER": 0.096579,
+       "FRAMEWORK": 0.094462,
+       "ACCOUNT_USE": 0.093854,
+       "PRIVACY_DATA": 0.093638,
+       "FEES_PAYMENT": 0.091722
+      },
+      "unfair": [],
+      "agreement": "majority"
+     },
+     {
+      "document": "Supercell",
+      "index": 136,
+      "fold": 0,
+      "y_true": "FRAMEWORK",
+      "y_pred": "DISPUTES_LAW",
+      "confidence": 0.096601,
+      "scores": {
+       "DISPUTES_LAW": 0.096601,
+       "FRAMEWORK": 0.094541,
+       "CONTENT_IP": 0.091742,
+       "TERMINATION": 0.090675,
+       "WARRANTY_DISCLAIMER": 0.090084
+      },
+      "unfair": [],
+      "agreement": "majority"
+     },
+     {
+      "document": "Microsoft",
+      "index": 376,
+      "fold": 4,
+      "y_true": "FRAMEWORK",
+      "y_pred": "WARRANTY_DISCLAIMER",
+      "confidence": 0.097076,
+      "scores": {
+       "WARRANTY_DISCLAIMER": 0.097076,
+       "FRAMEWORK": 0.095677,
+       "THIRD_PARTY_SERVICES": 0.093641,
+       "CONTENT_IP": 0.091767,
+       "DISPUTES_LAW": 0.090805
+      },
+      "unfair": [],
+      "agreement": "majority"
+     },
+     {
+      "document": "Atlas",
+      "index": 33,
+      "fold": 2,
+      "y_true": "DISPUTES_LAW",
+      "y_pred": "FRAMEWORK",
+      "confidence": 0.097171,
+      "scores": {
+       "FRAMEWORK": 0.097171,
+       "CONTENT_IP": 0.096119,
+       "PRIVACY_DATA": 0.094867,
+       "WARRANTY_DISCLAIMER": 0.094163,
+       "ACCOUNT_USE": 0.093714
+      },
+      "unfair": [],
+      "agreement": "majority"
+     },
+     {
+      "document": "Headspace",
+      "index": 371,
+      "fold": 2,
+      "y_true": "FRAMEWORK",
+      "y_pred": "TERMINATION",
+      "confidence": 0.097244,
+      "scores": {
+       "TERMINATION": 0.097244,
+       "FRAMEWORK": 0.096424,
+       "PRIVACY_DATA": 0.09527,
+       "DISPUTES_LAW": 0.093501,
+       "WARRANTY_DISCLAIMER": 0.092629
+      },
+      "unfair": [],
+      "agreement": "strict"
+     },
+     {
+      "document": "Vimeo",
+      "index": 156,
+      "fold": 0,
+      "y_true": "FRAMEWORK",
+      "y_pred": "MODIFICATION_OF_TERMS",
+      "confidence": 0.097333,
+      "scores": {
+       "MODIFICATION_OF_TERMS": 0.097333,
+       "FRAMEWORK": 0.095081,
+       "DISPUTES_LAW": 0.094589,
+       "FEES_PAYMENT": 0.094332,
+       "ACCOUNT_USE": 0.091727
+      },
+      "unfair": [],
+      "agreement": "strict"
+     },
+     {
+      "document": "LindenLab",
+      "index": 131,
+      "fold": 2,
+      "y_true": "ACCOUNT_USE",
+      "y_pred": "FRAMEWORK",
+      "confidence": 0.097342,
+      "scores": {
+       "FRAMEWORK": 0.097342,
+       "CONTENT_IP": 0.096379,
+       "FEES_PAYMENT": 0.095633,
+       "ACCOUNT_USE": 0.09503,
+       "PRIVACY_DATA": 0.09266
+      },
+      "unfair": [],
+      "agreement": "strict"
+     },
+     {
+      "document": "Booking",
+      "index": 54,
+      "fold": 1,
+      "y_true": "FEES_PAYMENT",
+      "y_pred": "FRAMEWORK",
+      "confidence": 0.097431,
+      "scores": {
+       "FRAMEWORK": 0.097431,
+       "CONTENT_IP": 0.094115,
+       "THIRD_PARTY_SERVICES": 0.093641,
+       "PRIVACY_DATA": 0.091618,
+       "DISPUTES_LAW": 0.091445
+      },
+      "unfair": [],
+      "agreement": "strict"
+     },
+     {
+      "document": "TripAdvisor",
+      "index": 105,
+      "fold": 3,
+      "y_true": "LIMITATION_LIABILITY",
+      "y_pred": "ACCOUNT_USE",
+      "confidence": 0.09753,
+      "scores": {
+       "ACCOUNT_USE": 0.09753,
+       "THIRD_PARTY_SERVICES": 0.094335,
+       "CONTENT_IP": 0.093384,
+       "WARRANTY_DISCLAIMER": 0.092591,
+       "TERMINATION": 0.092261
+      },
+      "unfair": [],
+      "agreement": "divergence"
+     },
+     {
+      "document": "Microsoft",
+      "index": 546,
+      "fold": 4,
+      "y_true": "FRAMEWORK",
+      "y_pred": "THIRD_PARTY_SERVICES",
+      "confidence": 0.09758,
+      "scores": {
+       "THIRD_PARTY_SERVICES": 0.09758,
+       "FRAMEWORK": 0.09519,
+       "FEES_PAYMENT": 0.093753,
+       "CONTENT_IP": 0.093642,
+       "ACCOUNT_USE": 0.091696
+      },
+      "unfair": [],
+      "agreement": "majority"
+     },
+     {
+      "document": "Amazon",
+      "index": 19,
+      "fold": 3,
+      "y_true": "CONTENT_IP",
+      "y_pred": "FEES_PAYMENT",
+      "confidence": 0.097582,
+      "scores": {
+       "FEES_PAYMENT": 0.097582,
+       "CONTENT_IP": 0.096216,
+       "ACCOUNT_USE": 0.094708,
+       "FRAMEWORK": 0.094564,
+       "PRIVACY_DATA": 0.094346
+      },
+      "unfair": [],
+      "agreement": "majority"
+     },
+     {
+      "document": "Microsoft",
+      "index": 499,
+      "fold": 4,
+      "y_true": "ACCOUNT_USE",
+      "y_pred": "THIRD_PARTY_SERVICES",
+      "confidence": 0.097614,
+      "scores": {
+       "THIRD_PARTY_SERVICES": 0.097614,
+       "LIMITATION_LIABILITY": 0.096921,
+       "ACCOUNT_USE": 0.095629,
+       "FRAMEWORK": 0.095058,
+       "MODIFICATION_OF_TERMS": 0.091118
+      },
+      "unfair": [],
+      "agreement": "divergence"
+     },
+     {
+      "document": "Spotify",
+      "index": 290,
+      "fold": 0,
+      "y_true": "FRAMEWORK",
+      "y_pred": "FEES_PAYMENT",
+      "confidence": 0.097785,
+      "scores": {
+       "FEES_PAYMENT": 0.097785,
+       "PRIVACY_DATA": 0.097151,
+       "CONTENT_IP": 0.095898,
+       "FRAMEWORK": 0.095782,
+       "ACCOUNT_USE": 0.095331
+      },
+      "unfair": [],
+      "agreement": "strict"
+     },
+     {
+      "document": "Spotify",
+      "index": 8,
+      "fold": 0,
+      "y_true": "FRAMEWORK",
+      "y_pred": "PRIVACY_DATA",
+      "confidence": 0.097789,
+      "scores": {
+       "PRIVACY_DATA": 0.097789,
+       "MODIFICATION_OF_TERMS": 0.093959,
+       "WARRANTY_DISCLAIMER": 0.093772,
+       "TERMINATION": 0.092082,
+       "CONTENT_IP": 0.091785
+      },
+      "unfair": [],
+      "agreement": "strict"
+     }
+    ],
+    "perLabel": [
+     {
+      "label": "CONTENT_IP",
+      "precision": 0.705882,
+      "recall": 0.612245,
+      "f1": 0.655738,
+      "support": 1764
+     },
+     {
+      "label": "ACCOUNT_USE",
+      "precision": 0.604106,
+      "recall": 0.595032,
+      "f1": 0.599534,
+      "support": 1731
+     },
+     {
+      "label": "FRAMEWORK",
+      "precision": 0.59656,
+      "recall": 0.549712,
+      "f1": 0.572178,
+      "support": 1388
+     },
+     {
+      "label": "FEES_PAYMENT",
+      "precision": 0.659,
+      "recall": 0.631831,
+      "f1": 0.64513,
+      "support": 1043
+     },
+     {
+      "label": "DISPUTES_LAW",
+      "precision": 0.875,
+      "recall": 0.820312,
+      "f1": 0.846774,
+      "support": 1024
+     },
+     {
+      "label": "WARRANTY_DISCLAIMER",
+      "precision": 0.636364,
+      "recall": 0.542533,
+      "f1": 0.585714,
+      "support": 529
+     },
+     {
+      "label": "LIMITATION_LIABILITY",
+      "precision": 0.591767,
+      "recall": 0.680473,
+      "f1": 0.633028,
+      "support": 507
+     },
+     {
+      "label": "THIRD_PARTY_SERVICES",
+      "precision": 0.532922,
+      "recall": 0.596774,
+      "f1": 0.563043,
+      "support": 434
+     },
+     {
+      "label": "TERMINATION",
+      "precision": 0.406072,
+      "recall": 0.573727,
+      "f1": 0.475556,
+      "support": 373
+     },
+     {
+      "label": "MODIFICATION_OF_TERMS",
+      "precision": 0.590123,
+      "recall": 0.66205,
+      "f1": 0.624021,
+      "support": 361
+     },
+     {
+      "label": "PRIVACY_DATA",
+      "precision": 0.288934,
+      "recall": 0.542308,
+      "f1": 0.377005,
+      "support": 260
+     }
+    ]
+   },
+   "uncertainty": "Comptages exacts sur les prédictions hors-pli des 5 plis.",
+   "interpretation": "Le modèle échoue 2.5 fois plus souvent sur les phrases où les annotateurs divergent que sur celles où ils sont unanimes (66.9% contre 26.8%). Ses erreurs ne sont donc pas arbitraires : elles se concentrent là où la tâche est objectivement ambiguë, ce qui suggère que la marge de progression réelle est plus étroite que le taux d'erreur global ne le laisse croire — une partie de ces « erreurs » sont des désaccords légitimes.",
+   "gates": [
+    {
+     "id": "dataset_frozen",
+     "label": "Dataset figé et daté",
+     "passed": true,
+     "detail": "empreinte 7116e627f528c557…",
+     "blocking": true
+    },
+    {
+     "id": "not_partial_snapshot",
+     "label": "Corpus complet (50 documents × 3 annotateurs)",
+     "passed": true,
+     "detail": "50 documents, 150 annotations soumises",
+     "blocking": true
+    },
+    {
+     "id": "taxonomy_spec_frozen",
+     "label": "Mappings de taxonomie figés et versionnés",
+     "passed": true,
+     "detail": "spécification v1, empreinte f6cdd2715df02177…",
+     "blocking": true
+    },
+    {
+     "id": "seed_recorded",
+     "label": "Graine enregistrée",
+     "passed": true,
+     "detail": "seed=42",
+     "blocking": true
+    },
+    {
+     "id": "code_version_recorded",
+     "label": "Version du code enregistrée",
+     "passed": true,
+     "detail": "69bbe460d4a4 (dépôt MODIFIÉ : non reproductible en l'état)",
+     "blocking": false
+    },
+    {
+     "id": "split_document_level",
+     "label": "Découpe au niveau DOCUMENT (jamais par phrase)",
+     "passed": true,
+     "detail": "schéma « group_kfold_document »",
+     "blocking": true
+    },
+    {
+     "id": "no_train_test_leak",
+     "label": "Aucune fuite entraînement/test",
+     "passed": true,
+     "detail": "garanti par le groupement par document",
+     "blocking": true
+    }
+   ],
+   "status": "validated",
+   "artifacts": [],
+   "provenance": {
+    "codeVersion": "69bbe460d4a4c60cdb221755001d2af325954234",
+    "codeClean": false,
+    "taxonomySpecVersion": 1,
+    "taxonomySpecFingerprint": "f6cdd2715df02177",
+    "python": "3.12.13",
+    "platform": "macOS-26.3.1-x86_64-i386-64bit",
+    "executedAt": "2026-09-13T20:33:57+00:00"
+   }
+  }
+ ]
+}

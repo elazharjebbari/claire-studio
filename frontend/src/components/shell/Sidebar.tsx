@@ -10,6 +10,7 @@ import {
   ListChecks,
   LayoutDashboard,
   FileText,
+  BookOpenCheck,
   FlaskConical,
   FolderKanban,
   Globe,
@@ -69,6 +70,14 @@ function navGroups(slug: string | undefined): NavGroup[] {
   // Le Lab (jeux de données figés + expériences) suit l'analyse : c'est la même
   // matière, vue sous l'angle de la production de résultats scientifiques.
   if (slug) corpus.push({ href: `/projects/${slug}/lab`, label: "Lab", icon: FlaskConical });
+  // Les résultats de la campagne finale, organisés par question de recherche : le bout
+  // de la chaîne (annoter → résoudre → mesurer → publier).
+  if (slug)
+    corpus.push({
+      href: `/projects/${slug}/paper`,
+      label: "Résultats de l'article",
+      icon: BookOpenCheck,
+    });
   corpus.push({ href: `/projects`, label: "Mes projets", icon: FolderKanban });
   corpus.push({ href: `/public`, label: "Projets publiés", icon: Globe });
 
