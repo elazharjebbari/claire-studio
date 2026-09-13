@@ -141,3 +141,23 @@ def test_aucun_garde_fou_checkpoint_sans_modele():
     """Un baseline TF-IDF ne télécharge rien — pas de vérification inutile."""
     script = build_run_script(run_id="r1", require_gpu=False, env_name="e", workdir="~/pactiva")
     assert "exit 66" not in script
+
+
+def test_progression_distante_absente_par_defaut():
+    """Un backend qui ne sait pas répondre renvoie None, jamais une exception : sur un
+    job de trois heures, ne pas connaître l'avancement n'est pas une panne."""
+    from claire.lab.runners.base import ExecutionBackend
+
+    assert ExecutionBackend().remote_progress(object()) is None
+
+
+def test_progression_distante_avale_les_erreurs_ssh():
+    """Le sondage d'avancement ne doit JAMAIS faire échouer un run : sans clé SSH, la
+    lecture échoue et le worker se contente de la phase."""
+    from claire.lab.runners.g5k import Grid5000Backend
+
+    class _Run:
+        id = "r1"
+        config = {"compute": {"g5k": {"site": "lyon"}}}
+
+    assert Grid5000Backend(login="x", ssh_key=None).remote_progress(_Run()) is None

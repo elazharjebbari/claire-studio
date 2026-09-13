@@ -112,11 +112,17 @@ def execute_run(run: ExperimentRun) -> ExperimentRun:
     return ingest_results(run, out_dir, partial=not complete)
 
 
+PROGRESS_INTERVAL = 60.0  # secondes entre deux lectures de la progression distante
+
+
 def _wait_remote(run: ExperimentRun, backend) -> bool:
     """Sonde un job distant jusqu'à sa fin. Renvoie False si l'attente a échoué."""
     from .runners.g5k import poll_interval
 
     started = time.time()
+    # Première interrogation immédiate : un job repris en cours de route doit afficher
+    # son avancement réel sans attendre une minute de plus.
+    last_progress_at = 0.0
     deadline = started + getattr(
         __import__("django.conf", fromlist=["settings"]).settings, "LAB_G5K_MAX_WAIT", 86400
     )
@@ -148,7 +154,15 @@ def _wait_remote(run: ExperimentRun, backend) -> bool:
         if state == "running" and run.status != RunStatus.RUNNING:
             run.status = RunStatus.RUNNING
             run.save(update_fields=["status"])
-        heartbeat(run, phase=state)
+
+        # La progression coûte un aller-retour SSH : on l'interroge au plus une fois par
+        # minute, alors que le sondage d'état descend à cinq secondes en début de job.
+        progress = None
+        now = time.time()
+        if state == "running" and now - last_progress_at >= PROGRESS_INTERVAL:
+            progress = backend.remote_progress(run)
+            last_progress_at = now
+        heartbeat(run, phase=state, progress=progress)
         time.sleep(poll_interval(time.time() - started))
 
     fail_run(run, "g5k_timeout", "délai d'attente dépassé pour le job distant")

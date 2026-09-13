@@ -30,6 +30,15 @@ class ExecutionBackend:
     def cancel(self, run) -> None:
         raise NotImplementedError
 
+    def remote_progress(self, run) -> int | None:
+        """Avancement du calcul distant, en pourcentage, ou `None` si indisponible.
+
+        Optionnel par construction : un backend qui ne sait pas répondre renvoie `None`,
+        et l'appelant se contente de la phase. La progression est un CONFORT
+        d'observabilité — elle ne doit jamais faire échouer un run ni le ralentir.
+        """
+        return None
+
 
 def write_config(out_dir: Path, config: dict) -> Path:
     """Écrit la configuration à côté des résultats.

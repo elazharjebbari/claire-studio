@@ -20,6 +20,7 @@ avec un code explicite et reste rejouable en local.
 
 from __future__ import annotations
 
+import json
 import logging
 import shlex
 import subprocess
@@ -222,6 +223,35 @@ class Grid5000Backend(ExecutionBackend):
     def poll(self, run) -> str:
         site = ((run.config.get("compute") or {}).get("g5k") or {}).get("site", "nancy")
         return g5k_poll(self._client, site, run.external_job_id)
+
+    def remote_progress(self, run) -> int | None:
+        """Lit `results/progress.json` sur la frontale du site.
+
+        POURQUOI. Le script de job écrit déjà ce fichier (option `--progress`), mais rien
+        ne le rapatriait : sur un fine-tuning de trois heures, l'interface affichait 0 %
+        du début à la fin alors que le nœud en était au pli 2 sur 5. Le fichier fait
+        quelques dizaines d'octets — un `cat` distant suffit, inutile de rapatrier les
+        résultats partiels à chaque sondage.
+
+        Toute erreur est avalée : ne pas connaître l'avancement n'est pas une panne.
+        """
+        config = (run.config.get("compute") or {}).get("g5k") or {}
+        site = config.get("site", "nancy")
+        workdir = config.get("workdir", "~/pactiva")
+        remote = f"{self._access_path(site, workdir)}/runs/{run.id}/results/progress.json"
+        try:
+            with temporary_ssh_key(self.ssh_key) as key_path:
+                completed = subprocess.run(
+                    [*ssh_command(key_path).split(), f"{self.login}@{GATEWAY}",
+                     f"cat {remote}"],
+                    capture_output=True, text=True, timeout=30, check=False,
+                )
+            if completed.returncode != 0:
+                return None
+            percent = json.loads(completed.stdout).get("percent")
+            return max(0, min(100, int(percent))) if percent is not None else None
+        except Exception:
+            return None
 
     def fetch(self, run, out_dir: Path) -> bool:
         config = (run.config.get("compute") or {}).get("g5k") or {}
