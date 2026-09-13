@@ -118,6 +118,9 @@ export interface GoldLlmVote {
 export interface GoldSentenceRow {
   index: number;
   text: string;
+  /** Traduction française de la phrase, résolue côté client (feature 8 : jeux de
+   *  traductions fichiers). Absente si le document n'est pas traduit. */
+  textFr?: string;
   annotators: GoldAnnotatorVote[];
   llms: GoldLlmVote[];
   agreementClass: AgreementClass;

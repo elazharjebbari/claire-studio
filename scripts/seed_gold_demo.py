@@ -43,6 +43,7 @@ from claire.projects.models import (  # noqa: E402
     ProjectMembership,
 )
 from claire.schemes.models import LabelScheme, Theme  # noqa: E402
+from claire.translations.models import Translation, TranslationSet  # noqa: E402
 
 User = get_user_model()
 
@@ -65,6 +66,17 @@ SENTENCES = [
     "define the scope of the service at its sole discretion.",
     "These terms are governed by the laws of the State of California.",
 ]
+
+# Traductions FR (feature 8) — la phrase 3 reste VOLONTAIREMENT non traduite, pour
+# démontrer le repli sur la version originale plutôt qu'un trou dans le contrat.
+TRANSLATIONS_FR = {
+    0: "Nous pouvons résilier votre compte à tout moment et pour n'importe quel motif, "
+       "sans préavis.",
+    1: "Vous acceptez de payer tous les frais liés à votre abonnement avant l'échéance.",
+    2: "Le prestataire se réserve le droit de modifier les présentes conditions, de "
+       "limiter sa responsabilité et de définir le périmètre du service à sa seule "
+       "discrétion.",
+}
 
 # (annotateur, {index: (primaire, [secondaires])}) — cf. le tableau du docstring.
 VOTES = {
@@ -121,6 +133,17 @@ def build() -> dict:
         i: Sentence.objects.create(document=document, index=i, raw_text=text)
         for i, text in enumerate(SENTENCES)
     }
+
+    # Jeu de traductions FR du corpus (la résolution GOLD doit pouvoir basculer de langue).
+    translation_set = TranslationSet.objects.create(
+        corpus=corpus, name="Démo FR", target_language="fr",
+        folder_path="(démo)", status="synced",
+    )
+    for index, text in TRANSLATIONS_FR.items():
+        Translation.objects.create(
+            translation_set=translation_set, document=document,
+            sentence=sentences[index], text=text, provenance="demo",
+        )
 
     project = Project.objects.create(
         slug=SLUG, name="Démonstration — résolution GOLD", corpus=corpus, scheme=scheme

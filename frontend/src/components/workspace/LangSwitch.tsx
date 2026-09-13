@@ -10,23 +10,35 @@
  * clavier (flèches ←/→ pour changer d'option, l'option active porte `tabIndex=0`,
  * les autres `tabIndex=-1` — pattern roving tabindex). L'unité d'interaction du
  * document reste l'index de phrase quel que soit le mode (cf. DocumentPanel).
+ *
+ * PRÉSENTATIONNEL : l'état est fourni par l'appelant (`value`/`onChange`), afin que
+ * l'atelier d'annotation ET l'atelier de résolution GOLD partagent le MÊME contrôle
+ * sans que le second ait à dépendre du store du premier (les deux stores sont isolés
+ * par conception). `testIdPrefix` évite toute collision si les deux coexistaient.
  */
 
 import { useRef } from "react";
-import { useWorkspaceStore } from "@/store/workspace";
 import { cn } from "@/lib/cn";
+import type { DisplayLang } from "@/lib/prefs/schema";
 
-type Lang = "orig" | "both" | "fr";
+type Lang = DisplayLang;
 
-const OPTIONS: { value: Lang; label: string; testid: string }[] = [
-  { value: "orig", label: "VO", testid: "lang-orig" },
-  { value: "both", label: "Bilingue", testid: "lang-both" },
-  { value: "fr", label: "FR", testid: "lang-fr" },
+const OPTIONS: { value: Lang; label: string; suffix: string }[] = [
+  { value: "orig", label: "VO", suffix: "orig" },
+  { value: "both", label: "Bilingue", suffix: "both" },
+  { value: "fr", label: "FR", suffix: "fr" },
 ];
 
-export function LangSwitch() {
-  const displayLang = useWorkspaceStore((s) => s.displayLang);
-  const setDisplayLang = useWorkspaceStore((s) => s.setDisplayLang);
+export interface LangSwitchProps {
+  value: Lang;
+  onChange: (value: Lang) => void;
+  /** Préfixe des `data-testid` (défaut : `lang`, comportement historique). */
+  testIdPrefix?: string;
+}
+
+export function LangSwitch({ value, onChange, testIdPrefix = "lang" }: LangSwitchProps) {
+  const displayLang = value;
+  const setDisplayLang = onChange;
   const refs = useRef<(HTMLButtonElement | null)[]>([]);
 
   function onKeyDown(e: React.KeyboardEvent, idx: number) {
@@ -42,7 +54,7 @@ export function LangSwitch() {
     <div
       role="radiogroup"
       aria-label="Mode d'affichage de langue"
-      data-testid="lang-switch"
+      data-testid={`${testIdPrefix}-switch`}
       className="inline-flex items-center rounded-md border border-line bg-panel-muted/40 p-0.5"
     >
       {OPTIONS.map((opt, idx) => {
@@ -57,7 +69,7 @@ export function LangSwitch() {
             role="radio"
             aria-checked={active}
             tabIndex={active ? 0 : -1}
-            data-testid={opt.testid}
+            data-testid={`${testIdPrefix}-${opt.suffix}`}
             onClick={() => setDisplayLang(opt.value)}
             onKeyDown={(e) => onKeyDown(e, idx)}
             className={cn(

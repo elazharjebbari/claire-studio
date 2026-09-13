@@ -20,9 +20,12 @@ import { getThemeToken, readableTextColor } from "@/lib/tokens";
 import { AGREEMENT_META, RISK_META, AUTO_META } from "@/lib/gold/styling";
 import { llmJudgeLabel } from "@/lib/llmJudges";
 import type { GoldSentenceRow } from "@/lib/gold/types";
+import type { DisplayLang } from "@/lib/prefs/schema";
 
 export interface GoldInspectorProps {
   sentence: GoldSentenceRow | null;
+  /** VO / bilingue / FR — même réglage que le panneau de lecture. */
+  displayLang?: DisplayLang;
   canDecide: boolean;
   pending: boolean;
   onDecide: (
@@ -47,7 +50,13 @@ export function candidatePrimaries(s: GoldSentenceRow): string[] {
   return [...codes].sort();
 }
 
-export function GoldInspectorPanel({ sentence, canDecide, pending, onDecide }: GoldInspectorProps) {
+export function GoldInspectorPanel({
+  sentence,
+  displayLang = "orig",
+  canDecide,
+  pending,
+  onDecide,
+}: GoldInspectorProps) {
   const candidates = useMemo(() => (sentence ? candidatePrimaries(sentence) : []), [sentence]);
 
   if (!sentence) {
@@ -67,7 +76,16 @@ export function GoldInspectorPanel({ sentence, canDecide, pending, onDecide }: G
       <div className="text-[11px] uppercase tracking-wide text-ink-muted">
         Phrase {sentence.index}
       </div>
-      <p className="rounded-md bg-reading p-2 text-sm text-ink">{sentence.text}</p>
+      <div className="rounded-md bg-reading p-2 text-sm text-ink">
+        <p>{displayLang === "fr" && sentence.textFr ? sentence.textFr : sentence.text}</p>
+        {/* Bilingue : la traduction sous la VO — l'arbitre tranche sur le texte qui fait
+            foi (l'anglais) tout en s'appuyant sur le français pour la compréhension. */}
+        {displayLang === "both" && sentence.textFr && (
+          <p data-testid="gold-inspector-translation" className="mt-1 italic text-ink-muted">
+            {sentence.textFr}
+          </p>
+        )}
+      </div>
 
       {/* Proposition du moteur */}
       <div className="flex flex-wrap items-center gap-1.5">

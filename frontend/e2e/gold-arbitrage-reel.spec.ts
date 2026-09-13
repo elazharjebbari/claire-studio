@@ -109,6 +109,27 @@ test.describe("GOLD — démonstration de bout en bout (backend réel)", () => {
       "FEES_PAYMENT",
     ]);
 
+    // ── 4-bis. Bascule de langue : le corpus est en anglais, l'arbitre lit en français ──
+    const reading = page.getByTestId("gold-reading");
+    await expect(reading).toContainText("We may terminate your account");
+    await expect(page.getByTestId("gold-lang-switch")).toBeVisible();
+
+    await page.getByTestId("gold-lang-both").click(); // bilingue : VO + FR
+    await expect(page.getByTestId("gold-translation-0")).toContainText(
+      "Nous pouvons résilier votre compte",
+    );
+    await expect(reading).toContainText("We may terminate your account");
+
+    await page.getByTestId("gold-lang-fr").click(); // FR : la traduction remplace la VO
+    await expect(reading).toContainText("Nous pouvons résilier votre compte");
+    await expect(reading).not.toContainText("We may terminate your account");
+    // Phrase 3 non traduite → repli sur la VO, signalé (jamais de trou dans le contrat).
+    await expect(reading).toContainText("These terms are governed by the laws");
+    await expect(reading).toContainText("non traduite");
+    await page.screenshot({ path: `${SHOTS}/2b-lecture-en-francais.png`, fullPage: true });
+
+    await page.getByTestId("gold-lang-orig").click(); // retour VO pour arbitrer sur le texte qui fait foi
+
     // La phrase 2 est l'ÉGALITÉ 1-1-1 : aucune validation en 1 clic n'est proposée.
     await page.getByTestId("gold-row-2").click();
     await expect(page.getByTestId("gold-inspector")).toContainText("Phrase 2");

@@ -12,6 +12,7 @@ import { Check, Lock, Split, Scale } from "lucide-react";
 import { useGoldStore } from "@/store/goldStore";
 import { blockKey, needsAttention } from "@/lib/gold/blocks";
 import type { GoldSentenceRow } from "@/lib/gold/types";
+import type { DisplayLang } from "@/lib/prefs/schema";
 
 function accentClass(s: GoldSentenceRow): string {
   if (s.decided) return s.autoResolved ? "border-l-info" : "border-l-success";
@@ -22,11 +23,18 @@ function accentClass(s: GoldSentenceRow): string {
 
 export interface GoldReadingProps {
   sentences: GoldSentenceRow[];
+  /** VO / bilingue / FR — la traduction voyage avec la phrase (`textFr`). */
+  displayLang?: DisplayLang;
   canDecide: boolean;
   onValidate: (index: number, clientY: number) => void;
 }
 
-export function GoldReadingPanel({ sentences, canDecide, onValidate }: GoldReadingProps) {
+export function GoldReadingPanel({
+  sentences,
+  displayLang = "orig",
+  canDecide,
+  onValidate,
+}: GoldReadingProps) {
   const selectedIndex = useGoldStore((s) => s.selectedIndex);
   const filter = useGoldStore((s) => s.filter);
   const parkY = useGoldStore((s) => s.parkY);
@@ -126,7 +134,22 @@ export function GoldReadingPanel({ sentences, canDecide, onValidate }: GoldReadi
                   </span>
                 )}
                 <span className="font-mono text-[10px] text-ink-muted">{s.index}</span>
-                <span className="min-w-0 flex-1 text-ink">{s.text}</span>
+                <span className="min-w-0 flex-1 text-ink">
+                  {/* En mode FR, la traduction REMPLACE la VO (repli sur la VO si la
+                      phrase n'est pas traduite — jamais de trou dans le contrat). */}
+                  {displayLang === "fr" && s.textFr ? s.textFr : s.text}
+                  {displayLang === "both" && s.textFr && (
+                    <span
+                      data-testid={`gold-translation-${s.index}`}
+                      className="mt-0.5 block italic text-ink-muted"
+                    >
+                      {s.textFr}
+                    </span>
+                  )}
+                  {displayLang === "fr" && !s.textFr && (
+                    <span className="ml-1 text-[10px] not-italic text-ink-muted">(non traduite)</span>
+                  )}
+                </span>
                 {!s.decided && needsAttention(s) && (
                   // Pastille ICÔNE (non-texte) plutôt qu'un mini-libellé coloré : exempte de
                   // la règle de contraste-texte WCAG 1.4.3, l'icône passe le 3:1 non-texte, et

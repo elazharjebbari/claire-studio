@@ -163,6 +163,7 @@ export function DocumentPanel({
   const clearClauseSelection = useWorkspaceStore((s) => s.clearClauseSelection);
   const clearSelection = useWorkspaceStore((s) => s.clearSelection);
   const displayLang = useWorkspaceStore((s) => s.displayLang);
+  const setDisplayLang = useWorkspaceStore((s) => s.setDisplayLang);
   const translatedSentences = useWorkspaceStore((s) => s.translatedSentences);
   const setTranslated = useWorkspaceStore((s) => s.setTranslated);
 
@@ -742,7 +743,7 @@ export function DocumentPanel({
               ↔
             </button>
           </div>
-          <LangSwitch />
+          <LangSwitch value={displayLang} onChange={setDisplayLang} />
           </div>
           </div>
           )}

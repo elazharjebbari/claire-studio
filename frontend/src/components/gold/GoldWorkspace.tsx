@@ -25,6 +25,9 @@ import {
 import { isAdminRole } from "@/lib/roles";
 import { useUiStore } from "@/store/ui";
 import { useGoldStore } from "@/store/goldStore";
+import { usePrefsStore } from "@/store/prefs";
+import { LangSwitch } from "@/components/workspace/LangSwitch";
+import { useDocumentTranslations } from "@/lib/api/hooks";
 import { nextTodo, prevTodo, nextUndecided, outlineStats } from "@/lib/gold/blocks";
 import { candidatePrimaries } from "./GoldInspectorPanel";
 import { useGoldShortcuts } from "./useGoldShortcuts";
@@ -39,6 +42,8 @@ export function GoldWorkspace({ slug, documentId }: { slug: string; documentId: 
   const select = useGoldStore((s) => s.select);
   const setParkY = useGoldStore((s) => s.setParkY);
   const selectedIndex = useGoldStore((s) => s.selectedIndex);
+  const displayLang = useGoldStore((s) => s.displayLang);
+  const setDisplayLang = useGoldStore((s) => s.setDisplayLang);
 
   useEffect(() => setProject(slug), [slug, setProject]);
   useEffect(() => initStore(documentId), [documentId, initStore]);
@@ -60,8 +65,34 @@ export function GoldWorkspace({ slug, documentId }: { slug: string; documentId: 
   const isManager = isAdminRole(me?.role) || project?.myRole === "lead";
   const lock = useArbitrationLock(slug, documentId, { initial: detail?.lock, enabled: ready });
 
-  const sentences = useMemo(() => detail?.sentences ?? [], [detail]);
+  // Langue de lecture : hydratée depuis la préférence de COMPTE à l'ouverture, puis
+  // repersistée à chaque changement — l'arbitre retrouve sa langue d'une session à l'autre
+  // et d'un atelier à l'autre (annotation ↔ résolution), sans réglage en double.
+  const prefLang = usePrefsStore((s) => s.prefs.overlays.displayLang);
+  const setOverlaysPref = usePrefsStore((s) => s.setOverlays);
+  const hydratedLang = useRef(false);
+  useEffect(() => {
+    if (hydratedLang.current) return;
+    hydratedLang.current = true;
+    setDisplayLang(prefLang);
+  }, [prefLang, setDisplayLang]);
+
+  const { byIndex: translations } = useDocumentTranslations(
+    detail?.document.id != null ? String(detail.document.id) : undefined,
+  );
+
+  const sentences = useMemo(
+    // La traduction est jointe ICI (source unique) : les trois panneaux reçoivent une
+    // phrase déjà porteuse de son texte français, aucun n'interroge l'API de son côté.
+    () =>
+      (detail?.sentences ?? []).map((s) => {
+        const fr = translations.get(s.index);
+        return fr ? { ...s, textFr: fr } : s;
+      }),
+    [detail, translations],
+  );
   const missingNames = detail?.readiness?.missingUsernames ?? [];
+  const hasTranslations = translations.size > 0;
   const selected = useMemo(
     () => sentences.find((s) => s.index === selectedIndex) ?? null,
     [sentences, selectedIndex],
@@ -188,6 +219,18 @@ export function GoldWorkspace({ slug, documentId }: { slug: string; documentId: 
         )}
 
         <div className="ml-auto flex items-center gap-2">
+          {/* Bascule de langue : n'apparaît que si le document a une traduction —
+              un contrôle inerte serait une promesse non tenue. */}
+          {hasTranslations && (
+            <LangSwitch
+              testIdPrefix="gold-lang"
+              value={displayLang}
+              onChange={(lang) => {
+                setDisplayLang(lang);
+                setOverlaysPref({ displayLang: lang });
+              }}
+            />
+          )}
           <button
             type="button"
             data-testid="gold-help-open"
@@ -315,6 +358,7 @@ export function GoldWorkspace({ slug, documentId }: { slug: string; documentId: 
           center={
             <GoldReadingPanel
               sentences={sentences}
+              displayLang={displayLang}
               canDecide={canDecide}
               onValidate={(index, clientY) => {
                 const s = sentences.find((x) => x.index === index);
@@ -325,6 +369,7 @@ export function GoldWorkspace({ slug, documentId }: { slug: string; documentId: 
           right={
             <GoldInspectorPanel
               sentence={selected}
+              displayLang={displayLang}
               canDecide={canDecide}
               pending={decide.isPending}
               onDecide={(index, primary, secondaries, clientY, comment) =>
