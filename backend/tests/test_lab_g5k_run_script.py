@@ -92,9 +92,15 @@ def test_env_name_avec_metacaractere_shell_ne_permet_pas_l_injection():
     assert quoted in script
 
 
-def test_hf_home_isole_par_run_pour_ne_jamais_partager_le_cache_entre_jobs():
+def test_hf_home_respecte_un_cache_impose_en_amont():
+    """DÉCISION RÉVISÉE le 13 septembre 2026. Le cache était isolé PAR RUN
+    (`$RUN_DIR/.hf`). Constat : les nœuds de calcul n'ont pas l'accès Internet de la
+    frontale, donc un cache jetable rend tout fine-tuning impossible — et un cache HF
+    est adressé par (dépôt, révision), le partager ne menace donc pas la reproductibilité.
+    Le cache est désormais persistant, mais la SUBSTITUTION reste conditionnelle : qui
+    veut isoler un run exporte `HF_HOME` en amont et sa valeur est respectée."""
     script = build_run_script(run_id="r42", require_gpu=False, env_name="e", workdir="~/pactiva")
-    assert 'export HF_HOME="${HF_HOME:-$RUN_DIR/.hf}"' in script
+    assert 'export HF_HOME="${HF_HOME:-' in script
 
 
 def test_ld_library_path_precede_le_garde_fou_gpu():
@@ -106,3 +112,32 @@ def test_ld_library_path_precede_le_garde_fou_gpu():
     script = build_run_script(run_id="r1", require_gpu=True, env_name="e", workdir="~/pactiva")
     assert 'export LD_LIBRARY_PATH="${CONDA_PREFIX:-}/lib:${LD_LIBRARY_PATH:-}"' in script
     assert script.index("LD_LIBRARY_PATH") < script.index("nvidia-smi")
+
+
+def test_cache_hf_persistant_hors_du_repertoire_de_run():
+    """Le cache HF doit SURVIVRE au run : sinon chaque job retélécharge 440 Mo, et le
+    sweep `encoders-comparison` (4 checkpoints × 5 folds) paie 20 téléchargements."""
+    script = build_run_script(run_id="r1", require_gpu=True, env_name="e", workdir="~/pactiva")
+    assert 'HF_HOME="${HF_HOME:-$HOME/.cache/huggingface}"' in script
+    assert "$RUN_DIR/.hf" not in script
+
+
+def test_garde_fou_checkpoint_quand_un_modele_est_demande():
+    """Les nœuds n'ont pas Internet : mieux vaut échouer en une seconde avec un code
+    distinct que planter après la réservation du GPU sur une erreur réseau."""
+    script = build_run_script(
+        run_id="r1", require_gpu=True, env_name="e", workdir="~/pactiva",
+        checkpoint="nlpaueb/legal-bert-base-uncased",
+    )
+    assert "local_files_only=True" in script
+    assert "exit 66" in script
+    assert "nlpaueb/legal-bert-base-uncased" in script
+    # Le garde-fou GPU doit rester en PREMIER : inutile de vérifier le cache d'un modèle
+    # qu'on ne pourra de toute façon pas entraîner.
+    assert script.index("exit 64") < script.index("exit 66")
+
+
+def test_aucun_garde_fou_checkpoint_sans_modele():
+    """Un baseline TF-IDF ne télécharge rien — pas de vérification inutile."""
+    script = build_run_script(run_id="r1", require_gpu=False, env_name="e", workdir="~/pactiva")
+    assert "exit 66" not in script

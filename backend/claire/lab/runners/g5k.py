@@ -53,7 +53,8 @@ def poll_interval(elapsed_seconds: float) -> int:
     return 60
 
 
-def build_run_script(*, run_id: str, require_gpu: bool, env_name: str, workdir: str) -> str:
+def build_run_script(*, run_id: str, require_gpu: bool, env_name: str, workdir: str,
+                     checkpoint: str | None = None) -> str:
     """Script exécuté sur le nœud.
 
     Le garde-fou GPU est le point important : sur Grid'5000, un désaccord entre la
@@ -79,6 +80,25 @@ PYCHECK
     # site Rennes, `cd: ~/pactiva/runs/<id>: No such file or directory` dans le stderr
     # OAR) — `$HOME` est une variable, elle s'étend normalement entre guillemets, donc on
     # substitue le tilde EN PYTHON avant d'écrire le script plutôt qu'en bash.
+    # Les nœuds de calcul n'ont PAS l'accès Internet direct dont dispose la frontale
+    # (vérifié le 13 septembre 2026 : `curl huggingface.co` → 200 depuis lyon, aucune
+    # variable `http_proxy` définie sur le nœud). Un fine-tuning lancé sans cache
+    # pré-peuplé échoue donc APRÈS la réservation, quelques minutes de GPU déjà
+    # consommées, sur une erreur réseau obscure. Ce garde-fou échoue en une seconde avec
+    # un code distinct (66) et dit quoi faire — même philosophie que le garde-fou GPU.
+    checkpoint_guard = ""
+    if checkpoint:
+        checkpoint_guard = f"""
+python - <<'PYCKPT' || {{ echo "FATAL: checkpoint {checkpoint} absent du cache HF (les noeuds n'ont pas Internet) — lancer scripts/prefetch_g5k_models.py"; exit 66; }}
+import sys
+from huggingface_hub import snapshot_download
+try:
+    snapshot_download({checkpoint!r}, local_files_only=True)
+except Exception:
+    sys.exit(1)
+PYCKPT
+"""
+
     node_workdir = f"$HOME{workdir[1:]}" if workdir.startswith("~") else workdir
     return f"""#!/usr/bin/env bash
 set -euo pipefail
@@ -94,8 +114,9 @@ source activate {shlex.quote(env_name)} 2>/dev/null || conda activate {shlex.quo
 # cette ligne, `import torch` plante AVANT même d'atteindre le garde-fou GPU ci-dessous,
 # qui ne verrait donc jamais tourner sa propre vérification.
 export LD_LIBRARY_PATH="${{CONDA_PREFIX:-}}/lib:${{LD_LIBRARY_PATH:-}}"
-export HF_HOME="${{HF_HOME:-$RUN_DIR/.hf}}"
-{gpu_guard}
+export HF_HOME="${{HF_HOME:-$HOME/.cache/huggingface}}"
+export HF_HUB_DISABLE_TELEMETRY=1
+{gpu_guard}{checkpoint_guard}
 python -m pactiva_lab run \\
   --config config.json --data dataset --out results \\
   --progress results/progress.json --cancel-file results/CANCEL
@@ -165,7 +186,8 @@ class Grid5000Backend(ExecutionBackend):
         out_dir = Path(out_dir)
         write_config(out_dir, run.config)
         script = build_run_script(
-            run_id=str(run.id), require_gpu=require_gpu, env_name=env_name, workdir=workdir
+            run_id=str(run.id), require_gpu=require_gpu, env_name=env_name,
+            workdir=workdir, checkpoint=(run.config.get("model") or {}).get("checkpoint"),
         )
         (out_dir / "run.sh").write_text(script, encoding="utf-8")
 
