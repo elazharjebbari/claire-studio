@@ -36,6 +36,11 @@ DEFAULT_RESOLUTION_CONFIG: dict = {
         "manual_levels": ["C3", "C4", "C5"],
     },
     "arbiters": [],  # usernames AUTORISÉS à arbitrer (vide = politique par défaut)
+    # Participants ATTENDUS de la résolution (vide = déduction par assignation). Déclarer
+    # cette liste est la porte de sortie quand la campagne dévie : un annotateur assigné
+    # qui n'a jamais participé gèlerait sinon le document indéfiniment (cf. dossier
+    # docs/pactiva/dossier-gold-execution/01 §1). Le garde-fou de complétude reste actif.
+    "expected_annotators": [],
     "auto_share": True,
     "secondary_policy": "advisory",
     "statuses": ["submitted", "in_review", "approved"],
@@ -124,6 +129,17 @@ def config_arbiters(project) -> set:
     return {str(u) for u in raw} if isinstance(raw, (list, tuple)) else set()
 
 
+def config_expected_annotators(project) -> set:
+    """Participants ATTENDUS déclarés (vide = déduction par assignation).
+
+    Quand la liste est non vide, elle FAIT FOI quel que soit le rôle : c'est ainsi qu'un
+    lead qui a réellement annoté est compté, et qu'un assigné qui n'a jamais participé
+    cesse de bloquer la résolution. La complétude reste exigée sur cette liste."""
+    res = resolution_settings(project)
+    raw = _get(res, "expected_annotators", "expectedAnnotators", default=[])
+    return {str(u) for u in raw} if isinstance(raw, (list, tuple)) else set()
+
+
 # ── Studio de config (V7) : lecture complète, validation, sauvegarde tracée ──
 def _member_usernames(project) -> set:
     return set(
@@ -142,7 +158,10 @@ def resolution_config_full(project) -> dict:
         **cfg["auto_resolve"],
         **(stored.get("auto_resolve") if isinstance(stored.get("auto_resolve"), dict) else {}),
     }
-    for key in ("annotator_weights", "signal_bonus", "arbiters", "auto_share", "secondary_policy", "statuses"):
+    for key in (
+        "annotator_weights", "signal_bonus", "arbiters", "expected_annotators",
+        "auto_share", "secondary_policy", "statuses",
+    ):
         if key in stored:
             cfg[key] = stored[key]
     if "config_changes" in stored:
@@ -221,12 +240,15 @@ def validate_resolution_config(raw: dict, project) -> dict:
         if st:
             cfg["statuses"] = list(st)
 
-    # Arbitres : doivent être des MEMBRES du projet (l'autocomplétion ne propose qu'eux).
-    arbiters = raw.get("arbiters")
-    if isinstance(arbiters, (list, tuple)):
+    # Arbitres et participants : doivent être des MEMBRES du projet (l'autocomplétion ne
+    # propose qu'eux). Même règle pour les deux listes — une seule implémentation.
+    for key in ("arbiters", "expected_annotators"):
+        values = raw.get(key)
+        if not isinstance(values, (list, tuple)):
+            continue
         cleaned = []
         seen = set()
-        for u in arbiters:
+        for u in values:
             u = str(u)
             if u in seen:
                 continue
@@ -234,7 +256,7 @@ def validate_resolution_config(raw: dict, project) -> dict:
                 raise ValueError(f"« {u} » n'est pas membre du projet.")
             seen.add(u)
             cleaned.append(u)
-        cfg["arbiters"] = cleaned
+        cfg[key] = cleaned
 
     return cfg
 

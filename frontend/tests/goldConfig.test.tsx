@@ -59,6 +59,34 @@ describe("GoldConfigStudio", () => {
     expect(screen.queryByTestId("config-llm-weight")).not.toBeInTheDocument();
   });
 
+  it("⭐ déclare les PARTICIPANTS ATTENDUS et les enregistre (déblocage de campagne)", async () => {
+    const saved: Array<Record<string, unknown>> = [];
+    server.use(
+      http.patch(`${BASE}/projects/:slug/gold/config`, async ({ request }) => {
+        const body = (await request.json()) as Record<string, unknown>;
+        saved.push(body);
+        return HttpResponse.json({ ...body, v: 1 });
+      }),
+    );
+    render(<GoldConfigStudio slug="claudette-gold-v1" />, { wrapper: wrapper() });
+    await waitFor(() => expect(screen.getByTestId("gold-config")).toBeInTheDocument());
+
+    // Deux sélecteurs distincts coexistent : arbitres ET participants attendus.
+    expect(screen.getByTestId("arbiter-picker")).toBeInTheDocument();
+    expect(screen.getByTestId("participant-picker")).toBeInTheDocument();
+
+    fireEvent.focus(screen.getByTestId("participant-input"));
+    fireEvent.change(screen.getByTestId("participant-input"), { target: { value: "bruno" } });
+    fireEvent.mouseDown(await screen.findByTestId("participant-option-bruno"));
+    expect(screen.getByTestId("participant-chip-bruno")).toBeInTheDocument();
+
+    const save = screen.getByTestId("gold-config-save");
+    await waitFor(() => expect(save).not.toBeDisabled());
+    fireEvent.click(save);
+    await waitFor(() => expect(saved.length).toBe(1));
+    expect(saved[0]?.expectedAnnotators).toEqual(["bruno"]);
+  });
+
   it("permet d'ajouter/retirer les comptes annotateurs issus des LLM", async () => {
     const calls: Array<Record<string, unknown>> = [];
     server.use(

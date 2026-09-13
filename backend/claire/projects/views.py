@@ -697,7 +697,7 @@ class ProjectViewSet(viewsets.ModelViewSet):
         from claire.annotations.models import Annotation
         from claire.gold.config import annotation_statuses
         from claire.gold.models import GoldSentence
-        from claire.gold.services import compute_status, lock_state
+        from claire.gold.services import compute_status, lock_state, readiness_by_document
 
         project = self.get_object()
         documents = list(project.corpus.documents.all().order_by("external_id"))
@@ -719,31 +719,17 @@ class ProjectViewSet(viewsets.ModelViewSet):
                 high_risk=Count("id", filter=Q(risk_band="high")),
             )
         }
-        # Complétude des annotations (batch) : annotateurs attendus vs soumis, par document.
-        member_ids = set(
-            project.memberships.filter(role=MembershipRole.ANNOTATOR).values_list("user_id", flat=True)
-        )
-        assigned_by_doc: dict = {}
-        for a in project.assignments.filter(assignee_id__in=member_ids).values("document_id", "assignee_id"):
-            assigned_by_doc.setdefault(a["document_id"], set()).add(a["assignee_id"])
-        gold_grade = annotation_statuses(project)
-        # Annotateurs ayant RÉELLEMENT une annotation (repli sans assignation) + soumis.
-        annotated_by_doc: dict = {}
-        submitted_by_doc: dict = {}
-        for an in Annotation.objects.filter(project=project, annotator_id__in=member_ids).values(
-            "document_id", "annotator_id", "status"
-        ):
-            annotated_by_doc.setdefault(an["document_id"], set()).add(an["annotator_id"])
-            if an["status"] in gold_grade:
-                submitted_by_doc.setdefault(an["document_id"], set()).add(an["annotator_id"])
+        # Complétude des annotations (batch) : MÊME règle que l'atelier — une seule
+        # implémentation partagée (`readiness_by_document`), pour que cockpit et atelier
+        # ne puissent pas diverger (comme `compute_status` l'a fait pour le statut).
+        readiness_by_doc = readiness_by_document(project, documents)
 
         rows = []
         for doc in documents:
             r = res_by_doc.get(doc.id)
             lock = lock_state(r) if r else {"locked": False, "locked_by": None}
-            expected = assigned_by_doc.get(doc.id) or annotated_by_doc.get(doc.id, set())
-            submitted = (submitted_by_doc.get(doc.id, set()) & expected)
-            ready = bool(expected) and len(submitted) >= len(expected)
+            readiness = readiness_by_doc[doc.id]
+            ready = readiness["ready"]
             decided = (counts.get(r.id, {}).get("decided", 0) if r else 0)
             # MÊME échelle pure que l'atelier (services.compute_status) : « finalisé »
             # prioritaire — un gold figé qui perd ensuite sa complétude reste « résolu »
@@ -762,12 +748,7 @@ class ProjectViewSet(viewsets.ModelViewSet):
                 },
                 "status": status_eff,
                 "pct_resolved": r.pct_resolved if r else 0.0,
-                "readiness": {
-                    "expected": len(expected),
-                    "submitted": len(submitted),
-                    "missing": len(expected) - len(submitted),
-                    "ready": ready,
-                },
+                "readiness": readiness,
                 "finalized": bool(r and r.finalized_at is not None),
                 "locked": lock["locked"],          # tient compte de l'expiration du bail
                 "locked_by": lock["locked_by"],

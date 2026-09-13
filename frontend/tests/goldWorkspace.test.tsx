@@ -87,7 +87,12 @@ describe("GoldWorkspace", () => {
           document: { id: 1, externalId: "Atlas", title: "Atlas", nSentences: 1 },
           status: "awaiting",
           pctResolved: 0,
-          readiness: { expected: 3, submitted: 1, missing: 2, ready: false },
+          readiness: {
+            expected: 3, submitted: 1, missing: 2, ready: false,
+            expectedUsernames: ["a1", "a2", "jc.lamirel"],
+            missingUsernames: ["a2", "jc.lamirel"],
+            source: "assignment",
+          },
           finalized: false,
           canFinalize: false,
           lock: { locked: false, lockedBy: null, heldByMe: false, expiresAt: null, leaseSeconds: 90 },
@@ -109,6 +114,31 @@ describe("GoldWorkspace", () => {
     // Pas de prise de verrou ni d'auto-résolution tant que ce n'est pas prêt.
     expect(screen.queryByTestId("gold-lock-acquire")).not.toBeInTheDocument();
     expect(screen.queryByTestId("gold-auto-resolve")).not.toBeInTheDocument();
+  });
+
+  it("⭐ NOMME les participants manquants (un compteur seul rend le blocage indiagnosticable)", async () => {
+    server.use(
+      http.get(`${BASE}/projects/:slug/gold/:externalId`, () =>
+        HttpResponse.json({
+          document: { id: 1, externalId: "Atlas", title: "Atlas", nSentences: 1 },
+          status: "awaiting",
+          pctResolved: 0,
+          readiness: {
+            expected: 3, submitted: 2, missing: 1, ready: false,
+            expectedUsernames: ["zahra.boulaich", "fatima.ouali", "jc.lamirel"],
+            missingUsernames: ["jc.lamirel"],
+            source: "assignment",
+          },
+          finalized: false,
+          canFinalize: false,
+          lock: { locked: false, lockedBy: null, heldByMe: false, expiresAt: null, leaseSeconds: 90 },
+          sentences: [],
+        }),
+      ),
+    );
+    render(<GoldWorkspace slug="claudette-gold-v1" documentId="Atlas" />, { wrapper: wrapper() });
+    const missing = await screen.findByTestId("gold-awaiting-missing");
+    expect(missing).toHaveTextContent("jc.lamirel");
   });
 
   it("propose « Soumettre la résolution » quand tout est décidé", async () => {

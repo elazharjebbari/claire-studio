@@ -16,6 +16,9 @@ export interface ResolutionConfig {
     manualLevels?: string[];
   };
   arbiters: string[]; // usernames autorisés à arbitrer (allow-list nominative)
+  /** Participants ATTENDUS (vide = déduction par assignation). Garde-fou de complétude
+   *  conservé : ces usernames doivent tous avoir soumis pour que la résolution s'ouvre. */
+  expectedAnnotators: string[];
   autoShare: boolean;
   secondaryPolicy: "optional" | "required" | "advisory";
   statuses: string[];
@@ -29,6 +32,11 @@ export interface GoldReadiness {
   submitted: number;
   missing: number;
   ready: boolean;
+  /** Diagnostic NOMMÉ : sans les noms, un blocage de campagne est introuvable depuis l'UI. */
+  expectedUsernames?: string[];
+  missingUsernames?: string[];
+  /** D'où vient la liste des attendus : déclarée en config, ou déduite. */
+  source?: "config" | "assignment" | "annotation";
 }
 
 export interface GoldCounts {

@@ -67,7 +67,13 @@ def test_awaiting_blocks_resolution_until_all_submit(scheme_with_themes, auth):
 
     body = _detail(auth, lead, project, doc).json()
     assert body["status"] == "awaiting"
-    assert body["readiness"] == {"expected": 2, "submitted": 1, "missing": 1, "ready": False}
+    # Compteurs + diagnostic nommé (le payload porte aussi expectedUsernames/missingUsernames
+    # /source depuis le lot « participants » — on vérifie les deux, pas une égalité stricte).
+    readiness = body["readiness"]
+    assert (readiness["expected"], readiness["submitted"], readiness["missing"]) == (2, 1, 1)
+    assert readiness["ready"] is False
+    assert readiness["missingUsernames"] == ["life_a2"]
+    assert readiness["source"] == "assignment"
     assert body["sentences"][0]["decided"] is False  # aucune auto-résolution prématurée
 
     # Décision refusée tant que la résolution n'est pas possible.
@@ -230,7 +236,10 @@ def test_llm_annotators_end_to_end_resolution(scheme_with_themes, auth):
         auth(lead).post(base, {"judge": judge, "action": "add"}, format="json")
 
     body = _detail(auth, lead, project, doc).json()
-    assert body["readiness"] == {"expected": 3, "submitted": 3, "missing": 0, "ready": True}
+    readiness = body["readiness"]
+    assert (readiness["expected"], readiness["submitted"], readiness["missing"]) == (3, 3, 0)
+    assert readiness["ready"] is True
+    assert readiness["expectedUsernames"] == ["claude", "codex", "mistral"]
     s0 = body["sentences"][0]
     assert len(s0["annotators"]) == 3
     assert s0["agreementClass"] == "majority"

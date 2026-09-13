@@ -130,6 +130,23 @@ export function GoldConfigStudio({ slug, embedded = false }: { slug: string; emb
           />
         </Section>
 
+        {/* PARTICIPANTS ATTENDUS — la porte de sortie quand la campagne dévie (un lead a
+            annoté, un assigné n'a jamais participé). Le garde-fou de complétude reste actif. */}
+        <Section
+          icon={<Users size={15} aria-hidden />}
+          title="Participants attendus"
+          desc="Qui doit avoir soumis pour qu'un document devienne arbitrable. Vide = déduit des assignations. Déclarez la liste réelle si un annotateur assigné ne participera pas, ou si un lead a annoté : la résolution reste bloquée tant que TOUS les participants déclarés n'ont pas soumis."
+        >
+          <ArbiterPicker
+            members={members?.results ?? []}
+            value={draft.expectedAnnotators ?? []}
+            onChange={(expectedAnnotators) => patch({ expectedAnnotators })}
+            disabled={locked}
+            testIdPrefix="participant"
+            placeholder="Ajouter un participant attendu…"
+          />
+        </Section>
+
         {/* Comptes annotateurs dérivés des LLM (ajout/retrait) */}
         <LlmAnnotatorsSection slug={slug} locked={locked} />
 

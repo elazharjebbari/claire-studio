@@ -26,6 +26,7 @@ from .config import (
     annotation_statuses,
     auto_resolve_flags,
     build_engine_config,
+    config_expected_annotators,
     secondary_policy,
 )
 from .models import (
@@ -42,12 +43,29 @@ LOCK_LEASE_SECONDS = 90  # bail du verrou d'arbitrage ; heartbeat conseillé tou
 
 # ── Complétude des annotations : la résolution n'est possible que lorsque TOUS les
 #    annotateurs attendus ont soumis (« on ne résout qu'une fois tout le monde fini ») ──
-def document_annotators(project, document) -> set:
-    """Annotateurs ATTENDUS pour ce document = membres de rôle ANNOTATEUR ASSIGNÉS
-    (Assignment) ; à défaut d'assignation, ceux qui ont RÉELLEMENT une annotation sur ce
-    document (et non tous les membres — sinon promouvoir un juge sur un autre document
-    bloquerait celui-ci). Les leads ARBITRENT (pas attendus comme annotateurs)."""
+def expected_annotator_ids(project, document) -> tuple[set, str]:
+    """Participants ATTENDUS (ids) + la SOURCE de cette liste, dans cet ordre de priorité :
+
+    1. ``config`` — liste nominative déclarée (`resolution.expected_annotators`). Elle fait
+       foi quel que soit le rôle : c'est la porte de sortie quand la campagne dévie (un
+       lead a annoté ; un assigné n'a jamais participé et gèlerait le document à vie).
+    2. ``assignment`` — membres de rôle ANNOTATEUR assignés (comportement historique).
+    3. ``annotation`` — à défaut d'assignation, ceux qui ont RÉELLEMENT une annotation
+       (et non tous les membres — sinon promouvoir un juge ailleurs bloquerait ici).
+
+    Les leads ARBITRENT : ils ne sont pas attendus comme annotateurs, SAUF déclaration
+    explicite en config (cas réel de la campagne Pactiva)."""
     from claire.projects.models import Assignment
+
+    declared = config_expected_annotators(project)
+    if declared:
+        ids = set(
+            project.memberships.filter(user__username__in=declared).values_list(
+                "user_id", flat=True
+            )
+        )
+        if ids:
+            return ids, "config"
 
     member_ids = set(
         project.memberships.filter(role=MembershipRole.ANNOTATOR).values_list("user_id", flat=True)
@@ -58,31 +76,104 @@ def document_annotators(project, document) -> set:
         ).values_list("assignee_id", flat=True)
     )
     if assigned:
-        return assigned
+        return assigned, "assignment"
     return set(
         Annotation.objects.filter(
             project=project, document=document, annotator_id__in=member_ids
         ).values_list("annotator_id", flat=True)
+    ), "annotation"
+
+
+def document_annotators(project, document) -> set:
+    """Ids des participants attendus (compat : la source est donnée par
+    `expected_annotator_ids`)."""
+    return expected_annotator_ids(project, document)[0]
+
+
+def _usernames(user_ids) -> list:
+    from django.contrib.auth import get_user_model
+
+    if not user_ids:
+        return []
+    return sorted(
+        get_user_model().objects.filter(id__in=user_ids).values_list("username", flat=True)
     )
+
+
+def readiness_payload(expected_ids: set, submitted_ids: set, source: str) -> dict:
+    """Forme PURE du diagnostic de complétude — source unique cockpit ET atelier.
+
+    Expose les NOMS, pas seulement des compteurs : sans eux, un blocage de campagne est
+    indiagnosticable depuis l'interface (leçon du 13 septembre 2026)."""
+    missing_ids = set(expected_ids) - set(submitted_ids)
+    return {
+        "expected": len(expected_ids),
+        "submitted": len(submitted_ids),
+        "missing": len(missing_ids),
+        "ready": len(expected_ids) > 0 and len(missing_ids) == 0,
+        "expected_usernames": _usernames(expected_ids),
+        "missing_usernames": _usernames(missing_ids),
+        "source": source,
+    }
 
 
 def resolution_readiness(project, document) -> dict:
     """Combien d'annotateurs attendus ont soumis ; la résolution est-elle possible ?"""
     statuses = annotation_statuses(project)
-    expected = document_annotators(project, document)
+    expected, source = expected_annotator_ids(project, document)
     submitted = set(
         Annotation.objects.filter(
             project=project, document=document, annotator_id__in=expected, status__in=statuses
         ).values_list("annotator_id", flat=True)
     )
-    expected_n = len(expected)
-    submitted_n = len(submitted)
-    return {
-        "expected": expected_n,
-        "submitted": submitted_n,
-        "missing": expected_n - submitted_n,
-        "ready": expected_n > 0 and submitted_n >= expected_n,
-    }
+    return readiness_payload(expected, submitted, source)
+
+
+def readiness_by_document(project, documents) -> dict:
+    """Complétude pour PLUSIEURS documents (cockpit) — MÊME règle que `resolution_readiness`.
+
+    Batch : une requête d'assignations + une d'annotations pour tout le lot (pas de N+1).
+    L'existence de ce helper est ce qui interdit au cockpit et à l'atelier de diverger."""
+    from claire.projects.models import Assignment
+
+    statuses = annotation_statuses(project)
+    doc_ids = [d.id for d in documents]
+
+    declared = config_expected_annotators(project)
+    declared_ids = set(
+        project.memberships.filter(user__username__in=declared).values_list("user_id", flat=True)
+    ) if declared else set()
+
+    member_ids = set(
+        project.memberships.filter(role=MembershipRole.ANNOTATOR).values_list("user_id", flat=True)
+    )
+    assigned_by_doc: dict = {}
+    for row in Assignment.objects.filter(
+        project=project, document_id__in=doc_ids, assignee_id__in=member_ids
+    ).values("document_id", "assignee_id"):
+        assigned_by_doc.setdefault(row["document_id"], set()).add(row["assignee_id"])
+
+    annotated_by_doc: dict = {}
+    submitted_by_doc: dict = {}
+    for row in Annotation.objects.filter(
+        project=project, document_id__in=doc_ids
+    ).values("document_id", "annotator_id", "status"):
+        if row["annotator_id"] in member_ids:
+            annotated_by_doc.setdefault(row["document_id"], set()).add(row["annotator_id"])
+        if row["status"] in statuses:
+            submitted_by_doc.setdefault(row["document_id"], set()).add(row["annotator_id"])
+
+    out = {}
+    for document in documents:
+        if declared_ids:
+            expected, source = declared_ids, "config"
+        elif assigned_by_doc.get(document.id):
+            expected, source = assigned_by_doc[document.id], "assignment"
+        else:
+            expected, source = annotated_by_doc.get(document.id, set()), "annotation"
+        submitted = submitted_by_doc.get(document.id, set()) & expected
+        out[document.id] = readiness_payload(expected, submitted, source)
+    return out
 
 
 def compute_status(*, finalized: bool, ready: bool, decided: int) -> str:

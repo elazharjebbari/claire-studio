@@ -54,6 +54,7 @@ export function GoldWorkspace({ slug, documentId }: { slug: string; documentId: 
   const lock = useArbitrationLock(slug, documentId, { initial: detail?.lock, enabled: ready });
 
   const sentences = useMemo(() => detail?.sentences ?? [], [detail]);
+  const missingNames = detail?.readiness?.missingUsernames ?? [];
   const selected = useMemo(
     () => sentences.find((s) => s.index === selectedIndex) ?? null,
     [sentences, selectedIndex],
@@ -179,12 +180,29 @@ export function GoldWorkspace({ slug, documentId }: { slug: string; documentId: 
       {!ready && (
         <div
           data-testid="gold-awaiting-banner"
-          className="flex items-center gap-2 border-b border-line bg-warning/10 px-4 py-2 text-[13px] text-warning"
+          className="flex flex-wrap items-center gap-2 border-b border-line bg-warning/10 px-4 py-2 text-[13px] text-warning"
         >
           <Clock size={14} aria-hidden />
           <Users size={14} aria-hidden />
-          Résolution indisponible : {detail.readiness.submitted}/{detail.readiness.expected} annotateurs
-          ont soumis. La résolution des conflits ne sera possible qu'une fois toutes les annotations validées.
+          <span>
+            Résolution indisponible : {detail.readiness.submitted}/{detail.readiness.expected} annotateurs
+            ont soumis.
+            {/* NOMMER les manquants : un compteur seul rend le blocage indiagnosticable. */}
+            {missingNames.length > 0 && (
+              <>
+                {" "}En attente de <strong data-testid="gold-awaiting-missing">{missingNames.join(", ")}</strong>.
+              </>
+            )}
+          </span>
+          {isManager && (
+            <Link
+              href={`/projects/${slug}/gold/config`}
+              data-testid="gold-awaiting-config-link"
+              className="ml-auto rounded border border-warning/40 px-2 py-0.5 text-[12px] underline-offset-2 hover:underline"
+            >
+              Ajuster les participants attendus
+            </Link>
+          )}
         </div>
       )}
       {detail.finalized && (

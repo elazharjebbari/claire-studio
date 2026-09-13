@@ -32,9 +32,22 @@ export interface ArbiterPickerProps {
   value: string[]; // usernames
   onChange: (next: string[]) => void;
   disabled?: boolean;
+  /** Préfixe des `data-testid` — permet DEUX sélecteurs sur un même écran (arbitres ET
+   *  participants attendus) sans collision. Défaut : comportement historique. */
+  testIdPrefix?: string;
+  /** Libellé du champ (le composant sert désormais deux rôles distincts). */
+  placeholder?: string;
 }
 
-export function ArbiterPicker({ members, value, onChange, disabled }: ArbiterPickerProps) {
+export function ArbiterPicker({
+  members,
+  value,
+  onChange,
+  disabled,
+  testIdPrefix = "arbiter",
+  placeholder,
+}: ArbiterPickerProps) {
+  const tid = (suffix: string) => `${testIdPrefix}-${suffix}`;
   const [query, setQuery] = useState("");
   const [open, setOpen] = useState(false);
   const [active, setActive] = useState(0);
@@ -84,9 +97,9 @@ export function ArbiterPicker({ members, value, onChange, disabled }: ArbiterPic
   }
 
   return (
-    <div className="flex flex-col gap-2" data-testid="arbiter-picker">
+    <div className="flex flex-col gap-2" data-testid={tid("picker")}>
       {/* Chips sélectionnés */}
-      <ul className="flex flex-wrap gap-1.5" data-testid="arbiter-chips">
+      <ul className="flex flex-wrap gap-1.5" data-testid={tid("chips")}>
         {value.length === 0 && (
           <li className="text-[12px] text-ink-muted">
             Aucun arbitre nommé — politique par défaut (leads, reviewers).
@@ -97,7 +110,7 @@ export function ArbiterPicker({ members, value, onChange, disabled }: ArbiterPic
           return (
             <li
               key={u}
-              data-testid={`arbiter-chip-${u}`}
+              data-testid={tid(`chip-${u}`)}
               className="inline-flex items-center gap-1.5 rounded-full border border-line bg-panel-muted py-0.5 pl-1 pr-1.5 text-[12px]"
             >
               <Avatar name={m?.displayName ?? u} />
@@ -106,7 +119,7 @@ export function ArbiterPicker({ members, value, onChange, disabled }: ArbiterPic
                 <button
                   type="button"
                   aria-label={`Retirer ${m?.displayName ?? u}`}
-                  data-testid={`arbiter-remove-${u}`}
+                  data-testid={tid(`remove-${u}`)}
                   onClick={() => remove(u)}
                   className="rounded-full p-0.5 text-ink-muted hover:bg-danger/15 hover:text-danger"
                 >
@@ -130,8 +143,8 @@ export function ArbiterPicker({ members, value, onChange, disabled }: ArbiterPic
               aria-expanded={open && candidates.length > 0}
               aria-controls="arbiter-listbox"
               aria-autocomplete="list"
-              data-testid="arbiter-input"
-              placeholder="Ajouter un arbitre (nom ou identifiant)…"
+              data-testid={tid("input")}
+              placeholder={placeholder ?? "Ajouter un arbitre (nom ou identifiant)…"}
               value={query}
               onChange={(e) => {
                 setQuery(e.target.value);
@@ -149,7 +162,7 @@ export function ArbiterPicker({ members, value, onChange, disabled }: ArbiterPic
             <ul
               id="arbiter-listbox"
               role="listbox"
-              data-testid="arbiter-options"
+              data-testid={tid("options")}
               className="absolute z-20 mt-1 max-h-60 w-full overflow-auto rounded-md border border-line bg-panel py-1 shadow-lg"
             >
               {candidates.map((m, i) => {
@@ -157,7 +170,7 @@ export function ArbiterPicker({ members, value, onChange, disabled }: ArbiterPic
                   <li key={m.username} role="option" aria-selected={i === active}>
                     <button
                       type="button"
-                      data-testid={`arbiter-option-${m.username}`}
+                      data-testid={tid(`option-${m.username}`)}
                       onMouseDown={(e) => {
                         e.preventDefault();
                         add(m.username);
@@ -181,7 +194,7 @@ export function ArbiterPicker({ members, value, onChange, disabled }: ArbiterPic
           )}
           {open && query.trim() !== "" && candidates.length === 0 && (
             <div
-              data-testid="arbiter-no-match"
+              data-testid={tid("no-match")}
               className="absolute z-20 mt-1 w-full rounded-md border border-line bg-panel px-3 py-2 text-[12px] text-ink-muted shadow-lg"
             >
               <UserPlus size={12} className="mr-1 inline" aria-hidden /> Aucun membre ne correspond.
