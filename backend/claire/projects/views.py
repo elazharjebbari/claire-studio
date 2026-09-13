@@ -827,9 +827,16 @@ class ProjectViewSet(viewsets.ModelViewSet):
             validate_resolution_config,
         )
 
+        from claire.gold.services import secondary_impact
+
         project = self.get_object()
         if request.method == "GET":
-            return Response(resolution_config_full(project))
+            # `secondaryImpact` : ce que la politique change concrètement (nombre de phrases
+            # portant des secondaires consensuels, documents déjà figés). Sans ce chiffre, le
+            # réglage est un menu opaque et la décision de protocole est prise à l'aveugle.
+            return Response(
+                {**resolution_config_full(project), "secondary_impact": secondary_impact(project)}
+            )
 
         # PATCH — réservé admin/lead, refusé si projet gelé.
         is_lead = project.memberships.filter(
@@ -848,7 +855,33 @@ class ProjectViewSet(viewsets.ModelViewSet):
             cfg = validate_resolution_config(request.data, project)
         except ValueError as exc:
             return Response({"detail": str(exc)}, status=status.HTTP_400_BAD_REQUEST)
-        return Response(save_resolution_config(project, cfg, actor=request.user))
+        saved = save_resolution_config(project, cfg, actor=request.user)
+        # Même forme que le GET : le studio garde sa mesure d'impact après enregistrement
+        # (sinon l'encart disparaît le temps d'un rechargement).
+        return Response({**saved, "secondary_impact": secondary_impact(project)})
+
+    # NB : nom de méthode `gold_apply_recompute` — il doit trier AVANT `gold_detail` pour
+    # que le chemin littéral `gold/recompute` matche avant la regex `gold/<document_id>`
+    # (même piège que `gold/documents`, `gold/stats` et `gold/llm-annotators`).
+    @action(detail=True, methods=["post"], url_path="gold/recompute")
+    def gold_apply_recompute(self, request, slug=None):
+        """Ré-applique la configuration à TOUS les documents non figés.
+
+        Sans cette action, changer la politique au studio ne produit aucun effet visible :
+        les phrases déjà matérialisées gardent leur état jusqu'au prochain recalcul de leur
+        document. Ignore les documents figés, incomplets, ou verrouillés par un autre arbitre."""
+        from claire.common.exceptions import Locked
+        from claire.gold.services import is_arbiter, recompute_project
+
+        project = self.get_object()
+        if not is_arbiter(request.user, project):
+            return Response(
+                {"detail": "Réservé aux arbitres (lead, reviewer ou administrateur)."},
+                status=status.HTTP_403_FORBIDDEN,
+            )
+        if project.locked:
+            raise Locked("Projet verrouillé par un administrateur : arbitrage gelé.")
+        return Response(recompute_project(project, request.user))
 
     # ── helper commun : (project, document, resolution|None) SANS création ──
     def _gold_ctx(self, document_id):

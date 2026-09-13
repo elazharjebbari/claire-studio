@@ -14,6 +14,7 @@ import type {
   GoldStats,
   GoldLlmAnnotator,
   ResolutionConfig,
+  GoldRecomputeSummary,
 } from "@/lib/gold/types";
 import type {
   Annotation,
@@ -741,6 +742,14 @@ export function patchGoldConfig(
   return apiFetch<ResolutionConfig>(`/projects/${slug}/gold/config`, {
     method: "PATCH",
     body: config,
+  });
+}
+
+/** Ré-applique la configuration à tous les documents non figés (studio de config). */
+export function recomputeGoldProject(slug: string): Promise<GoldRecomputeSummary> {
+  return apiFetch<GoldRecomputeSummary>(`/projects/${slug}/gold/recompute`, {
+    method: "POST",
+    body: {},
   });
 }
 

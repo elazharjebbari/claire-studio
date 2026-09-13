@@ -87,6 +87,65 @@ describe("GoldConfigStudio", () => {
     expect(saved[0]?.expectedAnnotators).toEqual(["bruno"]);
   });
 
+  it("⭐ rend la POLITIQUE DES SECONDAIRES décidable : effet expliqué + impact mesuré", async () => {
+    server.use(
+      http.get(`${BASE}/projects/:slug/gold/config`, () =>
+        HttpResponse.json({
+          v: 1,
+          llm: { role: "tiebreak", weight: 0.5, perJudge: {} },
+          annotatorWeights: {},
+          signalBonus: 0.2,
+          autoResolve: { absoluteAgreement: true, majority: true },
+          arbiters: [],
+          expectedAnnotators: [],
+          autoShare: true,
+          secondaryPolicy: "advisory",
+          statuses: ["submitted"],
+          secondaryImpact: {
+            policy: "advisory",
+            sentencesWithProposed: 444,
+            sentencesCarrying: 0,
+            proposedLabels: 453,
+            documentsTotal: 50,
+            documentsFinalized: 0,
+          },
+        }),
+      ),
+    );
+    render(<GoldConfigStudio slug="claudette-gold-v1" />, { wrapper: wrapper() });
+    await waitFor(() => expect(screen.getByTestId("gold-config")).toBeInTheDocument());
+
+    // L'effet de l'option courante est écrit en toutes lettres (plus de menu opaque).
+    expect(screen.getByTestId("config-secondary-effect").textContent).toMatch(
+      /n'entrent JAMAIS dans le gold auto-résolu/,
+    );
+    // …et l'ampleur est chiffrée : 444 phrases, 453 étiquettes.
+    const impact = screen.getByTestId("config-secondary-impact");
+    expect(impact.textContent).toMatch(/444/);
+    expect(impact.textContent).toMatch(/453/);
+  });
+
+  it("⭐ applique la configuration aux documents non figés (sinon le réglage reste sans effet)", async () => {
+    let called = 0;
+    server.use(
+      http.post(`${BASE}/projects/:slug/gold/recompute`, () => {
+        called += 1;
+        return HttpResponse.json({
+          documents: 50, recomputed: 50, autoResolved: 8952, todo: 462,
+          skippedFinalized: 0, skippedNotReady: 0, skippedLocked: 0,
+        });
+      }),
+    );
+    render(<GoldConfigStudio slug="claudette-gold-v1" />, { wrapper: wrapper() });
+    await waitFor(() => expect(screen.getByTestId("gold-config")).toBeInTheDocument());
+
+    fireEvent.click(screen.getByTestId("gold-recompute-all"));
+    await waitFor(() => expect(called).toBe(1));
+    const result = await screen.findByTestId("gold-recompute-result");
+    expect(result.textContent).toMatch(/50 document\(s\) recalculé/);
+    expect(result.textContent).toMatch(/462 phrase\(s\) à trancher/);
+  });
+
   it("permet d'ajouter/retirer les comptes annotateurs issus des LLM", async () => {
     const calls: Array<Record<string, unknown>> = [];
     server.use(

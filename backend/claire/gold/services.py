@@ -411,6 +411,81 @@ def recompute_document(
     return {"n": n, "decided": decided_count, "auto_resolved": auto_count}
 
 
+def secondary_impact(project) -> dict:
+    """Ce que la politique des secondaires change CONCRÈTEMENT sur ce projet.
+
+    Rend le réglage décidable depuis l'interface au lieu d'être un menu opaque : combien de
+    phrases portent des secondaires consensuels (proposés par le moteur), combien d'entre
+    elles les ont réellement dans le gold, et combien de documents sont déjà FIGÉS — pour
+    lesquels un changement de politique n'aura plus aucun effet (un gold figé ne se
+    recalcule pas)."""
+    from django.db.models import Count, Q
+
+    sentences = GoldSentence.objects.filter(resolution__project=project)
+    with_proposed = sentences.exclude(proposed_secondaries=[]).count()
+    carrying = sentences.exclude(secondaries=[]).count()
+    labels = sum(
+        len(x) for x in sentences.exclude(proposed_secondaries=[])
+        .values_list("proposed_secondaries", flat=True)
+    )
+    resolutions = project.gold_resolutions.aggregate(
+        total=Count("id"), finalized=Count("id", filter=Q(finalized_at__isnull=False))
+    )
+    return {
+        "policy": secondary_policy(project),
+        "sentences_with_proposed": with_proposed,
+        "sentences_carrying": carrying,
+        "proposed_labels": labels,
+        "documents_total": resolutions["total"],
+        "documents_finalized": resolutions["finalized"],
+    }
+
+
+def recompute_project(project, actor=None) -> dict:
+    """Ré-applique la configuration à TOUS les documents non figés (maintenance).
+
+    Nécessaire après un changement de politique : la config seule ne réécrit rien, les
+    `GoldSentence` déjà matérialisées gardent leur état jusqu'au prochain recalcul du
+    document. Sans cette action, un réglage modifié au studio semble sans effet.
+
+    Prudence : un document FIGÉ est ignoré (garantie « gold figé »), un document dont les
+    annotations sont incomplètes aussi, et un document actuellement VERROUILLÉ par un AUTRE
+    arbitre n'est pas touché (on ne recalcule pas sous les doigts de quelqu'un)."""
+    now = timezone.now()
+    summary = {
+        "documents": 0, "recomputed": 0, "auto_resolved": 0, "todo": 0,
+        "skipped_finalized": 0, "skipped_not_ready": 0, "skipped_locked": 0,
+    }
+    resolutions = list(
+        project.gold_resolutions.select_related("document", "locked_by").all()
+    )
+    for resolution in resolutions:
+        summary["documents"] += 1
+        if resolution.finalized_at is not None:
+            summary["skipped_finalized"] += 1
+            continue
+        if _lock_active(resolution, now) and (
+            actor is None or resolution.locked_by_id != getattr(actor, "id", None)
+        ):
+            summary["skipped_locked"] += 1
+            continue
+        if not resolution_readiness(project, resolution.document)["ready"]:
+            summary["skipped_not_ready"] += 1
+            continue
+        result = recompute_document(resolution)
+        summary["recomputed"] += 1
+        summary["auto_resolved"] += result["auto_resolved"]
+        summary["todo"] += max(0, result["n"] - result["decided"])
+    if actor is not None and summary["recomputed"]:
+        ArbitrationEvent.objects.create(
+            resolution=resolutions[0], index=None, actor=actor,
+            verb=ArbitrationVerb.AUTO,
+            payload={"scope": "project", **summary},
+            note="Application de la configuration à tous les documents non figés.",
+        )
+    return summary
+
+
 def resolve_and_payload(project, document, user=None) -> dict:
     """Recompute + payload de l'atelier pour un document."""
     resolution = get_or_create_resolution(project, document)

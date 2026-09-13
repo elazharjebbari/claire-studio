@@ -8,12 +8,13 @@
 
 import { useEffect, useMemo, useState } from "react";
 import Link from "next/link";
-import { ChevronLeft, Gavel, Save, Lock, Users, Bot, Sparkles, UserPlus, UserMinus } from "lucide-react";
+import { ChevronLeft, Gavel, Save, Lock, Users, Bot, Sparkles, UserPlus, UserMinus, RefreshCw } from "lucide-react";
 import {
   useGoldConfig,
   useMembers,
   useProject,
   useSaveGoldConfig,
+  useRecomputeGoldProject,
   useGoldLlmAnnotators,
   useMutateGoldLlmAnnotator,
 } from "@/lib/api/hooks";
@@ -22,10 +23,29 @@ import { Button, Panel } from "@/components/ui/primitives";
 import { ArbiterPicker } from "./ArbiterPicker";
 import type { ResolutionConfig } from "@/lib/gold/types";
 
-const SECONDARY_POLICIES: { value: ResolutionConfig["secondaryPolicy"]; label: string }[] = [
-  { value: "advisory", label: "Indicatif" },
-  { value: "optional", label: "Optionnel" },
-  { value: "required", label: "Requis" },
+const SECONDARY_POLICIES: {
+  value: ResolutionConfig["secondaryPolicy"];
+  label: string;
+  effect: string;
+}[] = [
+  {
+    value: "advisory",
+    label: "Indicatif — gold mono-étiquette",
+    effect:
+      "Les secondaires sont affichés à l'arbitre mais n'entrent JAMAIS dans le gold auto-résolu, même quand tous les annotateurs portent le même. Seules les phrases arbitrées à la main peuvent en garder.",
+  },
+  {
+    value: "optional",
+    label: "Optionnel — gold mono-étiquette",
+    effect:
+      "Identique à « indicatif » pour l'auto-résolution : aucune promotion d'office.",
+  },
+  {
+    value: "required",
+    label: "Requis — gold multi-étiquettes",
+    effect:
+      "Les secondaires consensuels (portés par au moins deux annotateurs) entrent dans le gold auto-résolu. C'est le réglage cohérent avec une ressource multi-étiquettes.",
+  },
 ];
 
 function Toggle({
@@ -77,6 +97,7 @@ export function GoldConfigStudio({ slug, embedded = false }: { slug: string; emb
   const { data: members } = useMembers(slug);
   const { data: project } = useProject(slug);
   const save = useSaveGoldConfig(slug);
+  const recompute = useRecomputeGoldProject(slug);
 
   const [draft, setDraft] = useState<ResolutionConfig | null>(null);
   useEffect(() => {
@@ -84,6 +105,9 @@ export function GoldConfigStudio({ slug, embedded = false }: { slug: string; emb
   }, [config]);
 
   const locked = !!project?.locked;
+  // Mesure d'impact : lue du serveur, JAMAIS du brouillon (elle décrit l'état actuel du
+  // gold, pas ce que le brouillon produirait).
+  const impact = config?.secondaryImpact;
   const dirty = useMemo(
     () => !!draft && !!config && JSON.stringify(draft) !== JSON.stringify(config),
     [draft, config],
@@ -195,19 +219,85 @@ export function GoldConfigStudio({ slug, embedded = false }: { slug: string; emb
             />
           </div>
           <label className="mt-2 flex flex-col gap-1 text-sm">
-            <span className="text-xs font-medium uppercase tracking-wide text-ink-muted">Politique des secondaires</span>
+            <span className="text-xs font-medium uppercase tracking-wide text-ink-muted">
+              Politique des secondaires
+            </span>
             <select
               data-testid="config-secondary"
               disabled={locked}
               value={draft.secondaryPolicy}
-              onChange={(e) => patch({ secondaryPolicy: e.target.value as ResolutionConfig["secondaryPolicy"] })}
-              className="w-48 rounded-md border border-line bg-panel px-2 py-1.5 text-sm text-ink"
+              onChange={(e) =>
+                patch({ secondaryPolicy: e.target.value as ResolutionConfig["secondaryPolicy"] })
+              }
+              className="w-full max-w-md rounded-md border border-line bg-panel px-2 py-1.5 text-sm text-ink"
             >
               {SECONDARY_POLICIES.map((p) => (
-                <option key={p.value} value={p.value}>{p.label}</option>
+                <option key={p.value} value={p.value}>
+                  {p.label}
+                </option>
               ))}
             </select>
+            <span className="text-[12px] text-ink-muted" data-testid="config-secondary-effect">
+              {SECONDARY_POLICIES.find((p) => p.value === draft.secondaryPolicy)?.effect}
+            </span>
           </label>
+
+          {/* IMPACT MESURÉ : sans ce chiffre, le réglage est un menu opaque et la décision
+              de protocole se prend à l'aveugle. */}
+          {impact && (
+            <div
+              data-testid="config-secondary-impact"
+              className="mt-2 rounded-md border border-line bg-panel-muted/40 px-3 py-2 text-[12px] text-ink-muted"
+            >
+              <p>
+                Sur ce projet, <strong className="text-ink">{impact.sentencesWithProposed}</strong>{" "}
+                phrase(s) portent des secondaires consensuels (
+                <strong className="text-ink">{impact.proposedLabels}</strong> étiquette(s)) ;{" "}
+                <strong className="text-ink">{impact.sentencesCarrying}</strong> les ont
+                réellement dans le gold.
+              </p>
+              {impact.documentsFinalized > 0 && (
+                <p className="mt-1 text-warning">
+                  {impact.documentsFinalized} document(s) sont déjà figés : un changement de
+                  politique n'aura plus aucun effet sur eux.
+                </p>
+              )}
+            </div>
+          )}
+
+          {/* APPLICATION : changer la politique ne réécrit rien tant que les documents déjà
+              matérialisés ne sont pas recalculés. Sans ce bouton, le réglage semble sans effet. */}
+          <div className="mt-2 flex flex-wrap items-center gap-2">
+            <Button
+              variant="outline"
+              data-testid="gold-recompute-all"
+              disabled={locked || dirty || recompute.isPending}
+              loading={recompute.isPending}
+              onClick={() => recompute.mutate()}
+              title={
+                dirty
+                  ? "Enregistrez d'abord la configuration"
+                  : "Recalculer tous les documents non figés avec la configuration actuelle"
+              }
+            >
+              <RefreshCw size={14} aria-hidden /> Appliquer aux documents non figés
+            </Button>
+            {dirty && (
+              <span className="text-[12px] text-warning">
+                Enregistrez la configuration avant de l'appliquer.
+              </span>
+            )}
+            {recompute.isSuccess && !recompute.isPending && recompute.data && (
+              <span className="text-[12px] text-success" data-testid="gold-recompute-result">
+                {recompute.data.recomputed} document(s) recalculé(s) ·{" "}
+                {recompute.data.todo} phrase(s) à trancher
+                {recompute.data.skippedFinalized > 0 &&
+                  ` · ${recompute.data.skippedFinalized} figé(s) ignoré(s)`}
+                {recompute.data.skippedLocked > 0 &&
+                  ` · ${recompute.data.skippedLocked} en cours d'arbitrage ignoré(s)`}
+              </span>
+            )}
+          </div>
         </Section>
       </div>
 

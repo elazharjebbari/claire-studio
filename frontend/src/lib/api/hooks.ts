@@ -725,6 +725,23 @@ export function useSaveGoldConfig(slug: string) {
   });
 }
 
+/** Ré-applique la configuration à tous les documents non figés.
+ *
+ * Indispensable après un changement de politique : la config seule ne réécrit rien, les
+ * phrases déjà matérialisées gardent leur état jusqu'au prochain recalcul de leur document.
+ * Invalide tout le cache gold (cockpit, documents, stats) puisque l'état change en masse. */
+export function useRecomputeGoldProject(slug: string) {
+  const qc = useQueryClient();
+  return useMutation({
+    mutationFn: () => api.recomputeGoldProject(slug),
+    onSuccess: () => {
+      qc.invalidateQueries({ queryKey: qk.goldConfig(slug) });
+      qc.invalidateQueries({ queryKey: qk.goldDocuments(slug) });
+      qc.invalidateQueries({ queryKey: qk.goldStats(slug) });
+    },
+  });
+}
+
 /** Finalisation / réouverture de la résolution d'un document. */
 export function useFinalizeGold(slug: string, externalId: string) {
   const qc = useQueryClient();

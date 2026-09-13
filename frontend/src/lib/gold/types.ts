@@ -23,6 +23,30 @@ export interface ResolutionConfig {
   secondaryPolicy: "optional" | "required" | "advisory";
   statuses: string[];
   configChanges?: { at: string; by: string | null }[];
+  /** Ce que la politique des secondaires change CONCRÈTEMENT sur ce projet (lecture seule). */
+  secondaryImpact?: GoldSecondaryImpact;
+}
+
+export interface GoldSecondaryImpact {
+  policy: ResolutionConfig["secondaryPolicy"];
+  /** Phrases dont le moteur PROPOSE des secondaires consensuels. */
+  sentencesWithProposed: number;
+  /** Phrases qui les portent RÉELLEMENT dans le gold. */
+  sentencesCarrying: number;
+  proposedLabels: number;
+  documentsTotal: number;
+  /** Documents déjà figés : un changement de politique n'y aura plus aucun effet. */
+  documentsFinalized: number;
+}
+
+export interface GoldRecomputeSummary {
+  documents: number;
+  recomputed: number;
+  autoResolved: number;
+  todo: number;
+  skippedFinalized: number;
+  skippedNotReady: number;
+  skippedLocked: number;
 }
 
 export type GoldStatus = "awaiting" | "ready" | "in_progress" | "resolved";
