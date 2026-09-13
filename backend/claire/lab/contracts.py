@@ -15,6 +15,9 @@ le chemin exact du champ fautif (ce que l'éditeur de configuration affiche à l
 
 from __future__ import annotations
 
+import json
+from pathlib import Path
+
 TASKS = (
     "T1_primary", "T2_multilabel", "T3_boundary",
     # Tâches des papiers (docs/pactiva-experiences-papiers/02) : mesures d'accord (E1–E4),
@@ -51,6 +54,52 @@ class ResultValidationError(ValueError):
 def _require(condition: bool, path: str, message: str) -> None:
     if not condition:
         raise ConfigValidationError(path, message)
+
+
+def _taxonomy_spec() -> dict:
+    """Spécification des taxonomies — SOURCE UNIQUE partagée avec le Lab et l'interface.
+
+    Lue par chemin (et non importée) parce que le backend ne dépend pas du package
+    `pactiva_lab` : c'est le même fichier, lu par trois consommateurs."""
+    from django.conf import settings
+
+    path = (
+        Path(settings.BASE_DIR).parent
+        / "frontend" / "src" / "lib" / "taxonomy" / "taxonomies.json"
+    )
+    try:
+        return json.loads(path.read_text(encoding="utf-8"))
+    except (OSError, ValueError):
+        return {}
+
+
+def _validate_data_block(config: dict) -> None:
+    """Valide `data.taxonomy` et `data.population`.
+
+    Sans ce contrôle, une faute de frappe (« T12 », « holdOut ») passerait la création et
+    produirait un run silencieusement calculé en T20 sur tout le corpus — le runner, lui,
+    laisse passer un code inconnu par conception (il ne doit jamais escamoter une donnée).
+    C'est donc ICI que la faute doit être attrapée."""
+    data = config.get("data")
+    if data is None:
+        return
+    _require(isinstance(data, dict), "/data", "objet attendu")
+
+    spec = _taxonomy_spec()
+    taxonomy = data.get("taxonomy")
+    if taxonomy is not None:
+        known = [t["id"] for t in spec.get("taxonomies", [])]
+        _require(
+            not known or taxonomy in known,
+            "/data/taxonomy", f"attendu parmi {known}",
+        )
+    population = data.get("population")
+    if population is not None:
+        known_populations = sorted(spec.get("populations", {}))
+        _require(
+            not known_populations or population in known_populations,
+            "/data/population", f"attendu parmi {known_populations}",
+        )
 
 
 def validate_config(config: dict) -> dict:
@@ -132,6 +181,8 @@ def validate_config(config: dict) -> dict:
         for path, values in axes.items():
             _require(isinstance(values, list) and values, f"/sweep/axes/{path}",
                      "liste non vide attendue")
+
+    _validate_data_block(config)
 
     seed = config.get("seed", 42)
     _require(isinstance(seed, int) and seed >= 0, "/seed", "entier positif attendu")
