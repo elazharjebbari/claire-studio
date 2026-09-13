@@ -332,6 +332,13 @@ export function GoldWorkspace({ slug, documentId }: { slug: string; documentId: 
             des <strong>projections</strong> des annotations. Les décisions restent écrites en{" "}
             <strong>T20</strong>, la taxonomie annotée : rien n'est dupliqué ni altéré.
           </span>
+          <Link
+            href="/help?s=taxonomies"
+            data-testid="gold-taxonomy-help"
+            className="ml-auto shrink-0 underline-offset-2 hover:underline"
+          >
+            Comprendre les taxonomies
+          </Link>
         </div>
       )}
       {(decideError || lock.error) && (

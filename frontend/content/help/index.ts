@@ -35,6 +35,7 @@ import raccourcis from "./raccourcis.md?raw";
 import faq from "./faq.md?raw";
 import labExperiences from "./lab-experiences.md?raw";
 import labMetriques from "./lab-metriques.md?raw";
+import taxonomies from "./taxonomies.md?raw";
 
 /** Map slug → contenu Markdown brut. */
 export const HELP_CONTENT: Record<string, string> = {
@@ -44,6 +45,7 @@ export const HELP_CONTENT: Record<string, string> = {
   "selection-blocs": selectionBlocs,
   "modes-langue": modesLangue,
   "themes-vocabulaire": themesVocabulaire,
+  taxonomies,
   "preannotations-llm": preannotationsLlm,
   "comparaison-llm": comparaisonLlm,
   "corpus-presentation": corpusPresentation,

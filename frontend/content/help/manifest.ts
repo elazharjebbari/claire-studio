@@ -30,6 +30,7 @@ export const HELP_MANIFEST: HelpSection[] = [
   { slug: "selection-blocs", title: "Sélection multi-blocs", group: "Annoter" },
   { slug: "modes-langue", title: "Modes de langue & traduction", group: "Annoter" },
   { slug: "themes-vocabulaire", title: "Thèmes & vocabulaire", group: "Annoter" },
+  { slug: "taxonomies", title: "Taxonomies de lecture (T20/T14/T11/T10)", group: "Annoter" },
   { slug: "preannotations-llm", title: "Pré-annotations LLM", group: "Annoter" },
   { slug: "comparaison-llm", title: "Comparer & arbitrer (juges LLM)", group: "Annoter" },
   { slug: "injustice-claudette", title: "Injustice CLAUDETTE", group: "Annoter" },
