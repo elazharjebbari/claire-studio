@@ -3,7 +3,7 @@
 \caption{Agreement with the frozen gold standard, for all three kinds of system,
 measured by the same procedure. Human agreement is leave-one-annotator-out, so
 that each annotator is scored against a gold to which they did not contribute.
-LLM judges are evaluated on stored pre-annotations. Reported, not demonstrated:
+Judge labels were produced once and stored. Reported, not demonstrated:
 see Section~\ref{sec:results}.}
 \label{tab:systems}
 \centering
@@ -12,7 +12,7 @@ see Section~\ref{sec:results}.}
 System & Setting & $\kappa$ & Accuracy \\
 \midrule
 Human annotators & leave-one-annotator-out & \textbf{0.859} & 0.871 \\
-Best LLM judge & stored pre-annotations, \Tn{20} & 0.581 & 0.601 \\
+Best LLM judge & stored labels, \Tn{20} & 0.581 & 0.601 \\
 Legal-BERT, fine-tuned & \Tn{20}, 5-fold by document & 0.695 & --- \\
 Legal-BERT, fine-tuned & \Tn{11}, 5-fold by document & 0.720 & --- \\
 \bottomrule

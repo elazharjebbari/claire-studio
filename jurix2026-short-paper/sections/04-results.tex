@@ -8,11 +8,10 @@
 \paragraph{The cost of the multi-label format.}
 Scoring secondary themes lowers agreement from a nominal $\alpha$ of 0.732 to an
 $\alpha$-MASI of 0.658: the multi-label format costs $0.073$ [0.061, 0.087] of
-chance-corrected agreement. Across the four granularities the penalty stays within a narrow
-band, from 0.063 at 10 classes to 0.075 at 14, and it does not decrease
-monotonically as categories are merged (Table~\ref{tab:reliability}). Its whole
-range, 0.012, is five times smaller than the agreement gain that consolidation
-yields below. The two effects that the literature tends to conflate are therefore
+chance-corrected agreement. Across the four granularities it stays between 0.063 and
+0.075, without decreasing monotonically as categories are merged
+(Table~\ref{tab:reliability}); its whole range, 0.012, is five times smaller than
+the agreement gain consolidation yields below. The two effects that the literature tends to conflate are therefore
 of different orders, and can be measured separately on the same sentences.
 
 \paragraph{The effect of granularity.}
@@ -36,9 +35,11 @@ Consolidation cannot be driven by agreement alone. \Tn{10}, obtained by merging
 along measured confusion clusters without regard to the legal status of the
 clauses, buys a further $0.012$ of $\alpha$-MASI over \Tn{11} --- and loses
 13.2\% of the unfairness signal instead of 5.9\%, a yield of 0.59 points of
-agreement per unit of signal against 1.13 for \Tn{11}. The merge responsible is
-one that crosses unfairness strata, placing clauses that the Directive treats
-differently \cite{eu1993directive,micklitz2017empire} into a single category.
+agreement per unit of signal against 1.13 for \Tn{11}. The merge responsible joins two
+themes whose observed unfairness rates fall in opposite strata, 0.385 against
+0.039 --- a distinction consumer protection law draws
+\cite{eu1993directive,micklitz2017empire} and that the agreement signal does not
+express.
 A purely statistical consolidation selects exactly this taxonomy; the legal
 constraint rules it out. Reliability gains and downstream utility are thus not
 interchangeable, and the boundary between them is drawn by law, not by data.
@@ -49,8 +50,6 @@ interchangeable, and the boundary between them is drawn by law, not by data.
 Against the frozen gold, trained annotators reach $\kappa = 0.859$ in
 leave-one-annotator-out, the best of the four LLM judges reaches $0.581$, and a
 fine-tuned Legal-BERT reaches $0.720$ on \Tn{11} (Table~\ref{tab:systems}).
-We report these figures rather than demonstrate them: the encoder is a single
-model with early stopping on the test fold, and the judges are scored on stored
-pre-annotations. Their ordering is nonetheless unambiguous --- a compact,
-domain-specific encoder outperforms every judge while remaining well below the
-human ceiling.
+We report these figures rather than demonstrate them (Section~\ref{sec:discussion}).
+Their ordering is nonetheless unambiguous: a compact, domain-specific encoder
+outperforms every judge while remaining well below the human ceiling.

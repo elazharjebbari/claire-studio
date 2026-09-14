@@ -1,0 +1,102 @@
+% Version PLACEHOLDER pour réserver la soumission EasyChair (JURIX 2026, short paper).
+% Format IOS Press officiel, même préambule que ../main.tex. Contenu : abstract final,
+% squelette des sections avec les chiffres déjà validés. À remplacer par la version finale.
+\documentclass{IOS-Book-Article}
+\usepackage{mathptmx}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{graphicx}
+\usepackage{booktabs}
+\usepackage{amsmath}
+\newcommand{\corpus}{CLAUDETTE}
+
+\begin{document}
+\begin{frontmatter}
+\title{A Thematic Layer for \corpus{}: Multi-Label Theme Annotation of Online Terms of Service by Trained Annotators and LLM Judges}
+\runningtitle{A Thematic Layer for \corpus{}}
+\author[A]{\fnms{Ahmed} \snm{El Azhar Jebbari}%
+\thanks{Corresponding Author: Ahmed El Azhar Jebbari, LORIA, Campus Scientifique, 54506 Vandœuvre-lès-Nancy, France; e-mail: jebbariazhar@gmail.com.}},
+\author[A]{\fnms{Jean-Charles} \snm{Lamirel}},
+\author[B]{\fnms{Fatima Zahra} \snm{Boulaich}}
+and
+\author[C]{\fnms{Fatima} \snm{Ouali}}
+\runningauthor{A. El Azhar Jebbari et al.}
+\address[A]{LORIA, Université de Lorraine, CNRS, Inria, Nancy, France}
+\address[B]{Juristiadata, France}
+\address[C]{Faculty of Legal Sciences, Rabat, Morocco}
+
+\begin{abstract}
+The \corpus{}/UNFAIR-ToS corpus is the reference benchmark for detecting unfair clauses in online terms of service, but it labels unfairness sentence by sentence and records nothing about what each clause is about. We add a thematic layer to its 50 contracts: 9,414 sentences, labelled independently by three trained annotators with one or more of 20 legal themes, alongside pre-annotations from four large language models on the same vocabulary and the same sentences. This layer supports measurement and training alike. It establishes a human ceiling for the task, against which language-model judges can be fairly evaluated---and remain clearly below. It quantifies the reliability cost of multi-label annotation, and shows this cost to be independent of taxonomy granularity. It shows that consolidating the taxonomy recovers an equivalent amount of reliability, provided no merge crosses unfairness strata---a legal constraint that purely statistical consolidation systematically violates. Finally, a compact legal language model fine-tuned on the layer approaches the human ceiling and outperforms every judge. We release the annotations, the codebook, the protocol, and the open-source annotation platform used to produce them, with which the layer can be browsed, analysed, exported and extended.
+\end{abstract}
+
+\begin{keyword}
+unfair terms of service\sep \corpus{}\sep multi-label annotation\sep
+inter-annotator agreement\sep LLM-as-a-judge\sep legal language models\sep annotation platform
+\end{keyword}
+\end{frontmatter}
+
+\section{Introduction}
+Online terms of service (ToS) are the contracts consumers accept most often and read least. The \corpus{} corpus~\cite{lippi2019claudette} made their automated analysis a benchmark task by labelling, sentence by sentence, eight categories of potentially unfair clauses under Directive 93/13/EEC~\cite{eu1993directive}; it has since been extended to several languages~\cite{drawzeski2021corpus,galassi2024multilingual}, included in LexGLUE~\cite{chalkidis2022lexglue}, and used to test large language models (LLMs)~\cite{panarelli2025worth}. Yet none of these resources records what a clause is \emph{about}: whether the sentence flagged as unfair belongs to a limitation of liability, a unilateral-change clause or a dispute-resolution provision is left to the reader. Clause topics exist for other corpora~\cite{braun2022topics,braun2024agbde}, but with a single annotator per clause, without chance-corrected agreement, or without public release.
+
+We add a thematic layer to the 50 original \corpus{} contracts. Every one of the 9,414 sentences carries one or more of 20 legal themes assigned independently by three trained annotators, and the same sentences carry pre-annotations from four LLMs on the same closed vocabulary. This paper reports what the layer allows one to measure and to train, and releases it. Our contributions are: (i) a human ceiling for the task, measured leave-one-annotator-out, against which LLM judges are evaluated on identical sentences and vocabulary; (ii) a measurement of the reliability cost of multi-label annotation, shown to be constant across four taxonomy granularities; (iii) a consolidation of the 20 themes into 11 that recovers an equivalent amount of reliability, under a legal constraint---no merge across unfairness strata---whose price we quantify; (iv) a compact legal encoder fine-tuned on the layer that outperforms every LLM judge; and (v) the annotations, codebook, protocol and annotation platform.
+
+\section{Background and Related Work}
+\label{sec:related}
+\textbf{Unfair-clause detection.} From \corpus{}~\cite{lippi2019claudette,lagioia2019deep,ruggeri2022memory} to its multilingual~\cite{drawzeski2021corpus,galassi2024multilingual} and LLM-era extensions~\cite{panarelli2025worth,frasheri2024llm}, all work labels unfairness, not subject matter. AGB-DE~\cite{braun2024agbde} and a recent Chilean corpus~\cite{loffler2025chilean} annotate clause classes with one or two experts and report no agreement coefficient. \textbf{Clause-topic resources.} LEDGAR~\cite{tuggener2020ledgar} reduces some 12,000 provision headings to 100 classes by frequency; Braun and Matthes~\cite{braun2022topics} built a 23-topic taxonomy with lawyers (87\,\% raw agreement, corpus not released); OPP-115~\cite{wilson2016opp115} remains the closest precedent of full triple annotation with $\kappa$, on privacy policies. \textbf{Measuring multi-label agreement.} Krippendorff's $\alpha$ with the MASI distance~\cite{krippendorff2018content,passonneau2006masi} is standard for label sets; Marchal et~al.~\cite{marchal2022multilabel} show that multi-labelling changes chance agreement; Bayerl and Paul~\cite{bayerl2011metaanalysis} identify the number of categories as a determinant of agreement and leave open whether the effect survives chance correction; Braun~\cite{braun2024differ} notes that legal datasets erase disagreement. \textbf{LLMs as annotators and judges.} LLMs annotate legal text usefully but not reliably~\cite{savelka2023unreasonable,schepers2025price,thalken2023legal}; LLM judges vary widely across tasks and are not ready to replace human judges~\cite{bavaresco2025judges}; pre-annotations anchor human annotators~\cite{choi2024llmeffect}. Small fine-tuned models still beat general LLMs on legal classification~\cite{chalkidis2020legalbert,thalken2023legal,dominguezolmedo2025lawma}. \textbf{Tooling.} Multi-user annotation platforms with curation exist~\cite{klie2018inception,pei2022potato}; the \corpus{} tool itself explains unfairness rather than supporting annotation~\cite{liepina2020claudettetool}.
+
+\section{Data and Method}
+\label{sec:method}
+\textbf{Corpus and protocol.} We use the 50 \corpus{} contracts with their original document structure (9,414 sentences; 1,137 unfairness labels on 1,032 sentences, base rate 11.0\,\%). A closed vocabulary of 20 legal themes (T20) was defined with a codebook; each sentence receives a primary theme and optional secondary themes. Three trained annotators annotated all 50 documents independently of one another (28,242 votes), post-editing pre-annotations produced by one of four LLM judges; the judge of origin is not persisted, so divergence from the closest judge is a lower bound of the editing actually performed. Conflicts are resolved by a cascade (strict agreement, majority, human arbitration) that preserves every vote. \textbf{Judges.} Four LLMs annotated the same 9,414 sentences with the same vocabulary (37,656 predictions after projection). \textbf{Measures.} Agreement on label sets is $\alpha$-MASI; agreement on the primary theme is nominal $\alpha$; their difference on identical material is the cost of multi-labelling. Confidence intervals are document-level paired bootstraps (1,000 resamples). The human reference is leave-one-annotator-out: each annotator is scored against the consensus of the other two exactly as a model would be. Taxonomy consolidations T14, T11 and T10 are read-time projections; T11 forbids merging themes whose unfairness rates fall in opposite strata (lift $\ge 3$ vs $\le 1$), T10 violates that constraint once. \textbf{Models.} TF-IDF/logistic regression floors and Legal-BERT~\cite{chalkidis2020legalbert} fine-tuning, document-grouped 5-fold cross-validation, seed 42, sentence context $\pm1$.
+
+\section{Results}
+\label{sec:results}
+Table~\ref{tab:agreement} reports agreement by taxonomy. Multi-labelling costs 0.074 points of $\alpha$ on identical material, and the cost is stable across granularities (0.063--0.075, overlapping intervals). T20 falls short of the 0.667 acceptability threshold; T11 exceeds it, and its gain reproduces on the 17 held-out documents not used to design the merges ($+0.069$ $[0.054; 0.085]$). T10 gains slightly more agreement but loses 2.2 times more unfairness signal (average precision of P(unfair $\mid$ theme set): $-13.2$\,\% vs $-5.9$\,\%). Boundaries are the hard part of the task: Jaccard between reconstructed clause boundaries is 0.37--0.47 where theme agreement reaches $\kappa$ 0.68--0.80, and annotators place from 2,163 to 4,121 boundaries.
+
+\begin{table}[t]
+\caption{Agreement by taxonomy on the full corpus (50 documents, 3 annotators). $\Delta_{\mathrm{ML}}$: paired difference between nominal $\alpha$ and $\alpha$-MASI (cost of multi-labelling); gain: paired difference of $\alpha$-MASI against T20; AP loss: relative loss of average precision of $\mathrm{P}(\text{unfair}\mid\text{theme set})$. Brackets: 95\,\% document-level bootstrap intervals.}
+\label{tab:agreement}
+\centering
+\footnotesize\setlength{\tabcolsep}{4pt}%
+\begin{tabular}{lcccccc}
+\toprule
+Taxonomy & $k$ & $\alpha$-MASI & Nom.\ $\alpha$ & $\Delta_{\mathrm{ML}}$ [95\,\% CI] & Gain vs T20 [95\,\% CI] & AP loss \\
+\midrule
+T20 & 20 & 0.658 & 0.732 & 0.073 [0.061; 0.087] & --- & --- \\
+T14 & 14 & 0.693 & 0.768 & 0.075 [0.063; 0.089] & +0.035 [0.030; 0.041] & $-6.4$\,\% \\
+T11 & 11 & \textbf{0.725} & 0.794 & 0.069 [0.058; 0.082] & \textbf{+0.067} [0.057; 0.077] & $-5.9$\,\% \\
+T10 & 10 & 0.737 & 0.800 & 0.063 [0.052; 0.076] & +0.078 [0.068; 0.090] & $-13.2$\,\% \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+Table~\ref{tab:ceiling} places judges and models against the human ceiling. Evaluated as a model, a human annotator reaches 0.871 accuracy ($\kappa = 0.859$) against the consensus of the other two. Human--human $\kappa$ ranges from 0.679 to 0.795; human--LLM $\kappa$ never exceeds 0.594, while two judges agree with each other at 0.800: the judges share a convention that is not the annotators'. Each annotator diverges from the closest judge on 39--49\,\% of sentences. Legal-BERT fine-tuned on the layer outperforms every judge and closes roughly half of the gap to the human ceiling.
+
+\begin{table}[t]
+\caption{Human ceiling, LLM judges and supervised models (primary theme). Accuracy and Cohen's $\kappa$; macro-F1 with 95\,\% document-level bootstrap intervals for models. Judges are scored against the arbitrated reference.}
+\label{tab:ceiling}
+\centering
+\begin{tabular}{llccc}
+\toprule
+System & Taxonomy & Accuracy & $\kappa$ & macro-F1 [95\,\% CI] \\
+\midrule
+Human reference (leave-one-annotator-out) & T20 & \textbf{0.871} & \textbf{0.859} & --- \\
+Best LLM judge (of four)                   & T20 & 0.601 & 0.581 & --- \\
+TF-IDF + logistic regression              & T20 & --- & --- & 0.483 [0.464; 0.508] \\
+TF-IDF + logistic regression              & T11 & --- & 0.570 & 0.597 [0.579; 0.619] \\
+Legal-BERT (fine-tuned)                   & T20 & 0.719 & 0.695 & 0.613 [0.576; 0.638] \\
+Legal-BERT (fine-tuned)                   & T11 & 0.754 & 0.720 & 0.735 [0.710; 0.758] \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\section{Discussion}
+\label{sec:discussion}
+Three points bear on annotation practice. First, the cost of the multi-label format and the effect of granularity are separable: the former is constant, the latter is what moves T20 across the acceptability threshold---an empirical answer to the question left open by Bayerl and Paul~\cite{bayerl2011metaanalysis}. Second, consolidation must be constrained by the downstream legal signal: the single merge that separates T10 from T11 (limitation of liability with warranty disclaimer) buys 0.012 of $\alpha$ at the price of 13\,\% of unfairness signal. Third, the gap between judges and humans is one of convention as much as of accuracy, which argues for evaluating judges against a measured human ceiling rather than against an absolute score. Limitations: annotators post-edited LLM pre-annotations, whose anchoring effect is documented~\cite{choi2024llmeffect}; one annotator completed 39 documents in two days; a single encoder was fine-tuned, with early stopping on the test fold; the boundary agreement reported here is a measurement, not a solution.
+
+\section{Conclusion}
+\label{sec:conclusion}
+The thematic layer turns \corpus{} into a resource on which both the reliability of legal annotation and the performance of models can be measured against a human ceiling. We release the annotations with all votes and soft labels, the codebook, the arbitration protocol, and the annotation platform used to build the layer, which exposes the three human annotations, the four LLM pre-annotations and the original unfairness labels side by side, computes the statistics reported here, projects the taxonomies, exports every layer and supports further annotation under the same protocol.
+
+\bibliographystyle{vancouver}
+\bibliography{references}
+\end{document}

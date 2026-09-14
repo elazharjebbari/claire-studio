@@ -6,18 +6,20 @@
 We annotate all 50 English contracts of \corpus{} \cite{lippi2019claudette}:
 9,414 sentences, each labelled with one primary theme and zero or more secondary
 themes drawn from a 20-theme legal vocabulary (\Tn{20}) covering the recurring
-subject matter of online terms of service, from account use and intellectual
-property to liability, termination and dispute resolution. Every sentence was labelled independently by each of three trained
+subject matter of online terms of service. Every sentence was labelled independently by each of three trained
 annotators working from a written codebook, and, separately, by four large
 language models prompted with the same vocabulary on the same sentences.
-Individual votes are retained rather than collapsed into a consensus, so that
-disagreement remains available for analysis \cite{braun2024differ,plank2022variation,uma2021disagreement}.
+Individual votes are retained rather than collapsed into a consensus
+\cite{braun2024differ,plank2022variation,uma2021disagreement}.
 
 \paragraph{Construction.}
-Annotators post-edited model pre-annotations rather than labelling from a blank
-slate; this speeds the task and anchors it, and we treat the resulting anchoring
-as a limitation to be bounded rather than a problem to be assumed away
-(Section~\ref{sec:discussion}). Annotators could not see one another's work. The
+Annotators did not post-edit the output of one model. The four judges labelled
+every sentence independently, and a deterministic engine sorted each sentence into
+one of five tiers on inter-judge agreement alone, from unanimous to fully split.
+Annotators saw that tier and the competing candidates, but selected from the full
+20-theme vocabulary, and frequently did: 34.5\% of gold labels match none of the
+four proposals, rising to 58.7\% on the sentences annotators themselves disputed.
+Annotators could not see one another's work. The
 gold standard is built by a three-tier cascade: 46.8\% of sentences are unanimous,
 48.3\% carry a majority of at least two of three, and the remaining 4.9\%
 (462 sentences) were arbitrated by a human committee. That last share is not
@@ -26,6 +28,13 @@ trained annotators, given the same codebook, cannot converge. Crucially,
 \emph{model outputs are never parties to the gold}: resolution is strictly
 inter-annotator, and the judges are held out as an object of evaluation rather
 than a contributor to the reference \cite{thalken2023legal}.
+
+\Tn{14} and \Tn{11} were designed under four criteria --- confusability,
+reliability, contractual function and support --- and one constraint fixed in
+advance: no merge joins themes whose observed unfairness rates fall in opposite
+strata. The merges were reviewed by the legal scholars among the authors;
+\Tn{10} breaks that constraint by construction and is reported as a
+counterfactual.
 
 \paragraph{Measurement.}
 We report Krippendorff's $\alpha$ under two distances
