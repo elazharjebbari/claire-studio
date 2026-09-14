@@ -33,7 +33,7 @@
 | **B0** | majorité / prévalence | — | classe majoritaire ; score = taux de base | plancher |
 | **B0'** | thème seul | thème T11 consensus | P(catégorie \| thème) estimée sur train | le plancher **fort** (AP 0,404 sur T20) |
 | **B1** | TF-IDF + régression logistique (un-contre-tous par catégorie) | phrase (±1 phrase de contexte en variante) | scores par catégorie | Lab `baselines.py` |
-| **B2** | encodeur fine-tuné (BERT-base, **Legal-BERT**) | phrase ±1 | idem | Lab `heavy.py`, cible `unfair` (à ajouter) ; G5K |
+| **B2** | encodeur fine-tuné (BERT-base, **Legal-BERT**) | phrase ±1 | idem | Lab `heavy.py`, tâche `U1_unfair` (cible binaire, argmax de la perte pondérée, AUC-PR en complément), découpage `design_holdout` (33 → 17), preset `unfair-legalbert-holdout` (hyperparamètres de E4.4) ; G5K |
 | **B3** | LLM prompté (zero-shot / few-shot) avec les définitions CLAUDETTE | phrase | catégories | même modèle que l'extraction, prompt distinct ; 1 exécution |
 | **B4** | graph-only structurel | L1+L2 sans texte : thème, position, voisinage thématique, co-occurrence (G2) | scores | isole ce que la structure documentaire apporte sans normes |
 
