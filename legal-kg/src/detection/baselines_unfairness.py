@@ -77,7 +77,26 @@ def evaluate(y_true: np.ndarray, scores: np.ndarray, thresholds: list[float], do
             fs.append(f)
         boots.append(np.mean(fs) if fs else 0.0)
     lo, hi = np.percentile(boots, [2.5, 97.5])
+    # Agrégat binaire « phrase abusive » (comparable à la tâche Lab U1_unfair) : positif si au moins une
+    # catégorie dépasse son seuil ; score = max des scores normalisés par le seuil (1.0 = frontière de décision).
+    thr_arr = np.array(thresholds, dtype=float)
+    y_any = (y_true.sum(axis=1) > 0).astype(int)
+    score_any = (scores / np.where(thr_arr > 0, thr_arr, 1.0)).max(axis=1)
+    pred_any = (score_any >= 1.0).astype(int)
+    p_a, r_a, f_a, _ = precision_recall_fscore_support(y_any, pred_any, average="binary", zero_division=0)
+    ap_any = average_precision_score(y_any, score_any) if y_any.sum() else None
+    boots_any = []
+    for _ in range(n_boot):
+        idx = np.concatenate([by_doc[d] for d in rng.choices(doc_ids, k=len(doc_ids))])
+        if y_any[idx].sum() == 0:
+            continue
+        boots_any.append(precision_recall_fscore_support(y_any[idx], pred_any[idx], average="binary", zero_division=0)[2])
+    lo_a, hi_a = np.percentile(boots_any, [2.5, 97.5]) if boots_any else (0.0, 0.0)
+    unfair_any = {"n_pos": int(y_any.sum()), "n": int(len(y_any)), "precision": round(float(p_a), 4), "recall": round(float(r_a), 4),
+                  "f1": round(float(f_a), 4), "f1_ci95": [round(float(lo_a), 4), round(float(hi_a), 4)],
+                  "pr_auc": None if ap_any is None else round(float(ap_any), 4)}
     return {"macro_f1": round(macro, 4), "macro_f1_ci95": [round(float(lo), 4), round(float(hi), 4)],
+            "unfair_any": unfair_any,
             "micro_f1": round(float(precision_recall_fscore_support(y_true.ravel(), (scores >= np.array(thresholds)).astype(int).ravel(), average="binary", zero_division=0)[2]), 4),
             "per_category": per_cat}
 

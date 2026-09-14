@@ -12,3 +12,9 @@ data/annotations/clauses_all.jsonl
 data/annotations/holdout/clauses.jsonl
 .venv/
 results/extraction/dry-run/
+# Baselines : on versionne le README et les petits fichiers de synthèse (run.json), pas les gros artefacts
+!results/baselines/
+results/baselines/*/*
+!results/baselines/*/run.json
+!results/baselines/*/SUPERSEDED.md
+!results/baselines/README.md
