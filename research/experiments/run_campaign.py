@@ -869,6 +869,28 @@ BUILDERS = [
 ]
 
 
+def label_cardinality(root, taxonomy: str) -> dict | None:
+    """Nombre moyen d'étiquettes par phrase, dans la taxonomie demandée.
+
+    Mesure indispensable pour interpréter un résultat multi-label : une tâche annotée en
+    multi-étiquettes peut avoir été ramenée à un quasi-mono-étiquetage par l'agrégation,
+    auquel cas le score obtenu ne dit rien de la difficulté réelle de la tâche.
+    """
+    from pactiva_lab.data import load_dataset
+
+    dataset = load_dataset(Path(root), taxonomy=taxonomy)
+    sizes = [len(getattr(s, "themes", []) or []) for s in dataset.sentences]
+    if not sizes:
+        return None
+    return {
+        "taxonomy": taxonomy,
+        "mean": round(sum(sizes) / len(sizes), 4),
+        "shareMulti": round(sum(1 for n in sizes if n >= 2) / len(sizes), 4),
+        "max": max(sizes),
+        "nSentences": len(sizes),
+    }
+
+
 def main() -> None:
     parser = argparse.ArgumentParser(description="Campagne expérimentale finale")
     parser.add_argument("dataset", help="dossier du dataset Lab")
@@ -909,12 +931,21 @@ def main() -> None:
                 "accuracy": round(sum(v["accuracy"] for v in values) / len(values), 4),
                 "kappa": round(sum(v["kappa"] for v in values) / len(values), 4),
             }
+        # Le plafond α-MASI et la cardinalité d'étiquettes viennent des expériences déjà
+        # calculées ou du dataset lui-même, jamais d'une constante recopiée : un chiffre
+        # codé en dur se périme sans prévenir (celui de E4.5 valait 0,635, mesuré sur un
+        # corpus antérieur, alors que E2.1 donne 0,725 en T11).
+        masi_ceiling = next(
+            (e["results"]["all"]["taxonomies"]["T11"]["alphaMasi"]
+             for e in experiments if e["id"] == "E2.1"), None
+        )
+        cardinality = label_cardinality(root, "T11")
         for builder, kwargs in (
             (e41_baselines, {"human_reference": human_reference}),
             (e42_learning_curve, {}),
             (e43_error_analysis, {}),
             (e44_legalbert, {"human_reference": human_reference}),
-            (e45_multilabel, {}),
+            (e45_multilabel, {"masi_ceiling": masi_ceiling, "cardinality": cardinality}),
         ):
             result = builder(runs_dir, manifest, gold_state, **kwargs)
             # Les expériences GPU renvoient `None` tant que leurs runs Grid'5000 ne sont

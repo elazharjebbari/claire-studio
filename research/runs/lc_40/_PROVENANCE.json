@@ -1,0 +1,47 @@
+{
+ "runId": "905d475d-56b1-4ec6-9c43-7f866f131911",
+ "experiment": "Campagne — courbe d'apprentissage 40 documents",
+ "experimentId": "a57ee6f8-7fcf-4ee2-87ee-239fc718eb9c",
+ "completedAt": "2026-09-13 23:40:33.887890+00:00",
+ "datasetFingerprint": "7116e627f528c5572457e79d9e53d2e71bfc21e3a20aacb43e9d3072cfb70e2e",
+ "compute": "local",
+ "externalJobId": null,
+ "config": {
+  "data": {
+   "taxonomy": "T11"
+  },
+  "seed": 42,
+  "task": "T1_primary",
+  "model": {
+   "family": "tfidf_linear",
+   "ngram_max": 2,
+   "classifier": "logreg",
+   "class_weight": "balanced"
+  },
+  "compute": {
+   "target": "local"
+  },
+  "version": 1,
+  "evaluation": {
+   "split": {
+    "k": 5,
+    "scheme": "group_kfold_document"
+   },
+   "bootstrap": {
+    "enabled": true,
+    "n_resamples": 200
+   },
+   "human_ceiling": true,
+   "error_analysis": true,
+   "learning_curve": {
+    "seed": 42,
+    "n_documents": 40
+   }
+  },
+  "preprocess": {
+   "case": "lower",
+   "detokenize": "regex_rules",
+   "max_length": 128
+  }
+ }
+}

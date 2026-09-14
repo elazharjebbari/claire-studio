@@ -1,0 +1,47 @@
+{
+ "runId": "d0af18f8-3914-4b15-95b0-e6cfcce53b63",
+ "experiment": "G5K validation — axe taxonomie T11",
+ "experimentId": "8cfb4ad2-6e71-4564-a388-92c76bf577c7",
+ "completedAt": "2026-09-13 21:16:35.651024+00:00",
+ "datasetFingerprint": "7116e627f528c5572457e79d9e53d2e71bfc21e3a20aacb43e9d3072cfb70e2e",
+ "compute": "g5k",
+ "externalJobId": "6925504",
+ "config": {
+  "data": {
+   "taxonomy": "T11"
+  },
+  "seed": 42,
+  "task": "T1_primary",
+  "model": {
+   "family": "tfidf_linear",
+   "ngram_max": 2,
+   "classifier": "logreg",
+   "class_weight": "balanced"
+  },
+  "compute": {
+   "g5k": {
+    "site": "nancy",
+    "resources": "walltime=00:15"
+   },
+   "target": "g5k",
+   "require_gpu": false
+  },
+  "version": 1,
+  "evaluation": {
+   "split": {
+    "k": 5,
+    "scheme": "group_kfold_document"
+   },
+   "bootstrap": {
+    "enabled": true,
+    "n_resamples": 200
+   },
+   "human_ceiling": true
+  },
+  "preprocess": {
+   "case": "lower",
+   "detokenize": "regex_rules",
+   "max_length": 128
+  }
+ }
+}

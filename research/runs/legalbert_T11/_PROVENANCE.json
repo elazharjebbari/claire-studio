@@ -1,0 +1,55 @@
+{
+ "runId": "6723ac89-c2b7-409c-afbb-b97954f9fbd3",
+ "experiment": "Legal-BERT fine-tune — T11 (fusionnée)",
+ "experimentId": "420b8eb0-e2a2-4678-8105-54d9d4d64c61",
+ "completedAt": "2026-09-13 22:44:04.769014+00:00",
+ "datasetFingerprint": "7116e627f528c5572457e79d9e53d2e71bfc21e3a20aacb43e9d3072cfb70e2e",
+ "compute": "g5k",
+ "externalJobId": "2066889",
+ "config": {
+  "data": {
+   "taxonomy": "T11"
+  },
+  "seed": 42,
+  "task": "T1_primary",
+  "model": {
+   "loss": "weighted_ce",
+   "epochs": 8,
+   "family": "transformer_finetune",
+   "batch_size": 16,
+   "checkpoint": "nlpaueb/legal-bert-base-uncased",
+   "learning_rate": 2e-05,
+   "early_stopping_patience": 3
+  },
+  "compute": {
+   "g5k": {
+    "site": "lyon",
+    "exotic": true,
+    "resources": "gpu=1,walltime=03:00"
+   },
+   "target": "g5k",
+   "require_gpu": true
+  },
+  "version": 1,
+  "evaluation": {
+   "split": {
+    "k": 5,
+    "scheme": "group_kfold_document"
+   },
+   "bootstrap": {
+    "enabled": true,
+    "n_resamples": 1000
+   },
+   "human_ceiling": true,
+   "error_analysis": true
+  },
+  "preprocess": {
+   "context": {
+    "window_after": 1,
+    "window_before": 1
+   },
+   "detokenize": "regex_rules",
+   "max_length": 128
+  }
+ }
+}

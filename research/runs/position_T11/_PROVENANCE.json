@@ -1,0 +1,40 @@
+{
+ "runId": "6638973d-24cc-459d-91b8-0aaabe2dff90",
+ "experiment": "Campagne — position seule (T11)",
+ "experimentId": "c2ea224b-0d12-4a0f-922a-219a9dadfe99",
+ "completedAt": "2026-09-13 23:37:40.559213+00:00",
+ "datasetFingerprint": "7116e627f528c5572457e79d9e53d2e71bfc21e3a20aacb43e9d3072cfb70e2e",
+ "compute": "local",
+ "externalJobId": null,
+ "config": {
+  "data": {
+   "taxonomy": "T11"
+  },
+  "seed": 42,
+  "task": "T1_primary",
+  "model": {
+   "family": "position_only"
+  },
+  "compute": {
+   "target": "local"
+  },
+  "version": 1,
+  "evaluation": {
+   "split": {
+    "k": 5,
+    "scheme": "group_kfold_document"
+   },
+   "bootstrap": {
+    "enabled": true,
+    "n_resamples": 200
+   },
+   "human_ceiling": true,
+   "error_analysis": true
+  },
+  "preprocess": {
+   "case": "lower",
+   "detokenize": "regex_rules",
+   "max_length": 128
+  }
+ }
+}

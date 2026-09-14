@@ -301,52 +301,91 @@ def e44_legalbert(runs_dir, manifest, gold_state, human_reference=None):
 
 
 # =========================================================================== #
-def e45_multilabel(runs_dir, manifest, gold_state):
-    """La tâche RÉELLE du protocole d'annotation — à comparer au plafond α-MASI."""
+def e45_multilabel(runs_dir, manifest, gold_state, masi_ceiling=None,
+                   cardinality=None):
+    """La tâche multi-étiquette — et ce que l'agrégation en fait réellement."""
     run = read_run(runs_dir, "legalbert_multilabel_T11")
     if not run:
         return None
     m = run.get("metrics") or {}
     summary = run_summary(run)
+    mono = run_summary(read_run(runs_dir, "legalbert_T11"))
+    mean_labels = (cardinality or {}).get("mean")
+    share_multi = (cardinality or {}).get("shareMulti")
 
     exp = Experiment(
-        id="E4.5", rq="RQ4", title="Multi-label : la tâche réellement annotée",
+        id="E4.5", rq="RQ4", title="Multi-label : ce que l'agrégation fait à la tâche",
         question="Un modèle apprend-il la tâche telle qu'elle a été annotée — plusieurs thèmes par phrase — et non sa réduction à un thème principal ?",
-        hypothesis="La performance multi-label est nettement inférieure à la performance mono-label, dans des proportions comparables à l'écart entre le plafond α-MASI et le plafond κ : la difficulté vient de la tâche, pas du modèle.",
-        protocol="Fine-tuning de `nlpaueb/legal-bert-base-uncased` en sortie sigmoïde (perte BCE), 10 époques, plis groupés PAR DOCUMENT (k=5), graine 42. La référence de comparaison est le plafond α-MASI (0,635), JAMAIS le plafond κ mono-label : les deux ne mesurent pas la même tâche.",
-        metrics_declared=["macro_f1", "micro_f1"],
+        hypothesis="ATTENDU : la performance multi-label devait être NETTEMENT INFÉRIEURE à la performance mono-label, la tâche étant plus dure. RÉSULTAT : hypothèse RÉFUTÉE, et la raison est instructive (voir interprétation).",
+        protocol="Fine-tuning de `nlpaueb/legal-bert-base-uncased` en sortie sigmoïde (perte BCE), 10 époques, plis groupés PAR DOCUMENT (k=5), graine 42, sur le même dataset et les mêmes plis que la condition mono-label. La cardinalité d'étiquettes du dataset a été mesurée séparément pour interpréter l'écart.",
+        metrics_declared=["macro_f1", "micro_f1", "subset_accuracy", "hamming_loss", "lrap"],
         limits=[
-            "Seuil de décision fixé globalement, non calibré par classe : une calibration par thème relèverait la macro-F1 sur les classes rares.",
-            "Les thèmes secondaires absorbés par leur primaire lors de la projection T11 disparaissent : le nombre d'étiquettes par phrase est mécaniquement plus faible qu'en T20.",
+            "LIMITE PRINCIPALE : le dataset agrégé ne préserve PAS le multi-étiquetage des annotations individuelles. Ce run ne mesure donc pas la difficulté réelle de la tâche multi-label, mais celle d'une tâche redevenue quasi mono-étiquette par l'agrégation.",
+            "La macro-F1 multi-label (moyenne one-vs-rest par étiquette) et la macro-F1 mono-label ne sont PAS la même quantité : les rapprocher indique une tendance, jamais un classement.",
+            "Le plafond α-MASI est un coefficient d'accord CORRIGÉ DU HASARD, la F1 ne l'est pas : les afficher côte à côte situe un ordre de grandeur, ce n'est pas une comparaison stricte.",
+            "Seuil de décision global, non calibré par classe : une calibration par thème relèverait la macro-F1 sur les classes rares.",
         ],
         depends_on=["E1.1", "E4.4"],
     )
     gates = standard_gates(manifest=manifest, gold_state=gold_state,
                            split_scheme="group_kfold_document", seed=SEED,
                            requires_model=True)
+    metrics = [
+        metric("macro_f1", "macro-F1 multi-label", summary["macroF1"], ci=summary["ci"]),
+        metric("micro_f1", "micro-F1 multi-label", summary["microF1"]),
+        metric("subset_accuracy", "Exactitude par sous-ensemble exact",
+               m.get("subset_accuracy")),
+        metric("hamming_loss", "Perte de Hamming", m.get("hamming_loss"),
+               higher_is_better=False),
+        metric("lrap", "LRAP (précision moyenne par rang d'étiquette)", m.get("lrap")),
+    ]
+    if mean_labels is not None:
+        metrics.append(metric("label_cardinality", "Étiquettes par phrase (moyenne, T11)",
+                              mean_labels,
+                              note="mesurée sur le dataset agrégé de la campagne"))
+        metrics.append(metric("share_multi_label", "Part des phrases à ≥ 2 étiquettes",
+                              share_multi))
+    if masi_ceiling is not None:
+        metrics.append(metric("alpha_masi_ceiling", "Plafond α-MASI T11 (accord humain)",
+                              masi_ceiling,
+                              note="E2.1, corpus complet — échelle différente de la F1"))
+
+    cardinality_phrase = (
+        f"Or le dataset agrégé ne porte que {mean_labels:.2f} étiquette par phrase en "
+        f"moyenne, et seules {share_multi:.1%} des phrases en ont au moins deux : "
+        if mean_labels is not None and share_multi is not None else
+        "Or le dataset agrégé ne préserve quasiment pas le multi-étiquetage : "
+    )
     return envelope(
         exp,
-        summary=f"En multi-label T11, la macro-F1 atteint {summary['macroF1']:.3f} (micro-F1 {summary['microF1']:.3f}).",
+        summary=(f"macro-F1 {summary['macroF1']:.3f} en multi-label — hypothèse réfutée : "
+                 f"l'agrégation a ramené la tâche à un quasi-mono-étiquetage "
+                 + (f"({mean_labels:.2f} étiquette par phrase)." if mean_labels else ".")),
         data={"datasetFingerprint": manifest.get("fingerprint"), "taxonomy": "T11",
               "labelSource": "consensus (agrégation Lab)", "populations": ["all"]},
         config={"seed": SEED, "split": "group_kfold_document (k=5)",
                 "checkpoint": "nlpaueb/legal-bert-base-uncased", "epochs": 10,
                 "loss": "bce", "task": "T2_multilabel",
                 "compute": "Grid'5000 — lyon, cluster gemini (V100 32 Go)"},
-        metrics=[
-            metric("macro_f1", "macro-F1 multi-label", summary["macroF1"], ci=summary["ci"]),
-            metric("micro_f1", "micro-F1 multi-label", summary["microF1"]),
-            metric("alpha_masi_ceiling", "Plafond α-MASI (référence humaine)", 0.635,
-                   note="accord inter-annotateurs sur la tâche multi-label"),
-        ],
-        results={"run": summary, "foldStats": m.get("fold_stats")},
-        uncertainty="IC 95 % bootstrap par document sur la macro-F1.",
+        metrics=metrics,
+        results={"run": summary, "monoLabelReference": mono,
+                 "foldStats": m.get("fold_stats"), "cardinality": cardinality},
+        uncertainty="IC 95 % bootstrap par document (1 000 rééchantillonnages) sur la macro-F1.",
         interpretation=(
-            f"La tâche réellement annotée — plusieurs thèmes par phrase — est sensiblement "
-            f"plus dure que sa réduction mono-label : {summary['macroF1']:.3f} de macro-F1. "
-            "Ce chiffre se lit contre le plafond α-MASI (0,635), pas contre le plafond κ : "
-            "comparer une performance multi-label à un accord mono-label surestimerait "
-            "mécaniquement l'écart restant à combler."
+            f"La performance multi-label ({summary['macroF1']:.3f}) n'est pas inférieure à "
+            f"la performance mono-label"
+            + (f" ({mono['macroF1']:.3f})" if mono else "")
+            + " : l'hypothèse est réfutée. "
+            + cardinality_phrase
+            + "l'agrégation en consensus a largement effacé le multi-étiquetage pourtant "
+            "présent dans les annotations individuelles. C'est cohérent avec E1.1, qui "
+            "mesure précisément ce coût sur les VOTES (α-MASI inférieur à α nominal) là où "
+            "le multi-étiquetage existe encore. "
+            "CONSÉQUENCE MÉTHODOLOGIQUE : ce chiffre ne peut pas être présenté comme la "
+            "performance sur la tâche réellement annotée. Le mesurer demande un dataset "
+            "construit en agrégation souple (`aggregation='soft'`), qui conserve les "
+            "étiquettes concurrentes au lieu de trancher. Tant que ce dataset n'existe pas, "
+            "l'affirmation « le modèle apprend la tâche multi-label » n'est pas soutenable."
         ),
         gates=gates,
     )
