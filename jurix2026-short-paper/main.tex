@@ -62,21 +62,21 @@ and
 \address[C]{Faculty of Legal Sciences, Rabat, Morocco}
 %
 \begin{abstract}
-The \corpus{}/UNFAIR-ToS corpus is the reference benchmark for detecting unfair
-clauses in online terms of service, but it labels unfairness sentence by sentence
-and records nothing about what each clause is about. We add a thematic layer to
-its 50 contracts: 9,414 sentences, each labelled with one or more of 20 legal
-themes independently by three trained annotators, and separately by four large
-language models prompted with the same vocabulary on the same sentences. The layer
-separates two effects that the reliability literature tends to conflate. The
-multi-label format costs 0.073 [0.061, 0.087] of chance-corrected agreement, and
-this cost varies by only 0.012 across four granularities; consolidating 20 themes
-into 11 recovers 0.067 [0.058, 0.077], a gain that replicates on 17 held-out
-contracts. Consolidation is constrained, however: the taxonomy that agreement
-alone would select merges across unfairness strata and loses 13.2\% of the
-downstream signal. A fine-tuned legal encoder outperforms every judge while
-remaining below the human ceiling. We release the annotations, codebook, protocol
-and annotation platform.
+The \corpus{}/UNFAIR-ToS corpus is the reference benchmark for unfair clauses in
+online terms of service, but it records only whether a sentence is unfair, never
+what the clause is about. We add a thematic layer to its 50 contracts:
+9,414 sentences, each labelled with one or more of 20 legal themes independently
+by three trained annotators, and by four large language models on the same
+sentences. The layer separates two effects that the reliability literature tends
+to conflate. Letting annotators assign several themes lowers agreement, by much
+the same amount whatever the number of categories. Merging the taxonomy from
+20 themes into 11 recovers an equivalent amount, and the gain holds on contracts
+held out from the design of the merges. Merging is constrained, however: the
+taxonomy that agreement alone would select groups clauses that consumer protection
+law treats differently, at more than twice the cost in downstream signal. A
+fine-tuned legal encoder outperforms every language-model judge, while remaining
+clearly below the human ceiling. We release the annotations with their individual
+votes, the codebook, the protocol and the annotation platform.
 \end{abstract}
 
 \begin{keyword}
