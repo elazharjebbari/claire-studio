@@ -1,0 +1,56 @@
+% -----------------------------------------------------------------------------
+% 4. Results — un résultat DÉMONTRÉ (coût du format vs effet de granularité),
+% deux résultats RAPPORTÉS (plafond humain / juges ; modèle fine-tuné).
+% Budget : ~450 mots + Tables 1 et 2.
+% -----------------------------------------------------------------------------
+\input{tables/reliability}
+
+\paragraph{The cost of the multi-label format.}
+Scoring secondary themes lowers agreement from a nominal $\alpha$ of 0.732 to an
+$\alpha$-MASI of 0.658: the multi-label format costs $0.073$ [0.061, 0.087] of
+chance-corrected agreement. Across the four granularities the penalty stays within a narrow
+band, from 0.063 at 10 classes to 0.075 at 14, and it does not decrease
+monotonically as categories are merged (Table~\ref{tab:reliability}). Its whole
+range, 0.012, is five times smaller than the agreement gain that consolidation
+yields below. The two effects that the literature tends to conflate are therefore
+of different orders, and can be measured separately on the same sentences.
+
+\paragraph{The effect of granularity.}
+Consolidating the taxonomy recovers agreement of the same order as the format
+costs. Merging \Tn{20} into \Tn{11} raises $\alpha$-MASI by $0.067$ [0.058, 0.077],
+carrying the layer across the 0.667 threshold conventionally used for tentative
+conclusions \cite{passonneau2006masi} --- a threshold the annotation taxonomy
+itself does not reach. Two properties make this more than a mechanical artefact
+of coarser categories. First, the gain \emph{replicates out of sample}: the
+17 contracts held out from the design of the merges yield $+0.069$, against
+$+0.066$ on the 33 contracts used to design them. Second, \Tn{11} \emph{dominates}
+the intermediate \Tn{14}: it gains twice as much agreement ($+0.067$ against
+$+0.035$) while losing \emph{less} downstream signal (5.9\% against 6.4\%).
+Granularity is therefore a genuine lever on reliability, and not merely a
+redistribution of the same disagreements over fewer categories. What the result
+does not establish is that the merged categories are legally better: it measures
+how consistently annotators apply them, not whether they carve the domain well.
+
+\paragraph{The legal constraint on consolidation.}
+Consolidation cannot be driven by agreement alone. \Tn{10}, obtained by merging
+along measured confusion clusters without regard to the legal status of the
+clauses, buys a further $0.012$ of $\alpha$-MASI over \Tn{11} --- and loses
+13.2\% of the unfairness signal instead of 5.9\%, a yield of 0.59 points of
+agreement per unit of signal against 1.13 for \Tn{11}. The merge responsible is
+one that crosses unfairness strata, placing clauses that the Directive treats
+differently \cite{eu1993directive,micklitz2017empire} into a single category.
+A purely statistical consolidation selects exactly this taxonomy; the legal
+constraint rules it out. Reliability gains and downstream utility are thus not
+interchangeable, and the boundary between them is drawn by law, not by data.
+
+\input{tables/systems}
+
+\paragraph{Reported: the human ceiling, the judges and a fine-tuned encoder.}
+Against the frozen gold, trained annotators reach $\kappa = 0.859$ in
+leave-one-annotator-out, the best of the four LLM judges reaches $0.581$, and a
+fine-tuned Legal-BERT reaches $0.720$ on \Tn{11} (Table~\ref{tab:systems}).
+We report these figures rather than demonstrate them: the encoder is a single
+model with early stopping on the test fold, and the judges are scored on stored
+pre-annotations. Their ordering is nonetheless unambiguous --- a compact,
+domain-specific encoder outperforms every judge while remaining well below the
+human ceiling.

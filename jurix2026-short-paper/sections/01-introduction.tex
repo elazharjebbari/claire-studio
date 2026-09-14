@@ -1,0 +1,37 @@
+% -----------------------------------------------------------------------------
+% 1. Introduction — attaque par le manque, puis la couche, puis la question et sa
+% réponse, puis les contributions explicites. Budget : ~380 mots.
+% -----------------------------------------------------------------------------
+\corpus{} records whether a sentence in a consumer contract is potentially unfair;
+it records nothing about what the clause is about \cite{lippi2019claudette,
+lagioia2019deep}. A limitation clause and an arbitration clause are both unfair,
+and both are simply unfair. Where clause topics do exist for contracts, the
+resources are single-annotated \cite{braun2022topics}, unpublished, or reported
+without chance-corrected agreement \cite{loffler2025chilean}, so it is not known
+how reliably the task can be performed at all.
+
+We add a thematic layer to the reference benchmark. All 50 contracts and
+9,414 sentences of \corpus{} are labelled with one or more of 20 legal themes,
+independently by three trained annotators, and separately by four large language
+models prompted with the same vocabulary on the same sentences. Individual votes,
+the arbitration trail and the resulting gold standard are all released.
+
+The layer settles a question that the reliability literature leaves open. Agreement
+is known to fall when annotators may assign several labels, and to rise when
+categories are merged \cite{bayerl2011metaanalysis,marchal2022multilabel}; what is
+not known is whether these are one effect or two, since they are seldom measured
+on the same sentences. Here they are. The multi-label format costs
+$0.073$ [0.061, 0.087] of chance-corrected agreement, and this cost varies by only
+0.012 across four granularities --- while merging 20 themes into 11 recovers
+$0.067$ [0.058, 0.077], a gain that replicates on 17 contracts held out from the
+design of the merges. Consolidation is therefore a real lever on reliability, but
+not an unconstrained one: the taxonomy that agreement alone would select merges
+clauses across unfairness strata, and loses 13.2\% of the downstream unfairness
+signal to buy $0.012$ of extra agreement.
+
+We contribute: (i) a thematic layer over \corpus{}, multi-label and triply
+annotated, published with its disagreements and with the open-source platform used
+to produce it; (ii) a separation of the cost of the multi-label \emph{format} from
+the effect of taxonomy \emph{granularity}, measured on the same sentences and
+replicated out of sample; and (iii) a legal constraint on consolidation --- merges
+must not cross unfairness strata --- together with the price of violating it.

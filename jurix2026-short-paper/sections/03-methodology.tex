@@ -1,0 +1,44 @@
+% -----------------------------------------------------------------------------
+% 3. The Thematic Layer and Its Construction — ressource d'abord, protocole
+% ensuite, mesures en dernier. Budget : ~400 mots. Pas de sous-titres numérotés.
+% -----------------------------------------------------------------------------
+\paragraph{The layer.}
+We annotate all 50 English contracts of \corpus{} \cite{lippi2019claudette}:
+9,414 sentences, each labelled with one primary theme and zero or more secondary
+themes drawn from a 20-theme legal vocabulary (\Tn{20}) covering the recurring
+subject matter of online terms of service --- account and permitted use, content
+and intellectual property, liability, warranty, termination, dispute resolution,
+personal data, fees, unilateral modification, and third-party services, among
+others. Every sentence was labelled independently by each of three trained
+annotators working from a written codebook, and, separately, by four large
+language models prompted with the same vocabulary on the same sentences.
+Individual votes are retained rather than collapsed into a consensus, so that
+disagreement remains available for analysis \cite{braun2024differ,plank2022variation,uma2021disagreement}.
+
+\paragraph{Construction.}
+Annotators post-edited model pre-annotations rather than labelling from a blank
+slate; this speeds the task and anchors it, and we treat the resulting anchoring
+as a limitation to be bounded rather than a problem to be assumed away
+(Section~\ref{sec:discussion}). Annotators could not see one another's work. The
+gold standard is built by a three-tier cascade: 46.8\% of sentences are unanimous,
+48.3\% carry a majority of at least two of three, and the remaining 4.9\%
+(462 sentences) were arbitrated by a human committee. That last share is not
+overhead but a measurement: it is the fraction of the corpus on which three
+trained annotators, given the same codebook, cannot converge. Crucially,
+\emph{model outputs are never parties to the gold}: resolution is strictly
+inter-annotator, and the judges are held out as an object of evaluation rather
+than a contributor to the reference \cite{thalken2023legal}.
+
+\paragraph{Measurement.}
+We report Krippendorff's $\alpha$ under two distances
+\cite{krippendorff2018content,artstein2008intercoder}: the MASI distance for
+set-valued labels \cite{passonneau2006masi}, and the nominal distance on primary
+themes alone. The gap between them is what multi-label annotation costs in
+reliability \cite{marchal2022multilabel}. Coarser taxonomies (\Tn{14}, \Tn{11},
+\Tn{10}) are \emph{projections} of \Tn{20} applied at read time: the annotations
+themselves are never rewritten, so every comparison is paired by construction,
+and confidence intervals come from bootstrap resampling over documents rather
+than sentences. The merges were designed on 33 contracts and validated on the
+17 held out from that design. Finally, the human ceiling is estimated
+leave-one-annotator-out, each annotator being scored against a gold to which they
+did not contribute \cite{nangia2019human}.

@@ -1,0 +1,127 @@
+% =============================================================================
+%  JURIX 2026 — SHORT PAPER (max. 5 pages, remerciements et références exclus)
+%  Construit à partir du gabarit officiel IOS Press `IOS-Book-Article.tmpl`
+%  (vtex-soft/texsupport.IOS-Book-Article, classe v1.20 du 2024/01/31).
+%
+%  RÈGLES (ios-book-article_LaTeX_Instructions.pdf) :
+%   - AUCUNE commande modifiant la mise en page (\textwidth, \textheight, marges,
+%     interligne, taille de police, espacement des sections, légendes, biblio) ;
+%   - corps de texte : Times 10 pt (mathptmx, comme dans l'exemple officiel) ;
+%   - références Vancouver/NLM numériques, citées [n] par ordre d'apparition ;
+%   - légende des tableaux AU-DESSUS, légende des figures EN DESSOUS ;
+%   - renvoyer aux flottants par Table~1 / Figure~1 (jamais « above »/« below »).
+%
+%  Compilation :  latexmk -pdf main.tex        (voir README.md)
+% =============================================================================
+
+\documentclass{IOS-Book-Article}     %[seceqn,secfloat,secthm]
+\usepackage{mathptmx}                % police Times du corps — activée dans l'exemple officiel
+\usepackage[T1]{fontenc}             % proposé (en commentaire) par le gabarit officiel
+\usepackage[utf8]{inputenc}          % source UTF-8 (défaut des LaTeX récents, explicité)
+%
+%%%%%%%%%%% Put your definitions here
+%
+% --- Packages sans effet sur la mise en page IOS Press -----------------------
+\usepackage{graphicx}                % \includegraphics (PDF / PNG / JPG / EPS)
+\usepackage{booktabs}                % \toprule \midrule \bottomrule
+\usepackage{multirow}                % cellules multi-lignes
+\usepackage{array}                   % spécifications de colonnes étendues
+\usepackage{amsmath}                 % équations (numérotées en continu par la classe)
+\usepackage{amssymb}                 % symboles mathématiques supplémentaires
+% NOTE : hyperref, etoolbox et url sont DÉJÀ chargés par IOS-Book-Article.cls.
+%        Ne pas recharger hyperref. Ne pas charger geometry, setspace, titlesec,
+%        caption, enumitem ni microtype (mise en page ou conflits).
+%
+% --- Macros pratiques pour cet article ---------------------------------------
+\newcommand{\corpus}{CLAUDETTE}      % orthographe unique du corpus
+\newcommand{\Tn}[1]{T#1}             % noms des taxonomies : \Tn{20}, \Tn{11}
+\newcommand{\todo}[1]{\textbf{[TODO: #1]}} % marqueur visible ; `grep TODO` avant soumission
+%
+%%%%%%%%%%% End of definitions
+
+\begin{document}
+\begin{frontmatter}          % The preamble begins here.
+%
+%\pretitle{}
+\title{A Thematic Layer for \corpus{}: Separating the Cost of Multi-Label Annotation from the Effect of Taxonomy Granularity}
+\runningtitle{A Thematic Layer for \corpus{}}
+%\subtitle{}
+
+% Deux auteurs ou plus (syntaxe du gabarit officiel). Relecture single-blind : noms conservés.
+\author[A]{\fnms{Ahmed} \snm{El Azhar Jebbari}%\orcid{0000-0000-0000-0000}% TODO : ORCID
+\thanks{Corresponding Author: Ahmed El Azhar Jebbari, LORIA, Campus Scientifique, 54506 Vandœuvre-lès-Nancy, France; e-mail: \todo{email}.}},
+% TODO : co-auteurs — compléter ou supprimer les deux lignes ci-dessous (garder l'espace avant « and »).
+\author[A]{\fnms{Second} \snm{Author}}
+and
+\author[B]{\fnms{Third} \snm{Author}}
+\runningauthor{A. El Azhar Jebbari et al.}
+\address[A]{LORIA, Université de Lorraine, CNRS, Inria, Nancy, France}
+\address[B]{\todo{Affiliation of Third Author}}
+%
+\begin{abstract}
+The \corpus{}/UNFAIR-ToS corpus is the reference benchmark for detecting unfair
+clauses in online terms of service, but it labels unfairness sentence by sentence
+and records nothing about what each clause is about. We add a thematic layer to
+its 50 contracts: 9,414 sentences, each labelled with one or more of 20 legal
+themes independently by three trained annotators, and separately by four large
+language models prompted with the same vocabulary on the same sentences. The layer
+separates two effects that the reliability literature tends to conflate. The
+multi-label format costs 0.073 [0.061, 0.087] of chance-corrected agreement, and
+this cost varies by only 0.012 across four granularities; consolidating 20 themes
+into 11 recovers 0.067 [0.058, 0.077], a gain that replicates on 17 held-out
+contracts. Consolidation is constrained, however: the taxonomy that agreement
+alone would select merges across unfairness strata and loses 13.2\% of the
+downstream signal. A fine-tuned legal encoder outperforms every judge while
+remaining below the human ceiling. We release the annotations, codebook, protocol
+and annotation platform.
+\end{abstract}
+
+\begin{keyword}
+unfair terms of service\sep \corpus{}\sep multi-label annotation\sep
+inter-annotator agreement\sep LLM-as-a-judge\sep legal language models\sep annotation platform
+\end{keyword}
+
+\end{frontmatter}
+
+%%%%%%%%%%% The article body starts:
+
+\section{Introduction}
+\label{sec:introduction}
+\input{sections/01-introduction}
+
+\section{Background and Related Work}
+\label{sec:related-work}
+\input{sections/02-related-work}
+
+\section{The Thematic Layer and Its Construction}
+\label{sec:methodology}
+\input{sections/03-methodology}
+
+\section{Results}
+\label{sec:results}
+\input{sections/04-results}
+
+\section{Discussion and Limitations}
+\label{sec:discussion}
+\input{sections/05-discussion}
+
+\section{Conclusion and Availability}
+\label{sec:conclusion}
+\input{sections/06-conclusion}
+
+% Marqueur de limite de pages : la page enregistrée pour ce label est la dernière
+% page du corps de texte (lue par tools/check_pages.sh). Largeur nulle, sans effet
+% sur la mise en page. À laisser AVANT les remerciements : l'appel JURIX exclut
+% remerciements et références de la limite de 5 pages.
+\label{end:body}
+
+% --- Remerciements (hors limite de 5 pages selon l'appel JURIX) ---------------
+%\section*{Acknowledgements}
+%\todo{Funding, computing resources (Grid'5000), annotators.}
+
+%%%%%%%%%%% The bibliography starts:
+% Style Vancouver/NLM numérique fourni par IOS Press ; exécuter bibtex (pas biber).
+\bibliographystyle{vancouver}
+\bibliography{references}
+
+\end{document}

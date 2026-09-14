@@ -1,0 +1,23 @@
+% Table 1 — le résultat démontré. Légende AU-DESSUS (règle IOS Press).
+\begin{table}[t]
+\caption{Reliability and downstream signal by taxonomy, on all 50 contracts
+(9,414 sentences, three annotators). The gap between $\alpha$-MASI and nominal
+$\alpha$ is the cost of the multi-label format. Differences against \Tn{20} are
+paired by document; 95\% confidence intervals from 1{,}000 document-level
+bootstrap resamples. Signal loss is the relative drop in leave-one-document-out
+average precision of $P(\mathrm{unfair}\mid\mathrm{theme\ combination})$, scored
+against the \corpus{} unfairness labels, which are never projected.
+\Tn{10} merges across unfairness strata; \Tn{14} and \Tn{11} do not.}
+\label{tab:reliability}
+\centering
+\begin{tabular}{lccccc}
+\toprule
+Taxonomy & Classes & $\alpha$-MASI & Nominal $\alpha$ & $\Delta$ vs.\ \Tn{20} [95\% CI] & Signal loss \\
+\midrule
+\Tn{20} & 20 & 0.658 & 0.732 & --- & --- \\
+\Tn{14} & 14 & 0.693 & 0.768 & $+0.035$ [0.030, 0.042] & 6.4\% \\
+\textbf{\Tn{11}} & 11 & \textbf{0.725} & 0.794 & $\mathbf{+0.067}$ \textbf{[0.058, 0.077]} & \textbf{5.9\%} \\
+\Tn{10} & 10 & 0.737 & 0.800 & $+0.078$ [0.068, 0.090] & 13.2\% \\
+\bottomrule
+\end{tabular}
+\end{table}

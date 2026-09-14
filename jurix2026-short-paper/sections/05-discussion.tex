@@ -1,0 +1,33 @@
+% -----------------------------------------------------------------------------
+% 5. Discussion and Limitations — deux implications, puis un paragraphe de
+% limites dense (une proposition par limite). Budget : ~250 mots.
+% -----------------------------------------------------------------------------
+Two consequences follow for annotation practice. First, the reliability cost of
+multi-label annotation need not be paid by abandoning multi-label annotation: it
+can be recovered by consolidating the taxonomy, which preserves the ability to
+record that a clause does two things at once. Second, that consolidation cannot be
+delegated to the agreement signal. Merging along measured confusion clusters is
+what a data-driven procedure would do, and on this corpus it selects precisely the
+taxonomy that collapses the legal distinction the downstream task depends on. The
+criterion has to come from outside the annotation statistics --- here, from the
+strata of unfairness that consumer protection law itself draws
+\cite{eu1993directive,micklitz2017empire}. For the evaluation of language models,
+the gap between the human ceiling and the best judge (0.859 against 0.581) is
+large enough that judges are not substitutable for trained annotators on this
+task, in line with findings on other legal annotation tasks
+\cite{thalken2023legal,bavaresco2025judges}; a compact domain-specific encoder
+\cite{chalkidis2020legalbert} closes much, though not all, of that gap, which is
+consistent with the specialization results of \cite{dominguezolmedo2025lawma}.
+
+\paragraph{Limitations.}
+Pre-annotations were post-edited rather than produced from scratch, and annotator
+divergence from the suggested label (38.5--48.6\% of sentences) bounds the
+anchoring risk \cite{choi2024llmeffect} without eliminating it. The layer covers
+one legal system and one language. The judges are scored on stored
+pre-annotations, so the benchmark measures a historical output rather than the
+current state of the art. The fine-tuned encoder is a single model with early
+stopping on the test fold, making its reported agreement mildly optimistic.
+Finally, the aggregated gold carries only 1.04 labels per sentence, so a
+multi-label score computed on it would not measure the difficulty of the task as
+annotated; the multi-label cost reported here is measured on individual votes,
+where the secondary themes survive.
