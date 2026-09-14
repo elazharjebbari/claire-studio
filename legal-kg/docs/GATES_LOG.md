@@ -8,6 +8,6 @@
 | 2026-09-15 | G4 Schéma du KG | **passée** | porteur | `ontology/legal_kg_schema.yaml`, `graph/schema/memgraph_schema.cypher`, build L1–L2 (50 docs, 11 967 clauses), tests d'étanchéité verts, ADR-001/002/003 | contraintes Memgraph à exécuter sur une instance (docker) — non fait faute d'instance locale |
 | 2026-09-15 | Gel des règles v0.1 | **effectué** | porteur | `graph/rules/FROZEN.txt` (SHA-256 + date + commit) | pré-inscription valable pour toute exécution ultérieure sur les 17 documents de validation |
 | — | G5 Extraction fiable | en attente | — | pilote 100 clauses préparé (`data/annotations/pilot_100/`, plancher 8 par thème porteur, 22 % longues) ; `src/extraction/extract_templates.py` validé à vide (dry-run, 7 tests verts) | **bloqué : aucun accès API LLM configuré sur ce poste** (ni `ANTHROPIC_API_KEY`, ni `ant auth`, SDK non installé) |
-| — | G6 Baseline reproductible | en attente | — | — | Legal-BERT cible `unfair` à ajouter au runner Lab |
+| 2026-09-15 | G6 Baseline reproductible | **partielle** | porteur | run `6bf45ed8…` : B0 0,00 · B0' thème seul **0,219** [0,201 ; 0,239] · B1 TF-IDF+LR **0,447** [0,413 ; 0,480] (hold-out) ; 5 plis 0,240 ± 0,010 / 0,452 ± 0,024 ; `results/baselines/README.md` | manque B2 (Legal-BERT cible `unfair`, G5K) et B3 (LLM prompté, clé API) ; un premier run à seuils in-sample a été remplacé (défaut documenté) |
 | — | G7 Pipeline complet | en attente | — | — | — |
 | — | G8 Résultats suffisants | en attente | — | — | — |
