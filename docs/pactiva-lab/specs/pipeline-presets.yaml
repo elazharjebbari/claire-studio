@@ -514,9 +514,10 @@ presets:
         bootstrap: { enabled: true, n_resamples: 1000 }
         human_ceiling: false
         error_analysis: true
-      # Cluster CONTRAINT : à lyon, `gpu=1` seul peut tomber sur neowise (GPU AMD, pas de pilote
-      # NVIDIA) — constaté le 15 sept. 2026, job 2067175 arrêté par le garde-fou (code 64).
-      compute: { target: g5k, require_gpu: true, g5k: { site: lyon, exotic: true, resources: "{cluster='gemini'}/gpu=1,walltime=02:00" } }
+      # Clusters CONTRAINTS aux GPU NVIDIA de lyon : `gpu=1` seul peut tomber sur neowise (GPU AMD,
+      # pas de pilote NVIDIA) — job 2067175 arrêté par le garde-fou (code 64) le 15 sept. 2026 ; le
+      # même jour gemini était Dead en quasi-totalité → sirius (A100) a servi (job 2067180).
+      compute: { target: g5k, require_gpu: true, g5k: { site: lyon, exotic: true, resources: "{cluster in ('gemini','sirius')}/gpu=1,walltime=02:00" } }
 
 recommended_order:
   - baseline-fast          # sans plancher, rien n'est interprétable
