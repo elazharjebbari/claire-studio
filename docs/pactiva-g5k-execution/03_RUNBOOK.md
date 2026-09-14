@@ -66,7 +66,7 @@ Réglages obligatoires :
 
 | Code | Cause | Remède |
 |---|---|---|
-| 64 | aucun GPU visible sur le nœud | vérifier `require_gpu` et le cluster réservé |
+| 64 | aucun GPU visible sur le nœud | vérifier `require_gpu` et **contraindre le cluster** : à lyon, `gpu=1` seul peut être servi par **neowise** (GPU AMD MI50, `nvidia-smi` absent) — écrire `resources: "{cluster='gemini'}/gpu=1,walltime=…"` (constaté le 15 sept. 2026, job 2067175) |
 | 65 | torch ne voit pas le GPU (CUDA/pytorch désaccordés) | reconstruire l'environnement conda |
 | 66 | checkpoint absent du cache HuggingFace | étape 2 |
 | `capability_missing` | package distant périmé | étape 1 |
