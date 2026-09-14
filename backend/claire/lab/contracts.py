@@ -23,6 +23,9 @@ TASKS = (
     # Tâches des papiers (docs/pactiva-experiences-papiers/02) : mesures d'accord (E1–E4),
     # cascade gold (E5), anomalie de co-occurrence (G2).
     "M1_agreement", "M2_gold_cascade", "G2_cooccurrence",
+    # Programme Legal KG (15 sept. 2026) : cible binaire d'abusivité CLAUDETTE, baseline
+    # texte-seul B2 (Legal-BERT) évaluée en conception → hold-out figé.
+    "U1_unfair",
 )
 MODEL_FAMILIES = (
     "majority", "position_only", "tfidf_linear", "embeddings_head",
@@ -37,6 +40,9 @@ TASK_FAMILIES = {
     "G2_cooccurrence": "cooccurrence_anomaly",
 }
 SPLIT_SCHEME = "group_kfold_document"
+# `design_holdout` : un seul pli, test = population figée `holdout` (17 documents),
+# entraînement = conception (33). Toujours groupé par document — jamais par phrase.
+SPLIT_SCHEMES = (SPLIT_SCHEME, "design_holdout")
 
 
 class ConfigValidationError(ValueError):
@@ -157,12 +163,19 @@ def validate_config(config: dict) -> dict:
     # Le découpage par phrase n'est pas une option : il ferait fuir des phrases du même
     # contrat entre entraînement et test. Le refus est ici, pas dans une revue de code.
     _require(
-        scheme == SPLIT_SCHEME,
+        scheme in SPLIT_SCHEMES,
         "/evaluation/split/scheme",
-        f"seul {SPLIT_SCHEME} est autorisé (un découpage par phrase créerait une fuite)",
+        f"attendu parmi {SPLIT_SCHEMES} (un découpage par phrase créerait une fuite)",
     )
-    k = int(split.get("k", 5))
-    _require(2 <= k <= 10, "/evaluation/split/k", "attendu entre 2 et 10")
+    if scheme == "design_holdout":
+        _require(
+            (config.get("data") or {}).get("population") != "holdout",
+            "/data/population",
+            "design_holdout entraîne sur la conception : ne pas restreindre au hold-out",
+        )
+    else:
+        k = int(split.get("k", 5))
+        _require(2 <= k <= 10, "/evaluation/split/k", "attendu entre 2 et 10")
 
     bootstrap = evaluation.get("bootstrap") or {}
     if bootstrap.get("enabled", True):

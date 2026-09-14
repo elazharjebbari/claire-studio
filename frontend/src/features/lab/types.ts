@@ -8,7 +8,8 @@ export type LabTask =
   | "T3_boundary"
   | "M1_agreement"
   | "M2_gold_cascade"
-  | "G2_cooccurrence";
+  | "G2_cooccurrence"
+  | "U1_unfair";
 
 export type RunStatus =
   | "queued"

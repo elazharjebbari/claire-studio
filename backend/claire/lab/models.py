@@ -53,6 +53,7 @@ class Task(models.TextChoices):
     M1 = "M1_agreement", "M1 — mesures d'accord (E1–E4)"
     M2 = "M2_gold_cascade", "M2 — cascade gold (E5)"
     G2 = "G2_cooccurrence", "G2 — anomalie de co-occurrence"
+    U1 = "U1_unfair", "U1 — abusivité CLAUDETTE (texte seul)"
 
 
 class ComputeKind(models.TextChoices):

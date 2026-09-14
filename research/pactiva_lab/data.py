@@ -74,6 +74,45 @@ class Dataset:
             (test if sentence.document in test_documents else train).append(position)
         return train, test
 
+    def restricted_to(self, documents: set[str]) -> "Dataset":
+        """Copie restreinte à une population de documents (filtre `data.population`).
+
+        Les plis sont INTERSECTÉS, jamais recalculés : un pli vidé disparaît, les autres
+        gardent leur composition — deux runs sur la même population restent appariés."""
+        keep = set(documents)
+        sentences = [s for s in self.sentences if s.document in keep]
+        folds = [[d for d in fold if d in keep] for fold in self.folds]
+        folds = [fold for fold in folds if fold]
+        return Dataset(
+            root=self.root, manifest=self.manifest, splits={**self.splits, "folds": folds},
+            sentences=sentences, labels=self.labels,
+            judges={k: v for k, v in self.judges.items() if k[0] in keep},
+            taxonomy=self.taxonomy,
+        )
+
+    def with_holdout_fold(self, holdout: set[str]) -> "Dataset":
+        """Découpage `design_holdout` : UN pli dont le test est la population figée
+        `holdout` et l'entraînement tout le reste (la population de conception).
+
+        Le hold-out n'a servi ni à concevoir les fusions ni à régler quoi que ce soit ;
+        ce découpage est celui des baselines texte-seul du programme Legal KG."""
+        present = set(self.documents)
+        test = sorted(holdout & present)
+        train = sorted(present - holdout)
+        if not test or not train:
+            raise ValueError(
+                "design_holdout : il faut des documents des deux côtés "
+                f"(train={len(train)}, test={len(test)}) — ne pas combiner avec "
+                "data.population='holdout'"
+            )
+        return Dataset(
+            root=self.root, manifest=self.manifest,
+            splits={**self.splits, "scheme": "design_holdout", "k": 1, "folds": [test],
+                    "train_documents": train},
+            sentences=self.sentences, labels=self.labels, judges=self.judges,
+            taxonomy=self.taxonomy,
+        )
+
     def subsample_documents(
         self, n: int, *, seed: int = 0, pool: list[str] | None = None
     ) -> list[str]:

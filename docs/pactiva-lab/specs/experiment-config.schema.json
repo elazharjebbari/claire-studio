@@ -14,7 +14,7 @@
 
     "task": {
       "enum": ["T1_primary", "T2_multilabel", "T3_boundary",
-               "M1_agreement", "M2_gold_cascade", "G2_cooccurrence"],
+               "M1_agreement", "M2_gold_cascade", "G2_cooccurrence", "U1_unfair"],
       "description": "T1 mono-label (thème primaire) · T2 multi-label (ensemble de thèmes) · T3 frontière de segment. Les plafonds humains diffèrent : ne jamais agréger les trois en un score unique. M1/M2 = tâches de MESURE (accords E1–E4, cascade gold E5) sans modèle entraîné ; G2 = anomalie de co-occurrence de thèmes évaluée contre l'abusivité CLAUDETTE."
     },
 
@@ -154,8 +154,8 @@
           "type": "object",
           "additionalProperties": false,
           "properties": {
-            "scheme": { "const": "group_kfold_document",
-              "description": "IMPOSÉ. Un split par phrase ferait fuir des phrases du même contrat entre train et test — les scores seraient gonflés et le résultat non publiable." },
+            "scheme": { "enum": ["group_kfold_document", "design_holdout"], "default": "group_kfold_document",
+              "description": "Toujours groupé par document : un split par phrase ferait fuir des phrases du même contrat entre train et test — les scores seraient gonflés et le résultat non publiable. `design_holdout` = un seul pli, entraînement sur la population de conception (33 documents), test sur le hold-out figé (17) ; `k` est alors ignoré." },
             "k": { "type": "integer", "minimum": 2, "maximum": 10, "default": 5 },
             "inner_k": { "type": "integer", "minimum": 0, "maximum": 5, "default": 3,
               "description": "Validation imbriquée pour le réglage des hyperparamètres. 0 = pas de réglage. Le test n'est JAMAIS utilisé pour sélectionner." }

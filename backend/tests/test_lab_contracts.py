@@ -52,3 +52,47 @@ def test_data_block_must_be_an_object():
     config["data"] = "T11"
     with pytest.raises(ConfigValidationError):
         validate_config(config)
+
+
+
+# ── U1_unfair et design_holdout (programme Legal KG, 15 sept. 2026) ──────────────
+def _u1_config(**overrides):
+    config = {
+        "version": 1, "task": "U1_unfair", "dataset_id": "d1",
+        "preprocess": {"detokenize": "regex_rules"},
+        "model": {"family": "tfidf_linear"},
+        "evaluation": {"split": {"scheme": "design_holdout"}},
+    }
+    config.update(overrides)
+    return config
+
+
+def test_u1_unfair_design_holdout_acceptee():
+    from claire.lab.contracts import validate_config
+
+    validate_config(_u1_config())
+
+
+def test_design_holdout_refuse_la_population_holdout():
+    from claire.lab.contracts import ConfigValidationError, validate_config
+
+    with pytest.raises(ConfigValidationError) as exc:
+        validate_config(_u1_config(data={"population": "holdout"}))
+    assert exc.value.path == "/data/population"
+
+
+def test_design_holdout_accepte_sans_k_et_group_kfold_garde_ses_bornes():
+    from claire.lab.contracts import ConfigValidationError, validate_config
+
+    validate_config(_u1_config(evaluation={"split": {"scheme": "design_holdout"}}))
+    with pytest.raises(ConfigValidationError) as exc:
+        validate_config(_u1_config(evaluation={"split": {"scheme": "group_kfold_document", "k": 1}}))
+    assert exc.value.path == "/evaluation/split/k"
+
+
+def test_decoupage_par_phrase_toujours_refuse():
+    from claire.lab.contracts import ConfigValidationError, validate_config
+
+    with pytest.raises(ConfigValidationError) as exc:
+        validate_config(_u1_config(evaluation={"split": {"scheme": "random_sentence"}}))
+    assert exc.value.path == "/evaluation/split/scheme"

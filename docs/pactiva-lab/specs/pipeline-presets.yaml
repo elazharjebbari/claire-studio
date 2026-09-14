@@ -39,6 +39,9 @@ themes:
   - id: graphe-anomalies
     label: "Hypergraphe & anomalies"
     description: "La partie graphe du papier long : l'identité des combinaisons de thèmes comme signal d'abusivité, évaluée contre CLAUDETTE — avec ses ablations d'honnêteté."
+  - id: abusivite-texte-seul
+    label: "Abusivité — baselines texte seul (Legal KG)"
+    description: "Les planchers B1/B2 du programme Legal KG (soumission 157) : prédire l'abusivité CLAUDETTE depuis le texte seul, entraînement sur les 33 documents de conception, mesure sur les 17 documents de validation figés. Ce que le graphe et les règles de la grey list doivent battre — ou expliquer."
 
 presets:
 
@@ -464,6 +467,55 @@ presets:
 # ─────────────────────────────────────────────────────────────────────────────
 # Ordre d'exécution recommandé
 # ─────────────────────────────────────────────────────────────────────────────
+  # ─────────────────────────────────────────────────────────────────────────────
+  # PROGRAMME LEGAL KG — baselines texte seul de l'abusivité (cible U1, hold-out figé)
+  # Protocole : legal-kg/docs/EXPERIMENTAL_PROTOCOL.md (B0–B2). Aucun seuil réglé sur le
+  # hold-out : la décision est l'argmax de la perte pondérée ; l'AUC-PR complète la F1.
+  # ─────────────────────────────────────────────────────────────────────────────
+
+  - id: unfair-tfidf-holdout
+    theme: abusivite-texte-seul
+    papers: [long]
+    stage: screening
+    label: "B1 — TF-IDF + linéaire, abusivité (conception → hold-out)"
+    why: "Le plancher lexical de l'abusivité, sous le même découpage figé que B2 : contrôle de parité avec legal-kg/src/detection/baselines_unfairness.py."
+    duration_hint: "~2 min CPU"
+    config:
+      task: U1_unfair
+      preprocess: { detokenize: regex_rules, case: lower, max_length: 128, context: { window_before: 1, window_after: 1 } }
+      model: { family: tfidf_linear, ngram_max: 2, min_df: 2 }
+      evaluation:
+        split: { scheme: design_holdout }
+        bootstrap: { enabled: true, n_resamples: 1000 }
+        human_ceiling: false
+        error_analysis: true
+      compute: { target: local }
+
+  - id: unfair-legalbert-holdout
+    theme: abusivite-texte-seul
+    papers: [long]
+    stage: confirmation
+    label: "B2 — Legal-BERT, abusivité (conception → hold-out)"
+    why: "Le plancher capacitif texte seul de la soumission 157 : hyperparamètres de legal-bert-finetune (E4.4) repris tels quels, un seul entraînement sur la conception, une seule mesure sur le hold-out."
+    duration_hint: "~25 min GPU (un seul pli)"
+    config:
+      task: U1_unfair
+      preprocess: { detokenize: regex_rules, max_length: 128, context: { window_before: 1, window_after: 1 } }
+      model:
+        family: transformer_finetune
+        checkpoint: nlpaueb/legal-bert-base-uncased
+        epochs: 8
+        batch_size: 16
+        learning_rate: 2.0e-5
+        loss: weighted_ce
+        early_stopping_patience: 3
+      evaluation:
+        split: { scheme: design_holdout }
+        bootstrap: { enabled: true, n_resamples: 1000 }
+        human_ceiling: false
+        error_analysis: true
+      compute: { target: g5k, require_gpu: true, g5k: { site: lyon, exotic: true, resources: "gpu=1,walltime=02:00" } }
+
 recommended_order:
   - baseline-fast          # sans plancher, rien n'est interprétable
   - position-only          # diagnostic : que dit la structure seule ?
@@ -477,3 +529,5 @@ recommended_order:
   - multilabel-finetune    # la tâche réelle
   - sequence-boundary      # le point dur
   - cooccurrence-abusivite # la partie graphe du papier long (G2)
+  - unfair-tfidf-holdout   # plancher lexical de l'abusivité (Legal KG, B1)
+  - unfair-legalbert-holdout # plancher capacitif texte seul (Legal KG, B2)

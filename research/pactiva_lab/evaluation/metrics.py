@@ -251,3 +251,32 @@ def reliability_curve(
             }
         )
     return out
+
+
+def positive_class_prf(y_true: list[str], y_pred: list[str], positive: str) -> dict[str, float]:
+    """P/R/F1 de la classe positive d'une tâche binaire (U1 : `unfair`), avec support."""
+    return per_class_prf(y_true, y_pred).get(
+        positive, {"precision": 0.0, "recall": 0.0, "f1": 0.0, "support": 0}
+    )
+
+
+def average_precision(y_true: list[bool], scores: list[float]) -> float | None:
+    """Average precision PURE (sans sklearn), ex æquo groupés par seuil — même définition
+    que `average_precision_score` : AP = Σ (R_n − R_{n−1}) · P_n. None sans positif."""
+    pairs = [(1 if t else 0, float(v)) for t, v in zip(y_true, scores)]
+    total_positive = sum(t for t, _ in pairs)
+    if not pairs or total_positive == 0:
+        return None
+    ordered = sorted(pairs, key=lambda p: -p[1])
+    ap, tp, seen, i = 0.0, 0, 0, 0
+    while i < len(ordered):
+        j = i
+        group_tp = 0
+        while j < len(ordered) and ordered[j][1] == ordered[i][1]:
+            group_tp += ordered[j][0]
+            j += 1
+        tp += group_tp
+        seen += j - i
+        ap += (tp / seen) * (group_tp / total_positive)
+        i = j
+    return round(ap, 6)

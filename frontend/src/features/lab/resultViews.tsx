@@ -47,6 +47,10 @@ export const TASK_REFERENCES: Record<
     label: "Rare ≠ abusif",
     text: "Un score d'anomalie ne vaut que CONTRE les labels (AUC-PR, precision@k). Repères mesurés : cardinalité lift 1,09× (nul) ; identité de combinaison jusqu'à 7,4×.",
   },
+  U1_unfair: {
+    label: "Baselines texte-seul (hold-out 17 documents)",
+    text: "Taux de base 11,0 % ; thème seul F1 0,22 ; TF-IDF + régression logistique F1 0,45 [0,41 ; 0,48]. Pas de plafond humain : l'abusivité CLAUDETTE est mono-source.",
+  },
 };
 
 /** Bande de référence publiée par tâche — complète (sans remplacer) le plafond calculé

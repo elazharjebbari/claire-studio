@@ -25,4 +25,9 @@ __version__ = "0.1.0"
 # qui exige une capacité absente : sur un déploiement distant (Grid'5000) synchronisé à la
 # main, un package périmé IGNORERAIT silencieusement `data.taxonomy` et produirait des
 # résultats étiquetés T11 mais calculés en T20 — une fausse figure indétectable.
-CAPABILITIES = frozenset({"taxonomy_projection", "population_filter"})
+CAPABILITIES = frozenset({
+    "taxonomy_projection", "population_filter",
+    # 15 sept. 2026 (Legal KG, baseline B2) : cible d'abusivité CLAUDETTE et découpage
+    # conception → hold-out figé. Un paquet Grid'5000 antérieur refusera ces configs.
+    "unfair_target", "design_holdout_split",
+})

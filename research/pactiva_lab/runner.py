@@ -18,7 +18,7 @@ from collections import defaultdict
 from pathlib import Path
 
 from .data import Dataset, load_dataset
-from .taxonomy import spec_fingerprint, taxonomy_of
+from .taxonomy import population_documents, population_of, spec_fingerprint, taxonomy_of
 from .env import capture_environment
 from .evaluation.bootstrap import bootstrap_ci, fold_dispersion
 from .evaluation.ceiling import human_ceiling
@@ -27,9 +27,11 @@ from .evaluation.metrics import (
     confusion_matrix,
     expected_calibration_error,
     lrap,
+    average_precision,
     macro_f1,
     micro_f1,
     multilabel_prf,
+    positive_class_prf,
     per_class_prf,
     reliability_curve,
     top_confusions,
@@ -43,7 +45,15 @@ class Cancelled(RuntimeError):
     """Annulation coopérative demandée par l'orchestrateur."""
 
 
+UNFAIR, FAIR = "unfair", "fair"
+SINGLE_LABEL_TASKS = ("T1_primary", "U1_unfair")
+
+
 def _targets(dataset: Dataset, task: str):
+    if task == "U1_unfair":
+        # Cible binaire : la phrase porte au moins une étiquette d'abusivité CLAUDETTE.
+        # Les thèmes ne sont PAS une entrée : baseline texte-seul (Legal KG, B2).
+        return [UNFAIR if s.unfair else FAIR for s in dataset.sentences]
     if task == "T2_multilabel":
         return [set(s.themes) for s in dataset.sentences]
     if task == "T3_boundary":
@@ -83,6 +93,10 @@ def assert_capabilities(config: dict) -> None:
         required.add("taxonomy_projection")
     if data.get("population"):
         required.add("population_filter")
+    if config.get("task") == "U1_unfair":
+        required.add("unfair_target")
+    if ((config.get("evaluation") or {}).get("split") or {}).get("scheme") == "design_holdout":
+        required.add("design_holdout_split")
     missing = required - CAPABILITIES
     if missing:
         raise RuntimeError(
@@ -129,6 +143,16 @@ def run_experiment(
     # Taxonomie de traitement : projection AU CHARGEMENT (les fichiers restent en T20).
     # Les plis étant inchangés, deux runs de taxonomies différentes sont appariés.
     dataset = load_dataset(data_dir, taxonomy=taxonomy_of(config))
+    # Population figée (anti-contamination) : restriction APRÈS chargement, plis
+    # intersectés. Puis découpage `design_holdout` : un seul pli, test = hold-out.
+    population = population_of(config)
+    if population:
+        dataset = dataset.restricted_to(population_documents(population))
+    split_scheme = ((config.get("evaluation") or {}).get("split") or {}).get(
+        "scheme", "group_kfold_document"
+    )
+    if split_scheme == "design_holdout":
+        dataset = dataset.with_holdout_fold(population_documents("holdout"))
     preprocess = config.get("preprocess") or {}
     texts = _build_texts(dataset, preprocess)
     targets = _targets(dataset, task)
@@ -237,6 +261,13 @@ def run_experiment(
             # « se calculerait » sur des rangs ex æquo dégénérés (> 1 possible, revue
             # adversariale) — mieux vaut son absence qu'un chiffre faux.
             fold_result["lrap"] = lrap([targets[i] for i in test_idx], scores)
+        if task == "U1_unfair" and proba_ok:
+            # AUC-PR sur les scores complets du pli (la décision reste l'argmax de la
+            # perte pondérée : aucun seuil réglé sur le test).
+            fold_result["unfair_auc_pr"] = average_precision(
+                [targets[i] == UNFAIR for i in test_idx],
+                [row.get(UNFAIR, 0.0) for row in scores],
+            )
         fold_scores.append(fold_result)
         _write_progress(progress_path, fold + 1, n_folds)
         _write_partial(out_dir, task, fold_scores, started)
@@ -260,14 +291,26 @@ def run_experiment(
                 task,
             )["macro_f1"]
 
+        n_resamples = int(
+            (config.get("evaluation") or {}).get("bootstrap", {}).get("n_resamples", 1000)
+        )
         metrics["macro_f1_ci"] = bootstrap_ci(
-            sorted(by_document),
-            metric_on,
-            n_resamples=int(
-                (config.get("evaluation") or {}).get("bootstrap", {}).get("n_resamples", 1000)
-            ),
+            sorted(by_document), metric_on, n_resamples=n_resamples,
             seed=int(config.get("seed", 42)),
         )
+        if task == "U1_unfair":
+            def unfair_f1_on(documents: list[str]) -> float:
+                rows = [r for d in documents for r in by_document.get(d, [])]
+                if not rows:
+                    return 0.0
+                return positive_class_prf(
+                    [r["y_true"] for r in rows], [r["y_pred"] for r in rows], UNFAIR
+                )["f1"]
+
+            metrics["unfair_f1_ci"] = bootstrap_ci(
+                sorted(by_document), unfair_f1_on, n_resamples=n_resamples,
+                seed=int(config.get("seed", 42)),
+            )
 
     result = {
         "task": task,
@@ -278,6 +321,18 @@ def run_experiment(
             "nSentences": len(dataset.sentences),
         },
         "preprocess": describe(preprocess),
+        "split": {
+            "scheme": split_scheme,
+            "population": population,
+            "n_folds": len(dataset.folds),
+            "n_train_documents": (
+                len(dataset.splits.get("train_documents", []))
+                if split_scheme == "design_holdout" else None
+            ),
+            "n_test_documents": (
+                len(dataset.folds[0]) if split_scheme == "design_holdout" else None
+            ),
+        },
         "metrics": metrics,
         "per_fold": fold_scores,
         "per_label": _per_label(predictions, task),
@@ -383,11 +438,20 @@ def _score(y_true: list, y_pred: list, task: str) -> dict:
         return {"macro_f1": round(f1, 6), "micro_f1": round(f1, 6),
                 "boundary_precision": round(p, 6), "boundary_recall": round(r, 6),
                 "window_diff": window_diff(truth, pred)}
-    return {
+    out = {
         "macro_f1": macro_f1(y_true, y_pred),
         "micro_f1": micro_f1(y_true, y_pred),
         "kappa": cohen_kappa(y_true, y_pred),
     }
+    if task == "U1_unfair":
+        positive = positive_class_prf(y_true, y_pred, UNFAIR)
+        out.update({
+            "unfair_precision": positive["precision"],
+            "unfair_recall": positive["recall"],
+            "unfair_f1": positive["f1"],
+            "unfair_support": positive["support"],
+        })
+    return out
 
 
 def _aggregate(fold_scores: list[dict], task: str) -> dict:
@@ -429,7 +493,7 @@ def _global_scores(predictions: list[dict], task: str) -> dict:
 
 
 def _per_label(predictions: list[dict], task: str) -> list[dict]:
-    if task != "T1_primary":
+    if task not in SINGLE_LABEL_TASKS:
         return []
     stats = per_class_prf(
         [row["y_true"] for row in predictions], [row["y_pred"] for row in predictions]
@@ -448,6 +512,15 @@ def _ceiling(dataset: Dataset, task: str) -> dict:
     Le dataset agrégé ne conserve pas les votes individuels ; on utilise donc le nombre
     d'annotateurs et la classe d'accord comme approximation, en le DISANT franchement.
     """
+    if task == "U1_unfair":
+        return {
+            "value": None, "task": task, "pairs": 0,
+            "warning": "not_applicable",
+            "note": (
+                "l'abusivité CLAUDETTE est une référence mono-source (une annotation "
+                "par phrase) : aucun plafond inter-annotateurs n'est calculable"
+            ),
+        }
     multi = [s for s in dataset.sentences if s.n_annotators >= 2]
     if not multi:
         return {
@@ -515,7 +588,7 @@ def _errors(predictions: list[dict], task: str) -> dict:
         },
         "lowestConfidenceErrors": sorted(wrong, key=lambda r: r["confidence"])[:20],
     }
-    if task == "T1_primary":
+    if task in SINGLE_LABEL_TASKS:
         out["topConfusions"] = top_confusions(
             [row["y_true"] for row in predictions], [row["y_pred"] for row in predictions]
         )
