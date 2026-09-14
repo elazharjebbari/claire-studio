@@ -1,0 +1,64 @@
+@startuml dag
+title DAG du programme — tâches, dépendances, chemin critique (en rouge)
+skinparam defaultFontSize 11
+skinparam ArrowColor #444444
+
+rectangle "P0 Audit ressources\n(fait)" as P0 #DDDDDD
+rectangle "P1 Littérature\n(fait, maintenance)" as P1 #DDDDDD
+rectangle "P2 Data understanding\n(fait) + réimport XML" as P2 #DDDDDD
+rectangle "P3 Modèle juridique\nYAML + relecture juriste\n[Gate 3]" as P3 #FFE0E0
+rectangle "P4 Schéma KG\nADR-001/002/003\n[Gate 4]" as P4 #FFE0E0
+rectangle "P6a Build L1–L2\n+ ingestion Memgraph" as P6a
+rectangle "P7a Baselines B0–B3\n(Lab, plis) [Gate 6]" as P7a
+rectangle "P5a Pilote extraction\n100 clauses, 2 juristes\n[Gate 5]" as P5a #FFE0E0
+rectangle "P5b Extraction hold-out\n+ validation juristes" as P5b #FFE0E0
+rectangle "P6b Ingestion L3\n(Norm validées)" as P6b #FFE0E0
+rectangle "P7b Gel des règles\n(hash + date + commit)" as P7b #FFE0E0
+rectangle "P8-E2 Règles sur hold-out\n+ ablations" as E2 #FFE0E0
+rectangle "P8-E1 Structure vs texte" as E1
+rectangle "P8-E4 Métriques KG\n+ réplication ouverte" as E4
+rectangle "P8-E3 Hybride +\nétude humaine" as E3
+rectangle "P8-E5 Venn / McNemar" as E5
+rectangle "P8-E6 Audit FP" as E6
+rectangle "P9 Analyse d'erreurs" as P9
+rectangle "P10 Consolidation\n[Gate 8]" as P10 #FFE0E0
+rectangle "P11 Publication\n157 CR · ICAIL · ressource" as P11 #FFE0E0
+
+P0 --> P2
+P0 --> P1
+P1 --> P3
+P2 --> P3
+P2 --> P4
+P3 --> P4
+P4 --> P6a
+P2 --> P7a
+P3 --> P5a
+P4 --> P5a
+P5a --> P5b
+P6a --> P6b
+P5b --> P6b
+P3 --> P7b
+P5a --> P7b
+P6b --> E2
+P7b --> E2
+P6b --> E1
+P7a --> E1
+P5b --> E4
+E2 --> E3
+E1 --> E3
+E1 --> E5
+E2 --> E5
+E2 --> E6
+E3 --> P9
+E5 --> P9
+E6 --> P9
+E4 --> P10
+P9 --> P10
+P10 --> P11
+
+legend right
+  Rouge : chemin critique P3 → P5a → P5b → P6b → P7b → E2 → P10 → P11
+  Parallélisable dès maintenant : P6a, P7a, réimport XML, P1 maintenance
+  Bloquants : Gate 3 (relecture juriste), Gate 5 (pilote), gel des règles avant tout calcul hold-out
+endlegend
+@enduml

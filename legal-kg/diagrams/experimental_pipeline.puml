@@ -1,0 +1,38 @@
+@startuml experimental_pipeline
+title Pipeline expérimental — E0 → E6, baselines et étanchéité
+skinparam defaultFontSize 11
+start
+partition "Données" {
+  :Export figé · populations conception (33) / validation (17)
+  · 5 plis par document (graine 42);
+}
+partition "Étanchéité (tests automatiques)" {
+  :prompts sans catégorie/item · few-shot ⊂ conception
+  · règles gelées (hash, date) avant tout calcul sur le hold-out
+  · aucune règle ne lit LABELED · plis disjoints;
+}
+fork
+  partition "Baselines" {
+    :B0 majorité · B0' thème seul · B1 TF-IDF+LR
+    · B2 BERT / Legal-BERT (cible unfair) · B3 LLM prompté · B4 graph-only;
+  }
+fork again
+  partition "Construction" {
+    :E0 pilote templates (100 clauses, 2 juristes, κ par champ);
+    :E4 extraction complète · métriques KG · réplication modèle ouvert;
+  }
+end fork
+:E2 règles gelées sur hold-out
+P/R par item · Δ vs thème seul · ablations (sans exceptions, R1, R1+R2, +R3, brut vs validé);
+:E1 structure vs texte
+A3 A7 A8 vs B0–B4 · macro-F1 / PR-AUC par catégorie · permutation appariée · Holm;
+:E3 hybride & explications
+non-infériorité (borne 0,05) · étude humaine 2 juristes × 200 cas · règles vs saillance;
+:E5 ce que le graphe voit
+Venn des TP · McNemar · familles R1–R4;
+:E6 audit des faux positifs
+origine {template, règle, référence} · omissions candidates du benchmark;
+:Consolidation (Gate 8)
+revue adversariale · tableaux imposés · paper/tables/*.tex;
+stop
+@enduml

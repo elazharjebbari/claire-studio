@@ -1,0 +1,35 @@
+@startuml data_pipeline
+title Pipeline de données — de l'export au graphe interrogeable
+start
+:Export Lab figé (empreinte 7116e627…)
+sentences · votes · judges · gold · reference · splits;
+:Profil reproductible
+src/profiling/profile_dataset.py → DATA_PROFILE.md, data/profiling/*;
+if (Gate 2 : données comprises ?) then (oui)
+  :Réimport archive XML originale
+  sévérité 1/2/3, sections;
+  :Build L1 + L2 + L4-référence
+  src/graph/build_document_graph.py → graph/export/<dataset>/*.csv;
+  :Ingestion Memgraph
+  01_ingest.cypher (MERGE idempotent) + memgraph_schema.cypher;
+  :Clauses cibles → clauses.jsonl
+  (thème T11, inventaire d'actions, ≤ 8 phrases);
+  fork
+    :Extraction LLM (pilote → complet)
+    → validation → L3 Norm;
+  fork again
+    :Baselines B0–B4
+    (Lab, plis par document);
+  end fork
+  :Règles gelées (hash + date)
+  → MATCHES_ITEM (run_id);
+  :Évaluation E0–E6
+  IC bootstrap par document;
+  :Tableaux + papier
+  paper/tables/*.tex (générés);
+  stop
+else (non)
+  :Compléter le profil / corriger l'export;
+  stop
+endif
+@enduml

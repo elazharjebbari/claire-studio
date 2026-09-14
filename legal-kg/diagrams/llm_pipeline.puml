@@ -1,0 +1,28 @@
+@startuml llm_pipeline
+title Sélection et exploitation des LLM — pilote, extraction, vérification, réplication
+skinparam defaultFontSize 11
+start
+:Constituer le pilote : 100 clauses de CONCEPTION
+stratifiées par thème T11, 20 % longues ; référence = 2 juristes;
+:Pour chaque candidat (configs/models.yaml) :
+3 exécutions à T=0, prompt v0.x, schéma imposé;
+:Mesurer : conformité au schéma · exactitude par champ
+· rappel d'énoncé · hallucination · reproductibilité · coût · latence · déployabilité;
+:Score pondéré DÉCLARÉ (0,40 / 0,20 / 0,15 / 0,15 / 0,10) → modèle retenu M*
++ vérificateur V (autre famille) + modèle ouvert O (réplication);
+if (Gate 5 : conformité ≥ 0,98, hallucination ≤ 5 %, repro ≥ 0,95, κ validateurs ≥ 0,67 ?) then (oui)
+  fork
+    :Extraction complète avec M* (2 450 clauses, Batch API)
+    → étapes 2–5 → validation humaine (hold-out 100 %);
+  fork again
+    :Réplication hold-out avec O (poids épinglés)
+    → mêmes règles → comparer RQ2;
+  end fork
+  :Enregistrer Run {model, version, prompt_hash, schema_hash, seed, coût}
+  et conserver step_1_raw … step_6_validated;
+  stop
+else (non)
+  :Réviser prompt / schéma (nouvelle version) ou changer de modèle ; re-piloter;
+  stop
+endif
+@enduml

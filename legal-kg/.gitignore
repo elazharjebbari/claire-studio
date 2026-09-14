@@ -1,0 +1,14 @@
+data/raw/*
+!data/raw/README.md
+graph/export/*/
+results/*/
+*.pyc
+__pycache__/
+.pytest_cache/
+# Export du dataset : les textes (CLAUDETTE, licence tierce) et les gros fichiers ne sont pas versionnés ici.
+# Les couches d'annotation publiées vivent dans ../data/thematic-layer/ (versionnées) ; voir data/processed/README.md
+data/processed/*.jsonl
+data/annotations/clauses_all.jsonl
+data/annotations/holdout/clauses.jsonl
+.venv/
+results/extraction/dry-run/

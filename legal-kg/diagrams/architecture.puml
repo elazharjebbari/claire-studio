@@ -1,0 +1,48 @@
+@startuml architecture
+title Legal KG programme — architecture générale (modèle D en couches)
+skinparam componentStyle rectangle
+skinparam defaultFontSize 12
+
+package "Sources" {
+  [CLAUDETTE XML original\n(50 ToS, sévérité, sections)] as XML
+  [Export Lab 7116e627\n(sentences, votes, judges, gold, reference)] as EXPORT
+  [Directive 93/13/CEE\n+ annexe (a)–(q)] as DIR
+}
+
+package "Plateforme Pactiva (prod)" {
+  [Atelier d'annotation\n(3 annotateurs, 4 juges LLM)] as ATELIER
+  [Module GOLD\n(cascade, arbitrage)] as GOLD
+  [Lab\n(datasets versionnés, runs, G5K)] as LAB
+}
+
+package "legal-kg" {
+  [src/profiling\n(profil reproductible)] as PROF
+  [src/extraction\n(LLM schema-guided → validation)] as EXT
+  [src/graph\n(build CSV → ingestion)] as BUILD
+  database "Memgraph\nL1 documentaire · L2 thématique\nL3 normative · L4 juridique · L5 résultats\n+ provenance (Run, Activity)" as MG
+  [graph/rules\n(YAML gelé → Cypher)] as RULES
+  [src/detection\n(règles R1–R4, baselines, A3–A8)] as DET
+  [src/evaluation\n(métriques, IC, tests, tableaux)] as EVAL
+  [results/ + paper/tables\n(runs enregistrés)] as RES
+}
+
+actor "Juristes\n(validation, audit)" as JUR
+
+ATELIER --> LAB
+GOLD --> LAB
+LAB --> EXPORT
+XML --> BUILD : sévérité, sections (réimport)
+EXPORT --> PROF
+EXPORT --> BUILD
+BUILD --> MG : L1, L2, L4-référence
+DIR --> RULES : LEGAL_MODEL, directive_93_13.yaml
+EXT --> JUR : propositions
+JUR --> EXT : validated / edited / rejected
+EXT --> MG : L3 (Norm, EVIDENCED_BY, PRODUCED_BY)
+RULES --> DET
+MG <--> DET : MATCHES_ITEM (append-only), PREDICTED
+DET --> EVAL
+MG --> EVAL : LABELED (évaluation seulement)
+EVAL --> RES
+EVAL --> JUR : explications à juger (E3), faux positifs (E6)
+@enduml

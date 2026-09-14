@@ -1,0 +1,25 @@
+@startuml detection_explanation_pipeline
+title Détection par règles et explication par sous-graphe témoin
+skinparam defaultFontSize 11
+participant "graph/rules\n(YAML gelé)" as Y
+participant "Compilateur\n(src/detection/rules)" as K
+database "Memgraph" as M
+participant "Moteur d'explication" as X
+actor "Juriste" as J
+
+Y -> K : charger v0.x, vérifier hash ∈ FROZEN.txt\nrefuser LABELED / Category
+K -> M : requêtes Cypher paramétrées ($run_id, $rule_version)
+M --> K : appariements (Norm, Clause, evidence, item)
+K -> M : MERGE MATCHES_ITEM {rule_id, rule_version, run_id, evidence_ids} (append-only)
+K -> X : identifiants des signalements
+X -> M : explication complète (03_explanation_queries)
+M --> X : template, règle, item, texte de l'annexe, phrases d'evidence, trace de validation
+X -> X : rendu texte + contrefactuel de champ (R1/R2)
+X -> J : sous-graphe témoin (JSON + texte)
+J --> X : {suffisante | partielle | insuffisante} · {exacte | partielle | erronée} · utile ?
+X -> M : Activity {kind: audit, actor, at, verdict}
+note over K, M
+  Projection : phrases d'evidence uniquement
+  Fidélité : masquer l'evidence ⇒ le signalement disparaît (test de suppression)
+end note
+@enduml

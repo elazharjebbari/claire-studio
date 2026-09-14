@@ -1,0 +1,56 @@
+@startuml memgraph_model
+title Modèle Memgraph (property graph) — étiquettes, relations, contraintes
+left to right direction
+skinparam defaultFontSize 11
+
+rectangle "(:Document)\nid* name population\nn_sentences agreement_alpha" as D
+rectangle "(:Section)\nid* order title" as S
+rectangle "(:Clause)\nid* source(∃) start end\nn_sentences themes_signature\n[embedding_node2vec]" as C
+rectangle "(:Sentence)\nid* index(∃) text(∃)\ntext_detok n_tokens doc_position\nidx: document" as SE
+rectangle "(:Theme)\nkey*=code@taxonomy\ncode taxonomy label stratum" as T
+rectangle "(:Annotation)\nid* annotator source primary\nsecondaries model version\nidx: annotator, source" as A
+rectangle "(:GoldDecision)\nid* agreement_class auto_level\nrisk_band confidence tally finalized" as G
+rectangle "(:Norm)\nid* modality(∃) source(∃) status(∃)\naction object condition notice remedy\nconfidence validated_by\nidx: modality, action, status" as N
+rectangle "(:Party)\nrole" as P
+rectangle "(:ActionType)\ncode theme_scope" as AT
+rectangle "(:AnnexItem)\ncode* text expressibility risk_class" as AI
+rectangle "(:LegalSource)\nid* title jurisdiction bindingness" as LS
+rectangle "(:Category)\ncode* definition" as CAT
+rectangle "(:Rule)\nkey*=id@version\nrules_hash(∃) frozen_at family item" as R
+rectangle "(:Run)\nid* kind(∃) model prompt_hash\nrules_hash seed code_version started_at" as RUN
+rectangle "(:Activity)\nid* kind actor at before after" as ACT
+
+D --> S : CONTAINS
+D --> C : CONTAINS
+S --> C : CONTAINS
+C --> SE : CONTAINS
+SE --> SE : NEXT
+C --> S : REFERS_TO {surface}
+SE --> T : HAS_THEME {source, role, confidence, run_id}
+C --> T : HAS_THEME
+T --> T : PROJECTS_TO {spec_version}
+SE --> A : ANNOTATED_BY
+SE --> G : DECIDED_BY
+C --> N : STATES
+N --> P : HAS_ACTOR (exactement 1)
+N --> P : HAS_COUNTERPARTY
+N --> AT : HAS_ACTION
+N --> SE : EVIDENCED_BY {span} (≥ 1)
+N --> N : CONDITIONAL_ON | EXCEPTION_TO | CONTRADICTS {run_id}
+N --> AI : MATCHES_ITEM {rule_id, rule_version, run_id, evidence_ids, superseded_by}
+AI --> LS : PART_OF
+AI --> CAT : MAPS_TO
+SE --> CAT : LABELED {severity, source}
+SE --> CAT : PREDICTED {model, version, run_id, score, split}
+C --> C : SIMILAR_TO {method, score, run_id}
+A --> RUN : PRODUCED_BY
+N --> RUN : PRODUCED_BY
+R --> RUN : PRODUCED_BY
+N --> ACT : EDITED_BY
+
+legend right
+  * = contrainte d'unicité · (∃) = contrainte d'existence · idx = index
+  MATCHES_ITEM / PREDICTED / SIMILAR_TO : append-only (superseded_by)
+  Vues (non stockées) : IMPOSES, GRANTS, PROHIBITS, ALLOWS
+endlegend
+@enduml

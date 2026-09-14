@@ -1,0 +1,13 @@
+# GATES_LOG — journal des portes de qualité
+
+| Date | Gate | Décision | Décideur | Preuves | Réserves / dettes |
+|---|---|---|---|---|---|
+| 2026-09-15 | G1 État de l'art | **passée** | porteur | `docs/STATE_OF_THE_ART.md`, `docs/literature/references.bib` (64 entrées, ✅/⚠) | ⚠ 7 entrées à re-vérifier (DOI/pages) avant publication |
+| 2026-09-15 | G2 Données comprises | **passée** | porteur | `docs/DATA_PROFILE.md` régénérable, `data/profiling/`, `docs/DATA_UNDERSTANDING.md` | réimport fait le 15 sept : sévérité sur 95.6 % des labels, sections pour 3/50 documents (`data/annotations/`) |
+| 2026-09-15 | G3 Schéma juridique | **passée sur validation du porteur** | porteur (validation explicite du 15 sept, « je valide les décisions humaines ») | `ontology/directive_93_13.yaml` v0.1 (17 items, exceptions §2, mapping, expressibilité), `docs/LEGAL_MODEL.md` | **à consigner** : relecture des deux co-autrices juristes (F. Z. Boulaich, F. Ouali) avant camera-ready ; toute correction = v0.2 + nouveau gel des règles |
+| 2026-09-15 | G4 Schéma du KG | **passée** | porteur | `ontology/legal_kg_schema.yaml`, `graph/schema/memgraph_schema.cypher`, build L1–L2 (50 docs, 11 967 clauses), tests d'étanchéité verts, ADR-001/002/003 | contraintes Memgraph à exécuter sur une instance (docker) — non fait faute d'instance locale |
+| 2026-09-15 | Gel des règles v0.1 | **effectué** | porteur | `graph/rules/FROZEN.txt` (SHA-256 + date + commit) | pré-inscription valable pour toute exécution ultérieure sur les 17 documents de validation |
+| — | G5 Extraction fiable | en attente | — | pilote 100 clauses préparé (`data/annotations/pilot_100/`, plancher 8 par thème porteur, 22 % longues) ; `src/extraction/extract_templates.py` validé à vide (dry-run, 7 tests verts) | **bloqué : aucun accès API LLM configuré sur ce poste** (ni `ANTHROPIC_API_KEY`, ni `ant auth`, SDK non installé) |
+| — | G6 Baseline reproductible | en attente | — | — | Legal-BERT cible `unfair` à ajouter au runner Lab |
+| — | G7 Pipeline complet | en attente | — | — | — |
+| — | G8 Résultats suffisants | en attente | — | — | — |

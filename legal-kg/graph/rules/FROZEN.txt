@@ -1,0 +1,8 @@
+# Gel des artefacts de pré-inscription — une ligne par artefact gelé.
+# Format : <sha256>  <fichier>  <version>  <date UTC>  <commit>
+# Le moteur refuse d'exécuter sur la population `holdout` une version absente d'ici ou gelée après la première exécution.
+# Ce que les auteurs savaient au gel : définitions des 8 catégories CLAUDETTE ; taux d'abusivité par thème sur les 50
+# documents (DATA_PROFILE) — PAS les templates du hold-out (inexistants à cette date) ; aucune exécution de règle n'a eu lieu.
+8f2967dbbcc4911150393e92b1c1cc928de491d8115bc4b1024c1e16c2216f34  graph/rules/grey_list_queries.yaml  0.1  2026-09-14T22:16:24+00:00  <commit contenant ce fichier>
+e0507b99dc2f91bfb7c281a9a6bb210c0f9d189e0e1ed195319f5febbfd95d4b  ontology/directive_93_13.yaml  0.1  2026-09-14T22:16:24+00:00  <commit contenant ce fichier>
+3505122d82d363e5030578f42247520af6aff62bb6fe69f9fce00599f26205bf  ontology/legal_kg_schema.yaml  0.1  2026-09-14T22:16:24+00:00  <commit contenant ce fichier>

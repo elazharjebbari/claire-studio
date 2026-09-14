@@ -1,0 +1,78 @@
+# Modèles candidats pour l'extraction (LLM_EXTRACTION §5). Aucun chiffre de performance ici : ils viennent du pilote.
+# Tarifs Anthropic : API première partie, cache de la référence du 24 juin 2026 (à re-vérifier au moment du run).
+selection_protocol:
+  pilot_clauses: 100                 # conception, stratifiées par thème T11, 20 % de clauses longues
+  runs_per_model: 3                  # température 0, seed fixé si supporté
+  reference: "two lawyers, independently validated templates"
+  weighted_score: {field_accuracy: 0.40, hallucination_rate: 0.20, reproducibility: 0.15, cost: 0.15, local_deployability: 0.10}
+  replication: "best open model re-runs the holdout extraction"
+candidates:
+  - id: claude-opus-5
+    provider: anthropic
+    tier: proprietary_frontier
+    price_per_mtok: {input: 5.00, output: 25.00}
+    structured_output: native
+    local: false
+    notes: "défaut recommandé par la référence API ; Batch API −50 %"
+  - id: claude-sonnet-5
+    provider: anthropic
+    tier: proprietary
+    price_per_mtok: {input: 2.00, output: 10.00}
+    structured_output: native
+    local: false
+  - id: claude-fable-5-1
+    provider: anthropic
+    tier: proprietary_frontier
+    price_per_mtok: {input: 10.00, output: 50.00}
+    structured_output: native
+    local: false
+    notes: "thinking toujours actif ; pas de tool_choice forcé ; à réserver au vérificateur ou au pilote"
+  - id: claude-haiku-4-5
+    provider: anthropic
+    tier: small
+    price_per_mtok: {input: 1.00, output: 5.00}
+    structured_output: native
+    local: false
+    notes: "candidat vérificateur / passage à l'échelle"
+  - id: openai-gpt-current
+    provider: openai
+    tier: proprietary
+    price_per_mtok: null           # à relever au moment du run
+    structured_output: native
+    local: false
+  - id: google-gemini-current
+    provider: google
+    tier: proprietary
+    price_per_mtok: null
+    structured_output: native
+    local: false
+  - id: llama-3.x-70b
+    provider: meta (open weights)
+    tier: open_general
+    price_per_mtok: null
+    structured_output: constrained_decoding
+    local: true
+  - id: qwen-2.5-72b
+    provider: alibaba (open weights)
+    tier: open_general
+    structured_output: constrained_decoding
+    local: true
+  - id: mistral-large
+    provider: mistral
+    tier: open_or_api
+    structured_output: native_or_constrained
+    local: partial
+  - id: saullm-54b
+    provider: equall (open weights)
+    tier: open_legal
+    structured_output: constrained_decoding
+    local: true
+    notes: "spécialisation juridique ; à confronter aux généralistes"
+  - id: deepseek-v3
+    provider: deepseek (open weights)
+    tier: open_general
+    structured_output: constrained_decoding
+    local: true
+prior_evidence:   # nos juges sur la tâche voisine (thème par phrase, vocabulaire fermé, 9 414 phrases)
+  kappa_vs_consensus: {fable: 0.58, claude: 0.52, mistral: 0.33, codex: 0.26}
+  kappa_between_judges_max: 0.80

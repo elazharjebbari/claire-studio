@@ -1,0 +1,240 @@
+# Directive 93/13/CEE — représentation exploitable (v0.1, 14 septembre 2026)
+# ⚠ Modélisation d'ingénierie à faire RELIRE par les co-autrices juristes avant gel (Gate 3).
+# Vocabulaires fermés : voir legal_kg_schema.yaml (actors, modalities, actions, conditions, notice, remedy).
+source:
+  id: "eli:dir:1993:13:oj"           # European Legislation Identifier de la directive (à vérifier)
+  title: "Council Directive 93/13/EEC of 5 April 1993 on unfair terms in consumer contracts"
+  jurisdiction: EU
+  bindingness: minimum_harmonisation   # art. 8 : les États peuvent être plus stricts
+
+general_test:                          # art. 3(1) — non exécutable directement ; sert de cadre
+  not_individually_negotiated: presumed_true_for_standard_terms   # art. 3(2)
+  good_faith: not_observable
+  significant_imbalance:
+    observable_proxies:
+      - one_sided_right            # droit du professionnel sans droit symétrique du consommateur (R3)
+      - obligation_without_counterpart
+      - remedy_absent_where_expected
+  assessment_context: [nature_of_goods, circumstances_at_conclusion, other_terms]   # art. 4(1)
+  exclusions: [main_subject_matter, price_adequacy_if_transparent]                   # art. 4(2)
+
+transparency:                          # art. 5 — hors périmètre initial, prévu comme extension
+  plain_intelligible_language: indicator_only
+  contra_proferentem: interpretation_rule
+
+annex_scope_exceptions:                # annexe §2
+  fin_serv_termination_valid_reason: "Point (g) does not hinder terms by which a supplier of financial services reserves the right to terminate unilaterally without notice where there is a valid reason, provided the supplier informs the other party immediately."
+  fin_serv_alter_rate: "Point (j) does not hinder terms by which a supplier of financial services alters the interest rate or charges without notice where there is a valid reason, provided the supplier informs the other party at the earliest opportunity and the consumer is free to dissolve the contract immediately."
+  indeterminate_duration_reasonable_notice: "Point (j) does not hinder terms under which a seller or supplier reserves the right to alter unilaterally the conditions of a contract of indeterminate duration, provided he informs the consumer with reasonable notice and the consumer is free to dissolve the contract."
+  securities_currency: "Points (g), (j) and (l) do not apply to transactions in transferable securities, financial instruments and other products or services whose price is linked to fluctuations the seller does not control, nor to contracts for the purchase or sale of foreign currency, traveller's cheques or international money orders."
+  price_indexation: "Point (l) does not hinder price-indexation clauses, where lawful, provided the method by which prices vary is explicitly described."
+
+# Chaque item : effet visé, acteur, modalité typique, action(s), élément dont l'ABSENCE est constitutive,
+# exceptions applicables, catégories CLAUDETTE mappées, thèmes T11 où on le cherche, expressibilité,
+# strate de risque observée sur CLAUDETTE (DATA_UNDERSTANDING §4) — jamais une règle en soi.
+items:
+  a:
+    effect: "excluding or limiting the legal liability of the seller in the event of the death of or personal injury to a consumer resulting from an act or omission of the seller"
+    actor: provider
+    modality: [permission, power]
+    actions: [exclude_liability, cap_liability]
+    object_includes: [personal_injury, death]
+    missing_element: null
+    exceptions: []
+    claudette_categories: [LTD]
+    themes_T11: [LIMITATION_LIABILITY]
+    expressibility: structural
+    risk_class: high
+  b:
+    effect: "inappropriately excluding or limiting the legal rights of the consumer vis-à-vis the seller in the event of total or partial non-performance or inadequate performance, including the option of offsetting a debt"
+    actor: provider
+    modality: [permission, power]
+    actions: [exclude_liability, cap_liability, exclude_remedy, exclude_warranty]
+    missing_element: null
+    exceptions: []
+    claudette_categories: [LTD]
+    themes_T11: [LIMITATION_LIABILITY, WARRANTY_DISCLAIMER]
+    expressibility: structural
+    risk_class: high
+  c:
+    effect: "making an agreement binding on the consumer whereas provision of services by the seller is subject to a condition whose realization depends on his own will alone"
+    actor: provider
+    modality: [power]
+    actions: [condition_own_will]
+    missing_element: null
+    exceptions: []
+    claudette_categories: []
+    themes_T11: [FRAMEWORK]
+    expressibility: not_expressible
+    risk_class: unknown
+  d:
+    effect: "permitting the seller to retain sums paid by the consumer where the latter decides not to conclude or perform the contract, without providing for the consumer to receive compensation of an equivalent amount from the seller where the latter is the party cancelling"
+    actor: provider
+    modality: [permission]
+    actions: [retain_payment]
+    missing_element: reciprocity
+    exceptions: []
+    claudette_categories: []
+    themes_T11: [FEES_PAYMENT]
+    expressibility: structural
+    risk_class: unknown
+  e:
+    effect: "requiring any consumer who fails to fulfil his obligation to pay a disproportionately high sum in compensation"
+    actor: user
+    modality: [obligation]
+    actions: [pay_compensation]
+    missing_element: null
+    quantitative: {field: amount_ratio, threshold: "declared_before_evaluation"}
+    exceptions: []
+    claudette_categories: []
+    themes_T11: [FEES_PAYMENT]
+    expressibility: quantitative
+    risk_class: unknown
+  f:
+    effect: "authorizing the seller to dissolve the contract on a discretionary basis where the same facility is not granted to the consumer, or permitting the seller to retain the sums paid for services not yet supplied by him where it is the seller himself who dissolves the contract"
+    actor: provider
+    modality: [permission, power]
+    actions: [terminate, suspend, remove_content, retain_payment]
+    condition_pattern: [discretion, none_stated]
+    missing_element: reciprocity
+    exceptions: []
+    claudette_categories: [TER, CR]
+    themes_T11: [TERMINATION, CONTENT_IP, ACCOUNT_USE]
+    expressibility: structural
+    risk_class: high
+  g:
+    effect: "enabling the seller to terminate a contract of indeterminate duration without reasonable notice except where there are serious grounds for doing so"
+    actor: provider
+    modality: [permission, power]
+    actions: [terminate, suspend]
+    condition_pattern: [discretion, none_stated]
+    missing_element: reasonable_notice
+    exceptions: [fin_serv_termination_valid_reason, securities_currency]
+    claudette_categories: [TER]
+    themes_T11: [TERMINATION, ACCOUNT_USE]
+    expressibility: structural
+    risk_class: high
+  h:
+    effect: "automatically extending a contract of fixed duration where the consumer does not indicate otherwise, when the deadline fixed for the consumer to express this desire not to extend the contract is unreasonably early"
+    actor: provider
+    modality: [power]
+    actions: [auto_renew]
+    quantitative: {field: opt_out_deadline_days, threshold: "declared_before_evaluation"}
+    exceptions: []
+    claudette_categories: []
+    themes_T11: [FEES_PAYMENT]
+    expressibility: quantitative
+    risk_class: unknown
+  i:
+    effect: "irrevocably binding the consumer to terms with which he had no real opportunity of becoming acquainted before the conclusion of the contract"
+    actor: provider
+    modality: [power]
+    actions: [bind_by_use, incorporate_by_reference]
+    missing_element: opportunity_to_know
+    exceptions: []
+    claudette_categories: [USE]
+    themes_T11: [FRAMEWORK]
+    expressibility: procedural_proxy
+    risk_class: low
+  j:
+    effect: "enabling the seller to alter the terms of the contract unilaterally without a valid reason which is specified in the contract"
+    actor: provider
+    modality: [permission, power]
+    actions: [modify_terms]
+    condition_pattern: [discretion, none_stated]
+    missing_element: valid_reason_specified
+    exceptions: [fin_serv_alter_rate, indeterminate_duration_reasonable_notice, securities_currency]
+    claudette_categories: [CH]
+    themes_T11: [MODIFICATION_OF_TERMS]
+    expressibility: structural
+    risk_class: high
+  k:
+    effect: "enabling the seller to alter unilaterally without a valid reason any characteristics of the product or service to be provided"
+    actor: provider
+    modality: [permission, power]
+    actions: [modify_service]
+    condition_pattern: [discretion, none_stated]
+    missing_element: valid_reason
+    exceptions: []
+    claudette_categories: [CH]
+    themes_T11: [MODIFICATION_OF_TERMS]
+    expressibility: structural
+    risk_class: high
+  l:
+    effect: "providing for the price of goods to be determined at the time of delivery or allowing a seller of goods or supplier of services to increase their price without in both cases giving the consumer the corresponding right to cancel the contract if the final price is too high in relation to the price agreed when the contract was concluded"
+    actor: provider
+    modality: [permission, power]
+    actions: [change_price]
+    missing_element: right_to_cancel
+    exceptions: [securities_currency, price_indexation]
+    claudette_categories: [CH]
+    themes_T11: [FEES_PAYMENT, MODIFICATION_OF_TERMS]
+    expressibility: structural
+    risk_class: high
+  m:
+    effect: "giving the seller the right to determine whether the goods or services supplied are in conformity with the contract, or giving him the exclusive right to interpret any term of the contract"
+    actor: provider
+    modality: [power]
+    actions: [determine_conformity, interpret_terms]
+    missing_element: null
+    exceptions: []
+    claudette_categories: []
+    themes_T11: [FRAMEWORK, WARRANTY_DISCLAIMER]
+    expressibility: structural
+    risk_class: unknown
+  n:
+    effect: "limiting the seller's obligation to respect commitments undertaken by his agents or making his commitments subject to compliance with a particular formality"
+    actor: provider
+    modality: [permission]
+    actions: [limit_agent_commitments]
+    missing_element: null
+    exceptions: []
+    claudette_categories: []
+    themes_T11: [THIRD_PARTY_SERVICES]
+    expressibility: not_expressible
+    risk_class: unknown
+  o:
+    effect: "obliging the consumer to fulfil all his obligations where the seller does not perform his"
+    actor: user
+    modality: [obligation]
+    actions: [perform_despite_non_performance]
+    missing_element: reciprocity
+    exceptions: []
+    claudette_categories: []
+    themes_T11: []
+    expressibility: not_expressible
+    risk_class: unknown
+  p:
+    effect: "giving the seller the possibility of transferring his rights and obligations under the contract, where this may serve to reduce the guarantees for the consumer, without the latter's agreement"
+    actor: provider
+    modality: [permission, power]
+    actions: [assign_contract]
+    missing_element: consumer_consent
+    exceptions: []
+    claudette_categories: []
+    themes_T11: [FRAMEWORK]
+    expressibility: structural
+    risk_class: unknown
+  q:
+    effect: "excluding or hindering the consumer's right to take legal action or exercise any other legal remedy, particularly by requiring the consumer to take disputes exclusively to arbitration not covered by legal provisions, unduly restricting the evidence available to him or imposing on him a burden of proof which, according to the applicable law, should lie with another party to the contract"
+    actor: provider
+    modality: [obligation_on_user, prohibition_on_user, power]
+    actions: [impose_arbitration, waive_class_action, restrict_evidence, shift_burden_of_proof, choose_forum]
+    missing_element: null
+    exceptions: []
+    claudette_categories: [A, J]
+    themes_T11: [DISPUTES_LAW]
+    expressibility: structural
+    risk_class: mixed     # ARBITRATION_DISPUTES lift 0,95 ; GOVERNING_LAW 4,8
+
+# Catégories CLAUDETTE sans item propre (à documenter dans le papier, pas à masquer)
+categories_without_item:
+  LAW: "choice of law — no Annex item; doctrinal/jurisprudential ground only"
+  J_partial: "jurisdiction — covered only through (q) as hindrance of legal action (cf. Océano Grupo)"
+
+# Extensions prévues (art. 8) : listes nationales
+extensions:
+  - id: fr_code_conso_R212-1   # liste noire (présomption irréfragable)
+    status: planned
+  - id: fr_code_conso_R212-2   # liste grise (présomption simple)
+    status: planned

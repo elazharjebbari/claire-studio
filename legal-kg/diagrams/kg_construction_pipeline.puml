@@ -1,0 +1,36 @@
+@startuml kg_construction_pipeline
+title Construction de la couche normative par LLM — avec ses portes
+|Préparation|
+start
+:Clause (≤ 8 phrases) + thème T11
++ inventaire d'actions du thème;
+note right: le prompt ne contient NI catégorie CLAUDETTE NI item de l'annexe
+|LLM|
+:1. Extraction schema-guided
+(sortie structurée, T=0, seed, prompt versionné);
+|Contrôles automatiques|
+:2. Validation structurale
+JSON Schema, énumérations, evidence ⊆ clause;
+if (valide ?) then (non)
+  :re-prompt ciblé (1 fois) sinon rejet;
+endif
+:3. Validation sémantique
+contraintes d'ontologie : acteur unique, modalité unique,
+remedy ∉ prohibition, action ∈ inventaire;
+:4. Vérification d'ancrage
+chaque champ non-null supporté par un span (vérificateur LLM
+d'une autre famille + heuristiques lexicales);
+if (ancré ?) then (non)
+  :champ → not_stated + flag hallucination;
+endif
+|Juriste|
+:6. Validation juridique
+accept / edit / reject par champ ; horodatage ; validateur;
+note right: hold-out : 100 % des clauses cibles ; conception : échantillon ; 20 % en double (κ)
+|Graphe|
+:7. Insertion
+Norm{status: validated|proposed} + EVIDENCED_BY + PRODUCED_BY(Run) + EDITED_BY(Activity);
+:Métriques RQ4 par étape
+(rejets, hallucinations, exactitude par champ, reproductibilité, coût);
+stop
+@enduml

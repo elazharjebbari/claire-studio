@@ -1,0 +1,69 @@
+@startuml conceptual_model
+title Modèle conceptuel (modèle D) — couches L1–L5 et provenance
+hide circle
+skinparam classAttributeIconSize 0
+
+package "L1 Documentaire" {
+  class Document { id; name; population; n_sentences; agreement_alpha }
+  class Section { id; order; title }
+  class Clause { id; source; start; end; n_sentences; themes_signature; taxonomy }
+  class Sentence { id; index; text; text_detok; n_tokens; doc_position }
+}
+package "L2 Thématique" {
+  class Theme { code; taxonomy; label; stratum }
+  class Annotation { id; annotator; source; primary; secondaries; model; version }
+  class GoldDecision { id; agreement_class; auto_level; risk_band; confidence; tally; finalized }
+}
+package "L3 Normative" {
+  class Norm { id; modality; action; object; condition; notice; remedy; confidence; status; validated_by }
+  class Party { role }
+  class ActionType { code; theme_scope }
+}
+package "L4 Juridique" {
+  class LegalSource { id; title; jurisdiction; bindingness }
+  class AnnexItem { code; text; expressibility; risk_class }
+  class Category { code; definition }
+  class Rule { id; version; item; family; rules_hash; frozen_at }
+}
+package "Provenance" {
+  class Run { id; kind; model; prompt_hash; rules_hash; seed; code_version; started_at; cost }
+  class Activity { id; kind; actor; at; before; after }
+}
+
+Document "1" --> "*" Section : CONTAINS
+Document "1" --> "*" Clause : CONTAINS
+Section "1" --> "*" Clause : CONTAINS
+Clause "1" --> "1..*" Sentence : CONTAINS
+Sentence --> Sentence : NEXT
+Clause --> Section : REFERS_TO
+Sentence "*" --> "*" Theme : HAS_THEME {source, role, confidence}
+Clause "*" --> "*" Theme : HAS_THEME
+Sentence "1" --> "*" Annotation : ANNOTATED_BY
+Sentence "1" --> "1" GoldDecision : DECIDED_BY
+Theme --> Theme : PROJECTS_TO {spec_version}
+Clause "1" --> "*" Norm : STATES
+Norm "*" --> "1" Party : HAS_ACTOR
+Norm --> Party : HAS_COUNTERPARTY
+Norm --> ActionType : HAS_ACTION
+Norm "1" --> "1..*" Sentence : EVIDENCED_BY {span}
+Norm --> Norm : CONDITIONAL_ON / EXCEPTION_TO / CONTRADICTS
+Norm "*" --> "*" AnnexItem : MATCHES_ITEM {rule_id, rule_version, run_id, evidence_ids}
+AnnexItem --> LegalSource : PART_OF
+AnnexItem --> Category : MAPS_TO
+Sentence "*" --> "*" Category : LABELED {severity, source=claudette}
+Sentence --> Category : PREDICTED {model, run_id, score}
+Clause --> Clause : SIMILAR_TO {method, score}
+Annotation --> Run : PRODUCED_BY
+Norm --> Run : PRODUCED_BY
+Norm --> Activity : EDITED_BY
+Rule --> Run : PRODUCED_BY
+
+note bottom of Category
+  LABELED est isolée : aucune Rule ne la lit
+  (lint des requêtes, test automatique)
+end note
+note right of Norm
+  vues dérivées : IMPOSES / GRANTS /
+  PROHIBITS / ALLOWS = modalité × acteur
+end note
+@enduml

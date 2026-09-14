@@ -1,0 +1,111 @@
+# Règles de détection — DSL déclaratif compilé en Cypher (ADR-003). v0.1 — GELÉE le 2026-09-15 (voir FROZEN.txt).
+# Gel : hash SHA-256 de ce fichier inscrit dans graph/rules/FROZEN.txt avec date et commit, AVANT toute
+# exécution sur les documents de validation (holdout). Toute modification ultérieure = nouvelle version.
+# Sémantique : conjonction des conditions ; `unless` = exceptions (négation) ; valeurs ∈ vocabulaires du
+# schéma ; `not_stated` ≠ `none` ; projection = phrases d'evidence de la norme. Les règles ne peuvent
+# référencer que : theme (T11), actor, modality, action, object, condition, notice, remedy, relations
+# STATES / HAS_ACTOR / EVIDENCED_BY / CONDITIONAL_ON / EXCEPTION_TO, et d'autres Norm du même document.
+version: "0.1"
+taxonomy: T11
+projection: evidence_only
+rules:
+  - id: Q-g
+    item: g
+    family: R1
+    description: "Provider may terminate/suspend at its discretion without (reasonable) notice"
+    where: {actor: provider, modality: [permission, power], action: [terminate, suspend], condition: [discretion, none_stated], notice: [none, not_stated]}
+    unless:
+      - related: {relation: [EXCEPTION_TO, CONDITIONAL_ON], target: {condition: for_cause}}
+  - id: Q-f-asymmetry
+    item: f
+    family: R3
+    description: "Discretionary termination right of the provider with no symmetric termination right of the user in the document"
+    where: {actor: provider, modality: [permission, power], action: [terminate, suspend], condition: [discretion, none_stated]}
+    unless:
+      - exists_in_document: {actor: user, modality: [permission, power], action: [terminate]}
+  - id: Q-j
+    item: j
+    family: R1
+    description: "Provider may modify terms unilaterally with no valid reason specified"
+    where: {actor: provider, modality: [permission, power], action: [modify_terms], condition: [discretion, none_stated]}
+  - id: Q-j-strict
+    item: j
+    family: R1
+    description: "As Q-j and no notice and no right to cancel (Annex §2 indeterminate-duration exception not satisfied)"
+    where: {actor: provider, modality: [permission, power], action: [modify_terms], condition: [discretion, none_stated], notice: [none, not_stated], remedy: [none, not_stated]}
+  - id: Q-j-absence
+    item: j
+    family: R2
+    description: "Modification clause with no notification norm and no notice"
+    where: {theme: MODIFICATION_OF_TERMS, has_norm: {action: modify_terms}}
+    unless:
+      - has_norm: {action: notify_change}
+      - has_norm: {action: modify_terms, notice: [duration, reasonable]}
+  - id: Q-k
+    item: k
+    family: R1
+    description: "Provider may alter service characteristics unilaterally without valid reason"
+    where: {actor: provider, modality: [permission, power], action: [modify_service], condition: [discretion, none_stated]}
+  - id: Q-l
+    item: l
+    family: R1
+    description: "Provider may change price without a right to cancel"
+    where: {actor: provider, modality: [permission, power], action: [change_price], remedy: [none, not_stated]}
+    unless:
+      - object_contains: [indexation, index]
+  - id: Q-ab
+    item: [a, b]
+    family: R1
+    description: "Exclusion/cap of liability covering personal injury or gross negligence, or unbounded"
+    where: {actor: provider, action: [exclude_liability, cap_liability, exclude_remedy], object_contains_any: [personal_injury, death, gross_negligence, unbounded]}
+    item_selector: {personal_injury: a, death: a, default: b}
+  - id: Q-q
+    item: q
+    family: R1
+    description: "Mandatory arbitration, class-action waiver, evidence restriction or burden shift imposed on the user"
+    where:
+      any:
+        - {actor: user, modality: [obligation, prohibition], action: [impose_arbitration, waive_class_action, restrict_evidence, shift_burden_of_proof, waive_jury]}
+        - {actor: provider, modality: [power], action: [impose_arbitration, choose_forum]}
+  - id: Q-i
+    item: i
+    family: R1
+    description: "Binding the user by mere use / by reference to terms not shown (procedural proxy)"
+    where: {actor: provider, modality: [power], action: [bind_by_use, incorporate_by_reference]}
+  - id: Q-m
+    item: m
+    family: R1
+    description: "Provider is sole judge of conformity or exclusive interpreter of the terms"
+    where: {actor: provider, modality: [power], action: [determine_conformity, interpret_terms]}
+  - id: Q-p
+    item: p
+    family: R1
+    description: "Assignment of the contract by the provider without the user's consent"
+    where: {actor: provider, modality: [permission, power], action: [assign_contract], remedy: [none, not_stated]}
+  - id: Q-d
+    item: d
+    family: R1
+    description: "Provider may retain sums paid when the user withdraws, without reciprocity"
+    where: {actor: provider, modality: [permission], action: [retain_payment]}
+    unless:
+      - exists_in_document: {actor: user, action: [compensation], modality: [permission]}
+  # Items quantitatifs : seuils DÉCLARÉS ici, jamais ajustés après évaluation
+  - id: Q-e
+    item: e
+    family: R1
+    description: "Disproportionate compensation owed by the user (declared threshold)"
+    where: {actor: user, modality: [obligation], action: [pay_compensation]}
+    threshold: {field: amount_ratio, op: ">=", value: 2.0}
+    status: quantitative
+  - id: Q-h
+    item: h
+    family: R1
+    description: "Automatic renewal with unreasonably early opt-out deadline (declared threshold)"
+    where: {actor: provider, modality: [power], action: [auto_renew]}
+    threshold: {field: opt_out_deadline_days, op: ">=", value: 30}
+    status: quantitative
+not_expressible: [c, n, o]
+composition_qualitative:   # R3 évalués qualitativement en v0.1
+  - id: R3-exculpation-triangle
+    items: [b]
+    pattern: "exclude_liability(provider) ∧ exclude_warranty(provider) ∧ indemnify(obligation, user) in same document"

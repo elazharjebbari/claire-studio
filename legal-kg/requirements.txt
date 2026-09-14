@@ -1,0 +1,5 @@
+# legal-kg — dépendances (les scripts de profil et de build n'utilisent que la bibliothèque standard)
+anthropic>=0.60          # extraction structurée (client.messages.parse) — à épingler après le pilote
+pydantic>=2.5
+PyYAML>=6.0
+pytest>=8.0
