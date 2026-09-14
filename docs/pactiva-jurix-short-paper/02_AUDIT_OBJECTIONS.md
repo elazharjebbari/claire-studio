@@ -1,5 +1,16 @@
 # Audit de deux objections de relecture — vérification sur les données
 
+> ⚠ **CORRECTIF DU 14 SEPTEMBRE 2026 — lire d'abord [`03_CORRECTIONS_MANUSCRIT.md`](03_CORRECTIONS_MANUSCRIT.md).**
+> L'analyse de l'objection n° 1 ci-dessous repose sur une prémisse **fausse** : elle suppose
+> une pré-annotation unique que les annotateurs auraient post-éditée. Vérification faite dans
+> le code, ce n'est pas le protocole. Les quatre juges annotent indépendamment, un moteur
+> déterministe route chaque phrase selon leur **accord inter-juges** (niveaux C1–C5) sans
+> privilégier aucun juge, et l'annotateur choisit dans le vocabulaire complet — pas seulement
+> parmi les propositions. Le risque de circularité **individuelle** tombe ; subsiste un risque
+> **collectif** (les quatre juges évalués sont les quatre qui ont assisté l'annotation), traité
+> dans le document 03. Les mesures rapportées ici restent exactes ; leur interprétation est
+> révisée là-bas.
+
 > **Ce que fait ce document.** Il prend deux objections formulées contre le short paper,
 > les confronte à ce que disent réellement nos données et notre code, et propose des
 > remèdes chiffrés par coût. Chaque verdict s'appuie sur une mesure reproductible, pas sur
