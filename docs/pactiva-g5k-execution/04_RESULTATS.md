@@ -96,16 +96,44 @@ un 0,754 flatteur.
 
 ---
 
-## 5. État de la campagne
+## 5. État de la campagne — 16 expériences sur 16 validées
 
-**16 expériences** (4 de plus qu'avant cette session), dont **12 validées** et 4
-`preliminary`.
+Les quatre expériences dépendantes du GOLD (E1.4, E2.1, E2.3, E3.3) ont été débloquées en
+deux temps.
 
-Les quatre en attente (E1.4, E2.1, E2.3, E3.3) sont bloquées par les contrôles
-`gold_finalized` et `gold_complete` : **50 résolutions GOLD ouvertes, 0 finalisée**. Ce
-n'est pas un défaut de la campagne, c'est son garde-fou qui fonctionne — ces expériences
-basculeront en `validated` d'elles-mêmes une fois l'arbitrage terminé, en rejouant
-`run_campaign.py`.
+**Un blocage était une erreur de saisie.** Le contrôle `gold_complete` compte les PHRASES
+non tranchées ; le fichier d'état fourni à la campagne y portait le nombre de RÉSOLUTIONS
+non finalisées (50 au lieu de 0). Un chiffre qui décide du statut publiable d'une
+expérience ne se saisit pas à la main : `scripts/gold_state.py` le mesure désormais en base.
+
+**L'autre blocage était réel.** L'arbitrage était pourtant terminé — 9 414 phrases toutes
+décidées, dont **462 arbitrages humains** tracés par 475 événements — mais aucune des
+50 résolutions n'était figée. `scripts/gold_finalize_all.py` les a soumises une à une, par
+la même séquence que l'atelier (prendre le verrou → soumettre → relâcher) plutôt qu'en
+écrivant en base : le service porte les garde-fous, et les contourner reviendrait à figer
+un gold que l'interface aurait refusé.
+
+**Preuve que figer n'a rien décidé.** L'empreinte des 9 414 décisions (thème primaire,
+secondaires, niveau de cascade) est **identique avant et après** :
+`02d201d544119182e304d03a3df39a73`. La finalisation pose une date d'immuabilité, elle ne
+touche à aucun arbitrage — et reste réversible par le dégel explicite (`reopen`).
+
+| | Avant | Après |
+|---|---|---|
+| Résolutions finalisées | 0 / 50 | **50 / 50** |
+| Statut | `in_progress` | `resolved` |
+| Phrases non tranchées | 0 | 0 |
+| Empreinte des décisions | `02d201d5…` | `02d201d5…` (inchangée) |
+
+### Un écart à connaître pour la relecture
+
+Le dataset gelé (`7116e627f528c557`) a été construit **avant** la finalisation : son
+`gold.jsonl` porte donc `finalized: false` et son README annonce « documents finalisés : 0 ».
+Ce n'est pas une incohérence des chiffres — aucune des 16 expériences ne lit ce champ (seul
+le preset Lab `gold-cascade` le fait), et les décisions du dataset sont exactement celles
+qui ont été figées, empreinte à l'appui. Le dataset n'a délibérément **pas** été reconstruit :
+cela aurait changé son empreinte et désaligné les quatre runs Grid'5000 pour un champ de
+métadonnée qui n'entre dans aucun calcul.
 
 ---
 
@@ -115,4 +143,6 @@ basculeront en `validated` d'elles-mêmes une fois l'arbitrage terminé, en rejo
   non lancé. Ses checkpoints restent à pré-télécharger — le correctif du protocole Xet est
   en place mais n'a pas été rejoué.
 - **Dataset en agrégation souple**, prérequis d'un vrai résultat multi-label (§4).
-- **Finalisation du GOLD**, qui débloque les quatre expériences restantes (§5).
+- **Reconstruction du dataset** après finalisation, si l'on veut que son `gold.jsonl`
+  porte l'état figé — à ne faire qu'en rejouant les runs Grid'5000 sur la nouvelle
+  empreinte, sans quoi la campagne mélangerait deux instantanés.
