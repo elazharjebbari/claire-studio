@@ -1,0 +1,370 @@
+{
+  "population": "holdout",
+  "universe": "population",
+  "n_passes": 1,
+  "n_sentences": 4078,
+  "items": {
+    "a": {
+      "categories": [
+        "LTD"
+      ],
+      "n_flagged": 4,
+      "tp": 2,
+      "fp": 2,
+      "fn": 130,
+      "fp_stable_all_passes": 2,
+      "fp_with_other_category_label": 0,
+      "fp_same_clause_has_reference": 1,
+      "fp_by_theme": {
+        "LIMITATION_LIABILITY": 2
+      },
+      "tp_by_severity": {
+        "2": 1,
+        "None": 1
+      },
+      "fn_by_severity": {
+        "2": 113,
+        "None": 16,
+        "3": 1
+      },
+      "fn_typology": {
+        "N2_no_expected_action": 59,
+        "N1_expected_action_fields_mismatch": 71
+      },
+      "fn_nearest_fields": {
+        "object∌personal_injury/death/gross_negligence": 42
+      },
+      "stable_share_of_flags": 1.0
+    },
+    "b": {
+      "categories": [
+        "LTD"
+      ],
+      "n_flagged": 19,
+      "tp": 15,
+      "fp": 4,
+      "fn": 117,
+      "fp_stable_all_passes": 4,
+      "fp_with_other_category_label": 0,
+      "fp_same_clause_has_reference": 0,
+      "fp_by_theme": {
+        "LIMITATION_LIABILITY": 4
+      },
+      "tp_by_severity": {
+        "2": 14,
+        "3": 1
+      },
+      "fn_by_severity": {
+        "2": 100,
+        "None": 17
+      },
+      "fn_typology": {
+        "N2_no_expected_action": 59,
+        "N1_expected_action_fields_mismatch": 58
+      },
+      "fn_nearest_fields": {
+        "object∌personal_injury/death/gross_negligence": 42
+      },
+      "stable_share_of_flags": 1.0
+    },
+    "d": {
+      "categories": [],
+      "n_flagged": 21,
+      "tp": 0,
+      "fp": 21,
+      "fn": 0,
+      "fp_stable_all_passes": 21,
+      "fp_with_other_category_label": 7,
+      "fp_same_clause_has_reference": 0,
+      "fp_by_theme": {
+        "FEES_PAYMENT": 16,
+        "TERMINATION": 5
+      },
+      "tp_by_severity": {},
+      "fn_by_severity": {},
+      "fn_typology": {},
+      "fn_nearest_fields": {},
+      "stable_share_of_flags": 1.0
+    },
+    "f": {
+      "categories": [
+        "TER",
+        "CR"
+      ],
+      "n_flagged": 12,
+      "tp": 10,
+      "fp": 2,
+      "fn": 130,
+      "fp_stable_all_passes": 2,
+      "fp_with_other_category_label": 1,
+      "fp_same_clause_has_reference": 0,
+      "fp_by_theme": {
+        "TERMINATION": 1,
+        "ACCOUNT_USE": 1
+      },
+      "tp_by_severity": {
+        "3": 10,
+        "2": 2
+      },
+      "fn_by_severity": {
+        "3": 45,
+        "2": 89,
+        "None": 8
+      },
+      "fn_typology": {
+        "N2_no_expected_action": 70,
+        "N1_expected_action_fields_mismatch": 60
+      },
+      "fn_nearest_fields": {
+        "condition=for_cause": 16,
+        "actor=user": 11,
+        "condition=specified_reason": 3
+      },
+      "stable_share_of_flags": 1.0
+    },
+    "g": {
+      "categories": [
+        "TER"
+      ],
+      "n_flagged": 40,
+      "tp": 27,
+      "fp": 13,
+      "fn": 75,
+      "fp_stable_all_passes": 13,
+      "fp_with_other_category_label": 8,
+      "fp_same_clause_has_reference": 4,
+      "fp_by_theme": {
+        "TERMINATION": 11,
+        "ACCOUNT_USE": 2
+      },
+      "tp_by_severity": {
+        "2": 11,
+        "3": 16
+      },
+      "fn_by_severity": {
+        "2": 50,
+        "3": 20,
+        "None": 5
+      },
+      "fn_typology": {
+        "N2_no_expected_action": 37,
+        "N1_expected_action_fields_mismatch": 38
+      },
+      "fn_nearest_fields": {
+        "condition=for_cause": 15,
+        "actor=user": 10,
+        "condition=specified_reason": 3,
+        "notice=reasonable": 3
+      },
+      "stable_share_of_flags": 1.0
+    },
+    "i": {
+      "categories": [
+        "USE"
+      ],
+      "n_flagged": 37,
+      "tp": 16,
+      "fp": 21,
+      "fn": 28,
+      "fp_stable_all_passes": 21,
+      "fp_with_other_category_label": 0,
+      "fp_same_clause_has_reference": 4,
+      "fp_by_theme": {
+        "FRAMEWORK": 13,
+        "MODIFICATION_OF_TERMS": 3,
+        "PRIVACY_DATA": 5
+      },
+      "tp_by_severity": {
+        "2": 14,
+        "None": 2
+      },
+      "fn_by_severity": {
+        "2": 27,
+        "None": 1
+      },
+      "fn_typology": {
+        "N1_expected_action_fields_mismatch": 23,
+        "N2_no_expected_action": 5
+      },
+      "fn_nearest_fields": {
+        "actor=user": 18,
+        "modality=obligation": 18,
+        "modality=permission": 4
+      },
+      "stable_share_of_flags": 1.0
+    },
+    "j": {
+      "categories": [
+        "CH"
+      ],
+      "n_flagged": 42,
+      "tp": 26,
+      "fp": 16,
+      "fn": 62,
+      "fp_stable_all_passes": 16,
+      "fp_with_other_category_label": 0,
+      "fp_same_clause_has_reference": 14,
+      "fp_by_theme": {
+        "MODIFICATION_OF_TERMS": 16
+      },
+      "tp_by_severity": {
+        "2": 26
+      },
+      "fn_by_severity": {
+        "2": 53,
+        "3": 3,
+        "None": 6
+      },
+      "fn_typology": {
+        "N2_no_expected_action": 53,
+        "N1_expected_action_fields_mismatch": 9
+      },
+      "fn_nearest_fields": {},
+      "stable_share_of_flags": 1.0
+    },
+    "k": {
+      "categories": [
+        "CH"
+      ],
+      "n_flagged": 22,
+      "tp": 11,
+      "fp": 11,
+      "fn": 77,
+      "fp_stable_all_passes": 11,
+      "fp_with_other_category_label": 6,
+      "fp_same_clause_has_reference": 9,
+      "fp_by_theme": {
+        "MODIFICATION_OF_TERMS": 11
+      },
+      "tp_by_severity": {
+        "2": 8,
+        "None": 3
+      },
+      "fn_by_severity": {
+        "2": 71,
+        "3": 3,
+        "None": 3
+      },
+      "fn_typology": {
+        "N2_no_expected_action": 69,
+        "N1_expected_action_fields_mismatch": 8
+      },
+      "fn_nearest_fields": {
+        "condition=specified_reason": 3
+      },
+      "stable_share_of_flags": 1.0
+    },
+    "l": {
+      "categories": [
+        "CH"
+      ],
+      "n_flagged": 18,
+      "tp": 11,
+      "fp": 7,
+      "fn": 77,
+      "fp_stable_all_passes": 7,
+      "fp_with_other_category_label": 0,
+      "fp_same_clause_has_reference": 3,
+      "fp_by_theme": {
+        "FEES_PAYMENT": 6,
+        "MODIFICATION_OF_TERMS": 1
+      },
+      "tp_by_severity": {
+        "2": 9,
+        "3": 1,
+        "None": 1
+      },
+      "fn_by_severity": {
+        "2": 70,
+        "None": 5,
+        "3": 2
+      },
+      "fn_typology": {
+        "N2_no_expected_action": 76,
+        "N1_expected_action_fields_mismatch": 1
+      },
+      "fn_nearest_fields": {},
+      "stable_share_of_flags": 1.0
+    },
+    "m": {
+      "categories": [],
+      "n_flagged": 39,
+      "tp": 0,
+      "fp": 39,
+      "fn": 0,
+      "fp_stable_all_passes": 39,
+      "fp_with_other_category_label": 0,
+      "fp_same_clause_has_reference": 0,
+      "fp_by_theme": {
+        "FRAMEWORK": 38,
+        "WARRANTY_DISCLAIMER": 1
+      },
+      "tp_by_severity": {},
+      "fn_by_severity": {},
+      "fn_typology": {},
+      "fn_nearest_fields": {},
+      "stable_share_of_flags": 1.0
+    },
+    "p": {
+      "categories": [],
+      "n_flagged": 17,
+      "tp": 0,
+      "fp": 17,
+      "fn": 0,
+      "fp_stable_all_passes": 17,
+      "fp_with_other_category_label": 1,
+      "fp_same_clause_has_reference": 0,
+      "fp_by_theme": {
+        "FRAMEWORK": 17
+      },
+      "tp_by_severity": {},
+      "fn_by_severity": {},
+      "fn_typology": {},
+      "fn_nearest_fields": {},
+      "stable_share_of_flags": 1.0
+    },
+    "q": {
+      "categories": [
+        "A",
+        "J"
+      ],
+      "n_flagged": 103,
+      "tp": 17,
+      "fp": 86,
+      "fn": 28,
+      "fp_stable_all_passes": 86,
+      "fp_with_other_category_label": 1,
+      "fp_same_clause_has_reference": 31,
+      "fp_by_theme": {
+        "DISPUTES_LAW": 86
+      },
+      "tp_by_severity": {
+        "2": 14,
+        "3": 2,
+        "None": 1
+      },
+      "fn_by_severity": {
+        "3": 25,
+        "None": 1,
+        "2": 2
+      },
+      "fn_typology": {
+        "N1_expected_action_fields_mismatch": 28
+      },
+      "fn_nearest_fields": {
+        "action=choose_forum": 20,
+        "modality=permission": 2
+      },
+      "stable_share_of_flags": 1.0
+    }
+  },
+  "stability": {
+    "n_passes": 1,
+    "flagged_union": 356,
+    "by_n_passes": {
+      "1": 356
+    },
+    "fleiss_kappa_binary_universe": null,
+    "majority": 356
+  }
+}

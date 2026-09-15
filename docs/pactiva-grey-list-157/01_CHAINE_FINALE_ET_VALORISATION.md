@@ -66,7 +66,7 @@ le goulot : **les prévoir dès maintenant dans l'agenda des deux juristes** (�
 
 | Tableau | Contenu | Source de données | Générateur | État |
 |---|---|---|---|---|
-| T1 Grey list ↔ CLAUDETTE ↔ thèmes ↔ expressibilité | 17 items, S/Q/P/— | `ontology/directive_93_13.yaml` | déjà rédigé dans `jurix2026-long-paper/placeholder/main.tex` (`tab:greylist`) | ✅ |
+| T1 Grey list ↔ CLAUDETTE ↔ thèmes ↔ expressibilité | 17 items, S/Q/P/— | `ontology/directive_93_13.yaml` | déjà rédigé dans `jurix2026-long-paper/main.tex (sections dans jurix2026-long-paper/sections/)` (`tab:greylist`) | ✅ |
 | T2 Abusivité par thème (T20, 50 docs) | n, part abusive, lift | `docs/DATA_PROFILE.md` | déjà rédigé (`tab:themes`) | ✅ |
 | T3 Résultats par requête / item sur le hold-out | signalées, P, R, F1 [IC], Δ vs thème seul | F7 `E2.json` | `make_tables.py --table queries` | à produire |
 | T4 Coût de l'interprétabilité | B0', B1, B2, requêtes : F1 binaire et par catégorie mappée [IC] | `results/baselines/README.md` + F7 | `make_tables.py --table cost` | B0'–B2 ✅, requêtes à produire |

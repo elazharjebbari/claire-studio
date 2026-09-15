@@ -1,0 +1,572 @@
+{
+  "task": "U1_unfair",
+  "config": {
+    "seed": 42,
+    "task": "U1_unfair",
+    "model": {
+      "loss": "weighted_ce",
+      "epochs": 8,
+      "family": "transformer_finetune",
+      "batch_size": 16,
+      "checkpoint": "nlpaueb/legal-bert-base-uncased",
+      "learning_rate": 2e-05,
+      "early_stopping_patience": 3
+    },
+    "compute": {
+      "g5k": {
+        "site": "lyon",
+        "exotic": true,
+        "resources": "{cluster='sirius'}/gpu=1,walltime=02:00"
+      },
+      "target": "g5k",
+      "require_gpu": true
+    },
+    "version": 1,
+    "evaluation": {
+      "split": {
+        "scheme": "design_holdout"
+      },
+      "bootstrap": {
+        "enabled": true,
+        "n_resamples": 1000
+      },
+      "human_ceiling": false,
+      "error_analysis": true
+    },
+    "preprocess": {
+      "context": {
+        "window_after": 1,
+        "window_before": 1
+      },
+      "detokenize": "regex_rules",
+      "max_length": 128
+    }
+  },
+  "dataset": {
+    "fingerprint": "7116e627f528c5572457e79d9e53d2e71bfc21e3a20aacb43e9d3072cfb70e2e",
+    "nDocuments": 50,
+    "nSentences": 9414
+  },
+  "preprocess": "detok=regex_rules ctx=-1/+1",
+  "split": {
+    "scheme": "design_holdout",
+    "population": null,
+    "n_folds": 1,
+    "n_train_documents": 33,
+    "n_test_documents": 17
+  },
+  "metrics": {
+    "kappa": 0.661306,
+    "kappa_dispersion": 0.0,
+    "macro_f1": 0.830469,
+    "macro_f1_dispersion": 0.0,
+    "micro_f1": 0.929132,
+    "micro_f1_dispersion": 0.0,
+    "unfair_auc_pr": 0.774533,
+    "unfair_auc_pr_dispersion": 0.0,
+    "unfair_f1": 0.701138,
+    "unfair_f1_dispersion": 0.0,
+    "unfair_precision": 0.643264,
+    "unfair_precision_dispersion": 0.0,
+    "unfair_recall": 0.770455,
+    "unfair_recall_dispersion": 0.0,
+    "unfair_support": 440.0,
+    "unfair_support_dispersion": 0.0,
+    "fold_stats": {
+      "kappa": {
+        "mean": 0.661306,
+        "std": 0.0,
+        "min": 0.661306,
+        "max": 0.661306,
+        "n": 1
+      },
+      "macro_f1": {
+        "mean": 0.830469,
+        "std": 0.0,
+        "min": 0.830469,
+        "max": 0.830469,
+        "n": 1
+      },
+      "micro_f1": {
+        "mean": 0.929132,
+        "std": 0.0,
+        "min": 0.929132,
+        "max": 0.929132,
+        "n": 1
+      },
+      "unfair_auc_pr": {
+        "mean": 0.774533,
+        "std": 0.0,
+        "min": 0.774533,
+        "max": 0.774533,
+        "n": 1
+      },
+      "unfair_f1": {
+        "mean": 0.701138,
+        "std": 0.0,
+        "min": 0.701138,
+        "max": 0.701138,
+        "n": 1
+      },
+      "unfair_precision": {
+        "mean": 0.643264,
+        "std": 0.0,
+        "min": 0.643264,
+        "max": 0.643264,
+        "n": 1
+      },
+      "unfair_recall": {
+        "mean": 0.770455,
+        "std": 0.0,
+        "min": 0.770455,
+        "max": 0.770455,
+        "n": 1
+      },
+      "unfair_support": {
+        "mean": 440.0,
+        "std": 0.0,
+        "min": 440,
+        "max": 440,
+        "n": 1
+      }
+    },
+    "ece": 0.055953,
+    "reliability_curve": [
+      {
+        "bin": 5,
+        "meanConfidence": 0.544827,
+        "accuracy": 0.603774,
+        "count": 53
+      },
+      {
+        "bin": 6,
+        "meanConfidence": 0.647628,
+        "accuracy": 0.541667,
+        "count": 24
+      },
+      {
+        "bin": 7,
+        "meanConfidence": 0.761203,
+        "accuracy": 0.529412,
+        "count": 34
+      },
+      {
+        "bin": 8,
+        "meanConfidence": 0.858559,
+        "accuracy": 0.60274,
+        "count": 73
+      },
+      {
+        "bin": 9,
+        "meanConfidence": 0.995879,
+        "accuracy": 0.945557,
+        "count": 3894
+      }
+    ],
+    "macro_f1_ci": {
+      "point": 0.830469,
+      "low": 0.801591,
+      "high": 0.857438,
+      "nResamples": 1000,
+      "confidence": 0.95,
+      "unit": "document"
+    },
+    "unfair_f1_ci": {
+      "point": 0.701138,
+      "low": 0.650086,
+      "high": 0.749149,
+      "nResamples": 1000,
+      "confidence": 0.95,
+      "unit": "document"
+    }
+  },
+  "per_fold": [
+    {
+      "macro_f1": 0.830469,
+      "micro_f1": 0.929132,
+      "kappa": 0.661306,
+      "unfair_precision": 0.643264,
+      "unfair_recall": 0.770455,
+      "unfair_f1": 0.701138,
+      "unfair_support": 440,
+      "unfair_auc_pr": 0.774533
+    }
+  ],
+  "per_label": [
+    {
+      "label": "fair",
+      "precision": 0.971557,
+      "recall": 0.948323,
+      "f1": 0.9598,
+      "support": 3638
+    },
+    {
+      "label": "unfair",
+      "precision": 0.643264,
+      "recall": 0.770455,
+      "f1": 0.701138,
+      "support": 440
+    }
+  ],
+  "environment": {
+    "python": "3.12.13",
+    "platform": "Linux-6.12.107+deb13-amd64-x86_64-with-glibc2.41",
+    "processor": "",
+    "packages": {
+      "scikit-learn": "1.9.0",
+      "numpy": "2.5.1",
+      "torch": "2.13.0+cu126",
+      "transformers": "5.15.0"
+    },
+    "gpu": {
+      "available": true,
+      "device": "NVIDIA A100-SXM4-40GB"
+    },
+    "elapsedSeconds": 250.057
+  },
+  "errors": {
+    "nErrors": 289,
+    "errorRate": 0.070868,
+    "unfairErrorRate": 0.229545,
+    "unfairSentences": 440,
+    "byAgreementClass": {
+      "divergence": {
+        "n": 156,
+        "errors": 11,
+        "rate": 0.070513
+      },
+      "majority": {
+        "n": 2008,
+        "errors": 136,
+        "rate": 0.067729
+      },
+      "strict": {
+        "n": 1914,
+        "errors": 142,
+        "rate": 0.07419
+      }
+    },
+    "lowestConfidenceErrors": [
+      {
+        "document": "Nintendo",
+        "index": 152,
+        "fold": 0,
+        "y_true": "fair",
+        "y_pred": "unfair",
+        "confidence": 0.511938,
+        "scores": {
+          "unfair": 0.511938,
+          "fair": 0.488062
+        },
+        "unfair": [],
+        "agreement": "strict"
+      },
+      {
+        "document": "musically",
+        "index": 142,
+        "fold": 0,
+        "y_true": "fair",
+        "y_pred": "unfair",
+        "confidence": 0.513553,
+        "scores": {
+          "unfair": 0.513553,
+          "fair": 0.486447
+        },
+        "unfair": [],
+        "agreement": "majority"
+      },
+      {
+        "document": "WhatsApp",
+        "index": 83,
+        "fold": 0,
+        "y_true": "fair",
+        "y_pred": "unfair",
+        "confidence": 0.518054,
+        "scores": {
+          "unfair": 0.518054,
+          "fair": 0.481946
+        },
+        "unfair": [],
+        "agreement": "strict"
+      },
+      {
+        "document": "Zynga",
+        "index": 97,
+        "fold": 0,
+        "y_true": "fair",
+        "y_pred": "unfair",
+        "confidence": 0.518616,
+        "scores": {
+          "unfair": 0.518616,
+          "fair": 0.481384
+        },
+        "unfair": [],
+        "agreement": "majority"
+      },
+      {
+        "document": "Tinder",
+        "index": 64,
+        "fold": 0,
+        "y_true": "unfair",
+        "y_pred": "fair",
+        "confidence": 0.522554,
+        "scores": {
+          "fair": 0.522554,
+          "unfair": 0.477446
+        },
+        "unfair": [
+          "TER"
+        ],
+        "agreement": "majority"
+      },
+      {
+        "document": "musically",
+        "index": 6,
+        "fold": 0,
+        "y_true": "fair",
+        "y_pred": "unfair",
+        "confidence": 0.522673,
+        "scores": {
+          "unfair": 0.522673,
+          "fair": 0.477327
+        },
+        "unfair": [],
+        "agreement": "strict"
+      },
+      {
+        "document": "eBay",
+        "index": 231,
+        "fold": 0,
+        "y_true": "fair",
+        "y_pred": "unfair",
+        "confidence": 0.533736,
+        "scores": {
+          "unfair": 0.533736,
+          "fair": 0.466264
+        },
+        "unfair": [],
+        "agreement": "majority"
+      },
+      {
+        "document": "Spotify",
+        "index": 255,
+        "fold": 0,
+        "y_true": "fair",
+        "y_pred": "unfair",
+        "confidence": 0.534135,
+        "scores": {
+          "unfair": 0.534135,
+          "fair": 0.465865
+        },
+        "unfair": [],
+        "agreement": "majority"
+      },
+      {
+        "document": "WorldOfWarcraft",
+        "index": 118,
+        "fold": 0,
+        "y_true": "fair",
+        "y_pred": "unfair",
+        "confidence": 0.534884,
+        "scores": {
+          "unfair": 0.534884,
+          "fair": 0.465116
+        },
+        "unfair": [],
+        "agreement": "strict"
+      },
+      {
+        "document": "WhatsApp",
+        "index": 62,
+        "fold": 0,
+        "y_true": "fair",
+        "y_pred": "unfair",
+        "confidence": 0.536687,
+        "scores": {
+          "unfair": 0.536687,
+          "fair": 0.463313
+        },
+        "unfair": [],
+        "agreement": "majority"
+      },
+      {
+        "document": "musically",
+        "index": 196,
+        "fold": 0,
+        "y_true": "fair",
+        "y_pred": "unfair",
+        "confidence": 0.538295,
+        "scores": {
+          "unfair": 0.538295,
+          "fair": 0.461705
+        },
+        "unfair": [],
+        "agreement": "majority"
+      },
+      {
+        "document": "Skype",
+        "index": 120,
+        "fold": 0,
+        "y_true": "fair",
+        "y_pred": "unfair",
+        "confidence": 0.538849,
+        "scores": {
+          "unfair": 0.538849,
+          "fair": 0.461151
+        },
+        "unfair": [],
+        "agreement": "majority"
+      },
+      {
+        "document": "PokemonGo",
+        "index": 103,
+        "fold": 0,
+        "y_true": "unfair",
+        "y_pred": "fair",
+        "confidence": 0.540389,
+        "scores": {
+          "fair": 0.540389,
+          "unfair": 0.459611
+        },
+        "unfair": [
+          "LTD"
+        ],
+        "agreement": "majority"
+      },
+      {
+        "document": "Skype",
+        "index": 110,
+        "fold": 0,
+        "y_true": "fair",
+        "y_pred": "unfair",
+        "confidence": 0.544416,
+        "scores": {
+          "unfair": 0.544416,
+          "fair": 0.455584
+        },
+        "unfair": [],
+        "agreement": "divergence"
+      },
+      {
+        "document": "Yahoo",
+        "index": 98,
+        "fold": 0,
+        "y_true": "unfair",
+        "y_pred": "fair",
+        "confidence": 0.549823,
+        "scores": {
+          "fair": 0.549823,
+          "unfair": 0.450177
+        },
+        "unfair": [
+          "LTD",
+          "TER"
+        ],
+        "agreement": "strict"
+      },
+      {
+        "document": "WorldOfWarcraft",
+        "index": 167,
+        "fold": 0,
+        "y_true": "fair",
+        "y_pred": "unfair",
+        "confidence": 0.550508,
+        "scores": {
+          "unfair": 0.550508,
+          "fair": 0.449492
+        },
+        "unfair": [],
+        "agreement": "strict"
+      },
+      {
+        "document": "Yahoo",
+        "index": 4,
+        "fold": 0,
+        "y_true": "unfair",
+        "y_pred": "fair",
+        "confidence": 0.552822,
+        "scores": {
+          "fair": 0.552822,
+          "unfair": 0.447178
+        },
+        "unfair": [
+          "CH",
+          "USE"
+        ],
+        "agreement": "majority"
+      },
+      {
+        "document": "LindenLab",
+        "index": 200,
+        "fold": 0,
+        "y_true": "fair",
+        "y_pred": "unfair",
+        "confidence": 0.553858,
+        "scores": {
+          "unfair": 0.553858,
+          "fair": 0.446142
+        },
+        "unfair": [],
+        "agreement": "majority"
+      },
+      {
+        "document": "Skype",
+        "index": 343,
+        "fold": 0,
+        "y_true": "unfair",
+        "y_pred": "fair",
+        "confidence": 0.555516,
+        "scores": {
+          "fair": 0.555516,
+          "unfair": 0.444484
+        },
+        "unfair": [
+          "CH"
+        ],
+        "agreement": "majority"
+      },
+      {
+        "document": "WorldOfWarcraft",
+        "index": 194,
+        "fold": 0,
+        "y_true": "fair",
+        "y_pred": "unfair",
+        "confidence": 0.561989,
+        "scores": {
+          "unfair": 0.561989,
+          "fair": 0.438011
+        },
+        "unfair": [],
+        "agreement": "majority"
+      }
+    ],
+    "topConfusions": [
+      {
+        "true": "fair",
+        "pred": "unfair",
+        "count": 188
+      },
+      {
+        "true": "unfair",
+        "pred": "fair",
+        "count": 101
+      }
+    ],
+    "confusionMatrix": {
+      "labels": [
+        "fair",
+        "unfair"
+      ],
+      "matrix": [
+        [
+          3450,
+          188
+        ],
+        [
+          101,
+          339
+        ]
+      ]
+    }
+  }
+}

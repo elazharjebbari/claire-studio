@@ -1,0 +1,49 @@
+{
+ "run_id": "holdout-inline-opus5-v02",
+ "kind": "extraction",
+ "backend": "inline_subagent",
+ "model": "claude-opus-5",
+ "effort": null,
+ "prompt": "llm/prompts/clause_template_extraction.md",
+ "prompt_hash": "7cf08dc25490899f56edb1fcb19075036111004f6aee590582fa1e85be373ffd",
+ "schema_hash": "aeb1d0a00322b91868c2e9b57e95c62f01830b7ef86b4ebaea61ff34036f6f46",
+ "temperature": null,
+ "repeat": 1,
+ "clauses": "../../data/annotations/holdout/clauses.jsonl",
+ "n_clauses": 1087,
+ "batch_size": 25,
+ "code_version": "9d349d95bd68d6bdb3b0128b8cd5eeec5430fca0",
+ "started_at": "2026-09-15T08:27:31+00:00",
+ "dry_run": false,
+ "tokens_in": null,
+ "tokens_out": null,
+ "refusals": 0,
+ "protocol_deviations": [
+  "no_temperature_control",
+  "no_constrained_decoding_schema_validated_after_generation",
+  "clauses_batched_not_one_call_per_clause",
+  "claude_code_system_prompt_wraps_extraction_prompt",
+  "no_token_accounting"
+ ],
+ "stray_clause_ids": [],
+ "agents": "sous-agents Claude Code general-purpose (model=opus -> claude-opus-5), contexte vierge ; schéma 0.2 + ancrage v0.2 ; collecte collect_inline_responses.py ou écriture directe",
+ "ended_at": "2026-09-15T11:19:34+00:00",
+ "n_calls": 1087,
+ "counts": {
+  "schema_ok": 1087,
+  "missing": 0,
+  "schema_errors": 0,
+  "norms": 2809,
+  "empty": 105
+ },
+ "metrics": {
+  "schema_compliance": 1.0,
+  "missing_share": 0.0,
+  "structural_pass": 0.9991,
+  "semantic_pass": 0.9991,
+  "anchoring_flags_per_norm": 0.1695,
+  "norms_per_clause": 2.584,
+  "empty_share": 0.0966,
+  "reproducibility_identical": null
+ }
+}

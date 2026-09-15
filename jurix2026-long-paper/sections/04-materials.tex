@@ -1,0 +1,31 @@
+% § 4 — Materials: Corpus, Thematic Layer and Clause Templates
+\section{Materials: Corpus, Thematic Layer and Clause Templates}
+\label{sec:materials}
+\label{sec:layer}
+\label{sec:templates}
+\textbf{Corpus.} \corpus{} comprises 50 online terms of service split into 9,414 sentences, of which 1,032 (11.0\,\%) carry at least one of 1,137 unfairness labels. The 17 held-out contracts contain 4,078 sentences, 440 of them labelled unfair.
+
+\textbf{Thematic layer.} The clause themes we rely on come from a companion resource: a multi-label thematic annotation of the 9,414 sentences of \corpus{} by three trained annotators, with $\alpha$-MASI 0.658 on the 20-theme taxonomy and 0.725 on its 11-theme consolidation, and a leave-one-annotator-out human ceiling of 0.871 accuracy ($\kappa$ 0.859). Agreement measures follow standard practice~\cite{krippendorff2018content,passonneau2006masi,artstein2008intercoder}; disagreement is preserved rather than erased~\cite{braun2024differ}. Every sentence of the 50 contracts carries a primary clause theme and optional secondary themes from a closed vocabulary of 20 themes, assigned independently by three trained annotators and resolved by a cascade (strict agreement 46.8\,\%, majority 48.3\,\%, human arbitration 4.9\,\%). Themes are not unfairness labels, but they are far from independent of them: Table~\ref{tab:themes} gives, for each theme, the share of sentences carrying a \corpus{} unfairness label. Four themes---governing law, modification of terms, termination and limitation of liability---concentrate the unfairness signal with lifts between 3.4 and 5.0 over the 11.0\,\% base rate; the framing themes (preamble, boilerplate, communications) are almost never unfair. This stratification matters twice: it is the reason why the theme alone is a strong baseline that any structured method must beat, and it is the reason why the 11-theme consolidation used downstream never merges themes across strata.
+
+\begin{table}[t]
+\caption{Unfairness by clause theme on the 50 \corpus{} contracts (consensus theme; $n$ sentences, share carrying a \corpus{} label, lift over the 11.0\,\% base rate). Themes with fewer than 20 sentences are omitted.}
+\label{tab:themes}
+\centering
+\footnotesize\setlength{\tabcolsep}{3.5pt}%
+\begin{tabular}{@{}lrrr@{\quad}lrrr@{}}
+\toprule
+Theme & $n$ & unfair & lift & Theme & $n$ & unfair & lift \\
+\midrule
+Governing law & 164 & 54.3\,\% & 4.95 & Fees and payment & 1,077 & 5.5\,\% & 0.50 \\
+Modification of terms & 392 & 49.0\,\% & 4.47 & Warranty disclaimer & 613 & 5.4\,\% & 0.49 \\
+Termination & 422 & 43.4\,\% & 3.96 & Eligibility and account & 761 & 4.2\,\% & 0.38 \\
+Limitation of liability & 604 & 37.2\,\% & 3.40 & Privacy and data & 278 & 4.0\,\% & 0.36 \\
+Arbitration and disputes & 847 & 10.5\,\% & 0.96 & Licence and IP & 1,225 & 3.4\,\% & 0.31 \\
+User content & 658 & 9.7\,\% & 0.89 & Acceptable use & 911 & 3.4\,\% & 0.31 \\
+Preamble and scope & 677 & 9.5\,\% & 0.86 & Miscellaneous boilerplate & 586 & 0.9\,\% & 0.08 \\
+Third-party services & 464 & 6.5\,\% & 0.59 & Meta, communications & 184 & 0.0\,\% & 0.00 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\textbf{Template extraction.} Templates are extracted automatically; clauses longer than eight sentences are split into windows of at most eight. A language model (Claude Opus~5) receives the clause sentences, the clause theme, the closed action inventory for that theme and the output schema, and returns zero or more templates, each citing the sentences that support it. It runs in an isolated context that contains neither the queries nor any reference label. Outputs are checked for schema conformance, structural validity (cited sentences exist, actions belong to the inventory) and semantic coherence; a lexical anchoring check then resets to \emph{not stated} any condition, notice or remedy value that no cue in the cited sentences supports, a deliberately conservative correction. Templates were not reviewed by legal experts in this study (Section~\ref{sec:discussion}). On a development pilot of 100 clauses extracted three times, 98\,\% of outputs conformed to the schema, the decisive fields (actor, modality, action, condition, notice, remedy) agreed across runs with a mean Jaccard index of 0.81, and the sentences flagged by the frozen queries agreed across runs with Fleiss' $\kappa = 0.86$. The held-out contracts were extracted in a single pass: 1,087 clause windows, all schema-conformant, 99.9\,\% structurally and semantically valid, yielding 2,809 templates (2.58 per clause), with 9.7\,\% of windows carrying none.

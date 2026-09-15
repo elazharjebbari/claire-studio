@@ -1,0 +1,48 @@
+% § 3 — The Executable Grey List: from the Annex to Frozen Queries
+\section{The Executable Grey List: from the Annex to Frozen Queries}
+\label{sec:greylist}
+\label{sec:queries}
+Table~\ref{tab:greylist} lists the seventeen items of the Annex, the \corpus{} category each item most directly corresponds to, the clause theme under which such a term is found, and whether the item can be expressed as a condition over the clause templates defined below. Three groups emerge. \emph{Structural items} describe a configuration of actor, modality, action and condition that a template can carry directly: items \gi{a}, \gi{b}, \gi{d}, \gi{f}, \gi{g}, \gi{j}, \gi{k}, \gi{l}, \gi{m}, \gi{p} and \gi{q}. \emph{Quantitative items} require a judgement of proportion or reasonableness that no template field encodes---``disproportionately high compensation'' \gi{e}, ``unreasonably early'' \gi{h}---and can be expressed only with an explicit, declared threshold. \emph{Procedural items} depend on facts outside the text, such as whether the consumer had a real opportunity of becoming acquainted with the terms \gi{i}, and can be approximated at best by a proxy (acceptance by mere use, the \corpus{} category ``contract by using''). Several categories of \corpus{} have no counterpart in the Annex: choice of law is not listed, and jurisdiction clauses are covered only through the general hindrance of legal action in \gi{q}. Conversely, items \gi{c}, \gi{n} and \gi{o} describe terms that are rare in ToS and absent from the reference categories. The grey list and the benchmark therefore overlap without coinciding, and the evaluation must be read item by item.
+
+\begin{table}[t]
+\caption{The Annex of Directive 93/13/EEC (grey list), its correspondence with \corpus{} categories (A~arbitration, CH~unilateral change, CR~content removal, J~jurisdiction, LAW~choice of law, LTD~limitation of liability, TER~unilateral termination, USE~contract by using) and with clause themes, and whether the item is expressible as a template condition (S~structural, Q~quantitative with declared threshold, P~procedural proxy, --~not expressible from the text).}
+\label{tab:greylist}
+\centering
+\footnotesize\setlength{\tabcolsep}{3pt}%
+\begin{tabular}{@{}c p{5.3cm} p{1.75cm} p{2.7cm} c@{}}
+\toprule
+Item & Term that has the object or effect of\ldots & \corpus{} & Clause theme & Expr. \\
+\midrule
+(a) & excluding/limiting liability for death or personal injury & LTD & Limitation of liability & S \\
+(b) & excluding/limiting the consumer's legal rights in case of non-performance & LTD & Limitation of liability; Warranty & S \\
+(c) & binding the consumer while the seller's performance depends on his will alone & -- & Preamble/scope & -- \\
+(d) & retaining sums paid when the consumer withdraws, without reciprocity & -- & Fees and payment & S \\
+(e) & requiring disproportionately high compensation from the consumer & -- & Fees and payment & Q \\
+(f) & dissolving the contract at the seller's discretion without reciprocity & TER, CR & Termination; User content & S \\
+(g) & terminating a contract of indeterminate duration without reasonable notice & TER & Termination & S \\
+(h) & automatically extending a fixed-term contract with an unreasonably early deadline & -- & Fees and payment & Q \\
+(i) & binding the consumer to terms he had no real opportunity to know & USE & Preamble/scope & P \\
+(j) & altering the terms unilaterally without a valid reason specified in the contract & CH & Modification of terms & S \\
+(k) & altering unilaterally the characteristics of the product or service & CH & Modification of terms & S \\
+(l) & determining the price at delivery or increasing it without a right to cancel & CH & Fees and payment & S \\
+(m) & letting the seller decide conformity or interpret any term exclusively & -- & Preamble/scope; Warranty & S \\
+(n) & limiting the seller's obligation to respect commitments of his agents & -- & Third-party services & -- \\
+(o) & obliging the consumer to perform while the seller does not & -- & -- & -- \\
+(p) & transferring the seller's rights and obligations without the consumer's agreement & -- & Preamble/scope & S \\
+(q) & excluding or hindering legal action, imposing arbitration, restricting evidence & A, J & Arbitration and disputes & S \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\textbf{Clause templates.} A template is a flat record attached to a clause (a maximal run of sentences sharing a theme). Its fields are fixed and few: the \emph{actor} (provider, user, third party); the \emph{modality} (obligation, permission, prohibition, power); the \emph{action}, drawn from a closed inventory per theme (terminate, suspend, modify terms, modify service, change price, exclude liability, cap liability, license content, remove content, impose arbitration, waive class action, choose forum, choose law, \ldots); the \emph{object} or affected party; the \emph{conditions} under which the action may be taken (for cause, for a specified reason, at discretion, none stated); the \emph{notice or deadline} (a duration, ``reasonable'', none, or not stated); and the \emph{remedy} left to the other party (refund, right to cancel, compensation, none, not stated). Two conventions matter for the queries. \emph{Not stated} is a value, distinct from \emph{none}: a termination clause that says nothing about notice is not the same as one that excludes it, and grey-list items are sensitive to the difference. And a clause may carry several templates when it states several norms; queries are evaluated per template and aggregated per clause.
+
+\textbf{Queries.} A query is a conjunction of conditions over template fields, optionally over several templates of the same document, that returns the templates satisfying it together with the sentences they were extracted from. The queries were drafted with a generative AI assistant from the text of the Annex and the \corpus{} category definitions, then reviewed and approved by the authors, before any template was extracted. They were revised once, on development contracts only: six action codes were added to the inventories, and two queries were extended, Q(q) to contractual limitation periods and Q(i) to acceptance deemed by continued use. The set was then frozen with a recorded hash, before any held-out template was extracted, and never edited afterwards. Every query cites the grey-list item it implements. Four examples, in prose:
+
+\begin{itemize}
+\item \textbf{Q(g)} --- theme \emph{termination}; actor \emph{provider}; modality \emph{permission} or \emph{power}; action \emph{terminate} or \emph{suspend}; conditions $\in$ \{at discretion, none stated\}; notice $\in$ \{none, not stated\}.
+\item \textbf{Q(j)} --- theme \emph{modification of terms}; actor \emph{provider}; action \emph{modify terms}; conditions $\in$ \{at discretion, none stated\} and no valid reason specified; a variant Q(j$'$) additionally requires remedy $\in$ \{none, not stated\}, that is, no right to cancel.
+\item \textbf{Q(a/b)} --- theme \emph{limitation of liability}; action \emph{exclude liability} or \emph{cap liability}; object includes personal injury or gross negligence, or the exclusion is unbounded (no carve-out for mandatory law).
+\item \textbf{Q(q)} --- action $\in$ \{impose arbitration, waive class action, restrict evidence, shift burden of proof, waive jury trial, limit the claim period\} with modality \emph{obligation} or \emph{prohibition} on the user; or the provider holding the \emph{power} to impose arbitration or choose the forum.
+\end{itemize}
+
+Queries come in three families: \emph{presence} of a forbidden configuration (the four above); \emph{absence} of an element the theme's schema expects (a modification clause with no notification mechanism and no notice); and \emph{composition} across clauses of the same document (a discretionary termination right of the provider with no symmetric termination right for the user). All are scored at the sentence level through the sentences their templates cite. A further composition pattern, combining an exclusion of liability, a warranty disclaimer and an indemnification duty of the user, is reported qualitatively only.

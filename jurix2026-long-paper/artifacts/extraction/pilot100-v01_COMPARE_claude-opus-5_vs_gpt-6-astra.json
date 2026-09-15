@@ -1,0 +1,166 @@
+{
+ "A": "results/extraction/inline-opus5-pilot100-20260915",
+ "B": "results/extraction/gpt-6-astra-pilot100-20260915",
+ "rules_sha256": "8f2967dbbcc4911150393e92b1c1cc928de491d8115bc4b1024c1e16c2216f34",
+ "statuses": [
+  "proposed"
+ ],
+ "quality": {
+  "A": {
+   "backend": "inline_subagent",
+   "model": "claude-opus-5",
+   "schema_compliance": 1.0,
+   "semantic_pass": 0.9933,
+   "norms_per_clause": 2.027,
+   "empty_share": 0.1067,
+   "other_action_share": 0.398,
+   "anchoring_flags_per_norm": 0.2056,
+   "anchoring_flags_by_value": {
+    "condition=specified_reason": 69,
+    "remedy=none": 37,
+    "remedy=compensation": 6,
+    "notice=reasonable": 3,
+    "notice=none": 3,
+    "condition=discretion": 3
+   },
+   "condition_distribution": {
+    "none_stated": 525,
+    "discretion": 49,
+    "specified_reason": 22,
+    "for_cause": 12
+   },
+   "intra_model_decisive_jaccard": 0.7955,
+   "tokens": {
+    "tokens_in": null,
+    "tokens_out": null
+   }
+  },
+  "B": {
+   "backend": "codex_exec",
+   "model": "gpt-6-astra",
+   "schema_compliance": 0.9733,
+   "semantic_pass": 1.0,
+   "norms_per_clause": 2.38,
+   "empty_share": 0.113,
+   "other_action_share": 0.5151,
+   "anchoring_flags_per_norm": 0.5784,
+   "anchoring_flags_by_value": {
+    "condition=specified_reason": 324,
+    "remedy=none": 58,
+    "notice=reasonable": 7,
+    "notice=none": 3,
+    "remedy=compensation": 3,
+    "condition=discretion": 3
+   },
+   "condition_distribution": {
+    "none_stated": 580,
+    "discretion": 52,
+    "specified_reason": 48,
+    "for_cause": 15
+   },
+   "intra_model_decisive_jaccard": 0.901,
+   "tokens": {
+    "input_tokens": 469610,
+    "output_tokens": 55901,
+    "reasoning_output_tokens": 2414,
+    "cached_input_tokens": 83712
+   }
+  }
+ },
+ "inter_model_by_repeat": {
+  "0": {
+   "clauses": 98,
+   "decisive_signature_jaccard_mean": 0.5967,
+   "empty_vs_nonempty_agreement": 0.9796,
+   "flagged_A": 37,
+   "flagged_B": 31,
+   "flagged_both": 23,
+   "flagged_jaccard": 0.5111,
+   "flagged_cohen_kappa": 0.6334
+  },
+  "1": {
+   "clauses": 96,
+   "decisive_signature_jaccard_mean": 0.621,
+   "empty_vs_nonempty_agreement": 0.9792,
+   "flagged_A": 35,
+   "flagged_B": 35,
+   "flagged_both": 26,
+   "flagged_jaccard": 0.5909,
+   "flagged_cohen_kappa": 0.7071
+  },
+  "2": {
+   "clauses": 98,
+   "decisive_signature_jaccard_mean": 0.66,
+   "empty_vs_nonempty_agreement": 0.9898,
+   "flagged_A": 36,
+   "flagged_B": 34,
+   "flagged_both": 28,
+   "flagged_jaccard": 0.6667,
+   "flagged_cohen_kappa": 0.7722
+  }
+ },
+ "design_diagnostic": {
+  "note": "conception, normes non validées, pilote enrichi : pas un résultat publiable",
+  "positives": 52,
+  "A": {
+   "0": {
+    "flagged": 37,
+    "tp": 25,
+    "precision": 0.6757,
+    "recall": 0.4808,
+    "f1": 0.5618
+   },
+   "1": {
+    "flagged": 35,
+    "tp": 24,
+    "precision": 0.6857,
+    "recall": 0.4615,
+    "f1": 0.5517
+   },
+   "2": {
+    "flagged": 36,
+    "tp": 24,
+    "precision": 0.6667,
+    "recall": 0.4615,
+    "f1": 0.5455
+   }
+  },
+  "B": {
+   "0": {
+    "flagged": 31,
+    "tp": 20,
+    "precision": 0.6452,
+    "recall": 0.3846,
+    "f1": 0.4819
+   },
+   "1": {
+    "flagged": 35,
+    "tp": 22,
+    "precision": 0.6286,
+    "recall": 0.4231,
+    "f1": 0.5057
+   },
+   "2": {
+    "flagged": 34,
+    "tp": 24,
+    "precision": 0.7059,
+    "recall": 0.4615,
+    "f1": 0.5581
+   }
+  },
+  "union_A_B_repeat0": {
+   "flagged": 45,
+   "tp": 27,
+   "precision": 0.6,
+   "recall": 0.5192,
+   "f1": 0.5567
+  },
+  "intersection_A_B_repeat0": {
+   "flagged": 23,
+   "tp": 18,
+   "precision": 0.7826,
+   "recall": 0.3462,
+   "f1": 0.48
+  }
+ }
+}

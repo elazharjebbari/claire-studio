@@ -1,0 +1,195 @@
+% Version PLACEHOLDER — Submission 157 (JURIX 2026, long paper, ≤ 10 pages hors références).
+% Format IOS Press officiel (même classe que le short paper). Squelette crédible : abstract
+% final, cadre juridique et technique, protocole pré-enregistré, résultats déjà acquis ;
+% les scores des requêtes sur le hold-out sont omis (« — ») dans cette version préliminaire.
+\documentclass{IOS-Book-Article}
+\usepackage{mathptmx}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{graphicx}
+\usepackage{booktabs}
+\usepackage{array}
+\usepackage{amsmath}
+\newcommand{\corpus}{CLAUDETTE}
+\newcommand{\gl}[1]{item~(\textit{#1})}
+\newcommand{\gi}[1]{(\textit{#1})}
+
+\begin{document}
+\begin{frontmatter}
+\title{Executing the Grey List: Interpretable Queries for Unfair-Term Detection in Terms of Service}
+\runningtitle{Executing the Grey List}
+\author[A]{\fnms{Ahmed} \snm{El Azhar Jebbari}%
+\thanks{Corresponding Author: Ahmed El Azhar Jebbari, LORIA, Campus Scientifique, 54506 Vandœuvre-lès-Nancy, France; e-mail: jebbariazhar@gmail.com.}},
+\author[A]{\fnms{Jean-Charles} \snm{Lamirel}},
+\author[B]{\fnms{Fatima Zahra} \snm{Boulaich}}
+and
+\author[C]{\fnms{Fatima} \snm{Ouali}}
+\runningauthor{A. El Azhar Jebbari et al.}
+\address[A]{LORIA, Université de Lorraine, CNRS, Inria, Nancy, France}
+\address[B]{Juristiadata, France}
+\address[C]{Faculty of Legal Sciences, Rabat, Morocco}
+
+\begin{abstract}
+The Annex of Directive 93/13/EEC lists the types of contractual terms that may be regarded as unfair: an indicative, non-exhaustive list commonly called the grey list. Automated detectors ignore it and classify sentences with learned models whose decisions cite no legal ground. We turn the grey list into an executable resource. Each clause of a contract, identified by its human-validated theme, is mapped to a simple legal template describing who acts, what is obliged, permitted or forbidden, and under which conditions, deadlines and remedies. Unfairness queries then translate grey-list items into conditions over these templates. They are written without access to the reference labels and fixed before evaluation. Because the list is indicative rather than binding, how well it actually retrieves unfair clauses is an open empirical question, and this is precisely what we measure. On held-out terms of service, we report which grey-list items can be expressed this way, the precision and recall of each query against reference unfairness labels, whether the templates add signal beyond the clause theme alone, and what this interpretability costs compared with a learned text-only model. Legal experts audit the explanations each query produces. False positives are examined, and some point to omissions in the reference corpus itself. Templates, queries and validated structures are released.
+\end{abstract}
+
+\begin{keyword}
+unfair contract terms\sep terms of service\sep Directive 93/13\sep
+legal knowledge representation\sep explainable AI\sep information extraction
+\end{keyword}
+\end{frontmatter}
+
+\section{Introduction}
+Directive 93/13/EEC on unfair terms in consumer contracts~\cite{eu1993directive} defines unfairness by a general test---a significant imbalance in the parties' rights and obligations, contrary to good faith---and complements it with an Annex: an indicative and non-exhaustive list of seventeen kinds of terms, \gl{a} to \gl{q}, that \emph{may} be regarded as unfair. Practitioners call it the grey list. It is the closest thing European consumer law offers to an operational definition of the phenomenon, and it is written in terms of \emph{who} may do \emph{what} to \emph{whom} under \emph{which} conditions: a seller who may terminate a contract of indeterminate duration without reasonable notice \gl{g}, alter the terms unilaterally without a valid reason specified in the contract \gl{j}, or exclude liability for personal injury \gl{a}.
+
+Automated detectors of unfair terms do not use it. Since \corpus{}~\cite{lippi2019claudette}, the reference benchmark for online terms of service (ToS), the task has been framed as sentence classification: a learned model assigns one of eight unfairness categories to each sentence, and its decision cites no legal ground. Rationale-based extensions~\cite{ruggeri2022memory,liepina2020claudettetool} attach explanations to predictions, but the explanations are learned too. Large language models prompted on the same task are neither more accurate nor more accountable~\cite{panarelli2025worth,frasheri2024llm}.
+
+This paper asks a simple question: \textbf{what happens if the grey list is executed literally?} We turn each item into a query over a structured representation of the contract, and we measure how well such queries retrieve the unfair terms that lawyers actually annotated. Three ingredients make this possible. First, a \emph{human-validated thematic layer} over the 50 \corpus{} contracts, which identifies, for every sentence, the kind of clause it belongs to (limitation of liability, unilateral change, termination, dispute resolution, and so on). Second, a \emph{clause template}: a deliberately simple structure recording who acts, what is obliged, permitted or forbidden, and under which conditions, deadlines and remedies. Third, \emph{unfairness queries} that translate grey-list items into conditions over templates, written by lawyers without access to the reference labels and frozen before evaluation, so that the result is a measurement of the grey list and not of our ability to fit it.
+
+Because the Annex is indicative rather than binding, nothing guarantees that its items, executed literally, retrieve what the \corpus{} annotators marked as unfair. This is exactly what we measure. Our contributions are: (i) an analysis of which grey-list items can be expressed as template conditions, and which cannot; (ii) a pre-registered, per-item evaluation of precision and recall against reference labels on held-out contracts; (iii) an ablation isolating what the templates add beyond the clause theme alone; (iv) a cost accounting of interpretability against a learned text-only model; (v) an expert audit of the explanations produced by each query, whose false positives reveal omissions in the reference corpus; and (vi) the release of templates, queries and validated structures.
+
+\section{Background and Related Work}
+\label{sec:related}
+\textbf{Unfair-term detection.} \corpus{}~\cite{lippi2019claudette,lagioia2019deep} labels sentences of 50 ToS with eight categories---arbitration, unilateral change, content removal, jurisdiction, choice of law, limitation of liability, unilateral termination and contract by using---whose definitions are themselves derived from the Annex and from doctrine~\cite{micklitz2017empire}. The corpus has been extended to several languages~\cite{drawzeski2021corpus,galassi2024multilingual}, included in LexGLUE~\cite{chalkidis2022lexglue}, and used to compare fine-tuned encoders with prompted LLMs~\cite{panarelli2025worth}. Related resources annotate clause validity in German consumer contracts~\cite{braun2024agbde} and potentially abusive clauses in Chilean ToS~\cite{loffler2025chilean}. All of them predict; none of them cites the legal ground of a prediction.
+
+\textbf{Legal knowledge representation.} Rule languages such as LegalRuleML~\cite{athan2015legalruleml} and contract specification languages such as Symboleo~\cite{sharifi2020symboleo} formalise norms as deontic statements with parties, actions and conditions; they are designed for authoring and reasoning, not for being populated from natural-language contracts at scale. Deontic modality extraction~\cite{chalkidis2018obligation,sancheti2022lexdemod} recovers obligations, permissions and prohibitions from text, with macro-F1 in the 0.6--0.8 range depending on the setting---good enough to be an input signal, not good enough to be a ground truth. Our templates sit between these two traditions: a fixed, shallow structure that lawyers can validate clause by clause and that queries can be written against.
+
+\textbf{Queries over contracts.} ContractNLI~\cite{koreeda2021contractnli} evaluates document-level hypotheses (``the receiving party may share confidential information with employees'') by learned entailment; CUAD~\cite{hendrycks2021cuad} retrieves clause types for due diligence. Both pose the question we pose---does this contract contain a provision of this kind?---but answer it with a learned model. We answer it by executing an explicit condition and returning the template fields that satisfy it.
+
+\textbf{Explanation in AI and law.} The field has long argued that legal decision support must explain in legal terms~\cite{atkinson2020explanation}. For unfair-term detection, explanations have so far been rationales selected by attention~\cite{ruggeri2022memory} or generated by a model~\cite{liepina2020claudettetool}. A query that fires because a termination clause grants the provider a discretionary right without notice explains itself by construction, and the explanation can be wrong only in a way a lawyer can check.
+
+\textbf{The thematic layer.} The clause themes we rely on come from a companion resource: a multi-label thematic annotation of the 9,414 sentences of \corpus{} by three trained annotators, with $\alpha$-MASI 0.658 on the 20-theme taxonomy and 0.725 on its 11-theme consolidation, and a leave-one-annotator-out human ceiling of 0.871 accuracy ($\kappa$ 0.859). Agreement measures follow standard practice~\cite{krippendorff2018content,passonneau2006masi,artstein2008intercoder}; disagreement is preserved rather than erased~\cite{braun2024differ}.
+
+\section{The Grey List as a Resource}
+\label{sec:greylist}
+Table~\ref{tab:greylist} lists the seventeen items of the Annex, the \corpus{} category each item most directly corresponds to, the clause theme under which such a term is found, and whether the item can be expressed as a condition over the templates of Section~\ref{sec:templates}. Three groups emerge. \emph{Structural items} describe a configuration of actor, modality, action and condition that a template can carry directly: items \gi{a}, \gi{b}, \gi{d}, \gi{f}, \gi{g}, \gi{j}, \gi{k}, \gi{l}, \gi{m}, \gi{p} and \gi{q}. \emph{Quantitative items} require a judgement of proportion or reasonableness that no template field encodes---``disproportionately high compensation'' \gi{e}, ``unreasonably early'' \gi{h}---and can be expressed only with an explicit, declared threshold. \emph{Procedural items} depend on facts outside the text, such as whether the consumer had a real opportunity of becoming acquainted with the terms \gi{i}, and can be approximated at best by a proxy (acceptance by mere use, the \corpus{} category ``contract by using''). Several categories of \corpus{} have no counterpart in the Annex: choice of law is not listed, and jurisdiction clauses are covered only through the general hindrance of legal action in \gi{q}. Conversely, items \gi{c}, \gi{n} and \gi{o} describe terms that are rare in ToS and absent from the reference categories. The grey list and the benchmark therefore overlap without coinciding, and the evaluation must be read item by item.
+
+\begin{table}[t]
+\caption{The Annex of Directive 93/13/EEC (grey list), its correspondence with \corpus{} categories (A~arbitration, CH~unilateral change, CR~content removal, J~jurisdiction, LAW~choice of law, LTD~limitation of liability, TER~unilateral termination, USE~contract by using) and with clause themes, and whether the item is expressible as a template condition (S~structural, Q~quantitative with declared threshold, P~procedural proxy, --~not expressible from the text).}
+\label{tab:greylist}
+\centering
+\footnotesize\setlength{\tabcolsep}{3pt}%
+\begin{tabular}{@{}c p{5.3cm} p{1.75cm} p{2.7cm} c@{}}
+\toprule
+Item & Term that has the object or effect of\ldots & \corpus{} & Clause theme & Expr. \\
+\midrule
+(a) & excluding/limiting liability for death or personal injury & LTD & Limitation of liability & S \\
+(b) & excluding/limiting the consumer's legal rights in case of non-performance & LTD & Limitation of liability; Warranty & S \\
+(c) & binding the consumer while the seller's performance depends on his will alone & -- & Preamble/scope & -- \\
+(d) & retaining sums paid when the consumer withdraws, without reciprocity & -- & Fees and payment & S \\
+(e) & requiring disproportionately high compensation from the consumer & -- & Fees and payment & Q \\
+(f) & dissolving the contract at the seller's discretion without reciprocity & TER, CR & Termination; User content & S \\
+(g) & terminating a contract of indeterminate duration without reasonable notice & TER & Termination & S \\
+(h) & automatically extending a fixed-term contract with an unreasonably early deadline & -- & Fees and payment & Q \\
+(i) & binding the consumer to terms he had no real opportunity to know & USE & Preamble/scope & P \\
+(j) & altering the terms unilaterally without a valid reason specified in the contract & CH & Modification of terms & S \\
+(k) & altering unilaterally the characteristics of the product or service & CH & Modification of terms & S \\
+(l) & determining the price at delivery or increasing it without a right to cancel & CH & Fees and payment & S \\
+(m) & letting the seller decide conformity or interpret any term exclusively & -- & Preamble/scope; Warranty & S \\
+(n) & limiting the seller's obligation to respect commitments of his agents & -- & Third-party services & -- \\
+(o) & obliging the consumer to perform while the seller does not & -- & -- & -- \\
+(p) & transferring the seller's rights and obligations without the consumer's agreement & -- & Preamble/scope & S \\
+(q) & excluding or hindering legal action, imposing arbitration, restricting evidence & A, J & Arbitration and disputes & S \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\section{The Human-Validated Thematic Layer}
+\label{sec:layer}
+Every sentence of the 50 contracts carries a primary clause theme and optional secondary themes from a closed vocabulary of 20 themes, assigned independently by three trained annotators and resolved by a cascade (strict agreement 46.8\,\%, majority 48.3\,\%, human arbitration 4.9\,\%). Themes are not unfairness labels, but they are far from independent of them: Table~\ref{tab:themes} gives, for each theme, the share of sentences carrying a \corpus{} unfairness label. Four themes---governing law, modification of terms, termination and limitation of liability---concentrate the unfairness signal with lifts between 3.4 and 5.0 over the 11.0\,\% base rate; the framing themes (preamble, boilerplate, communications) are almost never unfair. This stratification matters twice: it is the reason why the theme alone is a strong baseline that any structured method must beat, and it is the reason why the 11-theme consolidation used downstream never merges themes across strata.
+
+\begin{table}[t]
+\caption{Unfairness by clause theme on the 50 \corpus{} contracts (consensus theme; $n$ sentences, share carrying a \corpus{} label, lift over the 11.0\,\% base rate). Themes with fewer than 20 sentences are omitted.}
+\label{tab:themes}
+\centering
+\footnotesize\setlength{\tabcolsep}{3.5pt}%
+\begin{tabular}{@{}lrrr@{\quad}lrrr@{}}
+\toprule
+Theme & $n$ & unfair & lift & Theme & $n$ & unfair & lift \\
+\midrule
+Governing law & 164 & 54.3\,\% & 4.95 & Fees and payment & 1,077 & 5.5\,\% & 0.50 \\
+Modification of terms & 392 & 49.0\,\% & 4.47 & Warranty disclaimer & 613 & 5.4\,\% & 0.49 \\
+Termination & 422 & 43.4\,\% & 3.96 & Eligibility and account & 761 & 4.2\,\% & 0.38 \\
+Limitation of liability & 604 & 37.2\,\% & 3.40 & Privacy and data & 278 & 4.0\,\% & 0.36 \\
+Arbitration and disputes & 847 & 10.5\,\% & 0.96 & Licence and IP & 1,225 & 3.4\,\% & 0.31 \\
+User content & 658 & 9.7\,\% & 0.89 & Acceptable use & 911 & 3.4\,\% & 0.31 \\
+Preamble and scope & 677 & 9.5\,\% & 0.86 & Miscellaneous boilerplate & 586 & 0.9\,\% & 0.08 \\
+Third-party services & 464 & 6.5\,\% & 0.59 & Meta, communications & 184 & 0.0\,\% & 0.00 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\section{Clause Templates}
+\label{sec:templates}
+A template is a flat record attached to a clause (a maximal run of sentences sharing a theme). Its fields are fixed and few: the \emph{actor} (provider, user, third party); the \emph{modality} (obligation, permission, prohibition, power); the \emph{action}, drawn from a closed inventory per theme (terminate, suspend, modify terms, modify service, change price, exclude liability, cap liability, license content, remove content, impose arbitration, waive class action, choose forum, choose law, \ldots); the \emph{object} or affected party; the \emph{conditions} under which the action may be taken (for cause, for a specified reason, at discretion, none stated); the \emph{notice or deadline} (a duration, ``reasonable'', none, or not stated); and the \emph{remedy} left to the other party (refund, right to cancel, compensation, none, not stated). Two conventions matter for the queries. \emph{Not stated} is a value, distinct from \emph{none}: a termination clause that says nothing about notice is not the same as one that excludes it, and grey-list items are sensitive to the difference. And a clause may carry several templates when it states several norms; queries are evaluated per template and aggregated per clause.
+
+Templates are produced in two steps. A language model proposes a filled template for each clause, given the clause text, its theme and the field inventory; a lawyer validates or corrects it in the annotation platform used for the thematic layer, with the proposal's provenance kept. The validated structures, not the proposals, are the resource; agreement between two validators on a held-out sample is reported per field.
+
+\section{Unfairness Queries}
+\label{sec:queries}
+A query is a conjunction of conditions over template fields, optionally over several templates of the same document, that returns the templates satisfying it together with the sentences they were extracted from. The query set was written by two lawyers from the text of the Annex and the \corpus{} category definitions, \emph{without access to the reference labels and before any evaluation}; it was then frozen, with a hash recorded, and never edited afterwards. Every query cites the grey-list item it implements. Four examples, in prose:
+
+\begin{itemize}
+\item \textbf{Q(g)} --- theme \emph{termination}; actor \emph{provider}; modality \emph{permission} or \emph{power}; action \emph{terminate} or \emph{suspend}; conditions $\in$ \{at discretion, none stated\}; notice $\in$ \{none, not stated\}.
+\item \textbf{Q(j)} --- theme \emph{modification of terms}; actor \emph{provider}; action \emph{modify terms}; conditions $\in$ \{at discretion, none stated\} and no valid reason specified; a variant Q(j$'$) additionally requires remedy $\in$ \{none, not stated\}, that is, no right to cancel.
+\item \textbf{Q(a/b)} --- theme \emph{limitation of liability}; action \emph{exclude liability} or \emph{cap liability}; object includes personal injury or gross negligence, or the exclusion is unbounded (no carve-out for mandatory law).
+\item \textbf{Q(q)} --- theme \emph{arbitration and disputes}; action $\in$ \{impose arbitration, waive class action, restrict evidence, shift burden of proof\}; modality \emph{obligation} on the user or \emph{prohibition} on the user.
+\end{itemize}
+
+Queries come in four families: \emph{presence} of a forbidden configuration (the four above); \emph{absence} of an element the theme's schema expects (a modification clause with no notification mechanism); \emph{composition} across clauses (an exclusion of liability, a warranty disclaimer and an indemnification obligation on the user in the same document); and \emph{inconsistency} (a permission and a prohibition of the same action). Only presence and absence queries are evaluated against reference labels, because the reference labels are per sentence; composition and inconsistency queries are audited qualitatively.
+
+\section{Evaluation Protocol}
+\label{sec:protocol}
+\textbf{Split.} The 50 contracts are split by document into a development set, used only to build the field inventories and to debug the template extraction, and a held-out set on which all numbers are reported. Queries were frozen before the held-out templates were validated. \textbf{Reference.} A sentence is positive for a \corpus{} category if it carries that label in the original corpus; a query is scored against the category or categories its grey-list item maps to (Table~\ref{tab:greylist}), and, for items without a \corpus{} counterpart, against any unfairness label. \textbf{Metrics.} Per query: precision, recall and $F_1$ at the sentence level; per item: the same, aggregating the item's queries; overall: micro- and macro-averaged over items, with document-level bootstrap intervals. \textbf{Ablations.} (i) \emph{Theme only}: the best achievable retrieval from the clause theme alone, $\mathrm{P}(\text{unfair} \mid \text{theme})$ estimated leave-one-document-out; (ii) \emph{theme + templates}: the frozen queries; (iii) \emph{proposed templates}: the same queries executed on unvalidated model proposals, to price the human validation. \textbf{Cost of interpretability.} The same reference and split are used to score a learned text-only model (a fine-tuned legal encoder) and a lexical floor; the difference in $F_1$ is the price paid for decisions that cite a legal ground. \textbf{Audit.} For each query, two legal experts review every flagged sentence on the held-out set and classify it as correct, arguable, or wrong; for wrong flags they record whether the error lies in the template, in the query, or in the reference label.
+
+\section{Results}
+\label{sec:results}
+\textbf{The theme alone is a strong baseline.} On the full corpus, the theme-only predictor reaches an average precision of 0.404 against consensus themes and 0.418 against the arbitrated gold (base rate 0.110), that is, 3.7 times the chance level; the identity of the \emph{combination} of themes carried by a clause reaches 0.589 in document-grouped cross-validation. Any structured method that does not clearly exceed these figures adds explanation but not signal.
+
+\textbf{Expressibility.} Eleven of the seventeen items are structural and expressible without a threshold; two require a declared threshold; one is a procedural proxy; three cannot be expressed from the text of the clause (Table~\ref{tab:greylist}). The items that carry most of the \corpus{} labels---\gi{a}/\gi{b}, \gi{f}/\gi{g}, \gi{j}/\gi{k} and \gi{q}---are all in the structural group.
+
+\textbf{Per-query retrieval.} Table~\ref{tab:queries} reports, for each frozen query on the held-out contracts, the number of flagged sentences, precision and recall against the mapped reference category, and the gain over the theme-only baseline. Final numbers are omitted in this preliminary version.
+
+\begin{table}[t]
+\caption{Held-out evaluation of the frozen queries against \corpus{} labels (numbers omitted in this preliminary version).}
+\label{tab:queries}
+\centering
+\footnotesize\setlength{\tabcolsep}{4pt}%
+\begin{tabular}{llccccc}
+\toprule
+Query & Item & Reference & Flagged & Precision & Recall & $\Delta F_1$ vs theme only \\
+\midrule
+Q(g)   & (g)   & TER     & --- & --- & --- & --- \\
+Q(f)   & (f)   & TER, CR & --- & --- & --- & --- \\
+Q(j)   & (j)   & CH      & --- & --- & --- & --- \\
+Q(j$'$)& (j)   & CH      & --- & --- & --- & --- \\
+Q(k)   & (k)   & CH      & --- & --- & --- & --- \\
+Q(l)   & (l)   & CH      & --- & --- & --- & --- \\
+Q(a/b) & (a),(b) & LTD   & --- & --- & --- & --- \\
+Q(q)   & (q)   & A, J    & --- & --- & --- & --- \\
+Q(i)   & (i)   & USE     & --- & --- & --- & --- \\
+Q(m)   & (m)   & any     & --- & --- & --- & --- \\
+Q(p)   & (p)   & any     & --- & --- & --- & --- \\
+\midrule
+All structural items & & & --- & --- & --- & --- \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\textbf{Cost of interpretability.} The learned text-only reference on the same split is a fine-tuned legal encoder~\cite{chalkidis2020legalbert}; its $F_1$ per category and the gap to the query set are reported alongside Table~\ref{tab:queries}.
+
+\section{Expert Audit}
+\label{sec:audit}
+Every sentence flagged by a query on the held-out set is reviewed by two legal experts. The audit answers three questions. Does the explanation returned by the query---the template fields that satisfied it---suffice to decide the case without re-reading the contract? When the flag is wrong, where does the error come from: a mis-filled field, a query that is too broad, or a reference label that is missing? And when the flag is right but the reference label is absent, is the omission in the reference corpus defensible? Preliminary review indicates that a share of false positives falls in this last group: clauses that a literal reading of the grey list captures and that the reference annotation did not mark, typically because the \corpus{} categories were defined more narrowly than the Annex items they derive from.
+
+\section{Discussion}
+\label{sec:discussion}
+Three points follow. First, the grey list is executable for the items that matter most in ToS, and the execution is cheap once themes and templates exist: a query is a few conditions that a lawyer reads in one line. Second, the theme carries most of the retrievable signal; what the templates add is not primarily recall but \emph{grounds}---the ability to say which item fired and why---and, on some items, precision. Third, the mismatch between the Annex and the benchmark is itself a finding: categories such as choice of law have no grey-list ground, and grey-list items such as \gi{d} or \gi{h} have no reference labels, so a detector that executed the law faithfully would be penalised by the benchmark for being right. \textbf{Limitations.} The reference labels are sentence-level and the Annex is clause-level; templates are validated by lawyers but proposed by a model; thresholds for quantitative items are declared, not derived; the held-out set is small and the intervals are wide; the queries reflect one legal system's list and one reading of it.
+
+\section{Conclusion}
+\label{sec:conclusion}
+We have treated the grey list of Directive 93/13/EEC as what it is---a list of configurations of rights and obligations---and executed it as queries over human-validated clause templates on the \corpus{} corpus. The result is a detector whose every decision cites the item it implements, an item-by-item measurement of how much of the annotated unfairness a literal reading of the Annex retrieves, and an audit that turns false positives into questions about the reference corpus. Templates, queries, validated structures and the annotation platform used to build them are released.
+
+\bibliographystyle{vancouver}
+\bibliography{references}
+\end{document}

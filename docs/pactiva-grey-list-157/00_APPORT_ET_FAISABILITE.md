@@ -7,7 +7,7 @@
 > réellement ce matin — avec des chiffres de dimensionnement calculés sur l'export du dataset
 > `7116e627…` (50 ToS, 9 414 phrases, 2 450 clauses).
 >
-> Pièces connexes : placeholder `jurix2026-long-paper/placeholder/`, état de l'art
+> Pièces connexes : placeholder `jurix2026-long-paper/`, état de l'art
 > `draft/jurix2026_short_paper_etat_de_l_art.md` (§2-H : aval), modèle de clause et requêtes
 > `docs/pactiva-fusion-classes/05_MODELE_GRAPHE.md` (§3–5), résultats G2 `docs/pactiva-experiences-papiers/04`.
 
@@ -263,7 +263,7 @@ Labels CLAUDETTE : 490 (LTD 132, TER 102, CH 88, CR 52, USE 44, J 28, LAW 27, A 
 
 **Conception (33 documents)** : 1 562 clauses ; 930 clauses cibles (3 215 phrases, 356 abusives).
 
-**Mapping items ↔ catégories ↔ thèmes** : tableau 1 du placeholder (`jurix2026-long-paper/placeholder/main.tex`),
+**Mapping items ↔ catégories ↔ thèmes** : tableau 1 du placeholder (`jurix2026-long-paper/main.tex (sections dans jurix2026-long-paper/sections/)`),
 à faire relire par les juristes avant le gel.
 
 **Documents de validation** : Headspace, LindenLab, LinkedIn, Nintendo, Oculus, PokemonGo, Skype, Spotify,

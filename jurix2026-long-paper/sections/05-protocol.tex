@@ -1,0 +1,20 @@
+% § 5 — Pre-registered Evaluation Protocol
+\section{Pre-registered Evaluation Protocol}
+\label{sec:protocol}
+\begin{table}[t]
+\caption{Pre-registered questions, hypotheses and tests, recorded before any computation on the held-out contracts. Components requiring expert judgement are deferred to the follow-up study.}
+\label{tab:rq}
+\centering
+\footnotesize\setlength{\tabcolsep}{3pt}%
+\begin{tabular}{@{}p{0.55cm} p{5.9cm} p{2.3cm} p{2.3cm}@{}}
+\toprule
+RQ & Hypothesis H1 & Metric & Test \\
+\midrule
+A & precision $\geq 0.60$ on the mapped categories; recall $\geq 0.50$ on LTD, TER and CH; $F_1$ gain over theme only on these three & per item and query: P, R, $F_1$ & document-level bootstrap CI \\
+B & loss in $F_1$ $\leq 0.05$ against the best text-only model (explanation sufficiency: deferred) & $F_1$ difference & non-inferiority, one-sided CI \\
+C & $\geq 20\,\%$ of false positives are grounded flags missing from the reference (expert judgement: deferred) & false positives by item, theme, severity & descriptive only \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\textbf{Split.} The 50 contracts are split by document into 33 development contracts, used to build the field inventories, to debug the extraction and to revise the queries once, and 17 held-out contracts on which all numbers are reported. \textbf{Pre-registration.} The template schema and the queries were frozen, with a recorded hash and date, before the held-out templates were extracted; the extraction prompt is versioned and hashed as well. One change to the originally planned protocol was recorded at the same time: templates are used as extracted, without expert review, so the pipeline is evaluated end to end. \textbf{Reference.} A sentence is positive for a \corpus{} category if it carries that label in the original corpus; a query is scored against the category or categories its grey-list item maps to (Table~\ref{tab:greylist}), and, for items without a \corpus{} counterpart, against any unfairness label. \textbf{Metrics.} A flagged template marks only the sentences it cites. Per query: precision, recall and $F_1$ at the sentence level; per item: the same, aggregating the item's queries; overall: micro- and macro-averaged over items, with document-level bootstrap intervals; and, for comparison with learned models, a binary \emph{any unfairness} $F_1$. \textbf{Baselines.} (i) \emph{Theme only}: the best achievable retrieval from the clause theme alone, $\mathrm{P}(\text{unfair} \mid \text{theme})$ estimated leave-one-document-out; (ii) a lexical floor, TF-IDF with logistic regression; (iii) a fine-tuned legal encoder~\cite{chalkidis2020legalbert}. Both learned models are trained on the development contracts and scored on the same held-out sentences; the difference in $F_1$ is the price paid for decisions that cite a legal ground. \textbf{Error analysis.} False positives and false negatives are compared with the reference labels and categorised by item, theme and \corpus{} severity, without expert adjudication.

@@ -8,7 +8,7 @@ Commit des résultats : `0fb08e4`.
 - Rapport E2 : `legal-kg/results/evaluation/holdout-v02-pass0/E2.md` (+ `E2.json`, `sentences_eval.jsonl`)
 - Tests pré-enregistrés (Holm, permutations par document, non-infériorité) : `legal-kg/results/evaluation/holdout-v02-pass0/STATS.md` (+ `STATS.json`)
 - Analyse des désaccords (FP stables, typologie des FN N0–N3) : `legal-kg/results/evaluation/holdout-v02-disagreement/DISAGREEMENT.md`
-- Tableaux LaTeX : `jurix2026-long-paper/placeholder/tables/T3_queries.tex` (`tab:queries`), `T4_cost.tex` (`tab:cost`)
+- Tableaux LaTeX : `jurix2026-long-paper/tables/T3_queries.tex` (`tab:queries`), `T4_cost.tex` (`tab:cost`)
 - Extraction : `legal-kg/results/extraction/inline-opus5-holdout-v02-20260915/` (`run.json`, `MANIFEST.json`, `AGENTS.json`)
 - Appariements des règles : `legal-kg/results/rules/holdout-v02-pass0/` (`matches.jsonl`, `SUMMARY.json`)
 

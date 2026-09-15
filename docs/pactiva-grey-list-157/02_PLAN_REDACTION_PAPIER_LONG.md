@@ -1,7 +1,7 @@
 # Soumission 157 — Plan de rédaction du papier long JURIX 2026
 
 *15 septembre 2026. Complète `01_CHAINE_FINALE_ET_VALORISATION.md`. Base de travail : le brouillon v0 déjà écrit dans
-`jurix2026-long-paper/placeholder/main.tex` (introduction, état de l'art, tableau de la grey list, couche thématique,
+`jurix2026-long-paper/main.tex (sections dans jurix2026-long-paper/sections/)` (introduction, état de l'art, tableau de la grey list, couche thématique,
 templates, requêtes, protocole, résultats à trous, audit, discussion, conclusion), les inventaires du protocole
 (`legal-kg/docs/`), des résultats (`legal-kg/results/`, `jurix2026-short-paper/`) et de la bibliographie.*
 
@@ -9,7 +9,7 @@ templates, requêtes, protocole, résultats à trous, audit, discussion, conclus
 
 - Format IOS Press (`IOS-Book-Article.cls`, `vancouver.bst`), **10 pages au maximum hors références** (à revérifier sur
   l'appel au moment du camera-ready ; le short était à 5 pages hors références et remerciements). Tableaux ≥ 8 pt,
-  figures en niveaux de gris. Environnement déjà prêt : `jurix2026-long-paper/placeholder/` (compilable, gabarit du short
+  figures en niveaux de gris. Environnement déjà prêt : `jurix2026-long-paper/` (compilable, gabarit du short
   paper réutilisable : `tools/check_pages.sh`, marqueur `\label{end:body}`).
 - Lectorat : IA & droit (juristes et informaticiens). Ce qui est jugé : nouveauté, rigueur (pré-inscription), clarté
   juridique, reproductibilité, honnêteté sur les limites. Un résultat nul par item est acceptable si mesuré proprement
@@ -217,14 +217,14 @@ Notation : chemins relatifs à la racine du dépôt ; **[PUB]** utilisable comme
 conception à présenter comme tel ; **[À PRODUIRE]** livré par la chaîne finale (F-numéro de `01_…`).
 
 ### § 1 Introduction
-- Texte de départ : `jurix2026-long-paper/placeholder/main.tex` § Introduction (paragraphes 1–2 à garder).
+- Texte de départ : `jurix2026-long-paper/main.tex (sections dans jurix2026-long-paper/sections/)` § Introduction (paragraphes 1–2 à garder).
 - RQ et hypothèses : `legal-kg/docs/RESEARCH_QUESTIONS.md` — RQ2 (l.44-56 : P ≥ 0,60, R ≥ 0,50 sur LTD/TER/CH, ΔF1 > 0 vs
   thème seul), RQ3 (l.58-72 : non-infériorité 0,05, suffisance ≥ 70 %), RQ6 (l.104-114 : ≥ 20 % des FP = référence
   absente), RQ5 (l.89-102 : ≥ 30 % des TP manqués par le texte seul).
 - Positionnement « personne n'a exécuté l'annexe » : `legal-kg/docs/PUBLICATION_STRATEGY.md` l.11-24 ; contributions
   défendables l.39-46.
 - Références : `eu1993directive`, `lippi2019claudette`, `ruggeri2022memory`, `liepina2020claudettetool`,
-  `panarelli2025worth`, `frasheri2024llm`, `micklitz2017empire` (toutes dans `jurix2026-long-paper/placeholder/references.bib`).
+  `panarelli2025worth`, `frasheri2024llm`, `micklitz2017empire` (toutes dans `jurix2026-long-paper/references.bib`).
 
 ### § 2 Background and related work
 - Texte de départ : placeholder § Background (5 paragraphes).

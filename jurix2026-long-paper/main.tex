@@ -1,0 +1,63 @@
+% Submission 157 — JURIX 2026, long paper (≤ 10 pages hors références). Voir README.md.
+% Format IOS Press officiel. Protocole RÉEL (15 sept. 2026) : templates extraits automatiquement (Claude Opus 5,
+% sans relecture juriste), requêtes v0.2 gelées (hash) avant toute extraction du hold-out, une passe d'extraction
+% sur le hold-out, stabilité mesurée sur le pilote de conception. Tableaux T3/T4 générés par
+% tables/make_paper_tables.py depuis artifacts/evaluation/E2.json (source unique, copie de legal-kg). Sections dans sections/.
+\documentclass{IOS-Book-Article}
+\usepackage{mathptmx}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{graphicx}
+\usepackage{booktabs}
+\usepackage{array}
+\usepackage{amsmath}
+\newcommand{\corpus}{CLAUDETTE}
+\newcommand{\gl}[1]{item~(\textit{#1})}
+\newcommand{\gi}[1]{(\textit{#1})}
+\newcommand{\todo}[1]{\textbf{[TODO: #1]}}
+
+\begin{document}
+\begin{frontmatter}
+\title{Executing the Grey List: Interpretable Queries for Unfair-Term Detection in Terms of Service}
+\runningtitle{Executing the Grey List}
+\author[A]{\fnms{Ahmed} \snm{El Azhar Jebbari}%
+\thanks{Corresponding Author: Ahmed El Azhar Jebbari, LORIA, Campus Scientifique, 54506 Vandœuvre-lès-Nancy, France; e-mail: jebbariazhar@gmail.com.}},
+\author[A]{\fnms{Jean-Charles} \snm{Lamirel}},
+\author[B]{\fnms{Fatima Zahra} \snm{Boulaich}}
+and
+\author[C]{\fnms{Fatima} \snm{Ouali}}
+\runningauthor{A. El Azhar Jebbari et al.}
+\address[A]{LORIA, Université de Lorraine, CNRS, Inria, Nancy, France}
+\address[B]{Juristiadata, France}
+\address[C]{Faculty of Legal Sciences, Rabat, Morocco}
+
+\begin{abstract}
+The Annex of Directive 93/13/EEC lists the types of contractual terms that may be regarded as unfair: an indicative, non-exhaustive list commonly called the grey list. Automated detectors ignore it and classify sentences with learned models whose decisions cite no legal ground. We turn the grey list into an executable resource. Each clause of a contract, identified by its human-validated theme, is mapped to a simple legal template describing who acts, what is obliged, permitted or forbidden, and under which conditions, deadlines and remedies; templates are extracted by a language model that sees neither the queries nor the reference labels. Unfairness queries then translate grey-list items into conditions over these templates; they were frozen, with a recorded hash, before any computation on held-out contracts. Because the list is indicative rather than binding, how well it actually retrieves unfair clauses is an open empirical question, and this is precisely what we measure. Eleven of the seventeen items are expressible as structural conditions. On 17 held-out contracts, the frozen queries are precise on several items (0.61 to 0.83) but retrieve only a third of the unfair sentences: their binary $F_1$ of 0.36 is below that of the clause theme alone (0.44) and of a fine-tuned legal encoder (0.70). Every flag comes with the template fields and sentences that triggered it, and the analysis of misses and false positives locates where literal execution and the benchmark diverge. Queries, templates and code are released.
+\end{abstract}
+
+\begin{keyword}
+unfair contract terms\sep terms of service\sep Directive 93/13\sep
+legal knowledge representation\sep explainable AI\sep information extraction
+\end{keyword}
+\end{frontmatter}
+
+\input{sections/01-introduction}
+\input{sections/02-related-work}
+\input{sections/03-executable-grey-list}
+\input{sections/04-materials}
+\input{sections/05-protocol}
+\input{sections/06-results-a-retrieval}
+\input{sections/07-results-b-cost}
+\input{sections/08-results-c-errors}
+\input{sections/09-discussion}
+\input{sections/10-conclusion}
+
+% Fin du corps du texte : tools/check_pages.sh lit la page de ce label (limite JURIX : 10 pages hors références).
+\label{end:body}
+
+\section*{Declaration on the Use of Generative AI}
+Generative AI assistants (Claude Fable~5.1 and Claude Opus~5, Anthropic, used through Claude Code) were used to draft the query set and the software, and to draft and edit parts of the manuscript. All outputs were reviewed by the authors, who take full responsibility for the content. The use of language models to extract clause templates is part of the method and is described in Section~\ref{sec:materials}.
+
+\bibliographystyle{vancouver}
+\bibliography{references}
+\end{document}

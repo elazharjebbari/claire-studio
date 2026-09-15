@@ -1,8 +1,9 @@
-"""Tableaux T3 et T4 du papier 157, générés depuis UNE seule source : legal-kg/results/evaluation/<run>/E2.json.
+"""Tableaux T3 et T4 du papier 157, générés depuis UNE seule source : artifacts/evaluation/E2.json
+(copie figée de legal-kg/results/evaluation/holdout-v02-pass0/E2.json, commit 0fb08e4 ; voir artifacts/MANIFEST.md).
 
 Aucun chiffre n'est saisi à la main. T4 prend thème seul, B1, B2 et union dans le même bloc `binary`, donc les
 écarts affichés sont exactement ceux que teste run_stats.py. Usage :
-    python tables/make_paper_tables.py ../../legal-kg/results/evaluation/holdout-v02-pass0/E2.json
+    make tables          (équivaut à : python3 tables/make_paper_tables.py artifacts/evaluation/E2.json)
 """
 from __future__ import annotations
 

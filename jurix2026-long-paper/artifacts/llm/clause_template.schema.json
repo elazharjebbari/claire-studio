@@ -1,0 +1,45 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://pactiva.legal/schemas/clause_template/0.1",
+  "title": "ClauseTemplateExtraction",
+  "description": "Normative statements (templates) stated by one clause of a Terms-of-Service contract. Vocabularies are closed; 'not_stated' is a value distinct from 'none'. Every non-null field must be supported by evidence sentences of the clause.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["clause_id", "norms", "no_norm_reason"],
+  "properties": {
+    "clause_id": {"type": "string"},
+    "norms": {
+      "type": "array",
+      "maxItems": 6,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["actor", "modality", "action", "condition", "notice", "remedy", "evidence", "confidence"],
+        "properties": {
+          "actor": {"type": "string", "enum": ["provider", "user", "third_party"]},
+          "counterparty": {"type": ["string", "null"], "enum": ["provider", "user", "third_party", null]},
+          "modality": {"type": "string", "enum": ["obligation", "permission", "prohibition", "power"]},
+          "action": {"type": "string", "description": "One code from the action inventory supplied in the prompt for this clause's theme (or 'other')."},
+          "object": {"type": ["string", "null"], "maxLength": 120, "description": "Short free text; use canonical tokens when applicable: personal_injury, death, gross_negligence, unbounded, indexation."},
+          "condition": {"type": "string", "enum": ["for_cause", "specified_reason", "discretion", "none_stated"]},
+          "notice": {"type": "string", "enum": ["duration", "reasonable", "none", "not_stated"]},
+          "notice_duration_days": {"type": ["integer", "null"], "minimum": 0},
+          "remedy": {"type": "string", "enum": ["refund", "right_to_cancel", "compensation", "none", "not_stated"]},
+          "amount_ratio": {"type": ["number", "null"], "minimum": 0, "description": "For compensation clauses only: stated sum / reference sum, if both are stated."},
+          "opt_out_deadline_days": {"type": ["integer", "null"], "minimum": 0},
+          "evidence": {
+            "type": "array",
+            "minItems": 1,
+            "items": {"type": "integer", "description": "Sentence index within the clause (0-based) supporting this statement."}
+          },
+          "confidence": {"type": "number", "minimum": 0, "maximum": 1}
+        }
+      }
+    },
+    "no_norm_reason": {
+      "type": ["string", "null"],
+      "enum": ["definitional", "informational", "cross_reference_only", "not_applicable", null],
+      "description": "Filled only when norms is empty."
+    }
+  }
+}
