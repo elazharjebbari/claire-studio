@@ -1,8 +1,10 @@
-"""Backend « codex_exec » de l'extraction : agents Codex CLI (`codex exec`) sur les MÊMES lots que le backend inline.
+"""Backend « codex_exec » de l'extraction : un modèle OpenAI (vérifié le 15 sept. 2026 : `gpt-6-astra`, effort medium)
+piloté par la CLI Codex (`codex exec`), sur les MÊMES lots que le backend inline. Codex est le harnais, pas le modèle :
+le nom du modèle servi est résolu et enregistré à chaque appel.
 
 POURQUOI. LLM_EXTRACTION §5 exige de comparer au moins deux modèles candidats sur le pilote avant de retenir
-l'extracteur. Sans clé API, Claude Opus 5 a tourné en sous-agents Claude Code ; ce script fait tourner un
-modèle OpenAI via la CLI Codex (compte ChatGPT), dans des conditions volontairement symétriques : mêmes lots
+l'extracteur. Sans clé API, Claude Opus 5 a tourné en sous-agents Claude Code ; ce script fait tourner le
+modèle OpenAI configuré dans la CLI Codex (compte ChatGPT), dans des conditions volontairement symétriques : mêmes lots
 rendus depuis le prompt versionné, même absence de décodage contraint, même rejeu par les étapes 2–5.
 
 Étanchéité. Chaque appel s'exécute dans un répertoire temporaire VIDE hors du dépôt (aucun AGENTS.md, aucun
@@ -18,6 +20,7 @@ from __future__ import annotations
 
 import argparse
 import json
+import os
 import shutil
 import subprocess
 import tempfile
@@ -35,6 +38,27 @@ blank line. Each object has `clause_id` (copied verbatim), `norms` (array) and `
 indices refer to the clause's sentence numbers (from 0).
 
 """
+
+
+def resolve_model(model: str | None, effort: str | None) -> dict:
+    """Modèle et effort réellement demandés : argument explicite, sinon `$CODEX_HOME/config.toml`.
+
+    `codex exec --json` n'émet pas le nom du modèle dans ses événements ; sans cette résolution, le journal
+    ne dirait que « défaut de configuration », ce qui n'est pas une provenance."""
+    try:
+        import tomllib
+    except ModuleNotFoundError:  # pragma: no cover - Python < 3.11
+        tomllib = None
+    cfg = {}
+    path = Path(os.environ.get("CODEX_HOME", Path.home() / ".codex")) / "config.toml"
+    if tomllib and path.exists():
+        try:
+            cfg = tomllib.loads(path.read_text(encoding="utf-8"))
+        except Exception:  # noqa: BLE001
+            cfg = {}
+    return {"model": model or cfg.get("model", "unknown"), "provider": cfg.get("model_provider", "openai"),
+            "effort": effort or cfg.get("model_reasoning_effort", "unknown"),
+            "model_source": "argument" if model else ("config.toml" if cfg.get("model") else "unknown")}
 
 
 def usage_from_events(events_path: Path) -> dict:
@@ -92,7 +116,7 @@ def run_one(codex: str, model: str | None, effort: str | None, batch_file: Path,
 
 
 def main(argv: list[str] | None = None) -> int:
-    ap = argparse.ArgumentParser(description="Extraction du pilote par agents Codex CLI (codex exec).")
+    ap = argparse.ArgumentParser(description="Extraction du pilote par un modèle OpenAI piloté par la CLI Codex (codex exec).")
     ap.add_argument("--run-dir", type=Path, required=True, help="dossier exporté par inline_backend.py export")
     ap.add_argument("--repeats", default="0", help="passes à produire, ex. 0,1,2")
     ap.add_argument("--batches", default="", help="sous-ensemble de lots, ex. 01,02 (défaut : tous)")
@@ -121,6 +145,7 @@ def main(argv: list[str] | None = None) -> int:
             jobs.append((b, out, run_dir / "logs" / f"r{r}_{b.stem}.events.jsonl"))
 
     version = subprocess.run([args.codex, "--version"], capture_output=True, text=True).stdout.strip()
+    resolved = resolve_model(args.model, args.effort)
     results = []
     with ThreadPoolExecutor(max_workers=args.parallel) as pool:
         futures = [pool.submit(run_one, args.codex, args.model, args.effort, b, o, l, args.timeout) for b, o, l in jobs]
@@ -136,14 +161,13 @@ def main(argv: list[str] | None = None) -> int:
     calls_path = run_dir / "CODEX_CALLS.jsonl"
     with calls_path.open("a", encoding="utf-8") as fh:
         for res in results:
-            fh.write(json.dumps({**res, "codex_version": version, "model": args.model or "config_default",
-                                 "effort": args.effort or "config_default",
+            fh.write(json.dumps({**res, "codex_version": version, **resolved,
                                  "at": datetime.now(timezone.utc).isoformat(timespec="seconds")}, ensure_ascii=False) + "\n")
     if usage_total:
         (run_dir / "USAGE.json").write_text(json.dumps(usage_total, indent=1), encoding="utf-8")
     failed = [r for r in results if r["status"] != "ok"]
     print(json.dumps({"jobs": len(jobs), "ok": len(results) - len(failed), "failed": len(failed),
-                      "codex_version": version, "usage": usage_total}, ensure_ascii=False))
+                      "codex_version": version, **resolved, "usage": usage_total}, ensure_ascii=False))
     return 1 if failed else 0
 
 

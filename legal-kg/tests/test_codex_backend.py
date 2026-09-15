@@ -61,3 +61,11 @@ def test_consignes_etanches():
     import re
     assert not re.search(r"unfair|abusi|grey.?list|annex|93/13", cb.INSTRUCTIONS, re.I)
     assert not re.search(r"\b(LTD|TER|CH|CR|USE|LAW|LABELED)\b", cb.INSTRUCTIONS)   # codes : sensibles à la casse
+
+
+def test_modele_resolu_depuis_la_configuration(tmp_path, monkeypatch):
+    (tmp_path / "config.toml").write_text('model = "gpt-test"\nmodel_reasoning_effort = "high"\n')
+    monkeypatch.setenv("CODEX_HOME", str(tmp_path))
+    assert cb.resolve_model(None, None) == {"model": "gpt-test", "provider": "openai", "effort": "high",
+                                            "model_source": "config.toml"}
+    assert cb.resolve_model("autre", "low")["model_source"] == "argument"

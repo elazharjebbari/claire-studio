@@ -1,28 +1,31 @@
 {
- "extraction": "/private/tmp/claude-501/-Users-elazhar-PycharmProjects-claire-studio/13d33d98-5c8e-4132-9843-5084ea5aa781/scratchpad/cmp01/codex/step_5_corrected.jsonl",
+ "extraction": "results/extraction/gpt-6-astra-pilot100-20260915/step_5_corrected.jsonl",
  "n_clauses": 100,
  "repeats": [
   0,
-  1
+  1,
+  2
  ],
  "rules_sha256": "8f2967dbbcc4911150393e92b1c1cc928de491d8115bc4b1024c1e16c2216f34",
  "statuses": [
   "proposed"
  ],
  "extraction_stability": {
-  "clauses_complete": 95,
-  "identical_outputs_share": 0.1474,
-  "decisive_signature_jaccard_mean": 0.8819,
+  "clauses_complete": 94,
+  "identical_outputs_share": 0.117,
+  "decisive_signature_jaccard_mean": 0.9077,
   "empty_vs_nonempty_agreement": 1.0,
   "norms_per_repeat": {
    "0": 233,
-   "1": 230
+   "1": 230,
+   "2": 232
   }
  },
  "detection_stability": {
   "flagged_per_repeat": {
    "0": 31,
-   "1": 35
+   "1": 35,
+   "2": 34
   },
   "matches_by_rule_per_repeat": {
    "0": {
@@ -50,17 +53,33 @@
     "Q-k": 4,
     "Q-p": 3,
     "Q-q": 4
+   },
+   "2": {
+    "Q-ab": 4,
+    "Q-d": 1,
+    "Q-f-asymmetry": 5,
+    "Q-g": 7,
+    "Q-i": 2,
+    "Q-j": 7,
+    "Q-j-absence": 4,
+    "Q-j-strict": 5,
+    "Q-k": 4,
+    "Q-p": 3,
+    "Q-q": 4
    }
   },
   "pairwise_jaccard": {
-   "0-1": 0.8333
+   "0-1": 0.8333,
+   "0-2": 0.8571,
+   "1-2": 0.8158
   },
   "flagged_by_n_repeats": {
-   "1": 6,
-   "2": 30
+   "1": 5,
+   "2": 4,
+   "3": 29
   },
-  "fleiss_kappa_sentences": 0.8973,
-  "majority_flagged": 30
+  "fleiss_kappa_sentences": 0.8982,
+  "majority_flagged": 33
  },
  "design_diagnostic": {
   "note": "conception, normes non validées, pilote enrichi en thèmes à risque : pas un résultat publiable",
@@ -80,14 +99,21 @@
     "precision": 0.6286,
     "recall": 0.4231,
     "f1": 0.5057
+   },
+   "2": {
+    "flagged": 34,
+    "tp": 24,
+    "precision": 0.7059,
+    "recall": 0.4615,
+    "f1": 0.5581
    }
   },
   "majority_vote": {
-   "flagged": 30,
-   "tp": 19,
-   "precision": 0.6333,
-   "recall": 0.3654,
-   "f1": 0.4634
+   "flagged": 33,
+   "tp": 22,
+   "precision": 0.6667,
+   "recall": 0.4231,
+   "f1": 0.5176
   }
  }
 }

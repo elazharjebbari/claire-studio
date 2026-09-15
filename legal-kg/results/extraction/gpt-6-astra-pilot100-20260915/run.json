@@ -1,5 +1,5 @@
 {
- "run_id": "24c79d3b-a835-45fd-bb5d-c52d52e80798",
+ "run_id": "bad8c7e0-6474-40c4-90ad-7192b413a560",
  "kind": "extraction",
  "backend": "codex_exec",
  "model": "gpt-6-astra",
@@ -12,11 +12,11 @@
  "clauses": "data/annotations/pilot_100/clauses.jsonl",
  "n_clauses": 100,
  "batch_size": 25,
- "code_version": "faf9d05a174b633012de4a60ff6e62a619e3b572",
+ "code_version": "bc4d3211d59d9c2e9806810c1ced1cf66c44fe96",
  "started_at": "2026-09-15T07:34:56+00:00",
  "dry_run": false,
- "tokens_in": 391480,
- "tokens_out": 45269,
+ "tokens_in": 469610,
+ "tokens_out": 55901,
  "refusals": 0,
  "protocol_deviations": [
   "no_temperature_control",
@@ -26,30 +26,30 @@
   "chatgpt_plan_not_api_billing"
  ],
  "stray_clause_ids": [],
- "agents": "12 appels codex exec (CLI 0.154.0, compte ChatGPT, modèle de config gpt-6-astra, effort medium, service_tier priority), répertoire temporaire vide, sandbox read-only, --ephemeral, lot sur stdin, 4 en parallèle, 15 sept. 2026",
- "ended_at": "2026-09-15T07:41:40+00:00",
+ "agents": "Modèle OpenAI gpt-6-astra (effort medium, vérifié par l'en-tête codex exec), piloté par la CLI Codex 0.154.0 (compte ChatGPT) : 12 appels codex exec, répertoire temporaire vide, sandbox read-only, --ephemeral, lot sur stdin ; lots 03-04 de la passe 2 relancés après limite d'usage, 15 sept. 2026",
+ "ended_at": "2026-09-15T08:04:11+00:00",
  "n_calls": 300,
  "counts": {
-  "schema_ok": 244,
-  "missing": 50,
-  "schema_errors": 6,
-  "norms": 569,
-  "empty": 29
+  "schema_ok": 292,
+  "missing": 0,
+  "schema_errors": 8,
+  "norms": 695,
+  "empty": 33
  },
  "metrics": {
-  "schema_compliance": 0.8133,
-  "missing_share": 0.1667,
+  "schema_compliance": 0.9733,
+  "missing_share": 0.0,
   "structural_pass": 1.0,
   "semantic_pass": 1.0,
-  "anchoring_flags_per_norm": 0.5694,
-  "norms_per_clause": 2.332,
-  "empty_share": 0.1189,
-  "reproducibility_identical": 0.07
+  "anchoring_flags_per_norm": 0.5784,
+  "norms_per_clause": 2.38,
+  "empty_share": 0.113,
+  "reproducibility_identical": 0.11
  },
  "usage": {
-  "input_tokens": 391480,
-  "output_tokens": 45269,
-  "reasoning_output_tokens": 1578,
+  "input_tokens": 469610,
+  "output_tokens": 55901,
+  "reasoning_output_tokens": 2414,
   "cached_input_tokens": 83712
  }
 }
