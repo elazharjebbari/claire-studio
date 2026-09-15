@@ -1,16 +1,16 @@
 \begin{table}[t]
-\caption{The price of interpretability (held-out, sentence level, any unfairness label).}
+\caption{The price of interpretability on the held-out sentences (any \corpus{} label, 440 positives among 4,078). All systems are scored by the same evaluation run; the learned models are trained on the 33 development contracts.}
 \label{tab:cost}
 \centering
-\footnotesize\setlength{\tabcolsep}{4pt}
-\begin{tabular}{@{}lrrrrl@{}}
+\footnotesize\setlength{\tabcolsep}{4pt}%
+\begin{tabular}{@{}lrrlrl@{}}
 \toprule
-System & P & R & $F_1$ [95\% CI] & AUC-PR & Decision cites a legal ground \\
+System & P & R & $F_1$ [95\,\% CI] & Flagged & Cites a legal ground \\
 \midrule
-B0$'$ theme only & 0.29 & 0.62 & 0.39 [0.34;0.44] & 0.23 & no \\
-B1 TF-IDF + LR & 0.44 & 0.72 & 0.55 [0.51;0.58] & 0.50 & no \\
-B2 Legal-BERT (fine-tuned) & 0.64 & 0.77 & 0.70 [0.65;0.75] & 0.78 & no \\
-\textbf{Frozen queries (union)} & 0.41 & 0.33 & 0.36 [0.32;0.42] & --- & \textbf{yes} (item + template) \\
+Theme only (leave-one-document-out) & 0.42 & 0.46 & 0.44 & 489 & no \\
+TF-IDF + logistic regression & 0.45 & 0.63 & 0.53 [0.49; 0.57] & 614 & no \\
+Legal-BERT, fine-tuned & 0.64 & 0.77 & 0.70 [0.65; 0.75] & 527 & no \\
+\textbf{Frozen queries (union)} & 0.41 & 0.33 & 0.36 [0.32; 0.42] & 356 & \textbf{yes} \\
 \bottomrule
 \end{tabular}
 \end{table}
