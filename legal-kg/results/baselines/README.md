@@ -38,3 +38,28 @@ direct) tombent dans le même intervalle — c'est le **contrôle de parité** a
 `unfair-legalbert-holdout`, même dataset, découpage `design_holdout`) se compare à **0,53–0,55** en F1 binaire et
 ≈ 0,50–0,51 en AUC-PR ; sa lecture par catégorie n'est pas disponible (cible binaire), la comparaison par catégorie reste
 celle de la macro-F1 legal-kg.
+
+
+## B2 — Legal-BERT fine-tuné, cible binaire (Lab, run prod `bb37a8ce…`, job OAR 2067180, 15 sept. 09:02–09:06)
+
+Preset `unfair-legalbert-holdout` : `nlpaueb/legal-bert-base-uncased`, hyperparamètres de E4.4 (8 époques max, lot 16, lr 2e-5,
+perte pondérée, arrêt précoce patience 3, contexte ±1 phrase, 128 tokens), **un seul entraînement sur les 33 documents de
+conception, une seule mesure sur les 17 du hold-out** (`design_holdout`), décision = argmax (aucun seuil réglé), dataset
+`7116e627…`. Matériel : A100-SXM4-40GB (sirius, lyon). Copie du `results.json` dans `B2_lab_bb37a8ce/`.
+
+| Modèle (hold-out, 4 078 phrases, 440 abusives) | F1 abusif [IC 95 % doc.] | P | R | AUC-PR | κ | ECE |
+|---|---|---|---|---|---|---|
+| B0' thème seul (legal-kg, agrégat binaire) | 0,391 [0,344 ; 0,441] | 0,286 | 0,618 | 0,233 | — | — |
+| B1 TF-IDF + LR (legal-kg, agrégat) | 0,546 [0,512 ; 0,581] | 0,441 | 0,716 | 0,504 | — | — |
+| B1 TF-IDF + LR (Lab, binaire direct) | 0,529 [0,492 ; 0,572] | 0,454 | 0,634 | 0,510 | 0,462 | 0,335 |
+| **B2 Legal-BERT (Lab)** | **0,701** [0,650 ; 0,749] | 0,643 | 0,770 | **0,775** | 0,661 | **0,056** |
+
+Matrice de confusion B2 (lignes = vérité) : fair 3 450 / 188 ; unfair 101 / 339. Taux d'erreur sur les phrases abusives 23,0 %
+(B1 Lab : 36,6 %).
+
+Ce que cela fixe : (i) **le plancher texte-seul à battre ou à expliquer est désormais B2 ≈ 0,70 de F1 binaire / 0,77 d'AUC-PR**
+sur le hold-out, pas B1 ; (ii) l'écart B2 − B1 (+0,17, IC disjoints) mesure ce que la capacité d'un encodeur juridique apporte
+**sans structure** — toute approche graphe/règles (E2, A3–A8) devra montrer un gain *au-delà* de B2 ou un apport en
+explicabilité/précision par item que B2 ne fournit pas (B2 ne dit ni quel item de l'annexe, ni pourquoi) ; (iii) B2 reste un
+classifieur de phrases : la comparaison par item de la grey list (RQ2) et l'évaluation d'explication (RQ4) n'ont pas d'équivalent
+côté B2, ce qui est précisément la contribution visée par 157.
