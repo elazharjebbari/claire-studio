@@ -44,7 +44,7 @@ def t3(e2: dict) -> str:
     audit = "; ".join(f"({c}) {um[c]['n_flagged']}" for c in sorted(um))
     return "\n".join([
         r"\begin{table}[t]",
-        r"\caption{Held-out retrieval per grey-list item (17 contracts, 4,078 sentences). $n_+$: sentences carrying a mapped \corpus{} label; P, R, $F_1$ at sentence level with document-level bootstrap 95\,\% CI; theme only: $\mathrm{P}(\text{label} \mid \text{theme})$ estimated leave-one-document-out; $\Delta F_1$: queries minus theme only. Items without a \corpus{} counterpart (flags: " + audit + r") are not scored.}",
+        r"\caption{Held-out retrieval per grey-list item (17 contracts, 4,078 sentences). $n_+$: sentences carrying a mapped \corpus{} label; P, R, $F_1$ at sentence level with document-level bootstrap 95\,\% CI; theme only: $\mathrm{P}(\text{label} \mid \text{theme})$ estimated leave-one-document-out; $\Delta F_1$: queries minus theme only. Items without a \corpus{} counterpart (flags: " + audit + r") are not scored. Last row: micro-average over the structural items, which excludes the procedural proxy (i); macro-$F_1$ in parentheses.}",
         r"\label{tab:queries}",
         r"\centering",
         r"\footnotesize\setlength{\tabcolsep}{2.1pt}%",
@@ -54,7 +54,7 @@ def t3(e2: dict) -> str:
         r"\midrule",
         *rows,
         r"\midrule",
-        f"Structural items, {agg.get('n_items')} (micro) & & & & {f2(agg.get('micro_precision'))} & {f2(agg.get('micro_recall'))} & {f2(agg.get('micro_f1'))} (macro {f2(agg.get('macro_f1'))}) & & {signed(agg.get('macro_delta_f1_vs_theme_only'))} \\\\",
+        f"Structural ({agg.get('n_items')}) & & & & {f2(agg.get('micro_precision'))} & {f2(agg.get('micro_recall'))} & {f2(agg.get('micro_f1'))} (macro {f2(agg.get('macro_f1'))}) & & {signed(agg.get('macro_delta_f1_vs_theme_only'))} \\\\",
         r"\bottomrule",
         r"\end{tabular}",
         r"\end{table}",
