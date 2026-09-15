@@ -18,7 +18,9 @@ the working language of the campaign.
 | `fable` | Claude Fable 5 (Anthropic; `claude-fable-5`) | Claude Code, sub-agents forced to `model: fable`, fresh context | 1–2 August | `PROMPT_V9_2_FABLE.md` | `RUNBOOK_V9_2_FABLE.md` |
 
 Decoding settings other than those listed were the harness defaults; no sampling parameter was set by hand
-for Claude Code or Codex CLI. Each judge labelled all 50 contracts once; outputs were stored and never
+for Claude Code or Codex CLI. Each judge labelled all 50 contracts once, in isolated sessions: no judge ever had
+access to another judge's outputs, to earlier sessions or to any log of the campaign (the runbooks require the
+other judges' folders to be moved out of reach before a session starts). Outputs were stored and never
 regenerated (`judges.jsonl` in the parent folder).
 
 Provenance and how it was verified (15 September 2026):
