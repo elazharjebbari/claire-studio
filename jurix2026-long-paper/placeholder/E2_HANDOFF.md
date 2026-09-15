@@ -45,10 +45,10 @@ Par item (population, IC bootstrap par document) :
 | i | USE | 44 | 37 | 0,43 | 0,364 | 0,395 [0,31 ; 0,46] | **+0,213** | **mieux** (p 0,009) |
 | j | CH | 88 | 42 | 0,62 | 0,295 | 0,400 [0,32 ; 0,50] | +0,002 | ns |
 | k | CH | 88 | 22 | 0,50 | 0,125 | 0,200 [0,08 ; 0,34] | −0,198 | pire |
-| l | CH | 88 | 18 | 0,61 | 0,125 | 0,208 [0,13 ; 0,29] | −0,191 | pire |
+| l | CH | 88 | 18 | 0,61 | 0,125 | 0,208 [0,13 ; 0,29] | −0,191 | ns (p 0,014, Holm 0,056) |
 | q | A,J | 45 | 103 | 0,17 | 0,378 | 0,230 [0,15 ; 0,32] | +0,052 | ns |
 
-Items structurels (8) : micro P 0,458 / R 0,146 / F1 0,221 ; macro-F1 0,222 ; Δ macro vs thème seul −0,147.
+Items structurels (8, hors (i) qui est procédural) : micro P 0,458 / R 0,146 / F1 0,221 ; macro-F1 0,222 ; Δ macro vs thème seul −0,147.
 Couverture = 1,0 pour tous les items : aucun FN dans une clause sans norme ; la perte de rappel vient des champs des normes, pas d'une extraction manquante.
 
 Items sans catégorie CLAUDETTE (audit seulement, non évaluables) : m 39 phrases (0 avec une étiquette quelconque, 15 documents), d 21 (7), p 17 (1), e 0, h 0.

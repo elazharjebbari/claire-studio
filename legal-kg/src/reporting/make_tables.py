@@ -46,9 +46,19 @@ def table_cost(e2: dict, baselines: dict, caption: str, label: str) -> str:
     """baselines : {"B0' theme only": {...}, "B1 TF-IDF": {...}, "B2 Legal-BERT": {...}} avec f1, precision, recall, f1_ci95 {low, high}, auc_pr."""
     L = [r"\begin{table}[t]", rf"\caption{{{caption}}}", rf"\label{{{label}}}", r"\centering", r"\footnotesize\setlength{\tabcolsep}{4pt}",
          r"\begin{tabular}{@{}lrrrrl@{}}", r"\toprule", r"System & P & R & $F_1$ [95\% CI] & AUC-PR & Decision cites a legal ground \\", r"\midrule"]
-    for name, b in baselines.items():
-        L.append(rf"{name} & {fmt(b['precision'])} & {fmt(b['recall'])} & {fmt(b['f1'])}{ci(b.get('f1_ci95'))} & {fmt(b.get('auc_pr'))} & no \\")
+    # Cohérence avec STATS : les comparateurs sont ceux d'E2.json (thème seul LODO, B1/B2 = prédictions du Lab
+    # sur la même population) ; `baselines` ne fournit que l'AUC-PR (et sert de repli si E2.json n'a pas la ligne).
     ru = e2["binary"]["rules_union"]
+    rows = {"B0$'$ theme only (LODO)": ru.get("theme_only"), "B1 TF-IDF + LR": e2["binary"].get("B1"), "B2 Legal-BERT (fine-tuned)": e2["binary"].get("B2")}
+    aucs = {k: v.get("auc_pr") for k, v in baselines.items()}
+    for name, b in rows.items():
+        key = name[:2]
+        if b is None:
+            b = next((v for k, v in baselines.items() if k.startswith(key)), None)
+        if b is None:
+            continue
+        auc = b.get("auc_pr") or next((v for k, v in aucs.items() if k.startswith(key)), None)
+        L.append(rf"{name} & {fmt(b['precision'])} & {fmt(b['recall'])} & {fmt(b['f1'])}{ci(b.get('f1_ci95'))} & {fmt(auc) if auc is not None else '---'} & no \\")
     L.append(rf"\textbf{{Frozen queries (union)}} & {fmt(ru['precision'])} & {fmt(ru['recall'])} & {fmt(ru['f1'])}{ci(ru['f1_ci95'])} & --- & \textbf{{yes}} (item + template) \\")
     L += [r"\bottomrule", r"\end{tabular}", r"\end{table}"]
     return "\n".join(L) + "\n"
