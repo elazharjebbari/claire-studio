@@ -1,0 +1,49 @@
+{
+ "run_id": "f33b4faf-eda5-43f2-940b-18407132d7f3",
+ "kind": "extraction",
+ "backend": "inline_subagent",
+ "model": "claude-opus-5",
+ "effort": null,
+ "prompt": "llm/prompts/clause_template_extraction.md",
+ "prompt_hash": "7cf08dc25490899f56edb1fcb19075036111004f6aee590582fa1e85be373ffd",
+ "schema_hash": "aeb1d0a00322b91868c2e9b57e95c62f01830b7ef86b4ebaea61ff34036f6f46",
+ "temperature": null,
+ "repeat": 3,
+ "clauses": "data/annotations/pilot_100/clauses.jsonl",
+ "n_clauses": 100,
+ "batch_size": 25,
+ "code_version": "0fa36347af06fd6614914b657087c4c65ac42dc6",
+ "started_at": "2026-09-15T07:15:24+00:00",
+ "dry_run": false,
+ "tokens_in": null,
+ "tokens_out": null,
+ "refusals": 0,
+ "protocol_deviations": [
+  "no_temperature_control",
+  "no_constrained_decoding_schema_validated_after_generation",
+  "clauses_batched_not_one_call_per_clause",
+  "claude_code_system_prompt_wraps_extraction_prompt",
+  "no_token_accounting"
+ ],
+ "stray_clause_ids": [],
+ "agents": "12 sous-agents general-purpose, modèle opus (Claude Opus 5), contexte vierge, un par (lot de 25 clauses, répétition), 15 sept. 2026",
+ "ended_at": "2026-09-15T07:28:32+00:00",
+ "n_calls": 300,
+ "counts": {
+  "schema_ok": 300,
+  "missing": 0,
+  "schema_errors": 0,
+  "norms": 608,
+  "empty": 32
+ },
+ "metrics": {
+  "schema_compliance": 1.0,
+  "missing_share": 0.0,
+  "structural_pass": 1.0,
+  "semantic_pass": 0.9933,
+  "anchoring_flags_per_norm": 0.2056,
+  "norms_per_clause": 2.027,
+  "empty_share": 0.1067,
+  "reproducibility_identical": 0.08
+ }
+}
