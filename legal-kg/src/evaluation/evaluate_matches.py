@@ -142,41 +142,40 @@ def main(argv=None) -> int:
         f = flags & U; p = pos & U
         return len(f & p), len(f - p), len(p - f)
 
+    def per_doc_counts(flags: set, pos: set) -> dict:
+        """(tp, fp, fn) par document, calculé une fois ; le bootstrap n'est plus qu'une somme pondérée."""
+        out = {d: [0, 0, 0] for d in set(docs_u)}
+        for k in universe:
+            f = k in flags; p = k in pos
+            if f and p: out[k[0]][0] += 1
+            elif f: out[k[0]][1] += 1
+            elif p: out[k[0]][2] += 1
+        return out
+
+    def f1_of_counts(counts: dict, docs) -> float:
+        cnt = defaultdict(int)
+        for d in docs:
+            cnt[d] += 1
+        TP = FP = FN = 0
+        for d, m in cnt.items():
+            t, x, y = counts[d]; TP += m * t; FP += m * x; FN += m * y
+        return prf(TP, FP, FN)[2]
+
     def eval_block(flags: set, pos: set, name: str, ref_flags: set | None = None) -> dict:
         tp, fp, fn = metrics(flags, pos)
         p, r, f = prf(tp, fp, fn)
-        def f1_on(docs):
-            # documents avec répétition : pondération par multiplicité
-            cnt = defaultdict(int)
-            for d in docs:
-                cnt[d] += 1
-            TP = FP = FN = 0
-            for d, m in cnt.items():
-                t, x, y = metrics(flags, pos, {d})
-                TP += m * t; FP += m * x; FN += m * y
-            return prf(TP, FP, FN)[2]
+        counts = per_doc_counts(flags, pos)
         out = {"name": name, "n_pos": len(pos), "n_flagged": len(flags & uni_set), "tp": tp, "fp": fp, "fn": fn,
                "precision": round(p, 4), "recall": round(r, 4), "f1": round(f, 4),
-               "f1_ci95": boot_ci(docs_u, f1_on, a.n_boot, a.seed)}
+               "f1_ci95": boot_ci(docs_u, lambda docs: f1_of_counts(counts, docs), a.n_boot, a.seed)}
         if ref_flags is not None:
-            def delta_on(docs):
-                cnt = defaultdict(int)
-                for d in docs:
-                    cnt[d] += 1
-                A = [0, 0, 0]; B = [0, 0, 0]
-                for d, m in cnt.items():
-                    for acc, fl in ((A, flags), (B, ref_flags)):
-                        t, x, y = metrics(fl, pos, {d}); acc[0] += m * t; acc[1] += m * x; acc[2] += m * y
-                return prf(*A)[2] - prf(*B)[2]
+            ref_counts = per_doc_counts(ref_flags, pos)
             tpb, fpb, fnb = metrics(ref_flags, pos)
             out["theme_only"] = {"precision": round(prf(tpb, fpb, fnb)[0], 4), "recall": round(prf(tpb, fpb, fnb)[1], 4), "f1": round(prf(tpb, fpb, fnb)[2], 4), "n_flagged": len(ref_flags & uni_set)}
             out["delta_f1_vs_theme_only"] = round(f - prf(tpb, fpb, fnb)[2], 4)
-            out["delta_f1_ci95"] = boot_ci(docs_u, delta_on, a.n_boot, a.seed)
+            out["delta_f1_ci95"] = boot_ci(docs_u, lambda docs: f1_of_counts(counts, docs) - f1_of_counts(ref_counts, docs), a.n_boot, a.seed)
         return out
 
-    # Items AVEC catégorie(s) CLAUDETTE mappée(s) : évalués en P/R/F1. Items SANS catégorie (d, e, h, m, p) : la
-    # référence ne peut pas les juger — on ne rapporte que les phrases signalées (elles vont à l'audit expert, RQ6),
-    # et l'on indique combien portent malgré tout une étiquette quelconque.
     items_eval, items_unmapped = [], []
     for code in sorted(item_cats):
         if item_expr[code] == "not_expressible":

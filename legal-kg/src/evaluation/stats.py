@@ -29,23 +29,41 @@ def f1_from_rows(rows, col: str) -> float:
     return _prf(tp, fp, fn)[2]
 
 
-def paired_permutation_by_document(rows: list[dict], a: str, b: str, *, n: int = 10000, seed: int = 42, metric=f1_from_rows) -> dict:
-    """rows : {document, y_true, <a>: bool, <b>: bool}. H0 : les deux systèmes sont échangeables document par document."""
-    by_doc = defaultdict(list)
+def _doc_counts(rows: list[dict], col: str) -> dict:
+    out = {}
     for r in rows:
-        by_doc[r["document"]].append(r)
-    docs = sorted(by_doc)
-    observed = metric(rows, a) - metric(rows, b)
-    rng = random.Random(seed)
-    count = 0
+        c = out.setdefault(r["document"], [0, 0, 0])
+        if r["y_true"] and r[col]: c[0] += 1
+        elif r[col]: c[1] += 1
+        elif r["y_true"]: c[2] += 1
+    return out
+
+
+def _f1_sum(counts: dict, docs, weights=None) -> float:
+    tp = fp = fn = 0
+    for d in docs:
+        w = 1 if weights is None else weights[d]
+        t, x, y = counts[d]; tp += w * t; fp += w * x; fn += w * y
+    return _prf(tp, fp, fn)[2]
+
+
+def paired_permutation_by_document(rows: list[dict], a: str, b: str, *, n: int = 10000, seed: int = 42, metric=None) -> dict:
+    """rows : {document, y_true, <a>: bool, <b>: bool}. H0 : les deux systèmes sont échangeables document par document.
+    Implémentation sur comptes (tp, fp, fn) par document : O(documents) par permutation."""
+    ca, cb = _doc_counts(rows, a), _doc_counts(rows, b)
+    docs = sorted(set(ca) | set(cb))
+    for d in docs:
+        ca.setdefault(d, [0, 0, 0]); cb.setdefault(d, [0, 0, 0])
+    observed = _f1_sum(ca, docs) - _f1_sum(cb, docs)
+    rng = random.Random(seed); count = 0
     for _ in range(n):
-        swapped = []
+        sa, sb = {}, {}
         for d in docs:
             if rng.random() < 0.5:
-                swapped += [{**r, a: r[b], b: r[a]} for r in by_doc[d]]
+                sa[d], sb[d] = cb[d], ca[d]
             else:
-                swapped += by_doc[d]
-        diff = metric(swapped, a) - metric(swapped, b)
+                sa[d], sb[d] = ca[d], cb[d]
+        diff = _f1_sum(sa, docs) - _f1_sum(sb, docs)
         if abs(diff) >= abs(observed) - 1e-12:
             count += 1
     return {"a": a, "b": b, "observed_diff": round(observed, 4), "p_value": round((count + 1) / (n + 1), 5), "n_permutations": n, "n_documents": len(docs)}
@@ -73,16 +91,20 @@ def wilson(k: int, n: int, z: float = 1.959964) -> dict:
 
 def noninferiority(rows: list[dict], a: str, b: str, *, delta: float = 0.05, n_boot: int = 1000, seed: int = 42) -> dict:
     """A (règles) est non inférieur à B (texte) si la borne basse de l'IC bootstrap-document de F1_A − F1_B > −δ."""
-    by_doc = defaultdict(list)
-    for r in rows:
-        by_doc[r["document"]].append(r)
-    docs = sorted(by_doc); rng = random.Random(seed); diffs = []
+    ca, cb = _doc_counts(rows, a), _doc_counts(rows, b)
+    docs = sorted(set(ca) | set(cb))
+    for d in docs:
+        ca.setdefault(d, [0, 0, 0]); cb.setdefault(d, [0, 0, 0])
+    rng = random.Random(seed); diffs = []
     for _ in range(n_boot):
-        sample = [r for d in rng.choices(docs, k=len(docs)) for r in by_doc[d]]
-        diffs.append(f1_from_rows(sample, a) - f1_from_rows(sample, b))
+        sample = rng.choices(docs, k=len(docs))
+        w = {d: 0 for d in docs}
+        for d in sample:
+            w[d] += 1
+        diffs.append(_f1_sum(ca, docs, w) - _f1_sum(cb, docs, w))
     diffs.sort()
     low = diffs[int(0.025 * n_boot)]; high = diffs[min(n_boot - 1, int(0.975 * n_boot))]
-    return {"a": a, "b": b, "delta": delta, "diff_point": round(f1_from_rows(rows, a) - f1_from_rows(rows, b), 4),
+    return {"a": a, "b": b, "delta": delta, "diff_point": round(_f1_sum(ca, docs) - _f1_sum(cb, docs), 4),
             "ci95": [round(low, 4), round(high, 4)], "noninferior": low > -delta}
 
 

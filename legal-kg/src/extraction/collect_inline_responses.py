@@ -28,6 +28,11 @@ def extract(transcript: Path) -> tuple[list[str], dict]:
         for block in m.get("content") or []:
             if isinstance(block, dict) and block.get("type") == "text":
                 texts.append(block["text"])
+            # sous-agent qui a écrit lui-même le fichier : le contenu est dans l'appel Write de la transcription
+            if isinstance(block, dict) and block.get("type") == "tool_use" and block.get("name") == "Write":
+                content = (block.get("input") or {}).get("content")
+                if content:
+                    texts.append(content)
     lines = []
     for t in texts:
         for l in t.splitlines():
@@ -61,6 +66,10 @@ def main(argv=None) -> int:
             report[agent_id] = "transcription absente"; continue
         lines, meta = extract(transcript)
         out = a.run_dir / "responses" / f"r{repeat}_batch_{batch_no:02d}.jsonl"
+        if not lines:
+            # ne jamais écraser un fichier existant par du vide (agent encore en cours ou écriture directe)
+            report[agent_id] = {"file": out.name, "lines": 0, "expected": expected_by_batch[batch_no], "missing": [], "extra": [], "note": "aucune ligne extraite : fichier laissé intact", **meta}
+            continue
         out.write_text("\n".join(lines) + ("\n" if lines else ""), encoding="utf-8")
         ids = {json.loads(l)["clause_id"] for l in lines}
         expected_ids = set(manifest["batches"][batch_no - 1]["clause_ids"])
