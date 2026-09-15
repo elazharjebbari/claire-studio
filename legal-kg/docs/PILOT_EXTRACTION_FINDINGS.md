@@ -68,3 +68,22 @@ sera re-mesuré sur le pilote et la validation juriste tranchera au cas par cas.
 2. Décision schéma v0.2 (inventaires) et prompt v0.2 (ancrage), consignées dans `PROMPT_REGISTRY.md` et `FROZEN.txt`.
 3. Répétition du pilote avec le prompt v0.2 (3 passes) pour mesurer l'effet sur `other` et sur les drapeaux.
 4. Seulement ensuite : extraction du hold-out (1 087 clauses), sous le protocole gelé.
+
+## 5. Répétition du pilote avec le schéma et l'ancrage v0.2 (15 sept., `results/extraction/inline-opus5-pilot100-v02-20260915/`)
+
+Même backend (12 sous-agents Claude Opus 5 à contexte vierge, lots de 25, 3 passes), même 100 clauses, inventaires v0.2 et
+déclencheurs d'ancrage v0.2. Chiffres de **conception**, non publiables.
+
+| Mesure | v0.1 | v0.2 | Lecture |
+|---|---|---|---|
+| Lignes conformes au schéma | 300/300 | 294/300 | 6 objets > 120 caractères rejetés (2 %) : bruit déclaré, pas de re-prompt en mode inline |
+| Normes (3 passes) · par clause | 608 · 2,03 | 644 · 2,19 | légèrement plus de normes |
+| Part d'actions `other` | 39,8 % | 39,6 % | inchangée en global : ACCOUNT_USE (88 %) et CONTENT_IP (65 %) restent non décrits par choix ; **DISPUTES_LAW 35 → 21 %**, THIRD_PARTY 25 → 11 % ; FEES et WARRANTY montent (43 %, 45 %) |
+| Nouveaux codes utilisés | — | `deem_acceptance_by_use` 8, `pay_arbitration_fees` 8, `limit_claim_period` 6, `disclaim_user_interactions` 3, `disclaim_advice` 3, `cancel_booking` 2 | tous employés |
+| Drapeaux d'ancrage par norme | 0,206 | 0,185 | `condition=specified_reason` **69 → 37** (objectif atteint) ; `remedy=none` 37 → 53 |
+| Jaccard des signatures décisives | 0,80 | 0,81 | stable |
+| Phrases signalées par les règles (gelées v0.2) : Jaccard par paire · κ de Fleiss | 0,62–0,73 · 0,77 | 0,72–0,92 · **0,86** | 33 phrases signalées par les 3 passes (25 en v0.1) |
+| Diagnostic P / R / F1 (passe 0) | 0,68 / 0,48 / 0,56 | 0,51 / 0,42 / 0,46 | attendu : l'ancrage v0.2 conserve davantage de `specified_reason` (Q-g/Q-j se déclenchent moins, dans le sens de la prudence) et **Q-i élargi à `deem_acceptance_by_use` signale 13 phrases** dont la plupart sont étiquetées CH et non USE par CLAUDETTE : un désaccord de mapping item ↔ catégorie, pas un défaut à corriger après coup (règles gelées) |
+
+Décisions : rien n'est retouché après ces mesures (gel v0.2 du 15 sept. antérieur à toute exécution sur le hold-out). Les
+échecs de longueur d'objet et l'effet de Q-i sont consignés comme constats à discuter dans le papier.

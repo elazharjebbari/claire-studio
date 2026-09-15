@@ -1,0 +1,122 @@
+{
+ "extraction": "results/extraction/inline-opus5-pilot100-v02-20260915/step_5_corrected.jsonl",
+ "n_clauses": 100,
+ "repeats": [
+  0,
+  1,
+  2
+ ],
+ "rules_sha256": "c3303e6743c40a88ae36c5d0fd1c6cbce20ef2b9c85606d05759352039384f56",
+ "statuses": [
+  "proposed"
+ ],
+ "extraction_stability": {
+  "clauses_complete": 95,
+  "identical_outputs_share": 0.0842,
+  "decisive_signature_jaccard_mean": 0.8136,
+  "empty_vs_nonempty_agreement": 1.0,
+  "norms_per_repeat": {
+   "0": 211,
+   "1": 213,
+   "2": 220
+  }
+ },
+ "detection_stability": {
+  "flagged_per_repeat": {
+   "0": 43,
+   "1": 38,
+   "2": 37
+  },
+  "matches_by_rule_per_repeat": {
+   "0": {
+    "Q-ab": 2,
+    "Q-d": 2,
+    "Q-f-asymmetry": 4,
+    "Q-g": 7,
+    "Q-i": 7,
+    "Q-j": 4,
+    "Q-j-absence": 2,
+    "Q-j-strict": 2,
+    "Q-k": 4,
+    "Q-m": 1,
+    "Q-p": 2,
+    "Q-q": 6
+   },
+   "1": {
+    "Q-ab": 3,
+    "Q-d": 2,
+    "Q-f-asymmetry": 4,
+    "Q-g": 7,
+    "Q-i": 6,
+    "Q-j": 3,
+    "Q-j-absence": 1,
+    "Q-j-strict": 1,
+    "Q-k": 4,
+    "Q-m": 1,
+    "Q-p": 2,
+    "Q-q": 4
+   },
+   "2": {
+    "Q-ab": 3,
+    "Q-d": 2,
+    "Q-f-asymmetry": 4,
+    "Q-g": 7,
+    "Q-i": 5,
+    "Q-j": 3,
+    "Q-j-absence": 1,
+    "Q-j-strict": 1,
+    "Q-k": 4,
+    "Q-m": 1,
+    "Q-p": 2,
+    "Q-q": 6
+   }
+  },
+  "pairwise_jaccard": {
+   "0-1": 0.7234,
+   "0-2": 0.7391,
+   "1-2": 0.9231
+  },
+  "flagged_by_n_repeats": {
+   "1": 9,
+   "2": 5,
+   "3": 33
+  },
+  "fleiss_kappa_sentences": 0.8625,
+  "majority_flagged": 38
+ },
+ "design_diagnostic": {
+  "note": "conception, normes non validées, pilote enrichi en thèmes à risque : pas un résultat publiable",
+  "sentences": 287,
+  "positives": 52,
+  "per_repeat": {
+   "0": {
+    "flagged": 43,
+    "tp": 22,
+    "precision": 0.5116,
+    "recall": 0.4231,
+    "f1": 0.4632
+   },
+   "1": {
+    "flagged": 38,
+    "tp": 24,
+    "precision": 0.6316,
+    "recall": 0.4615,
+    "f1": 0.5333
+   },
+   "2": {
+    "flagged": 37,
+    "tp": 23,
+    "precision": 0.6216,
+    "recall": 0.4423,
+    "f1": 0.5169
+   }
+  },
+  "majority_vote": {
+   "flagged": 38,
+   "tp": 24,
+   "precision": 0.6316,
+   "recall": 0.4615,
+   "f1": 0.5333
+  }
+ }
+}

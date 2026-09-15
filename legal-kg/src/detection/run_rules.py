@@ -33,12 +33,18 @@ def main(argv=None) -> int:
     ap.add_argument("--population", choices=["design", "holdout"], required=True)
     ap.add_argument("--statuses", default="validated", help="statuts de normes admis, séparés par des virgules (ablation : proposed)")
     ap.add_argument("--projection", choices=["evidence_only", "whole_clause"], default="evidence_only")
+    ap.add_argument("--repeat", type=int, default=None, help="ne garder que la passe N (sinon toutes les lignes ; attention aux doublons d'identifiants entre passes)")
     ap.add_argument("--out", type=Path, default=None)
     a = ap.parse_args(argv)
 
     rules = load_rules(population=a.population)               # lève RulesError si non gelé sur holdout
     clauses = {c["clause_id"]: c for c in read_jsonl(a.clauses)}
     rows = read_jsonl(a.extraction)
+    if a.repeat is not None:
+        rows = [r for r in rows if int(r.get("repeat", 0)) == a.repeat]
+    repeats_present = sorted({int(r.get("repeat", 0)) for r in rows})
+    if len(repeats_present) > 1:
+        raise SystemExit(f"plusieurs passes dans l'extraction {repeats_present} : préciser --repeat N (les identifiants de normes seraient dupliqués)")
     norms = norms_from_extraction(rows, clauses)
     statuses = tuple(s.strip() for s in a.statuses.split(","))
     matches = evaluate_rules(rules, norms, statuses=statuses)
@@ -58,7 +64,7 @@ def main(argv=None) -> int:
         "run_id": run_id, "created_at": datetime.now(timezone.utc).isoformat(), "population": a.population,
         "rules_path": rules["_path"], "rules_version": rules["version"], "rules_sha256": rules["_sha256"],
         "rules_frozen": bool(rules["_frozen"]), "statuses": statuses, "projection": a.projection,
-        "n_clauses": len(clauses), "n_extraction_rows": len(rows), "n_norms": len(norms),
+        "n_clauses": len(clauses), "n_extraction_rows": len(rows), "repeat": a.repeat, "n_norms": len(norms),
         "n_norms_in_scope": sum(n.status in statuses for n in norms),
         "n_matches": len(matches), "n_sentences_flagged": len(proj),
         "matches_by_rule": dict(Counter(m.rule_id for m in matches)),
