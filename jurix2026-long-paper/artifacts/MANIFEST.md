@@ -28,6 +28,7 @@ extraction du hold-out ; extraction du hold-out en deux passes par `claude-opus-
 | `llm/clause_template_extraction.md` | `legal-kg/llm/prompts/clause_template_extraction.md` | 06277ba | `7cf08dc25490899f` | prompt d'extraction versionné |
 | `llm/clause_template.schema.json` | `legal-kg/llm/schemas/clause_template.schema.json` | 06277ba | `aeb1d0a00322b918` | schéma de sortie des templates |
 | `baselines/B2_legal-bert_holdout_results.json` | `legal-kg/results/baselines/B2_lab_bb37a8ce/results.json` | 09b59d1 | `ad8b7646a11281f4` | configuration et résultats de Legal-BERT (Table 5) |
+| `baselines/B2_legal-bert_holdout_ANALYSIS.md` | `legal-kg/results/baselines/B2_lab_bb37a8ce/ANALYSIS.md` | 6498355 | `7451ac57424f1a46` | Results B : 83 des 101 faux négatifs de Legal-BERT ont un score < 0,1 |
 | `extraction/holdout-v02_STABILITY_passes01.json` | `legal-kg/results/extraction/inline-opus5-holdout-v02-20260915/STABILITY.json` | e39294b | `80addffd154a7ffa` | Materials : stabilité hold-out entre les passes 0 et 1 (Jaccard 0,77, κ 0,82) |
 | `evaluation/E2_pass1.json` | `legal-kg/results/evaluation/holdout-v02-pass1/E2.json` | e39294b | `1711b3930d7e2f8e` | sensibilité : union F1 0,34 [0,28 ; 0,41] en passe 1 (Results B) |
 | `evaluation/E2_pass1.md` | `legal-kg/results/evaluation/holdout-v02-pass1/E2.md` | e39294b | `f3388d61373df831` | lecture humaine d'E2_pass1.json |

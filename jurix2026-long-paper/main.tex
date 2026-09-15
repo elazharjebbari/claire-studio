@@ -32,7 +32,7 @@ and
 \address[C]{Faculty of Legal Sciences, Rabat, Morocco}
 
 \begin{abstract}
-The Annex of Directive 93/13/EEC lists the types of contractual terms that may be regarded as unfair: an indicative, non-exhaustive list commonly called the grey list. Automated detectors ignore it and classify sentences with learned models whose decisions cite no legal ground. We turn the grey list into an executable resource. Each clause of a contract, identified by its human-validated theme, is mapped to a simple legal template describing who acts, what is obliged, permitted or forbidden, and under which conditions, deadlines and remedies; templates are extracted by a language model that sees neither the queries nor the reference labels. Unfairness queries then translate grey-list items into conditions over these templates; they were frozen, with a recorded hash, before any computation on held-out contracts. Because the list is indicative rather than binding, how well it actually retrieves unfair clauses is an open empirical question, and this is precisely what we measure. Eleven of the seventeen items are expressible as structural conditions. On 17 held-out contracts, the frozen queries are precise on several items (0.61 to 0.83) but retrieve only a third of the unfair sentences: their binary $F_1$ of 0.36 is below that of the clause theme alone (0.44) and of a fine-tuned legal encoder (0.70). Every flag comes with the template fields and sentences that triggered it, and the analysis of misses and false positives locates where literal execution and the benchmark diverge. Queries, templates and code are released.
+The Annex of Directive 93/13/EEC lists seventeen kinds of contractual terms that may be regarded as unfair: the grey list. Automated detectors of unfair terms do not use it. They classify sentences with learned models whose decisions cite no legal ground. We ask what happens when the grey list is executed literally. Each clause of a contract, located by a human-validated theme, is described by a clause template stating who may do what, under which conditions, with what notice and what remedy; templates are extracted by a language model that sees neither the queries nor the reference labels. Grey-list items become queries over these templates, frozen with a recorded hash before any computation on held-out contracts, so that the result measures the list rather than our ability to fit it. Eleven of the seventeen items are expressible as structural conditions. On 17 held-out \corpus{} contracts, the frozen queries are precise on several items (0.61 to 0.83) but retrieve a third of the unfair sentences: their binary $F_1$ of 0.36 is below that of the clause theme alone (0.44) and of a fine-tuned legal encoder (0.70). Every flag cites the item, the template fields and the sentences that triggered it, and the error analysis locates where literal execution and the benchmark diverge. Queries, templates and code are released.
 \end{abstract}
 
 \begin{keyword}
@@ -53,10 +53,8 @@ legal knowledge representation\sep explainable AI\sep information extraction
 \input{sections/10-conclusion}
 
 % Fin du corps du texte : tools/check_pages.sh lit la page de ce label (limite JURIX : 10 pages hors références).
+% L'usage d'un modèle de langage pour l'extraction des templates est décrit dans Materials (claude-opus-5) ; pas de section de déclaration séparée (décision du porteur, 15 sept.).
 \label{end:body}
-
-\section*{Declaration on the Use of Generative AI}
-Generative AI assistants (Claude Fable~5.1 and Claude Opus~5, Anthropic, used through Claude Code) were used to draft the query set and the software, and to draft and edit parts of the manuscript. All outputs were reviewed by the authors, who take full responsibility for the content. The use of language models to extract clause templates is part of the method and is described in Section~\ref{sec:materials}.
 
 \bibliographystyle{vancouver}
 \bibliography{references}

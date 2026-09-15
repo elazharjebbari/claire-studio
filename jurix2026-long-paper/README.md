@@ -16,15 +16,14 @@ make tables     # régénère tables/T3_queries.tex et T4_cost.tex depuis artifa
 make zip        # archive sources + PDF pour EasyChair / Overleaf
 ```
 
-`tools/check_pages.sh` lit la page du label `end:body`, posé après la dernière section et avant la déclaration
-sur l'IA générative et la bibliographie. Dépendances : TeX Live 2020 ou plus récent, `pdflatex`, BibTeX
+`tools/check_pages.sh` lit la page du label `end:body`, posé après la dernière section et avant la bibliographie. Dépendances : TeX Live 2020 ou plus récent, `pdflatex`, BibTeX
 (`vancouver.bst`, pas biber), Python 3.10+ pour `make tables`.
 
 ## Arborescence
 
 ```
 jurix2026-long-paper/
-├── main.tex                      # frontmatter (titre, auteurs, résumé, mots-clés), \input des sections, déclaration IA, biblio
+├── main.tex                      # frontmatter (titre, auteurs, résumé, mots-clés), \input des sections, biblio
 ├── sections/
 │   ├── 01-introduction.tex        # question, RQ-A/B/C, contributions
 │   ├── 02-related-work.tex
