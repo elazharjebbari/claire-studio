@@ -54,7 +54,7 @@ def t3(e2: dict) -> str:
         r"\midrule",
         *rows,
         r"\midrule",
-        f"Scored items (micro) & & & & {f2(agg.get('micro_precision'))} & {f2(agg.get('micro_recall'))} & {f2(agg.get('micro_f1'))} (macro {f2(agg.get('macro_f1'))}) & & {signed(agg.get('macro_delta_f1_vs_theme_only'))} \\\\",
+        f"Structural items, {agg.get('n_items')} (micro) & & & & {f2(agg.get('micro_precision'))} & {f2(agg.get('micro_recall'))} & {f2(agg.get('micro_f1'))} (macro {f2(agg.get('macro_f1'))}) & & {signed(agg.get('macro_delta_f1_vs_theme_only'))} \\\\",
         r"\bottomrule",
         r"\end{tabular}",
         r"\end{table}",
