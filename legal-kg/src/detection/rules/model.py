@@ -38,6 +38,14 @@ class NormRecord:
         return [f"sentence:{self.document}:{i}" for i in self.evidence]
 
 
+def norm_id_for(clause_id: str, k: int) -> str:
+    """`norm:<document>:<source>:c<local>:n<k>` (NAMING.md) à partir de `clause:<document>:<source>:<local>`."""
+    parts = clause_id.split(":")
+    if len(parts) == 4 and parts[0] == "clause":
+        return f"norm:{parts[1]}:{parts[2]}:c{parts[3]}:n{k}"
+    return f"norm:{clause_id}:n{k}"
+
+
 def norms_from_extraction(step5_rows: list[dict], clauses: dict[str, dict]) -> list[NormRecord]:
     """Convertit les sorties `step_5_corrected.jsonl` (ou validées) en NormRecord ; les indices d'evidence
     (relatifs à la clause) deviennent absolus grâce à `clauses[clause_id]["sentences"]`."""
@@ -51,7 +59,7 @@ def norms_from_extraction(step5_rows: list[dict], clauses: dict[str, dict]) -> l
         for k, n in enumerate(row["output"].get("norms", [])):
             ev = [abs_idx[i] for i in n.get("evidence", []) if 0 <= i < len(abs_idx)]
             out.append(NormRecord(
-                norm_id=f"norm:{cid}:n{k}", clause_id=cid, document=c["document"], theme_T11=c["theme_T11"],
+                norm_id=norm_id_for(cid, k), clause_id=cid, document=c["document"], theme_T11=c["theme_T11"],
                 actor=n["actor"], modality=n["modality"], action=n["action"], condition=n["condition"],
                 notice=n["notice"], remedy=n["remedy"], object=n.get("object"), counterparty=n.get("counterparty"),
                 status=row.get("status", "proposed"), evidence=ev, amount_ratio=n.get("amount_ratio"),

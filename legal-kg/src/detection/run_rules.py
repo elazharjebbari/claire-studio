@@ -49,7 +49,8 @@ def main(argv=None) -> int:
     out.mkdir(parents=True, exist_ok=True)
     with (out / "matches.jsonl").open("w", encoding="utf-8") as f:
         for m in matches:
-            f.write(json.dumps(m.__dict__, ensure_ascii=False) + "\n")
+            f.write(json.dumps({**m.__dict__, "rule_version": rules["version"], "rules_sha256": rules["_sha256"]},
+                               ensure_ascii=False) + "\n")
     with (out / "sentence_items.jsonl").open("w", encoding="utf-8") as f:
         for (doc, idx), items in sorted(proj.items()):
             f.write(json.dumps({"document": doc, "index": idx, "items": sorted(items)}, ensure_ascii=False) + "\n")

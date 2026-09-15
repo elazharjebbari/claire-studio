@@ -3,7 +3,7 @@
 - **Étiquettes** : PascalCase, singulier (`Sentence`, `AnnexItem`). **Relations** : UPPER_SNAKE, verbe ou
   nom de relation (`CONTAINS`, `MATCHES_ITEM`). **Propriétés** : snake_case.
 - **Identifiants** : `<label>:<document>:<local>` — `document:9gag`, `sentence:9gag:12`,
-  `clause:9gag:consensus:0003`, `annotation:9gag:12:zahra.boulaich`, `gold:9gag:12`, `norm:9gag:c0003:n1`,
+  `clause:9gag:consensus:0003`, `annotation:9gag:12:zahra.boulaich`, `gold:9gag:12`, `norm:9gag:consensus:c0003:n1` (source de la clause incluse : consensus ou annotateur),
   `run:<uuid>`. `Theme.key = code@taxonomy` ; `Rule.key = id@version`.
 - **Sources** : `human` (annotateur nommé dans `annotator`), `llm` (juge nommé), `consensus`, `gold`,
   `claudette`, `rule`, `model`.

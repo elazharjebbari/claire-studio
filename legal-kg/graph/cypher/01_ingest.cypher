@@ -68,4 +68,4 @@ MERGE (s)-[l:LABELED {source: "claudette"}]->(c) SET l.severity = toInteger(row.
 LOAD CSV FROM "/import/run.csv" WITH HEADER AS row
 MERGE (r:Run {id: row.id}) SET r.kind = row.kind, r.started_at = row.started_at, r.code_version = row.code_version, r.dataset = row.dataset;
 
-// L3 (Norm) et L4-règles (MATCHES_ITEM) sont ingérées par src/graph/ingest_norms.py après validation (Gate 5).
+// L3 (Norm) et L5 (MATCHES_ITEM) : src/graph/ingest_norms.py → CSV sous /import/norms, chargés par 05_ingest_norms.cypher (après validation, Gate 5).
