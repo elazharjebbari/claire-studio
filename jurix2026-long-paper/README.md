@@ -58,6 +58,7 @@ Chaque chiffre de résultat vient d'un fichier de `artifacts/` (voir `artifacts/
 | Tests (Holm, non-infériorité, Wilson) | `artifacts/evaluation/STATS.json` |
 | Results C (manqués, faux positifs) | `artifacts/evaluation/DISAGREEMENT.json` (passe 0) |
 | Extraction du hold-out, pilote, stabilité | `artifacts/extraction/*` |
+| Seconde passe du hold-out (sensibilité : κ 0,82, union 0,34, item (i) non robuste) | `artifacts/extraction/holdout-v02_STABILITY_passes01.json`, `artifacts/evaluation/E2_pass1.json`, `STATS_pass1.json` |
 | Requêtes gelées, empreintes | `artifacts/rules/grey_list_queries.yaml`, `artifacts/rules/FROZEN.txt` (v0.2, SHA-256 `c3303e67…`) |
 | Table 1 | `artifacts/ontology/directive_93_13.yaml` |
 
@@ -68,5 +69,5 @@ sont décrits dans `../legal-kg/docs/GATES_LOG.md` et `../docs/pactiva-grey-list
 
 - Nommer les modèles réellement servis (`claude-opus-5`, `gpt-6-astra`), jamais le harnais (Claude Code, Codex).
 - Aucune validation experte n'a eu lieu dans cette étude : ne jamais écrire « validated by legal experts » à propos
-  des templates ; la stabilité sur le hold-out n'est pas mesurée (une passe).
+  des templates ; l'analyse principale est la passe 0 (pré-enregistrée), la passe 1 n'est qu'un contrôle de sensibilité.
 - Ne pas éditer `tables/*.tex` à la main : corriger la source, recopier dans `artifacts/`, puis `make tables`.

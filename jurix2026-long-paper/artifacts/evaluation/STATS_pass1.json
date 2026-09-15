@@ -1,0 +1,215 @@
+{
+  "n_sentences": 4078,
+  "n_documents": 17,
+  "per_item": {
+    "a": {
+      "a": "rules",
+      "b": "theme_only",
+      "observed_diff": -0.3946,
+      "p_value": 0.0001,
+      "n_permutations": 10000,
+      "n_documents": 17,
+      "n_pos": 132,
+      "conclusive": true
+    },
+    "b": {
+      "a": "rules",
+      "b": "theme_only",
+      "observed_diff": -0.253,
+      "p_value": 0.0003,
+      "n_permutations": 10000,
+      "n_documents": 17,
+      "n_pos": 132,
+      "conclusive": true
+    },
+    "f": {
+      "a": "rules",
+      "b": "theme_only",
+      "observed_diff": -0.182,
+      "p_value": 0.002,
+      "n_permutations": 10000,
+      "n_documents": 17,
+      "n_pos": 140,
+      "conclusive": true
+    },
+    "g": {
+      "a": "rules",
+      "b": "theme_only",
+      "observed_diff": 0.0192,
+      "p_value": 0.60714,
+      "n_permutations": 10000,
+      "n_documents": 17,
+      "n_pos": 102,
+      "conclusive": true
+    },
+    "i": {
+      "a": "rules",
+      "b": "theme_only",
+      "observed_diff": 0.1425,
+      "p_value": 0.0377,
+      "n_permutations": 10000,
+      "n_documents": 17,
+      "n_pos": 44,
+      "conclusive": true
+    },
+    "j": {
+      "a": "rules",
+      "b": "theme_only",
+      "observed_diff": -0.0195,
+      "p_value": 0.72143,
+      "n_permutations": 10000,
+      "n_documents": 17,
+      "n_pos": 88,
+      "conclusive": true
+    },
+    "k": {
+      "a": "rules",
+      "b": "theme_only",
+      "observed_diff": -0.2036,
+      "p_value": 0.0003,
+      "n_permutations": 10000,
+      "n_documents": 17,
+      "n_pos": 88,
+      "conclusive": true
+    },
+    "l": {
+      "a": "rules",
+      "b": "theme_only",
+      "observed_diff": -0.1907,
+      "p_value": 0.0138,
+      "n_permutations": 10000,
+      "n_documents": 17,
+      "n_pos": 88,
+      "conclusive": true
+    },
+    "q": {
+      "a": "rules",
+      "b": "theme_only",
+      "observed_diff": 0.0282,
+      "p_value": 0.41816,
+      "n_permutations": 10000,
+      "n_documents": 17,
+      "n_pos": 45,
+      "conclusive": true
+    }
+  },
+  "binary": {
+    "theme_only": {
+      "permutation": {
+        "a": "rules",
+        "b": "theme_only",
+        "observed_diff": -0.103,
+        "p_value": 0.0048,
+        "n_permutations": 10000,
+        "n_documents": 17
+      },
+      "noninferiority": {
+        "a": "rules",
+        "b": "theme_only",
+        "delta": 0.05,
+        "diff_point": -0.103,
+        "ci95": [
+          -0.1588,
+          -0.0394
+        ],
+        "noninferior": false
+      }
+    },
+    "B2": {
+      "permutation": {
+        "a": "rules",
+        "b": "B2",
+        "observed_diff": -0.3649,
+        "p_value": 0.0001,
+        "n_permutations": 10000,
+        "n_documents": 17
+      },
+      "noninferiority": {
+        "a": "rules",
+        "b": "B2",
+        "delta": 0.05,
+        "diff_point": -0.3649,
+        "ci95": [
+          -0.4403,
+          -0.295
+        ],
+        "noninferior": false
+      }
+    },
+    "B1": {
+      "permutation": {
+        "a": "rules",
+        "b": "B1",
+        "observed_diff": -0.1932,
+        "p_value": 0.0001,
+        "n_permutations": 10000,
+        "n_documents": 17
+      },
+      "noninferiority": {
+        "a": "rules",
+        "b": "B1",
+        "delta": 0.05,
+        "diff_point": -0.1932,
+        "ci95": [
+          -0.2431,
+          -0.1429
+        ],
+        "noninferior": false
+      }
+    }
+  },
+  "holm_items": {
+    "a": {
+      "p": 0.0001,
+      "p_holm": 0.0009,
+      "reject_at_0.05": true
+    },
+    "b": {
+      "p": 0.0003,
+      "p_holm": 0.0024,
+      "reject_at_0.05": true
+    },
+    "k": {
+      "p": 0.0003,
+      "p_holm": 0.0021,
+      "reject_at_0.05": true
+    },
+    "f": {
+      "p": 0.002,
+      "p_holm": 0.012,
+      "reject_at_0.05": true
+    },
+    "l": {
+      "p": 0.0138,
+      "p_holm": 0.069,
+      "reject_at_0.05": false
+    },
+    "i": {
+      "p": 0.0377,
+      "p_holm": 0.1508,
+      "reject_at_0.05": false
+    },
+    "q": {
+      "p": 0.41816,
+      "p_holm": 1.0,
+      "reject_at_0.05": false
+    },
+    "g": {
+      "p": 0.60714,
+      "p_holm": 1.0,
+      "reject_at_0.05": false
+    },
+    "j": {
+      "p": 0.72143,
+      "p_holm": 0.72143,
+      "reject_at_0.05": false
+    }
+  },
+  "wilson_precision_rules_union": {
+    "point": 0.3686,
+    "low": 0.3209,
+    "high": 0.4189,
+    "n": 369,
+    "k": 136
+  }
+}

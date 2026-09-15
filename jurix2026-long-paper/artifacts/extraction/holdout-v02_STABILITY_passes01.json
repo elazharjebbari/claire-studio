@@ -1,0 +1,69 @@
+{
+ "extraction": "results/extraction/inline-opus5-holdout-v02-20260915/step_5_corrected.jsonl",
+ "n_clauses": 1087,
+ "repeats": [
+  0,
+  1
+ ],
+ "rules_sha256": "c3303e6743c40a88ae36c5d0fd1c6cbce20ef2b9c85606d05759352039384f56",
+ "statuses": [
+  "proposed"
+ ],
+ "extraction_stability": {
+  "clauses_complete": 1087,
+  "identical_outputs_share": 0.0975,
+  "decisive_signature_jaccard_mean": 0.7702,
+  "empty_vs_nonempty_agreement": 0.9936,
+  "norms_per_repeat": {
+   "0": 2809,
+   "1": 2889
+  }
+ },
+ "detection_stability": {
+  "flagged_per_repeat": {
+   "0": 356,
+   "1": 369
+  },
+  "matches_by_rule_per_repeat": {
+   "0": {
+    "Q-ab": 18,
+    "Q-d": 19,
+    "Q-f-asymmetry": 13,
+    "Q-g": 37,
+    "Q-i": 30,
+    "Q-j": 23,
+    "Q-j-absence": 7,
+    "Q-j-strict": 14,
+    "Q-k": 18,
+    "Q-l": 16,
+    "Q-m": 38,
+    "Q-p": 15,
+    "Q-q": 77
+   },
+   "1": {
+    "Q-ab": 20,
+    "Q-d": 18,
+    "Q-f-asymmetry": 16,
+    "Q-g": 40,
+    "Q-i": 25,
+    "Q-j": 23,
+    "Q-j-absence": 6,
+    "Q-j-strict": 15,
+    "Q-k": 21,
+    "Q-l": 15,
+    "Q-m": 40,
+    "Q-p": 15,
+    "Q-q": 77
+   }
+  },
+  "pairwise_jaccard": {
+   "0-1": 0.7221
+  },
+  "flagged_by_n_repeats": {
+   "1": 117,
+   "2": 304
+  },
+  "fleiss_kappa_sentences": 0.8229,
+  "majority_flagged": 304
+ }
+}

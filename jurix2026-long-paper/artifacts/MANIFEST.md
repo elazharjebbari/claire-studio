@@ -6,7 +6,7 @@ seulement des identifiants, des comptes et des métriques. Les sources vivantes 
 de régénération, recopier, mettre à jour ce manifeste, puis `make tables` et relire les chiffres du texte.
 
 Protocole : requêtes et schéma v0.2 gelés le 15 sept. 2026 à 08:24 UTC (voir `rules/FROZEN.txt`) avant toute
-extraction du hold-out ; extraction du hold-out en une passe par `claude-opus-5` ; évaluation `holdout-v02-pass0`.
+extraction du hold-out ; extraction du hold-out en deux passes par `claude-opus-5` ; analyse principale pré-enregistrée = passe 0 (`holdout-v02-pass0`), passe 1 = contrôle de sensibilité (`*_pass1`). `DISAGREEMENT.*` est la version passe 0 citée dans Results C (la source a depuis été recalculée sur deux passes).
 
 | Copie | Source dans le dépôt | Commit source | SHA-256 (16) | Usage dans le papier |
 |---|---|---|---|---|
@@ -28,3 +28,8 @@ extraction du hold-out ; extraction du hold-out en une passe par `claude-opus-5`
 | `llm/clause_template_extraction.md` | `legal-kg/llm/prompts/clause_template_extraction.md` | 06277ba | `7cf08dc25490899f` | prompt d'extraction versionné |
 | `llm/clause_template.schema.json` | `legal-kg/llm/schemas/clause_template.schema.json` | 06277ba | `aeb1d0a00322b918` | schéma de sortie des templates |
 | `baselines/B2_legal-bert_holdout_results.json` | `legal-kg/results/baselines/B2_lab_bb37a8ce/results.json` | 09b59d1 | `ad8b7646a11281f4` | configuration et résultats de Legal-BERT (Table 5) |
+| `extraction/holdout-v02_STABILITY_passes01.json` | `legal-kg/results/extraction/inline-opus5-holdout-v02-20260915/STABILITY.json` | e39294b | `80addffd154a7ffa` | Materials : stabilité hold-out entre les passes 0 et 1 (Jaccard 0,77, κ 0,82) |
+| `evaluation/E2_pass1.json` | `legal-kg/results/evaluation/holdout-v02-pass1/E2.json` | e39294b | `1711b3930d7e2f8e` | sensibilité : union F1 0,34 [0,28 ; 0,41] en passe 1 (Results B) |
+| `evaluation/E2_pass1.md` | `legal-kg/results/evaluation/holdout-v02-pass1/E2.md` | e39294b | `f3388d61373df831` | lecture humaine d'E2_pass1.json |
+| `evaluation/STATS_pass1.json` | `legal-kg/results/evaluation/holdout-v02-pass1/STATS.json` | e39294b | `257b83ed5aa48072` | sensibilité : item (i) +0,14, p Holm 0,15 ; autres verdicts inchangés (Results A) |
+| `evaluation/STATS_pass1.md` | `legal-kg/results/evaluation/holdout-v02-pass1/STATS.md` | e39294b | `d4749b1c8583d7ba` | lecture humaine de STATS_pass1.json |
