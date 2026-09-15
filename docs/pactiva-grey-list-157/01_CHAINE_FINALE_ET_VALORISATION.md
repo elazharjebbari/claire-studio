@@ -32,13 +32,13 @@ empreinte avant, et aucune décision prise après avoir vu le hold-out (`legal-k
 Chemin critique : F0 → F1 → F3 → F4 → F6 → F7 → F9 → rédaction. Les décisions humaines (F0, F2, F4, F9) sont
 le goulot : **les prévoir dès maintenant dans l'agenda des deux juristes** (≈ 8–10 jours de relecture au total).
 
-### Ce qui peut être préparé sans attendre F0
-- `src/evaluation/evaluate_matches.py` (F7) et `src/evaluation/stats.py` (F8) : à écrire et à tester **sur le pilote**
-  (population `design`, statut `proposed`), avec des tests de non-régression ; ils ne toucheront au hold-out qu'à F7.
-- Le générateur de feuille d'audit (F9) et la sortie « sous-graphe témoin » en texte (déjà lisible depuis Memgraph,
-  `03_explanation_queries.cypher` § explication).
-- Les gabarits LaTeX des tableaux (§ 3) avec génération automatique depuis les JSON (`src/reporting/make_tables.py`).
-- Le module de comparaison phrase à phrase avec B2 (`predictions.jsonl` du run `bb37a8ce…`).
+### Préparé le 15 sept. sans attendre F0 (validé à blanc sur le pilote, `legal-kg/src/evaluation/README.md`)
+- ✅ `src/evaluation/evaluate_matches.py` (F7) : par item / règle / binaire, IC document, Δ vs thème seul, couverture, comparaison B1/B2 phrase à phrase.
+- ✅ `src/evaluation/stats.py` + `run_stats.py` (F8) : permutation appariée par document, Holm, non-infériorité, Wilson.
+- ✅ `src/evaluation/audit_sheet.py` (F9–F10) : feuilles aveugles A/B + clé, dépouillement (taux, causes, κ, suffisance).
+- ✅ `src/reporting/make_tables.py` : T3, T4, T6 en LaTeX depuis les JSON.
+- ✅ fiche de décision F0 : `03_DECISION_V02.md` (recommandation : 6 codes, ancrage, règles v0.2 Q-q/Q-i).
+- ✅ bibliographie : 11 entrées ajoutées (CJUE ×4, extraction structurée ×3, statistiques ×4), toutes marquées à vérifier.
 
 ---
 

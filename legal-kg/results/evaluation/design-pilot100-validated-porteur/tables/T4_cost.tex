@@ -1,0 +1,16 @@
+\begin{table}[t]
+\caption{The price of interpretability (held-out, sentence level, any unfairness label).}
+\label{tab:cost}
+\centering
+\footnotesize\setlength{\tabcolsep}{4pt}
+\begin{tabular}{@{}lrrrrl@{}}
+\toprule
+System & P & R & $F_1$ [95\% CI] & AUC-PR & Decision cites a legal ground \\
+\midrule
+B0$'$ theme only & 0.29 & 0.62 & 0.39 [0.34;0.44] & 0.23 & no \\
+B1 TF-IDF + LR & 0.44 & 0.72 & 0.55 [0.51;0.58] & 0.50 & no \\
+B2 Legal-BERT (fine-tuned) & 0.64 & 0.77 & 0.70 [0.65;0.75] & 0.78 & no \\
+\textbf{Frozen queries (union)} & 0.68 & 0.48 & 0.56 [0.40;0.72] & --- & \textbf{yes} (item + template) \\
+\bottomrule
+\end{tabular}
+\end{table}

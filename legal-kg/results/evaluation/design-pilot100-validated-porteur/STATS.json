@@ -1,0 +1,173 @@
+{
+  "n_sentences": 287,
+  "n_documents": 31,
+  "per_item": {
+    "a": {
+      "a": "rules",
+      "b": "theme_only",
+      "observed_diff": -0.6545,
+      "p_value": 0.03398,
+      "n_permutations": 2000,
+      "n_documents": 31,
+      "n_pos": 14,
+      "conclusive": false
+    },
+    "b": {
+      "a": "rules",
+      "b": "theme_only",
+      "observed_diff": -0.4545,
+      "p_value": 0.09045,
+      "n_permutations": 2000,
+      "n_documents": 31,
+      "n_pos": 14,
+      "conclusive": false
+    },
+    "f": {
+      "a": "rules",
+      "b": "theme_only",
+      "observed_diff": -0.2923,
+      "p_value": 0.02649,
+      "n_permutations": 2000,
+      "n_documents": 31,
+      "n_pos": 19,
+      "conclusive": false
+    },
+    "g": {
+      "a": "rules",
+      "b": "theme_only",
+      "observed_diff": 0.0217,
+      "p_value": 0.75712,
+      "n_permutations": 2000,
+      "n_documents": 31,
+      "n_pos": 16,
+      "conclusive": false
+    },
+    "i": {
+      "a": "rules",
+      "b": "theme_only",
+      "observed_diff": 0.2121,
+      "p_value": 0.22789,
+      "n_permutations": 2000,
+      "n_documents": 31,
+      "n_pos": 5,
+      "conclusive": false
+    },
+    "j": {
+      "a": "rules",
+      "b": "theme_only",
+      "observed_diff": 0.1162,
+      "p_value": 0.42929,
+      "n_permutations": 2000,
+      "n_documents": 31,
+      "n_pos": 14,
+      "conclusive": false
+    },
+    "k": {
+      "a": "rules",
+      "b": "theme_only",
+      "observed_diff": -0.2238,
+      "p_value": 0.1999,
+      "n_permutations": 2000,
+      "n_documents": 31,
+      "n_pos": 14,
+      "conclusive": false
+    },
+    "l": {
+      "a": "rules",
+      "b": "theme_only",
+      "observed_diff": -0.5238,
+      "p_value": 0.01849,
+      "n_permutations": 2000,
+      "n_documents": 31,
+      "n_pos": 14,
+      "conclusive": false
+    },
+    "q": {
+      "a": "rules",
+      "b": "theme_only",
+      "observed_diff": 0.0431,
+      "p_value": 0.8086,
+      "n_permutations": 2000,
+      "n_documents": 31,
+      "n_pos": 3,
+      "conclusive": false
+    }
+  },
+  "binary": {
+    "theme_only": {
+      "permutation": {
+        "a": "rules",
+        "b": "theme_only",
+        "observed_diff": -0.0681,
+        "p_value": 0.46627,
+        "n_permutations": 2000,
+        "n_documents": 31
+      },
+      "noninferiority": {
+        "a": "rules",
+        "b": "theme_only",
+        "delta": 0.05,
+        "diff_point": -0.0681,
+        "ci95": [
+          -0.2368,
+          0.1115
+        ],
+        "noninferior": false
+      }
+    }
+  },
+  "holm_items": {
+    "l": {
+      "p": 0.01849,
+      "p_holm": 0.16641,
+      "reject_at_0.05": false
+    },
+    "f": {
+      "p": 0.02649,
+      "p_holm": 0.21192,
+      "reject_at_0.05": false
+    },
+    "a": {
+      "p": 0.03398,
+      "p_holm": 0.23786,
+      "reject_at_0.05": false
+    },
+    "b": {
+      "p": 0.09045,
+      "p_holm": 0.5427,
+      "reject_at_0.05": false
+    },
+    "k": {
+      "p": 0.1999,
+      "p_holm": 0.9995,
+      "reject_at_0.05": false
+    },
+    "i": {
+      "p": 0.22789,
+      "p_holm": 0.91156,
+      "reject_at_0.05": false
+    },
+    "j": {
+      "p": 0.42929,
+      "p_holm": 1.0,
+      "reject_at_0.05": false
+    },
+    "g": {
+      "p": 0.75712,
+      "p_holm": 1.0,
+      "reject_at_0.05": false
+    },
+    "q": {
+      "p": 0.8086,
+      "p_holm": 0.8086,
+      "reject_at_0.05": false
+    }
+  },
+  "wilson_precision_rules_union": {
+    "point": 0.6757,
+    "low": 0.5146,
+    "high": 0.8037,
+    "n": 37,
+    "k": 25
+  }
+}
