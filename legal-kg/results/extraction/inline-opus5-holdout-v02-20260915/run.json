@@ -8,11 +8,11 @@
  "prompt_hash": "7cf08dc25490899f56edb1fcb19075036111004f6aee590582fa1e85be373ffd",
  "schema_hash": "aeb1d0a00322b91868c2e9b57e95c62f01830b7ef86b4ebaea61ff34036f6f46",
  "temperature": null,
- "repeat": 1,
+ "repeat": 2,
  "clauses": "../../data/annotations/holdout/clauses.jsonl",
  "n_clauses": 1087,
  "batch_size": 25,
- "code_version": "9d349d95bd68d6bdb3b0128b8cd5eeec5430fca0",
+ "code_version": "f30bf543574644bd55190170a9820ab2637365de",
  "started_at": "2026-09-15T08:27:31+00:00",
  "dry_run": false,
  "tokens_in": null,
@@ -27,23 +27,23 @@
  ],
  "stray_clause_ids": [],
  "agents": "sous-agents Claude Code general-purpose (model=opus -> claude-opus-5), contexte vierge ; schéma 0.2 + ancrage v0.2 ; collecte collect_inline_responses.py ou écriture directe",
- "ended_at": "2026-09-15T11:19:34+00:00",
- "n_calls": 1087,
+ "ended_at": "2026-09-15T11:35:04+00:00",
+ "n_calls": 2174,
  "counts": {
-  "schema_ok": 1087,
+  "schema_ok": 2174,
   "missing": 0,
   "schema_errors": 0,
-  "norms": 2809,
-  "empty": 105
+  "norms": 5698,
+  "empty": 205
  },
  "metrics": {
   "schema_compliance": 1.0,
   "missing_share": 0.0,
   "structural_pass": 0.9991,
-  "semantic_pass": 0.9991,
-  "anchoring_flags_per_norm": 0.1695,
-  "norms_per_clause": 2.584,
-  "empty_share": 0.0966,
-  "reproducibility_identical": null
+  "semantic_pass": 0.9986,
+  "anchoring_flags_per_norm": 0.1718,
+  "norms_per_clause": 2.621,
+  "empty_share": 0.0943,
+  "reproducibility_identical": 0.0957
  }
 }

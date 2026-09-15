@@ -1,0 +1,39 @@
+\begin{table}[t]
+\caption{Held-out evaluation of the frozen queries against CLAUDETTE labels.}
+\label{tab:queries}
+\centering
+\footnotesize\setlength{\tabcolsep}{3.5pt}
+\begin{tabular}{@{}llrrrrrr@{}}
+\toprule
+Query & Item (ref.) & $n_+$ & Flagged & P & R & $F_1$ [95\% CI] & $\Delta F_1$ vs theme \\
+\midrule
+Q-g & (g) TER & 102 & 44 & 0.64 & 0.27 & 0.38 [0.28;0.47] & \\
+Q-f-asymmetry & (f) CR,TER & 140 & 15 & 0.80 & 0.09 & 0.15 [0.06;0.27] & \\
+Q-j & (j) CH & 88 & 44 & 0.57 & 0.28 & 0.38 [0.30;0.47] & \\
+Q-j-strict & (j) CH & 88 & 22 & 0.59 & 0.15 & 0.24 [0.14;0.36] & \\
+Q-j-absence & (j) CH & 88 & 6 & 0.50 & 0.03 & 0.06 [0.00;0.15] & \\
+Q-k & (k) CH & 88 & 25 & 0.44 & 0.12 & 0.19 [0.08;0.33] & \\
+Q-l & (l) CH & 88 & 18 & 0.61 & 0.12 & 0.21 [0.13;0.29] & \\
+Q-ab & (a,b) LTD & 132 & 24 & 0.71 & 0.13 & 0.22 [0.13;0.30] & \\
+Q-q & (q) A,J & 45 & 110 & 0.15 & 0.36 & 0.21 [0.14;0.30] & \\
+Q-i & (i) USE & 44 & 30 & 0.40 & 0.27 & 0.32 [0.19;0.44] & \\
+Q-m & (m) & --- & 42 & \multicolumn{4}{l}{audit only (no reference category)} \\
+Q-p & (p) & --- & 17 & \multicolumn{4}{l}{audit only (no reference category)} \\
+Q-d & (d) & --- & 20 & \multicolumn{4}{l}{audit only (no reference category)} \\
+Q-e & (e) & --- & 0 & \multicolumn{4}{l}{audit only (no reference category)} \\
+Q-h & (h) & --- & 0 & \multicolumn{4}{l}{audit only (no reference category)} \\
+\midrule
+\emph{item (a)} & LTD & 132 & 5 & 0.60 & 0.02 & 0.04 [0.00;0.10] & -0.39 [-0.50;-0.26] \\
+\emph{item (b)} & LTD & 132 & 19 & 0.74 & 0.11 & 0.19 [0.10;0.28] & -0.25 [-0.39;-0.12] \\
+\emph{item (f)} & TER,CR & 140 & 15 & 0.80 & 0.09 & 0.15 [0.06;0.27] & -0.18 [-0.30;-0.06] \\
+\emph{item (g)} & TER & 102 & 44 & 0.64 & 0.27 & 0.38 [0.28;0.47] & +0.02 [-0.06;0.10] \\
+\emph{item (i)} & USE & 44 & 30 & 0.40 & 0.27 & 0.32 [0.19;0.44] & +0.14 [-0.01;0.28] \\
+\emph{item (j)} & CH & 88 & 44 & 0.57 & 0.28 & 0.38 [0.30;0.47] & -0.02 [-0.11;0.09] \\
+\emph{item (k)} & CH & 88 & 25 & 0.44 & 0.12 & 0.19 [0.08;0.33] & -0.20 [-0.28;-0.12] \\
+\emph{item (l)} & CH & 88 & 18 & 0.61 & 0.12 & 0.21 [0.13;0.29] & -0.19 [-0.33;-0.05] \\
+\emph{item (q)} & A,J & 45 & 110 & 0.15 & 0.36 & 0.21 [0.14;0.30] & +0.03 [-0.06;0.11] \\
+\midrule
+\textbf{Structural items (8)} & & & & 0.43 & 0.15 & 0.22 (macro 0.22) & -0.15 \\
+\bottomrule
+\end{tabular}
+\end{table}
