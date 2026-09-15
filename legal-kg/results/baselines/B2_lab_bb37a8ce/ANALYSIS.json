@@ -1,0 +1,421 @@
+{
+  "name": "B2 Legal-BERT",
+  "analysis": {
+    "n": 4078,
+    "n_unfair": 440,
+    "recall_by_category": {
+      "A": {
+        "n": 17,
+        "recall": 0.647
+      },
+      "CH": {
+        "n": 88,
+        "recall": 0.739
+      },
+      "CR": {
+        "n": 52,
+        "recall": 0.808
+      },
+      "J": {
+        "n": 28,
+        "recall": 0.857
+      },
+      "LAW": {
+        "n": 27,
+        "recall": 0.852
+      },
+      "LTD": {
+        "n": 132,
+        "recall": 0.742
+      },
+      "TER": {
+        "n": 102,
+        "recall": 0.892
+      },
+      "USE": {
+        "n": 44,
+        "recall": 0.727
+      }
+    },
+    "by_theme_T11": [
+      {
+        "theme": "LIMITATION_LIABILITY",
+        "n": 201,
+        "n_unfair": 73,
+        "base_rate": 0.363,
+        "precision": 0.671,
+        "recall": 0.781,
+        "f1": 0.722,
+        "fp": 28,
+        "fn": 16
+      },
+      {
+        "theme": "MODIFICATION_OF_TERMS",
+        "n": 143,
+        "n_unfair": 71,
+        "base_rate": 0.497,
+        "precision": 0.718,
+        "recall": 0.859,
+        "f1": 0.782,
+        "fp": 24,
+        "fn": 10
+      },
+      {
+        "theme": "DISPUTES_LAW",
+        "n": 460,
+        "n_unfair": 68,
+        "base_rate": 0.148,
+        "precision": 0.688,
+        "recall": 0.809,
+        "f1": 0.743,
+        "fp": 25,
+        "fn": 13
+      },
+      {
+        "theme": "TERMINATION",
+        "n": 145,
+        "n_unfair": 60,
+        "base_rate": 0.414,
+        "precision": 0.707,
+        "recall": 0.883,
+        "f1": 0.785,
+        "fp": 22,
+        "fn": 7
+      },
+      {
+        "theme": "CONTENT_IP",
+        "n": 791,
+        "n_unfair": 47,
+        "base_rate": 0.059,
+        "precision": 0.649,
+        "recall": 0.787,
+        "f1": 0.712,
+        "fp": 20,
+        "fn": 10
+      },
+      {
+        "theme": "ACCOUNT_USE",
+        "n": 762,
+        "n_unfair": 39,
+        "base_rate": 0.051,
+        "precision": 0.532,
+        "recall": 0.641,
+        "f1": 0.581,
+        "fp": 22,
+        "fn": 14
+      },
+      {
+        "theme": "FRAMEWORK",
+        "n": 555,
+        "n_unfair": 28,
+        "base_rate": 0.05,
+        "precision": 0.517,
+        "recall": 0.536,
+        "f1": 0.526,
+        "fp": 14,
+        "fn": 13
+      },
+      {
+        "theme": "FEES_PAYMENT",
+        "n": 542,
+        "n_unfair": 28,
+        "base_rate": 0.052,
+        "precision": 0.615,
+        "recall": 0.857,
+        "f1": 0.716,
+        "fp": 15,
+        "fn": 4
+      },
+      {
+        "theme": "THIRD_PARTY_SERVICES",
+        "n": 201,
+        "n_unfair": 12,
+        "base_rate": 0.06,
+        "precision": 0.333,
+        "recall": 0.417,
+        "f1": 0.37,
+        "fp": 10,
+        "fn": 7
+      },
+      {
+        "theme": "WARRANTY_DISCLAIMER",
+        "n": 187,
+        "n_unfair": 11,
+        "base_rate": 0.059,
+        "precision": 0.462,
+        "recall": 0.545,
+        "f1": 0.5,
+        "fp": 7,
+        "fn": 5
+      },
+      {
+        "theme": "PRIVACY_DATA",
+        "n": 91,
+        "n_unfair": 3,
+        "base_rate": 0.033,
+        "precision": 0.5,
+        "recall": 0.333,
+        "f1": 0.4,
+        "fp": 1,
+        "fn": 2
+      }
+    ],
+    "error_rate_by_agreement": {
+      "divergence": {
+        "n": 156,
+        "error_rate": 0.071,
+        "unfair_rate": 0.109
+      },
+      "majority": {
+        "n": 2008,
+        "error_rate": 0.068,
+        "unfair_rate": 0.109
+      },
+      "strict": {
+        "n": 1914,
+        "error_rate": 0.074,
+        "unfair_rate": 0.107
+      }
+    },
+    "confident_errors": {
+      "false_negatives": 101,
+      "fn_score_lt_0.1": 83,
+      "fn_score_ge_0.4": 5,
+      "false_positives": 188,
+      "fp_score_gt_0.9": 129
+    },
+    "f1_by_document": {
+      "min": [
+        0.49,
+        "WorldOfWarcraft"
+      ],
+      "median": [
+        0.721,
+        "Tinder"
+      ],
+      "max": [
+        0.857,
+        "PokemonGo"
+      ],
+      "n_documents": 17
+    },
+    "multi_category": {
+      "n": 44,
+      "recall": 0.932
+    }
+  },
+  "compare": {
+    "name": "B1 TF-IDF",
+    "analysis": {
+      "n": 4078,
+      "n_unfair": 440,
+      "recall_by_category": {
+        "A": {
+          "n": 17,
+          "recall": 0.647
+        },
+        "CH": {
+          "n": 88,
+          "recall": 0.682
+        },
+        "CR": {
+          "n": 52,
+          "recall": 0.615
+        },
+        "J": {
+          "n": 28,
+          "recall": 0.929
+        },
+        "LAW": {
+          "n": 27,
+          "recall": 0.889
+        },
+        "LTD": {
+          "n": 132,
+          "recall": 0.606
+        },
+        "TER": {
+          "n": 102,
+          "recall": 0.647
+        },
+        "USE": {
+          "n": 44,
+          "recall": 0.432
+        }
+      },
+      "by_theme_T11": [
+        {
+          "theme": "LIMITATION_LIABILITY",
+          "n": 201,
+          "n_unfair": 73,
+          "base_rate": 0.363,
+          "precision": 0.467,
+          "recall": 0.767,
+          "f1": 0.58,
+          "fp": 64,
+          "fn": 17
+        },
+        {
+          "theme": "MODIFICATION_OF_TERMS",
+          "n": 143,
+          "n_unfair": 71,
+          "base_rate": 0.497,
+          "precision": 0.606,
+          "recall": 0.803,
+          "f1": 0.691,
+          "fp": 37,
+          "fn": 14
+        },
+        {
+          "theme": "DISPUTES_LAW",
+          "n": 460,
+          "n_unfair": 68,
+          "base_rate": 0.148,
+          "precision": 0.491,
+          "recall": 0.838,
+          "f1": 0.62,
+          "fp": 59,
+          "fn": 11
+        },
+        {
+          "theme": "TERMINATION",
+          "n": 145,
+          "n_unfair": 60,
+          "base_rate": 0.414,
+          "precision": 0.571,
+          "recall": 0.8,
+          "f1": 0.667,
+          "fp": 36,
+          "fn": 12
+        },
+        {
+          "theme": "CONTENT_IP",
+          "n": 791,
+          "n_unfair": 47,
+          "base_rate": 0.059,
+          "precision": 0.467,
+          "recall": 0.447,
+          "f1": 0.457,
+          "fp": 24,
+          "fn": 26
+        },
+        {
+          "theme": "ACCOUNT_USE",
+          "n": 762,
+          "n_unfair": 39,
+          "base_rate": 0.051,
+          "precision": 0.394,
+          "recall": 0.333,
+          "f1": 0.361,
+          "fp": 20,
+          "fn": 26
+        },
+        {
+          "theme": "FRAMEWORK",
+          "n": 555,
+          "n_unfair": 28,
+          "base_rate": 0.05,
+          "precision": 0.13,
+          "recall": 0.25,
+          "f1": 0.171,
+          "fp": 47,
+          "fn": 21
+        },
+        {
+          "theme": "FEES_PAYMENT",
+          "n": 542,
+          "n_unfair": 28,
+          "base_rate": 0.052,
+          "precision": 0.364,
+          "recall": 0.571,
+          "f1": 0.444,
+          "fp": 28,
+          "fn": 12
+        },
+        {
+          "theme": "THIRD_PARTY_SERVICES",
+          "n": 201,
+          "n_unfair": 12,
+          "base_rate": 0.06,
+          "precision": 0.125,
+          "recall": 0.083,
+          "f1": 0.1,
+          "fp": 7,
+          "fn": 11
+        },
+        {
+          "theme": "WARRANTY_DISCLAIMER",
+          "n": 187,
+          "n_unfair": 11,
+          "base_rate": 0.059,
+          "precision": 0.182,
+          "recall": 0.182,
+          "f1": 0.182,
+          "fp": 9,
+          "fn": 9
+        },
+        {
+          "theme": "PRIVACY_DATA",
+          "n": 91,
+          "n_unfair": 3,
+          "base_rate": 0.033,
+          "precision": 0.2,
+          "recall": 0.333,
+          "f1": 0.25,
+          "fp": 4,
+          "fn": 2
+        }
+      ],
+      "error_rate_by_agreement": {
+        "divergence": {
+          "n": 156,
+          "error_rate": 0.128,
+          "unfair_rate": 0.109
+        },
+        "majority": {
+          "n": 2008,
+          "error_rate": 0.12,
+          "unfair_rate": 0.109
+        },
+        "strict": {
+          "n": 1914,
+          "error_rate": 0.123,
+          "unfair_rate": 0.107
+        }
+      },
+      "confident_errors": {
+        "false_negatives": 161,
+        "fn_score_lt_0.1": 0,
+        "fn_score_ge_0.4": 161,
+        "false_positives": 335,
+        "fp_score_gt_0.9": 0
+      },
+      "f1_by_document": {
+        "min": [
+          0.372,
+          "WorldOfWarcraft"
+        ],
+        "median": [
+          0.538,
+          "TripAdvisor"
+        ],
+        "max": [
+          0.789,
+          "Twitter"
+        ],
+        "n_documents": 17
+      },
+      "multi_category": {
+        "n": 44,
+        "recall": 0.75
+      }
+    }
+  },
+  "overlap": {
+    "n_unfair": 440,
+    "both": 243,
+    "only_first": 36,
+    "only_second": 96,
+    "neither": 65
+  }
+}

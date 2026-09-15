@@ -63,3 +63,20 @@ sur le hold-out, pas B1 ; (ii) l'écart B2 − B1 (+0,17, IC disjoints) mesure c
 explicabilité/précision par item que B2 ne fournit pas (B2 ne dit ni quel item de l'annexe, ni pourquoi) ; (iii) B2 reste un
 classifieur de phrases : la comparaison par item de la grey list (RQ2) et l'évaluation d'explication (RQ4) n'ont pas d'équivalent
 côté B2, ce qui est précisément la contribution visée par 157.
+
+## Analyse d'erreurs B2 (et B1) — `src/evaluation/analyse_lab_predictions.py` → `B2_lab_bb37a8ce/ANALYSIS.md`
+
+- **Rappel par catégorie (B2)** : TER 0,89 · J 0,86 · LAW 0,85 · CR 0,81 · LTD 0,74 · CH 0,74 · USE 0,73 · **A 0,65** (n = 17). Les
+  phrases à ≥ 2 catégories sont presque toutes vues (rappel 0,93, n = 44).
+- **Par thème T11** : F1 0,72–0,79 dans les thèmes porteurs (TERMINATION, MODIFICATION, DISPUTES_LAW, LIMITATION_LIABILITY),
+  **0,37–0,58** dans les thèmes à faible taux de base (THIRD_PARTY_SERVICES, FRAMEWORK, ACCOUNT_USE, WARRANTY) : c'est la
+  **précision** qui chute (0,33–0,53), pas seulement le rappel.
+- **Les erreurs sont confiantes** : 83/101 faux négatifs ont un score « abusif » < 0,1 et 129/188 faux positifs > 0,9. Un
+  ré-étalonnage de seuil ne les récupérerait pas ; il manque de l'information, pas de la calibration (ECE 0,056).
+- **Indépendance de l'accord humain sur le thème** : taux d'erreur 0,068–0,074 quelle que soit la classe d'accord — l'ambiguïté
+  thématique n'explique pas les erreurs d'abusivité.
+- **Recouvrement B1/B2** sur les 440 phrases abusives : 243 vues par les deux, 96 par B2 seul, 36 par B1 seul, **65 par aucun**.
+  Ces 65 phrases (et les 188 faux positifs de B2) sont la cible naturelle des approches structurelles (E2, A3–A8) et de
+  l'analyse qualitative (ERROR_ANALYSIS.md) : à extraire en priorité dans le pilote si elles tombent dans le hold-out (elles y
+  sont toutes) — sans jamais les utiliser pour régler les règles (gel).
+- Dispersion par document : F1 de 0,49 (WorldOfWarcraft) à 0,86 (PokemonGo), médiane 0,72.
