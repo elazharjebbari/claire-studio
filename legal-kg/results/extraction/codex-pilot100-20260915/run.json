@@ -1,0 +1,55 @@
+{
+ "run_id": "24c79d3b-a835-45fd-bb5d-c52d52e80798",
+ "kind": "extraction",
+ "backend": "codex_exec",
+ "model": "gpt-6-astra",
+ "effort": null,
+ "prompt": "llm/prompts/clause_template_extraction.md",
+ "prompt_hash": "7cf08dc25490899f56edb1fcb19075036111004f6aee590582fa1e85be373ffd",
+ "schema_hash": "aeb1d0a00322b91868c2e9b57e95c62f01830b7ef86b4ebaea61ff34036f6f46",
+ "temperature": null,
+ "repeat": 3,
+ "clauses": "data/annotations/pilot_100/clauses.jsonl",
+ "n_clauses": 100,
+ "batch_size": 25,
+ "code_version": "faf9d05a174b633012de4a60ff6e62a619e3b572",
+ "started_at": "2026-09-15T07:34:56+00:00",
+ "dry_run": false,
+ "tokens_in": 391480,
+ "tokens_out": 45269,
+ "refusals": 0,
+ "protocol_deviations": [
+  "no_temperature_control",
+  "no_constrained_decoding_schema_validated_after_generation",
+  "clauses_batched_not_one_call_per_clause",
+  "codex_cli_system_prompt_wraps_extraction_prompt",
+  "chatgpt_plan_not_api_billing"
+ ],
+ "stray_clause_ids": [],
+ "agents": "12 appels codex exec (CLI 0.154.0, compte ChatGPT, modèle de config gpt-6-astra, effort medium, service_tier priority), répertoire temporaire vide, sandbox read-only, --ephemeral, lot sur stdin, 4 en parallèle, 15 sept. 2026",
+ "ended_at": "2026-09-15T07:41:40+00:00",
+ "n_calls": 300,
+ "counts": {
+  "schema_ok": 244,
+  "missing": 50,
+  "schema_errors": 6,
+  "norms": 569,
+  "empty": 29
+ },
+ "metrics": {
+  "schema_compliance": 0.8133,
+  "missing_share": 0.1667,
+  "structural_pass": 1.0,
+  "semantic_pass": 1.0,
+  "anchoring_flags_per_norm": 0.5694,
+  "norms_per_clause": 2.332,
+  "empty_share": 0.1189,
+  "reproducibility_identical": 0.07
+ },
+ "usage": {
+  "input_tokens": 391480,
+  "output_tokens": 45269,
+  "reasoning_output_tokens": 1578,
+  "cached_input_tokens": 83712
+ }
+}

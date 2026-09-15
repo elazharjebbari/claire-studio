@@ -46,13 +46,24 @@ from extract_templates import (  # noqa: E402
 )
 
 BACKEND = "inline_subagent"
-DEVIATIONS = [
-    "no_temperature_control",
-    "no_constrained_decoding_schema_validated_after_generation",
-    "clauses_batched_not_one_call_per_clause",
-    "claude_code_system_prompt_wraps_extraction_prompt",
-    "no_token_accounting",
-]
+# Écarts au protocole (LLM_EXTRACTION §4) propres à chaque backend sans API directe.
+DEVIATIONS_BY_BACKEND = {
+    "inline_subagent": [
+        "no_temperature_control",
+        "no_constrained_decoding_schema_validated_after_generation",
+        "clauses_batched_not_one_call_per_clause",
+        "claude_code_system_prompt_wraps_extraction_prompt",
+        "no_token_accounting",
+    ],
+    "codex_exec": [
+        "no_temperature_control",
+        "no_constrained_decoding_schema_validated_after_generation",
+        "clauses_batched_not_one_call_per_clause",
+        "codex_cli_system_prompt_wraps_extraction_prompt",
+        "chatgpt_plan_not_api_billing",
+    ],
+}
+DEVIATIONS = DEVIATIONS_BY_BACKEND[BACKEND]
 STEP_KEYS = ("1_raw", "2_structural", "3_semantic", "4_anchoring", "5_corrected")
 
 
@@ -171,13 +182,14 @@ def cmd_replay(args: argparse.Namespace) -> int:
         code_version = subprocess.check_output(["git", "rev-parse", "HEAD"], cwd=ROOT, text=True).strip()
     except Exception:  # noqa: BLE001
         code_version = "unknown"
-    record = {"run_id": args.run_id or str(uuid.uuid4()), "kind": "extraction", "backend": BACKEND,
+    backend = args.backend
+    record = {"run_id": args.run_id or str(uuid.uuid4()), "kind": "extraction", "backend": backend,
               "model": args.model, "effort": None, "prompt": str(PROMPT_PATH.relative_to(ROOT)),
               "prompt_hash": prompt_hash, "schema_hash": manifest["schema_hash"], "temperature": None,
               "repeat": args.repeat, "clauses": str(args.clauses), "n_clauses": len(clauses),
               "batch_size": manifest["batch_size"], "code_version": code_version,
               "started_at": manifest["exported_at"], "dry_run": False, "tokens_in": None, "tokens_out": None,
-              "refusals": 0, "protocol_deviations": DEVIATIONS, "stray_clause_ids": stray,
+              "refusals": 0, "protocol_deviations": DEVIATIONS_BY_BACKEND[backend], "stray_clause_ids": stray,
               "agents": args.agents_note}
 
     files = {k: (run_dir / f"step_{k}.jsonl").open("w", encoding="utf-8") for k in STEP_KEYS}
@@ -187,7 +199,7 @@ def cmd_replay(args: argparse.Namespace) -> int:
     for clause in clauses:
         for repeat in repeats:
             base = {"clause_id": clause["clause_id"], "repeat": repeat, "stop_reason": "end_turn", "latency_s": None,
-                    "backend": BACKEND}
+                    "backend": backend}
             got = responses.get((clause["clause_id"], repeat))
             if got is None or got["output"] is None:
                 stats["missing"] += 1
@@ -242,6 +254,11 @@ def cmd_replay(args: argparse.Namespace) -> int:
                     "empty_share": round(stats["empty"] / ok, 4),
                     "reproducibility_identical": round(stats["identical_across_repeats"] / len(clauses), 4)
                     if args.repeat > 1 and clauses else None}})
+    usage_path = run_dir / "USAGE.json"
+    if usage_path.exists():
+        usage = json.loads(usage_path.read_text(encoding="utf-8"))
+        record["tokens_in"], record["tokens_out"] = usage.get("input_tokens"), usage.get("output_tokens")
+        record["usage"] = usage
     (run_dir / "run.json").write_text(json.dumps(record, indent=1, ensure_ascii=False), encoding="utf-8")
     (run_dir / "prompt.md").write_text(PROMPT_PATH.read_text(encoding="utf-8"), encoding="utf-8")
     print(json.dumps({"run_id": record["run_id"], "out": str(run_dir), **record["metrics"], "stray": len(stray)},
@@ -266,6 +283,7 @@ def main(argv: list[str] | None = None) -> int:
     rp.add_argument("--model", default="claude-opus-5")
     rp.add_argument("--run-id", default=None)
     rp.add_argument("--agents-note", default="", help="traçabilité des sous-agents (type, modèle, date)")
+    rp.add_argument("--backend", default=BACKEND, choices=sorted(DEVIATIONS_BY_BACKEND))
     rp.set_defaults(func=cmd_replay)
     args = ap.parse_args(argv)
     return args.func(args)

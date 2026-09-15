@@ -71,3 +71,12 @@ def test_fleiss_binary_edge_cases():
     assert es.fleiss_kappa_binary([], 3) is None
     assert es.fleiss_kappa_binary([3, 0, 3, 0], 3) == 1.0
     assert es.fleiss_kappa_binary([0, 0, 0], 3) is None      # aucun signalement : accord attendu = 1, κ indéfini
+
+
+def test_cohen_kappa_binaire():
+    from evaluation.compare_extractors import cohen_kappa_binary
+
+    assert cohen_kappa_binary([True, False, True, False], [True, False, True, False]) == 1.0
+    assert cohen_kappa_binary([True, False], [False, True]) == -1.0
+    assert cohen_kappa_binary([], []) is None
+    assert cohen_kappa_binary([True, True], [True, True]) is None   # pe = 1 : κ indéfini
