@@ -151,3 +151,48 @@ commentaire du `.bib`**. Ajouter ces entrées coûte des lignes en bibliographie
 3. Mise à jour de `easychair-abstract.txt` si le résumé change ; vérification `grep TODO`.
 4. Consigner dans `docs/pactiva-jurix-short-paper/` la provenance des juges reçue des auteurs (elle manque
    au dépôt) et l'ajouter au `README` de `data/thematic-layer/` pour la ressource publiée.
+
+## 6. Exécuté le 15 septembre : base de production et manuscrit
+
+### 6.1 Ce que la base de production contient (interrogée via l'accès de déploiement)
+
+- `imports.PreAnnotation` : 200 enregistrements = 4 juges × 50 documents, `schema_version = v9.2` pour tous ;
+  charge utile `raw = {doc, judge, version, annotations, document_plan}` avec `version = v9.2-nature-derived`
+  (Claude, Codex, Fable) ou `v9.2` (Mistral, sans champ `legal_nature`). Importés le **21–22 juin 2026** (Claude,
+  Codex, Mistral) et le **2 août 2026** (Fable). Les justifications (`rationale`) sont rédigées en **français** :
+  le prompt de pré-annotation était en français. **Aucun identifiant de modèle, aucun réglage, aucune date de
+  génération** n'est stocké — ni dans la base, ni dans les fichiers, ni dans les dépôts de documentation.
+- `lab.ExperimentRun` : runs `llm_judge` antérieurs (11–15 août) sur des datasets partiels ; **aucun** sur le
+  dataset final `7116e627…` avant ce jour.
+
+### 6.2 Huit runs lancés sur le dataset final (preset `llm-judges-baseline`, 5 plis par document, bootstrap 1 000 documents)
+
+| Juge | κ T20 (écart-type inter-plis) | macro-F1 T20 [IC 95 %] | erreur T20 | κ T11 | macro-F1 T11 [IC 95 %] | erreur T11 | run T20 / T11 |
+|---|---|---|---|---|---|---|---|
+| Fable | 0,579 (0,047) | 0,403 [0,379 ; 0,406] | 39,9 % | 0,589 (0,040) | 0,367 [0,360 ; 0,375] | 37,1 % | `dc3c7fd7` / `b65cb576` |
+| Claude | 0,519 (0,033) | 0,354 [0,329 ; 0,364] | 45,6 % | 0,536 (0,030) | 0,335 [0,320 ; 0,351] | 41,9 % | `1bac2776` / `ff976996` |
+| Mistral | 0,330 (0,015) | 0,226 [0,199 ; 0,243] | 63,8 % | 0,354 (0,017) | 0,225 [0,204 ; 0,246] | 58,5 % | `bf30bb7b` / `6b7747f1` |
+| Codex | 0,264 (0,039) | 0,186 [0,160 ; 0,192] | 69,6 % | 0,301 (0,042) | 0,193 [0,170 ; 0,202] | 62,5 % | `ad3034fd` / `d238f7c0` |
+
+Lecture : les κ en 5 plis reproduisent à ±0,005 les κ globaux d'E3.3 utilisés dans la Table 2 (0,581 / 0,515 /
+0,327 / 0,266) ; les IC de macro-F1 par document ne se recouvrent pas entre juges consécutifs, sauf Fable–Claude en T11
+(recouvrement marginal) ; l'erreur sur les phrases abusives est plus élevée que l'erreur globale pour les quatre
+juges (Fable 42,7 % vs 39,9 % en T20). Le « plafond humain » renvoyé par ces runs (0,468) est le taux d'accord
+strict, pas le κ leave-one-annotator-out (0,859) : ne pas le citer.
+
+### 6.3 Modifications appliquées au manuscrit (corps = 5 pages, 0 débordement, `latexmk` propre)
+
+- §3 : « four large language models from three providers (Anthropic, OpenAI and Mistral AI; Table 2), prompted
+  once … in June and August 2026; their outputs were stored and never regenerated ».
+- Table 2 : quatre lignes de juges nommées, avec fournisseur et **`\todo{model id}`** à remplacer ; κ et exactitude
+  en T20 et T11 ; légende complétée (classement identique sous les deux taxonomies).
+- §4 : phrase de résultat rapporté (étendue 0,27–0,58, classement stable, gain T11 0,01–0,04 vs 0,067, redondance
+  Fable–Claude κ 0,80).
+- §5 Limitations : signature d'ancrage (0,607 / 0,636 vs 0,578 / 0,543) avant la sensibilité κ 0,515.
+- Coupes : §1 (deux phrases), §2 (fusion encodeurs compacts, gap raccourci), §3 (plafond humain fusionné,
+  « fraction … cannot converge »), §4 (phrase déplacée en §5, deux fusions), §5 (citations répétées), §6
+  (conclusion et disponibilité resserrées).
+
+**Reste bloquant** : les quatre identifiants de modèles (et, si connus, outil d'accès, température, mois de
+génération par juge). Une fois fournis, remplacer les `\todo{model id}` dans `tables/systems.tex`, recompiler,
+`tools/check_pages.sh`, `grep TODO`.

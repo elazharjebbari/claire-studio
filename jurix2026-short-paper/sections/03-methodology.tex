@@ -5,12 +5,14 @@
 \paragraph{The layer.}
 We annotate all 50 English contracts of \corpus{} \cite{lippi2019claudette}:
 9,414 sentences, each labelled with one primary theme and zero or more secondary
-themes drawn from a 20-theme legal vocabulary (\Tn{20}) covering the recurring
-subject matter of online terms of service. Every sentence was labelled independently by each of three trained
+themes drawn from a 20-theme legal vocabulary (\Tn{20}). Every sentence was
+labelled independently by each of three trained
 annotators working from a written codebook, and, separately, by four large
-language models prompted with the same vocabulary on the same sentences.
-Individual votes are retained rather than collapsed into a consensus
-\cite{braun2024differ,plank2022variation,uma2021disagreement}.
+language models from three providers (Anthropic, OpenAI and Mistral AI;
+Table~\ref{tab:systems}), prompted once with the same vocabulary on the same
+sentences, in June and August 2026; their outputs were stored and never
+regenerated. Individual votes are retained rather than collapsed into a
+consensus \cite{braun2024differ,plank2022variation,uma2021disagreement}.
 
 \paragraph{Construction.}
 Annotators did not post-edit the output of one model. The four judges labelled
@@ -22,9 +24,9 @@ four proposals, rising to 58.7\% on the sentences annotators themselves disputed
 Annotators could not see one another's work. The
 gold standard is built by a three-tier cascade: 46.8\% of sentences are unanimous,
 48.3\% carry a majority of at least two of three, and the remaining 4.9\%
-(462 sentences) were arbitrated by a human committee. That last share is not
-overhead but a measurement: it is the fraction of the corpus on which three
-trained annotators, given the same codebook, cannot converge. Crucially,
+(462 sentences) were arbitrated by a human committee --- the fraction of the
+corpus on which three trained annotators, given the same codebook, cannot
+converge. Crucially,
 \emph{model outputs are never parties to the gold}: resolution is strictly
 inter-annotator, and the judges are held out as an object of evaluation rather
 than a contributor to the reference \cite{thalken2023legal}.
@@ -46,6 +48,6 @@ reliability \cite{marchal2022multilabel}. Coarser taxonomies (\Tn{14}, \Tn{11},
 themselves are never rewritten, so every comparison is paired by construction,
 and confidence intervals come from bootstrap resampling over documents rather
 than sentences. The merges were designed on 33 contracts and validated on the
-17 held out from that design. Finally, the human ceiling is estimated
-leave-one-annotator-out, each annotator being scored against a gold to which they
-did not contribute \cite{nangia2019human}.
+17 held out from that design, and the human ceiling is estimated
+leave-one-annotator-out against a gold to which the scored annotator did not
+contribute \cite{nangia2019human}.

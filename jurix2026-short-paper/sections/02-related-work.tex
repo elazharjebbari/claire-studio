@@ -2,13 +2,12 @@
 % 2. Background and Related Work — deux paragraphes : ce qui est établi (grappes
 % de citations), ce qui reste ouvert (énoncé du gap). Budget : ~280 mots.
 % -----------------------------------------------------------------------------
-Automatic detection of potentially unfair clauses in terms of service is by now
-well established: \corpus{} and its successors detect and explain unfairness in
+Detecting potentially unfair clauses in terms of service is well established: \corpus{} and its successors detect and explain unfairness in
 English and across languages \cite{lippi2019claudette,lagioia2019deep,
 ruggeri2022memory,drawzeski2021corpus,galassi2024multilingual,liepina2020claudettetool},
-and the task is part of standard legal benchmarks \cite{chalkidis2022lexglue}.
-Compact domain-specific encoders remain competitive with, and often better than,
-general-purpose large models on clause classification
+and the task is part of standard legal benchmarks \cite{chalkidis2022lexglue},
+on which compact domain-specific encoders remain competitive with general-purpose
+large models
 \cite{chalkidis2020legalbert,dominguezolmedo2025lawma,panarelli2025worth,frasheri2024llm}.
 Language models are increasingly used as semantic annotators of legal text, with
 documented gains in cost and documented risks of anchoring and circularity
@@ -27,8 +26,7 @@ single-annotated \cite{braun2022topics}, defined for a different document type
 \cite{tuggener2020ledgar,hendrycks2021cuad,wilson2016opp115}, or reported without
 chance-corrected agreement \cite{loffler2025chilean,braun2024agbde}; none places
 human annotators and language models on the same vocabulary and the same
-sentences. The consequence is methodological as much as practical: because the
-multi-label format and the granularity of the taxonomy are almost never varied on
-the same data, it is not known whether the agreement penalty attributed to
-multi-label annotation is a property of the format or of the label set it is
-applied to --- a question \cite{bayerl2011metaanalysis} raises and leaves open.
+sentences. Because format and granularity are almost never varied on the same
+data, it is also not known whether the agreement penalty attributed to multi-label
+annotation belongs to the format or to the label set --- a question
+\cite{bayerl2011metaanalysis} raises and leaves open.

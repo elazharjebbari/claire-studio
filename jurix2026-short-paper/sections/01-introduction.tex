@@ -4,16 +4,14 @@
 % -----------------------------------------------------------------------------
 \corpus{} records whether a sentence in a consumer contract is potentially unfair;
 it records nothing about what the clause is about \cite{lippi2019claudette,
-lagioia2019deep}. A limitation clause and an arbitration clause are both unfair,
-and both are simply unfair. Where clause topics do exist, they come without
+lagioia2019deep}. Where clause topics do exist, they come without
 chance-corrected agreement \cite{braun2022topics,loffler2025chilean}, so the
 reliability of the task itself is unknown.
 
 We add a thematic layer to the reference benchmark. All 50 contracts and
 9,414 sentences of \corpus{} are labelled with one or more of 20 legal themes,
 independently by three trained annotators, and separately by four large language
-models prompted with the same vocabulary on the same sentences. Individual votes,
-the arbitration trail and the resulting gold standard are all released.
+models prompted with the same vocabulary on the same sentences.
 
 The layer settles a question that the reliability literature leaves open. Agreement
 is known to fall when annotators may assign several labels, and to rise when
@@ -28,8 +26,8 @@ clauses across unfairness strata, and loses 13.2\% of the downstream unfairness
 signal to buy $0.012$ of extra agreement.
 
 We contribute: (i) a thematic layer over \corpus{}, multi-label and triply
-annotated, published with its disagreements and with the open-source platform used
-to produce it; (ii) a separation of the cost of the multi-label \emph{format} from
+annotated, published with its disagreements and the platform that produced it;
+(ii) a separation of the cost of the multi-label \emph{format} from
 the effect of taxonomy \emph{granularity}, measured on the same sentences and
 replicated out of sample; and (iii) a legal constraint on consolidation --- merges
 must not cross unfairness strata --- together with the price of violating it.
