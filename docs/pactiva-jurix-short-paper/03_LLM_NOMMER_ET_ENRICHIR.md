@@ -196,3 +196,22 @@ strict, pas le κ leave-one-annotator-out (0,859) : ne pas le citer.
 **Reste bloquant** : les quatre identifiants de modèles (et, si connus, outil d'accès, température, mois de
 génération par juge). Une fois fournis, remplacer les `\todo{model id}` dans `tables/systems.tex`, recompiler,
 `tools/check_pages.sh`, `grep TODO`.
+
+## 7. Provenance des modèles — résolue le 15 septembre (sources : `SAVE/annotations`, journaux des CLI)
+
+| Juge | Modèle servi | Harnais | Dates 2026 | Niveau de preuve |
+|---|---|---|---|---|
+| Fable | **Claude Fable 5** (`claude-fable-5`) | Claude Code, sous-agents forcés `model: fable` | 1–2 août | transcription Claude Code (`dbeeafb4…`, 1 397 appels `claude-fable-5`) + runbook |
+| Claude | **Claude Opus 4.7** | Claude Code (abonnement), session vierge par document | 29–31 mai | README de campagne + runbook v9.2 (« Opus uniquement ») ; transcriptions de mai purgées → **déclaré, non revérifié** |
+| Mistral | **Mistral Medium 3.5** (`mistral-medium-3.5`) | Vibe CLI, température 1,0, thinking high | 21–22 juin | `~/.vibe/config.toml` + messages de session |
+| Codex | **GPT-5.5** | Codex CLI 0.135.0 | 31 mai – 2 juin | journaux `~/.codex/sessions` (`turn_context.model = gpt-5.5`) |
+
+Manuscrit : Table 2 porte désormais « Judge Fable (Claude Fable 5) », « Judge Claude (Claude Opus 4.7) »,
+« Judge Mistral (Mistral Medium 3.5) », « Judge Codex (GPT-5.5) » ; §3 précise « each run through its vendor's
+agent interface at default settings … between May and August 2026 » ; la disponibilité annonce les prompts.
+Les prompts et runbooks v9.2 sont publiés dans `data/thematic-layer/prompts/` avec un README de provenance.
+Pas de référence bibliographique ajoutée pour les modèles : aucune fiche technique vérifiée à la source n'est
+disponible dans le dépôt, et une URL inventée serait pire qu'une absence.
+
+Réserve à garder en tête pour un relecteur : le juge `claude` est le seul dont l'identifiant repose sur la
+documentation de campagne et non sur un journal d'exécution.
