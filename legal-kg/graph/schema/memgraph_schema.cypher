@@ -43,6 +43,22 @@ CREATE INDEX ON :Norm(action);
 CREATE INDEX ON :Norm(status);
 CREATE INDEX ON :AnnexItem(expressibility);
 CREATE INDEX ON :Run(kind);
+// Index de recherche par identifiant : dans Memgraph, une contrainte d'unicité ne sert PAS de plan d'accès —
+// sans ces index, chaque MATCH {id} des LOAD CSV balaie l'étiquette (constaté le 15 sept. : 90 227 lignes de
+// sentence_themes.csv bloquées > 10 min ; avec index, quelques secondes).
+CREATE INDEX ON :Document(id);
+CREATE INDEX ON :Sentence(id);
+CREATE INDEX ON :Clause(id);
+CREATE INDEX ON :Section(id);
+CREATE INDEX ON :Theme(key);
+CREATE INDEX ON :Annotation(id);
+CREATE INDEX ON :GoldDecision(id);
+CREATE INDEX ON :Norm(id);
+CREATE INDEX ON :AnnexItem(code);
+CREATE INDEX ON :Category(code);
+CREATE INDEX ON :Party(role);
+CREATE INDEX ON :Run(id);
+CREATE INDEX ON :Activity(id);
 
 // ---- Vocabulaires de référence (nœuds constants) ------------------------------------------------
 UNWIND ["provider", "user", "third_party"] AS r MERGE (:Party {role: r});

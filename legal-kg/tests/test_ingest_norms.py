@@ -61,6 +61,10 @@ def test_ingest_end_to_end(tmp_path):
     assert m[0]["item"] == "g" and m[0]["evidence_ids"] == "sentence:9gag:41|sentence:9gag:42" and m[0]["rule_version"] == "0.1"
     act = _csv(out / "activities.csv")
     assert act[0]["actor"] == "fatima.ouali" and act[0]["norm_id"] == "norm:9gag:consensus:c0003:n0"
+    cl = _csv(out / "clauses.csv")
+    assert {c["id"] for c in cl} == {"clause:9gag:consensus:0003", "clause:9gag:consensus:0007"}
+    assert _csv(out / "clause_themes.csv")[0]["theme_key"] == "TERMINATION@T11"
+    assert len(_csv(out / "clause_sentences.csv")) == 4
     summary = json.loads((out / "INGEST.json").read_text())
     assert summary["clauses_ingested"] == 2 and summary["clauses_without_norm"] == 1 and summary["counts"]["norms"] == 1
 
@@ -77,5 +81,15 @@ def test_cypher_ingest_is_isolated():
     text = (ROOT / "graph" / "cypher" / "05_ingest_norms.cypher").read_text(encoding="utf-8")
     body = "\n".join(l for l in text.splitlines() if not l.strip().startswith("//"))
     assert not re.search(r"\bLABELED\b|\bCategory\b", body)
-    for f in ("norms.csv", "norm_evidence.csv", "norm_relations.csv", "matches.csv", "activities.csv", "run.csv"):
+    for f in ("clauses.csv", "clause_sentences.csv", "clause_themes.csv", "norms.csv", "norm_evidence.csv", "norm_relations.csv", "matches.csv", "activities.csv", "run.csv"):
         assert f in text
+
+
+def test_split_clause_gets_parent(tmp_path):
+    clauses = CLAUSES + [{"clause_id": "clause:9gag:consensus:0029a", "document": "9gag", "theme_T11": "FEES_PAYMENT",
+                          "split_of_long_clause": True, "sentences": [{"index": 300, "text": "x"}]}]
+    rows = [{"clause_id": "clause:9gag:consensus:0029a", "repeat": 0, "status": "validated",
+             "output": {"clause_id": "clause:9gag:consensus:0029a", "norms": [NORM]}}]
+    tables = ingest_norms.build({c["clause_id"]: c for c in clauses}, rows, source="llm:test", run_id="r", matches=None, relations=None)
+    assert tables["clauses"][0]["split_of"] == "clause:9gag:consensus:0029"
+    assert tables["norms"][0]["id"] == "norm:9gag:consensus:c0029a:n0"

@@ -7,6 +7,23 @@ LOAD CSV FROM "/import/norms/run.csv" WITH HEADER AS row
 MERGE (r:Run {id: row.id})
 SET r.kind = row.kind, r.started_at = row.started_at, r.code_version = row.code_version, r.source = row.source, r.select = row.select;
 
+// Clauses de travail (re-découpage ≤ 8 phrases) : créées si absentes de L1, reliées à leur parent et à leur thème T11
+LOAD CSV FROM "/import/norms/clauses.csv" WITH HEADER AS row
+MATCH (d:Document {id: row.document_id})
+MERGE (c:Clause {id: row.id})
+ON CREATE SET c.document = row.document, c.source = row.source, c.start = toInteger(row.start), c.end = toInteger(row.end),
+              c.n_sentences = toInteger(row.n_sentences), c.taxonomy = "T11", c.themes_signature = row.theme_T11, c.derived = true
+MERGE (d)-[:CONTAINS]->(c)
+WITH c, row WHERE row.split_of <> ""
+MATCH (parent:Clause {id: row.split_of}) MERGE (c)-[:SPLIT_OF]->(parent);
+
+LOAD CSV FROM "/import/norms/clause_sentences.csv" WITH HEADER AS row
+MATCH (c:Clause {id: row.clause_id}), (s:Sentence {id: row.sentence_id}) MERGE (c)-[:CONTAINS]->(s);
+
+LOAD CSV FROM "/import/norms/clause_themes.csv" WITH HEADER AS row
+MATCH (c:Clause {id: row.clause_id}), (t:Theme {key: row.theme_key})
+MERGE (c)-[:HAS_THEME {role: row.role, source: row.source}]->(t);
+
 // Normes + acteur + clause + provenance
 LOAD CSV FROM "/import/norms/norms.csv" WITH HEADER AS row
 MATCH (c:Clause {id: row.clause_id})

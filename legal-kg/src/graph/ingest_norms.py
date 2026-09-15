@@ -101,8 +101,27 @@ def build(clauses: dict[str, dict], rows: list[dict], *, source: str, run_id: st
                 activity_rows.append({"id": f"activity:{r['clause_id']}:{k}:{r.get('validated_by', 'unknown')}",
                                       "norm_id": norm_id_for(r["clause_id"], k), "actor": r.get("validated_by", ""),
                                       "at": r.get("validated_at", ""), "kind": "validation", "note": r.get("validation_note", "")})
+    # Clauses ingérées : les clauses re-découpées (suffixe a/b…, `split_of_long_clause`) n'existent pas dans L1 ;
+    # on les émet avec leur parent pour que 05_ingest_norms.cypher les crée (MERGE) et pose SPLIT_OF + HAS_THEME(T11).
+    clause_rows, clause_sent_rows, clause_theme_rows = [], [], []
+    for r in rows:
+        c = clauses[r["clause_id"]]
+        cid = c["clause_id"]; parts = cid.split(":")
+        parent = ""
+        if c.get("split_of_long_clause") and parts[-1][-1].isalpha():
+            parent = ":".join(parts[:-1] + [parts[-1].rstrip("abcdefghijklmnopqrstuvwxyz")])
+        idx = [s_["index"] for s_ in c["sentences"]]
+        clause_rows.append({"id": cid, "document": c["document"], "document_id": f"document:{c['document']}", "source": parts[2] if len(parts) == 4 else "",
+                            "start": min(idx), "end": max(idx), "n_sentences": len(idx), "theme_T11": c.get("theme_T11", ""),
+                            "split_of": parent, "population": c.get("population", "")})
+        clause_sent_rows += [{"clause_id": cid, "sentence_id": f"sentence:{c['document']}:{i}"} for i in idx]
+        if c.get("theme_T11"):
+            clause_theme_rows.append({"clause_id": cid, "theme_key": f"{c['theme_T11']}@T11", "role": "primary", "source": "consensus"})
+        for t in c.get("themes_T11", []) or []:
+            if t != c.get("theme_T11"):
+                clause_theme_rows.append({"clause_id": cid, "theme_key": f"{t}@T11", "role": "secondary", "source": "consensus"})
     return {"norms": norm_rows, "norm_evidence": evidence_rows, "norm_relations": relation_rows, "matches": match_rows,
-            "activities": activity_rows}
+            "activities": activity_rows, "clauses": clause_rows, "clause_sentences": clause_sent_rows, "clause_themes": clause_theme_rows}
 
 
 def main(argv=None) -> int:
@@ -130,6 +149,10 @@ def main(argv=None) -> int:
     out = a.out or ROOT / "graph" / "export" / "norms" / run_id
     out.mkdir(parents=True, exist_ok=True)
     counts = {
+        "clauses": write_csv(out / "clauses.csv", tables["clauses"],
+                             ["id", "document", "document_id", "source", "start", "end", "n_sentences", "theme_T11", "split_of", "population"]),
+        "clause_sentences": write_csv(out / "clause_sentences.csv", tables["clause_sentences"], ["clause_id", "sentence_id"]),
+        "clause_themes": write_csv(out / "clause_themes.csv", tables["clause_themes"], ["clause_id", "theme_key", "role", "source"]),
         "norms": write_csv(out / "norms.csv", tables["norms"], NORM_FIELDS),
         "norm_evidence": write_csv(out / "norm_evidence.csv", tables["norm_evidence"], ["norm_id", "sentence_id"]),
         "norm_relations": write_csv(out / "norm_relations.csv", tables["norm_relations"], ["from_id", "to_id", "type", "run_id"]),
@@ -141,6 +164,7 @@ def main(argv=None) -> int:
                                  "code_version": git_sha(), "source": a.source, "select": a.select}],
               ["id", "kind", "started_at", "code_version", "source", "select"])
     summary = {"run_id": run_id, "counts": counts, "clauses_ingested": len(rows), "clauses_without_norm": sum(1 for r in rows if not (r.get("output") or {}).get("norms")),
+               "clauses_split_created": sum(1 for c in tables["clauses"] if c["split_of"]),
                "by_action": dict(Counter(n["action"] for n in tables["norms"])), "by_status": dict(Counter(n["status"] for n in tables["norms"])),
                "inputs": {"clauses": str(a.clauses), "extraction": str(a.extraction), "matches": str(a.matches) if a.matches else None},
                "cypher": "graph/cypher/05_ingest_norms.cypher (monter ce dossier sous /import/norms)"}
