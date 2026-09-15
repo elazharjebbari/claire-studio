@@ -13,28 +13,28 @@ sys.path.insert(0, str(ROOT / "src"))
 from evaluation import extraction_stability as es  # noqa: E402
 
 
-def _clause(doc, local, theme, n=2, population="designSet"):
+def _clause(doc, local, theme, n=2, population="designSet", start=10):
     return {"clause_id": f"clause:{doc}:consensus:{local}", "document": doc, "theme_T11": theme, "population": population,
-            "sentences": [{"index": 10 + i, "text": f"sentence {i}"} for i in range(n)], "action_inventory": ["terminate", "other"]}
+            "sentences": [{"index": start + i, "text": f"sentence {i}"} for i in range(n)], "action_inventory": ["terminate", "other"]}
 
 
 def _row(cid, repeat, norms):
     return {"clause_id": cid, "repeat": repeat, "status": "proposed", "output": {"clause_id": cid, "norms": norms, "no_norm_reason": None if norms else "informational"}}
 
 
-def _term(evidence=(0,), notice="not_stated"):
-    return {"actor": "provider", "modality": "power", "action": "terminate", "condition": "discretion", "notice": notice,
+def _term(evidence=(0,), condition="discretion"):
+    return {"actor": "provider", "modality": "power", "action": "terminate", "condition": condition, "notice": "not_stated",
             "remedy": "not_stated", "evidence": list(evidence), "confidence": 0.9}
 
 
 @pytest.fixture
 def data(tmp_path):
-    c1, c2 = _clause("Doc", "0001", "TERMINATION"), _clause("Doc", "0002", "TERMINATION")
+    c1, c2 = _clause("Doc", "0001", "TERMINATION", start=10), _clause("Doc", "0002", "TERMINATION", start=20)
     rows = [
         # clause 1 : identique sur les 3 passes → signalée 3 fois par Q-g
         _row(c1["clause_id"], 0, [_term()]), _row(c1["clause_id"], 1, [_term()]), _row(c1["clause_id"], 2, [_term()]),
-        # clause 2 : préavis « reasonable » dans une passe sur 3 → signalée 2 fois (majorité)
-        _row(c2["clause_id"], 0, [_term(evidence=(1,))]), _row(c2["clause_id"], 1, [_term(evidence=(1,), notice="reasonable")]),
+        # clause 2 : résiliation « pour motif » dans une passe sur 3 (éteint Q-g ET Q-f-asymmetry) → signalée 2 fois (majorité)
+        _row(c2["clause_id"], 0, [_term(evidence=(1,))]), _row(c2["clause_id"], 1, [_term(evidence=(1,), condition="for_cause")]),
         _row(c2["clause_id"], 2, [_term(evidence=(1,))]),
     ]
     (tmp_path / "clauses.jsonl").write_text("\n".join(json.dumps(c) for c in (c1, c2)) + "\n")
@@ -59,7 +59,7 @@ def test_measures(data, capsys):
 
 
 def test_reference_refused_on_holdout(data):
-    c = _clause("Doc", "0003", "TERMINATION", population="holdout")
+    c = _clause("Doc", "0003", "TERMINATION", population="holdout", start=30)
     with (data / "clauses.jsonl").open("a") as fh:
         fh.write(json.dumps(c) + "\n")
     with pytest.raises(SystemExit, match="hold-out"):
