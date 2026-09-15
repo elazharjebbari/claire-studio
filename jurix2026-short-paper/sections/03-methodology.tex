@@ -19,10 +19,10 @@ Annotators did not post-edit the output of one model. The four judges labelled
 every sentence independently, in isolated sessions with no access to one another's
 outputs or to any log of the campaign, and a deterministic engine sorted each sentence into
 one of five tiers on inter-judge agreement alone, from unanimous to fully split.
-Annotators saw that tier and the competing candidates, but selected from the full
-20-theme vocabulary, and frequently did: 34.5\% of gold labels match none of the
-four proposals, rising to 58.7\% on the sentences annotators themselves disputed.
-Annotators could not see one another's work. The
+Annotators, who could not see one another's work, saw that tier and the competing
+candidates but selected from the full 20-theme vocabulary, and frequently did:
+34.5\% of gold labels match none of the four proposals, rising to 58.7\% on the
+sentences annotators themselves disputed. The
 gold standard is built by a three-tier cascade: 46.8\% of sentences are unanimous,
 48.3\% carry a majority of at least two of three, and the remaining 4.9\%
 (462 sentences) were arbitrated by a human committee --- the fraction of the
@@ -45,10 +45,9 @@ We report Krippendorff's $\alpha$ under two distances
 set-valued labels \cite{passonneau2006masi}, and the nominal distance on primary
 themes alone. The gap between them is what multi-label annotation costs in
 reliability \cite{marchal2022multilabel}. Coarser taxonomies (\Tn{14}, \Tn{11},
-\Tn{10}) are \emph{projections} of \Tn{20} applied at read time: the annotations
-themselves are never rewritten, so every comparison is paired by construction,
-and confidence intervals come from bootstrap resampling over documents rather
-than sentences. The merges were designed on 33 contracts and validated on the
+\Tn{10}) are \emph{projections} of \Tn{20} applied at read time, so every comparison
+is paired by construction; confidence intervals come from bootstrap resampling
+over documents, never sentences. The merges were designed on 33 contracts and validated on the
 17 held out from that design, and the human ceiling is estimated
 leave-one-annotator-out against a gold to which the scored annotator did not
 contribute \cite{nangia2019human}.
