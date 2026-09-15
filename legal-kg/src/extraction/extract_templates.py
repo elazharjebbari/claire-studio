@@ -90,12 +90,16 @@ def render_user(template: str, clause: dict) -> str:
 LEXICAL_TRIGGERS = {
     "condition": {"discretion": ["sole discretion", "any reason", "at any time", "for any reason", "without cause", "our discretion", "no reason"],
                   "for_cause": ["breach", "violat", "if you", "cause", "in the event"],
-                  "specified_reason": ["reason", "because", "due to", "in order to"]},
+                  # v0.2 (15 sept. 2026) : la forme conditionnelle « if / where / upon … » est la façon normale de nommer une
+                  # raison en anglais contractuel ; sans ces marqueurs, 69 normes du pilote étaient rétrogradées vers
+                  # none_stated, ce qui FAVORISAIT Q-g/Q-j (docs/PILOT_EXTRACTION_FINDINGS.md § 3).
+                  "specified_reason": ["reason", "because", "due to", "in order to", "if ", "where ", "upon ", "in the event",
+                                       "suspect", "fraud", "security", "legal", "necessary"]},
     "notice": {"none": ["without notice", "without prior notice", "no notice", "without notifying", "immediately"],
                "duration": ["days", "day", "months", "hours", "weeks", "30", "14", "60", "90"],
                "reasonable": ["reasonable notice", "advance notice", "prior notice", "notify you", "notice"]},
     "remedy": {"refund": ["refund"], "right_to_cancel": ["terminate", "cancel", "close your account", "stop using", "discontinue"],
-               "compensation": ["compensat", "damages", "reimburs"], "none": ["no refund", "non-refundable", "not be entitled", "sole remedy", "without refund"]},
+               "compensation": ["compensat", "damages", "reimburs"], "none": ["no refund", "non-refundable", "not be entitled", "sole remedy", "without refund", "no liability", "not liable", "without any refund"]},   # v0.2
 }
 
 

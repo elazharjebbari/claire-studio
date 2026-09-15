@@ -1,11 +1,14 @@
-# Règles de détection — DSL déclaratif compilé en Cypher (ADR-003). v0.1 — GELÉE le 2026-09-15 (voir FROZEN.txt).
+# Règles de détection — DSL déclaratif compilé en Cypher (ADR-003). v0.2 — GELÉE le 2026-09-15 (voir FROZEN.txt).
+# v0.2 (décision F0, option 1, 15 sept. 2026, AVANT toute exécution sur le hold-out) : Q-q admet `limit_claim_period`
+# (délai de prescription contractuel = obstacle au recours, item q) ; Q-i admet `deem_acceptance_by_use` (item i).
+# Ce que les auteurs savaient : diagnostics de CONCEPTION du pilote 100 clauses (P 0,67–0,69 / R 0,46–0,48) ; aucun chiffre du hold-out.
 # Gel : hash SHA-256 de ce fichier inscrit dans graph/rules/FROZEN.txt avec date et commit, AVANT toute
 # exécution sur les documents de validation (holdout). Toute modification ultérieure = nouvelle version.
 # Sémantique : conjonction des conditions ; `unless` = exceptions (négation) ; valeurs ∈ vocabulaires du
 # schéma ; `not_stated` ≠ `none` ; projection = phrases d'evidence de la norme. Les règles ne peuvent
 # référencer que : theme (T11), actor, modality, action, object, condition, notice, remedy, relations
 # STATES / HAS_ACTOR / EVIDENCED_BY / CONDITIONAL_ON / EXCEPTION_TO, et d'autres Norm du même document.
-version: "0.1"
+version: "0.2"
 taxonomy: T11
 projection: evidence_only
 rules:
@@ -65,13 +68,13 @@ rules:
     description: "Mandatory arbitration, class-action waiver, evidence restriction or burden shift imposed on the user"
     where:
       any:
-        - {actor: user, modality: [obligation, prohibition], action: [impose_arbitration, waive_class_action, restrict_evidence, shift_burden_of_proof, waive_jury]}
+        - {actor: user, modality: [obligation, prohibition], action: [impose_arbitration, waive_class_action, restrict_evidence, shift_burden_of_proof, waive_jury, limit_claim_period]}
         - {actor: provider, modality: [power], action: [impose_arbitration, choose_forum]}
   - id: Q-i
     item: i
     family: R1
     description: "Binding the user by mere use / by reference to terms not shown (procedural proxy)"
-    where: {actor: provider, modality: [power], action: [bind_by_use, incorporate_by_reference]}
+    where: {actor: provider, modality: [power], action: [bind_by_use, incorporate_by_reference, deem_acceptance_by_use]}
   - id: Q-m
     item: m
     family: R1

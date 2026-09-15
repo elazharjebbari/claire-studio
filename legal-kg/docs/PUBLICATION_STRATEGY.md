@@ -62,3 +62,25 @@ système juridique ; ancrage des pré-annotations LLM (Choi et al. 2024).
 | janv.–mars 2027 | ICAIL 2027 long : P2+P3 (Gate 8) | E1, E4, E5 |
 | 2027 | *AI & Law* : P1 étendu + P4 | E3 |
 | 2027 | resource track (ISWC/ESWC ou LREC) : graphe + couche structurée | Gate 4, publication FAIR |
+
+
+## Positionnement arrêté le 15 septembre 2026 : pipeline entièrement automatique, sans validation juriste des templates
+
+Décision du porteur : les templates ne sont **pas** relus par les juristes pour la soumission 157 (délai). Les résultats
+caractérisent le pipeline de bout en bout, l'extraction étant traitée comme une **source de bruit mesurée** (stabilité entre
+passes, écart inter-modèles, drapeaux d'ancrage), et non comme une vérité validée. Conséquences protocolaires : E2 s'exécute
+sur les normes en statut `proposed` ; l'ablation « proposé vs validé » disparaît ; l'audit expert (E6) et l'évaluation de
+suffisance des explications (E3) sont reportés à l'étude de suite ; l'analyse des faux positifs se fait par croisement
+automatique (thème, sévérité, catégorie, stabilité) et par cas illustratifs choisis par les auteurs, présentés comme tels.
+
+Formulation retenue pour la section *Limitations and future work* (à reprendre telle quelle, compléter les crochets) :
+
+> The normative templates used in this study were not reviewed by legal experts, as this was not feasible within the time
+> frame of the present work. Our results therefore characterise the end-to-end pipeline, with extraction treated as a
+> measured source of noise; they do not establish the correctness of individual templates. This work is part of an ongoing
+> collaboration with legal experts, who [describe their actual contribution, e.g. contributed to the thematic annotation of
+> the corpus]. The follow-up study, [currently in preparation], addresses the main limitations identified here: (i)
+> independent double validation of the templates by two legal experts, with per-field agreement and adjudication, which
+> will allow extraction errors to be separated from rule errors; (ii) re-extraction with pinned model versions at
+> temperature zero, and replication with an open-weight model; (iii) an expert evaluation of the evidence subgraphs used
+> as explanations.

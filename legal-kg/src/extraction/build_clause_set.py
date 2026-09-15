@@ -42,7 +42,11 @@ def load_action_inventory():
                 if line.strip() and not line.startswith("    "):
                     break
                 continue
-            key, _, val = line.strip().partition(":")
+            stripped = line.strip()
+            if stripped.startswith("#"):
+                continue
+            stripped = stripped.split("#", 1)[0].strip()          # commentaire en fin de ligne ignoré
+            key, _, val = stripped.partition(":")
             inv[key] = [a.strip() for a in val.strip().strip("[]").split(",") if a.strip()]
     return inv
 

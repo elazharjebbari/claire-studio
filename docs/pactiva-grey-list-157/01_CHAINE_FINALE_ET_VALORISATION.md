@@ -5,6 +5,11 @@ Opus 5 inline × 3 passes + Codex), G6 passée (B0–B2 sur le hold-out), G7 pas
 Python ↔ Cypher). Ce document décrit ce qui s'enchaîne dès que l'autre session a livré ses propositions v0.2, jusqu'à la
 fin des expérimentations, puis la mise en valeur des résultats. Le plan de rédaction est dans `02_PLAN_REDACTION_PAPIER_LONG.md`.*
 
+**Mise à jour du 15 sept. (décision du porteur)** : F0 = option 1 (fait, v0.2 gelée) ; **F2, F4, F9, F10 supprimées** — aucune
+validation juriste des templates pour 157 ; E2 tourne sur les normes `proposed` ; l'audit devient une analyse automatique des
+désaccords règles ↔ référence (par item, thème, sévérité, stabilité inter-passes) + cas illustratifs des auteurs ; la limitation
+est déclarée (`PUBLICATION_STRATEGY.md`). Le reste de la chaîne est inchangé.
+
 Principe directeur inchangé : **une seule exécution sur les 17 documents de validation**, avec des règles regelées par
 empreinte avant, et aucune décision prise après avoir vu le hold-out (`legal-kg/docs/EXPERIMENTAL_PROTOCOL.md`,
 `legal-kg/graph/rules/FROZEN.txt`).

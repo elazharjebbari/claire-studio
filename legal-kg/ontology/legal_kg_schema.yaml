@@ -1,7 +1,7 @@
 # Schéma du Legal KG (modèle D, couches L1–L5 + provenance) — v0.1, 14 septembre 2026
 # Source unique : les contraintes Memgraph (graph/schema/memgraph_schema.cypher), le JSON Schema
 # d'extraction (llm/schemas/clause_template.schema.json) et l'export RDF (vue B) en dérivent.
-version: 0.1
+version: 0.2
 naming:
   node_labels: PascalCase
   relationship_types: UPPER_SNAKE
@@ -17,13 +17,15 @@ vocabularies:
   source: [human, llm, consensus, gold, claudette, rule, model]
   taxonomy: [T20, T14, T11, T10]
   action_by_theme_T11:      # inventaire fermé d'actions par thème (extensible par version)
-    TERMINATION: [terminate, suspend, delete_account, retain_payment]
+    # v0.2 (15 sept. 2026) : + cancel_booking (TERMINATION), + deem_acceptance_by_use (MODIFICATION, item i), + disclaim_user_interactions
+    # (LIMITATION), + disclaim_advice (WARRANTY), + limit_claim_period (DISPUTES, item q) et pay_arbitration_fees (DISPUTES, asymétrie R3).
+    TERMINATION: [terminate, suspend, delete_account, retain_payment, cancel_booking]
     ACCOUNT_USE: [suspend, terminate, restrict_access, bind_by_use]
-    MODIFICATION_OF_TERMS: [modify_terms, modify_service, change_price, notify_change]
+    MODIFICATION_OF_TERMS: [modify_terms, modify_service, change_price, notify_change, deem_acceptance_by_use]
     FEES_PAYMENT: [change_price, auto_renew, retain_payment, charge_fee, refund, pay_compensation, compensation]
-    LIMITATION_LIABILITY: [exclude_liability, cap_liability, exclude_remedy, indemnify]
-    WARRANTY_DISCLAIMER: [exclude_warranty, determine_conformity]
-    DISPUTES_LAW: [impose_arbitration, waive_class_action, choose_forum, choose_law, restrict_evidence, shift_burden_of_proof, waive_jury]
+    LIMITATION_LIABILITY: [exclude_liability, cap_liability, exclude_remedy, indemnify, disclaim_user_interactions]
+    WARRANTY_DISCLAIMER: [exclude_warranty, determine_conformity, disclaim_advice]
+    DISPUTES_LAW: [impose_arbitration, waive_class_action, choose_forum, choose_law, restrict_evidence, shift_burden_of_proof, waive_jury, limit_claim_period, pay_arbitration_fees]
     CONTENT_IP: [license_content, remove_content, retain_content, assign_ip]
     FRAMEWORK: [bind_by_use, incorporate_by_reference, interpret_terms, assign_contract, notify]
     THIRD_PARTY_SERVICES: [disclaim_third_party, limit_agent_commitments]

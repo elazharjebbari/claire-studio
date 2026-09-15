@@ -1,5 +1,5 @@
 // Généré par src/detection/rules/compile_cypher.py depuis /Users/elazhar/PycharmProjects/claire-studio/legal-kg/graph/rules/grey_list_queries.yaml
-// version 0.1 · sha256 8f2967dbbcc4911150393e92b1c1cc928de491d8115bc4b1024c1e16c2216f34 · gelée : True
+// version 0.2 · sha256 c3303e6743c40a88ae36c5d0fd1c6cbce20ef2b9c85606d05759352039384f56 · gelée : True
 // Paramètres : $run_id, $status ('validated' | 'proposed'). Étanchéité : aucune référence à la couche de référence.
 
 // Q-g — item g — R1 — Provider may terminate/suspend at its discretion without (reasonable) notice
@@ -8,7 +8,7 @@ WHERE EXISTS { MATCH (n)-[:HAS_ACTOR]->(:Party {role: "provider"}) } AND n.modal
 MATCH (n)-[:EVIDENCED_BY]->(s:Sentence)
 WITH d, c, n, collect(DISTINCT s.id) AS evidence, "g" AS item_code
 MATCH (i:AnnexItem {code: item_code})
-MERGE (n)-[m:MATCHES_ITEM {rule_id: "Q-g", rule_version: "0.1", run_id: $run_id}]->(i)
+MERGE (n)-[m:MATCHES_ITEM {rule_id: "Q-g", rule_version: "0.2", run_id: $run_id}]->(i)
 SET m.evidence_ids = evidence
 RETURN d.id AS document, c.id AS clause, n.id AS norm, evidence, item_code AS item;
 
@@ -18,7 +18,7 @@ WHERE EXISTS { MATCH (n)-[:HAS_ACTOR]->(:Party {role: "provider"}) } AND n.modal
 MATCH (n)-[:EVIDENCED_BY]->(s:Sentence)
 WITH d, c, n, collect(DISTINCT s.id) AS evidence, "f" AS item_code
 MATCH (i:AnnexItem {code: item_code})
-MERGE (n)-[m:MATCHES_ITEM {rule_id: "Q-f-asymmetry", rule_version: "0.1", run_id: $run_id}]->(i)
+MERGE (n)-[m:MATCHES_ITEM {rule_id: "Q-f-asymmetry", rule_version: "0.2", run_id: $run_id}]->(i)
 SET m.evidence_ids = evidence
 RETURN d.id AS document, c.id AS clause, n.id AS norm, evidence, item_code AS item;
 
@@ -28,7 +28,7 @@ WHERE EXISTS { MATCH (n)-[:HAS_ACTOR]->(:Party {role: "provider"}) } AND n.modal
 MATCH (n)-[:EVIDENCED_BY]->(s:Sentence)
 WITH d, c, n, collect(DISTINCT s.id) AS evidence, "j" AS item_code
 MATCH (i:AnnexItem {code: item_code})
-MERGE (n)-[m:MATCHES_ITEM {rule_id: "Q-j", rule_version: "0.1", run_id: $run_id}]->(i)
+MERGE (n)-[m:MATCHES_ITEM {rule_id: "Q-j", rule_version: "0.2", run_id: $run_id}]->(i)
 SET m.evidence_ids = evidence
 RETURN d.id AS document, c.id AS clause, n.id AS norm, evidence, item_code AS item;
 
@@ -38,7 +38,7 @@ WHERE EXISTS { MATCH (n)-[:HAS_ACTOR]->(:Party {role: "provider"}) } AND n.modal
 MATCH (n)-[:EVIDENCED_BY]->(s:Sentence)
 WITH d, c, n, collect(DISTINCT s.id) AS evidence, "j" AS item_code
 MATCH (i:AnnexItem {code: item_code})
-MERGE (n)-[m:MATCHES_ITEM {rule_id: "Q-j-strict", rule_version: "0.1", run_id: $run_id}]->(i)
+MERGE (n)-[m:MATCHES_ITEM {rule_id: "Q-j-strict", rule_version: "0.2", run_id: $run_id}]->(i)
 SET m.evidence_ids = evidence
 RETURN d.id AS document, c.id AS clause, n.id AS norm, evidence, item_code AS item;
 
@@ -48,7 +48,7 @@ WHERE n.action = "modify_terms" AND EXISTS { MATCH (c)-[:HAS_THEME {role: 'prima
 MATCH (n)-[:EVIDENCED_BY]->(s:Sentence)
 WITH d, c, n, collect(DISTINCT s.id) AS evidence, "j" AS item_code
 MATCH (i:AnnexItem {code: item_code})
-MERGE (n)-[m:MATCHES_ITEM {rule_id: "Q-j-absence", rule_version: "0.1", run_id: $run_id}]->(i)
+MERGE (n)-[m:MATCHES_ITEM {rule_id: "Q-j-absence", rule_version: "0.2", run_id: $run_id}]->(i)
 SET m.evidence_ids = evidence
 RETURN d.id AS document, c.id AS clause, n.id AS norm, evidence, item_code AS item;
 
@@ -58,7 +58,7 @@ WHERE EXISTS { MATCH (n)-[:HAS_ACTOR]->(:Party {role: "provider"}) } AND n.modal
 MATCH (n)-[:EVIDENCED_BY]->(s:Sentence)
 WITH d, c, n, collect(DISTINCT s.id) AS evidence, "k" AS item_code
 MATCH (i:AnnexItem {code: item_code})
-MERGE (n)-[m:MATCHES_ITEM {rule_id: "Q-k", rule_version: "0.1", run_id: $run_id}]->(i)
+MERGE (n)-[m:MATCHES_ITEM {rule_id: "Q-k", rule_version: "0.2", run_id: $run_id}]->(i)
 SET m.evidence_ids = evidence
 RETURN d.id AS document, c.id AS clause, n.id AS norm, evidence, item_code AS item;
 
@@ -68,7 +68,7 @@ WHERE EXISTS { MATCH (n)-[:HAS_ACTOR]->(:Party {role: "provider"}) } AND n.modal
 MATCH (n)-[:EVIDENCED_BY]->(s:Sentence)
 WITH d, c, n, collect(DISTINCT s.id) AS evidence, "l" AS item_code
 MATCH (i:AnnexItem {code: item_code})
-MERGE (n)-[m:MATCHES_ITEM {rule_id: "Q-l", rule_version: "0.1", run_id: $run_id}]->(i)
+MERGE (n)-[m:MATCHES_ITEM {rule_id: "Q-l", rule_version: "0.2", run_id: $run_id}]->(i)
 SET m.evidence_ids = evidence
 RETURN d.id AS document, c.id AS clause, n.id AS norm, evidence, item_code AS item;
 
@@ -78,27 +78,27 @@ WHERE EXISTS { MATCH (n)-[:HAS_ACTOR]->(:Party {role: "provider"}) } AND n.actio
 MATCH (n)-[:EVIDENCED_BY]->(s:Sentence)
 WITH d, c, n, collect(DISTINCT s.id) AS evidence, CASE WHEN n.object CONTAINS "personal_injury" THEN "a" WHEN n.object CONTAINS "death" THEN "a" ELSE "b" END AS item_code
 MATCH (i:AnnexItem {code: item_code})
-MERGE (n)-[m:MATCHES_ITEM {rule_id: "Q-ab", rule_version: "0.1", run_id: $run_id}]->(i)
+MERGE (n)-[m:MATCHES_ITEM {rule_id: "Q-ab", rule_version: "0.2", run_id: $run_id}]->(i)
 SET m.evidence_ids = evidence
 RETURN d.id AS document, c.id AS clause, n.id AS norm, evidence, item_code AS item;
 
 // Q-q — item q — R1 — Mandatory arbitration, class-action waiver, evidence restriction or burden shift imposed on the user
 MATCH (d:Document)-[:CONTAINS]->(c:Clause)-[:STATES]->(n:Norm {status: $status})
-WHERE ((EXISTS { MATCH (n)-[:HAS_ACTOR]->(:Party {role: "user"}) } AND n.modality IN ["obligation", "prohibition"] AND n.action IN ["impose_arbitration", "waive_class_action", "restrict_evidence", "shift_burden_of_proof", "waive_jury"]) OR (EXISTS { MATCH (n)-[:HAS_ACTOR]->(:Party {role: "provider"}) } AND n.modality IN ["power"] AND n.action IN ["impose_arbitration", "choose_forum"]))
+WHERE ((EXISTS { MATCH (n)-[:HAS_ACTOR]->(:Party {role: "user"}) } AND n.modality IN ["obligation", "prohibition"] AND n.action IN ["impose_arbitration", "waive_class_action", "restrict_evidence", "shift_burden_of_proof", "waive_jury", "limit_claim_period"]) OR (EXISTS { MATCH (n)-[:HAS_ACTOR]->(:Party {role: "provider"}) } AND n.modality IN ["power"] AND n.action IN ["impose_arbitration", "choose_forum"]))
 MATCH (n)-[:EVIDENCED_BY]->(s:Sentence)
 WITH d, c, n, collect(DISTINCT s.id) AS evidence, "q" AS item_code
 MATCH (i:AnnexItem {code: item_code})
-MERGE (n)-[m:MATCHES_ITEM {rule_id: "Q-q", rule_version: "0.1", run_id: $run_id}]->(i)
+MERGE (n)-[m:MATCHES_ITEM {rule_id: "Q-q", rule_version: "0.2", run_id: $run_id}]->(i)
 SET m.evidence_ids = evidence
 RETURN d.id AS document, c.id AS clause, n.id AS norm, evidence, item_code AS item;
 
 // Q-i — item i — R1 — Binding the user by mere use / by reference to terms not shown (procedural proxy)
 MATCH (d:Document)-[:CONTAINS]->(c:Clause)-[:STATES]->(n:Norm {status: $status})
-WHERE EXISTS { MATCH (n)-[:HAS_ACTOR]->(:Party {role: "provider"}) } AND n.modality IN ["power"] AND n.action IN ["bind_by_use", "incorporate_by_reference"]
+WHERE EXISTS { MATCH (n)-[:HAS_ACTOR]->(:Party {role: "provider"}) } AND n.modality IN ["power"] AND n.action IN ["bind_by_use", "incorporate_by_reference", "deem_acceptance_by_use"]
 MATCH (n)-[:EVIDENCED_BY]->(s:Sentence)
 WITH d, c, n, collect(DISTINCT s.id) AS evidence, "i" AS item_code
 MATCH (i:AnnexItem {code: item_code})
-MERGE (n)-[m:MATCHES_ITEM {rule_id: "Q-i", rule_version: "0.1", run_id: $run_id}]->(i)
+MERGE (n)-[m:MATCHES_ITEM {rule_id: "Q-i", rule_version: "0.2", run_id: $run_id}]->(i)
 SET m.evidence_ids = evidence
 RETURN d.id AS document, c.id AS clause, n.id AS norm, evidence, item_code AS item;
 
@@ -108,7 +108,7 @@ WHERE EXISTS { MATCH (n)-[:HAS_ACTOR]->(:Party {role: "provider"}) } AND n.modal
 MATCH (n)-[:EVIDENCED_BY]->(s:Sentence)
 WITH d, c, n, collect(DISTINCT s.id) AS evidence, "m" AS item_code
 MATCH (i:AnnexItem {code: item_code})
-MERGE (n)-[m:MATCHES_ITEM {rule_id: "Q-m", rule_version: "0.1", run_id: $run_id}]->(i)
+MERGE (n)-[m:MATCHES_ITEM {rule_id: "Q-m", rule_version: "0.2", run_id: $run_id}]->(i)
 SET m.evidence_ids = evidence
 RETURN d.id AS document, c.id AS clause, n.id AS norm, evidence, item_code AS item;
 
@@ -118,7 +118,7 @@ WHERE EXISTS { MATCH (n)-[:HAS_ACTOR]->(:Party {role: "provider"}) } AND n.modal
 MATCH (n)-[:EVIDENCED_BY]->(s:Sentence)
 WITH d, c, n, collect(DISTINCT s.id) AS evidence, "p" AS item_code
 MATCH (i:AnnexItem {code: item_code})
-MERGE (n)-[m:MATCHES_ITEM {rule_id: "Q-p", rule_version: "0.1", run_id: $run_id}]->(i)
+MERGE (n)-[m:MATCHES_ITEM {rule_id: "Q-p", rule_version: "0.2", run_id: $run_id}]->(i)
 SET m.evidence_ids = evidence
 RETURN d.id AS document, c.id AS clause, n.id AS norm, evidence, item_code AS item;
 
@@ -128,7 +128,7 @@ WHERE EXISTS { MATCH (n)-[:HAS_ACTOR]->(:Party {role: "provider"}) } AND n.modal
 MATCH (n)-[:EVIDENCED_BY]->(s:Sentence)
 WITH d, c, n, collect(DISTINCT s.id) AS evidence, "d" AS item_code
 MATCH (i:AnnexItem {code: item_code})
-MERGE (n)-[m:MATCHES_ITEM {rule_id: "Q-d", rule_version: "0.1", run_id: $run_id}]->(i)
+MERGE (n)-[m:MATCHES_ITEM {rule_id: "Q-d", rule_version: "0.2", run_id: $run_id}]->(i)
 SET m.evidence_ids = evidence
 RETURN d.id AS document, c.id AS clause, n.id AS norm, evidence, item_code AS item;
 
@@ -138,7 +138,7 @@ WHERE EXISTS { MATCH (n)-[:HAS_ACTOR]->(:Party {role: "user"}) } AND n.modality 
 MATCH (n)-[:EVIDENCED_BY]->(s:Sentence)
 WITH d, c, n, collect(DISTINCT s.id) AS evidence, "e" AS item_code
 MATCH (i:AnnexItem {code: item_code})
-MERGE (n)-[m:MATCHES_ITEM {rule_id: "Q-e", rule_version: "0.1", run_id: $run_id}]->(i)
+MERGE (n)-[m:MATCHES_ITEM {rule_id: "Q-e", rule_version: "0.2", run_id: $run_id}]->(i)
 SET m.evidence_ids = evidence
 RETURN d.id AS document, c.id AS clause, n.id AS norm, evidence, item_code AS item;
 
@@ -148,6 +148,6 @@ WHERE EXISTS { MATCH (n)-[:HAS_ACTOR]->(:Party {role: "provider"}) } AND n.modal
 MATCH (n)-[:EVIDENCED_BY]->(s:Sentence)
 WITH d, c, n, collect(DISTINCT s.id) AS evidence, "h" AS item_code
 MATCH (i:AnnexItem {code: item_code})
-MERGE (n)-[m:MATCHES_ITEM {rule_id: "Q-h", rule_version: "0.1", run_id: $run_id}]->(i)
+MERGE (n)-[m:MATCHES_ITEM {rule_id: "Q-h", rule_version: "0.2", run_id: $run_id}]->(i)
 SET m.evidence_ids = evidence
 RETURN d.id AS document, c.id AS clause, n.id AS norm, evidence, item_code AS item;

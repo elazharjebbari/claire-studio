@@ -29,7 +29,7 @@ def fired(matches, rule_id):
 
 
 def test_rules_are_frozen_and_loadable():
-    assert RULES["version"] == "0.1"
+    assert RULES["version"] == "0.2"
     assert RULES["_frozen"] is not None, "le fichier de règles doit être gelé (FROZEN.txt)"
     assert verify_frozen(RULES_DIR / "grey_list_queries.yaml", population="holdout") is not None
 
@@ -129,3 +129,12 @@ def test_compiled_cypher_is_isolated_and_complete(tmp_path):
     for r in RULES["rules"]:
         assert f"rule_id: \"{r['id']}\"" in text
     assert "MATCHES_ITEM" in text and "$run_id" in text and "$status" in text
+
+
+def test_v02_limit_claim_period_fires_Qq_and_deem_acceptance_fires_Qi():
+    m = evaluate_rules(RULES, [N("v1", theme_T11="DISPUTES_LAW", actor="user", modality="obligation", action="limit_claim_period", condition="none_stated")])
+    assert fired(m, "Q-q") and fired(m, "Q-q")[0].item == "q"
+    assert not fired(evaluate_rules(RULES, [N("v2", actor="provider", modality="power", action="limit_claim_period")]), "Q-q")
+    m = evaluate_rules(RULES, [N("v3", theme_T11="MODIFICATION_OF_TERMS", actor="provider", modality="power", action="deem_acceptance_by_use", condition="none_stated")])
+    assert fired(m, "Q-i") and fired(m, "Q-i")[0].item == "i"
+    assert not fired(evaluate_rules(RULES, [N("v4", actor="user", modality="obligation", action="deem_acceptance_by_use")]), "Q-i")

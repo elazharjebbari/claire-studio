@@ -54,8 +54,8 @@ Après modification : re-mesurer le taux de drapeaux sur le pilote (cible < 10 %
 
 ## E. Décision
 
-- [ ] Option 1 — **recommandée** : A (6 codes), B, C-1 ; règles v0.2 (Q-q, Q-i).
+- [x] Option 1 — **recommandée** — **DÉCIDÉE le 15 sept. 2026 (porteur)** : A (6 codes), B, C-1 ; règles v0.2 (Q-q, Q-i).
 - [ ] Option 2 — minimale : B seulement (prompt), aucune modification de schéma ni de règle ; hold-out sous v0.1.
 - [ ] Option 3 — étendue : A complet (tous les codes candidats), B, C ; risque : inventaires longs, instabilité accrue.
 
-Décidé par : ______  Date : ______  Consigné dans `legal-kg/docs/GATES_LOG.md` et `llm/prompts/PROMPT_REGISTRY.md`.
+Décidé par : porteur  Date : 2026-09-15  + protocole entièrement automatique (aucune validation juriste des templates pour 157 ; formulation de limites dans PUBLICATION_STRATEGY.md)  Consigné dans `legal-kg/docs/GATES_LOG.md` et `llm/prompts/PROMPT_REGISTRY.md`.
