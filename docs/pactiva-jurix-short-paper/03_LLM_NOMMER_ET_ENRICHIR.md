@@ -215,3 +215,15 @@ disponible dans le dépôt, et une URL inventée serait pire qu'une absence.
 
 Réserve à garder en tête pour un relecteur : le juge `claude` est le seul dont l'identifiant repose sur la
 documentation de campagne et non sur un journal d'exécution.
+
+## 8. Correction du 15 septembre : « ancrage » → « effet d'exposition »
+
+Le porteur précise le protocole : **aucun label pré-rempli**, les propositions des **quatre** juges affichées sur un
+pied d'égalité, choix libre dans le vocabulaire complet. Le manuscrit disait « the signature of anchoring rather
+than competence » à propos de Fable, ce qui laisse entendre un biais de protocole en sa faveur : faux. Ce qui
+subsiste et reste dit : un **effet d'exposition symétrique** — sur les phrases où les annotateurs se divisent, le
+gold coïncide plus souvent avec la meilleure proposition (Fable 0,636 vs 0,607 ; Claude 0,543 vs 0,578), ce qui
+peut gonfler le score du meilleur juge sans qu'aucun juge soit favorisé par construction. La sensibilité (sans
+Fable, Claude à κ 0,515) est conservée. §3 dit désormais « No label was pre-filled and no model output was
+post-edited … the candidates of all four judges on an equal footing ».
+

@@ -15,13 +15,14 @@ are not substitutable for trained annotators on this task
 closes much, though not all, of that gap.
 
 \paragraph{Limitations.}
-The four judges we evaluate are the four that assisted annotation, so the benchmark
-is not free of circularity \cite{choi2024llmeffect}: the engine favoured none of
-them and a third of gold labels match no proposal, but an error shared by all four
-could survive. \textsc{Fable} alone gains accuracy where the annotators split
-(0.607 on unanimous sentences, 0.636 on majority-decided ones; \textsc{Claude}
-0.578 and 0.543), the signature of anchoring rather than competence. Excluding it
-leaves \textsc{Claude} at
+The four judges we evaluate are the four whose candidates were shown during
+annotation, so the benchmark is not free of circularity \cite{choi2024llmeffect}: no
+candidate was pre-filled or favoured and a third of gold labels match no proposal,
+but an error shared by all four could survive, and where annotators split, the gold
+coincides more often with the strongest candidate (\textsc{Fable} 0.636 against 0.607
+on unanimous sentences; \textsc{Claude} 0.543 against 0.578) --- an exposure effect,
+not a preference built into the protocol. Excluding \textsc{Fable} leaves
+\textsc{Claude} at
 $\kappa = 0.515$, which widens the gap to the human ceiling rather than narrowing
 it. The layer covers one legal system and one language, and the stored judge
 labels measure a historical output rather than the current state of the art. The
