@@ -1,13 +1,13 @@
 % Table 2 — les résultats rapportés. Une seule référence de comparaison ; les
 % quatre juges sont nommés et classés (E3.3 : classement identique en T20 et T11).
 \begin{table}[t]
-\caption{Agreement with the frozen gold standard, for all three kinds of system,
-measured by the same procedure, under the annotated taxonomy (\Tn{20}) and the
-consolidated one (\Tn{11}). Human agreement is leave-one-annotator-out, so that
-each annotator is scored against a gold to which they did not contribute; the
-encoder is evaluated 5-fold by document; judge labels were produced once and
-stored. Judges are ordered by agreement; their ranking is the same under both
-taxonomies. Reported, not demonstrated: see Section~\ref{sec:results}.}
+\caption{Agreement with the frozen gold standard under the annotated (\Tn{20}) and
+the consolidated (\Tn{11}) taxonomy. Human agreement is leave-one-annotator-out, each
+annotator being scored against a gold to which they did not contribute; the encoder is
+evaluated 5-fold by document (95\% intervals from 1{,}000 document-level bootstrap
+resamples of its out-of-fold predictions); judge labels were produced once and stored.
+Judges are ordered by agreement, identically under both taxonomies. Reported, not
+demonstrated: see Section~\ref{sec:results}.}
 \label{tab:systems}
 \centering
 \begin{tabular}{lcccc}
@@ -16,7 +16,7 @@ taxonomies. Reported, not demonstrated: see Section~\ref{sec:results}.}
 System & \Tn{20} & \Tn{11} & \Tn{20} & \Tn{11} \\
 \midrule
 Human annotators & \textbf{0.859} & --- & 0.871 & --- \\
-Legal-BERT, fine-tuned & 0.695 & 0.720 & --- & --- \\
+Legal-BERT, fine-tuned & 0.695 [0.671, 0.720] & 0.720 [0.692, 0.748] & 0.719 & 0.754 \\
 Judge \textsc{Fable} (Claude Fable 5) & 0.581 & 0.591 & 0.601 & 0.629 \\
 Judge \textsc{Claude} (Claude Opus 4.7) & 0.515 & 0.531 & 0.539 & 0.576 \\
 Judge \textsc{Mistral} (Mistral Medium 3.5) & 0.327 & 0.353 & 0.358 & 0.413 \\

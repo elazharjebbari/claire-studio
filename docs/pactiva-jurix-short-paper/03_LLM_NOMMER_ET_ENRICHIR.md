@@ -227,3 +227,15 @@ peut gonfler le score du meilleur juge sans qu'aucun juge soit favorisé par con
 Fable, Claude à κ 0,515) est conservée. §3 dit désormais « No label was pre-filled and no model output was
 post-edited … the candidates of all four judges on an equal footing ».
 
+
+## 9. Suites du 15 septembre : bibliographie et intervalle de Legal-BERT
+
+- **Bibliographie** : le décompte « 40 entrées, 30 citées » de la première relecture était un artefact de comptage
+  (citations groupées sur plusieurs lignes non capturées). Recompte exact : **40 entrées, 40 citées**, aucune
+  clé manquante. Rien à purger.
+- **Legal-BERT** : intervalles à 95 % par bootstrap de 1 000 rééchantillonnages de documents sur les prédictions
+  hors-pli des runs de production (`d055c2c0…` T20, `6723ac89…` T11, dataset `7116e627…`, 9 414 phrases,
+  50 documents) : **κ 0,695 [0,671 ; 0,720] en T20, 0,720 [0,692 ; 0,748] en T11** ; exactitude 0,719 / 0,754.
+  Ajoutés à la Table 2 (cellules κ et colonne exactitude), légende complétée. Les intervalles ne recouvrent ni le
+  plafond humain (0,859) ni le meilleur juge (0,581 / 0,591) : l'ordre rapporté est robuste au rééchantillonnage
+  par document ; la réserve « early stopping on the test fold » reste dans les limites.
