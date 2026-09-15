@@ -1,0 +1,143 @@
+{
+ "note": "analyse post hoc, non pré-enregistrée ; passe 0 ; phrase = unité ; toute étiquette CLAUDETTE",
+ "inputs": {
+  "sentences_eval_pass0.jsonl": "cc197a0e395b438a3a3da40a2c5887e2fc6371c665365e0d3a107de144faecde",
+  "B2_legal-bert_holdout_predictions.jsonl": "323483e37fdfea7b15e228703188f35b822292481ea06e1e5e693cfee23005c1"
+ },
+ "positives": 440,
+ "rules_retrieved_positives": 145,
+ "rules_only_positives": 22,
+ "rules_only_encoder_score": {
+  "lt_0.1": 13,
+  "lt_0.25": 17,
+  "ge_0.4": 3
+ },
+ "rules_only_sentences": [
+  {
+   "document": "LindenLab",
+   "index": 1,
+   "encoder_unfair_score": 0.341953
+  },
+  {
+   "document": "LindenLab",
+   "index": 49,
+   "encoder_unfair_score": 0.106765
+  },
+  {
+   "document": "LindenLab",
+   "index": 168,
+   "encoder_unfair_score": 0.30617
+  },
+  {
+   "document": "LindenLab",
+   "index": 271,
+   "encoder_unfair_score": 0.100099
+  },
+  {
+   "document": "PokemonGo",
+   "index": 35,
+   "encoder_unfair_score": 0.010187
+  },
+  {
+   "document": "PokemonGo",
+   "index": 103,
+   "encoder_unfair_score": 0.459611
+  },
+  {
+   "document": "Skype",
+   "index": 15,
+   "encoder_unfair_score": 0.003664
+  },
+  {
+   "document": "Skype",
+   "index": 26,
+   "encoder_unfair_score": 0.030815
+  },
+  {
+   "document": "Skype",
+   "index": 322,
+   "encoder_unfair_score": 0.000966
+  },
+  {
+   "document": "Skype",
+   "index": 385,
+   "encoder_unfair_score": 0.028473
+  },
+  {
+   "document": "Tinder",
+   "index": 64,
+   "encoder_unfair_score": 0.477446
+  },
+  {
+   "document": "Twitter",
+   "index": 6,
+   "encoder_unfair_score": 0.000627
+  },
+  {
+   "document": "Twitter",
+   "index": 73,
+   "encoder_unfair_score": 0.106318
+  },
+  {
+   "document": "WhatsApp",
+   "index": 63,
+   "encoder_unfair_score": 0.001059
+  },
+  {
+   "document": "WorldOfWarcraft",
+   "index": 20,
+   "encoder_unfair_score": 0.061463
+  },
+  {
+   "document": "WorldOfWarcraft",
+   "index": 21,
+   "encoder_unfair_score": 0.002795
+  },
+  {
+   "document": "WorldOfWarcraft",
+   "index": 52,
+   "encoder_unfair_score": 0.133085
+  },
+  {
+   "document": "WorldOfWarcraft",
+   "index": 177,
+   "encoder_unfair_score": 0.080594
+  },
+  {
+   "document": "Yahoo",
+   "index": 4,
+   "encoder_unfair_score": 0.447178
+  },
+  {
+   "document": "Yahoo",
+   "index": 86,
+   "encoder_unfair_score": 0.008654
+  },
+  {
+   "document": "Zynga",
+   "index": 58,
+   "encoder_unfair_score": 0.025621
+  },
+  {
+   "document": "Zynga",
+   "index": 197,
+   "encoder_unfair_score": 0.001345
+  }
+ ],
+ "encoder_alone": {
+  "tp": 339,
+  "fp": 188,
+  "fn": 101,
+  "precision": 0.6433,
+  "recall": 0.7705,
+  "f1": 0.7011
+ },
+ "naive_union_rules_or_encoder": {
+  "tp": 361,
+  "fp": 376,
+  "fn": 79,
+  "precision": 0.4898,
+  "recall": 0.8205,
+  "f1": 0.6134
+ }
+}

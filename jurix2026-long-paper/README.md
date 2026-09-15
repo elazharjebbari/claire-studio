@@ -60,6 +60,7 @@ Chaque chiffre de résultat vient d'un fichier de `artifacts/` (voir `artifacts/
 | Seconde passe du hold-out (sensibilité : κ 0,82, union 0,34, item (i) non robuste) | `artifacts/extraction/holdout-v02_STABILITY_passes01.json`, `artifacts/evaluation/E2_pass1.json`, `STATS_pass1.json` |
 | Requêtes gelées, empreintes | `artifacts/rules/grey_list_queries.yaml`, `artifacts/rules/FROZEN.txt` (v0.2, SHA-256 `c3303e67…`) |
 | Table 1 | `artifacts/ontology/directive_93_13.yaml` |
+| Discussion, complémentarité et union naïve (post hoc) | `artifacts/evaluation/POSTHOC_complementarity.json`, régénérable par `python3 tools/post_hoc_complementarity.py` |
 
 La chaîne complète (extraction, règles, évaluation) vit dans `../legal-kg/` ; le protocole et ses écarts déclarés
 sont décrits dans `../legal-kg/docs/GATES_LOG.md` et `../docs/pactiva-grey-list-157/`.
