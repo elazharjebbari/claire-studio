@@ -69,11 +69,15 @@ docs/pactiva-reviewer-demo/
 
 | Lot | Contenu | État |
 |---|---|---|
-| L0 | Sauvegarde/rechargement du modèle, inférence + segmentation, sous-commande `predict`, tests | ✅ fait (`research/pactiva_lab`) |
-| L1 | Entraînement du modèle servi (33 → 17), poids + `results.json` | ⏳ en cours en local (CPU) |
-| L2 | Pseudonymisation des votes, zip de publication, script de génération des chiffres | 📋 |
-| L3 | API publique `/public/demo/*` (contrats, classification, jobs, manifeste), quotas | 📋 |
-| L4 | Page d'accueil anglaise + visualiseur + téléchargements | 📋 |
-| L5 | Tests (pytest, vitest, e2e a11y), garde couleurs, types | 📋 |
-| L6 | Déploiement (poids sur le VPS, réglages, porte de tests, contrôle en production) | 📋 |
-| L7 | Vérification finale « parcours reviewer » et compte rendu | 📋 |
+| L0 | Sauvegarde/rechargement du modèle, inférence + segmentation, sous-commande `predict`, tests | ✅ `00554ad` |
+| L1 | Entraînement du modèle servi (33 → 17), poids + `results.json` | ⏳ en cours en local (CPU, lancé le 19 sept. 22 h 40) |
+| L2 | Pseudonymisation des votes, zip de publication, `RELEASE.json` | ✅ `d097d34` |
+| L3 | API publique `/public/demo/*`, quotas, `demo_selfcheck` | ✅ `ac0102c` (18 tests) |
+| L4 | Page d'accueil anglaise + visualiseur + téléchargements ; ancienne page sur `/presentation` | ✅ `2e0682d` (22 tests vitest) |
+| L5 | e2e (accueil, démonstration, a11y axe), MSW, garde couleurs, types, lint | ✅ `fa4f7a5` |
+| L6 | Déploiement : page, API et données en ligne ; poids à installer à la fin de L1 | ✅ `844e00c` déployé le 20 sept. 00 h 20 (health 200, 17 contrats, zip, quota 429 au 7ᵉ appel) ; poids ⏳ |
+| L7 | Parcours reviewer complet avec classification réelle, compte rendu | ⏳ après L1 |
+
+### Constat corrigé au passage
+
+Avant ce chantier, un visiteur anonyme de `https://pactiva.legal/` était renvoyé vers `/login?next=/` : la synchronisation des préférences par compte interrogeait `/me` sur toutes les pages et le 401 déclenchait la redirection globale. Les routes publiques sont désormais centralisées (`frontend/src/lib/publicRoutes.ts`) et exemptées de l'appel à `/me`, de la redirection sur 401 et de l'auto-connexion de développement.
