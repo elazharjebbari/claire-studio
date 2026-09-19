@@ -43,6 +43,14 @@ const GUARDED = [
   "src/features/lab/ActiveRunIndicator.tsx",
   "src/features/lab/ComputeTargetBadge.tsx",
   "src/features/lab/charts.tsx",
+  // Page reviewer (docs/pactiva-reviewer-demo) — publique, thème clair, jetons seulement.
+  "src/app/page.tsx",
+  "src/features/demo/DemoPanel.tsx",
+  "src/features/demo/ResultsViewer.tsx",
+  "src/features/demo/ThemeChip.tsx",
+  "src/features/demo/ReleaseSections.tsx",
+  "src/features/demo/logic.ts",
+  "src/lib/taxonomy/labels.en.ts",
 ];
 
 const HEX = /#[0-9a-fA-F]{3,8}\b/;

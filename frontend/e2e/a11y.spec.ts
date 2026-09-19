@@ -12,6 +12,17 @@ import AxeBuilder from "@axe-core/playwright";
 const WCAG_TAGS = ["wcag2a", "wcag2aa", "wcag21a", "wcag21aa"];
 
 test.describe("Accessibilité (axe-core)", () => {
+  test("la page reviewer (racine) n'a pas de violation sérieuse/critique", async ({ page }) => {
+    await page.goto("/");
+    await expect(page.getByRole("heading", { name: /A Thematic Layer for CLAUDETTE/i })).toBeVisible();
+
+    const results = await new AxeBuilder({ page }).withTags(WCAG_TAGS).analyze();
+    const serious = results.violations.filter(
+      (v) => v.impact === "serious" || v.impact === "critical",
+    );
+    expect(serious, serious.map((v) => `${v.id}: ${v.help}`).join("\n")).toEqual([]);
+  });
+
   test("l'accueil n'a pas de violation sérieuse/critique", async ({ page }) => {
     await page.goto("/home");
     await expect(page.getByRole("heading", { name: "Atelier Pactiva" })).toBeVisible();

@@ -11,6 +11,7 @@
  *  - tracé (console) pour diagnostic.
  */
 
+import { usePathname } from "next/navigation";
 import { MutationCache, QueryCache, QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { useEffect, useRef, useState } from "react";
 import { useUiStore } from "@/store/ui";
@@ -22,6 +23,7 @@ import { ApiErrorBanner } from "@/components/debug/ApiErrorBanner";
 import { DebugBar } from "@/components/debug/DebugBar";
 import { ErrorBoundary } from "@/components/debug/ErrorBoundary";
 import { MOCKS_ENABLED, AUTO_LOGIN_ENABLED } from "@/lib/env";
+import { isPublicPath } from "@/lib/publicRoutes";
 
 function makeClient() {
   // Les caches partagent un onError qui alimente le store d'erreurs API
@@ -99,6 +101,9 @@ function useAuthExpiredRedirect() {
     if (MOCKS_ENABLED) return;
     setAuthExpiredHandler(() => {
       if (typeof window === "undefined") return;
+      // Surfaces publiques (page reviewer, présentation, projets publiés…) : un 401 de fond
+      // ne doit jamais renvoyer un visiteur anonyme vers la connexion.
+      if (isPublicPath(window.location.pathname)) return;
       // Anti-boucle DUR : au plus UNE reprise toutes les 30 s. Sans ce garde,
       // un 401 de fond (ex. token expiré) déclenchait un reload → re-login →
       // (429) → 401 → reload… en boucle. Le garde casse la tempête.
@@ -121,6 +126,13 @@ function useAuthExpiredRedirect() {
 function UiPrefsSyncMount() {
   useUiPrefsSync();
   return null;
+}
+
+/** Ne monte la synchro (et donc l'appel à `/me`) que hors des routes publiques. */
+function UiPrefsSyncGate() {
+  const pathname = usePathname();
+  if (isPublicPath(pathname)) return null;
+  return <UiPrefsSyncMount />;
 }
 
 export function Providers({ children }: { children: React.ReactNode }) {
@@ -147,7 +159,7 @@ export function Providers({ children }: { children: React.ReactNode }) {
         <AuthGate>
           {/* Sync des préférences PAR COMPTE : hydrate au login + PATCH /me débouncé.
               DANS le gate (authentifié) pour les mêmes raisons que la DebugBar. */}
-          <UiPrefsSyncMount />
+          <UiPrefsSyncGate />
           {children}
           {/* DebugBar DANS le gate : /me n'est sondé qu'une fois authentifié
               (évite un 401 de fond pré-login qui boucle). */}

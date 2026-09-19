@@ -17,12 +17,16 @@ import { useCallback, useEffect, useState } from "react";
 import { ensureAutoLogin } from "@/lib/auth";
 import { tokenStore } from "@/lib/api/client";
 import { AUTO_LOGIN_ENABLED, MOCKS_ENABLED } from "@/lib/env";
+import { isPublicPath } from "@/lib/publicRoutes";
 
 type Phase = "idle" | "booting" | "ready" | "error";
 
 export function AuthGate({ children }: { children: React.ReactNode }) {
-  // En mode mock, ou sans auto-login, l'AuthGate est transparent.
-  const needsAutoLogin = !MOCKS_ENABLED && AUTO_LOGIN_ENABLED;
+  // En mode mock, ou sans auto-login, l'AuthGate est transparent. Il l'est aussi sur les
+  // surfaces PUBLIQUES (page reviewer `/`, présentation, projets publiés, connexion) : elles
+  // n'ont besoin d'aucun compte et doivent rester lisibles même si le backend est arrêté.
+  const publicRoute = typeof window !== "undefined" && isPublicPath(window.location.pathname);
+  const needsAutoLogin = !MOCKS_ENABLED && AUTO_LOGIN_ENABLED && !publicRoute;
 
   const [phase, setPhase] = useState<Phase>(needsAutoLogin ? "idle" : "ready");
   const [errorMsg, setErrorMsg] = useState<string | null>(null);
