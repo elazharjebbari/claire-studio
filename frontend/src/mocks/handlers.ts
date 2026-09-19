@@ -333,6 +333,27 @@ export const handlers = [
     }),
   ),
 
+  // Page reviewer (docs/pactiva-reviewer-demo) — API publique de démonstration, sans auth.
+  http.get(`${BASE}/public/demo/contracts`, () =>
+    HttpResponse.json({ contracts: [{ document: "Headspace", nSentences: 372, nUnfair: 35 }] }),
+  ),
+  http.post(`${BASE}/public/demo/classify`, () =>
+    HttpResponse.json({ jobId: "demo-job-1", status: "queued", position: 0 }, { status: 202 }),
+  ),
+  http.get(`${BASE}/public/demo/jobs/:jobId`, ({ params }) =>
+    HttpResponse.json({
+      jobId: params.jobId, status: "done", source: "text", document: null, title: "Pasted text",
+      timings: { queuedS: 0.1, runS: 1.2 }, error: null,
+      result: {
+        segmenter: "pysbd", classes: ["TERMINATION", "FEES_PAYMENT"], truncated: false,
+        sentences: [
+          { index: 0, text: "We may terminate your account at any time without notice.", label: "TERMINATION", confidence: 0.93, scores: { TERMINATION: 0.93 } },
+          { index: 1, text: "All fees are due within thirty days and are not refundable.", label: "FEES_PAYMENT", confidence: 0.81, scores: { FEES_PAYMENT: 0.81 } },
+        ],
+      },
+    }),
+  ),
+
   // Publication publique (chantier F) — lecture seule.
   http.get(`${BASE}/public/projects`, () =>
     HttpResponse.json(
