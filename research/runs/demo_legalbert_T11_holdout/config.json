@@ -1,0 +1,43 @@
+{
+  "version": 1,
+  "seed": 42,
+  "task": "T1_primary",
+  "data": {
+    "taxonomy": "T11"
+  },
+  "preprocess": {
+    "detokenize": "regex_rules",
+    "max_length": 128,
+    "context": {
+      "window_before": 1,
+      "window_after": 1
+    }
+  },
+  "model": {
+    "family": "transformer_finetune",
+    "checkpoint": "nlpaueb/legal-bert-base-uncased",
+    "epochs": 8,
+    "batch_size": 16,
+    "learning_rate": 2e-05,
+    "loss": "weighted_ce",
+    "early_stopping_patience": 3,
+    "save_model": true
+  },
+  "evaluation": {
+    "split": {
+      "scheme": "design_holdout"
+    },
+    "bootstrap": {
+      "enabled": true,
+      "n_resamples": 1000
+    },
+    "human_ceiling": true,
+    "calibration": true,
+    "error_analysis": true
+  },
+  "compute": {
+    "target": "local",
+    "require_gpu": false
+  },
+  "note": "Modèle servi par la page reviewer : recette E4.4 (legal-bert-finetune), découpe design(33)/hold-out(17) pour que les 17 contrats proposés en essai soient inconnus du modèle."
+}

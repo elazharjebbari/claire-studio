@@ -1,0 +1,31 @@
+bloc;option;valeur_percue;robustesse;cout;verdict;raison
+page;A vitrine statique;2;5;1;ecarte;rien ne s'exerce
+page;B verifier le papier;5;4;3;retenu;une seule fonction dynamique, le reste fige
+page;C laboratoire ouvert;4;2;5;ecarte;surfaces internes non pseudonymisees
+donnees;A zip unique;3;5;1;complement;empreinte unique
+donnees;B fichiers + apercu;5;5;2;retenu;format visible sans telecharger
+donnees;C API de requete;4;3;4;ecarte;doublon du visualiseur
+modele;A entraine sur 50;3;4;3;ecarte;contrats d'essai vus a l'entrainement
+modele;B entraine 33 servi 17;5;4;3;retenu;hors echantillon reel, chiffres hold-out
+modele;C modele distille;3;5;3;ecarte;s'eloigne du papier
+inference;A synchrone Django;2;1;1;ecarte;coupure proxy 60 s
+inference;B job + sondage sous-processus;4;4;3;retenu;motif Lab/export eprouve
+inference;C service resident;5;3;4;v2;memoire permanente sur VPS partage
+entree;A coller;3;5;1;ecarte;trop pauvre
+entree;B coller/txt/hold-out;5;4;2;retenu;decision du porteur
+entree;C pdf/docx/url;4;2;4;ecarte;extraction hasardeuse, licence
+segmentation;A regles maison;2;4;1;repli;listes et titres mal decoupes
+segmentation;B pysbd + paragraphes;4;5;1;retenu;deterministe, meme granularite que CLAUDETTE
+segmentation;C spaCy;4;3;3;ecarte;50 Mo, chargement
+visualiseur;A workspace en lecture;5;2;4;ecarte;couplage stores/auth
+visualiseur;B composants dedies purs;5;5;3;retenu;meme langage visuel, sans etat serveur
+visualiseur;C tableau;2;5;1;ecarte;structure de clause invisible
+reference;A modele seul;2;5;1;ecarte;valeur de la couche invisible
+reference;B modele vs gold/A1-A3/juges;5;4;3;retenu;desaccords visibles par phrase
+reference;C metriques seules;3;5;1;complement;resume exactitude et kappa
+securite;A ouvert;1;1;0;ecarte;cout CPU non borne
+securite;B quotas+tailles+langue;4;4;2;retenu;proportionne, sans compte
+securite;C code reviewer;4;5;2;option;parametre vide par defaut
+chiffres;A retapes;2;2;1;ecarte;derive
+chiffres;B generes des artefacts;5;5;2;retenu;provenance tracee
+chiffres;C capture du tableau;3;4;1;ecarte;illisible, non verifiable

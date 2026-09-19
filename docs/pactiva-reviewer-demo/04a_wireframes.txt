@@ -1,0 +1,90 @@
+PAGE / (≥ 1024 px, thème clair)
+════════════════════════════════════════════════════════════════════════════════════════
+ [◆ Pactiva]      Try the classifier   Data   Key figures   Protocol   Platform   Français
+────────────────────────────────────────────────────────────────────────────────────────
+  A Thematic Layer for CLAUDETTE
+  Separating the cost of multi-label annotation from the effect of taxonomy granularity
+  JURIX 2026 · companion page for reviewers
+
+  [ Try the classifier ]   [ Download the data ]   [ Open the annotation platform ]
+
+  Dataset fingerprint 7116e627f528c557 · 50 contracts · 9,414 sentences · 3 annotators · 4 LLM judges
+════════════════════════════════════════════════════════════════════════════════════════
+
+ TRY THE CLASSIFIER
+ ┌─────────────────────────────────────────────────────────────────────────────────────┐
+ │ ( Paste text ) ( Upload .txt ) ( CLAUDETTE contract — 17 unseen by the model )      │
+ │ ┌─────────────────────────────────────────────────────────────────────────────────┐ │
+ │ │ Paste an English contract or terms of service…                                  │ │
+ │ │                                                                                 │ │
+ │ └─────────────────────────────────────────────────────────────────────────────────┘ │
+ │ 12,480 / 60,000 characters · ~ 96 sentences · English ✓            [ Classify ]     │
+ │ Legal-BERT (T11), trained on the 33 design contracts. Your text is not stored.      │
+ └─────────────────────────────────────────────────────────────────────────────────────┘
+
+ RESULT — Headspace (CLAUDETTE, held out)          accuracy vs gold 0.78 · κ 0.74 · 212 sentences
+ ┌───────────────────────────────────────────────────────────┐ ┌──────────────────────────┐
+ │ #   text                                  model   gold A1 A2 A3  judges │ │ CONTENTS                 │
+ │ ── Framework ─────────────────────────────────────────── │ │ ▌Framework        1–14   │
+ │ 0 │ Welcome to Headspace…                 ● FRAME  ● ● ● ●  ●●●●     │ │ ▌Account & use   15–41  │
+ │ 1 │ These Terms of Service govern…        ● FRAME  ● ● ● ●  ●●●●     │ │ ▌Fees & payment  42–70  │
+ │ ── Account & use ─────────────────────────────────────── │ │ ▌Termination     71–88  │
+ │15 │ You must be at least 18 years old…    ● ACCNT  ● ● ● ≠  ●●●○     │ │ …                        │
+ │16 │ We may suspend your account if…       ● TERMN  ≠ ● ≠ ●  ●○●●     │ ├──────────────────────────┤
+ │   │   confidence ▮▮▮▮▮▮▮▯▯▯ 0.71                                     │ │ LEGEND   [T11 ▾]         │
+ │ …                                                         │ │ ● Framework        14    │
+ │                                                           │ │ ● Account & use    27    │
+ │ [ ] show disagreements only                                │ │ ● Fees & payment   29    │
+ └───────────────────────────────────────────────────────────┘ │ …                        │
+                                     [ Export JSON ] [ Export CSV ] │ Judges: Fable · Claude · │
+                                                                    │ Mistral · Codex          │
+                                                                    └──────────────────────────┘
+════════════════════════════════════════════════════════════════════════════════════════
+
+ WHAT WE RELEASE                                    thematic-layer-7116e627.zip · 4.2 MB · sha256 …
+ ┌──────────────┐ ┌──────────────┐ ┌──────────────┐ ┌──────────────┐
+ │ Votes        │ │ Gold + trail │ │ LLM judges   │ │ Judge prompts│
+ │ 28,242 rows  │ │ 9,414 rows   │ │ 37,656 rows  │ │ v9.2, 4 files│
+ │ A1–A3        │ │ cascade tier │ │ 4 judges     │ │ + runbooks   │
+ │ ▸ preview    │ │ ▸ preview    │ │ ▸ preview    │ │ ▸ read       │
+ └──────────────┘ └──────────────┘ └──────────────┘ └──────────────┘
+ ┌──────────────┐ ┌──────────────┐ ┌──────────────┐ ┌──────────────┐
+ │ Taxonomies   │ │ Codebook     │ │ Protocol     │ │ Platform     │
+ │ T20→T14/11/10│ │ 20 themes    │ │ annotation & │ │ source ·     │
+ │ spec v1      │ │ definitions  │ │ judging      │ │ public       │
+ │ fingerprint  │ │ ▸ read       │ │ ▸ read       │ │ projects ·   │
+ └──────────────┘ └──────────────┘ └──────────────┘ │ sign in      │
+ The source sentences belong to the CLAUDETTE corpus and are not redistributed; records are keyed by (document, index).
+
+ KEY FIGURES (generated from the released files)
+ ┌────────────────────────────────────────────┬─────────┬─────────┬──────────────────────┐
+ │ Measure                                    │ 20 th.  │ 11 th.  │ how computed         │
+ │ Krippendorff α (MASI), 3 annotators        │ 0.658   │ 0.725   │ ▸                    │
+ │ Human ceiling κ (leave-one-annotator-out)  │ 0.859   │ —       │ ▸                    │
+ │ Legal-BERT fine-tuned, κ [95 % CI]         │ 0.695   │ 0.720   │ ▸ runs/legalbert_T11 │
+ │ Best LLM judge (Claude Fable 5), κ         │ 0.581   │ 0.591   │ ▸                    │
+ │ Served model (33 → 17 held out), macro-F1  │ —       │ x.xxx   │ ▸ demo run           │
+ └────────────────────────────────────────────┴─────────┴─────────┴──────────────────────┘
+
+ PROTOCOL ▸        CODEBOOK ▸        THE PLATFORM: [Public projects] [Sign in] [Source on GitHub]
+────────────────────────────────────────────────────────────────────────────────────────
+ Cite · Contact · CLAUDETTE licence notice · Pactiva (LORIA) · Français
+════════════════════════════════════════════════════════════════════════════════════════
+
+MOBILE (< 640 px)
+┌──────────────────────┐
+│ ◆ Pactiva      ☰     │
+│ A Thematic Layer…    │
+│ [Try] [Data] [Sign in]│
+│ ─ Try the classifier ─│
+│ (Paste)(.txt)(CLAUDETTE)│
+│ ┌──────────────────┐ │
+│ │ textarea         │ │
+│ └──────────────────┘ │
+│ 0/60,000 · [Classify]│
+│ ─ Result ─           │
+│ Contents ▾  Legend ▾ │
+│ 0 ▌ text…            │
+│   ● FRAME 0.93  g●a●●●│
+│ 1 ▌ text…            │
+└──────────────────────┘

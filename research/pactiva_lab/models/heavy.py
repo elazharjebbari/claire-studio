@@ -257,6 +257,58 @@ class TransformerFinetune(Model):
 
         self.model, self.tokenizer, self.device = model, tokenizer, device
 
+    # ------------------------------------------------------------------ #
+    # Persistance : le modèle entraîné est un ARTEFACT du run (kind=model)
+    # ------------------------------------------------------------------ #
+    def save(self, directory) -> None:
+        """Écrit poids + tokenizer + `classes.json` + `model_config.json` dans `directory`.
+
+        Ajouté pour la démonstration publique (page reviewer) : jusqu'ici le modèle
+        entraîné ne survivait pas au processus, et chaque figure du papier reposait sur des
+        poids que personne ne pouvait recharger. `classes.json` fixe l'ordre des logits ;
+        sans lui, un rechargement redonnerait des indices, pas des thèmes.
+        """
+        import json
+        from pathlib import Path
+
+        target = Path(directory)
+        target.mkdir(parents=True, exist_ok=True)
+        # safetensors refuse les tenseurs non contigus (cas réel avec bert-tiny après
+        # `.float()`) : on les compacte avant l'écriture, sans effet sur les valeurs.
+        for parameter in self.model.parameters():
+            if not parameter.data.is_contiguous():
+                parameter.data = parameter.data.contiguous()
+        self.model.save_pretrained(target, safe_serialization=True)
+        self.tokenizer.save_pretrained(target)
+        (target / "classes.json").write_text(
+            json.dumps(self.classes, ensure_ascii=False, indent=2), encoding="utf-8"
+        )
+        (target / "model_config.json").write_text(
+            json.dumps({"family": self.name, "checkpoint": self.checkpoint,
+                        "seed": self.seed, "config": self.config}, ensure_ascii=False, indent=2),
+            encoding="utf-8",
+        )
+
+    @classmethod
+    def load(cls, directory) -> "TransformerFinetune":
+        """Recharge un modèle écrit par `save` ; inférence seule (pas de `fit`)."""
+        import json
+        from pathlib import Path
+
+        torch = _require("torch", "transformers")
+        transformers = _require("transformers", "transformers")
+        source = Path(directory)
+        meta = json.loads((source / "model_config.json").read_text(encoding="utf-8"))
+        instance = cls(meta["config"], seed=int(meta.get("seed", 42)))
+        instance.classes = json.loads((source / "classes.json").read_text(encoding="utf-8"))
+        instance.tokenizer = transformers.AutoTokenizer.from_pretrained(source)
+        model = transformers.AutoModelForSequenceClassification.from_pretrained(source).float()
+        instance.device = "cuda" if torch.cuda.is_available() else "cpu"
+        model.to(instance.device)
+        model.eval()
+        instance.model = model
+        return instance
+
     def predict(self, texts, extra=None):
         return [max(scores, key=scores.get) for scores in self.predict_proba(texts, extra)]
 

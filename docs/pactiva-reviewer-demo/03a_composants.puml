@@ -1,0 +1,47 @@
+@startuml composants
+skinparam componentStyle rectangle
+title Page reviewer Pactiva — composants
+
+package "Navigateur (Next.js, /)" {
+  [page.tsx (serveur, theme-light)] as Page
+  [DemoPanel] as Panel
+  [ResultsViewer] as Viewer
+  [DownloadsGrid / KeyFigures / Codebook] as Static
+  [lib/api/demo.ts] as Api
+}
+
+package "Fichiers statiques Next" {
+  [frontend/public/downloads/\nthematic-layer-7116e627.zip\n*.jsonl, prompts/, RELEASE.json] as Downloads
+}
+
+package "Django (daphne :8017) — claire/demo" {
+  [views.py\nAllowAny · throttle demo] as Views
+  [services.py\njeu figé · pseudonymes · garde-fous] as Services
+  [runner.py\nfil daemon · verrou · sous-processus] as Runner
+  database "DemoJob" as Jobs
+}
+
+package "research/.venv — pactiva_lab" {
+  [cli predict] as Cli
+  [inference.py\nsegment (pysbd) · predict_sentences] as Inf
+  [models/heavy.py\nTransformerFinetune.load] as Model
+}
+
+folder "var/models/legalbert_T11_holdout" as Weights
+folder "var/lab/datasets/0a2542a1-…\n(7116e627…)" as Dataset
+
+Page --> Static
+Page --> Panel
+Panel --> Api
+Viewer --> Api
+Static --> Downloads
+Api --> Views : GET manifest, contracts\nPOST classify, GET jobs
+Views --> Services
+Views --> Runner
+Runner --> Jobs
+Runner --> Cli : python -m pactiva_lab predict
+Cli --> Inf
+Inf --> Model
+Model --> Weights
+Services --> Dataset
+@enduml

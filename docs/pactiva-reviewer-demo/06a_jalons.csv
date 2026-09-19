@@ -1,0 +1,9 @@
+jalon;lot;livrable;verification;etat
+J0;L0;save/load + inference + predict;pytest tests/test_heavy_models.py -k "save_load or predict_cli";fait
+J1;L1;poids du modele servi;results.json split.n_test_documents=17 ; predict sur 3 phrases;en cours
+J2;L2;votes pseudonymises + zip + RELEASE.json;aucun identifiant reel, aucun champ text, sha256 listes;a faire
+J3;L3;API /public/demo/* + quotas;pytest backend/tests/test_demo_api.py;a faire
+J4;L4;page / anglaise + visualiseur;vitest + tsc + check:colors + next build;a faire
+J5;L5;suites completes + e2e a11y;pytest, vitest, playwright a11y;a faire
+J6;L6;production;health 200 ; classification reelle < 30 s ; 429 au 7e appel/min;a faire
+J7;L7;parcours reviewer + compte rendu;checklist 08 § manuel;a faire

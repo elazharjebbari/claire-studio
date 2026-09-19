@@ -1,0 +1,84 @@
+# Contrat de l'API publique de démonstration — préfixe /api/v1/public/demo
+# Tous les endpoints : AllowAny, sans authentification, réponses camelCase (bridge DRF existant),
+# limitation de débit ScopedRateThrottle (scope "demo" : 30/hour ; "demo_burst" : 6/min sur classify).
+version: 1
+endpoints:
+  - method: GET
+    path: /manifest
+    description: Chiffres clés, carte du modèle servi, liste des téléchargements (lu depuis RELEASE.json).
+    response:
+      datasetFingerprint: "7116e627f528c5572457e79d9e53d2e71bfc21e3a20aacb43e9d3072cfb70e2e"
+      release: {version: "1", builtAt: "2026-09-19T…Z"}
+      downloads:
+        - {name: "votes.jsonl", path: "/downloads/thematic-layer-7116e627/votes.jsonl", bytes: 0, sha256: "…", records: 28242, description: "Individual annotator votes (A1–A3)"}
+      figures:
+        - {key: "alpha_masi_T20", value: 0.658, ci: null, source: "manifest.json / taxonomy_matrix.json", label: "α-MASI, 20 themes"}
+      model:
+        checkpoint: "nlpaueb/legal-bert-base-uncased"
+        taxonomy: "T11"
+        trainedOn: {documents: 33, sentences: 0}
+        evaluatedOn: {documents: 17, sentences: 0}
+        metrics: {macroF1: 0.0, microF1: 0.0, kappa: 0.0, macroF1Ci: {low: 0.0, high: 0.0}}
+        recipe: {epochs: 8, batchSize: 16, learningRate: 2.0e-5, maxLength: 128, context: "±1 sentence", seed: 42}
+      limits: {maxChars: 60000, maxSentences: 400, language: "en"}
+      accessCodeRequired: false
+
+  - method: GET
+    path: /contracts
+    description: Les 17 contrats CLAUDETTE tenus à l'écart de l'entraînement (population holdout de taxonomies.json).
+    response:
+      contracts:
+        - {document: "Headspace", nSentences: 0, nUnfair: 0}
+
+  - method: GET
+    path: /contracts/{document}
+    description: Phrases du contrat (texte affiché à l'écran, non téléchargeable) avec gold, votes pseudonymisés, juges et labels CLAUDETTE.
+    errors: {404: "document hors population holdout"}
+    response:
+      document: "Headspace"
+      taxonomy: "T20"
+      sentences:
+        - index: 0
+          text: "…"
+          gold: {primary: "PREAMBLE_SCOPE", secondaries: [], agreementClass: "majority", tier: "auto", confidence: 0.6667, tally: {PREAMBLE_SCOPE: 2.0, META: 1.0}}
+          votes: [{annotator: "A1", primary: "META", secondaries: []}, {annotator: "A2", primary: "PREAMBLE_SCOPE", secondaries: []}, {annotator: "A3", primary: "PREAMBLE_SCOPE", secondaries: []}]
+          judges: {claude: "PREAMBLE_SCOPE", codex: "PREAMBLE_SCOPE", mistral: "META", fable: "PREAMBLE_SCOPE"}
+          unfair: []
+      judgesLegend: {claude: "Claude Opus 4.7", codex: "GPT-5.5", mistral: "Mistral Medium 3.5", fable: "Claude Fable 5"}
+
+  - method: POST
+    path: /classify
+    description: Lance la classification (job asynchrone). Le texte n'est jamais conservé.
+    headers: {X-Demo-Code: "optionnel, exigé si DEMO_ACCESS_CODE est défini"}
+    request:
+      oneOf:
+        - {source: "text", text: "…", title: "optionnel"}
+        - {source: "contract", document: "Headspace"}
+    responses:
+      202: {jobId: "uuid", status: "queued", position: 0}
+      400: {code: "too_long" | "empty" | "not_english" | "unknown_document", detail: "…"}
+      403: {code: "access_code_required"}
+      429: {detail: "Request was throttled."}
+      503: {code: "queue_full", detail: "Three requests are already waiting; try again in a minute."}
+
+  - method: GET
+    path: /jobs/{jobId}
+    description: État et résultat du job.
+    response:
+      jobId: "uuid"
+      status: "queued" | "running" | "done" | "failed"
+      source: "text" | "contract"
+      document: "Headspace | null"
+      timings: {queuedS: 0.0, runS: 0.0}
+      result:
+        segmenter: "pysbd" | "punctuation_rules" | "provided"
+        classes: ["ACCOUNT_USE", "…"]
+        sentences:
+          - {index: 0, text: "…", label: "TERMINATION", confidence: 0.91, scores: {TERMINATION: 0.91, ACCOUNT_USE: 0.04}}
+        truncated: false
+        comparison:            # présent si source=contract
+          gold: [{index: 0, primaryT20: "…", primaryT11: "…", agreementClass: "…", tier: "…"}]
+          votes: [{index: 0, A1: "…", A2: "…", A3: "…"}]
+          judges: [{index: 0, claude: "…", codex: "…", mistral: "…", fable: "…"}]
+          summary: {accuracyT11: 0.0, kappaT11: 0.0, nSentences: 0, judgesAccuracyT11: {claude: 0.0}}
+      error: null | {code: "timeout" | "model_unavailable" | "internal", detail: "…"}

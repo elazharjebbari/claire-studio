@@ -27,7 +27,23 @@ def main(argv: list[str] | None = None) -> int:
     run.add_argument("--cancel-file", default=None,
                      help="si ce fichier apparaît, le run s'arrête proprement")
 
+    predict = sub.add_parser("predict", help="prédit le thème de phrases nouvelles avec un modèle sauvegardé")
+    predict.add_argument("--model", required=True, help="dossier écrit par TransformerFinetune.save")
+    predict.add_argument("--input", required=True, help='JSON {"text": ...} ou {"sentences": [...]}')
+    predict.add_argument("--out", required=True, help="fichier JSON de sortie")
+
     args = parser.parse_args(argv)
+    if args.command == "predict":
+        from .inference import run_cli
+
+        try:
+            result = run_cli(args.model, args.input, args.out)
+        except Exception as exc:
+            print(f"ÉCHEC : {exc}", file=sys.stderr)
+            return 1
+        print(f"phrases    : {result['n_sentences']}   segmenteur : {result.get('segmenter')}   "
+              f"durée : {result['timing_s']} s")
+        return 0
     if args.command != "run":
         parser.error("commande inconnue")
 

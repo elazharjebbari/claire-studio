@@ -1,0 +1,46 @@
+id;niveau;composant;cas;attendu;automatise
+R1;unitaire;heavy.save/load;aller-retour;probabilites identiques 1e-5, classes preservees;oui
+R2;unitaire;inference.segment;paragraphes + liste numerotee;4 phrases, "4. Payment" isole;oui
+R3;unitaire;inference.segment;401 phrases;tronque a 400;oui
+R4;unitaire;cli predict;texte colle;n_sentences=2, labels dans classes;oui
+P1;script;build_release;identifiants reels;absents de downloads/;oui
+P2;script;build_release;champ text;absent des fichiers publies;oui
+P3;script;build_release;empreinte;inchangee, comptes identiques;oui
+P4;script;build_release;RELEASE.json;tailles et sha256 exacts;oui
+A1;api;manifest;GET anonyme;200, champs requis;oui
+A2;api;contracts;liste;17 documents holdout exactement;oui
+A3;api;contracts/{doc};document design;404;oui
+A4;api;contracts/{doc};holdout;votes A1-A3, gold, judges, texte present;oui
+A5;api;classify;vide;400 empty;oui
+A6;api;classify;> 60000 caracteres;400 too_long;oui
+A7;api;classify;texte francais;400 not_english;oui
+A8;api;classify;document inconnu;400 unknown_document;oui
+A9;api;classify;code d'acces requis absent;403;oui
+A10;api;classify;file pleine;503 queue_full;oui
+A11;api;classify;7e appel/min;429;oui
+A12;api;job;cycle de vie simule;queued->running->done, in.json supprime;oui
+A13;api;job;sous-processus en echec;failed + error.code, pas de trace;oui
+A14;api;job;comparaison contrat;summary.kappaT11=1 si prediction=gold;oui
+A15;api;purge;jobs > 24 h;supprimes;oui
+A16;api;journal;caplog;aucun texte;oui
+F1;vitest;labels.en;couverture;tous les codes T20/T11;oui
+F2;vitest;DemoPanel;vide;bouton desactive;oui
+F3;vitest;DemoPanel;> 60000;refus, message;oui
+F4;vitest;DemoPanel;non anglais;message;oui
+F5;vitest;DemoPanel;onglet contrat;17 entrees (MSW);oui
+F6;vitest;useDemoJob;sondage;1 s puis 3 s, arret done/failed;oui
+F7;vitest;ResultsViewer;segments;calcules aux changements de theme;oui
+F8;vitest;ResultsViewer;filtre desaccords;phrases modele!=gold ou votes divergents;oui
+F9;vitest;export;contrat;sans texte, note affichee;oui
+F10;vitest;contrastAA;globals.css;AA vert;oui
+F11;script;check:colors;nouveaux fichiers;aucun hex;oui
+E1;e2e;a11y;/;0 violation serieuse/critique;oui
+E2;e2e;welcome;/welcome;-> /, titre, liens;oui
+E3;e2e;demo;coller texte;segment affiche;oui
+M1;manuel;prod;navigation privee;anglais, aucun 401;non
+M2;manuel;prod;coller;< 20 s;non
+M3;manuel;prod;contrat Headspace;colonnes + resume;non
+M4;manuel;prod;quota;429 au 7e;non
+M5;manuel;prod;zip;sha256 identique, aucun identifiant;non
+M6;manuel;prod;chiffres;egaux au papier;non
+M7;manuel;prod;VPS;RSS < 1,6 Go, in.json supprime;non

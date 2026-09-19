@@ -173,3 +173,64 @@ def test_transformer_finetune_refuse_une_config_sans_modele():
 
     with pytest.raises(ValueError, match="checkpoint.*encoder"):
         TransformerFinetune({})
+
+
+# --------------------------------------------------------------------------- #
+# Persistance + inférence (démonstration publique)
+# --------------------------------------------------------------------------- #
+
+def test_transformer_save_load_donne_les_memes_probabilites(tmp_path):
+    """Le modèle servi doit être CELUI qui a été entraîné : après `save` puis `load`,
+    les distributions sont identiques à 1e-5 et l'ordre des classes est préservé."""
+    model = TransformerFinetune(
+        {"checkpoint": CHECKPOINT, "epochs": 1, "batch_size": 4, "max_length": 32}, seed=7
+    )
+    model.fit(TEXTS, LABELS)
+    before = model.predict_proba(TEXTS[:2])
+    model.save(tmp_path / "m")
+    assert (tmp_path / "m" / "classes.json").exists()
+    assert (tmp_path / "m" / "model_config.json").exists()
+
+    loaded = TransformerFinetune.load(tmp_path / "m")
+    after = loaded.predict_proba(TEXTS[:2])
+    assert loaded.classes == ["FEES", "TERMINATION"]
+    for a, b in zip(before, after):
+        for label in a:
+            assert abs(a[label] - b[label]) < 1e-5
+    assert loaded.predict(TEXTS[:1])[0] in ("FEES", "TERMINATION")
+
+
+def test_predict_cli_sur_texte_colle(tmp_path):
+    """`pactiva_lab predict` : segmentation + contexte ±1 + une ligne par phrase."""
+    import json
+    from pactiva_lab.cli import main
+    from pactiva_lab.inference import segment
+
+    sentences, segmenter = segment(
+        "We may terminate your account at any time. Fees are due within thirty days.\n\n"
+        "4. Payment\nAll charges are non refundable."
+    )
+    assert segmenter in ("pysbd", "punctuation_rules")
+    assert len(sentences) == 4
+    assert sentences[2] == "4. Payment"
+
+    model = TransformerFinetune(
+        {"checkpoint": CHECKPOINT, "epochs": 1, "batch_size": 4, "max_length": 32}, seed=7
+    )
+    model.fit(TEXTS, LABELS)
+    model.save(tmp_path / "m")
+    meta_path = tmp_path / "m" / "model_config.json"
+    meta = json.loads(meta_path.read_text())
+    meta["preprocess"] = {"detokenize": "regex_rules", "max_length": 32,
+                          "context": {"window_before": 1, "window_after": 1}}
+    meta_path.write_text(json.dumps(meta))
+
+    (tmp_path / "in.json").write_text(json.dumps({"text": "We may terminate your account. Fees are due."}))
+    code = main(["predict", "--model", str(tmp_path / "m"), "--input", str(tmp_path / "in.json"),
+                 "--out", str(tmp_path / "out.json")])
+    assert code == 0
+    out = json.loads((tmp_path / "out.json").read_text())
+    assert out["n_sentences"] == 2
+    assert {r["label"] for r in out["sentences"]} <= {"FEES", "TERMINATION"}
+    assert all(0.0 < r["confidence"] <= 1.0 for r in out["sentences"])
+    assert out["model"]["checkpoint"] == CHECKPOINT

@@ -1,0 +1,30 @@
+@startuml sequence-classification
+title Coller un contrat → thèmes par phrase (job + sondage)
+actor Reviewer
+participant "Page /" as UI
+participant "POST /public/demo/classify" as Classify
+participant "DemoJob" as DB
+participant "Runner (fil daemon)" as Runner
+participant "pactiva_lab predict\n(research/.venv)" as Predict
+participant "GET /public/demo/jobs/{id}" as Poll
+
+Reviewer -> UI : colle le texte / dépose .txt / choisit un contrat
+UI -> UI : vérifie taille, langue (côté client, message immédiat)
+UI -> Classify : {source, text | document}
+Classify -> Classify : quota (scope demo), taille, langue, contrat autorisé
+Classify -> DB : create(status=queued, sans texte)
+Classify -> Runner : enqueue(job_id, in.json temporaire 600)
+Classify --> UI : 202 {job_id}
+loop toutes les 1 s puis 3 s (≤ 3 min)
+  UI -> Poll : GET
+  Poll --> UI : {status: queued|running}
+end
+Runner -> Predict : --model DEMO_MODEL_DIR --input in.json --out out.json (120 s max, 3 fils)
+Predict -> Predict : segment (pysbd) → build_text (±1, détok.) → predict_proba
+Predict --> Runner : out.json
+Runner -> DB : status=done, result, timings ; supprime in.json
+UI -> Poll : GET
+Poll -> Poll : si source=contract : joint gold, votes A1–A3, juges, labels ; résumé (exactitude, κ)
+Poll --> UI : {status: done, result}
+UI -> Reviewer : visualiseur (rail de thèmes, frontières, TOC, colonnes de comparaison)
+@enduml

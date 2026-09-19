@@ -216,6 +216,22 @@ def run_experiment(
         model.fit(
             [texts[i] for i in train_idx], train_targets, [extra[i] for i in train_idx]
         )
+        if (config["model"] or {}).get("save_model") and hasattr(model, "save"):
+            # Un dossier par pli ; en `design_holdout` (un seul pli) c'est LE modèle servi
+            # par la démonstration publique. Écrit sous `out_dir` pour revenir de Grid'5000
+            # avec le reste des résultats (le rapatriement rsync couvre tout `results/`).
+            target = out_dir / "model" / f"fold_{fold}"
+            model.save(target)
+            # Le prétraitement fait partie du modèle servi : sans lui, l'inférence ne
+            # reproduirait ni la fenêtre de contexte ni la détokenisation.
+            meta_path = target / "model_config.json"
+            meta = json.loads(meta_path.read_text(encoding="utf-8"))
+            meta["preprocess"] = preprocess
+            meta["task"] = task
+            meta["dataset_fingerprint"] = dataset.manifest.get("fingerprint")
+            meta["split"] = {"scheme": split_scheme, "fold": fold,
+                             "train_documents": sorted({dataset.sentences[i].document for i in train_idx})}
+            meta_path.write_text(json.dumps(meta, ensure_ascii=False, indent=2), encoding="utf-8")
 
         test_texts = [texts[i] for i in test_idx]
         test_extra = [extra[i] for i in test_idx]

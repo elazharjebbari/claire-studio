@@ -15,7 +15,7 @@ embeddings = ["sentence-transformers>=3.0", "torch>=2.2"]
 # sous transformers 5.x ; `tiktoken` est le repli que transformers tente sinon (et qui
 # échoue sur ce modèle) — les deux découverts par la campagne de validation GPU des
 # 15-16 août 2026 (runs réels en échec sur gemini).
-transformers = ["transformers>=4.40", "torch>=2.2", "accelerate>=0.30",
+transformers = ["transformers>=4.40", "torch>=2.2", "accelerate>=0.30", "pysbd>=0.3",
                 "sentencepiece>=0.2", "protobuf>=4.25", "tiktoken>=0.7"]
 dev = ["pytest>=8.0"]
 
