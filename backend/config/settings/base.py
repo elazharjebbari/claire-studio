@@ -83,6 +83,19 @@ LAB_RESEARCH_PYTHON = env("LAB_RESEARCH_PYTHON", default=None)
 # Grid'5000 déconseille explicitement de soumettre de nombreux petits jobs OAR séparés,
 # voir docs/pactiva-g5k/research/02_OAR_KADEPLOY.md §4.3.
 LAB_G5K_MAX_RUNS_PER_SWEEP = env.int("LAB_G5K_MAX_RUNS_PER_SWEEP", default=3)
+
+# --- Démonstration publique (page reviewer, docs/pactiva-reviewer-demo) --------------
+# Modèle Legal-BERT T11 servi (dossier écrit par TransformerFinetune.save) et jeu figé du Lab
+# dont proviennent les 17 contrats hold-out. Le texte collé n'est jamais conservé.
+DEMO_MODEL_DIR = env("DEMO_MODEL_DIR", default=str(BASE_DIR.parent / "var" / "models" / "legalbert_T11_holdout"))
+DEMO_DATASET_ID = env("DEMO_DATASET_ID", default="0a2542a1-c5b0-4ef8-95e0-15abea0566db")
+DEMO_ACCESS_CODE = env("DEMO_ACCESS_CODE", default="")
+DEMO_MAX_CHARS = env.int("DEMO_MAX_CHARS", default=60000)
+DEMO_MAX_SENTENCES = env.int("DEMO_MAX_SENTENCES", default=400)
+DEMO_QUEUE_MAX = env.int("DEMO_QUEUE_MAX", default=3)
+DEMO_JOB_TIMEOUT = env.int("DEMO_JOB_TIMEOUT", default=120)
+DEMO_THREADS = env.int("DEMO_THREADS", default=3)
+DEMO_RUN_INLINE = False
 # Délai avant de tuer un run local (claire/lab/runners/local.py). 3600 s (l'ancien défaut
 # implicite) suffit à peine pour UN SEUL pli d'un encodeur lourd sans GPU sur ce VPS — un
 # run réel a dépassé ce délai en production (12 août 2026). 7200 s laisse la marge pour
@@ -117,6 +130,7 @@ INSTALLED_APPS = [
     "claire.gold",
     "claire.analysis",
     "claire.lab",
+    "claire.demo",
     "claire.audit",
     "claire.common",
 ]
@@ -246,6 +260,9 @@ REST_FRAMEWORK = {
         # Onboarding (chantier E) : anti-abus inscription / reset mot de passe.
         "register": env("THROTTLE_REGISTER_RATE", default="10/hour"),
         "password_reset": env("THROTTLE_PASSWORD_RESET_RATE", default="5/hour"),
+        # Démonstration publique (page reviewer) : trafic anonyme, borné par adresse.
+        "demo": env("THROTTLE_DEMO_RATE", default="30/hour"),
+        "demo_burst": env("THROTTLE_DEMO_BURST_RATE", default="6/min"),
     },
 }
 

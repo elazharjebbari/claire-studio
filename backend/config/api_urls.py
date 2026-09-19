@@ -125,6 +125,8 @@ class HealthView(APIView):
 urlpatterns = [
     # Liveness / debug (no auth)
     path("health", HealthView.as_view(), name="health"),
+    # Démonstration publique (page reviewer, docs/pactiva-reviewer-demo) — AllowAny, quotas par adresse.
+    path("", include("claire.demo.urls")),
     # Feature flags (no auth) — points 4b/7 + admin
     path("config/flags", ConfigFlagsView.as_view(), name="config-flags"),
     # Auth (JWT) — CONTRACT §3
