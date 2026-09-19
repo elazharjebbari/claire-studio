@@ -1,0 +1,82 @@
+{
+  "scheme": "group_kfold_document",
+  "k": 5,
+  "seed": 42,
+  "folds": [
+    [
+      "Crowdtangle",
+      "LinkedIn",
+      "Masquerade",
+      "Rovio",
+      "Skype",
+      "Spotify",
+      "Supercell",
+      "Syncme",
+      "Vimeo",
+      "WorldOfWarcraft"
+    ],
+    [
+      "Academia",
+      "Booking",
+      "Deliveroo",
+      "Dropbox",
+      "Endomondo",
+      "Fitbit",
+      "Google",
+      "PokemonGo",
+      "Twitter",
+      "eBay"
+    ],
+    [
+      "9gag",
+      "Atlas",
+      "Betterpoints_UK",
+      "Evernote",
+      "Headspace",
+      "LindenLab",
+      "Onavo",
+      "Tinder",
+      "WhatsApp",
+      "Yahoo"
+    ],
+    [
+      "Airbnb",
+      "Amazon",
+      "Facebook",
+      "Moves-app",
+      "Oculus",
+      "Snap",
+      "TripAdvisor",
+      "TrueCaller",
+      "Uber",
+      "musically"
+    ],
+    [
+      "Duolingo",
+      "Instagram",
+      "Microsoft",
+      "Netflix",
+      "Nintendo",
+      "Skyscanner",
+      "Viber",
+      "Vivino",
+      "YouTube",
+      "Zynga"
+    ]
+  ],
+  "foldSizes": [
+    1885,
+    1886,
+    1870,
+    1884,
+    1889
+  ],
+  "foldDocumentCounts": [
+    10,
+    10,
+    10,
+    10,
+    10
+  ],
+  "rationale": "Groupement par document : un découpage par phrase ferait fuir des phrases du même contrat entre entraînement et test."
+}

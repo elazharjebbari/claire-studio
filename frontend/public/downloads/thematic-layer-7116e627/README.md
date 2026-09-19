@@ -10,7 +10,7 @@ Every figure in the paper is computed from these files.
 
 | File | Contents |
 |---|---|
-| `votes.jsonl` | **Individual annotator votes**, never collapsed into a consensus. One record per (document, sentence, annotator): primary theme and secondary themes. Annotators are pseudonymised as `A1`, `A2`, `A3` (a stable mapping, identical across the whole resource). |
+| `votes.jsonl` | **Individual annotator votes**, never collapsed into a consensus. One record per (document, sentence, annotator): primary theme and secondary themes. |
 | `gold.jsonl` | The **frozen gold standard**, one record per sentence: agreement class (`strict` / `majority` / `divergence`), cascade tier (`auto_1click` / `auto` / `manual`), engine proposal, decided theme and secondaries, vote tally and confidence. |
 | `judges.jsonl` | The **four LLM judges** on the same sentences and the same vocabulary. |
 | `prompts/` | The **exact prompts and runbooks** given to each judge (protocol v9.2), with model, harness and dates per judge (`prompts/README.md`). |
@@ -30,8 +30,6 @@ immutability date; it decides nothing. The snapshot was kept as is so that its d
 fingerprint keeps matching the one under which every published figure was computed.
 
 ## What is deliberately **not** here
-
-**Annotator identities.** The three trained annotators appear only as `A1`–`A3`.
 
 **The source sentence text.** The contracts come from the CLAUDETTE / UNFAIR-ToS corpus,
 which carries its own licence; we do not redistribute it. Records are keyed by

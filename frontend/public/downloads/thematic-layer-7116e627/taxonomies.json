@@ -1,0 +1,665 @@
+{
+  "specVersion": 1,
+  "frozenAt": "2026-09-13",
+  "canonical": "T20",
+  "note": "SOURCE UNIQUE des taxonomies de thèmes. Lue par le frontend (TypeScript), le backend et le Lab (Python) — mêmes octets, parité testée des deux côtés, sur le modèle des cas d'or du moteur gold. T20 est la taxonomie CANONIQUE : c'est elle qui est annotée, stockée et transmise sur le fil. T14/T11/T10 sont des PROJECTIONS déterministes, jamais des données. Toute modification de ce fichier invalide les chiffres publiés : incrémenter specVersion et re-figer.",
+  "populations": {
+    "designSet": {
+      "id": "design-33-v1",
+      "label": "Corpus de conception (33 documents)",
+      "rationale": "Documents multi-annotés au 24 août 2026 (export de dataset 13aa1fbfdb09987f) : ce sont EUX qui ont servi à concevoir et calibrer les fusions T14/T11/T10. Tout résultat mesuré ici est donc, par construction, optimiste. La liste nominative est extraite de `manifest.coverage` de cet export et FIGÉE ici : elle n'existait nulle part ailleurs dans le dépôt.",
+      "datasetFingerprint": "13aa1fbfdb09987f",
+      "documents": [
+        "9gag",
+        "Academia",
+        "Airbnb",
+        "Amazon",
+        "Atlas",
+        "Betterpoints_UK",
+        "Booking",
+        "Crowdtangle",
+        "Deliveroo",
+        "Dropbox",
+        "Duolingo",
+        "Endomondo",
+        "Evernote",
+        "Facebook",
+        "Fitbit",
+        "Google",
+        "Instagram",
+        "Masquerade",
+        "Microsoft",
+        "Moves-app",
+        "Netflix",
+        "Onavo",
+        "Rovio",
+        "Skyscanner",
+        "Snap",
+        "Supercell",
+        "Syncme",
+        "TrueCaller",
+        "Uber",
+        "Viber",
+        "Vimeo",
+        "Vivino",
+        "YouTube"
+      ]
+    },
+    "holdout": {
+      "id": "holdout-17-v1",
+      "label": "Hold-out de validation (17 documents)",
+      "rationale": "Documents qui n'étaient PAS encore multi-annotés le 24 août 2026, date de conception des fusions. La STRUCTURE des mappings (quels thèmes fusionnent) dérive des désaccords entre annotateurs, qui n'existent que sur des phrases multi-annotées : ces 17 documents n'ont donc fourni aucune paire et n'ont pas pu influencer le choix des regroupements.",
+      "documents": [
+        "Headspace",
+        "LindenLab",
+        "LinkedIn",
+        "Nintendo",
+        "Oculus",
+        "PokemonGo",
+        "Skype",
+        "Spotify",
+        "Tinder",
+        "TripAdvisor",
+        "Twitter",
+        "WhatsApp",
+        "WorldOfWarcraft",
+        "Yahoo",
+        "Zynga",
+        "eBay",
+        "musically"
+      ],
+      "blindness": {
+        "aveugle_pour": [
+          "grappes de confusion (critère C1) : calculées sur les seules phrases multi-annotées",
+          "fiabilité par thème (critère C2) : idem, aucune paire issue de ces documents"
+        ],
+        "non_aveugle_pour": [
+          "supports par classe (critère C4) : calibrés sur les 50 documents agrégés",
+          "strates d'abusivité (garde-fou G) : P(abusif|thème) calculé sur les 50 documents",
+          "effets simulés publiés le 13 septembre 2026 : rejoués sur les 50 documents"
+        ],
+        "verification": "Les deux critères contaminés ont été RECALCULÉS sur les 33 documents de conception seuls (13 septembre 2026) : la décision est inchangée. Strates — limitation de responsabilité lift 3,43 contre exclusion de garantie 0,32 (rapport de 10×, même conclusion : ne pas fusionner, donc T11 et non T10). Supports — les quatre classes fusionnées de T11 pèsent 993, 872, 871 et 555 phrases sur les 33 seuls, toutes bien au-dessus du seuil de 300. La contamination est donc documentée et sans effet sur le choix des mappings.",
+        "consequence_editoriale": "Tout résultat doit être rapporté en TROIS colonnes — conception (33), validation (17), corpus complet (50) — et jamais présenté comme « hold-out vierge ». Les chiffres publiés le 13 septembre sur les 50 documents sont des résultats de corpus complet, pas une validation hors conception.",
+        "reserve": "Sur ces 17 documents, la deuxième et la troisième annotation sont POSTÉRIEURES à la conception (fin août et 12-13 septembre 2026) : le hold-out est indépendant de la conception, mais il n'a pas été produit en aveugle dans les mêmes conditions de rythme. À déclarer comme limite."
+      }
+    }
+  },
+  "taxonomies": [
+    {
+      "id": "T20",
+      "label": "T20 — taxonomie d'annotation",
+      "short": "20 thèmes",
+      "rationale": "La taxonomie effectivement annotée par les trois annotateurs. Source canonique : aucune donnée n'est stockée autrement.",
+      "categories": [
+        {
+          "code": "META",
+          "label": "Méta / dates / adresses",
+          "description": "En-têtes, dates d'effet, coordonnées, titres de document.",
+          "color": "#6B7280",
+          "members": [
+            "META"
+          ]
+        },
+        {
+          "code": "PREAMBLE_SCOPE",
+          "label": "Préambule & périmètre",
+          "description": "Objet du contrat, périmètre, acceptation.",
+          "color": "#8B5CF6",
+          "isRefuge": true,
+          "members": [
+            "PREAMBLE_SCOPE"
+          ]
+        },
+        {
+          "code": "PRIVACY_DATA",
+          "label": "Données & vie privée",
+          "description": "Collecte/usage des données, renvoi à la politique de confidentialité.",
+          "color": "#0EA5E9",
+          "members": [
+            "PRIVACY_DATA"
+          ]
+        },
+        {
+          "code": "ELIGIBILITY_ACCOUNT",
+          "label": "Éligibilité & compte",
+          "description": "Conditions d'accès, âge, création/sécurité du compte.",
+          "color": "#14B8A6",
+          "members": [
+            "ELIGIBILITY_ACCOUNT"
+          ]
+        },
+        {
+          "code": "ACCEPTABLE_USE",
+          "label": "Usage acceptable",
+          "description": "Comportements interdits, abus, restrictions d'usage.",
+          "color": "#22C55E",
+          "members": [
+            "ACCEPTABLE_USE"
+          ]
+        },
+        {
+          "code": "USER_CONTENT",
+          "label": "Contenu utilisateur",
+          "description": "Contenu posté par l'utilisateur, droits/licences accordés dessus.",
+          "color": "#84CC16",
+          "members": [
+            "USER_CONTENT"
+          ]
+        },
+        {
+          "code": "LICENSE_IP",
+          "label": "Licence & propriété intel.",
+          "description": "Propriété intellectuelle du fournisseur, licence d'usage du service/logiciel.",
+          "color": "#EAB308",
+          "members": [
+            "LICENSE_IP"
+          ]
+        },
+        {
+          "code": "MODIFICATION_OF_TERMS",
+          "label": "Modification des conditions",
+          "description": "Droit de modifier les CGU ou le service.",
+          "color": "#F59E0B",
+          "members": [
+            "MODIFICATION_OF_TERMS"
+          ]
+        },
+        {
+          "code": "TERMINATION",
+          "label": "Résiliation",
+          "description": "Suspension/clôture du compte ou du service.",
+          "color": "#F97316",
+          "members": [
+            "TERMINATION"
+          ]
+        },
+        {
+          "code": "WARRANTY_DISCLAIMER",
+          "label": "Exclusion de garantie",
+          "description": "Service fourni « en l'état », absence de garanties.",
+          "color": "#EF4444",
+          "members": [
+            "WARRANTY_DISCLAIMER"
+          ]
+        },
+        {
+          "code": "LIMITATION_LIABILITY",
+          "label": "Limitation de responsabilité",
+          "description": "Plafonds/exclusions de responsabilité et de dommages.",
+          "color": "#DC2626",
+          "members": [
+            "LIMITATION_LIABILITY"
+          ]
+        },
+        {
+          "code": "ARBITRATION_DISPUTES",
+          "label": "Arbitrage & litiges",
+          "description": "Résolution des litiges, arbitrage, renonciation à l'action collective.",
+          "color": "#EC4899",
+          "members": [
+            "ARBITRATION_DISPUTES"
+          ]
+        },
+        {
+          "code": "GOVERNING_LAW",
+          "label": "Loi applicable",
+          "description": "Loi applicable et/ou tribunal compétent.",
+          "color": "#D946EF",
+          "members": [
+            "GOVERNING_LAW"
+          ]
+        },
+        {
+          "code": "THIRD_PARTY_SERVICES",
+          "label": "Services tiers",
+          "description": "Liens, intégrations, services de tiers.",
+          "color": "#A855F7",
+          "members": [
+            "THIRD_PARTY_SERVICES"
+          ]
+        },
+        {
+          "code": "FEES_PAYMENT",
+          "label": "Frais & paiement",
+          "description": "Prix, abonnements, facturation, remboursements.",
+          "color": "#10B981",
+          "members": [
+            "FEES_PAYMENT"
+          ]
+        },
+        {
+          "code": "COMMUNICATIONS",
+          "label": "Communications",
+          "description": "Notifications, e-mails, communications administratives.",
+          "color": "#06B6D4",
+          "members": [
+            "COMMUNICATIONS"
+          ]
+        },
+        {
+          "code": "FEEDBACK",
+          "label": "Retours / feedback",
+          "description": "Suggestions/retours de l'utilisateur et droits dessus.",
+          "color": "#3B82F6",
+          "members": [
+            "FEEDBACK"
+          ]
+        },
+        {
+          "code": "PROMOTIONS",
+          "label": "Promotions",
+          "description": "Offres, concours, codes promo.",
+          "color": "#F472B6",
+          "members": [
+            "PROMOTIONS"
+          ]
+        },
+        {
+          "code": "DMCA",
+          "label": "DMCA / contrefaçon",
+          "description": "Signalement de contrefaçon, procédure de retrait.",
+          "color": "#FB7185",
+          "members": [
+            "DMCA"
+          ]
+        },
+        {
+          "code": "MISC_BOILERPLATE",
+          "label": "Boilerplate divers",
+          "description": "Clauses standard non spécifiques (divisibilité, intégralité, cession…).",
+          "color": "#94A3B8",
+          "isRefuge": true,
+          "members": [
+            "MISC_BOILERPLATE"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "T14",
+      "label": "T14 — fusion de fiabilité",
+      "short": "14 classes",
+      "rationale": "Fusion MINIMALE : on ne regroupe que les thèmes dont l'accord inter-annotateurs s'effondre (α < 0,50) avec leur voisin sémantique immédiat. Aucune réorganisation fonctionnelle. Sert de borne basse : ce que l'on gagne en ne touchant qu'à la queue de distribution.",
+      "categories": [
+        {
+          "code": "PREAMBLE_SCOPE",
+          "label": "Préambule, périmètre & dispositions diverses",
+          "description": "Objet et périmètre du contrat, acceptation, en-têtes et métadonnées, clauses standard non spécifiques (divisibilité, intégralité, cession).",
+          "color": "#8B5CF6",
+          "isRefuge": true,
+          "rationale": "META (α 0,51) et MISC_BOILERPLATE (α 0,53) sont la première grappe de confusion du corpus avec PREAMBLE_SCOPE (512 désaccords) : trois façons de nommer « ce qui encadre le contrat sans créer d'obligation ».",
+          "members": [
+            "PREAMBLE_SCOPE",
+            "META",
+            "MISC_BOILERPLATE"
+          ]
+        },
+        {
+          "code": "LICENSE_IP",
+          "label": "Licence, propriété intellectuelle & signalements",
+          "description": "Propriété intellectuelle du fournisseur, licence d'usage du service, procédure de signalement de contrefaçon, droits sur les suggestions de l'utilisateur.",
+          "color": "#EAB308",
+          "rationale": "DMCA (α 0,10) et FEEDBACK (α 0,13) sont les deux thèmes les moins fiables du corpus ; ce sont des régimes de licence particuliers, systématiquement confondus avec LICENSE_IP (223 et 38 désaccords).",
+          "members": [
+            "LICENSE_IP",
+            "DMCA",
+            "FEEDBACK"
+          ]
+        },
+        {
+          "code": "COMMUNICATIONS",
+          "label": "Communications & promotions",
+          "description": "Notifications, e-mails et communications administratives, offres, concours et codes promotionnels.",
+          "color": "#06B6D4",
+          "rationale": "PROMOTIONS (α 0,24, 10 phrases en consensus) est un canal de communication commercial ; COMMUNICATIONS (α 0,18) est le canal administratif. Leur frontière est la plus confusable du corpus (indice 0,235).",
+          "members": [
+            "COMMUNICATIONS",
+            "PROMOTIONS"
+          ]
+        },
+        {
+          "code": "ARBITRATION_DISPUTES",
+          "label": "Arbitrage, litiges & loi applicable",
+          "description": "Résolution des litiges, arbitrage obligatoire, renonciation à l'action collective, loi applicable et tribunal compétent.",
+          "color": "#EC4899",
+          "rationale": "GOVERNING_LAW (α 0,63, 163 phrases) est un satellite rare d'ARBITRATION_DISPUTES (α 0,90) : une même clause désigne souvent forum ET droit applicable.",
+          "members": [
+            "ARBITRATION_DISPUTES",
+            "GOVERNING_LAW"
+          ]
+        },
+        {
+          "code": "PRIVACY_DATA",
+          "label": "Données & vie privée",
+          "description": "Collecte/usage des données, renvoi à la politique de confidentialité.",
+          "color": "#0EA5E9",
+          "members": [
+            "PRIVACY_DATA"
+          ]
+        },
+        {
+          "code": "ELIGIBILITY_ACCOUNT",
+          "label": "Éligibilité & compte",
+          "description": "Conditions d'accès, âge, création/sécurité du compte.",
+          "color": "#14B8A6",
+          "members": [
+            "ELIGIBILITY_ACCOUNT"
+          ]
+        },
+        {
+          "code": "ACCEPTABLE_USE",
+          "label": "Usage acceptable",
+          "description": "Comportements interdits, abus, restrictions d'usage.",
+          "color": "#22C55E",
+          "members": [
+            "ACCEPTABLE_USE"
+          ]
+        },
+        {
+          "code": "USER_CONTENT",
+          "label": "Contenu utilisateur",
+          "description": "Contenu posté par l'utilisateur, droits/licences accordés dessus.",
+          "color": "#84CC16",
+          "members": [
+            "USER_CONTENT"
+          ]
+        },
+        {
+          "code": "MODIFICATION_OF_TERMS",
+          "label": "Modification des conditions",
+          "description": "Droit de modifier les CGU ou le service.",
+          "color": "#F59E0B",
+          "members": [
+            "MODIFICATION_OF_TERMS"
+          ]
+        },
+        {
+          "code": "TERMINATION",
+          "label": "Résiliation",
+          "description": "Suspension/clôture du compte ou du service.",
+          "color": "#F97316",
+          "members": [
+            "TERMINATION"
+          ]
+        },
+        {
+          "code": "WARRANTY_DISCLAIMER",
+          "label": "Exclusion de garantie",
+          "description": "Service fourni « en l'état », absence de garanties.",
+          "color": "#EF4444",
+          "members": [
+            "WARRANTY_DISCLAIMER"
+          ]
+        },
+        {
+          "code": "LIMITATION_LIABILITY",
+          "label": "Limitation de responsabilité",
+          "description": "Plafonds/exclusions de responsabilité et de dommages.",
+          "color": "#DC2626",
+          "members": [
+            "LIMITATION_LIABILITY"
+          ]
+        },
+        {
+          "code": "THIRD_PARTY_SERVICES",
+          "label": "Services tiers",
+          "description": "Liens, intégrations, services de tiers.",
+          "color": "#A855F7",
+          "members": [
+            "THIRD_PARTY_SERVICES"
+          ]
+        },
+        {
+          "code": "FEES_PAYMENT",
+          "label": "Frais & paiement",
+          "description": "Prix, abonnements, facturation, remboursements.",
+          "color": "#10B981",
+          "members": [
+            "FEES_PAYMENT"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "T11",
+      "label": "T11 — familles fonctionnelles (stratifiée)",
+      "short": "11 classes",
+      "rationale": "RECOMMANDÉE. Regroupe les thèmes par FONCTION contractuelle le long des quatre grappes de confusion mesurées, mais JAMAIS à travers les strates d'abusivité : limitation de responsabilité (P(abusif) = 0,385) reste séparée de l'exclusion de garantie (0,039). C'est ce garde-fou qui distingue T11 de T10.",
+      "categories": [
+        {
+          "code": "FRAMEWORK",
+          "label": "Cadre contractuel & communications",
+          "description": "Tout ce qui encadre le contrat sans créer d'obligation substantielle : objet et périmètre, acceptation, en-têtes et métadonnées, clauses standard, notifications et communications, offres promotionnelles.",
+          "color": "#8B5CF6",
+          "isRefuge": true,
+          "rationale": "Les cinq thèmes de la grappe « cadrage » : PREAMBLE_SCOPE, META, MISC_BOILERPLATE, COMMUNICATIONS, PROMOTIONS. Abusivité homogène et basse (lift ≤ 0,8).",
+          "members": [
+            "PREAMBLE_SCOPE",
+            "META",
+            "MISC_BOILERPLATE",
+            "COMMUNICATIONS",
+            "PROMOTIONS"
+          ]
+        },
+        {
+          "code": "CONTENT_IP",
+          "label": "Contenu, propriété intellectuelle & signalements",
+          "description": "Le régime des contenus et des droits : licence du fournisseur sur le service, licence concédée sur le contenu de l'utilisateur, retraits et signalements de contrefaçon, droits sur les suggestions.",
+          "color": "#EAB308",
+          "rationale": "Quatuor des licences croisées (LICENSE_IP, USER_CONTENT, DMCA, FEEDBACK) : 409 + 223 + 38 désaccords entre eux. α simulé de la fusion (0,751) supérieur à sa meilleure composante isolée.",
+          "members": [
+            "LICENSE_IP",
+            "USER_CONTENT",
+            "DMCA",
+            "FEEDBACK"
+          ]
+        },
+        {
+          "code": "ACCOUNT_USE",
+          "label": "Accès au compte & usage du service",
+          "description": "Qui peut utiliser le service et pour quoi : conditions d'accès, âge, création et sécurité du compte, comportements interdits, restrictions d'usage.",
+          "color": "#14B8A6",
+          "rationale": "ELIGIBILITY_ACCOUNT et ACCEPTABLE_USE sont deux faces d'une même police d'accès (188 désaccords), à abusivité identique (0,036 / 0,040).",
+          "members": [
+            "ELIGIBILITY_ACCOUNT",
+            "ACCEPTABLE_USE"
+          ]
+        },
+        {
+          "code": "DISPUTES_LAW",
+          "label": "Litiges, arbitrage & loi applicable",
+          "description": "Le règlement du contentieux : procédure d'arbitrage, renonciation à l'action collective, tribunal compétent, loi applicable.",
+          "color": "#EC4899",
+          "rationale": "ARBITRATION_DISPUTES et GOVERNING_LAW règlent le même objet (le contentieux) et appartiennent à la même strate d'abusivité intermédiaire-haute.",
+          "members": [
+            "ARBITRATION_DISPUTES",
+            "GOVERNING_LAW"
+          ]
+        },
+        {
+          "code": "PRIVACY_DATA",
+          "label": "Données & vie privée",
+          "description": "Collecte/usage des données, renvoi à la politique de confidentialité.",
+          "color": "#0EA5E9",
+          "rationale": "Conservée seule malgré un support faible (269 phrases) : domaine juridique propre (RGPD) et aucun partenaire de fusion légitime. Dette déclarée du schéma.",
+          "members": [
+            "PRIVACY_DATA"
+          ]
+        },
+        {
+          "code": "MODIFICATION_OF_TERMS",
+          "label": "Modification des conditions",
+          "description": "Droit de modifier unilatéralement les CGU ou le service.",
+          "color": "#F59E0B",
+          "rationale": "Pilier d'abusivité (P(abusif) = 0,488, lift 4,5) : intouchable.",
+          "members": [
+            "MODIFICATION_OF_TERMS"
+          ]
+        },
+        {
+          "code": "TERMINATION",
+          "label": "Résiliation",
+          "description": "Suspension et clôture du compte ou du service, et leurs effets.",
+          "color": "#F97316",
+          "rationale": "Pilier d'abusivité (0,386, lift 3,5) : intouchable.",
+          "members": [
+            "TERMINATION"
+          ]
+        },
+        {
+          "code": "LIMITATION_LIABILITY",
+          "label": "Limitation de responsabilité",
+          "description": "Plafonds et exclusions de responsabilité et de dommages.",
+          "color": "#DC2626",
+          "rationale": "Pilier d'abusivité (0,385, lift 3,5) : SÉPARÉE de l'exclusion de garantie — c'est le garde-fou des strates, et la requête compositionnelle du graphe a besoin des deux types distincts.",
+          "members": [
+            "LIMITATION_LIABILITY"
+          ]
+        },
+        {
+          "code": "WARRANTY_DISCLAIMER",
+          "label": "Exclusion de garantie",
+          "description": "Service fourni « en l'état », absence de garanties.",
+          "color": "#EF4444",
+          "rationale": "Strate basse (0,039) : la fusionner avec la limitation de responsabilité coûterait 12,6 % du signal d'abusivité (mesuré).",
+          "members": [
+            "WARRANTY_DISCLAIMER"
+          ]
+        },
+        {
+          "code": "THIRD_PARTY_SERVICES",
+          "label": "Services tiers",
+          "description": "Liens, intégrations et services de tiers, et la responsabilité associée.",
+          "color": "#A855F7",
+          "members": [
+            "THIRD_PARTY_SERVICES"
+          ]
+        },
+        {
+          "code": "FEES_PAYMENT",
+          "label": "Frais & paiement",
+          "description": "Prix, abonnements, facturation, renouvellement, remboursements.",
+          "color": "#10B981",
+          "rationale": "Conservée seule malgré 167 désaccords avec TERMINATION : fonctions disjointes et strates opposées ; les clauses bifaces relèvent du multi-étiquetage, pas de la fusion.",
+          "members": [
+            "FEES_PAYMENT"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "T10",
+      "label": "T10 — familles fonctionnelles (non stratifiée)",
+      "short": "10 classes",
+      "rationale": "T11 plus la fusion des deux clauses exculpatoires. Sert de TEST À CHARGE du garde-fou des strates : cette unique fusion supplémentaire coûte 12,6 % du signal d'abusivité (contre 4,9 % pour l'ensemble des fusions de T11). N'est PAS destinée à être adoptée.",
+      "categories": [
+        {
+          "code": "FRAMEWORK",
+          "label": "Cadre contractuel & communications",
+          "description": "Tout ce qui encadre le contrat sans créer d'obligation substantielle : objet et périmètre, acceptation, en-têtes et métadonnées, clauses standard, notifications et communications, offres promotionnelles.",
+          "color": "#8B5CF6",
+          "isRefuge": true,
+          "members": [
+            "PREAMBLE_SCOPE",
+            "META",
+            "MISC_BOILERPLATE",
+            "COMMUNICATIONS",
+            "PROMOTIONS"
+          ],
+          "rationale": "Les cinq thèmes de la grappe « cadrage » : PREAMBLE_SCOPE, META, MISC_BOILERPLATE, COMMUNICATIONS, PROMOTIONS. Abusivité homogène et basse (lift ≤ 0,8)."
+        },
+        {
+          "code": "CONTENT_IP",
+          "label": "Contenu, propriété intellectuelle & signalements",
+          "description": "Le régime des contenus et des droits : licence du fournisseur sur le service, licence concédée sur le contenu de l'utilisateur, retraits et signalements de contrefaçon, droits sur les suggestions.",
+          "color": "#EAB308",
+          "members": [
+            "LICENSE_IP",
+            "USER_CONTENT",
+            "DMCA",
+            "FEEDBACK"
+          ],
+          "rationale": "Quatuor des licences croisées (LICENSE_IP, USER_CONTENT, DMCA, FEEDBACK) : 409 + 223 + 38 désaccords entre eux. α simulé de la fusion (0,751) supérieur à sa meilleure composante isolée."
+        },
+        {
+          "code": "ACCOUNT_USE",
+          "label": "Accès au compte & usage du service",
+          "description": "Qui peut utiliser le service et pour quoi : conditions d'accès, âge, création et sécurité du compte, comportements interdits, restrictions d'usage.",
+          "color": "#14B8A6",
+          "members": [
+            "ELIGIBILITY_ACCOUNT",
+            "ACCEPTABLE_USE"
+          ],
+          "rationale": "ELIGIBILITY_ACCOUNT et ACCEPTABLE_USE sont deux faces d'une même police d'accès (188 désaccords), à abusivité identique (0,036 / 0,040)."
+        },
+        {
+          "code": "DISPUTES_LAW",
+          "label": "Litiges, arbitrage & loi applicable",
+          "description": "Le règlement du contentieux : procédure d'arbitrage, renonciation à l'action collective, tribunal compétent, loi applicable.",
+          "color": "#EC4899",
+          "members": [
+            "ARBITRATION_DISPUTES",
+            "GOVERNING_LAW"
+          ],
+          "rationale": "ARBITRATION_DISPUTES et GOVERNING_LAW règlent le même objet (le contentieux) et appartiennent à la même strate d'abusivité intermédiaire-haute."
+        },
+        {
+          "code": "RISK_ALLOCATION",
+          "label": "Répartition des risques (responsabilité & garanties)",
+          "description": "L'ensemble des clauses exculpatoires : plafonds et exclusions de responsabilité, et absence de garantie sur le service.",
+          "color": "#DC2626",
+          "rationale": "Fusion REJETÉE pour l'adoption : elle dilue le thème le plus prédictif de l'abusivité (0,385) dans une classe deux fois plus grosse et quatre fois moins dense (0,039).",
+          "members": [
+            "LIMITATION_LIABILITY",
+            "WARRANTY_DISCLAIMER"
+          ]
+        },
+        {
+          "code": "PRIVACY_DATA",
+          "label": "Données & vie privée",
+          "description": "Collecte/usage des données, renvoi à la politique de confidentialité.",
+          "color": "#0EA5E9",
+          "members": [
+            "PRIVACY_DATA"
+          ]
+        },
+        {
+          "code": "MODIFICATION_OF_TERMS",
+          "label": "Modification des conditions",
+          "description": "Droit de modifier unilatéralement les CGU ou le service.",
+          "color": "#F59E0B",
+          "members": [
+            "MODIFICATION_OF_TERMS"
+          ]
+        },
+        {
+          "code": "TERMINATION",
+          "label": "Résiliation",
+          "description": "Suspension et clôture du compte ou du service, et leurs effets.",
+          "color": "#F97316",
+          "members": [
+            "TERMINATION"
+          ]
+        },
+        {
+          "code": "THIRD_PARTY_SERVICES",
+          "label": "Services tiers",
+          "description": "Liens, intégrations et services de tiers, et la responsabilité associée.",
+          "color": "#A855F7",
+          "members": [
+            "THIRD_PARTY_SERVICES"
+          ]
+        },
+        {
+          "code": "FEES_PAYMENT",
+          "label": "Frais & paiement",
+          "description": "Prix, abonnements, facturation, renouvellement, remboursements.",
+          "color": "#10B981",
+          "members": [
+            "FEES_PAYMENT"
+          ]
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,236 @@
+{
+  "version": 1,
+  "builtAt": "2026-09-19T20:49:02+00:00",
+  "datasetFingerprint": "7116e627f528c5572457e79d9e53d2e71bfc21e3a20aacb43e9d3072cfb70e2e",
+  "counts": {
+    "documents": 50,
+    "sentences": 9414,
+    "votes": 28242,
+    "goldSentences": 9414,
+    "annotators": 3,
+    "judges": [
+      "claude",
+      "codex",
+      "fable",
+      "mistral"
+    ],
+    "unfairSentences": 1032
+  },
+  "zip": {
+    "path": "/downloads/thematic-layer-7116e627.zip",
+    "bytes": 401695,
+    "sha256": "c7463c3c8e66491d4f265fc7f3ab9f40c6849e0f96ebbedb171ba68b3cec39c1"
+  },
+  "downloads": [
+    {
+      "name": "README.md",
+      "path": "/downloads/thematic-layer-7116e627/README.md",
+      "bytes": 3183,
+      "sha256": "27ae10520d64aca11068195b6579022846d79a801d82198d71c9ce07dfff873c",
+      "records": null,
+      "description": "How to read and join the files."
+    },
+    {
+      "name": "gold.jsonl",
+      "path": "/downloads/thematic-layer-7116e627/gold.jsonl",
+      "bytes": 3512978,
+      "sha256": "58553da715ab0e92464d0bfa7e31477d3a1a8c2c974f08051293ff26e337f0eb",
+      "records": 9414,
+      "description": "Frozen gold standard and arbitration trail: agreement class, cascade tier, engine proposal, decided themes, vote tally, confidence."
+    },
+    {
+      "name": "judges.jsonl",
+      "path": "/downloads/thematic-layer-7116e627/judges.jsonl",
+      "bytes": 4186688,
+      "sha256": "102ade73d78b4fe4922197d495f223f272324678534ff511444c6956a8a0e6e0",
+      "records": 37656,
+      "description": "The four LLM judges on the same sentences and vocabulary."
+    },
+    {
+      "name": "labels.json",
+      "path": "/downloads/thematic-layer-7116e627/labels.json",
+      "bytes": 1885,
+      "sha256": "579746079e186255321698df9f242cbbef717bd07a6e245ff327d2d08168890e",
+      "records": null,
+      "description": "Label inventory and supports."
+    },
+    {
+      "name": "manifest.json",
+      "path": "/downloads/thematic-layer-7116e627/manifest.json",
+      "bytes": 5320,
+      "sha256": "c62b5b866939a4ea5691859cae7dd83e776e3a573172d4206cb4846376f5bbcb",
+      "records": null,
+      "description": "Provenance: counts, fingerprint, build parameters."
+    },
+    {
+      "name": "prompts/PROMPT_V9_2_FABLE.md",
+      "path": "/downloads/thematic-layer-7116e627/prompts/PROMPT_V9_2_FABLE.md",
+      "bytes": 9231,
+      "sha256": "35ca02cbc9ad424f41a532753001c950aa4f104272da2030f6e97b6c4db414df",
+      "records": null,
+      "description": "Judge prompt or runbook (protocol v9.2)"
+    },
+    {
+      "name": "prompts/PROMPT_V9_2_MISTRAL.md",
+      "path": "/downloads/thematic-layer-7116e627/prompts/PROMPT_V9_2_MISTRAL.md",
+      "bytes": 8253,
+      "sha256": "419700a888cc6f132415339ccb59709dd0abcbf6068de916dbea18fcd93977f7",
+      "records": null,
+      "description": "Judge prompt or runbook (protocol v9.2)"
+    },
+    {
+      "name": "prompts/PROMPT_V9_2_claude_codex.md",
+      "path": "/downloads/thematic-layer-7116e627/prompts/PROMPT_V9_2_claude_codex.md",
+      "bytes": 6040,
+      "sha256": "d6844ce5f88b8c91e4b03c2c2c051b733025aa277937051615155a4014535a77",
+      "records": null,
+      "description": "Judge prompt or runbook (protocol v9.2)"
+    },
+    {
+      "name": "prompts/README.md",
+      "path": "/downloads/thematic-layer-7116e627/prompts/README.md",
+      "bytes": 3212,
+      "sha256": "5dcb6821953ec7879938c760dcafe020d77a6be92027d1092b0cb745ae7dfe43",
+      "records": null,
+      "description": "Judge prompt or runbook (protocol v9.2)"
+    },
+    {
+      "name": "prompts/RUNBOOK_V9_2_FABLE.md",
+      "path": "/downloads/thematic-layer-7116e627/prompts/RUNBOOK_V9_2_FABLE.md",
+      "bytes": 9618,
+      "sha256": "819955066071f090c7e6c6fd36f1b2895a7e3158f00eb8a337198c09e0df5f64",
+      "records": null,
+      "description": "Judge prompt or runbook (protocol v9.2)"
+    },
+    {
+      "name": "prompts/RUNBOOK_V9_2_MISTRAL.md",
+      "path": "/downloads/thematic-layer-7116e627/prompts/RUNBOOK_V9_2_MISTRAL.md",
+      "bytes": 8050,
+      "sha256": "411918a8385f7c778b2170df90b14f4305299393d2f26155174fe9798c46f1eb",
+      "records": null,
+      "description": "Judge prompt or runbook (protocol v9.2)"
+    },
+    {
+      "name": "prompts/RUNBOOK_V9_2_claude_codex.md",
+      "path": "/downloads/thematic-layer-7116e627/prompts/RUNBOOK_V9_2_claude_codex.md",
+      "bytes": 4976,
+      "sha256": "e2b10fda6b5fcfeaf2f00687a57c1bd9b8d6e296b8ffcbcd96f25f45df385397",
+      "records": null,
+      "description": "Judge prompt or runbook (protocol v9.2)"
+    },
+    {
+      "name": "splits.json",
+      "path": "/downloads/thematic-layer-7116e627/splits.json",
+      "bytes": 1293,
+      "sha256": "c92f45efe0b396e33ed4c9f41877e6ad677fd1392681415c06ffb9a533943e5f",
+      "records": null,
+      "description": "Document-level folds used for every model result."
+    },
+    {
+      "name": "taxonomies.json",
+      "path": "/downloads/thematic-layer-7116e627/taxonomies.json",
+      "bytes": 27379,
+      "sha256": "f6cdd2715df021779fc6b11c640c276a8980c21959e42171570f41988686ace4",
+      "records": null,
+      "description": "Frozen taxonomy specification: T20 and the T14 / T11 / T10 projections, design / held-out partition."
+    },
+    {
+      "name": "votes.jsonl",
+      "path": "/downloads/thematic-layer-7116e627/votes.jsonl",
+      "bytes": 3074126,
+      "sha256": "242b2f74a5c4d330ea5cdfba49499c4f1c633ca9b152a54aa4d231ef03483c18",
+      "records": 28242,
+      "description": "Individual annotator votes (A1–A3): one record per (document, sentence, annotator), primary theme and secondary themes."
+    }
+  ],
+  "judges": [
+    {
+      "id": "fable",
+      "model": "Claude Fable 5"
+    },
+    {
+      "id": "claude",
+      "model": "Claude Opus 4.7"
+    },
+    {
+      "id": "mistral",
+      "model": "Mistral Medium 3.5"
+    },
+    {
+      "id": "codex",
+      "model": "GPT-5.5"
+    }
+  ],
+  "figures": [
+    {
+      "key": "alpha_masi",
+      "label": "Krippendorff's α (MASI distance), three annotators",
+      "t20": 0.658076,
+      "t11": 0.725014,
+      "source": "docs/pactiva-taxonomies/resultats/taxonomy_matrix.json (population all, raw)",
+      "how": "α computed on the individual votes (votes.jsonl) with the MASI distance on the set {primary} ∪ secondaries; the 11-theme value is the same votes projected through taxonomies.json."
+    },
+    {
+      "key": "alpha_nominal",
+      "label": "Nominal α on primary themes",
+      "t20": 0.731536,
+      "t11": 0.794027,
+      "source": "taxonomy_matrix.json (raw)",
+      "how": "Same votes, primary theme only, nominal distance; the gap with α-MASI is the cost of the multi-label format."
+    },
+    {
+      "key": "consolidation_gain",
+      "label": "Gain from consolidating 20 → 11 themes (α-MASI)",
+      "t20": null,
+      "t11": 0.067,
+      "source": "taxonomy_matrix.json",
+      "how": "Paired difference of α-MASI between the T20 votes and their T11 projection (bootstrap CI over documents in the paper)."
+    },
+    {
+      "key": "human_ceiling_kappa",
+      "label": "Human ceiling, κ (leave-one-annotator-out against the gold)",
+      "t20": 0.8594,
+      "t11": null,
+      "source": "frontend/src/features/paper/campaign.json (E1.5)",
+      "how": "Each annotator scored against a gold rebuilt without her votes; mean Cohen's κ over the three annotators (accuracy 0.8705)."
+    },
+    {
+      "key": "legalbert_kappa",
+      "label": "Legal-BERT fine-tuned, κ (5-fold, grouped by document)",
+      "t20": 0.694916,
+      "t11": 0.719628,
+      "ci_t20": {
+        "low": 0.57553,
+        "high": 0.638178,
+        "unit": "document",
+        "point": 0.606555,
+        "confidence": 0.95,
+        "nResamples": 1000
+      },
+      "ci_t11": {
+        "low": 0.710459,
+        "high": 0.757826,
+        "unit": "document",
+        "point": 0.733507,
+        "confidence": 0.95,
+        "nResamples": 1000
+      },
+      "source": "research/runs/legalbert_T20/results.json, research/runs/legalbert_T11/results.json",
+      "how": "nlpaueb/legal-bert-base-uncased, 8 epochs, ±1 sentence of context, weighted cross-entropy, seed 42, 5-fold cross-validation grouped by document on Grid'5000; macro-F1 0.612707 / 0.734652."
+    },
+    {
+      "key": "best_judge_kappa",
+      "label": "Best LLM judge (Claude Fable 5), κ",
+      "t20": 0.5805,
+      "t11": 0.5908,
+      "source": "campaign.json (E3.3)",
+      "how": "judges.jsonl against the gold; the other judges: Claude Opus 4.7 0.5147 / 0.5308, Mistral Medium 3.5 0.3272 / 0.3533, GPT-5.5 0.2659 / 0.3016."
+    }
+  ],
+  "model": null,
+  "limits": {
+    "maxChars": 60000,
+    "maxSentences": 400,
+    "language": "en"
+  }
+}
