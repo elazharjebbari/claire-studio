@@ -1,0 +1,64 @@
+{
+  "family": "transformer_finetune",
+  "checkpoint": "nlpaueb/legal-bert-base-uncased",
+  "seed": 42,
+  "config": {
+    "family": "transformer_finetune",
+    "checkpoint": "nlpaueb/legal-bert-base-uncased",
+    "epochs": 8,
+    "batch_size": 16,
+    "learning_rate": 2e-05,
+    "loss": "weighted_ce",
+    "early_stopping_patience": 3,
+    "save_model": true
+  },
+  "preprocess": {
+    "detokenize": "regex_rules",
+    "max_length": 128,
+    "context": {
+      "window_before": 1,
+      "window_after": 1
+    }
+  },
+  "task": "T1_primary",
+  "dataset_fingerprint": "7116e627f528c5572457e79d9e53d2e71bfc21e3a20aacb43e9d3072cfb70e2e",
+  "split": {
+    "scheme": "design_holdout",
+    "fold": 0,
+    "train_documents": [
+      "9gag",
+      "Academia",
+      "Airbnb",
+      "Amazon",
+      "Atlas",
+      "Betterpoints_UK",
+      "Booking",
+      "Crowdtangle",
+      "Deliveroo",
+      "Dropbox",
+      "Duolingo",
+      "Endomondo",
+      "Evernote",
+      "Facebook",
+      "Fitbit",
+      "Google",
+      "Instagram",
+      "Masquerade",
+      "Microsoft",
+      "Moves-app",
+      "Netflix",
+      "Onavo",
+      "Rovio",
+      "Skyscanner",
+      "Snap",
+      "Supercell",
+      "Syncme",
+      "TrueCaller",
+      "Uber",
+      "Viber",
+      "Vimeo",
+      "Vivino",
+      "YouTube"
+    ]
+  }
+}

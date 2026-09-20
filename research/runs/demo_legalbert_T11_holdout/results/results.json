@@ -1,0 +1,851 @@
+{
+  "task": "T1_primary",
+  "config": {
+    "version": 1,
+    "seed": 42,
+    "task": "T1_primary",
+    "data": {
+      "taxonomy": "T11"
+    },
+    "preprocess": {
+      "detokenize": "regex_rules",
+      "max_length": 128,
+      "context": {
+        "window_before": 1,
+        "window_after": 1
+      }
+    },
+    "model": {
+      "family": "transformer_finetune",
+      "checkpoint": "nlpaueb/legal-bert-base-uncased",
+      "epochs": 8,
+      "batch_size": 16,
+      "learning_rate": 2e-05,
+      "loss": "weighted_ce",
+      "early_stopping_patience": 3,
+      "save_model": true
+    },
+    "evaluation": {
+      "split": {
+        "scheme": "design_holdout"
+      },
+      "bootstrap": {
+        "enabled": true,
+        "n_resamples": 1000
+      },
+      "human_ceiling": true,
+      "calibration": true,
+      "error_analysis": true
+    },
+    "compute": {
+      "target": "local",
+      "require_gpu": false
+    },
+    "note": "Modèle servi par la page reviewer : recette E4.4 (legal-bert-finetune), découpe design(33)/hold-out(17) pour que les 17 contrats proposés en essai soient inconnus du modèle."
+  },
+  "dataset": {
+    "fingerprint": "7116e627f528c5572457e79d9e53d2e71bfc21e3a20aacb43e9d3072cfb70e2e",
+    "nDocuments": 50,
+    "nSentences": 9414
+  },
+  "preprocess": "detok=regex_rules ctx=-1/+1",
+  "split": {
+    "scheme": "design_holdout",
+    "population": null,
+    "n_folds": 1,
+    "n_train_documents": 33,
+    "n_test_documents": 17
+  },
+  "metrics": {
+    "kappa": 0.711097,
+    "kappa_dispersion": 0.0,
+    "macro_f1": 0.729073,
+    "macro_f1_dispersion": 0.0,
+    "micro_f1": 0.748897,
+    "micro_f1_dispersion": 0.0,
+    "fold_stats": {
+      "kappa": {
+        "mean": 0.711097,
+        "std": 0.0,
+        "min": 0.711097,
+        "max": 0.711097,
+        "n": 1
+      },
+      "macro_f1": {
+        "mean": 0.729073,
+        "std": 0.0,
+        "min": 0.729073,
+        "max": 0.729073,
+        "n": 1
+      },
+      "micro_f1": {
+        "mean": 0.748897,
+        "std": 0.0,
+        "min": 0.748897,
+        "max": 0.748897,
+        "n": 1
+      }
+    },
+    "ece": 0.171689,
+    "reliability_curve": [
+      {
+        "bin": 2,
+        "meanConfidence": 0.279641,
+        "accuracy": 0.333333,
+        "count": 3
+      },
+      {
+        "bin": 3,
+        "meanConfidence": 0.367222,
+        "accuracy": 0.233333,
+        "count": 30
+      },
+      {
+        "bin": 4,
+        "meanConfidence": 0.458336,
+        "accuracy": 0.282051,
+        "count": 78
+      },
+      {
+        "bin": 5,
+        "meanConfidence": 0.548818,
+        "accuracy": 0.42,
+        "count": 150
+      },
+      {
+        "bin": 6,
+        "meanConfidence": 0.65202,
+        "accuracy": 0.4,
+        "count": 165
+      },
+      {
+        "bin": 7,
+        "meanConfidence": 0.747589,
+        "accuracy": 0.395062,
+        "count": 162
+      },
+      {
+        "bin": 8,
+        "meanConfidence": 0.858845,
+        "accuracy": 0.49505,
+        "count": 303
+      },
+      {
+        "bin": 9,
+        "meanConfidence": 0.983675,
+        "accuracy": 0.84123,
+        "count": 3187
+      }
+    ],
+    "macro_f1_ci": {
+      "point": 0.729073,
+      "low": 0.693545,
+      "high": 0.760785,
+      "nResamples": 1000,
+      "confidence": 0.95,
+      "unit": "document"
+    }
+  },
+  "per_fold": [
+    {
+      "macro_f1": 0.729073,
+      "micro_f1": 0.748897,
+      "kappa": 0.711097
+    }
+  ],
+  "per_label": [
+    {
+      "label": "CONTENT_IP",
+      "precision": 0.709172,
+      "recall": 0.802532,
+      "f1": 0.752969,
+      "support": 790
+    },
+    {
+      "label": "ACCOUNT_USE",
+      "precision": 0.778689,
+      "recall": 0.62336,
+      "f1": 0.69242,
+      "support": 762
+    },
+    {
+      "label": "FRAMEWORK",
+      "precision": 0.643917,
+      "recall": 0.781982,
+      "f1": 0.706265,
+      "support": 555
+    },
+    {
+      "label": "FEES_PAYMENT",
+      "precision": 0.869936,
+      "recall": 0.754159,
+      "f1": 0.807921,
+      "support": 541
+    },
+    {
+      "label": "DISPUTES_LAW",
+      "precision": 0.932314,
+      "recall": 0.928261,
+      "f1": 0.930283,
+      "support": 460
+    },
+    {
+      "label": "LIMITATION_LIABILITY",
+      "precision": 0.823529,
+      "recall": 0.693069,
+      "f1": 0.752688,
+      "support": 202
+    },
+    {
+      "label": "THIRD_PARTY_SERVICES",
+      "precision": 0.766667,
+      "recall": 0.572139,
+      "f1": 0.655271,
+      "support": 201
+    },
+    {
+      "label": "WARRANTY_DISCLAIMER",
+      "precision": 0.553633,
+      "recall": 0.855615,
+      "f1": 0.672269,
+      "support": 187
+    },
+    {
+      "label": "TERMINATION",
+      "precision": 0.71831,
+      "recall": 0.69863,
+      "f1": 0.708333,
+      "support": 146
+    },
+    {
+      "label": "MODIFICATION_OF_TERMS",
+      "precision": 0.839695,
+      "recall": 0.769231,
+      "f1": 0.80292,
+      "support": 143
+    },
+    {
+      "label": "PRIVACY_DATA",
+      "precision": 0.538462,
+      "recall": 0.538462,
+      "f1": 0.538462,
+      "support": 91
+    }
+  ],
+  "environment": {
+    "python": "3.11.12",
+    "platform": "macOS-26.3.1-x86_64-i386-64bit",
+    "processor": "i386",
+    "packages": {
+      "scikit-learn": "1.9.0",
+      "numpy": "1.26.4",
+      "torch": "2.2.2",
+      "transformers": "4.44.2",
+      "sentence-transformers": "3.0.1"
+    },
+    "gpu": {
+      "available": false,
+      "device": null
+    },
+    "elapsedSeconds": 11747.733
+  },
+  "human_ceiling": {
+    "value": 0.468026,
+    "metric": "strict_agreement_rate",
+    "task": "T1_primary",
+    "pairs": 9414,
+    "ci": {
+      "point": 0.468026,
+      "low": 0.420644,
+      "high": 0.520025,
+      "nResamples": 1000,
+      "confidence": 0.95,
+      "unit": "document"
+    },
+    "note": "Approximation calculée sur le dataset AGRÉGÉ (taux d'accord strict). Le plafond exact demande les votes individuels : construire un dataset avec aggregation='soft' pour l'obtenir."
+  },
+  "errors": {
+    "nErrors": 1024,
+    "errorRate": 0.251103,
+    "unfairErrorRate": 0.238636,
+    "unfairSentences": 440,
+    "byAgreementClass": {
+      "divergence": {
+        "n": 156,
+        "errors": 107,
+        "rate": 0.685897
+      },
+      "majority": {
+        "n": 2008,
+        "errors": 613,
+        "rate": 0.305279
+      },
+      "strict": {
+        "n": 1914,
+        "errors": 304,
+        "rate": 0.15883
+      }
+    },
+    "lowestConfidenceErrors": [
+      {
+        "document": "Twitter",
+        "index": 33,
+        "fold": 0,
+        "y_true": "MODIFICATION_OF_TERMS",
+        "y_pred": "TERMINATION",
+        "confidence": 0.281953,
+        "scores": {
+          "TERMINATION": 0.281953,
+          "FRAMEWORK": 0.247036,
+          "MODIFICATION_OF_TERMS": 0.169418,
+          "WARRANTY_DISCLAIMER": 0.133654,
+          "ACCOUNT_USE": 0.075177
+        },
+        "unfair": [
+          "CH"
+        ],
+        "agreement": "majority"
+      },
+      {
+        "document": "Twitter",
+        "index": 37,
+        "fold": 0,
+        "y_true": "MODIFICATION_OF_TERMS",
+        "y_pred": "TERMINATION",
+        "confidence": 0.281953,
+        "scores": {
+          "TERMINATION": 0.281953,
+          "FRAMEWORK": 0.247036,
+          "MODIFICATION_OF_TERMS": 0.169418,
+          "WARRANTY_DISCLAIMER": 0.133654,
+          "ACCOUNT_USE": 0.075177
+        },
+        "unfair": [
+          "CH"
+        ],
+        "agreement": "majority"
+      },
+      {
+        "document": "TripAdvisor",
+        "index": 95,
+        "fold": 0,
+        "y_true": "THIRD_PARTY_SERVICES",
+        "y_pred": "ACCOUNT_USE",
+        "confidence": 0.310762,
+        "scores": {
+          "ACCOUNT_USE": 0.310762,
+          "THIRD_PARTY_SERVICES": 0.303575,
+          "FRAMEWORK": 0.188278,
+          "WARRANTY_DISCLAIMER": 0.098588,
+          "FEES_PAYMENT": 0.036287
+        },
+        "unfair": [],
+        "agreement": "strict"
+      },
+      {
+        "document": "LindenLab",
+        "index": 37,
+        "fold": 0,
+        "y_true": "LIMITATION_LIABILITY",
+        "y_pred": "THIRD_PARTY_SERVICES",
+        "confidence": 0.321817,
+        "scores": {
+          "THIRD_PARTY_SERVICES": 0.321817,
+          "FRAMEWORK": 0.311332,
+          "WARRANTY_DISCLAIMER": 0.249517,
+          "CONTENT_IP": 0.04704,
+          "LIMITATION_LIABILITY": 0.044624
+        },
+        "unfair": [],
+        "agreement": "majority"
+      },
+      {
+        "document": "Skype",
+        "index": 365,
+        "fold": 0,
+        "y_true": "FEES_PAYMENT",
+        "y_pred": "ACCOUNT_USE",
+        "confidence": 0.328536,
+        "scores": {
+          "ACCOUNT_USE": 0.328536,
+          "FRAMEWORK": 0.287467,
+          "FEES_PAYMENT": 0.25082,
+          "CONTENT_IP": 0.090447,
+          "WARRANTY_DISCLAIMER": 0.019101
+        },
+        "unfair": [],
+        "agreement": "majority"
+      },
+      {
+        "document": "WorldOfWarcraft",
+        "index": 138,
+        "fold": 0,
+        "y_true": "TERMINATION",
+        "y_pred": "FRAMEWORK",
+        "confidence": 0.332371,
+        "scores": {
+          "FRAMEWORK": 0.332371,
+          "WARRANTY_DISCLAIMER": 0.327834,
+          "ACCOUNT_USE": 0.159185,
+          "CONTENT_IP": 0.102485,
+          "FEES_PAYMENT": 0.026548
+        },
+        "unfair": [],
+        "agreement": "divergence"
+      },
+      {
+        "document": "Skype",
+        "index": 103,
+        "fold": 0,
+        "y_true": "CONTENT_IP",
+        "y_pred": "ACCOUNT_USE",
+        "confidence": 0.332582,
+        "scores": {
+          "ACCOUNT_USE": 0.332582,
+          "TERMINATION": 0.301994,
+          "CONTENT_IP": 0.188371,
+          "FRAMEWORK": 0.139553,
+          "WARRANTY_DISCLAIMER": 0.011941
+        },
+        "unfair": [
+          "CR",
+          "TER"
+        ],
+        "agreement": "majority"
+      },
+      {
+        "document": "Nintendo",
+        "index": 38,
+        "fold": 0,
+        "y_true": "LIMITATION_LIABILITY",
+        "y_pred": "ACCOUNT_USE",
+        "confidence": 0.337565,
+        "scores": {
+          "ACCOUNT_USE": 0.337565,
+          "CONTENT_IP": 0.270035,
+          "LIMITATION_LIABILITY": 0.229723,
+          "WARRANTY_DISCLAIMER": 0.137661,
+          "FEES_PAYMENT": 0.008351
+        },
+        "unfair": [],
+        "agreement": "majority"
+      },
+      {
+        "document": "Nintendo",
+        "index": 121,
+        "fold": 0,
+        "y_true": "THIRD_PARTY_SERVICES",
+        "y_pred": "CONTENT_IP",
+        "confidence": 0.348004,
+        "scores": {
+          "CONTENT_IP": 0.348004,
+          "LIMITATION_LIABILITY": 0.327434,
+          "WARRANTY_DISCLAIMER": 0.271339,
+          "THIRD_PARTY_SERVICES": 0.028486,
+          "ACCOUNT_USE": 0.011778
+        },
+        "unfair": [],
+        "agreement": "majority"
+      },
+      {
+        "document": "PokemonGo",
+        "index": 40,
+        "fold": 0,
+        "y_true": "THIRD_PARTY_SERVICES",
+        "y_pred": "FRAMEWORK",
+        "confidence": 0.349765,
+        "scores": {
+          "FRAMEWORK": 0.349765,
+          "THIRD_PARTY_SERVICES": 0.330787,
+          "CONTENT_IP": 0.254788,
+          "ACCOUNT_USE": 0.042547,
+          "PRIVACY_DATA": 0.006442
+        },
+        "unfair": [],
+        "agreement": "strict"
+      },
+      {
+        "document": "eBay",
+        "index": 64,
+        "fold": 0,
+        "y_true": "CONTENT_IP",
+        "y_pred": "ACCOUNT_USE",
+        "confidence": 0.357831,
+        "scores": {
+          "ACCOUNT_USE": 0.357831,
+          "FRAMEWORK": 0.347856,
+          "PRIVACY_DATA": 0.19991,
+          "CONTENT_IP": 0.025317,
+          "THIRD_PARTY_SERVICES": 0.020126
+        },
+        "unfair": [],
+        "agreement": "majority"
+      },
+      {
+        "document": "Nintendo",
+        "index": 99,
+        "fold": 0,
+        "y_true": "TERMINATION",
+        "y_pred": "ACCOUNT_USE",
+        "confidence": 0.36366,
+        "scores": {
+          "ACCOUNT_USE": 0.36366,
+          "WARRANTY_DISCLAIMER": 0.305,
+          "FRAMEWORK": 0.216717,
+          "CONTENT_IP": 0.068549,
+          "TERMINATION": 0.021558
+        },
+        "unfair": [],
+        "agreement": "strict"
+      },
+      {
+        "document": "Zynga",
+        "index": 66,
+        "fold": 0,
+        "y_true": "TERMINATION",
+        "y_pred": "ACCOUNT_USE",
+        "confidence": 0.363682,
+        "scores": {
+          "ACCOUNT_USE": 0.363682,
+          "CONTENT_IP": 0.253752,
+          "TERMINATION": 0.247147,
+          "FRAMEWORK": 0.099309,
+          "PRIVACY_DATA": 0.010129
+        },
+        "unfair": [],
+        "agreement": "majority"
+      },
+      {
+        "document": "TripAdvisor",
+        "index": 15,
+        "fold": 0,
+        "y_true": "CONTENT_IP",
+        "y_pred": "FRAMEWORK",
+        "confidence": 0.366174,
+        "scores": {
+          "FRAMEWORK": 0.366174,
+          "CONTENT_IP": 0.348651,
+          "ACCOUNT_USE": 0.263859,
+          "PRIVACY_DATA": 0.008612,
+          "DISPUTES_LAW": 0.004585
+        },
+        "unfair": [],
+        "agreement": "strict"
+      },
+      {
+        "document": "Yahoo",
+        "index": 126,
+        "fold": 0,
+        "y_true": "DISPUTES_LAW",
+        "y_pred": "ACCOUNT_USE",
+        "confidence": 0.370843,
+        "scores": {
+          "ACCOUNT_USE": 0.370843,
+          "WARRANTY_DISCLAIMER": 0.238767,
+          "CONTENT_IP": 0.180505,
+          "FRAMEWORK": 0.17456,
+          "LIMITATION_LIABILITY": 0.011042
+        },
+        "unfair": [],
+        "agreement": "divergence"
+      },
+      {
+        "document": "Zynga",
+        "index": 88,
+        "fold": 0,
+        "y_true": "CONTENT_IP",
+        "y_pred": "WARRANTY_DISCLAIMER",
+        "confidence": 0.378589,
+        "scores": {
+          "WARRANTY_DISCLAIMER": 0.378589,
+          "LIMITATION_LIABILITY": 0.315001,
+          "CONTENT_IP": 0.193185,
+          "ACCOUNT_USE": 0.085809,
+          "THIRD_PARTY_SERVICES": 0.008495
+        },
+        "unfair": [],
+        "agreement": "majority"
+      },
+      {
+        "document": "WorldOfWarcraft",
+        "index": 122,
+        "fold": 0,
+        "y_true": "LIMITATION_LIABILITY",
+        "y_pred": "WARRANTY_DISCLAIMER",
+        "confidence": 0.380539,
+        "scores": {
+          "WARRANTY_DISCLAIMER": 0.380539,
+          "ACCOUNT_USE": 0.306521,
+          "FEES_PAYMENT": 0.174361,
+          "CONTENT_IP": 0.046292,
+          "LIMITATION_LIABILITY": 0.040842
+        },
+        "unfair": [],
+        "agreement": "majority"
+      },
+      {
+        "document": "Nintendo",
+        "index": 168,
+        "fold": 0,
+        "y_true": "FEES_PAYMENT",
+        "y_pred": "TERMINATION",
+        "confidence": 0.381846,
+        "scores": {
+          "TERMINATION": 0.381846,
+          "FEES_PAYMENT": 0.355048,
+          "DISPUTES_LAW": 0.13302,
+          "FRAMEWORK": 0.050046,
+          "ACCOUNT_USE": 0.047519
+        },
+        "unfair": [],
+        "agreement": "majority"
+      },
+      {
+        "document": "Skype",
+        "index": 364,
+        "fold": 0,
+        "y_true": "FEES_PAYMENT",
+        "y_pred": "CONTENT_IP",
+        "confidence": 0.389393,
+        "scores": {
+          "CONTENT_IP": 0.389393,
+          "FEES_PAYMENT": 0.334446,
+          "ACCOUNT_USE": 0.22468,
+          "FRAMEWORK": 0.011552,
+          "WARRANTY_DISCLAIMER": 0.009657
+        },
+        "unfair": [],
+        "agreement": "majority"
+      },
+      {
+        "document": "PokemonGo",
+        "index": 41,
+        "fold": 0,
+        "y_true": "THIRD_PARTY_SERVICES",
+        "y_pred": "CONTENT_IP",
+        "confidence": 0.390386,
+        "scores": {
+          "CONTENT_IP": 0.390386,
+          "FRAMEWORK": 0.230476,
+          "THIRD_PARTY_SERVICES": 0.229469,
+          "ACCOUNT_USE": 0.121829,
+          "PRIVACY_DATA": 0.010861
+        },
+        "unfair": [],
+        "agreement": "strict"
+      }
+    ],
+    "topConfusions": [
+      {
+        "true": "ACCOUNT_USE",
+        "pred": "CONTENT_IP",
+        "count": 160
+      },
+      {
+        "true": "ACCOUNT_USE",
+        "pred": "FRAMEWORK",
+        "count": 62
+      },
+      {
+        "true": "FEES_PAYMENT",
+        "pred": "FRAMEWORK",
+        "count": 59
+      },
+      {
+        "true": "CONTENT_IP",
+        "pred": "ACCOUNT_USE",
+        "count": 46
+      },
+      {
+        "true": "CONTENT_IP",
+        "pred": "FRAMEWORK",
+        "count": 34
+      },
+      {
+        "true": "FRAMEWORK",
+        "pred": "CONTENT_IP",
+        "count": 33
+      },
+      {
+        "true": "FRAMEWORK",
+        "pred": "WARRANTY_DISCLAIMER",
+        "count": 27
+      },
+      {
+        "true": "CONTENT_IP",
+        "pred": "WARRANTY_DISCLAIMER",
+        "count": 24
+      },
+      {
+        "true": "THIRD_PARTY_SERVICES",
+        "pred": "FRAMEWORK",
+        "count": 23
+      },
+      {
+        "true": "LIMITATION_LIABILITY",
+        "pred": "WARRANTY_DISCLAIMER",
+        "count": 23
+      }
+    ],
+    "confusionMatrix": {
+      "labels": [
+        "ACCOUNT_USE",
+        "CONTENT_IP",
+        "DISPUTES_LAW",
+        "FEES_PAYMENT",
+        "FRAMEWORK",
+        "LIMITATION_LIABILITY",
+        "MODIFICATION_OF_TERMS",
+        "PRIVACY_DATA",
+        "TERMINATION",
+        "THIRD_PARTY_SERVICES",
+        "WARRANTY_DISCLAIMER"
+      ],
+      "matrix": [
+        [
+          475,
+          160,
+          0,
+          10,
+          62,
+          6,
+          6,
+          14,
+          7,
+          6,
+          16
+        ],
+        [
+          46,
+          634,
+          1,
+          20,
+          34,
+          8,
+          2,
+          10,
+          10,
+          1,
+          24
+        ],
+        [
+          7,
+          4,
+          427,
+          0,
+          15,
+          1,
+          1,
+          2,
+          0,
+          0,
+          3
+        ],
+        [
+          19,
+          19,
+          2,
+          408,
+          59,
+          3,
+          3,
+          1,
+          8,
+          6,
+          13
+        ],
+        [
+          20,
+          33,
+          8,
+          6,
+          434,
+          1,
+          5,
+          8,
+          6,
+          7,
+          27
+        ],
+        [
+          5,
+          5,
+          14,
+          2,
+          5,
+          140,
+          1,
+          0,
+          0,
+          7,
+          23
+        ],
+        [
+          1,
+          2,
+          2,
+          1,
+          19,
+          0,
+          110,
+          1,
+          6,
+          0,
+          1
+        ],
+        [
+          14,
+          12,
+          2,
+          0,
+          8,
+          0,
+          0,
+          49,
+          0,
+          5,
+          1
+        ],
+        [
+          12,
+          1,
+          1,
+          9,
+          10,
+          1,
+          2,
+          0,
+          102,
+          0,
+          8
+        ],
+        [
+          9,
+          19,
+          1,
+          9,
+          23,
+          6,
+          0,
+          5,
+          1,
+          115,
+          13
+        ],
+        [
+          2,
+          5,
+          0,
+          4,
+          5,
+          4,
+          1,
+          1,
+          2,
+          3,
+          160
+        ]
+      ]
+    }
+  }
+}

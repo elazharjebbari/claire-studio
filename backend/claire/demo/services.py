@@ -148,9 +148,18 @@ def contract_sentences(document: str) -> list[str]:
     return [r.get("text_detok") or r["text"] for r in rows]
 
 
+def display_text(text: str) -> str:
+    """Texte lisible pour l'écran : les artefacts de tokenisation CLAUDETTE (-lrb-, ``, '' …) sont
+    résolus avec les règles de l'import du corpus. L'entrée du modèle, elle, reste le texte du jeu
+    figé (celui de l'entraînement)."""
+    from claire.corpora.loaders import clean_sentence
+
+    return clean_sentence(text)
+
+
 def contract_detail(document: str) -> dict:
     """Phrases (texte à l'écran), gold, votes pseudonymisés, juges, labels CLAUDETTE."""
-    texts = contract_sentences(document)
+    texts = [display_text(t) for t in contract_sentences(document)]
     corpus = _corpus()
     projection = taxonomy_projection()
     pseud = corpus["pseudonyms"]

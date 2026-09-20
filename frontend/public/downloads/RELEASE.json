@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "builtAt": "2026-09-20T09:58:47+00:00",
+  "builtAt": "2026-09-20T13:17:39+00:00",
   "datasetFingerprint": "7116e627f528c5572457e79d9e53d2e71bfc21e3a20aacb43e9d3072cfb70e2e",
   "counts": {
     "documents": 50,
@@ -209,9 +209,55 @@
       "t11": 0.5908,
       "source": "campaign.json (E3.3)",
       "how": "judges.jsonl against the gold; the other judges: Claude Opus 4.7 0.5147 / 0.5308, Mistral Medium 3.5 0.3272 / 0.3533, GPT-5.5 0.2659 / 0.3016."
+    },
+    {
+      "key": "served_model",
+      "label": "Served model: 33 design → 17 held-out contracts, macro-F1 / κ",
+      "t20": null,
+      "t11": 0.729073,
+      "extra": {
+        "kappa": 0.711097
+      },
+      "source": "research/runs/demo_legalbert_T11_holdout/results/results.json",
+      "how": "The exact weights behind “Try the classifier”: same recipe, trained once on the 33 design contracts, evaluated on the 17 held-out contracts (design_holdout split)."
     }
   ],
-  "model": null,
+  "model": {
+    "checkpoint": "nlpaueb/legal-bert-base-uncased",
+    "taxonomy": "T11",
+    "trainedOn": {
+      "documents": 33,
+      "population": "design set (33 contracts)"
+    },
+    "evaluatedOn": {
+      "documents": 17,
+      "population": "held-out set (17 contracts, never seen in training)"
+    },
+    "metrics": {
+      "macroF1": 0.729073,
+      "microF1": 0.748897,
+      "kappa": 0.711097,
+      "macroF1Ci": {
+        "point": 0.729073,
+        "low": 0.693545,
+        "high": 0.760785,
+        "nResamples": 1000,
+        "confidence": 0.95,
+        "unit": "document"
+      }
+    },
+    "recipe": {
+      "epochs": 8,
+      "batchSize": 16,
+      "learningRate": 2e-05,
+      "maxLength": 128,
+      "context": "±1 sentence",
+      "seed": 42,
+      "loss": "weighted_ce"
+    },
+    "datasetFingerprint": "7116e627f528c5572457e79d9e53d2e71bfc21e3a20aacb43e9d3072cfb70e2e",
+    "source": "research/runs/demo_legalbert_T11_holdout/results/results.json"
+  },
   "limits": {
     "maxChars": 60000,
     "maxSentences": 400,

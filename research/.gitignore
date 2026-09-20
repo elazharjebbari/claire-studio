@@ -1,0 +1,9 @@
+
+# Modèle servi par la page reviewer : les poids (≈ 420 Mo) vivent hors git (VPS var/models/) ;
+# seuls results.json, model_config.json et classes.json sont versionnés.
+runs/demo_legalbert_T11_holdout/results/model/**/*.safetensors
+runs/demo_legalbert_T11_holdout/results/model/**/tokenizer.json
+runs/demo_legalbert_T11_holdout/results/model/**/vocab.txt
+runs/demo_legalbert_T11_holdout/results/predictions.jsonl
+runs/demo_legalbert_T11_holdout/results/results.partial.json
+runs/demo_legalbert_T11_holdout/progress.json

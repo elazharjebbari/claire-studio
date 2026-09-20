@@ -104,8 +104,11 @@ class JobView(_PublicView):
         if job.status == DemoJobStatus.DONE and job.result:
             result = dict(job.result)
             if job.source == DemoJobSource.CONTRACT and job.document:
+                # À l'écran, le texte CLAUDETTE est détokenisé ; le modèle a reçu le texte du jeu figé.
+                result["sentences"] = [{**s, "text": services.display_text(s.get("text", ""))}
+                                       for s in (result.get("sentences") or [])]
                 try:
-                    result["comparison"] = services.comparison(job.document, result.get("sentences") or [])
+                    result["comparison"] = services.comparison(job.document, result["sentences"])
                 except services.DemoInputError:
                     result["comparison"] = None
             payload["result"] = result
