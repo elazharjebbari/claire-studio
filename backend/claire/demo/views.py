@@ -66,7 +66,7 @@ class ClassifyView(_PublicView):
                             status=status.HTTP_400_BAD_REQUEST)
         if runner.queue_full():
             return Response({"code": "queue_full",
-                             "detail": "Three requests are already waiting; please try again in a minute."},
+                             "detail": "Too many requests are already waiting; please try again in a minute."},
                             status=status.HTTP_503_SERVICE_UNAVAILABLE)
         try:
             if source == DemoJobSource.CONTRACT:

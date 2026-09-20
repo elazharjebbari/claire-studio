@@ -10,9 +10,9 @@ class UserSerializer(serializers.ModelSerializer):
         model = User
         fields = [
             "id", "username", "email", "role", "display_name", "locale",
-            "is_email_verified", "ui_preferences",
+            "is_email_verified", "is_guest", "ui_preferences",
         ]
-        read_only_fields = ["id", "role", "is_email_verified"]
+        read_only_fields = ["id", "role", "is_email_verified", "is_guest"]
 
 
 class ProfileUpdateSerializer(serializers.ModelSerializer):

@@ -53,14 +53,16 @@ interface NavGroup {
 // « Ma session » (où j'annote, mon travail) de « Collaboration » (comparer/échanger)
 // et de « Corpus & projets ». Plus de slug en dur (H2) : les liens propres au projet
 // n'apparaissent que si un projet courant est résolu.
-function navGroups(slug: string | undefined): NavGroup[] {
+function navGroups(slug: string | undefined, guest = false): NavGroup[] {
   const session: NavItem[] = [{ href: "/work", label: "Mes annotations", icon: ListChecks }];
   if (slug) {
     session.push({ href: `/projects/${slug}`, label: "Tableau de bord", icon: LayoutDashboard });
   }
   const corpus: NavItem[] = [];
   if (slug) corpus.push({ href: `/projects/${slug}/docs`, label: "Documents", icon: FileText });
-  if (slug)
+  // Compte invité (accès reviewer) : le strict nécessaire pour lire les annotations et le gold —
+  // ni analyse, ni Lab, ni résultats de campagne (le serveur refuse de toute façon ces routes).
+  if (slug && !guest)
     corpus.push({
       href: `/projects/${slug}/analysis`,
       label: "Analyse & qualité",
@@ -69,10 +71,10 @@ function navGroups(slug: string | undefined): NavGroup[] {
   if (slug) corpus.push({ href: `/projects/${slug}/gold`, label: "Résolution GOLD", icon: Gavel });
   // Le Lab (jeux de données figés + expériences) suit l'analyse : c'est la même
   // matière, vue sous l'angle de la production de résultats scientifiques.
-  if (slug) corpus.push({ href: `/projects/${slug}/lab`, label: "Lab", icon: FlaskConical });
+  if (slug && !guest) corpus.push({ href: `/projects/${slug}/lab`, label: "Lab", icon: FlaskConical });
   // Les résultats de la campagne finale, organisés par question de recherche : le bout
   // de la chaîne (annoter → résoudre → mesurer → publier).
-  if (slug)
+  if (slug && !guest)
     corpus.push({
       href: `/projects/${slug}/paper`,
       label: "Résultats de l'article",
@@ -114,11 +116,11 @@ export function Sidebar() {
   const setMobileOpen = useUiStore((s) => s.setMobileNavOpen);
   const project = useCurrentProjectSlug();
   const pathname = usePathname();
-  const groups = navGroups(project);
   // Séparation admin / annotateur (chantier G) : la section Administration n'est
   // visible que pour les rôles admin/owner ; l'annotateur garde un espace focalisé.
   const { data: me } = useMe();
   const isAdmin = isAdminRole(me?.role);
+  const groups = navGroups(project, !!me?.isGuest);
 
   // Le tiroir mobile ne doit jamais survivre à une navigation ni à Échap — sinon il
   // reste ouvert par-dessus la page suivante, une confusion classique de ce pattern.

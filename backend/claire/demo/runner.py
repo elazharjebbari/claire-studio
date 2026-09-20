@@ -1,9 +1,11 @@
-"""Exécution des jobs de classification : file FIFO, un job à la fois, sous-processus isolé.
+"""Exécution des jobs de classification : file FIFO, N jobs en parallèle, sous-processus isolés.
 
 Même principe que `claire/lab/runners/local.py` : le package ML est invoqué en SOUS-PROCESSUS
 (`research/.venv/bin/python -m pactiva_lab predict`), jamais importé dans Django. Le texte est
 écrit dans `var/demo/jobs/<id>/in.json` (permissions 600) et supprimé à la fin du job.
 
+Jusqu'à `DEMO_MAX_PARALLEL` (3) classifications tournent en parallèle, chacune dans son propre
+sous-processus ; les suivantes attendent dans une file FIFO bornée par `DEMO_QUEUE_MAX`.
 `settings.DEMO_RUN_INLINE` (vrai en test) exécute le job en SYNCHRONE dans la requête ;
 `settings.DEMO_PREDICT_COMMAND` remplace la commande réelle (liste d'arguments, les jetons
 `{model}`, `{input}`, `{out}` sont substitués) — les tests y branchent un faux `predict`.
@@ -28,7 +30,21 @@ from .models import DemoJob, DemoJobStatus
 
 _lock = threading.Lock()
 _queue: deque = deque()
-_worker: threading.Thread | None = None
+# Compteur de fils ACTIFS tenu sous le verrou (un fil se retire du compte avant de relâcher le
+# verrou quand il trouve la file vide) : `Thread.is_alive()` mentirait pendant les quelques
+# microsecondes où un fil sortant est encore vivant, et un job pourrait rester en file.
+_active = 0
+
+
+def max_parallel() -> int:
+    """Nombre de classifications simultanées (chacune = un sous-processus qui charge le modèle,
+    ≈ 1,3 Go de mémoire de pointe ; 3 par défaut sur le VPS)."""
+    return max(1, int(getattr(settings, "DEMO_MAX_PARALLEL", 3)))
+
+
+def active_workers() -> int:
+    with _lock:
+        return _active
 
 
 def jobs_root() -> Path:
@@ -127,11 +143,12 @@ def execute(job_id) -> None:
 
 
 def _drain() -> None:
-    global _worker
+    """Un fil de travail : dépile tant qu'il y a des jobs, puis s'arrête (un autre repartira)."""
+    global _active
     while True:
         with _lock:
             if not _queue:
-                _worker = None
+                _active -= 1
                 return
             job_id = _queue.popleft()
         try:
@@ -141,17 +158,23 @@ def _drain() -> None:
 
 
 def enqueue(job: DemoJob) -> int:
-    """Ajoute le job à la file ; retourne sa position (0 = démarre tout de suite)."""
-    global _worker
+    """Ajoute le job à la file ; retourne sa position d'attente (0 = pris en charge tout de suite).
+
+    Jusqu'à `DEMO_MAX_PARALLEL` fils de travail tournent en même temps, chacun exécutant un
+    sous-processus indépendant ; au-delà, les jobs attendent dans la file FIFO."""
     if getattr(settings, "DEMO_RUN_INLINE", False):
         execute(job.id)
         return 0
+    global _active
     with _lock:
+        free_slots = max(0, max_parallel() - _active)
+        # Position indicative : jobs déjà en attente moins les fils libres (un fil qui vient
+        # de démarrer n'a pas forcément encore dépilé son job : l'estimation est prudente).
+        position = max(0, len(_queue) + 1 - free_slots) if free_slots else len(_queue) + 1
         _queue.append(job.id)
-        position = len(_queue) - 1
-        if _worker is None or not _worker.is_alive():
-            _worker = threading.Thread(target=_drain, name="demo-runner", daemon=True)
-            _worker.start()
+        if _active < max_parallel():
+            _active += 1
+            threading.Thread(target=_drain, name=f"demo-runner-{_active}", daemon=True).start()
     return position
 
 

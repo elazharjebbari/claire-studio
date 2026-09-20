@@ -19,6 +19,7 @@ from claire.projects.models import Project
 
 from .contracts import ConfigValidationError, expand_sweep, validate_config
 from .crypto import CredentialsKeyMissing, encrypt_secret, is_configured
+from .g5k_reference import gpu_clusters_for, load_static_catalogue
 from .models import (
     ComputeCredential,
     Experiment,
@@ -27,7 +28,6 @@ from .models import (
     RunStatus,
     Task,
 )
-from .g5k_reference import gpu_clusters_for, load_static_catalogue
 from .preflight import preflight
 from .presets import load_presets
 from .serializers import (

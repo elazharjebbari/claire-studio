@@ -8,7 +8,6 @@ from django.db import models
 from claire.corpora.models import Document
 from claire.projects.models import Project
 
-
 # Ordre d'AFFICHAGE des juges (réglette des frontières, comparaison N-way, menus, atelier
 # gold) : par TAILLE DE MODÈLE décroissante, pas par ordre d'ajout. Constante de MODULE et
 # non attribut de classe : dans une Enum, toute assignation de classe deviendrait un membre.

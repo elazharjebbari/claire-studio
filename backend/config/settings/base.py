@@ -92,9 +92,15 @@ DEMO_DATASET_ID = env("DEMO_DATASET_ID", default="0a2542a1-c5b0-4ef8-95e0-15abea
 DEMO_ACCESS_CODE = env("DEMO_ACCESS_CODE", default="")
 DEMO_MAX_CHARS = env.int("DEMO_MAX_CHARS", default=60000)
 DEMO_MAX_SENTENCES = env.int("DEMO_MAX_SENTENCES", default=400)
-DEMO_QUEUE_MAX = env.int("DEMO_QUEUE_MAX", default=3)
+DEMO_QUEUE_MAX = env.int("DEMO_QUEUE_MAX", default=6)
+DEMO_MAX_PARALLEL = env.int("DEMO_MAX_PARALLEL", default=3)
 DEMO_JOB_TIMEOUT = env.int("DEMO_JOB_TIMEOUT", default=120)
-DEMO_THREADS = env.int("DEMO_THREADS", default=3)
+DEMO_THREADS = env.int("DEMO_THREADS", default=2)
+# Compte reviewer (accès public en un clic depuis la page) : identifiants servis par le manifeste
+# uniquement si DEMO_REVIEWER_PUBLIC est vrai ; le mot de passe vit dans .env, jamais dans le code.
+DEMO_REVIEWER_PUBLIC = env.bool("DEMO_REVIEWER_PUBLIC", default=False)
+DEMO_REVIEWER_USERNAME = env("DEMO_REVIEWER_USERNAME", default="jurix-reviewer")
+DEMO_REVIEWER_PASSWORD = env("DEMO_REVIEWER_PASSWORD", default="")
 DEMO_RUN_INLINE = False
 # Délai avant de tuer un run local (claire/lab/runners/local.py). 3600 s (l'ancien défaut
 # implicite) suffit à peine pour UN SEUL pli d'un encodeur lourd sans GPU sur ce VPS — un
@@ -143,6 +149,8 @@ MIDDLEWARE = [
     "django.middleware.common.CommonMiddleware",
     "django.middleware.csrf.CsrfViewMiddleware",
     "django.contrib.auth.middleware.AuthenticationMiddleware",
+    # Compte invité (accès reviewer) : périmètre d'API borné, avant toute vue.
+    "claire.common.middleware.GuestAccessMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
 ]

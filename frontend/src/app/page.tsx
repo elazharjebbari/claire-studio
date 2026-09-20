@@ -13,6 +13,7 @@ import { ExternalLink, LogIn, ScrollText } from "lucide-react";
 import { Logo } from "@/components/brand/Logo";
 import { Disclosure } from "@/components/ui/Disclosure";
 import { DemoPanel } from "@/features/demo/DemoPanel";
+import { ReviewerSignIn } from "@/features/demo/ReviewerSignIn";
 import { Codebook, DownloadsGrid, KeyFigures, Protocol, type Release } from "@/features/demo/ReleaseSections";
 import releaseJson from "../../public/downloads/RELEASE.json";
 
@@ -145,9 +146,10 @@ export default function ReviewerPage() {
           <p className="mt-1 text-ink-muted">
             A shared reviewer account gives read access to the 150 annotation sessions of the campaign (frozen, with annotators shown as
             A1–A3), the human–judge comparison views and the concordance figures, plus a sandbox project on the same 50 contracts where you
-            can annotate yourself; your sessions stay yours and never enter the released layer. The credentials are provided with the
-            submission; they can also be requested by e-mail.
+            can annotate yourself; your sessions stay yours and never enter the released layer. The account has no access to
+            configuration, experiments or exports.
           </p>
+          <ReviewerSignIn />
         </div>
         <div className="mt-5 flex flex-wrap gap-3">
           <Link href="/public" data-testid="welcome-public" className="inline-flex items-center gap-2 rounded-md border border-line bg-panel px-4 py-2 text-sm font-medium text-ink hover:bg-panel-muted">

@@ -694,8 +694,6 @@ class ProjectViewSet(viewsets.ModelViewSet):
         """Cockpit GOLD : une ligne PAR document (statut/avancement/verrou/répartition)."""
         from django.db.models import Count, Q
 
-        from claire.annotations.models import Annotation
-        from claire.gold.config import annotation_statuses
         from claire.gold.models import GoldSentence
         from claire.gold.services import compute_status, lock_state, readiness_by_document
 
@@ -826,7 +824,6 @@ class ProjectViewSet(viewsets.ModelViewSet):
             save_resolution_config,
             validate_resolution_config,
         )
-
         from claire.gold.services import secondary_impact
 
         project = self.get_object()

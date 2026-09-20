@@ -24,6 +24,11 @@ class User(AbstractUser):
     locale = models.CharField(max_length=12, default="en")
     # Vérification e-mail (chantier E). Les comptes seedés sont marqués vérifiés.
     is_email_verified = models.BooleanField(default=False)
+    # Compte INVITÉ (accès reviewer JURIX) : lecture des sessions et du gold des projets dont il est
+    # membre, annotation dans ses propres sessions seulement ; aucune configuration, aucun Lab,
+    # aucune analyse, aucun export, aucune écriture collaborative. Appliqué par
+    # `claire.common.middleware.GuestAccessMiddleware` et reflété par l'interface (`isGuest`).
+    is_guest = models.BooleanField(default=False)
     # Préférences d'interface PAR COMPTE (overlays atelier, panneaux, auto-pré-annotation) —
     # blob JSON versionné camelCase (contrat front lib/prefs/schema.ts), fusionné aux défauts
     # à la lecture. Absence = défauts front (aucune data-migration). Whitelisté à l'écriture

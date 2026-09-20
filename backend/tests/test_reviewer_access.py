@@ -68,3 +68,34 @@ def test_reviewer_access_creates_account_locks_campaign_and_sandbox(campaign, ap
     call_command("reviewer_access", campaign=campaign.slug, sandbox="jurix-sandbox-test", password="x", restore_display_names=True, stdout=StringIO())
     assert not any(n.startswith("Annotator A") for n in ProjectMembership.objects.filter(project=campaign, role=MembershipRole.ANNOTATOR)
                    .values_list("user__display_name", flat=True))
+
+
+@pytest.mark.django_db
+def test_guest_scope_is_read_only_outside_own_sessions(campaign, api_client):
+    """Le compte invité : lecture des sessions et du gold ; ni Lab, ni analyse, ni export, ni écriture
+    collaborative ou de configuration ; il annote seulement ses propres sessions du bac à sable."""
+    from claire.common.middleware import guest_decision
+
+    assert guest_decision("GET", "/api/v1/annotations?project=x") is None
+    assert guest_decision("GET", "/api/v1/projects/x/gold/cockpit") is None
+    assert guest_decision("GET", "/api/v1/preannotations?project=x") is None
+    assert guest_decision("POST", "/api/v1/annotations") is None
+    assert guest_decision("PATCH", "/api/v1/annotations/12/clauses") is None
+    assert guest_decision("PATCH", "/api/v1/me") is None
+    assert guest_decision("POST", "/api/v1/auth/refresh") is None
+    for method, path in (("GET", "/api/v1/lab/experiments"), ("GET", "/api/v1/analysis/x"), ("POST", "/api/v1/exports"),
+                         ("GET", "/api/v1/users"), ("GET", "/api/v1/audit"), ("PATCH", "/api/v1/projects/x"),
+                         ("POST", "/api/v1/projects/x/members"), ("POST", "/api/v1/annotations/1/comments"),
+                         ("POST", "/api/v1/projects/x/gold/decide"), ("POST", "/api/v1/imports/preannotations")):
+        assert guest_decision(method, path) is not None, (method, path)
+
+    call_command("reviewer_access", campaign=campaign.slug, sandbox="jurix-sandbox-test", password="Guest-1", stdout=StringIO())
+    r = api_client.post("/api/v1/auth/login", {"username": "jurix-reviewer", "password": "Guest-1"}, format="json")
+    api_client.credentials(HTTP_AUTHORIZATION=f"Bearer {r.json()['access']}")
+    me = api_client.get("/api/v1/me").json()
+    assert me["isGuest"] is True and me["role"] == "reviewer"
+    assert api_client.get(f"/api/v1/annotations?project={campaign.slug}").status_code == 200
+    assert api_client.get("/api/v1/lab/presets").status_code == 403
+    assert api_client.post("/api/v1/exports", {"project": campaign.slug, "format": "jsonl"}, format="json").status_code == 403
+    assert api_client.patch(f"/api/v1/projects/{campaign.slug}", {"visibility": "public"}, format="json").status_code == 403
+    assert api_client.get("/api/v1/users").status_code == 403

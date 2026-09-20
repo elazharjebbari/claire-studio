@@ -60,6 +60,9 @@ export interface User {
   locale?: string;
   /** Vérification e-mail (chantier E). */
   isEmailVerified?: boolean;
+  /** Compte invité (accès reviewer) : lecture des annotations et du gold, annotation dans ses
+   *  propres sessions ; ni configuration, ni Lab, ni analyse (le serveur l'impose aussi). */
+  isGuest?: boolean;
   /** Préférences d'interface PAR COMPTE (blob camelCase versionné ; cf. lib/prefs/schema). */
   uiPreferences?: Record<string, unknown>;
 }

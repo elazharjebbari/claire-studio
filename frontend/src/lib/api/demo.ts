@@ -50,6 +50,7 @@ export interface DemoManifest {
   accessCodeRequired: boolean;
   modelAvailable: boolean;
   holdoutDocuments: string[];
+  reviewerAccess: { username: string; password: string; campaign: string; sandbox: string } | null;
 }
 
 export interface DemoContract {

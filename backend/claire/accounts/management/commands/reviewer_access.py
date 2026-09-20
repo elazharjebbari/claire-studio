@@ -73,6 +73,7 @@ class Command(BaseCommand):
                       "is_email_verified": True, "locale": "en"},
         )
         user.role = Role.REVIEWER
+        user.is_guest = True
         user.is_active = True
         user.is_email_verified = True
         user.set_password(password)

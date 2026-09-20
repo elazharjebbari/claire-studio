@@ -26,13 +26,13 @@ import shlex
 import subprocess
 from pathlib import Path
 
-from .base import ExecutionBackend, sentinel_present, write_config
 from ..g5k_client import G5KError, build_client
 from ..g5k_client import cancel as g5k_cancel
 from ..g5k_client import poll as g5k_poll
 from ..g5k_client import submit as g5k_submit
 from ..g5k_client import test_connection as g5k_test_connection
 from ..g5k_ssh import ssh_command, temporary_ssh_key
+from .base import ExecutionBackend, sentinel_present, write_config
 
 logger = logging.getLogger("claire.lab.g5k")
 

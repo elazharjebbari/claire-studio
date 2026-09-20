@@ -49,6 +49,7 @@ const GUARDED = [
   "src/features/demo/ResultsViewer.tsx",
   "src/features/demo/ThemeChip.tsx",
   "src/features/demo/ReleaseSections.tsx",
+  "src/features/demo/ReviewerSignIn.tsx",
   "src/features/demo/logic.ts",
   "src/lib/taxonomy/labels.en.ts",
 ];

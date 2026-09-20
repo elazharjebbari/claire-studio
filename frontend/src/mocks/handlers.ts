@@ -334,6 +334,11 @@ export const handlers = [
   ),
 
   // Page reviewer (docs/pactiva-reviewer-demo) — API publique de démonstration, sans auth.
+  http.get(`${BASE}/public/demo/manifest`, () =>
+    HttpResponse.json({ datasetFingerprint: "7116e627", downloads: [], figures: [], model: null,
+      limits: { maxChars: 60000, maxSentences: 400, language: "en" }, accessCodeRequired: false,
+      modelAvailable: true, holdoutDocuments: ["Headspace"], reviewerAccess: null }),
+  ),
   http.get(`${BASE}/public/demo/contracts`, () =>
     HttpResponse.json({ contracts: [{ document: "Headspace", nSentences: 372, nUnfair: 35 }] }),
   ),

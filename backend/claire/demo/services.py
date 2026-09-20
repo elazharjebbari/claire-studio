@@ -304,4 +304,16 @@ def manifest() -> dict:
         "access_code_required": bool(getattr(settings, "DEMO_ACCESS_CODE", "")),
         "model_available": Path(str(getattr(settings, "DEMO_MODEL_DIR", ""))).joinpath("model_config.json").exists(),
         "holdout_documents": list(holdout_documents()),
+        "reviewer_access": reviewer_access(),
     }
+
+
+def reviewer_access() -> dict | None:
+    """Identifiants du compte invité, servis seulement si le porteur l'a rendu public."""
+    if not getattr(settings, "DEMO_REVIEWER_PUBLIC", False):
+        return None
+    password = getattr(settings, "DEMO_REVIEWER_PASSWORD", "") or ""
+    if not password:
+        return None
+    return {"username": getattr(settings, "DEMO_REVIEWER_USERNAME", "jurix-reviewer"), "password": password,
+            "campaign": "campagne-pactiva", "sandbox": "jurix2026-sandbox"}
