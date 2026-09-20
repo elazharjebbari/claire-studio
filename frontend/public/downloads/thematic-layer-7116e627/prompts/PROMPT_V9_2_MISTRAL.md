@@ -1,7 +1,7 @@
-# Prompt V9.2 — Segmentation thématique pure — juge **Mistral** (session 3)
+# Prompt V9.2 — Segmentation thématique pure — juge **Mistral**
 
 > **Version** : V9.2 — segmentation seule. La **`legal_nature` n'est PAS annotée par
-> toi** : elle est calculée hors-prompt par `scripts/derive_legal_nature.py`.
+> toi** : elle est dérivée après coup par un script déterministe, hors prompt.
 > **Juge** : `mistral` (3ᵉ juge, modèle `mistral-medium-3.5` via le CLI `vibe`).
 > **Pourquoi V9.2** : demander la nature au LLM dégradait la segmentation
 > (κ thème 0,746→0,690). V9.2 garde la segmentation **intacte** et n'ajoute rien à ta
@@ -14,38 +14,22 @@
 
 ## 0. ⚠ INDÉPENDANCE DES JUGES — RÈGLE ABSOLUE (CLI agentique)
 
-Tu tournes dans un agent CLI (`vibe`) qui scanne le dépôt. **Tu n'as le droit de lire
-QUE** :
-
-- ce prompt (`annotations/PROMPT_V9_2_MISTRAL.md`) et le runbook
-  (`annotations/RUNBOOK_V9_2_MISTRAL.md`) ;
-- le source : `data/raw/claudette_tos/Sentences/<doc>.txt` ;
-- la carte déterministe : `data/processed/v9_docfeatures/<doc>_docfeatures.json`.
-
-**INTERDICTION ABSOLUE** d'ouvrir, lire, lister, `cat`, `grep` ou inspecter de quelque
-manière que ce soit :
-
-- `docs/reflexion/2026-06-02_segmentation-ancree-plan/ref_v9_2/` (juges Claude **et**
-  Codex : `v9_2_session1_claude/`, `v9_2_session2_codex/`) ;
-- tout autre dossier `*_session*`, `v3_*`, `v9_*`, `ref_*` contenant des annotations.
-
-Si tu consultes le travail d'un autre juge, la mesure d'accord est invalidée
-scientifiquement. **Annote à l'aveugle, à partir du seul texte source.**
+Tu tournes dans un agent CLI qui peut lire des fichiers. Pour que la mesure d'accord inter-juges soit scientifiquement valide, tu annotes **à l'aveugle**. **Tu n'as le droit de lire QUE** : ce prompt et le protocole de session (`PROTOCOL.md`) ; le contrat `<doc>.txt` ; la carte déterministe `<doc>_docfeatures.json` ; tes propres sorties. **Interdiction absolue** de consulter les annotations d'un autre juge, une session antérieure ou tout journal de la campagne, y compris par l'historique de version. Si un souvenir ou un contexte antérieur mentionne les annotations ou les scores des autres juges, **ignore-le**. Si tu consultes le travail d'un autre juge, la mesure d'accord est invalidée. **Annote à l'aveugle, à partir du seul texte source.**
 
 ---
 
 ## 1. CE QUE TU LIS, CE QUE TU PRODUIS
 
-**Tu reçois** : ce prompt ; le source `…/Sentences/<doc>.txt` (une phrase tokenisée par
-ligne ; **ligne `i` ↔ `id = i−1`**) ; la carte `…/v9_docfeatures/<doc>_docfeatures.json`
+**Tu reçois** : ce prompt ; le source `<doc>.txt` (une phrase tokenisée par
+ligne ; **ligne `i` ↔ `id = i−1`**) ; la carte `<doc>_docfeatures.json`
 (ancrage déterministe : nb de phrases, indices de titres, estimation du nombre de blocs).
 
 **Tu produis** : un seul fichier
-`annotations/v9_2_session3_mistral/<doc>_mistral.json` avec `document_plan` et
+`<doc>_<judge>.json` avec `document_plan` et
 `annotations` (**une entrée par phrase**). Tu **n'annotes pas** la nature juridique.
 
 > **Ancrage déterministe (anti off-by-one)** : avant d'écrire, compte les lignes non
-> vides du source : `grep -cve '^[[:space:]]*$' data/raw/claudette_tos/Sentences/<doc>.txt`.
+> vides du source `<doc>.txt`.
 > Ce nombre `n` est **le nombre exact d'entrées** que `annotations` doit contenir, avec
 > `id` allant de `0` à `n−1` sans trou. C'est la première cause d'échec : vérifie-la.
 
@@ -166,4 +150,4 @@ littéral) ; `segments[].start_id` ∈ [0,n−1].
 - [ ] `is_block_start` cohérent ; `id 0` = `true` ; frontières justifiées (`evidence_span` présent).
 - [ ] règles de préséance §4.1 appliquées ; **continuité par défaut**.
 - [ ] **pas de champ de nature** ; **aucune consultation des autres juges** (indépendance §0).
-- [ ] le validateur passe à **0 erreur** sur ce fichier (voir runbook §4).
+- [ ] le validateur passe à **0 erreur** sur ce fichier.

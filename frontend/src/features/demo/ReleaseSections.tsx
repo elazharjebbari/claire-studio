@@ -107,8 +107,8 @@ export function DownloadsGrid({ release }: { release: Release }) {
             <h3 className="text-sm font-semibold text-ink">Judge prompts</h3>
           </div>
           <p className="text-[13px] text-ink-muted">
-            The exact instruction files and runbooks (protocol v9.2), with model, harness and dates per judge:{" "}
-            {release.judges.map((j) => j.model).join(", ")}.
+            The instruction files given to the judges (protocol v9.2) and the session protocol: inputs, isolation, validation, models,
+            harnesses and dates for {release.judges.map((j) => j.model).join(", ")}.
           </p>
           <ul className="mt-auto flex flex-col gap-0.5 text-[12px]">
             {prompts.map((p) => (

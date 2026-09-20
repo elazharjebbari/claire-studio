@@ -1,23 +1,22 @@
 # Prompt V9.2 — Segmentation thématique pure (la nature est dérivée par script)
 
 > **Version** : V9.2 — segmentation seule. La **`legal_nature` n'est PAS annotée par
-> toi** : elle est calculée hors-prompt par `scripts/derive_legal_nature.py`.
+> toi** : elle est dérivée après coup par un script déterministe, hors prompt.
 > **Pourquoi** : la phase test V9.1 a montré que demander la nature au LLM **dégrade
 > la segmentation** (effet de bord, κ thème 0,746→0,690). V9.2 garde la segmentation
 > de V9 **intacte** et n'ajoute **rien** à ta charge — au contraire, tu te concentres
 > uniquement sur la segmentation thématique.
-> **Statut** : phases B (validati (on stratifiée) puis C (50 docs). 2 juges.
 > Le prompt est **autonome**.
 
 ---
 
 ## 0. CE QUE TU LIS, CE QUE TU PRODUIS
 
-**Tu reçois** : ce prompt ; le source `…/Sentences/<doc>.txt` (une phrase tokenisée
+**Tu reçois** : ce prompt ; le source `<doc>.txt` (une phrase tokenisée
 par ligne ; ligne `i` ↔ `id = i−1`) ; optionnellement
-`…/v9_docfeatures/<doc>_docfeatures.json` (carte déterministe — ancrage).
+`<doc>_docfeatures.json` (carte déterministe — ancrage).
 
-**Tu produis** : `annotations/v9_2_session<N>_<judge>/<doc>_<judge>.json` avec
+**Tu produis** : `<doc>_<judge>.json` avec
 `document_plan` et `annotations` (**une entrée par phrase**). Tu **n'annotes pas** la
 nature juridique.
 

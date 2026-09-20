@@ -54,7 +54,7 @@
   1. **Individual votes** — `votes.jsonl · {n} records · one record per (document, sentence, annotator): primary theme and secondary themes.`
   2. **Gold standard and arbitration trail** — `gold.jsonl · {n} records · agreement class (strict / majority / divergence), cascade tier (auto_1click / auto / manual), engine proposal, decided themes, vote tally, confidence.`
   3. **LLM judges** — `judges.jsonl · {n} records · Claude Fable 5, Claude Opus 4.7, Mistral Medium 3.5, GPT-5.5 on the same sentences and vocabulary.`
-  4. **Judge prompts** — `prompts/ · the exact instruction files and runbooks (protocol v9.2), with model, harness and dates per judge.`
+  4. **Judge prompts** — `prompts/ · the instruction files given to the judges (protocol v9.2) and the session protocol: inputs, isolation, validation, models, harnesses, dates, mapping onto the 20 themes.`
   5. **Frozen taxonomies** — `taxonomies.json · T20 (annotated) and the T14 / T11 / T10 projections, design / held-out document partition, specification v1.`
   6. **Codebook** — `the 20 themes with their definitions, the segmentation and multi-label rules given to annotators.`
   7. **Protocol** — `independent annotation, isolated judges, three-tier resolution cascade, read-time projections, document-level bootstrap.`

@@ -13,7 +13,7 @@ Every figure in the paper is computed from these files.
 | `votes.jsonl` | **Individual annotator votes**, never collapsed into a consensus. One record per (document, sentence, annotator): primary theme and secondary themes. Annotators are pseudonymised as `A1`, `A2`, `A3` (a stable mapping, identical across the whole resource). |
 | `gold.jsonl` | The **frozen gold standard**, one record per sentence: agreement class (`strict` / `majority` / `divergence`), cascade tier (`auto_1click` / `auto` / `manual`), engine proposal, decided theme and secondaries, vote tally and confidence. |
 | `judges.jsonl` | The **four LLM judges** on the same sentences and the same vocabulary. |
-| `prompts/` | The **exact prompts and runbooks** given to each judge (protocol v9.2), with model, harness and dates per judge (`prompts/README.md`). |
+| `prompts/` | The **prompts** given to each judge (protocol v9.2) and the **session protocol** (inputs, isolation, validation, models, harnesses, dates, mapping onto the 20 themes). See `prompts/README.md`. |
 | `taxonomies.json` | The **frozen taxonomy specification**: T20 (canonical, the one annotated) plus the T14 / T11 / T10 projections, with the design/validation document partition. |
 | `labels.json` | Label inventory and supports. |
 | `splits.json` | Document-level folds used for every model result. |

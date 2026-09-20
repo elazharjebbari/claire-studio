@@ -1,35 +1,64 @@
-# Prompt V9.2 — Segmentation thématique pure — juge **Mistral**
+# Prompt V9.2 — Segmentation thématique pure — juge **Fable** (session 4)
 
 > **Version** : V9.2 — segmentation seule. La **`legal_nature` n'est PAS annotée par
-> toi** : elle est dérivée après coup par un script déterministe, hors prompt.
-> **Juge** : `mistral` (3ᵉ juge, modèle `mistral-medium-3.5` via le CLI `vibe`).
+> toi** : elle est calculée hors-prompt par `scripts/derive_legal_nature.py`.
+> **Juge** : `fable` (4ᵉ juge, modèle `claude-fable-5` via Claude Code).
 > **Pourquoi V9.2** : demander la nature au LLM dégradait la segmentation
 > (κ thème 0,746→0,690). V9.2 garde la segmentation **intacte** et n'ajoute rien à ta
 > charge — tu te concentres uniquement sur la **segmentation thématique**.
 > **Pourquoi ce format exact** : tes annotations seront comparées phrase à phrase à
-> celles de deux autres juges (Claude, Codex) déjà produites au **même format V9.2**.
-> Toute déviation de format casse la mesure d'accord inter-juges. Le prompt est **autonome**.
+> celles de trois autres juges (Claude Opus, Codex, Mistral) déjà produites au **même
+> format V9.2**. Toute déviation de format casse la mesure d'accord inter-juges.
+> Le prompt est **autonome** : tout ce dont tu as besoin est ici.
 
 ---
 
-## 0. ⚠ INDÉPENDANCE DES JUGES — RÈGLE ABSOLUE (CLI agentique)
+## 0. ⚠ INDÉPENDANCE DES JUGES — RÈGLE ABSOLUE (agent CLI)
 
-Tu tournes dans un agent CLI qui peut lire des fichiers. Pour que la mesure d'accord inter-juges soit scientifiquement valide, tu annotes **à l'aveugle**. **Tu n'as le droit de lire QUE** : ce prompt et le protocole de session (`PROTOCOL.md`) ; le contrat `<doc>.txt` ; la carte déterministe `<doc>_docfeatures.json` ; tes propres sorties. **Interdiction absolue** de consulter les annotations d'un autre juge, une session antérieure ou tout journal de la campagne, y compris par l'historique de version. Si un souvenir ou un contexte antérieur mentionne les annotations ou les scores des autres juges, **ignore-le**. Si tu consultes le travail d'un autre juge, la mesure d'accord est invalidée. **Annote à l'aveugle, à partir du seul texte source.**
+Tu tournes dans Claude Code, un agent CLI qui peut scanner tout le dépôt. Pour que la
+mesure d'accord inter-juges soit scientifiquement valide, tu annotes **à l'aveugle**.
+**Liste blanche stricte — tu n'as le droit de lire QUE** :
+
+- ce prompt (`annotations/PROMPT_V9_2_FABLE.md`) et le runbook
+  (`annotations/RUNBOOK_V9_2_FABLE.md`) ;
+- le source : `data/raw/claudette_tos/Sentences/<doc>.txt` ;
+- la carte déterministe : `data/processed/v9_docfeatures/<doc>_docfeatures.json` ;
+- tes propres sorties : `annotations/v9_2_session4_fable/*.json` ;
+- en **exécution seule** : `scripts/validate_v9_2_annotations.py` (validation).
+
+**INTERDICTION ABSOLUE** d'ouvrir, lire, lister, `cat`, `grep`, chercher (Grep/Glob)
+ou inspecter de quelque manière que ce soit **tout ce qui n'est pas dans la liste
+blanche**, en particulier :
+
+- **`docs/` en intégralité** (y compris `docs/reflexion/**/ref_*` qui contient les
+  annotations des juges Claude, Codex et Mistral, et `docs/livrables/`) ;
+- tout dossier `*_session*`, `v3_*` … `v9_*`, `ref_*` contenant des annotations,
+  où qu'il ait été déplacé ;
+- **l'historique git** : pas de `git show`, `git log -p`, `git diff`, `git stash`,
+  `git checkout` sur des fichiers d'annotation supprimés ou déplacés — l'historique
+  contient les annotations des autres juges ;
+- tout autre script de `scripts/` (certains encodent des annotations ou des règles
+  dérivées des autres juges).
+
+Si un souvenir, une mémoire persistante ou un contexte antérieur mentionne les
+annotations ou les scores des autres juges, **ignore-le pour tes décisions
+d'annotation**. Si tu consultes le travail d'un autre juge, la mesure d'accord est
+invalidée. **Annote à l'aveugle, à partir du seul texte source.**
 
 ---
 
 ## 1. CE QUE TU LIS, CE QUE TU PRODUIS
 
-**Tu reçois** : ce prompt ; le source `<doc>.txt` (une phrase tokenisée par
-ligne ; **ligne `i` ↔ `id = i−1`**) ; la carte `<doc>_docfeatures.json`
+**Tu reçois** : ce prompt ; le source `…/Sentences/<doc>.txt` (une phrase tokenisée par
+ligne ; **ligne `i` ↔ `id = i−1`**) ; la carte `…/v9_docfeatures/<doc>_docfeatures.json`
 (ancrage déterministe : nb de phrases, indices de titres, estimation du nombre de blocs).
 
 **Tu produis** : un seul fichier
-`<doc>_<judge>.json` avec `document_plan` et
+`annotations/v9_2_session4_fable/<doc>_fable.json` avec `document_plan` et
 `annotations` (**une entrée par phrase**). Tu **n'annotes pas** la nature juridique.
 
 > **Ancrage déterministe (anti off-by-one)** : avant d'écrire, compte les lignes non
-> vides du source `<doc>.txt`.
+> vides du source : `grep -cve '^[[:space:]]*$' data/raw/claudette_tos/Sentences/<doc>.txt`.
 > Ce nombre `n` est **le nombre exact d'entrées** que `annotations` doit contenir, avec
 > `id` allant de `0` à `n−1` sans trou. C'est la première cause d'échec : vérifie-la.
 
@@ -120,7 +149,7 @@ Continuations (`is_block_start = false`) : `reason` court seulement.
 
 ```json
 {
-  "doc": "Spotify", "judge": "mistral", "version": "v9.2",
+  "doc": "Spotify", "judge": "fable", "version": "v9.2",
   "document_plan": {"estimated_n_blocks": 12, "rationale_global": "…",
     "segments": [{"start_id": 0, "theme": "PREAMBLE_SCOPE", "rationale": "…", "evidence_span": "these terms"}]},
   "annotations": [
@@ -140,7 +169,7 @@ non vides du source) ; `id` 0..n−1 dans l'ordre ; `theme` ∈ §4 (ou `OTHER_*
 chaque frontière a `rationale` + `rationale_codes` valides + `evidence_span` (idéalement
 littéral) ; `segments[].start_id` ∈ [0,n−1].
 **`doc`** doit valoir le nom exact du fichier (ex. `Betterpoints_UK`, `Moves-app`,
-`PokemonGo`). **`judge` = `"mistral"`**. **Ne produis AUCUN champ de nature**.
+`PokemonGo`). **`judge` = `"fable"`**. **Ne produis AUCUN champ de nature**.
 
 ---
 
@@ -149,5 +178,6 @@ littéral) ; `segments[].start_id` ∈ [0,n−1].
 - [ ] `len(annotations)` == lignes non vides du source ; `id` 0..n−1 ; `block_id` contigus ; un thème/bloc.
 - [ ] `is_block_start` cohérent ; `id 0` = `true` ; frontières justifiées (`evidence_span` présent).
 - [ ] règles de préséance §4.1 appliquées ; **continuité par défaut**.
-- [ ] **pas de champ de nature** ; **aucune consultation des autres juges** (indépendance §0).
-- [ ] le validateur passe à **0 erreur** sur ce fichier.
+- [ ] **pas de champ de nature** ; **aucune consultation des autres juges ni de `docs/`
+      ni de l'historique git** (indépendance §0).
+- [ ] le validateur passe à **0 erreur** sur ce fichier (voir runbook §4).

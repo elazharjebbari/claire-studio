@@ -269,7 +269,7 @@ def build(check_only: bool, demo_results: Path | None) -> int:
         downloads.append({"name": rel, "path": f"/downloads/thematic-layer-{short}/{rel}",
                           "bytes": p.stat().st_size, "sha256": sha256(p),
                           "records": record_count(rel) if "/" not in rel else None,
-                          "description": descriptions.get(rel, "Judge prompt or runbook (protocol v9.2)" if rel.startswith("prompts/") else "")})
+                          "description": descriptions.get(rel, ("Session protocol of the judges" if rel.endswith("PROTOCOL.md") else "Judge prompt (protocol v9.2)") if rel.startswith("prompts/") else "")})
     figures, model_card = key_figures(demo_results)
     release = {
         "version": 1,
