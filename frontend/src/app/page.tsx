@@ -140,6 +140,15 @@ export default function ReviewerPage() {
           Pactiva is the platform the layer was produced, arbitrated and exported with. Public projects are open to everyone; the annotation
           workshop, the gold arbitration cockpit and the experiment lab require an account.
         </p>
+        <div className="mt-4 max-w-3xl rounded-lg border border-line bg-panel p-4 text-sm" data-testid="reviewer-access">
+          <p className="font-medium text-ink">Reviewer access</p>
+          <p className="mt-1 text-ink-muted">
+            A shared reviewer account gives read access to the 150 annotation sessions of the campaign (frozen, with annotators shown as
+            A1–A3), the human–judge comparison views and the concordance figures, plus a sandbox project on the same 50 contracts where you
+            can annotate yourself; your sessions stay yours and never enter the released layer. The credentials are provided with the
+            submission; they can also be requested by e-mail.
+          </p>
+        </div>
         <div className="mt-5 flex flex-wrap gap-3">
           <Link href="/public" data-testid="welcome-public" className="inline-flex items-center gap-2 rounded-md border border-line bg-panel px-4 py-2 text-sm font-medium text-ink hover:bg-panel-muted">
             <ScrollText size={16} aria-hidden /> Public projects

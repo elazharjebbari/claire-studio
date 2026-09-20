@@ -6,6 +6,7 @@ from django.utils import timezone
 from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework import status, viewsets
 from rest_framework.decorators import action
+from rest_framework.exceptions import PermissionDenied
 from rest_framework.response import Response
 
 from claire.audit.services import record_event
@@ -224,7 +225,7 @@ class AnnotationViewSet(viewsets.ModelViewSet):
     def create(self, request, *args, **kwargs):
         """POST /annotations — optional seed=preannotation:<judge> (INV-4 idempotent)."""
         from claire.corpora.models import Document
-        from claire.projects.models import Project
+        from claire.projects.models import MembershipRole, Project
 
         data = request.data
         project = get_object_or_404(
@@ -234,6 +235,24 @@ class AnnotationViewSet(viewsets.ModelViewSet):
             Document, external_id=data.get("document") or data.get("document_id"),
             corpus=project.corpus,
         )
+
+        # Gel de campagne : aucune NOUVELLE session dans un projet verrouillé (le verrou
+        # gelait déjà le contenu des sessions existantes ; sans cette garde, un membre
+        # pouvait encore ajouter une session à une campagne figée). Et un membre au rôle
+        # `reviewer` LIT le projet, il n'y annote pas : ses sessions vont dans un projet
+        # où il est annotateur (accès reviewer JURIX, `reviewer_access`).
+        if project.locked and not Annotation.objects.filter(
+            project=project, document=document, annotator=request.user
+        ).exists():
+            raise Locked(
+                "Projet verrouillé par un administrateur : aucune nouvelle session pour "
+                "toute la campagne."
+            )
+        membership = project.memberships.filter(user=request.user).first()
+        if membership is not None and membership.role == MembershipRole.REVIEWER:
+            raise PermissionDenied(
+                "Les membres au rôle reviewer lisent ce projet ; ils n'y ouvrent pas de session."
+            )
 
         seed = data.get("seed")  # e.g. "preannotation:claude"
         if seed and seed.startswith("preannotation:"):
