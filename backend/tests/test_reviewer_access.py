@@ -12,9 +12,15 @@ from tests.conftest import UserFactory
 @pytest.fixture
 def campaign(db, project):
     # `project` (conftest) : projet avec corpus + schéma ; on y met trois annotatrices fictives.
+    from claire.annotations.models import Annotation
+    doc = project.corpus.documents.first()
     for name in ("zoe.test", "anna.test", "mila.test"):
         u = UserFactory(username=name)
         ProjectMembership.objects.get_or_create(project=project, user=u, defaults={"role": MembershipRole.ANNOTATOR})
+        Annotation.objects.get_or_create(project=project, document=doc, annotator=u)
+    # un membre annotateur SANS session (co-auteur) : pas renommé
+    lead = UserFactory(username="lead.test")
+    ProjectMembership.objects.get_or_create(project=project, user=lead, defaults={"role": MembershipRole.ANNOTATOR})
     return project
 
 
@@ -41,6 +47,7 @@ def test_reviewer_access_creates_account_locks_campaign_and_sandbox(campaign, ap
     names = dict(ProjectMembership.objects.filter(project=campaign, role=MembershipRole.ANNOTATOR)
                  .values_list("user__username", "user__display_name"))
     assert names["anna.test"] == "Annotator A1" and names["mila.test"] == "Annotator A2" and names["zoe.test"] == "Annotator A3"
+    assert not names["lead.test"].startswith("Annotator")
 
     # rejouable : même compte, même mot de passe remplacé, pas de doublon
     call_command("reviewer_access", campaign=campaign.slug, sandbox="jurix-sandbox-test", password="Other-1", stdout=StringIO())
@@ -59,5 +66,5 @@ def test_reviewer_access_creates_account_locks_campaign_and_sandbox(campaign, ap
 
     # restauration des noms d'affichage
     call_command("reviewer_access", campaign=campaign.slug, sandbox="jurix-sandbox-test", password="x", restore_display_names=True, stdout=StringIO())
-    assert set(ProjectMembership.objects.filter(project=campaign, role=MembershipRole.ANNOTATOR)
-               .values_list("user__display_name", flat=True)) == {""}
+    assert not any(n.startswith("Annotator A") for n in ProjectMembership.objects.filter(project=campaign, role=MembershipRole.ANNOTATOR)
+                   .values_list("user__display_name", flat=True))

@@ -12,7 +12,7 @@ Ce que la commande met en place (idempotent, rejouable) :
 3. **Un bac à sable** (`--sandbox`, `jurix2026-sandbox`) : même corpus, même schéma, privé, non
    verrouillé ; le compte y est membre `annotator` avec une assignation par document — les
    reviewers annotent eux-mêmes, dans leurs propres sessions, sans toucher aux nôtres.
-4. **Pseudonymes à l'écran** : les membres annotateurs de la campagne reçoivent le nom d'affichage
+4. **Pseudonymes à l'écran** : les comptes ayant annoté la campagne reçoivent le nom d'affichage
    `Annotator A1/A2/A3` (ordre alphabétique des identifiants, la règle des données publiées) ;
    l'interface affiche le nom d'affichage avant l'identifiant. Réversible avec
    `--restore-display-names`.
@@ -111,9 +111,13 @@ class Command(BaseCommand):
             _, made = Assignment.objects.get_or_create(project=sandbox, document=document, assignee=user)
             n_assigned += int(made)
 
-        # 4) pseudonymes à l'écran pour les annotateurs de la campagne
+        # 4) pseudonymes à l'écran pour les annotateurs de la campagne : les comptes qui ont
+        # RÉELLEMENT annoté (au moins une session), par ordre alphabétique d'identifiant — la
+        # même règle que les données publiées (A1, A2, A3), indépendamment du rôle de membre.
+        from claire.annotations.models import Annotation
+
         annotators = list(
-            User.objects.filter(memberships__project=campaign, memberships__role=MembershipRole.ANNOTATOR)
+            User.objects.filter(pk__in=Annotation.objects.filter(project=campaign).values("annotator"))
             .exclude(pk=user.pk).order_by("username")
         )
         renamed = []
