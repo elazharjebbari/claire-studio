@@ -1,6 +1,6 @@
 # Page reviewer Pactiva — démonstration du papier court JURIX 2026
 
-> **19 septembre 2026 · statut : conception validée, exécution en cours (voir § Statut) · exécutant : session agentique (Claude Opus 5) sous la direction du porteur.**
+> **19–20 septembre 2026 · statut : livré en production (voir § Statut) · exécutant : session agentique (Claude Opus 5) sous la direction du porteur.**
 > Périmètre arrêté par le porteur le 17 septembre : **le papier court uniquement** (*A Thematic Layer for CLAUDETTE*), **aucune extraction par modèle de langage**, page **en anglais**, **aucun nom d'annotateur** exposé, texte des contrats CLAUDETTE **consultable mais non téléchargeable**.
 
 ## Le problème
@@ -70,14 +70,14 @@ docs/pactiva-reviewer-demo/
 | Lot | Contenu | État |
 |---|---|---|
 | L0 | Sauvegarde/rechargement du modèle, inférence + segmentation, sous-commande `predict`, tests | ✅ `00554ad` |
-| L1 | Entraînement du modèle servi (33 → 17), poids + `results.json` | ⏳ en cours en local (CPU, lancé le 19 sept. 22 h 40) |
+| L1 | Entraînement du modèle servi (33 → 17), poids + `results.json` | ✅ `f40ae96` — macro-F1 0,729 [0,694 ; 0,761], κ 0,711 sur les 17 contrats hold-out (CPU local, 3 h 20) ; poids sur le VPS `var/models/legalbert_T11_holdout` |
 | L2 | Pseudonymisation des votes, zip de publication, `RELEASE.json` | ✅ `d097d34` |
 | L3 | API publique `/public/demo/*`, quotas, `demo_selfcheck` | ✅ `ac0102c` (18 tests) |
 | L4 | Page d'accueil anglaise + visualiseur + téléchargements ; ancienne page sur `/presentation` | ✅ `2e0682d` (22 tests vitest) |
 | L5 | e2e (accueil, démonstration, a11y axe), MSW, garde couleurs, types, lint | ✅ `fa4f7a5` |
-| L6 | Déploiement : page, API et données en ligne ; poids à installer à la fin de L1 | ✅ `844e00c` déployé le 20 sept. 00 h 20 (health 200, 17 contrats, zip, quota 429 au 7ᵉ appel) ; poids ⏳ |
+| L6 | Déploiement : page, API, données, puis poids et carte du modèle | ✅ `844e00c` (20 sept. 00 h 20) puis `f40ae96` (20 sept. 15 h 40) ; `demo_selfcheck` OK sur le VPS |
 | L6-bis | Prompts des juges en édition lisible + protocole de session unique ; accès reviewer (`reviewer_access` : compte partagé, campagne verrouillée en lecture, bac à sable, noms A1–A3) | ✅ `a6ae078`, `522fcd1`, déployés le 20 sept. |
-| L7 | Parcours reviewer complet avec classification réelle, compte rendu | ⏳ après L1 (entraînement relancé le 20 sept. 11 h 50 après un redémarrage de la machine) |
+| L7 | Parcours reviewer complet avec classification réelle | ✅ 20 sept. 15 h 45 en production : texte collé de 6 phrases → 19 s ; WhatsApp (98 phrases) → 26 s, exactitude 0,89 / κ 0,87 contre le gold ; Headspace (372 phrases) → 68 s, κ 0,80 ; a11y axe vert ; quota 429 au 7ᵉ appel |
 
 ### Constat corrigé au passage
 
