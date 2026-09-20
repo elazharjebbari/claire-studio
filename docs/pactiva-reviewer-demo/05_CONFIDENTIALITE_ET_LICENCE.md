@@ -64,3 +64,10 @@ Vérifié en production le 20 sept. : connexion OK ; 150 sessions listées ; cr�
 Résidu connu : l'API des membres d'un projet expose aussi l'identifiant de connexion des co-auteurs (`elazhar.jebbari`, …) à côté du nom d'affichage ; l'interface montre le nom d'affichage en premier. Les co-auteurs sont nommés dans le papier (relecture en simple aveugle) ; si le porteur veut masquer aussi les identifiants, une option de l'endpoint des membres pour les comptes au rôle `reviewer` suffit.
 
 Transmission des identifiants : par le canal des chairs (commentaire EasyChair) ou sur demande par e-mail ; la page publique annonce l'existence de l'accès sans le publier.
+
+## 8. Compte invité et accès en un clic (20 sept., après-midi)
+
+- `User.is_guest` (migration `accounts/0004`) + `GuestAccessMiddleware` : pour un invité, lecture des annotations, du gold et des juges ; écriture seulement sur ses propres sessions (`/annotations`, sauf commentaires, revues, partage) ; refus 403 explicite pour Lab, analyse, exports, audit, utilisateurs, imports, configuration de projet, membres, décisions gold. La barre latérale masque Analyse, Lab et Résultats de l'article (`isGuest`).
+- Identifiants publiés sur la page (bouton « Sign in as reviewer ») : servis par le manifeste seulement si `DEMO_REVIEWER_PUBLIC=true` et `DEMO_REVIEWER_PASSWORD` définis sur le serveur. Décision du porteur du 20 sept. (« que le compte soit accessible »). Rotation : changer `DEMO_REVIEWER_PASSWORD` dans `.env`, relancer `reviewer_access --password …`, redémarrer `claire-studio`.
+- Quotas : réglables sans redéploiement (`THROTTLE_DEMO_RATE`, `THROTTLE_DEMO_BURST_RATE`) ; levés le 20 sept. à la demande du porteur (100 000/h) ; trois classifications en parallèle (`DEMO_MAX_PARALLEL=3`, `DEMO_THREADS=2`), file de six.
+- Vérifié en production : connexion en un clic → `/projects/campagne-pactiva/docs` ; barre latérale réduite ; cockpit gold lisible (composition strict / majorité / divergence, paliers) ; trois contrats classés en parallèle (32–48 s chacun) ; aucun 429.
