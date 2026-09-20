@@ -81,7 +81,7 @@ def test_me_shape(admin_client):
     data = admin_client.get("/api/v1/me").json()
     _assert_keys(
         data,
-        {"id", "username", "email", "role", "displayName", "locale", "isEmailVerified",
+        {"id", "username", "email", "role", "displayName", "locale", "isEmailVerified", "isGuest",
          "uiPreferences"},
         where="User",
     )

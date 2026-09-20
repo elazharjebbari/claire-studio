@@ -263,36 +263,39 @@ def test_cohen_kappa_and_english_share():
     assert services.english_share("bonjour ceci est un texte") < 0.05
 
 
-@pytest.mark.django_db(transaction=True)
-def test_runner_runs_up_to_three_jobs_in_parallel(demo_env, settings, tmp_path):
-    """Trois jobs lancés ensemble s'exécutent en parallèle (trois fils, trois sous-processus)."""
+def test_runner_schedules_up_to_three_jobs_in_parallel(settings, monkeypatch):
+    """Ordonnanceur : trois jobs mis en file ensemble démarrent ensemble (trois fils), le quatrième
+    attend qu'un fil se libère ; aucun job n'est oublié. L'exécution réelle est remplacée par une
+    attente, pour tester le seul ordonnancement (pas la base ni le sous-processus)."""
+    import threading
     import time
 
-    slow = tmp_path / "slow_predict.py"
-    slow.write_text(textwrap.dedent("""
-        import json, sys, time
-        time.sleep(1.5)
-        payload = json.load(open(sys.argv[2]))
-        rows = [{"index": i, "text": s, "label": "FRAMEWORK", "confidence": 0.9, "scores": {}} for i, s in enumerate(payload.get("sentences") or ["x"])]
-        json.dump({"n_sentences": len(rows), "classes": ["FRAMEWORK"], "sentences": rows, "timing_s": 1.5, "segmenter": "provided"}, open(sys.argv[3], "w"))
-    """))
-    settings.DEMO_PREDICT_COMMAND = [sys.executable, str(slow), "{model}", "{input}", "{out}"]
     settings.DEMO_RUN_INLINE = False
     settings.DEMO_MAX_PARALLEL = 3
-    jobs = []
-    for _ in range(3):
-        job = DemoJob.objects.create(source="contract", document=HOLDOUT_DOC, title=HOLDOUT_DOC)
-        runner.write_input(job, sentences=["a", "b"])
-        jobs.append(job)
-    started = time.monotonic()
-    positions = [runner.enqueue(j) for j in jobs]
-    assert max(positions) <= 2 and positions[0] == 0     # trois fils démarrent ; la position est indicative
-    deadline = started + 20
-    while time.monotonic() < deadline:
-        if all(DemoJob.objects.get(pk=j.pk).status in ("done", "failed") for j in jobs):
-            break
-        time.sleep(0.1)
-    elapsed = time.monotonic() - started
-    states = [(DemoJob.objects.get(pk=j.pk).status, DemoJob.objects.get(pk=j.pk).error) for j in jobs]
-    assert all(s == "done" for s, _ in states), (states, elapsed)
-    assert elapsed < 4.0, elapsed                      # en série, il faudrait ≥ 4,5 s
+    started, finished = [], []
+    lock = threading.Lock()
+
+    def fake_execute(job_id):
+        with lock:
+            started.append((job_id, time.monotonic()))
+        time.sleep(0.6)
+        with lock:
+            finished.append(job_id)
+
+    monkeypatch.setattr(runner, "execute", fake_execute)
+
+    class _Job:
+        def __init__(self, i):
+            self.id = f"job-{i}"
+
+    t0 = time.monotonic()
+    positions = [runner.enqueue(_Job(i)) for i in range(4)]
+    deadline = t0 + 5
+    while time.monotonic() < deadline and len(finished) < 4:
+        time.sleep(0.05)
+    assert sorted(finished) == ["job-0", "job-1", "job-2", "job-3"]
+    first_three = sorted(t for _, t in started)[:3]
+    assert first_three[2] - first_three[0] < 0.3            # les trois premiers démarrent ensemble
+    assert positions[3] >= 1                                  # le quatrième savait qu'il attendait
+    assert time.monotonic() - t0 < 2.0                        # ≈ 1,2 s en parallèle, 2,4 s en série
+    assert runner.active_workers() == 0
