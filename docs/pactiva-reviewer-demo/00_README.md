@@ -76,7 +76,8 @@ docs/pactiva-reviewer-demo/
 | L4 | Page d'accueil anglaise + visualiseur + téléchargements ; ancienne page sur `/presentation` | ✅ `2e0682d` (22 tests vitest) |
 | L5 | e2e (accueil, démonstration, a11y axe), MSW, garde couleurs, types, lint | ✅ `fa4f7a5` |
 | L6 | Déploiement : page, API et données en ligne ; poids à installer à la fin de L1 | ✅ `844e00c` déployé le 20 sept. 00 h 20 (health 200, 17 contrats, zip, quota 429 au 7ᵉ appel) ; poids ⏳ |
-| L7 | Parcours reviewer complet avec classification réelle, compte rendu | ⏳ après L1 |
+| L6-bis | Prompts des juges en édition lisible + protocole de session unique ; accès reviewer (`reviewer_access` : compte partagé, campagne verrouillée en lecture, bac à sable, noms A1–A3) | ✅ `a6ae078`, `522fcd1`, déployés le 20 sept. |
+| L7 | Parcours reviewer complet avec classification réelle, compte rendu | ⏳ après L1 (entraînement relancé le 20 sept. 11 h 50 après un redémarrage de la machine) |
 
 ### Constat corrigé au passage
 

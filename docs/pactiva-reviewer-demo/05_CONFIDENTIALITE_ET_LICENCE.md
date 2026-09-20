@@ -47,3 +47,20 @@ Un enregistrement par job : identifiant, source, document (si contrat), nombre d
 ## 6. Licence des artefacts publiés
 
 La page reprend la formulation du dossier du papier court : *released under an open licence upon publication*. Le choix de la licence (CC BY 4.0 pour les données, MIT pour le code, par exemple) et le dépôt d'un DOI restent des décisions du porteur, consignées dans `docs/pactiva-jurix-short-paper/01_STRUCTURE_RECOMMANDEE.md`.
+
+## 7. Accès reviewer à la plateforme (20 sept.)
+
+Commande `manage.py reviewer_access` (backend), rejouable :
+
+| Élément | Réglage | Protection de nos annotations |
+|---|---|---|
+| Compte partagé `jurix-reviewer` | rôle utilisateur `reviewer`, e-mail de service, mot de passe passé en argument, jamais stocké | pas de droit d'export (admins seulement) ; ne peut modifier le contenu d'aucune session d'autrui (`IsAnnotationOwner`) |
+| Campagne `campagne-pactiva` | **verrouillée** (`locked`), le compte y est membre `reviewer` sans assignation | lecture des 150 sessions, comparaison humain ↔ juges, concordance ; **aucune nouvelle session** dans un projet verrouillé ni pour un membre `reviewer` (garde ajoutée dans `annotations/views.py`, 423 / 403) ; gold finalisé immuable |
+| Bac à sable `jurix2026-sandbox` | même corpus et schéma, privé, non verrouillé ; le compte y est `annotator` avec les 50 documents assignés | les sessions des reviewers restent dans ce projet et n'entrent jamais dans la couche publiée |
+| Noms à l'écran | les trois comptes ayant annoté reçoivent le nom d'affichage `Annotator A1/A2/A3` (ordre alphabétique des identifiants, même règle que les données) | réversible : `reviewer_access --restore-display-names` |
+
+Vérifié en production le 20 sept. : connexion OK ; 150 sessions listées ; création de session dans la campagne → 423 ; dans le bac à sable → 201 ; export → 403 ; membres affichés `Annotator A1/A2/A3`.
+
+Résidu connu : l'API des membres d'un projet expose aussi l'identifiant de connexion des co-auteurs (`elazhar.jebbari`, …) à côté du nom d'affichage ; l'interface montre le nom d'affichage en premier. Les co-auteurs sont nommés dans le papier (relecture en simple aveugle) ; si le porteur veut masquer aussi les identifiants, une option de l'endpoint des membres pour les comptes au rôle `reviewer` suffit.
+
+Transmission des identifiants : par le canal des chairs (commentaire EasyChair) ou sur demande par e-mail ; la page publique annonce l'existence de l'accès sans le publier.
