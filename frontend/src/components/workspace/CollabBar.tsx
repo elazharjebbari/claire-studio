@@ -8,6 +8,7 @@
  * rien en solo, discret à plusieurs.
  */
 
+import { useMe } from "@/lib/api/hooks";
 import { useState } from "react";
 import { UserPlus } from "lucide-react";
 import { useWorkspaceStore } from "@/store/workspace";
@@ -21,6 +22,10 @@ function initials(name: string): string {
 }
 
 export function CollabBar({ projectSlug }: { projectSlug?: string }) {
+  // Compte invité (accès reviewer) : pas de partage — le serveur le refuse et le bouton n'a pas
+  // de sens pour un lecteur.
+  const { data: me } = useMe();
+  const guest = !!me?.isGuest;
   const annotationId = useWorkspaceStore((s) => s.annotationId);
   const { data: flags } = useFeatureFlags();
   const presenceEnabled = Boolean(flags?.presence);
@@ -63,7 +68,7 @@ export function CollabBar({ projectSlug }: { projectSlug?: string }) {
         )}
       </div>
 
-      {projectSlug && (
+      {projectSlug && !guest && (
         <button
           type="button"
           data-testid="collab-invite"
@@ -75,7 +80,7 @@ export function CollabBar({ projectSlug }: { projectSlug?: string }) {
         </button>
       )}
 
-      {shareOpen && projectSlug && (
+      {shareOpen && projectSlug && !guest && (
         <ShareLinkDialog projectSlug={projectSlug} onClose={() => setShareOpen(false)} />
       )}
     </div>

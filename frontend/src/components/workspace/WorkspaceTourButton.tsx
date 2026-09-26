@@ -13,6 +13,7 @@
 import { useEffect, useRef } from "react";
 import { Button } from "@/components/ui/primitives";
 import { MOCKS_ENABLED } from "@/lib/env";
+import { useMe } from "@/lib/api/hooks";
 
 // Versionné : incrémenter le suffixe quand la visite est refondue → les utilisateurs
 // existants la revoient automatiquement UNE fois après la mise à jour.
@@ -26,10 +27,14 @@ async function launchTour(): Promise<void> {
 
 export function WorkspaceTourButton() {
   const autoStarted = useRef(false);
+  const { data: me } = useMe();
+  // Compte invité (accès reviewer) : il vient LIRE des annotations, pas apprendre à annoter —
+  // la visite ne s'ouvre pas d'elle-même, le bouton reste à disposition.
+  const guest = !!me?.isGuest;
 
   useEffect(() => {
-    // Auto-démarrage 1re visite : jamais en mode mock (E2E), une seule fois.
-    if (MOCKS_ENABLED || autoStarted.current) return;
+    // Auto-démarrage 1re visite : jamais en mode mock (E2E), jamais pour un invité, une fois.
+    if (MOCKS_ENABLED || guest || autoStarted.current) return;
     autoStarted.current = true;
     let seen = false;
     try {
@@ -49,7 +54,7 @@ export function WorkspaceTourButton() {
       void launchTour();
     }, 600);
     return () => window.clearTimeout(t);
-  }, []);
+  }, [guest]);
 
   return (
     <Button
