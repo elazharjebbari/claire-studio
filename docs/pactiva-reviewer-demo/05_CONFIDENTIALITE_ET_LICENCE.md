@@ -71,3 +71,14 @@ Transmission des identifiants : par le canal des chairs (commentaire EasyChair) 
 - Identifiants publiés sur la page (bouton « Sign in as reviewer ») : servis par le manifeste seulement si `DEMO_REVIEWER_PUBLIC=true` et `DEMO_REVIEWER_PASSWORD` définis sur le serveur. Décision du porteur du 20 sept. (« que le compte soit accessible »). Rotation : changer `DEMO_REVIEWER_PASSWORD` dans `.env`, relancer `reviewer_access --password …`, redémarrer `claire-studio`.
 - Quotas : réglables sans redéploiement (`THROTTLE_DEMO_RATE`, `THROTTLE_DEMO_BURST_RATE`) ; levés le 20 sept. à la demande du porteur (100 000/h) ; trois classifications en parallèle (`DEMO_MAX_PARALLEL=3`, `DEMO_THREADS=2`), file de six.
 - Vérifié en production : connexion en un clic → `/projects/campagne-pactiva/docs` ; barre latérale réduite ; cockpit gold lisible (composition strict / majorité / divergence, paliers) ; trois contrats classés en parallèle (32–48 s chacun) ; aucun 429.
+
+## 9. Entrée directe dans les annotations (26 sept.)
+
+Le compte reviewer n'a aucune assignation sur la campagne : la liste des documents lui présentait 50 lignes sans porte d'entrée. Corrigé :
+
+- `/projects/<campagne>/docs` affiche, pour un lecteur sur un projet **gelé**, les **sessions existantes** (`A1`, `A2`, `A3`) ouvertes en un clic en lecture, plus un lien « Comparer » par document et un renvoi vers le bac à sable. Le mode est décidé par le **verrou du projet**, pas par le rôle : sur son bac à sable, le même compte retrouve « Annoter → » et ses 50 documents attribués.
+- L'API `/projects/<slug>/documents` expose la matrice des sessions au rôle `reviewer` (déjà la règle de `/annotations`), restreinte aux membres **ayant annoté**.
+- Identités : le nom d'affichage passe avant l'identifiant partout (`common/identity.display_name`), et l'identifiant de connexion n'est plus servi qu'à la supervision et à soi-même (matrice des sessions et liste des membres) — le résidu signalé au § 7 est levé.
+- Confort : pour un invité, la visite guidée ne s'ouvre plus d'elle-même et le partage collaboratif est masqué.
+
+Vérifié en production le 26 sept. : connexion en un clic → 150 liens de lecture et 50 liens de comparaison sur la campagne ; ouverture d'une session en lecture seule ; bac à sable → 50 boutons « Annoter », session éditable (« Ma session — édition »).
