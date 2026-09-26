@@ -80,9 +80,22 @@ class AssignmentSerializer(serializers.ModelSerializer):
 
 class ProjectMembershipSerializer(serializers.ModelSerializer):
     user_id = serializers.PrimaryKeyRelatedField(source="user", read_only=True)
-    username = serializers.CharField(source="user.username", read_only=True)
+    username = serializers.SerializerMethodField()
     display_name = serializers.CharField(source="user.display_name", read_only=True)
 
     class Meta:
         model = ProjectMembership
         fields = ["id", "user_id", "username", "display_name", "role", "joined_at"]
+
+    def get_username(self, obj) -> str:
+        """Identifiant de connexion : supervision et soi-même seulement.
+
+        Un lecteur (rôle `reviewer`, dont l'accès reviewer JURIX) voit le nom d'affichage, qui
+        porte le pseudonyme de l'équipe ; l'identifiant de connexion ne lui apporte rien."""
+        request = self.context.get("request")
+        viewer = getattr(request, "user", None) if request else None
+        if viewer is None or not getattr(viewer, "is_authenticated", False):
+            return ""
+        if getattr(viewer, "is_admin_role", False) or viewer.id == obj.user_id:
+            return obj.user.username
+        return ""

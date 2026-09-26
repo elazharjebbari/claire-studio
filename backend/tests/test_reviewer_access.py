@@ -99,3 +99,27 @@ def test_guest_scope_is_read_only_outside_own_sessions(campaign, api_client):
     assert api_client.post("/api/v1/exports", {"project": campaign.slug, "format": "jsonl"}, format="json").status_code == 403
     assert api_client.patch(f"/api/v1/projects/{campaign.slug}", {"visibility": "public"}, format="json").status_code == 403
     assert api_client.get("/api/v1/users").status_code == 403
+
+
+@pytest.mark.django_db
+def test_reviewer_sees_existing_sessions_on_the_documents_page(campaign, api_client):
+    """La liste des documents doit donner au reviewer une porte d'entrée : les sessions
+    existantes, nommées par leur pseudonyme, avec leur identifiant d'annotation à ouvrir."""
+    call_command("reviewer_access", campaign=campaign.slug, sandbox="jurix-sandbox-test", password="Read-1", stdout=StringIO())
+    r = api_client.post("/api/v1/auth/login", {"username": "jurix-reviewer", "password": "Read-1"}, format="json")
+    api_client.credentials(HTTP_AUTHORIZATION=f"Bearer {r.json()['access']}")
+
+    rows = api_client.get(f"/api/v1/projects/{campaign.slug}/documents").json()["results"]
+    assert rows, "le reviewer doit voir les documents du projet"
+    sessions = rows[0]["sessions"]
+    names = sorted(s["displayName"] for s in sessions)
+    assert names == ["Annotator A1", "Annotator A2", "Annotator A3"]      # pseudonymes, pas d'identifiants
+    assert all(s["annotationId"] for s in sessions)                        # chaque session est ouvrable
+    assert len(sessions) == 3                                              # membre sans session : absent
+    assert all(s["username"] == "" for s in sessions)                      # aucun identifiant de connexion
+    members = api_client.get(f"/api/v1/projects/{campaign.slug}/members").json()["results"]
+    shown = {m["username"] for m in members}
+    assert shown == {"", "jurix-reviewer"}                                 # seulement le sien
+    assert "Annotator A1" in {m["displayName"] for m in members}
+    # la session d'autrui s'ouvre en lecture
+    assert api_client.get(f"/api/v1/annotations/{sessions[0]['annotationId']}").status_code == 200

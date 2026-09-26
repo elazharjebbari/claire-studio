@@ -215,12 +215,14 @@ class ProjectViewSet(viewsets.ModelViewSet):
                 m.role = role
                 m.save(update_fields=["role"])
             return Response(
-                ProjectMembershipSerializer(m).data,
+                ProjectMembershipSerializer(m, context={"request": request}).data,
                 status=status.HTTP_201_CREATED if created else status.HTTP_200_OK,
             )
         qs = project.memberships.select_related("user").order_by("user__username")
         return Response(
-            results_envelope(ProjectMembershipSerializer(qs, many=True).data)
+            results_envelope(
+                ProjectMembershipSerializer(qs, many=True, context={"request": request}).data
+            )
         )
 
     @action(
@@ -292,9 +294,17 @@ class ProjectViewSet(viewsets.ModelViewSet):
         is_lead = project.memberships.filter(
             user=user, role=MembershipRole.LEAD
         ).exists()
+        # Le rôle `reviewer` (supervision transverse, y compris l'accès reviewer JURIX) LIT les
+        # sessions des autres — c'est déjà la règle de `/annotations` (ADR-001) ; sans cela, la
+        # liste des documents lui montrerait 50 lignes sans aucune porte d'entrée vers les
+        # annotations existantes. Il ne dispose d'aucune action d'écriture pour autant.
+        is_reviewer = (
+            getattr(user, "role", None) == "reviewer"
+            or project.memberships.filter(user=user, role=MembershipRole.REVIEWER).exists()
+        )
         is_supervisor = bool(getattr(user, "is_admin_role", False)) or is_lead
         mine_only = request.query_params.get("mine") in ("1", "true", "True")
-        expose_sessions = is_supervisor and not mine_only
+        expose_sessions = (is_supervisor or is_reviewer) and not mine_only
 
         documents = list(project.corpus.documents.all().order_by("external_id"))
 
@@ -325,13 +335,23 @@ class ProjectViewSet(viewsets.ModelViewSet):
             .filter(role__in=[MembershipRole.ANNOTATOR, MembershipRole.LEAD])
             .order_by("user__username")
         ]
+        if is_reviewer and not is_supervisor:
+            # Vue reviewer : seulement les membres qui ONT annoté — une colonne vide n'apporte
+            # rien à la lecture et exposerait le nom d'un membre sans session.
+            with_sessions = set(
+                Annotation.objects.filter(project=project).values_list("annotator_id", flat=True)
+            )
+            session_members = [m for m in session_members if m.id in with_sessions]
         submitted = {"submitted", "in_review", "approved"}
 
         def session_for(doc, member):
             an = ann_idx.get((doc.id, member.id))
             return {
                 "annotator_id": member.id,
-                "username": member.username,
+                # Identifiant de connexion réservé à la supervision : un lecteur (rôle reviewer,
+                # dont l'accès reviewer JURIX) ne voit que le nom d'affichage, qui porte le
+                # pseudonyme. Sa propre ligne garde son identifiant.
+                "username": member.username if (is_supervisor or member.id == user.id) else "",
                 "display_name": display_name(member),
                 "color": user_color(member.id),
                 "assigned": (doc.id, member.id) in assign_idx,

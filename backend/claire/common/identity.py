@@ -25,9 +25,17 @@ def user_color(user_id) -> str:
 
 
 def display_name(user) -> str:
-    """Nom lisible d'un utilisateur (get_full_name → username → id)."""
+    """Nom lisible d'un utilisateur : `display_name` → nom complet → identifiant → id.
+
+    Le champ `display_name` du compte passe EN PREMIER : c'est lui que l'équipe édite, et c'est
+    lui qui porte les pseudonymes d'affichage (« Annotator A1 ») posés pour l'accès reviewer.
+    Sans cette priorité, toutes les surfaces collaboratives afficheraient l'identifiant de
+    connexion à la place du pseudonyme."""
     if user is None:
         return "—"
+    chosen = (getattr(user, "display_name", "") or "").strip()
+    if chosen:
+        return chosen
     full = (getattr(user, "get_full_name", lambda: "")() or "").strip()
     return full or getattr(user, "username", None) or f"user#{getattr(user, 'pk', '?')}"
 
