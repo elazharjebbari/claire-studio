@@ -25,18 +25,21 @@ export default function ProjectDocs({ params }: { params: { slug: string } }) {
   const { data: me } = useMe();
   const isAdmin = isAdminRole(me?.role);
   const isGuest = !!me?.isGuest;
-  // Un invité lit les sessions des autres : on demande la matrice (sans `mine`), que le
-  // serveur n'expose qu'aux superviseurs et aux reviewers.
-  const { data: docs } = useProjectDocuments(params.slug, { mine: !isGuest });
+  // Mode LECTURE : un invité sur un projet GELÉ (la campagne). Sur un projet ouvert (son bac à
+  // sable), le même compte retrouve la vue annotateur — c'est le projet qui décide, pas le rôle.
+  const reading = isGuest && Boolean(project?.locked);
+  // En lecture, on demande la matrice des sessions (sans `mine`), que le serveur n'expose
+  // qu'aux superviseurs et aux reviewers.
+  const { data: docs } = useProjectDocuments(params.slug, { mine: !reading });
   const { data: projects } = useProjects();
   const [opening, setOpening] = useState<string | null>(null);
 
   const documents = docs?.results ?? [];
   // Projet où l'invité PEUT annoter (bac à sable) : le premier projet où il n'est pas gelé.
-  const sandbox = isGuest
+  const sandbox = reading
     ? (projects?.results ?? []).find((p) => p.slug !== params.slug && !p.locked)
     : undefined;
-  const readOnly = isGuest || Boolean(project?.locked);
+  const readOnly = Boolean(project?.locked);
 
   async function open(externalId: string) {
     if (opening) return;
@@ -57,9 +60,11 @@ export default function ProjectDocs({ params }: { params: { slug: string } }) {
             Documents · {project?.name ?? params.slug}
           </h1>
           <p className="mt-0.5 text-sm text-ink-muted">
-            {isGuest
+            {reading
               ? "Cliquez sur un annotateur pour lire sa session, ou sur « Comparer » pour les voir côte à côte."
-              : "Liste de travail : statut de ma session et accès à l'annotation (1 ligne par document)."}
+              : isGuest
+                ? "Votre bac à sable : les 50 contrats vous sont attribués, vos sessions n'appartiennent qu'à vous."
+                : "Liste de travail : statut de ma session et accès à l'annotation (1 ligne par document)."}
           </p>
         </div>
         {isAdmin && (
@@ -73,7 +78,7 @@ export default function ProjectDocs({ params }: { params: { slug: string } }) {
         )}
       </div>
 
-      {isGuest && (
+      {reading && (
         <div
           data-testid="guest-banner"
           className="mb-4 rounded-md border border-line bg-panel px-3 py-2 text-xs text-ink-muted"
@@ -133,7 +138,7 @@ export default function ProjectDocs({ params }: { params: { slug: string } }) {
                 </div>
               </div>
               <div className="flex shrink-0 items-center gap-3">
-                {isGuest ? (
+                {reading ? (
                   <>
                     {sessions.map((s) => (
                       <Link
